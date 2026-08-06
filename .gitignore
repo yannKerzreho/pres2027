@@ -1,0 +1,24 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.pytest_cache/
+
+# Données volumineuses / PDF bruts (récupérés par le pipeline, non versionnés)
+data/raw/*.pdf
+data/raw/pdf/
+data/raw/notices_index.csv
+# Sorties du parsing live (régénérables via pipeline/build_live_dataset.py)
+data/parsed/*.csv
+# NB : tests/fixtures/pdf/ EST versionné (petites notices de référence pour les tests)
+
+# Sorties de modèle / traces d'inférence
+*.nc
+model/traces/
+
+# OS
+.DS_Store
+
+# Figures générées (régénérables)
+notebooks/figures/*.png

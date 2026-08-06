@@ -1,0 +1,25 @@
+# Pipeline données & exploration
+pandas
+numpy
+matplotlib
+requests
+pyarrow
+
+# Modèle bayésien (calibration hiérarchique + modèle live)
+# NB : sur Python 3.9, scipy est épinglé <1.13 car arviz 0.17 importe encore
+# scipy.signal.gaussian, alias supprimé dans scipy 1.13.
+pymc==5.12.0
+arviz==0.17.1
+scipy==1.12.0
+# Sampler HMC rapide (JAX) — nuts_sampler="numpyro"
+numpyro
+jax
+
+# Parsing PDF des notices (Phase 2)
+pdfplumber
+
+# Tests
+pytest
+
+# Sauvegarde des traces d'inférence (.nc)
+h5py

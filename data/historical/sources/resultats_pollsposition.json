@@ -1,0 +1,854 @@
+{
+  "2017": {
+    "premier_tour": {
+      "source": "https://www.conseil-constitutionnel.fr/decision/2017/2017169PDR.htm",
+      "date": "2017-04-23",
+      "inscrits": 47582183,
+      "votants": 37003728,
+      "exprimes": 36054394,
+      "resultats": {
+        "Nicolas Dupont-Aignan": 1695000,
+        "Marine Le Pen": 7678491,
+        "Emmanuel Macron": 8656346,
+        "Benoît Hamon": 2291288,
+        "Nathalie Arthaud": 232384,
+        "Philippe Poutou": 394505,
+        "Jacques Cheminade": 65586,
+        "Jean Lassalle": 435301,
+        "Jean-Luc Mélenchon": 7059951,
+        "François Asselineau": 332547,
+        "François Fillon": 7212995
+      }
+    },
+    "second_tour": {
+      "source": "https://www.conseil-constitutionnel.fr/decision/2017/2017171PDR.htm",
+      "date": "2017-05-07",
+      "inscrits": 47568693,
+      "votants": 35467327,
+      "exprimes": 31381603,
+      "resultats": {
+        "Emmanuel Macron": 20743128,
+        "Marine Le Pen": 10638475
+      }
+    },
+    "candidats": [
+      {
+        "nom": "Nicolas Dupont-Aignan",
+        "parti": "Debout la France",
+        "parti_court": "DLF"
+      },
+      {
+        "nom": "Marine Le Pen",
+        "parti": "Front national",
+        "parti_court": "FN"
+      },
+      {
+        "nom": "Emmanuel Macron",
+        "parti": "En marche",
+        "parti_court": "EM"
+      },
+      {
+        "nom": "Benoît Hamon",
+        "parti": "Parti socialiste",
+        "parti_court": "PS"
+      },
+      {
+        "nom": "Nathalie Arthaud",
+        "parti": "Lutte ouvrière",
+        "parti_court": "LO"
+      },
+      {
+        "nom": "Philippe Poutou",
+        "parti": "Nouveau parti anticapitaliste",
+        "parti_court": "NPA"
+      },
+      {
+        "nom": "Jacques Cheminade",
+        "parti": "Solidarité et progrès",
+        "parti_court": "S&P"
+      },
+      {
+        "nom": "Jean Lassalle",
+        "parti": "Résistons",
+        "parti_court": "R"
+      },
+      {
+        "nom": "Jean-Luc Mélenchon",
+        "parti": "La France insoumise",
+        "parti_court": "LFI"
+      },
+      {
+        "nom": "François Asselineau",
+        "parti": "Union populaire républicaine",
+        "parti_court": "UPR"
+      },
+      {
+        "nom": "François Fillon",
+        "parti": "Les républicains",
+        "parti_court": ""
+      }
+    ]
+  },
+  "2012": {
+    "premier_tour": {
+      "source": "https://www.conseil-constitutionnel.fr/decision/2012/2012152PDR.htm",
+      "date": "2012-04-22",
+      "inscrits": 46028542,
+      "votants": 36584399,
+      "exprimes": 35883209,
+      "resultats": {
+        "Eva Joly": 828345,
+        "Marine Le Pen": 6421426,
+        "Nicolas Sarkozy": 9753629,
+        "Jean-Luc Mélenchon": 3984822,
+        "Philippe Poutou": 411160,
+        "Nathalie Arthaud": 202548,
+        "Jacques Cheminade": 89545,
+        "François Bayrou": 3275122,
+        "Nicolas Dupont-Aignan": 643907,
+        "François Hollande":  10272705
+      }
+    },
+    "second_tour": {
+      "source": "https://www.conseil-constitutionnel.fr/decision/2012/2012154PDR.htm",
+      "date": "2012-05-06",
+      "inscrits": 46066307,
+      "votants": 37016309,
+      "exprimes": 34861353,
+      "resultats": {
+        "François Hollande": 18000668,
+        "Nicolas Sarkozy": 16860685 
+      }
+    },
+    "candidats": [
+      {
+        "nom": "Eva Joly",
+        "parti": "Europe écologie les verts",
+        "parti_court": "EELV"
+      },
+      {
+        "nom": "Marine Le Pen",
+        "parti": "Front national",
+        "parti_court": "FN"
+      },
+      {
+        "nom": "Nicolas Sarkozy",
+        "parti": "Union pour un mouvement populaire",
+        "parti_court": "UMP"
+      },
+      {
+        "nom": "Jean-Luc Mélenchon",
+        "parti": "Front de gauche",
+        "parti_court": "FG"
+      },
+      {
+        "nom": "Philipe Poutou",
+        "parti": "Nouveau parti anticapitaliste",
+        "parti_court": "NPA"
+      },
+      {
+        "nom": "Nathalie Arthaud",
+        "parti": "Lutte ouvrière",
+        "parti_court": "LO"
+      },
+      {
+        "nom": "Jacques Cheminade",
+        "parti": "Solidarité et progrès",
+        "parti_court": "S&P"
+      },
+      {
+        "nom": "François Bayrou",
+        "parti": "Mouvement démocrate",
+        "parti_court": "MoDem"
+      },
+      {
+        "nom": "Nicolas Dupont-Aignan",
+        "parti": "Debout la République",
+        "parti_court": "DLR"
+      },
+      {
+        "nom": "François Hollande",
+        "parti": "Parti socialiste",
+        "parti_court": "PS"
+      }
+    ]
+  },
+  "2007": {
+    "premier_tour": {
+      "source": "https://www.conseil-constitutionnel.fr/decision/2007/2007139PDR.htm",
+      "date": "2007-04-22",
+      "inscrits": 44472834,
+      "votants": 37254242,
+      "exprimes": 36719396,
+      "resultats": {
+        "Olivier Besancenot": 1498581,
+        "Marie-Georges Buffet": 707268,
+        "Gérard Schivardi": 123540,
+        "François Bayrou": 6820119,
+        "José Bové": 483008,
+        "Dominique Voynet": 576666,
+        "Philippe de Villiers": 818407,
+        "Ségolène Royal": 9500112,
+        "Frédéric Nihous": 420645,
+        "Jean-Marie Le Pen": 3834530,
+        "Arlette Laguiller": 487857,
+        "Nicolas Sarkozy": 11448663
+      }
+    },
+    "second_tour": {
+      "source": "https://www.conseil-constitutionnel.fr/decision/2007/2007141pdr.htm",
+      "date": "2007-05-02",
+      "inscrits": 44472733,
+      "votants": 37342004,
+      "exprimes": 35773578,
+      "resultats": {
+        "Ségolène Royal": 16790440,
+        "Nicolas Sarkozy": 18983138
+      }
+    },
+    "candidats": [
+      {
+        "nom": "François Bayrou",
+        "parti": "Union pour la démocratie française",
+        "parti_court": "UDF"
+      },
+      {
+        "nom": "Olivier Besancenot",
+        "parti": "Ligue communiste révolutionnaire",
+        "parti_court": "LCR"
+      },
+      {
+        "nom": "José Bové",
+        "parti": "Sans étiquette",
+        "parti_court": "-"
+      },
+      {
+        "nom": "Marie-Georges Buffet",
+        "parti": "Parti communiste français",
+        "parti_court": "PCF"
+      },
+      {
+        "nom": "Arlette Laguiller",
+        "parti": "Lutte ouvrière",
+        "parti_court": "LO"
+      },
+      {
+        "nom": "Jean-Marie Le Pen",
+        "parti": "Front national",
+        "parti_court": "FN"
+      },
+      {
+        "nom": "Frédéric Nihous",
+        "parti": "Chasse, pêche, nature et traditions",
+        "parti_court": "CPNT"
+      },
+      {
+        "nom": "Ségolène Royal",
+        "parti": "Parti socialiste",
+        "parti_court": "PS"
+      },
+      {
+        "nom": "Nicolas Sarkozy",
+        "parti": "Union pour un mouvement populaire",
+        "parti_court": "UMP"
+      },
+      {
+        "nom": "Gérard Schivardi",
+        "parti": "Comité national pour la reconquête de la démocratie",
+        "parti_court": "CNRD"
+      },
+      {
+        "nom": "Philippe de Villiers",
+        "parti": "Mouvement pour la France",
+        "parti_court": "MPF"
+      },
+      {
+        "nom": "Dominique Voynet",
+        "parti": "Les verts",
+        "parti_court": "LV"
+      }
+    ]
+  },
+  "2002": {
+    "premier_tour": {
+      "source": "https://www.conseil-constitutionnel.fr/election-presidentielle-2002/resultats-du-1er-tour",
+      "date": "2022-04-21",
+      "inscrits": 41194689,
+      "votants": 29495733,
+      "exprimes": 28498471,
+      "resultats": {
+        "Brunot Mégret": 667026,
+        "Corrine Lepage": 535837,
+        "Daniel Gluckstein": 132686,
+        "François Bayrou": 1949170,
+        "Jacques Chirac": 5665855,
+        "Jean-Marie Le Pen": 4804713,
+        "Christine Taubira": 660447,
+        "Jean Saint-Josse": 1204689,
+        "Noël Mamère": 1495724,
+        "Lionel Jospin": 4610113,
+        "Christine Boutin": 339112,
+        "Robert Hue": 960480,
+        "Jean-Pierre Chevènement": 1518528,
+        "Alain Madelin": 1113484,
+        "Arlette Laguiller": 1630045,
+        "Olivier Besancenot": 1210562
+      }
+    },
+    "second_tour": {
+      "source": "https://www.conseil-constitutionnel.fr/election-presidentielle-2002/resultats-definitifs-du-second-tour-5-mai-2002",
+      "date": "2022-05-05",
+      "inscrits": 41191169,
+      "votants": 32832195,
+      "exprimes": 31062988,
+      "resultats": {
+        "Jacques Chirac": 25537956,
+        "Jean-Marie Le Pen": 5525032
+      }
+    },
+    "candidats": [
+      {
+        "nom": "Daniel Gluckstein",
+        "parti": "Parti des travailleurs",
+        "parti_court": "PT"
+      },
+      {
+        "nom": "Christine Boutin",
+        "parti": "Forum des républicains sociaux",
+        "parti_court": "FRS"
+      },
+      {
+        "nom": "Corine Lepage",
+        "parti": "Cap21",
+        "parti_court": "Cap21"
+      },
+      {
+        "nom": "Christiane Taubira",
+        "parti": "Parti radical de gauche",
+        "parti_court": "PRG"
+      },
+      {
+        "nom": "Bruno Mégret",
+        "parti": "Mouvement national républicain",
+        "parti_court": "MNR"
+      },
+      {
+        "nom": "Robert Hue",
+        "parti": "Parti communiste français",
+        "parti_court": "PCF"
+      },
+      {
+        "nom": "Alain Madelin",
+        "parti": "Démocratie libérale",
+        "parti_court": "DL"
+      },
+      {
+        "nom": "Jean Saint-Josse",
+        "parti": "Chasse, pêche, nature et traditions",
+        "parti_court": "CPNT"
+      },
+      {
+        "nom": "Olivier Besancenot",
+        "parti": "Ligue communiste révolutionnaire",
+        "parti_court": "LCR"
+      },
+      {
+        "nom": "Noël Mamère",
+        "parti": "Les verts",
+        "parti_court": "LV"
+      },
+      {
+        "nom": "Jean-Pierre Chevènement",
+        "parti": "Mouvement des citoyens",
+        "parti_court": "MDC"
+      },
+      {
+        "nom": "Arlette Laguiller",
+        "parti": "Lutte ouvrière",
+        "parti_court": "LO"
+      },
+      {
+        "nom": "François Bayrou",
+        "parti": "Union pour la démocratie française",
+        "parti_court": "UDF"
+      },
+      {
+        "nom": "Lionel Jospin",
+        "parti": "Parti socialiste",
+        "parti_court": "PS"
+      },
+      {
+        "nom": "Jean-Marie Le Pen",
+        "parti": "Front national",
+        "parti_court": "FN"
+      },
+      {
+        "nom": "Jacques Chirac",
+        "parti": "Rassemblement pour la République",
+        "parti_court": "RPR"
+      }
+    ]
+  },
+  "1995": {
+    "premier_tour": {
+      "source": "https://www.conseil-constitutionnel.fr/decision/1988/8860PDR.htm",
+      "date": "1995-04-23",
+      "inscrits": 39992912,
+      "votants": 31345794,
+      "exprimes": 30462633,
+      "resultats": {
+        "Philippe de Villiers": 1443186,
+        "Jean-Marie Le Pen": 4570838,
+        "Jacques Chirac": 6348375,
+        "Arlette Laguiller": 1615552,
+        "Jacques Cheminade": 84959,
+        "Lionel Jospin": 7097786,
+        "Dominique Voynet": 1010681,
+        "Edouard Balladur": 5658796,
+        "Robert Hue": 2632460
+      }
+    },
+    "second_tour": {
+      "source": "https://www.conseil-constitutionnel.fr/decision/1995/9581PDR.htm",
+      "date": "1995-05-07",
+      "inscrits": 39976944,
+      "votants": 31845819,
+      "exprimes": 29943671,
+      "resultats": {
+        "Jacques Chirac": 15763027,
+        "Lionel Jospin": 14180644
+      }
+    },
+    "candidats": [
+      {
+        "nom": "Jacques Cheminade",
+        "parti": "Fédération pour une nouvelle solidarité",
+        "parti_court": "FNS"
+      },
+      {
+        "nom": "Dominique Voynet",
+        "parti": "Les verts",
+        "parti_court": "LV"
+      },
+      {
+        "nom": "Philippe de Villiers",
+        "parti": "Mouvement pour la France",
+        "parti_court": "MPF"
+      },
+      {
+        "nom": "Arlette Laguiller",
+        "parti": "Lutte ouvrière",
+        "parti_court": "LO"
+      },
+      {
+        "nom": "Robert Hue",
+        "parti": "Parti communiste français",
+        "parti_court": "PCF"
+      },
+      {
+        "nom": "Jean-Marie Le Pen",
+        "parti": "Front national",
+        "parti_court": "FN"
+      },
+      {
+        "nom": "Édouard Balladur",
+        "parti": "Rassemblement pour la République",
+        "parti_court": "RPR"
+      },
+      {
+        "nom": "Jacques Chirac",
+        "parti": "Rassemblement pour la République",
+        "parti_court": "RPR"
+      },
+      {
+        "nom": "Lionel Jospin",
+        "parti": "Parti socialiste",
+        "parti_court": "PS"
+      }
+    ]
+  },
+  "1988": {
+    "premier_tour": {
+      "source": "https://www.conseil-constitutionnel.fr/decision/1988/8856pdr.htm",
+      "date": "1988-04-24",
+      "inscrits": 38128507,
+      "votants": 31027972,
+      "exprimes": 30406038,
+      "resultats": {
+        "Raymond Barre": 5031849,
+        "Pierre Juquin": 639084,
+        "Jean-Marie Le Pen": 4375894,
+        "Jacques Chirac": 6063514,
+        "François Mitterrand": 10367220,
+        "Pierre Boussel": 116823,
+        "Antoine Waechter": 1149642,
+        "Arlette Laguiller": 606017,
+        "André Lajoinie": 2055995
+      }
+    },
+    "second_tour": {
+      "source": "https://www.conseil-constitutionnel.fr/decision/1988/8860PDR.htm",
+      "date": "1988-05-08",
+      "inscrits": 38168869,
+      "votants": 32085071,
+      "exprimes": 30923249,
+      "resultats": {
+        "Jacques Chirac": 14218970,
+        "François Mitterrand": 16704279
+      }
+    },
+    "candidats": [
+      {
+        "nom": "Pierre Boussel",
+        "parti": "Mouvement pour un parti des travailleurs",
+        "parti_court": "MPPT"
+      },
+      {
+        "nom": "Arlette Laguiller",
+        "parti": "Lutte ouvrière",
+        "parti_court": "LO"
+      },
+      {
+        "nom": "Pierre Juquin",
+        "parti": "Communiste rénovateur",
+        "parti_court": "CR"
+      },
+      {
+        "nom": "Antoine Waechter",
+        "parti": "Les verts",
+        "parti_court": "LV"
+      },
+      {
+        "nom": "André Lajoinie",
+        "parti": "Parti communiste français",
+        "parti_court": "PCF"
+      },
+      {
+        "nom": "Jean-Marie Le Pen",
+        "parti": "Front national",
+        "parti_court": "FN"
+      },
+      {
+        "nom": "Raymond Barre",
+        "parti": "Union pour la démocratie française",
+        "parti_court": "UDF"
+      },
+      {
+        "nom": "Jacques Chirac",
+        "parti": "Rassemblement pour la République",
+        "parti_court": "RPR"
+      },
+      {
+        "nom": "François Mitterrand",
+        "parti": "Parti socialiste",
+        "parti_court": "PS"
+      }
+    ]
+  },
+  "1981": {
+    "premier_tour": {
+      "source": "https://www.conseil-constitutionnel.fr/decision/1981/8145pdr.htm",
+      "date": "1981-04-26",
+      "inscrits": 36398659,
+      "votants": 29516082,
+      "exprimes": 29038117,
+      "resultats": {
+        "Arlette Laguiller": 668057,
+        "Marie-France Garaud": 386623,
+        "Michel Crépeau": 642847,
+        "Huguette Bouchardeau": 321353,
+        "Brice Lalonde": 1126254,
+        "François Mitterrand": 7505960,
+        "Valéry Giscard d'Estaing": 8222432,
+        "Georges Marchais": 4456922,
+        "Michel Debré": 481821,
+        "Jacques Chirac": 5225848
+      }
+    },
+    "second_tour": {
+      "source": "https://www.conseil-constitutionnel.fr/decision/1981/8147pdr.htm",
+      "date": "1981-05-10",
+      "inscrits": 36398762,
+      "votants": 31249552,
+      "exprimes": 30350568,
+      "resultats": {
+        "Valéry Giscard d'Estaing": 14642306,
+        "François Mitterrand": 15708262
+      }
+    },
+    "candidats": [
+      {
+        "nom": "Valery Giscard d'Estaing",
+        "parti": "Union pour la démocratie française",
+        "parti_court": "UDF"
+      },
+      {
+        "nom": "François Mitterrand",
+        "parti": "Parti socialiste",
+        "parti_court": "PS"
+      },
+      {
+        "nom": "Jacques Chirac",
+        "parti": "Rassemblement pour la République",
+        "parti_court": "RPR"
+      },
+      {
+        "nom": "Georges Marchais",
+        "parti": "Parti communiste français",
+        "parti_court": "PCF"
+      },
+      {
+        "nom": "Brice Lalonde",
+        "parti": "Mouvement d'écologie politique",
+        "parti_court": "MEP"
+      },
+      {
+        "nom": "Arlette Laguiller",
+        "parti": "Lutte ouvrière",
+        "parti_court": "LO"
+      },
+      {
+        "nom": "Michel Crépeau",
+        "parti": "Mouvement des radicaux de gauche",
+        "parti_court": "MRG"
+      },
+      {
+        "nom": "Michel Debré",
+        "parti": "Divers droite",
+        "parti_court": "DVD"
+      },
+      {
+        "nom": "Marie-France Garaud",
+        "parti": "Divers droite",
+        "parti_court": "DVD"
+      },
+      {
+        "nom": "Huguette Bourchardeau",
+        "parti": "Parti socialiste unifié",
+        "parti_court": "PSU"
+      }
+    ]
+  },
+  "1974": {
+    "premier_tour": {
+      "source": "https://www.conseil-constitutionnel.fr/decision/1974/7430pdr.htm",
+      "date": "1974-05-05",
+      "inscrits": 30602953,
+      "votants": 25775743,
+      "exprimes": 25538636,
+      "resultats": {
+        "Jacques Chaban-Delmas": 3857728,
+        "René Dumont": 337800,
+        "Valéry Giscard d'Estaing": 8326774,
+        "Guy Héraud": 19255,
+        "Alain Krivine": 93990,
+        "Arlette Laguiller": 595247,
+        "Jean-Marie Le Pen": 190921,
+        "François Mitterrand": 11044373,
+        "Emile Muller": 176279,
+        "Bertrand Renouvin": 43722,
+        "Jean Royer": 810540,
+        "Jean-Claude Sebag": 42007
+      }
+    },
+    "second_tour": {
+      "source": "https://www.conseil-constitutionnel.fr/decision/1974/7432PDR.htm",
+      "date": "1974-05-19",
+      "inscrits": 30600775,
+      "votants": 26721595,
+      "exprimes": 26367807,
+      "resultats": {
+        "Valéry Giscard d'Estaing": 13396203,
+        "François Mitterrand": 12971604
+      }
+    },
+    "candidats": [
+      {
+        "nom": "Guy Héraud",
+        "parti": "Indépendant",
+        "parti_court": "I"
+      },
+      {
+        "nom": "Jean-Claude Sebag",
+        "parti": "Mouvement fédéraliste européen",
+        "parti_court": "MFE"
+      },
+      {
+        "nom": "Bertrand Renouvin",
+        "parti": "Nouvelle Action française",
+        "parti_court": "NAF"
+      },
+      {
+        "nom": "Alain Krivine",
+        "parti": "Front communiste révolutionnaire",
+        "parti_court": "FCR"
+      },
+      {
+        "nom": "Emile Muller",
+        "parti": "Mouvement démocrate socialiste de France",
+        "parti_court": "MDSF"
+      },
+      {
+        "nom": "Jean-Marie Le Pen",
+        "parti": "Front national",
+        "parti_court": "FN"
+      },
+      {
+        "nom": "René Dumont",
+        "parti": "Divers gacuhe",
+        "parti_court": "DVG"
+      },
+      {
+        "nom": "Arlette Laguiller",
+        "parti": "Lutte Ouvrière",
+        "parti_court": "LO"
+      },
+      {
+        "nom": "Jean Royer",
+        "parti": "Divers droite",
+        "parti_court": "DVD"
+      },
+      {
+        "nom": "Jacques Chaban-Delmas",
+        "parti": "Union des démocrates pour la République",
+        "parti_court": "UDR"
+      },
+      {
+        "nom": "Valéry Giscard d'Estaing",
+        "parti": "Fédération nationale des républicains indépendants",
+        "parti_court": "FNRI"
+      },
+      {
+        "nom": "François Mitterrand",
+        "parti": "Parti socialiste",
+        "parti_court": "PS"
+      }
+    ]
+  },
+  "1969": {
+    "premier_tour": {
+      "source": "https://www.conseil-constitutionnel.fr/decision/1969/6920PDR.htm",
+      "date": "1969-06-01",
+      "inscrits": 29513361,
+      "votants": 22898960,
+      "exprimes": 22603924,
+      "resultats": {
+        "Gaston Defferre": 1133222,
+        "Louis Ducatel": 286447,
+        "Jacques Duclos": 4808285,
+        "Alain Krivine": 239104,
+        "Alain Poher": 5268613,
+        "Georges Pompidou": 10051783,
+        "Michel Rocard": 816470
+      }
+    },
+    "second_tour": {
+      "source": "https://www.conseil-constitutionnel.fr/decision/1969/6922pdr.htm",
+      "date": "1969-06-15",
+      "inscrits": 29500334,
+      "votants": 20311287,
+      "exprimes": 19007489,
+      "resultats": {
+        "Georges Pompidou": 11064371,
+        "Alain Poher": 7943118
+      }
+    },
+    "candidats": [
+      {
+        "nom": "Gaston Defferre",
+        "parti": "Section française de l'internationale ouvrière",
+        "parti_court": "SFIO"
+      },
+      {
+        "nom": "Louis Ducatel",
+        "parti": "Divers gauche",
+        "parti_court": "DVG"
+      },
+      {
+        "nom": "Jacques Duclos",
+        "parti": "Parti communiste français",
+        "parti_court": "PCF"
+      },
+      {
+        "nom": "Alain Krivine",
+        "parti": "Ligue communiste",
+        "parti_court": "LC"
+      },
+      {
+        "nom": "Alain Poher",
+        "parti": "Centre démocrate",
+        "parti_court": "CD"
+      },
+      {
+        "nom": "Georges Pompidou",
+        "parti": "Union des démocrates pour la République",
+        "parti_court": "UDR"
+      },
+      {
+        "nom": "Michel Rocard",
+        "parti": "Parti socialiste unifié",
+        "parti_court": "PSU"
+      }
+    ]
+  },
+  "1965": {
+    "premier_tour": {
+      "source": "https://www.conseil-constitutionnel.fr/decision/1965/656pdr.htm",
+      "date": "1965-12-05",
+      "inscrits": 28910581,
+      "votants": 24502916,
+      "exprimes": 24254556,
+      "resultats": {
+        "Marcel Barbu": 279685,
+        "Charle de Gaulle": 10828521,
+        "Jean Lecanuet": 3777120,
+        "Pierre Marcilhacy": 415017,
+        "François Mitterrand": 7694005,
+        "Jean-Louis Tixier-Vignancour": 1260208
+      }
+    },
+    "second_tour": {
+      "source": "https://www.conseil-constitutionnel.fr/decision/1965/6510pdr.htm",
+      "date": "1965-12-19",
+      "inscrits": 28902704,
+      "votants": 24371647,
+      "exprimes": 23703434,
+      "resultats": {
+        "Charles de Gaulle": 13083699,
+        "François Mitterrand": 10619735
+      }
+    },
+    "candidats": [
+      {
+        "nom": "Marcel Barbu",
+        "parti": "Divers gauche",
+        "parti_court": "DVG"
+      },
+      {
+        "nom": "Charles de Gaulle",
+        "parti": "Union pour la nouvelle République - Union démocratique du travail",
+        "parti_court": "UNR-UDT"
+      },
+      {
+        "nom": "Jean Lecanuet",
+        "parti": "Mouvement républicain populaire",
+        "parti_court": "MRP"
+      },
+      {
+        "nom": "Pierre Marcilhacy",
+        "parti": "Parti libéral européen",
+        "parti_court": "PLE"
+      },
+      {
+        "nom": "François Mitterand",
+        "parti": "Convention des institutions républicaines",
+        "parti_court": "CIR"
+      },
+      {
+        "nom": "Jean-Louis Tixier-Vignancour",
+        "parti": "Comité Tixier-Vignancour",
+        "parti_court": "CTV"
+      }
+    ]
+  }
+}
