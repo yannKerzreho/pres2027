@@ -1,7 +1,7 @@
 # Pipeline données & exploration
 pandas
 numpy
-matplotlib
+matplotlib<3.9.0
 requests
 pyarrow
 
