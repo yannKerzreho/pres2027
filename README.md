@@ -5,9 +5,6 @@ Agrégation bayésienne des sondages de la présidentielle française 2027
 des *house effects* par institut sur données historiques, et simulation Monte
 Carlo du second tour.
 
-Le projet est **open source et documenté** — sa valeur ajoutée face aux modèles
-existants (depuis1958.fr, Silver Bulletin) qui ne publient pas leur code. Voir
-[`PROJECT_PLAN.md`](PROJECT_PLAN.md) pour la spécification complète.
 
 ## État d'avancement
 
