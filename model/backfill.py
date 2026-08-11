@@ -70,22 +70,30 @@ def main():
         if not todo:
             continue
         raw = load_raw_polls(as_of=as_of)
-        if raw["notice"].nunique() < args.min_sondages:
-            continue
+        ecrits = []
         for mid, mdl in todo.items():
+            # Seuil appliqué aux sondages que CE modèle utilise réellement
+            # (`used_polls`), pas à ceux disponibles : un modèle à roster exact
+            # peut n'en retenir que 2 là où `raw` en compte 15, et publier un
+            # point de courbe reposant sur deux sondages serait trompeur.
+            n_utiles = int(mdl.used_polls(raw)["notice"].nunique())
+            if n_utiles < args.min_sondages:
+                print(f"  {as_of} [{mid}] : ignoré ({n_utiles} sondage(s) utilisable(s) "
+                      f"sur {raw['notice'].nunique()}, minimum {args.min_sondages})")
+                continue
             try:
                 snap = mdl.run(raw, as_of)
             except (IndexError, ValueError) as e:
-                # un modèle peut filtrer les sondages en interne (ex.
-                # bayesian-nowcast écarte tout ce qui précède MIN_POLL_DATE,
-                # cf. nowcast.py) et se retrouver sans donnée du tout à cette
-                # date, même si `raw` (non filtré) en a assez — pas une
-                # erreur de backfill, cette date est juste hors du scope de
-                # CE modèle.
+                # Un modèle peut filtrer en interne et se retrouver sans donnée
+                # exploitable à cette date, même si `raw` en a assez — pas une
+                # erreur de backfill, cette date est hors du scope de CE modèle.
                 print(f"  {as_of} [{mid}] : ignoré ({e})")
                 continue
             write_snapshot(snap)
-        print(f"  {as_of} : {raw['notice'].nunique()} sondages ({', '.join(todo)})")
+            ecrits.append(f"{mid}:{n_utiles}")
+        if ecrits:
+            print(f"  {as_of} : {raw['notice'].nunique()} sondages disponibles "
+                  f"→ {', '.join(ecrits)}")
 
 
 if __name__ == "__main__":

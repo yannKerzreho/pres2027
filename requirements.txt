@@ -1,26 +1,17 @@
-# Pipeline données & exploration
+# Pipeline données
 pandas
 numpy
-matplotlib<3.9.0
 requests
-pyarrow
 
-# Modèle bayésien — un seul moteur (NumPyro/JAX) pour la calibration hiérarchique
-# ET les modèles live : tout modèle du dépôt (calibration incluse) s'écrit dans
-# la même syntaxe NumPyro, cf. model/models/bayesian_nowcast.py.
-# xarray : format du résultat de calibration (model/core/bank.py) et des
-# tirages de nowcast (model/core/base.py:Nowcast) — accès par coordonnées
-# nommées (institut, bloc, candidat...) plutôt que par index entier.
+# Modèle — un seul moteur d'inférence (NumPyro/JAX) pour tout le dépôt :
+# calibration du saut terminal (model/core/terminal_jump.py) comme modèles live,
+# dans la même syntaxe.
+# xarray : format des paramètres calibrés (model/core/bank.py) et des tirages de
+# nowcast (model/core/base.py:Nowcast) — accès par coordonnées nommées
+# (institut, bloc, candidat...) plutôt que par index entier.
 numpyro
 jax
 xarray
-scipy==1.12.0
-
-# Filtre de Kalman JAX pur (dynamax.linear_gaussian_ssm) pour marginaliser
-# analytiquement le chemin gaussien du nowcast SSM (cf. docs/spec_ssm_nowcast.md
-# §4) — NumPyro garde le rôle d'orchestrateur des hyperparamètres, dynamax
-# calcule la vraisemblance marginale des sondages injectée via numpyro.factor.
-dynamax==0.1.8
 
 # Ingestion sondages (sondages/wiki.py, source primaire) + parsing PDF (spot-check)
 mwparserfromhell
@@ -32,3 +23,12 @@ anthropic>=0.40
 
 # Tests
 pytest
+
+# Retirés de cette branche (aucun import) :
+#   dynamax    — filtre de Kalman du nowcast SSM, qui vit sur `dev` ;
+#   matplotlib — servait aux notebooks d'exploration, non versionnés ;
+#   pyarrow    — plus aucun format colonne en lecture/écriture ;
+#   scipy==1.12.0 — épinglé pour arviz 0.17 (`scipy.signal.gaussian`, retiré en
+#     1.13), or arviz n'est pas une dépendance ici. scipy reste installé de façon
+#     transitive par jax/numpyro, sans contrainte de version — ce qui lève au
+#     passage la restriction Python 3.9 documentée jusqu'ici.

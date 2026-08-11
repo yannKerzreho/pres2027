@@ -22,7 +22,7 @@ def run_numpyro_mcmc(model_fn, model_kwargs: dict, draws: int = 1000, tune: int 
     d'échelle (HalfNormal — `tau`, les `*_sd` de `house_effects_model`...),
     `init_to_uniform` peut occasionnellement initialiser une chaîne TRÈS loin
     dans la queue, dans une région où le gradient de la vraisemblance
-    (notamment à travers un filtre de Kalman, cf. `bayesian_nowcast_ssm_model`)
+    (notamment à travers un filtre de Kalman, cf. un modèle à état latent)
     s'annule numériquement — la chaîne reste alors bloquée EXACTEMENT à sa
     valeur d'initialisation tout le run (observé concrètement : 2 chaînes sur
     4 figées à tau=5.09/3.15, écart-type 0.0000, sur le nowcast 2026-07-08).

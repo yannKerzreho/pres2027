@@ -50,7 +50,13 @@ SLOTS = {
     # de ces sondages était tombé à 1e-19, mais le bruit tiré restait celui,
     # serré, d'un sondage de 1000 personnes (cf. `resample_slot`).
     "Mélenchon (LFI)":     ("gauche_radicale", ["Jean-Luc Mélenchon"]),
-    "Ruffin":              ("gauche_radicale", ["François Ruffin"]),
+    # Ruffin retiré le 2026-08-11, imposé par le filtre de roster exact
+    # (`filter_scenarios_by_exact_slots`) : il n'est testé que dans 4 des 86
+    # hypothèses disponibles. Le garder rendait le roster introuvable — ZÉRO
+    # hypothèse ne testait les 11 slots ensemble, le modèle n'avait plus aucune
+    # donnée. Le conserver sans jamais de mesure aurait été pire : le repli à
+    # 1 % lui aurait donné une part du simplexe sans qu'aucun sondage ne l'ait
+    # mesurée.
     "Roussel (PCF)":       ("gauche", ["Fabien Roussel"]),
     "Glucksmann (PP)":     ("gauche", ["Raphaël Glucksmann"]),          # alternatives écartées : Olivier Faure, François Hollande
     "Tondelier (EELV)":    ("ecologistes", ["Marine Tondelier"]),
@@ -137,6 +143,40 @@ def load_raw_polls(path: Path | None = None, tour: str = "Premier tour",
                     + "|" + df["hypothese"].astype(str))
     df["scenario_id"] = scenario_key.apply(lambda s: hashlib.sha1(s.encode()).hexdigest()[:12])
     return df.reset_index(drop=True)
+
+
+def filter_scenarios_by_exact_slots(raw: pd.DataFrame,
+                                    slots: set[str] | None = None) -> pd.DataFrame:
+    """Ne garde que les scénarios testant EXACTEMENT `slots` — ni moins, ni plus.
+
+    Un scénario est un `scenario_id` (institut × date × hypothèse), c'est-à-dire
+    un champ de candidats réellement soumis aux sondés. Deux scénarios aux champs
+    différents ne mesurent PAS la même quantité : la part d'Édouard Philippe
+    testé seul au centre n'est pas comparable à sa part testé face à Gabriel
+    Attal, où le vote centriste se partage. Les moyenner revient à additionner
+    des mesures prises dans des unités différentes — et comme le modèle
+    renormalise ensuite chaque tirage sur le simplexe, l'incohérence se propage
+    à tous les candidats, pas seulement à celui dont le champ a changé.
+
+    Sont donc écartés les scénarios auxquels il MANQUE un slot, et ceux qui
+    contiennent un candidat EN PLUS (non mappé vers un slot : Attal, Villepin…).
+    Le second cas est le moins intuitif mais tout aussi disqualifiant — c'est
+    exactement une variation du champ.
+
+    Ce filtre est volontairement coûteux en données. À utiliser quand la
+    cohérence des mesures prime sur leur nombre ; un modèle qui préfère
+    l'inverse peut ne pas l'appeler.
+    """
+    for col in ("scenario_id", "slot"):
+        if col not in raw.columns:
+            raise KeyError(
+                f"colonne '{col}' absente : ce filtre attend la sortie de "
+                f"`load_raw_polls`, qui identifie chaque scénario (institut × date × "
+                f"hypothèse). Une trame construite à la main doit fournir cette colonne.")
+    cible = set(SLOTS) if slots is None else set(slots)
+    ok = [sid for sid, sub in raw.groupby("scenario_id")
+          if set(sub["slot"].dropna()) == cible and not sub["slot"].isna().any()]
+    return raw[raw["scenario_id"].isin(ok)].reset_index(drop=True)
 
 
 def aggregate_to_slots(raw: pd.DataFrame) -> pd.DataFrame:

@@ -90,24 +90,74 @@ def test_resample_slot_repli_si_jamais_teste():
     assert 0.0 < draws.mean() < 0.05   # repli faible (~1%), jamais 0 ni dominant
 
 
+def _raw(rows):
+    """Trame au format `load_raw_polls` : `scenario_id` identifie le champ de
+    candidats réellement soumis (institut × date × hypothèse), ce dont dépend le
+    filtre de roster exact."""
+    d = pd.DataFrame(rows)
+    d["notice_url"] = "http://x/" + d["notice"]
+    d["hypothese"] = None
+    return d
+
+
+SLOTS3 = ["RN", "Philippe (Horizons)", "Mélenchon (LFI)"]
+
+
 def test_linear_pooling_nowcast_simplexe_par_tirage():
     as_of = "2026-08-10"
-    raw = pd.DataFrame({
-        "notice": ["s1", "s1", "s2"],
-        "notice_url": ["http://x/s1", "http://x/s1", "http://x/s2"],
-        "institut": ["Ifop", "Ifop", "Elabe"],
-        "date_fin": ["2026-08-01", "2026-08-01", "2026-08-05"],
-        "echantillon": [1000, 1000, 900],
-        "hypothese": [None, None, None],
-        "candidat": ["Marine Le Pen", "Édouard Philippe", "Marine Le Pen"],
-        "intention": [33.0, 20.0, 35.0],
-        "slot": ["RN", "Philippe (Horizons)", "RN"],
-        "bloc": ["droite_radicale", "centre", "droite_radicale"],
-    })
-    slots = ["RN", "Philippe (Horizons)", "Mélenchon (LFI)"]
-    res = linear_pooling_nowcast(raw, as_of, slots, half_life_days=14.0, n_draws=500, seed=0)
+    # Deux scénarios testant EXACTEMENT les 3 slots — seuls admissibles.
+    raw = _raw([
+        {"scenario_id": "a", "notice": "s1", "institut": "Ifop", "date_fin": "2026-08-01",
+         "echantillon": 1000, "candidat": "Marine Le Pen", "intention": 45.0,
+         "slot": "RN", "bloc": "droite_radicale"},
+        {"scenario_id": "a", "notice": "s1", "institut": "Ifop", "date_fin": "2026-08-01",
+         "echantillon": 1000, "candidat": "Édouard Philippe", "intention": 32.0,
+         "slot": "Philippe (Horizons)", "bloc": "centre"},
+        {"scenario_id": "a", "notice": "s1", "institut": "Ifop", "date_fin": "2026-08-01",
+         "echantillon": 1000, "candidat": "Jean-Luc Mélenchon", "intention": 23.0,
+         "slot": "Mélenchon (LFI)", "bloc": "gauche_radicale"},
+        {"scenario_id": "b", "notice": "s2", "institut": "Elabe", "date_fin": "2026-08-05",
+         "echantillon": 900, "candidat": "Marine Le Pen", "intention": 47.0,
+         "slot": "RN", "bloc": "droite_radicale"},
+        {"scenario_id": "b", "notice": "s2", "institut": "Elabe", "date_fin": "2026-08-05",
+         "echantillon": 900, "candidat": "Édouard Philippe", "intention": 30.0,
+         "slot": "Philippe (Horizons)", "bloc": "centre"},
+        {"scenario_id": "b", "notice": "s2", "institut": "Elabe", "date_fin": "2026-08-05",
+         "echantillon": 900, "candidat": "Jean-Luc Mélenchon", "intention": 23.0,
+         "slot": "Mélenchon (LFI)", "bloc": "gauche_radicale"},
+    ])
+    res = linear_pooling_nowcast(raw, as_of, SLOTS3, half_life_days=14.0, n_draws=500, seed=0)
     sums = res.pi.sum(axis=1)
     assert np.allclose(sums, 1.0, atol=1e-9)
     assert res.pi.shape == (500, 3)
-    # Mélenchon jamais testé dans ce jeu -> repli faible, jamais nul ni dominant
-    assert res.pi[:, 2].mean() < 0.2
+    # Le champ étant complet (les parts somment à 100), la renormalisation ne
+    # déplace pas l'estimation : RN doit retomber sur ~46 %, sa part mesurée.
+    assert 0.40 < res.pi[:, 0].mean() < 0.52
+
+
+def test_scenario_au_champ_different_est_ecarte():
+    """Le cœur du filtre : une hypothèse testant un candidat de PLUS ne mesure
+    pas la même chose (le vote se répartit autrement) et doit être écartée,
+    même si elle contient bien les trois slots demandés."""
+    as_of = "2026-08-10"
+    base = [
+        {"scenario_id": "a", "notice": "s1", "institut": "Ifop", "date_fin": "2026-08-01",
+         "echantillon": 1000, "candidat": "Marine Le Pen", "intention": 45.0,
+         "slot": "RN", "bloc": "droite_radicale"},
+        {"scenario_id": "a", "notice": "s1", "institut": "Ifop", "date_fin": "2026-08-01",
+         "echantillon": 1000, "candidat": "Édouard Philippe", "intention": 32.0,
+         "slot": "Philippe (Horizons)", "bloc": "centre"},
+        {"scenario_id": "a", "notice": "s1", "institut": "Ifop", "date_fin": "2026-08-01",
+         "echantillon": 1000, "candidat": "Jean-Luc Mélenchon", "intention": 23.0,
+         "slot": "Mélenchon (LFI)", "bloc": "gauche_radicale"},
+    ]
+    intrus = dict(base[0], candidat="Gabriel Attal", intention=12.0, slot=None, bloc=None)
+
+    from model.core.live_dataset import filter_scenarios_by_exact_slots
+    assert not filter_scenarios_by_exact_slots(_raw(base), set(SLOTS3)).empty
+    assert filter_scenarios_by_exact_slots(_raw(base + [intrus]), set(SLOTS3)).empty
+
+    # et le modèle refuse alors de produire un nowcast plutôt que d'en inventer un
+    with pytest.raises(ValueError, match="roster"):
+        linear_pooling_nowcast(_raw(base + [intrus]), as_of, SLOTS3,
+                               half_life_days=14.0, n_draws=100, seed=0)

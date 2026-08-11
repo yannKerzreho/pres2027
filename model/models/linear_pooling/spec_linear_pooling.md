@@ -8,7 +8,7 @@ reste est **[TRANCHÉ]** (session de conception du 2026-08-10).
 ## 1. Objectif
 
 Une alternative simple et transparente à `bayesian-nowcast` (SSM à état
-latent, `docs/spec_ssm_nowcast.md`) : pas de marche aléatoire, pas
+latent, spec sur la branche `dev`) : pas de marche aléatoire, pas
 d'inférence NUTS, pas de house effects — juste une moyenne pondérée directe
 des sondages par candidat, où le poids décroît avec l'ancienneté. Sert de
 comparaison lisible (« qu'est-ce que les sondages bruts disent, sans
@@ -18,23 +18,33 @@ prior, soit un problème dans l'un des deux modèles.
 
 ## 2. Espace des candidats
 
-Ce modèle **n'introduit pas** de notion de configuration/scénario exacte
-$c \subset \mathcal K$ (contrairement à une première version de cette spec) :
-il réutilise directement `SLOTS`/`aggregate_to_slots`
-(`model/core/live_dataset.py`), le même vocabulaire que `bayesian-nowcast`.
-Le choix « Philippe pas Attal », « Le Pen pas Bardella », « Ruffin inclus »
-est donc déjà tranché ailleurs, partagé entre les deux modèles, et modifiable
-en un seul endroit (`SLOTS`) au fil de la campagne — la décroissance demi-vie
-(§3) fait que changer d'hypothèse en cours de route se répercute vite, sans
-discontinuité gérée à la main.
+Le vocabulaire est celui de `SLOTS` (`model/core/live_dataset.py`) : le choix
+« Philippe pas Attal », « Le Pen pas Bardella » est tranché là, et modifiable
+en un seul endroit au fil de la campagne — la décroissance demi-vie (§3) fait
+qu'un changement d'hypothèse se répercute vite, sans discontinuité gérée à la
+main.
 
-Raison du changement par rapport à la configuration exacte : aucun sondage
-2027 ne teste les 12 slots simultanément (7 à 11 sur 12, cf.
-`docs/spec_ssm_nowcast.md`, note d'implémentation) — indexer par $c$ exact
-aurait fragmenté $\mathcal P$ en dizaines de sous-ensembles quasi disjoints,
-chacun avec très peu de sondages. `aggregate_to_slots` résout déjà ce
-problème (fusion des hypothèses mutuellement exclusives, cf. sa docstring) ;
-pas de raison de le résoudre une seconde fois ici.
+**Roster EXACT [TRANCHÉ 2026-08-11].** Seules sont agrégées les hypothèses qui
+soumettent aux sondés **exactement** ces candidats — ni moins, ni plus
+(`filter_scenarios_by_exact_slots`). Une hypothèse à laquelle il manque un
+slot, ou qui en teste un de plus (Attal aux côtés de Philippe, Villepin…), ne
+mesure pas la même quantité : la part d'un candidat dépend du champ face auquel
+il est testé. Les moyenner revient à additionner des mesures prises dans des
+unités différentes, et comme le modèle renormalise ensuite chaque tirage sur le
+simplexe (§6), l'incohérence contamine **tous** les candidats, pas seulement
+celui dont le champ a changé.
+
+Conséquence assumée : le filtre est coûteux. Sur les données du 2026-08-11,
+il ne retient que 6 des 22 sondages disponibles (13 hypothèses sur 86 contiennent
+les 10 slots, dont 6 sans candidat surnuméraire). Vérification de cohérence :
+les hypothèses retenues somment bien à 100,0 % sur les 10 slots — c'est la
+signature d'un champ complet, alors que les hypothèses « souples » (10 slots
+présents + un intrus) n'y somment qu'à 97 %, les 3 points manquants étant ceux
+du candidat écarté, que la renormalisation redistribuerait arbitrairement.
+
+**Ruffin exclu** pour la même raison : testé dans 4 hypothèses sur 86, l'inclure
+rendait le roster introuvable (ZÉRO hypothèse ne testait les 11 slots ensemble),
+donc le modèle sans données.
 
 ## 3. Pondération demi-vie
 
@@ -56,7 +66,7 @@ $$\Omega_s(T) = \sum_{(p,h)\in\mathcal P_s} W_{p,h}(T), \qquad
 
 **[OUVERT]** `H` (jours) : fixé à 14 dans `LinearPooling.half_life_days`
 comme point de départ raisonnable (poids divisé par 2 toutes les deux
-semaines), **pas calibré**. `model/backtest/backtest_loo.py` permettrait un
+semaines), **pas calibré**. Un backtest dédié permettrait un
 balayage empirique (minimiser l'erreur LOO 2017/2022) comme cela a été fait
 pour `tau`/`historical_prior_n` sur `bayesian-nowcast` — non fait à ce stade.
 
@@ -78,7 +88,7 @@ Pour chaque tirage Monte Carlo $j = 1,\dots,S$, indépendamment par slot $s$ :
    **choisi**, pas dilué par le poids demi-vie qui n'a servi qu'à la
    sélection. Beta plutôt que Normal : reste dans $[0,1]$ pour les petits
    candidats (Poutou, Arthaud), variance $\approx Y(1-Y)/n$ cohérente avec
-   `sampling_sigma` (`model/models/bayesian_nowcast/calibration.py`) —
+   l'écart-type d'échantillonnage usuel $\sqrt{Y(1-Y)/n}$ —
    approximation `/n` plutôt que `/(n+1)` (Beta exacte) gardée pour rester
    cohérente avec cette convention existante, écart négligeable aux $n$ en jeu.
 
@@ -165,7 +175,7 @@ sondage de même taille et de même fraîcheur.
 Chaque tirage $\theta_{s,j}$ est indépendant par slot (pas de corrélation
 inter-slots au sein d'un même sondage — même simplification que le mode
 `full_covariance=False` de `bayesian-nowcast`, cf.
-`docs/spec_ssm_encodage_partiel.md`). La somme $\sum_s \theta_{s,j}$ n'est
+encodage des sondages partiels, spec sur `dev`). La somme $\sum_s \theta_{s,j}$ n'est
 donc pas exactement 1 (ni même $\sum_s \hat Y_s(T)$ au niveau des points,
 pour les mêmes raisons qu'en §5B de la spec initiale : arrondis, catégorie
 « Autres »). On renormalise **par tirage** :
@@ -178,7 +188,7 @@ composition valide), consommé tel quel par `forecast_from_draws`.
 **[OUVERT]** Cette renormalisation est un ratio de variables aléatoires :
 $E[\pi_s] \neq E[\theta_s]/E[\sum\theta]$ en général (biais de second ordre,
 analogue à l'effet Jensen déjà documenté pour `softmax` dans
-`historical_prior_cov`, `model/models/bayesian_nowcast/nowcast.py`).
+`historical_prior_cov`, le modèle SSM (branche `dev`)).
 
 Vérifié empiriquement (cas réel du 10/08/2026, session de conception) : la
 somme des $\hat Y_s(T)$ bruts sur les 12 slots vaut 106,2 % (couverture
@@ -199,16 +209,49 @@ reçoit un repli $\mathrm{Beta}(1, 99)$ (moyenne 1 %, confiance faible,
 gelée. Constantes arbitraires (`FALLBACK_MEAN_PCT`, `FALLBACK_N`), pas
 calibrées.
 
-## 8. Saut terminal (T → scrutin) — réutilisé tel quel
+## 8. Dérive d'opinion — une loi, appliquée deux fois
 
-Aucune spécification propre : `forecast()` appelle directement
-`forecast_from_draws` (`model/core/simulate.py`) avec les tirages
-renormalisés du §6, exactement comme `bayesian-nowcast`. Le saut sinh-arcsinh
-(`TerminalJumpCalibration`, `docs/spec_ssm_nowcast.md` §2.2) est calibré
-séparément pour ce modèle (`bank_jump.json` propre à ce dossier, `bank=None`
-lors du fit — cf. §5, pas de débiaisage house-effects même dans le movement
-pool historique), mais c'est la MÊME mécanique, les mêmes données
-2017/2022. Pas de nouveau code, pas de nouvelle spec.
+La loi vit dans `model/core/terminal_jump.py`, partagée : elle répond à
+« de combien l'opinion peut-elle encore bouger ? », question indépendante de
+la façon dont on estime l'opinion courante. Elle est calibrée pour ce modèle
+avec `bank=None` (pas de débiaisage house-effects, cohérent avec §5) et
+stockée dans le `bank_jump.json` de ce dossier.
+
+**Forme.** Les mouvements 2017/2022 (`clr(résultat) − clr(sondage)`, 59
+observations) sont ajustés par une sinh-arcsinh dont la dispersion suit
+
+$$\sigma(h) \;=\; \text{scale}\cdot\sqrt{1-e^{-h/\tau}}$$
+
+soit la variance d'un processus d'Ornstein-Uhlenbeck. Ce n'est pas un choix
+esthétique : la dispersion observée est **plate** entre 63 et 267 jours du
+scrutin (0,508 / 0,610 / 0,590), là où une loi en $\sqrt{h}$ prédirait
+0,286 / 0,402 / 0,590. La dérive sature, l'essentiel du mouvement se joue
+près du vote. Ajusté : $\tau \approx 73$ j.
+
+**Deux jambes.** Le nowcast du §4 mesure la part telle qu'un sondage l'a
+observée, avec le bruit d'échantillonnage de *son* terrain — valable au jour
+de ce terrain, pas à `as_of`. On applique donc la loi deux fois, sur des
+horizons comptés en jours avant le scrutin :
+
+| jambe | de | à | variance |
+|---|---|---|---|
+| 1 — vers `as_of` | $h_{\text{sondage}}$ | $h_{\text{as\_of}}$ | $\text{scale}^2[\text{sat}(h_{\text{sondage}}) - \text{sat}(h_{\text{as\_of}})]$ |
+| 2 — vers le scrutin | $h_{\text{as\_of}}$ | $0$ | $\text{scale}^2[\text{sat}(h_{\text{as\_of}}) - \text{sat}(0)]$ |
+
+La somme vaut exactement $\text{scale}^2\,\text{sat}(h_{\text{sondage}})$ :
+ni double comptage, ni segment oublié. La jambe 1 utilise l'âge **propre à
+chaque tirage** (le mélange du §4 sélectionne un sondage différent à chaque
+fois). Sans elle, l'incertitude du nowcast ne bougeait pas d'un pouce quand
+les sondages vieillissaient — mesuré : 0,000 pt d'écart entre un calcul le
+jour du dernier sondage et 32 jours plus tard.
+
+**`loc` est global, jamais par bloc.** Les mouvements étant en log-ratio
+centré, leur moyenne vaut exactement 0 : un `loc` par bloc ne mesurerait
+rien, il répartirait ce zéro sur 3 à 18 observations issues de 2 campagnes.
+Il valait −0,50 sur `droite` (Fillon puis Pécresse), ce qui imposait à tout
+candidat LR de perdre la moitié de sa part quels que soient ses sondages.
+Étant global, il est en outre annulé exactement par la renormalisation
+softmax du §6.
 
 ## 9. Limites assumées
 
@@ -217,7 +260,10 @@ pool historique), mais c'est la MÊME mécanique, les mêmes données
 - `H` non calibré (§3) — point de départ raisonnable, pas une valeur validée.
 - Biais de renormalisation non quantifié (§6).
 - Repli d'un slot non testé arbitraire, non calibré (§7).
+- `τ` estimé à 73 j mais **faiblement identifié** (§8) : aucun mouvement du
+  pool n'est mesuré à moins de 59 jours du scrutin, donc la courbure qui
+  fixe `τ` repose sur peu de signal. Extrapoler la jambe 1 à des sondages
+  très anciens (plusieurs années) sort du domaine calibré.
 
 Ces limites sont assumées par construction (c'est le prix de la simplicité
-du modèle) plutôt que des bugs — mais elles doivent rester visibles pour
-quiconque compare `linear-pooling` à `bayesian-nowcast` sur le site.
+du modèle) plutôt que des bugs — mais elles doivent rester visibles.

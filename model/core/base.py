@@ -56,8 +56,7 @@ class Nowcast:
             # contrat `validate_snapshot`. La moyenne reste techniquement
             # biaisée à la hausse pour un petit candidat sous forte incertitude
             # (effet Jensen, E[softmax(X)] > softmax(E[X])) — corrigé à la
-            # source en réduisant cette incertitude quand c'est injustifié
-            # (cf. docs/spec_ssm_implementation.md §9-10, `historical_prior_cov`),
+            # source en réduisant cette incertitude quand c'est injustifié,
             # pas en changeant la statistique de résumé.
             out[c] = {
                 "mean": round(float(vals.mean()), 4),
@@ -118,6 +117,18 @@ class ForecastModel(ABC):
         """{forecast_scrutin: {slot: {...}}, duels_probables: [...], drift_modele}."""
         ...
 
+    def used_polls(self, raw_polls: pd.DataFrame) -> pd.DataFrame:
+        """Sous-ensemble de `raw_polls` que ce modèle a RÉELLEMENT consommé.
+
+        Par défaut : tout. Un modèle qui filtre en interne (roster exact, date
+        plancher, instituts...) **doit** surcharger ceci — c'est ce qui alimente
+        `meta.n_sondages`, `meta.instituts` et les points du graphe. Sans cette
+        surcharge, le site annonce une base de sondages plus large que celle
+        effectivement utilisée : le lecteur croit à une précision qui n'existe
+        pas, et les points affichés ne correspondent pas à la courbe tracée.
+        """
+        return raw_polls
+
     def display_polls(self, raw_polls: pd.DataFrame) -> list[dict]:
         """Sondages à afficher sur la courbe, dans le vocabulaire de CE
         modèle. Par défaut : slots fusionnés (`aggregate_to_slots`) — un
@@ -161,7 +172,13 @@ class ForecastModel(ABC):
 # --- Contrat : assemblage + validation + écriture -----------------------------
 def assemble_snapshot(model: ForecastModel, as_of: str, nc: Nowcast, fc: dict,
                       raw_polls: pd.DataFrame, horizon: int) -> dict:
-    polls_list = model.display_polls(raw_polls)
+    # Tout ce qui est publié décrit les sondages RÉELLEMENT utilisés, pas ceux
+    # reçus en entrée (cf. `ForecastModel.used_polls`) : annoncer 22 sondages
+    # quand le modèle en consomme 6 surestimerait la base aux yeux du lecteur.
+    used = model.used_polls(raw_polls)
+    polls_list = model.display_polls(used)
+    n_recus = int(raw_polls["notice"].nunique())
+    n_utilises = int(used["notice"].nunique())
     return {
         "model": model.id,
         "as_of": as_of,
@@ -169,9 +186,10 @@ def assemble_snapshot(model: ForecastModel, as_of: str, nc: Nowcast, fc: dict,
             "genere_le": date.today().isoformat(),
             "as_of": as_of,
             "scrutin_t1": "2027-04-18",
-            "n_sondages": int(raw_polls["notice"].nunique()),
+            "n_sondages": n_utilises,
+            "n_sondages_disponibles": n_recus,
             "horizon_prevision_jours": horizon,
-            "instituts": sorted(raw_polls["institut"].unique().tolist()),
+            "instituts": sorted(used["institut"].unique().tolist()),
             "note": ("Parts au 1er tour par slot (alternatives fusionnées). "
                      "Probabilités, pas des prédictions."),
         },

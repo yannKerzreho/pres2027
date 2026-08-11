@@ -26,7 +26,9 @@ import xarray as xr
 
 from model.core.bank import Bank
 from model.core.base import ForecastModel, Nowcast, register
-from model.core.live_dataset import ELECTION_T1, SLOTS, aggregate_to_slots
+from model.core.live_dataset import (
+    ELECTION_T1, SLOTS, aggregate_to_slots, filter_scenarios_by_exact_slots,
+)
 from model.core.simulate import forecast_from_draws
 from model.core.terminal_jump import TerminalJumpCalibration, jump_moves
 
@@ -135,7 +137,18 @@ def linear_pooling_nowcast(raw_polls: pd.DataFrame, as_of: str, slots: list[str]
     systématique de CETTE jambe-ci — cf. `jump_moves` pour pourquoi `loc`, lui,
     ne se découpe pas proprement.
     """
-    obs = aggregate_to_slots(raw_polls)
+    # Roster EXACT (cf. filter_scenarios_by_exact_slots) : on n'agrège que des
+    # hypothèses ayant soumis aux sondés le même champ de candidats. Sans ce
+    # filtre, le mélange du §4 pioche indifféremment dans des scénarios où le
+    # vote centriste est partagé entre Philippe et Attal et d'autres où il ne
+    # l'est pas, et la renormalisation sur le simplexe propage l'incohérence à
+    # tous les slots.
+    retenu = filter_scenarios_by_exact_slots(raw_polls, set(slots))
+    if retenu.empty:
+        raise ValueError(
+            f"Aucune hypothèse ne teste exactement le roster demandé "
+            f"({len(slots)} candidats) à la date {as_of}.")
+    obs = aggregate_to_slots(retenu)
     as_of_ts = pd.Timestamp(as_of)
     rng = np.random.default_rng(seed)
 
@@ -177,12 +190,15 @@ def linear_pooling_nowcast(raw_polls: pd.DataFrame, as_of: str, slots: list[str]
 class LinearPooling(ForecastModel):
     id = "linear-pooling"
     label = "Lissage linéaire (demi-vie)"
-    description = ("Moyenne pondérée directe des sondages par candidat/slot — poids = "
-                   "taille d'échantillon × décroissance demi-vie, sans état latent ni "
-                   "marche aléatoire. Incertitude par mélange pondéré (rééchantillonnage "
-                   "+ bruit Beta d'échantillonnage), saut terminal sinh-arcsinh calibré "
-                   "sur 2017/2022 pour la projection jusqu'au scrutin (même mécanisme que "
-                   "bayesian-nowcast).")
+    description = ("Moyenne pondérée directe des sondages par candidat — poids = taille "
+                   "d'échantillon × décroissance demi-vie (14 jours), sans état latent ni "
+                   "marche aléatoire. L'incertitude vient d'un mélange pondéré : on tire un "
+                   "sondage, puis dans son propre bruit d'échantillonnage — elle reflète "
+                   "donc le désaccord réel entre instituts, et ne s'annule pas en accumulant "
+                   "les sondages. Pas de débiaisage par institut. La dérive d'opinion suit "
+                   "une loi sinh-arcsinh calibrée sur 2017/2022, dont la dispersion sature "
+                   "avec l'horizon ; elle est appliquée deux fois, du dernier sondage à "
+                   "aujourd'hui puis d'aujourd'hui au scrutin.")
     trains_on_history = True
     public = True
 
@@ -202,6 +218,11 @@ class LinearPooling(ForecastModel):
 
     def load_artifacts(self) -> None:
         self.jump_bank = Bank.load(BANK_JUMP_PATH)
+
+    def used_polls(self, raw_polls):
+        # Ce modèle n'agrège que les hypothèses au roster EXACT : le site doit
+        # annoncer et tracer celles-là, pas l'ensemble reçu.
+        return filter_scenarios_by_exact_slots(raw_polls, set(SLOTS))
 
     def nowcast(self, raw_polls, as_of) -> Nowcast:
         slots = list(SLOTS)

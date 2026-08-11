@@ -1,7 +1,7 @@
 """Utilitaire de prévision à la carte : dérive log-ratio + comptage des
 probabilités. PAS un mécanisme automatique — un modèle qui veut cette
 stratégie de dérive appelle `forecast_from_draws` explicitement depuis sa
-propre méthode `forecast()` (cf. `model/models/bayesian_nowcast/nowcast.py`) ;
+propre méthode `forecast()` (cf. son `forecast()`) ;
 un autre modèle est libre de projeter son nowcast jusqu'au scrutin autrement.
 
 À partir des tirages du *nowcast* `π` (fournis par n'importe quel modèle), on
@@ -13,8 +13,9 @@ ajoute la dérive d'opinion d'ici au scrutin **dans l'espace log-ratio** (softma
 Trois modes de dérive, du plus au moins spécifique — le premier disponible
 l'emporte :
   1. `jump_bank` + `candidate_blocs` : saut terminal paramétrique sinh-arcsinh
-     (TerminalJumpCalibration, docs/spec_ssm_nowcast.md §2.2) — skew/tail
-     globaux, loc/scale par bloc, remplace le bootstrap empirique d'origine.
+     (`TerminalJumpCalibration`, cf. `model/core/terminal_jump.py`) — tous
+     paramètres globaux, dispersion saturante en `√(1−e^(−h/τ))`, remplace le
+     bootstrap empirique d'origine.
   2. `drift_pool` : bootstrap log-ratio empirique (mode d'origine, gardé pour
      un modèle qui n'a pas encore de saut calibré).
   3. repli gaussien (`drift_sd`).
@@ -109,7 +110,7 @@ def forecast_from_draws(pi: np.ndarray, slots: list[str], forecast_horizon: int,
         "forecast_scrutin": {
             slots[k]: {
                 # Moyenne, pas médiane — cf. model/core/base.py:Nowcast.summary
-                # (docs/spec_ssm_implementation.md §11) : seule la moyenne
+                # : seule la moyenne
                 # préserve Σ_c part_moyenne_c = 1 (linéarité de l'espérance).
                 "part_moyenne": round(float(theta[:, k].mean()), 4),
                 "ic90": band(theta[:, k]),
