@@ -12,6 +12,14 @@ définie une seule fois, ici, réutilisée en JAX (`house_effects_model`) et en
 NumPy (les sigmas dérivées ci-dessous, pour le backtest/les notebooks) — un
 autre modèle est libre de choisir une autre forme (log1p, sinh-arcsinh
 calibré...), rien dans le framework n'impose une forme.
+
+Le **saut terminal** (`TerminalJumpCalibration` et son jeu de données
+`movement_pool`) ne vit PAS ici mais dans `model/core/terminal_jump.py` : il
+répond à une question — « de combien l'opinion peut-elle encore bouger d'ici
+au scrutin ? » — indépendante de la façon dont on estime l'opinion courante,
+et `linear-pooling` s'en sert autant que ce modèle. Ré-exporté ci-dessous pour
+que `model.models.bayesian_nowcast.<nom>` continue de fonctionner (backtest,
+tests), avec une seule source de vérité.
 """
 
 from __future__ import annotations
@@ -27,10 +35,12 @@ import numpyro.distributions as dist
 import pandas as pd
 from model.core.bank import Bank
 from model.core.inference import run_numpyro_mcmc
-from model.core.utils import SinhArcsinh
+from model.core.terminal_jump import (  # noqa: F401  (ré-export, cf. docstring)
+    DEFAULT_JUMP_PRIORS_CFG, TerminalJumpCalibration, institut_bias_prior, movement_pool,
+    terminal_jump_model,
+)
+from model.core.utils import SinhArcsinh, clr
 from pipeline.historical import load_calibration_frame, load_results
-
-from .latent import clr
 
 BANK_PATH = Path(__file__).parent / "bank.json"
 JUMP_BANK_PATH = Path(__file__).parent / "bank_jump.json"
@@ -216,161 +226,6 @@ def measurement_sigma(bank: Bank, institut: str, intention: float, n: int) -> fl
     l'institut à horizon 0 (pas de croissance en horizon — la dérive jusqu'au
     scrutin appartient à la prévision, pas à la mesure de l'opinion courante)."""
     return math.hypot(sampling_sigma(intention, n), excess_sigma(bank, institut, 0))
-
-
-def institut_bias_prior(bank: Bank | None, institut: str, bloc: str) -> tuple[float, float]:
-    """(mean, sd) du biais institut×bloc. Repli sur la moyenne de population du
-    bloc si l'institut est inconnu (shrinkage) ; prior faible si pas de Bank."""
-    if bank is None:
-        return 0.0, 5.0
-    try:
-        return bank.institut_bias.at(institut=institut, bloc=bloc)
-    except KeyError:
-        return bank.bloc_bias_mean.at(bloc=bloc)
-
-
-def movement_pool(bank: Bank, hmin: float = 45.0) -> pd.DataFrame:
-    """Mouvements RÉELS d'opinion 2017/2022, en espace log-ratio (CLR),
-    par candidat×élection×fenêtre d'horizon — jeu de données du fit
-    paramétrique du saut terminal (TerminalJumpCalibration, sinh-arcsinh,
-    docs/spec_ssm_nowcast.md §2.2). Débiaise chaque sondage historique du
-    biais calibré, moyenne les sondages proches (même candidat, fenêtre
-    d'horizon ≥ hmin) pour annuler le bruit d'échantillon, et calcule le
-    mouvement `clr(résultat) − clr(sondage_débiaisé)`. Bloc ET horizon (moyen
-    de la fenêtre) conservés par mouvement : loc/scale du saut sont fittés par
-    bloc (§7), et TerminalJumpCalibration normalise par horizon avant de
-    fitter (un mouvement mesuré à J-400 et un mouvement à J-50 ne sont PAS la
-    même quantité — cf. sa docstring)."""
-    df = load_calibration_frame()
-    df["bias"] = [institut_bias_prior(bank, r.institut, r.bloc)[0] for r in df.itertuples()]
-    df["deb"] = df["intention"] - df["bias"]
-    res = load_results()
-    res = res[res["tour"] == "Premier tour"]
-
-    df["hbin"] = pd.cut(df["horizon"], [0, 45, 90, 180, 400])
-    moves: list[float] = []
-    blocs: list[str] = []
-    horizons: list[float] = []
-    for elec in df["election"].unique():
-        de = df[df["election"] == elec]
-        cand = sorted(de["candidat"].unique())
-        bloc_of = de.drop_duplicates("candidat").set_index("candidat")["bloc"]
-        rmap = dict(zip(res.loc[res.election == elec, "candidat"],
-                        res.loc[res.election == elec, "resultat"]))
-        r = np.array([rmap.get(c, np.nan) for c in cand])
-        for _, grp in de.groupby("hbin", observed=True):
-            h = grp["horizon"].mean()
-            if h < hmin:
-                continue
-            smap = grp.groupby("candidat")["deb"].mean()
-            s = np.array([smap.get(c, np.nan) for c in cand])
-            mask = ~np.isnan(s) & ~np.isnan(r) & (s > 0)
-            if mask.sum() < 4:
-                continue
-            cand_kept = [c for c, keep in zip(cand, mask) if keep]
-            moves.extend((clr(r[mask]) - clr(s[mask])).tolist())
-            blocs.extend(bloc_of.loc[cand_kept].tolist())
-            horizons.extend([float(h)] * int(mask.sum()))
-    return pd.DataFrame({"bloc": blocs, "move": moves, "horizon": horizons})
-
-
-# Hyperparamètres des priors du fit sinh-arcsinh (saut terminal).
-DEFAULT_JUMP_PRIORS_CFG = {
-    "loc_mean_sd": 5.0, "loc_sd_sd": 3.0,
-    "log_scale_mu": float(np.log(3.0)), "log_scale_sd": 1.0,
-    "skew_sd": 1.0, "tail_log_sd": 0.5,
-}
-
-
-def terminal_jump_model(bloc_idx: jnp.ndarray, move_at_href: jnp.ndarray, n_bloc: int,
-                        horizon_ref: float, priors_cfg: dict | None = None):
-    """NumPyro pur : move_at_href_i ~ SinhArcsinh(loc[bloc_i], scale[bloc_i], skew, tail)
-    (TFP, substrate JAX — cf. docs/spec_ssm_nowcast.md §2.2 ; `tailweight` de
-    TFP joue le rôle de `tail`, convention multiplicative légèrement différente
-    du pseudo-code de la spec mais même interprétation : 1 = pas de déformation
-    par rapport à une gaussienne).
-
-    `move_at_href` : mouvements RENORMALISÉS à l'horizon de référence
-    `horizon_ref` AVANT ce modèle (cf. TerminalJumpCalibration.calibrate) — un
-    mouvement mesuré à J-400 et un mouvement à J-50 ne sont pas la même
-    quantité, la dérive continue jusqu'au scrutin (loi en sqrt(horizon), même
-    `horizon_diffusion` que `campaign_drift` ailleurs dans ce module) ; le fit
-    lui-même reste sur l'horizon de référence, seul le TIRAGE à `forecast()`
-    est rescalé par horizon (`model/core/simulate.py`). `horizon_ref` est
-    stocké tel quel dans la Bank (constante, comme `horizon_scale_mean` dans
-    house_effects_model) pour que ce rescaling reste cohérent sans dupliquer
-    la valeur en dur ailleurs.
-
-    skew/tail GLOBAUX (spec_ssm_nowcast.md §7 : seulement 2 élections
-    historiques, un ajustement par bloc de 4 paramètres de forme risquerait de
-    capturer les particularités de CES deux campagnes plutôt que des
-    fondamentaux généralisables). `scale` GLOBAL aussi, pour la même raison
-    (décidé le 2026-08-09, cf. session de conception) : avec seulement 2
-    élections, le partial pooling hiérarchique par bloc n'a aucun moyen de
-    distinguer une vraie hétérogénéité de volatilité entre blocs politiques
-    d'un simple écart d'échantillon entre CES deux campagnes précises — observé
-    concrètement sur `droite_radicale` (0.55) vs `centre` (0.30, quasi 2x) à
-    partir de n=2, qui produisait une inversion de `p_qualifie_top2` non
-    justifiée (RN sous Horizons au 2026-03-26 malgré une intention nettement
-    supérieure). `loc` reste par bloc (partial pooling non centré, même
-    logique que bloc_bias_mean/excess_log_scale dans house_effects_model) : la
-    direction moyenne du saut (qui dérive vers le haut/bas d'ici au scrutin)
-    est mieux identifiée que son amplitude à si peu de données."""
-    cfg = {**DEFAULT_JUMP_PRIORS_CFG, **(priors_cfg or {})}
-    numpyro.deterministic("jump_horizon_ref", horizon_ref)
-
-    loc_mean = numpyro.sample("jump_loc_mean", dist.Normal(0.0, cfg["loc_mean_sd"]))
-    loc_sd = numpyro.sample("jump_loc_sd", dist.HalfNormal(cfg["loc_sd_sd"]))
-    loc_z = numpyro.sample("jump_loc_z", dist.Normal(0.0, 1.0).expand([n_bloc]))
-    loc = numpyro.deterministic("jump_loc", loc_mean + loc_z * loc_sd)
-
-    log_scale = numpyro.sample("jump_log_scale", dist.Normal(cfg["log_scale_mu"], cfg["log_scale_sd"]))
-    # broadcast en (n_bloc,) : garde le schéma Bank (dims=["bloc"]) et les
-    # lookups `.at(bloc=...)` de model/core/simulate.py inchangés, avec la
-    # MÊME valeur pour chaque bloc.
-    scale = numpyro.deterministic("jump_scale", jnp.exp(log_scale) * jnp.ones(n_bloc))
-
-    skew = numpyro.sample("jump_skew", dist.Normal(0.0, cfg["skew_sd"]))
-    tail = numpyro.sample("jump_tail", dist.LogNormal(0.0, cfg["tail_log_sd"]))
-
-    d = SinhArcsinh(loc=loc[bloc_idx], scale=scale[bloc_idx], skewness=skew, tailweight=tail)
-    numpyro.sample("move_obs", d, obs=move_at_href)
-
-
-class TerminalJumpCalibration:
-    """Fit paramétrique du saut terminal (nowcast -> jour du scrutin) : pas
-    d'ABC, une classe normale qui compose run_numpyro_mcmc + Bank — même
-    pattern que HouseEffectsCalibration, jeu de données et Bank séparés (deux
-    modèles NumPyro distincts, pas de raison de les forcer dans un seul run).
-
-    Dépendance à l'horizon : chaque mouvement historique est mesuré à un
-    horizon différent (fenêtres 45-90/90-180/180-400 jours) — les renormaliser
-    à un horizon de référence commun (`horizon_ref`, moyenne du pool) avant de
-    fitter rend le fit interne cohérent ; `forecast_from_draws`
-    (model/core/simulate.py) rescale ensuite le TIRAGE à l'horizon réel de la
-    prévision, dans le même sens (sqrt(horizon)) que `campaign_drift`."""
-    draws = 1000
-    tune = 1000
-    chains = 4
-    target_accept = 0.9
-    seed = 27
-    hmin = 45.0
-    priors_cfg: dict | None = None
-
-    def calibrate(self, bank: Bank) -> Bank:
-        moves = movement_pool(bank, hmin=self.hmin)
-        horizon_ref = float(moves["horizon"].mean())
-        scale_to_ref = np.sqrt(horizon_ref / moves["horizon"].to_numpy())
-        move_at_href = moves["move"].to_numpy() * scale_to_ref
-
-        bloc_codes, bloc_names = pd.factorize(moves["bloc"], sort=True)
-        data = {"bloc_idx": jnp.array(bloc_codes), "move_at_href": jnp.array(move_at_href),
-                "n_bloc": len(bloc_names), "horizon_ref": horizon_ref, "priors_cfg": self.priors_cfg}
-        samples, _ = run_numpyro_mcmc(
-            terminal_jump_model, data, draws=self.draws, tune=self.tune, chains=self.chains,
-            seed=self.seed, target_accept=self.target_accept)
-        return Bank(samples, dims={"jump_loc": ["bloc"], "jump_scale": ["bloc"]},
-                   coords={"bloc": list(bloc_names)})
 
 
 def main() -> None:

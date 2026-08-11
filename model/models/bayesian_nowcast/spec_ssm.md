@@ -790,9 +790,187 @@ dans un ordre de grandeur plausible et stable d'une date à l'autre (RN
 artificiellement une variance ni ne substitue une statistique de résumé non
 principielle — les causes structurelles identifiées (sondages hors-scope,
 prior mal centré, prior isotrope, sur-paramétrisation du biais à faible
-volume de données, initialisation NUTS aberrante) sont corrigées
-directement, pas leurs symptômes. Points ouverts non résolus : §6.8
-(décalage RN vs sondages bruts) et §6.9 (`tau` isotrope + house effects).
+volume de données, initialisation NUTS aberrante, **bruit d'observation qui
+n'était pas celui d'un multinomial**, §6.11) sont corrigées directement, pas
+leurs symptômes. Point ouvert non résolu : §6.8 (décalage RN vs sondages
+bruts) — §6.9 est largement refermé par §6.11.
+
+### 6.11 La couverture : `R` n'était pas la variance d'un multinomial **[TRANCHÉ]** (2026-08-11)
+
+Point de départ : avec le roster cohérent (10 slots), le SSM ne couvrait que
+**35 %** des observations à un IC90, avec des intervalles très étroits (1,83
+pt). Gonfler `tau` (plancher 0,05 / 0,08) ou l'extrapolation finale n'y
+changeait rien — normal, `as_of` tombe souvent un jour de sondage
+(`as_of_dt = 0`). Gonfler `R` uniformément (×1,5, ×2, ×3) ne donnait que
+35 → 40 %. La sous-couverture n'était donc ni un problème de `tau`, ni un
+problème d'ÉCHELLE de `R` : c'était sa **FORME**.
+
+#### 6.11.1 Ce que `R = (deff/n)·I` supposait réellement
+
+Pour un multinomial, `Var(p̂_i) = p_i(1−p_i)/n`. En passant en log-ratio
+(delta-method, `J = diag(1/p)`) puis en projetant sur l'hyperplan à somme
+nulle (`P = I − 𝟙𝟙ᵀ/m`, qui annule le terme `−𝟙𝟙ᵀ`), et enfin dans la base
+ILR locale orthonormée `W` (`W Wᵀ = P`, `Wᵀ W = I`, donc `Wᵀ P = Wᵀ`) :
+
+```
+Cov(p̂)      = (diag(p) − p pᵀ)/n
+Cov(log p̂)  = (diag(1/p) − 𝟙𝟙ᵀ)/n
+Cov(clr)    = P · diag(1/(n p)) · P
+R = Cov(y)  = Wᵀ · diag(1/(n p)) · W
+```
+
+Le facteur `(1−p_i)` n'est pas perdu : il est **exactement** porté par la
+projection. Vérifié en repoussant `R` jusqu'aux parts sur un sondage complet
+(`H` inversible, jacobienne de `softmax`) : on retombe sur
+`(diag(p) − p pᵀ)/n` à `2e−11` près — `tests/test_latent.py:
+test_R_est_bien_la_variance_multinomiale_sur_les_parts`.
+
+`R = (deff/n)·I` revient donc à poser **`p_i = 1` pour tous les candidats** :
+la variance d'observation était sous-estimée d'un facteur ~`1/p_i`, soit
+**×2,9 pour un candidat à 34 %** et **×100 pour un candidat à 1 %**. C'est
+une erreur de forme, pas de réglage — d'où l'inefficacité d'un facteur
+multiplicatif uniforme.
+
+Cette simplification (§5.7) avait été adoptée pour atténuer la dérive du RN.
+Son motif est tombé : la cause racine s'est révélée être le mélange de
+rosters incohérents + la renormalisation implicite après suppression des
+non-modélisés (`biais_rn_investigation.md`, addendum du 2026-08-11).
+
+#### 6.11.2 `deff ≈ 2` — mesuré, pas postulé
+
+Un sondage français n'est pas un tirage aléatoire simple. Mesure directe et
+sans modèle : on apparie les scénarios de **deux instituts différents testant
+exactement le même champ de candidats** à faible écart de date (2017+2022 :
+8138 paires candidat×scénario à ≤3 j, 1478 le **même jour**). À champ et date
+identiques, l'écart ne peut venir que du bruit d'observation.
+
+```
+E[(p_a − p_b)²] / E[Var_multinomiale] = 2,16 (≤3 j)   1,99 (même jour)
+```
+
+La **forme** de cet excès a été départagée entre trois modèles (RMS(z) par
+tranche de `p` en points, 1,00 = calibration parfaite) :
+
+| modèle | p≈2 | p≈6 | p≈10 | p≈15 | p≈22 | p≈27 |
+|---|---|---|---|---|---|---|
+| multinomial brut | 1,55 | 1,73 | 1,79 | 1,58 | 1,37 | 1,40 |
+| **`deff` × multinomial (retenu)** | **1,06** | **1,17** | **1,21** | **1,07** | **0,93** | **0,95** |
+| multinomial + `c²` constant en points | 0,67 | 1,05 | 1,24 | 1,20 | 1,10 | 1,17 |
+| multinomial + `(κ·p)²` (log-ratio) | 1,45 | 1,41 | 1,34 | 1,05 | 0,83 | 0,77 |
+
+Seul le facteur **multiplicatif** est plat sur toute la plage de `p`. Un
+excès additif en points sur-couvre massivement les petits candidats ; un
+excès isotrope en log-ratio — qui aurait pourtant été le plus naturel à
+ajouter dans l'espace ILR (`+ σ²·I`, la piste « sur-dispersion
+d'observation ») — a la pente inverse. **`deff = 2,0`** retenu (l'estimation
+à écart nul, 1,99, est la seule qui isole le bruit pur ; les paires à ≤3 j
+contiennent aussi un vrai mouvement d'opinion). Reproduction :
+`notebooks/06b_same_day_poll_coherence_matched.py` pour l'appariement.
+
+#### 6.11.3 Effet mesuré sur la couverture
+
+Diagnostic d'innovation un-pas-en-avant (`notebooks/07_ssm_obs_coverage.py`,
+roster cohérent 10, `as_of = 2026-07-10`, 72 innovations) : à chaque nœud,
+`z = chol(S)⁻¹·(y − H·μ_pred)` avec `S = H P Hᵀ + R` doit être `N(0, I)`.
+C'est la bonne quantité — un IC d'ÉTAT comparé à un sondage observé
+sous-couvre par construction, puisqu'il oublie le bruit du sondage tenu (même
+protocole que `notebooks/04e_spatial_coverage_excess.py` côté
+`spatial_pooling`). `tau` est ré-estimé par maximum de vraisemblance **pour
+chaque `R`** : sinon la comparaison est biaisée, élargir `R` poussant
+mécaniquement `tau` vers le bas.
+
+| `R` | `tau` (ML) | RMS(z) | IC50 | IC80 | IC90 |
+|---|---|---|---|---|---|
+| `(1/n)·I` (ancien défaut) | 0,1077 | **2,94** | 40,3 % | 55,6 % | 62,5 % |
+| `(2/n)·I` | 0,0957 | 2,21 | 37,5 % | 59,7 % | 68,1 % |
+| multinomial, `deff=1` | 0,0294 | 1,10 | 51,4 % | 75,0 % | 86,1 % |
+| **multinomial, `deff=2`** | **0,0163** | **0,89** | **55,6 %** | **83,3 %** | **91,7 %** |
+| multinomial, `deff=3` | 0,0114 | 0,78 | 58,3 % | 90,3 % | 97,2 % |
+
+Le `deff = 2` mesuré indépendamment sur les paires appariées (§6.11.2) tombe
+sur la configuration la mieux calibrée — deux routes indépendantes, même
+réponse.
+
+**Conséquence sur `tau`, et sur le point ouvert §6.9** : `tau` passe de
+**0,108 à 0,016** (÷6,7). C'était mécanique — avec un `R` trop petit, le
+filtre n'a d'autre canal que `tau` pour expliquer la variation d'un sondage à
+l'autre. Le symptôme central du §6.9 (sd de 14,6 pts sur RN après 31 jours
+sans sondage, dû à `tau ≈ 0,123`) se réduit d'un facteur ~7,5 sans toucher ni
+à `use_biais` ni à un `tau` par candidat : **`tau` isotrope n'était pas le
+problème, c'était un symptôme de `R`.** (À re-vérifier sous NUTS complet : le
+tableau ci-dessus estime `tau` par maximum de vraisemblance, pas par MCMC.)
+
+**Réserves, explicitement** :
+- 72 innovations seulement (le filtre de roster est restrictif). L'ORDRE des
+  configurations est sans ambiguïté (RMS(z) 2,94 → 1,10 → 0,89), mais un
+  `deff` entre ~1,5 et ~2,5 n'y est pas départageable — c'est la mesure sur
+  paires appariées (n=1478 le même jour) qui ancre la valeur.
+- IC50 sur-couvre légèrement (55,6 % pour 50 %) : les sondages sont arrondis
+  au demi-point, ce qui crée un atome d'innovations exactement nulles. Même
+  effet visible sur les paires appariées.
+- Sans filtre de roster (68 nœuds), le verdict sur la FORME tient (isotrope :
+  RMS(z) 2,10) mais le NIVEAU de `deff` n'y est pas lisible — même `deff=1`
+  sur-couvre (IC90 97,5 %), l'incohérence de roster gonflant la covariance
+  d'état bien au-delà de ce que `R` explique. Ce n'est pas une cible de
+  calibration valide (cf. `biais_rn_investigation.md`).
+- Le biais résiduel par candidat reste visible (`z` moyen : RN +0,78,
+  Mélenchon +0,66) — c'est le retard de poursuite d'une marche sans dérive
+  face à une tendance soutenue (§7.2), un sujet distinct de la couverture.
+
+#### 6.11.4 Ce que ça rend caduc
+
+`full_covariance` ne bascule plus la FORME de `R` : les deux modes portent
+désormais la même covariance delta-method et ne diffèrent que par le système
+de coordonnées locales (ILR orthonormé vs ALR). Par le théorème d'invariance
+(§5.2) ils donnent le **même** postérieur — c'est devenu un test de
+non-régression (`test_ilr_local_et_alr_local_donnent_le_meme_posterieur`)
+plutôt qu'une variante de modèle. L'ILR local reste le défaut : il est
+orthonormé, donc cohérent avec un `tau` isotrope.
+
+`isotropic_obs_noise=True` (`bayesian-nowcast-obs-isotrope`) conserve
+l'ancien comportement, pour mesurer l'écart — pas comme candidat.
+
+### 6.12 Le filtre de roster cohérent devient le défaut **[TRANCHÉ]** (2026-08-11)
+
+`aggregate_to_slots` retire silencieusement les candidats non modélisés d'une
+hypothèse, puis `poll_observation_values` RENORMALISE la masse restante. La
+part supprimée n'est donc pas traitée comme manquante — elle est
+**redistribuée** entre les candidats restants. Mesuré sur la campagne 2026 :
+**28,75 pts** de masse jetée en moyenne par hypothèse (médiane 34), et
+**43,04 pts quand RN est absente** du champ testé contre 9,41 quand elle est
+présente. Le SSM ne voyait donc pas « le même électorat avec RN manquante »
+mais une composition renormalisée sur un support plus petit, traitée comme
+comparable aux hypothèses contenant RN.
+
+Deux conséquences, mesurées séparément :
+
+| | sans filtre | roster cohérent 10 |
+|---|---|---|
+| erreur signée moyenne sur RN | −2,82 pt | **−0,26 pt** |
+| couverture prédictive IC90 (hors éch.) | 99,3 % | cf. §6.11.3 |
+| couverture prédictive IC50 | 78,0 % | — |
+| largeur IC90 sur RN | 17,5 pt | — |
+
+La seconde ligne est le point neuf de cette session : le mélange de rosters ne
+biaise pas seulement la moyenne, il gonfle la **covariance d'état** bien
+au-delà de ce que le bruit d'observation explique — un candidat rarement
+observé dans un champ cohérent garde une variance très large, et les
+intervalles deviennent inutilisables. C'est visible aussi dans le diagnostic
+d'innovation (§6.11.3, dernière réserve) : sans filtre, même `deff=1`
+sur-couvre à 97,5 %.
+
+**[TRANCHÉ]** : `BayesianNowcast.roster_filter_slots = COHERENT_ROSTER_SLOTS`
+par défaut. `bayesian-nowcast-roster-mixte` conserve l'ancien comportement
+pour la mesure. Les autres variantes enregistrées héritent du filtre, donc
+chacune ne fait plus varier qu'un seul facteur par rapport au défaut.
+
+**Limite assumée** : le filtre écarte des sondages réels. Les hypothèses
+testant Bardella (16 sur la fenêtre janvier-mars 2026, contre 4 pour Le Pen)
+ne sont plus utilisées du tout, alors qu'elles portent une information sur le
+bloc RN. C'est le prix du choix `SLOTS` (un seul candidat par bloc, Bardella
+écarté — décision utilisateur confirmée, §5.7.1). La bonne façon de récupérer
+cette information serait un remappage explicite à l'ingestion ou un slot
+« bloc RN » agrégé, pas un relâchement du filtre.
 
 ## 7. Proposition non tranchée : état de tendance (local linear trend)
 
@@ -971,6 +1149,17 @@ reste nécessaire avant de considérer l'ajout acquis.
   correct, non confirmé comme définitif.
 - **§6.9** — `tau` unique/isotrope + absence de débiaisage institut par
   défaut : incertitude extrapolée disproportionnée après un long silence
-  sondagier. Pistes : `use_biais=True` par défaut, `tau` par bloc/candidat.
+  sondagier. **Largement refermé par §6.11** : `tau` passe de 0,108 à 0,016
+  une fois `R` corrigé, donc la piste « `tau` par bloc/candidat » n'est plus
+  prioritaire. Reste à confirmer sous NUTS complet.
+- **§6.11** — [TRANCHÉ] `R` est maintenant la covariance delta-method du
+  multinomial, déflatée par `deff = 2` (mesuré). Reste ouvert : la valeur de
+  `deff` n'est ancrée que sur 2017/2022, à re-mesurer quand la campagne 2027
+  aura assez de sondages appariés. `deff` absorbe aussi les house effects
+  faute de `use_biais` — à réviser à la baisse si `use_biais` est réactivé,
+  sinon on les compte deux fois.
+- **§6.12** — [TRANCHÉ] filtre de roster cohérent par défaut. Reste ouvert :
+  récupérer l'information des hypothèses écartées (Bardella) par un remappage
+  à l'ingestion plutôt que de les jeter.
 - **§7** — état de tendance (local linear trend) : proposition complète,
   non implémentée, plan de vérification défini mais pas exécuté.

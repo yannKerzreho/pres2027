@@ -1,17 +1,38 @@
 """Petits utilitaires mathématiques partagés du projet.
 
-Ce module reste volontairement léger : fonctions JAX pures et distributions
+Ce module reste volontairement léger : fonctions JAX pures, distributions
 NumPyro réutilisables sans dépendre de bibliothèques externes fragiles côté
-versions (ex. TFP substrate JAX).
+versions (ex. TFP substrate JAX), et la géométrie compositionnelle de base
+(`clr`) — commune à tout modèle qui raisonne sur des parts électorales, pas
+propre à l'un d'eux.
 """
 
 from __future__ import annotations
 
 import jax.numpy as jnp
 import jax.random as jr
+import numpy as np
 import numpyro.distributions as dist
 from numpyro.distributions import constraints
 from numpyro.distributions.util import promote_shapes
+
+FLOOR = 1e-4          # plancher numérique avant log() sur une composition
+
+
+def clr(shares: np.ndarray, floor: float = FLOOR) -> np.ndarray:
+    """Centered log-ratio d'un vecteur de parts (K,), ramené au simplexe.
+    Invariant à l'échelle de `shares` (%, proportions...) — la renormalisation
+    est là pour la clarté, pas parce qu'elle change le résultat.
+
+    Espace naturel des mouvements d'opinion : une différence de parts brutes
+    n'a pas de sens géométrique sur le simplexe (elle peut sortir de [0,1]),
+    une différence de CLR si — c'est ce qui rend `movement_pool`
+    (`model/core/terminal_jump.py`) additif et donc fittable.
+    """
+    v = np.clip(np.asarray(shares, dtype=float), floor, None)
+    v = v / v.sum()
+    lg = np.log(v)
+    return lg - lg.mean()
 
 
 def sinh_arcsinh_standard(z, skewness, tailweight):

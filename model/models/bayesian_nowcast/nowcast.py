@@ -700,6 +700,12 @@ class BayesianNowcast(ForecastModel):
                   "les sondages sans pondération temporelle. Pas de débiaisage par "
                   "institut par défaut (cf. use_biais).")
     trains_on_history = True
+    # Hors du sélecteur public tant que §6.8 de spec_ssm.md (décalage RN vs
+    # sondages bruts) reste ouvert : publier une courbe dont on sait qu'elle a
+    # un biais non expliqué contredirait la ligne du projet (communiquer des
+    # probabilités honnêtes). Le modèle reste pleinement exécutable — CLI,
+    # tests de contrat, backfill — et repasse public en changeant cette ligne.
+    public = False
     use_house_effects = True
     # `biais[institut,bloc]` DÉSACTIVÉ par défaut : avec ~20-45 groupes et
     # parfois aussi peu que 5 sondages en début de campagne, le postérieur
@@ -746,9 +752,31 @@ class BayesianNowcast(ForecastModel):
     # candidats testés dans la même hypothèse — indépendant de la corrélation
     # (vérifié : décorréler la covariance jointe seule ne change rien).
     use_tau_candidat = False
-    # Filtre expérimental de cohérence de roster : garde seulement les
-    # hypothèses contenant ce noyau de slots. Désactivé par défaut.
-    roster_filter_slots: tuple[str, ...] = ()
+    # Cohérence de roster : seules les hypothèses testant le noyau
+    # `COHERENT_ROSTER_SLOTS` entrent dans le SSM. ACTIVÉ PAR DÉFAUT (session
+    # du 2026-08-11) — ce n'est plus une variante expérimentale.
+    #
+    # Le modèle suppose une liste FIXE de candidats. Une hypothèse qui teste
+    # une liste différente (Bardella au lieu de Le Pen, Attal au lieu de
+    # Philippe) voit ses candidats non modélisés silencieusement retirés par
+    # `aggregate_to_slots`, puis la masse restante RENORMALISÉE par
+    # `poll_observation_values` — la part supprimée n'est donc pas traitée
+    # comme manquante, elle est REDISTRIBUÉE entre les candidats restants.
+    # Mesuré sur la campagne 2026 : 28,75 pts de masse jetée en moyenne
+    # (43,04 pts quand RN est absente du roster testé, 9,41 quand elle est
+    # présente) — cf. `biais_rn_investigation.md`, addendum du 2026-08-11.
+    #
+    # Deux effets mesurés, tous deux corrigés par le filtre :
+    #   - biais : erreur signée moyenne sur RN -2,82 pt sans filtre contre
+    #     -0,26 pt avec (mesure de la session du 2026-08-11) ;
+    #   - IC : sans filtre, la couverture prédictive hors échantillon monte à
+    #     IC90 99,3 % / IC50 78,0 % avec des bandes de 17,5 pt sur RN — le
+    #     mélange de rosters gonfle la covariance d'ÉTAT bien au-delà de ce
+    #     que `R` explique (§6.11.3 de la spec).
+    #
+    # `BayesianNowcastRosterMixte` ci-dessous rétablit l'ancien comportement
+    # (aucun filtre) pour pouvoir mesurer l'écart.
+    roster_filter_slots: tuple[str, ...] = COHERENT_ROSTER_SLOTS
     roster_filter_exact: bool = False
     # Bruit d'observation (session du 2026-08-11, travail sur la COUVERTURE) :
     # `R` est maintenant la covariance delta-method du multinomial
@@ -973,22 +1001,23 @@ class BayesianNowcastTauCandidat(BayesianNowcast):
 
 
 @register
-class BayesianNowcastRosterCore(BayesianNowcast):
-    """Variante de COMPARAISON : ne garde que les hypothèses contenant un
-    noyau cohérent de slots centraux (`COHERENT_ROSTER_SLOTS`) avant l'agrégation.
+class BayesianNowcastRosterMixte(BayesianNowcast):
+    """Variante de COMPARAISON : AUCUN filtre de roster — toutes les
+    hypothèses entrent dans le SSM, quel que soit le champ testé.
 
-    But expérimental : le modèle suppose une liste fixe de candidats ; une
-    hypothèse qui remplace RN ou Philippe par une alternative injecte un
-    signal partiel hors-cible dans l'état latent commun. Ce filtre mesure
-    l'impact de cette incohérence de roster sans réécrire le SSM."""
-    id = "bayesian-nowcast-roster-core"
-    label = "Nowcast bayésien (SSM, filtre roster cohérent — comparaison)"
-    description = ("Même modèle que bayesian-nowcast, mais en ne gardant que les "
-                   "hypothèses contenant la liste cohérente LO/LFI/EELV/PS-PCF/"
-                   "Philippe/LR/RN/DLF/Zemmour.")
+    C'était le comportement par défaut jusqu'au 2026-08-11 ; conservé pour
+    mesurer le coût de l'incohérence de roster, pas comme candidat (cf.
+    `BayesianNowcast.roster_filter_slots` pour les chiffres : biais RN
+    -2,82 pt contre -0,26 pt, et couverture prédictive IC90 à 99,3 % avec des
+    bandes de 17,5 pt sur RN)."""
+    id = "bayesian-nowcast-roster-mixte"
+    label = "Nowcast bayésien (SSM, sans filtre de roster — comparaison)"
+    description = ("Même modèle que bayesian-nowcast, mais sans filtre de cohérence "
+                   "de roster — toutes les hypothèses sont agrégées dans le même état "
+                   "latent, y compris celles testant un champ différent.")
     trains_on_history = True
     use_house_effects = True
-    roster_filter_slots = COHERENT_ROSTER_SLOTS
+    roster_filter_slots: tuple[str, ...] = ()
     public = False
 
 

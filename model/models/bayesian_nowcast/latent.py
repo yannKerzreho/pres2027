@@ -23,18 +23,12 @@ import jax.nn
 import jax.numpy as jnp
 import numpy as np
 
-FLOOR = 1e-4          # plancher numérique avant log() — même valeur que _clr (calibration.py)
+# `clr` (log-ratio centré) est de la géométrie compositionnelle générique, pas
+# propre au SSM : elle vit dans model/core/utils.py, d'où `movement_pool` la
+# tire aussi. Ré-exportée ici pour que `from .latent import clr` reste valide.
+from model.core.utils import FLOOR, clr  # noqa: F401
+
 PADDING_VAR = 1e6      # variance de padding pour les dimensions non observées d'un sondage partiel
-
-
-def clr(shares: np.ndarray, floor: float = FLOOR) -> np.ndarray:
-    """Centered log-ratio d'un vecteur de parts (K,), ramené au simplexe.
-    Invariant à l'échelle de `shares` (%, proportions...) — la renormalisation
-    est là pour la clarté, pas parce qu'elle change le résultat."""
-    v = np.clip(np.asarray(shares, dtype=float), floor, None)
-    v = v / v.sum()
-    lg = np.log(v)
-    return lg - lg.mean()
 
 
 def helmert_basis(K: int) -> np.ndarray:

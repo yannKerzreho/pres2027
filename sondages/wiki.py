@@ -666,9 +666,26 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--page", default=DEFAULT_PAGE)
     ap.add_argument("--out", default=None, help="chemin CSV de sortie (défaut : déduit du nom de page)")
+    ap.add_argument("--min-sondages", type=int, default=0,
+                    help="échoue (code 1) SANS écrire si moins de N sondages sont "
+                         "extraits — garde-fou du job quotidien contre une "
+                         "dégradation silencieuse du parsing Wikipedia")
     args = ap.parse_args()
 
     intentions, report = build_dataset(args.page)
+
+    # Vérifier AVANT d'écrire : la source est une page wiki éditable par
+    # n'importe qui, et un changement de gabarit ou un renommage de section
+    # ferait tomber l'extraction à quelques sondages sans lever d'erreur. Sans
+    # ce contrôle, le CSV serait écrasé puis `model.run` publierait un snapshot
+    # calculé sur presque rien — une régression invisible, en ligne.
+    n = 0 if intentions.empty else int(intentions["notice"].nunique())
+    if args.min_sondages and n < args.min_sondages:
+        raise SystemExit(
+            f"ABANDON : {n} sondages extraits, minimum attendu {args.min_sondages}. "
+            f"Le fichier existant n'a PAS été écrasé. Vérifier la page « {args.page} » "
+            f"(gabarit modifié ?) et {len(report['warnings'])} avertissement(s) de parsing.")
+
     out_path = Path(args.out) if args.out else DEFAULT_OUT
     out = write_dataset(intentions, out_path)
 

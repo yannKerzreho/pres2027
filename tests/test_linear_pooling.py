@@ -50,7 +50,7 @@ def test_resample_slot_recupere_l_estimateur_ponctuel_en_moyenne():
         {"date_fin": "2026-08-05", "echantillon": 1200, "n_hypotheses": 1, "part": 35.0},
     ])
     rng = np.random.default_rng(0)
-    draws, diag = resample_slot(sub, as_of, half_life_days=14.0, n_draws=200_000, rng=rng)
+    draws, age, diag = resample_slot(sub, as_of, half_life_days=14.0, n_draws=200_000, rng=rng)
     assert draws.mean() == pytest.approx(diag["point_estimate"], abs=0.002)
     # ordre de grandeur de l'exemple chiffré §4.3 (34.14 %)
     assert diag["point_estimate"] == pytest.approx(0.3414, abs=0.001)
@@ -68,7 +68,7 @@ def test_resample_slot_variance_superieure_a_la_variance_de_moyenne_classique():
         {"date_fin": "2026-08-05", "echantillon": 1200, "n_hypotheses": 1, "part": 35.0},
     ])
     rng = np.random.default_rng(1)
-    draws, _ = resample_slot(sub, as_of, half_life_days=14.0, n_draws=200_000, rng=rng)
+    draws, _, _ = resample_slot(sub, as_of, half_life_days=14.0, n_draws=200_000, rng=rng)
     mixture_sd = draws.std()
     # variance classique de la moyenne pondérée : Σ w_p² σ_p² / Ω²
     age = (as_of - pd.to_datetime(sub["date_fin"])).dt.days.to_numpy().astype(float)
@@ -83,9 +83,9 @@ def test_resample_slot_variance_superieure_a_la_variance_de_moyenne_classique():
 def test_resample_slot_repli_si_jamais_teste():
     as_of = pd.Timestamp("2026-08-10")
     rng = np.random.default_rng(2)
-    draws, diag = resample_slot(pd.DataFrame(columns=["date_fin", "echantillon",
-                                                       "n_hypotheses", "part"]),
-                                as_of, half_life_days=14.0, n_draws=1000, rng=rng)
+    draws, age, diag = resample_slot(pd.DataFrame(columns=["date_fin", "echantillon",
+                                                            "n_hypotheses", "part"]),
+                                     as_of, half_life_days=14.0, n_draws=1000, rng=rng)
     assert diag["n_polls"] == 0
     assert 0.0 < draws.mean() < 0.05   # repli faible (~1%), jamais 0 ni dominant
 

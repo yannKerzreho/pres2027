@@ -1,12 +1,12 @@
 {
-  "model": "bayesian-nowcast-no-house-effects",
-  "as_of": "2026-08-10",
+  "model": "linear-pooling",
+  "as_of": "2026-08-11",
   "meta": {
-    "genere_le": "2026-08-10",
-    "as_of": "2026-08-10",
+    "genere_le": "2026-08-11",
+    "as_of": "2026-08-11",
     "scrutin_t1": "2027-04-18",
     "n_sondages": 22,
-    "horizon_prevision_jours": 251,
+    "horizon_prevision_jours": 250,
     "instituts": [
       "Cluster17",
       "Elabe",
@@ -21,198 +21,182 @@
   },
   "nowcast": {
     "Arthaud (LO)": {
-      "mean": 0.0132,
+      "mean": 0.0103,
       "ic90": [
-        0.0029,
-        0.0335
-      ]
-    },
-    "Poutou (NPA)": {
-      "mean": 0.0315,
-      "ic90": [
-        0.0003,
-        0.1419
+        0.0044,
+        0.0179
       ]
     },
     "Mélenchon (LFI)": {
-      "mean": 0.1425,
+      "mean": 0.14,
       "ic90": [
-        0.0342,
-        0.3355
+        0.1129,
+        0.1676
       ]
     },
     "Ruffin": {
-      "mean": 0.0563,
+      "mean": 0.0559,
       "ic90": [
-        0.0129,
-        0.1416
+        0.043,
+        0.0691
       ]
     },
     "Roussel (PCF)": {
-      "mean": 0.0223,
+      "mean": 0.0237,
       "ic90": [
-        0.005,
-        0.0564
+        0.0141,
+        0.0358
       ]
     },
     "Glucksmann (PP)": {
-      "mean": 0.1015,
+      "mean": 0.0996,
       "ic90": [
-        0.0238,
-        0.241
+        0.0756,
+        0.1254
       ]
     },
     "Tondelier (EELV)": {
-      "mean": 0.037,
+      "mean": 0.0361,
       "ic90": [
-        0.0077,
-        0.0961
+        0.0205,
+        0.0524
       ]
     },
     "Philippe (Horizons)": {
-      "mean": 0.1614,
+      "mean": 0.1687,
       "ic90": [
-        0.0399,
-        0.3659
+        0.1297,
+        0.2076
       ]
     },
     "Retailleau (LR)": {
-      "mean": 0.0791,
+      "mean": 0.0831,
       "ic90": [
-        0.0181,
-        0.1927
+        0.0605,
+        0.1132
       ]
     },
     "Dupont-Aignan": {
-      "mean": 0.0148,
+      "mean": 0.0153,
       "ic90": [
-        0.0031,
-        0.0399
+        0.0073,
+        0.0262
       ]
     },
     "RN": {
-      "mean": 0.3101,
+      "mean": 0.3324,
       "ic90": [
-        0.1018,
-        0.5933
+        0.2916,
+        0.375
       ]
     },
     "Zemmour (Reconquête)": {
-      "mean": 0.0304,
+      "mean": 0.0348,
       "ic90": [
-        0.0064,
-        0.0764
+        0.0221,
+        0.0528
       ]
     }
   },
   "forecast_scrutin": {
     "Arthaud (LO)": {
-      "part_moyenne": 0.0138,
+      "part_moyenne": 0.0108,
       "ic90": [
-        0.0016,
-        0.0424
+        0.0022,
+        0.0298
       ],
-      "p_qualifie_top2": 0.001,
-      "p_arrive_premier": 0.0003
-    },
-    "Poutou (NPA)": {
-      "part_moyenne": 0.0318,
-      "ic90": [
-        0.0002,
-        0.1515
-      ],
-      "p_qualifie_top2": 0.0473,
-      "p_arrive_premier": 0.0217
+      "p_qualifie_top2": 0.0,
+      "p_arrive_premier": 0.0
     },
     "Mélenchon (LFI)": {
-      "part_moyenne": 0.1415,
+      "part_moyenne": 0.1433,
       "ic90": [
-        0.0203,
-        0.3893
+        0.0413,
+        0.3197
       ],
-      "p_qualifie_top2": 0.3357,
-      "p_arrive_premier": 0.1502
+      "p_qualifie_top2": 0.3412,
+      "p_arrive_premier": 0.1278
     },
     "Ruffin": {
-      "part_moyenne": 0.0588,
+      "part_moyenne": 0.0589,
       "ic90": [
-        0.0072,
-        0.1754
+        0.0153,
+        0.1438
       ],
-      "p_qualifie_top2": 0.0725,
-      "p_arrive_premier": 0.0208
+      "p_qualifie_top2": 0.0377,
+      "p_arrive_premier": 0.0067
     },
     "Roussel (PCF)": {
-      "part_moyenne": 0.0238,
+      "part_moyenne": 0.0249,
       "ic90": [
-        0.0028,
-        0.0738
+        0.0057,
+        0.0643
       ],
-      "p_qualifie_top2": 0.0088,
+      "p_qualifie_top2": 0.0025,
       "p_arrive_premier": 0.0005
     },
     "Glucksmann (PP)": {
-      "part_moyenne": 0.1038,
+      "part_moyenne": 0.103,
       "ic90": [
-        0.0146,
-        0.2932
+        0.0283,
+        0.2368
       ],
-      "p_qualifie_top2": 0.2107,
-      "p_arrive_premier": 0.076
+      "p_qualifie_top2": 0.18,
+      "p_arrive_premier": 0.0452
     },
     "Tondelier (EELV)": {
-      "part_moyenne": 0.0393,
+      "part_moyenne": 0.0383,
       "ic90": [
-        0.0044,
-        0.1215
+        0.0087,
+        0.098
       ],
-      "p_qualifie_top2": 0.0345,
-      "p_arrive_premier": 0.0105
+      "p_qualifie_top2": 0.0088,
+      "p_arrive_premier": 0.0008
     },
     "Philippe (Horizons)": {
-      "part_moyenne": 0.1597,
+      "part_moyenne": 0.1691,
       "ic90": [
-        0.0242,
-        0.4369
+        0.0508,
+        0.3623
       ],
-      "p_qualifie_top2": 0.4047,
+      "p_qualifie_top2": 0.4693,
       "p_arrive_premier": 0.1797
     },
     "Retailleau (LR)": {
-      "part_moyenne": 0.0813,
+      "part_moyenne": 0.0873,
       "ic90": [
-        0.0108,
-        0.2339
+        0.0231,
+        0.2036
       ],
-      "p_qualifie_top2": 0.138,
-      "p_arrive_premier": 0.0398
+      "p_qualifie_top2": 0.1145,
+      "p_arrive_premier": 0.029
     },
     "Dupont-Aignan": {
-      "part_moyenne": 0.0157,
+      "part_moyenne": 0.0167,
       "ic90": [
-        0.0018,
-        0.0497
+        0.0034,
+        0.0458
       ],
-      "p_qualifie_top2": 0.0018,
-      "p_arrive_premier": 0.0005
+      "p_qualifie_top2": 0.0005,
+      "p_arrive_premier": 0.0
     },
     "RN": {
-      "part_moyenne": 0.2989,
+      "part_moyenne": 0.3108,
       "ic90": [
-        0.0652,
-        0.6575
+        0.1202,
+        0.5646
       ],
-      "p_qualifie_top2": 0.727,
-      "p_arrive_premier": 0.497
+      "p_qualifie_top2": 0.8337,
+      "p_arrive_premier": 0.6088
     },
     "Zemmour (Reconquête)": {
-      "part_moyenne": 0.0317,
+      "part_moyenne": 0.037,
       "ic90": [
-        0.0038,
-        0.0981
+        0.0087,
+        0.0925
       ],
-      "p_qualifie_top2": 0.018,
-      "p_arrive_premier": 0.003
+      "p_qualifie_top2": 0.0118,
+      "p_arrive_premier": 0.0015
     }
   },
   "duels_probables": [
@@ -221,72 +205,136 @@
         "Philippe (Horizons)",
         "RN"
       ],
-      "probabilite": 0.2452
+      "probabilite": 0.3495
     },
     {
       "candidats": [
         "Mélenchon (LFI)",
         "RN"
       ],
-      "probabilite": 0.1953
+      "probabilite": 0.2402
     },
     {
       "candidats": [
         "Glucksmann (PP)",
         "RN"
       ],
-      "probabilite": 0.1143
+      "probabilite": 0.127
     },
     {
       "candidats": [
         "Retailleau (LR)",
         "RN"
       ],
-      "probabilite": 0.078
+      "probabilite": 0.0742
     },
     {
       "candidats": [
         "Mélenchon (LFI)",
         "Philippe (Horizons)"
       ],
-      "probabilite": 0.0597
+      "probabilite": 0.063
     },
     {
       "candidats": [
         "Glucksmann (PP)",
         "Philippe (Horizons)"
       ],
-      "probabilite": 0.0428
+      "probabilite": 0.0295
     },
     {
       "candidats": [
         "Ruffin",
         "RN"
       ],
-      "probabilite": 0.0365
+      "probabilite": 0.0262
     },
     {
       "candidats": [
-        "Mélenchon (LFI)",
-        "Glucksmann (PP)"
+        "Philippe (Horizons)",
+        "Retailleau (LR)"
       ],
-      "probabilite": 0.0315
+      "probabilite": 0.0187
     }
   ],
-  "drift_modele": "gaussien log-ratio (sd=0.6)",
+  "drift_modele": "sinh-arcsinh calibré (2017/2022, saturation tau=73j, K=11, horizon 250j -> scrutin)",
   "diagnostics": {
-    "hyperparametres": {
-      "tau_niveau": {
-        "mean": 0.1237,
-        "sd": 0.0096,
-        "r_hat": 1.001
+    "half_life_days": 14.0,
+    "par_slot": {
+      "Arthaud (LO)": {
+        "omega": 1118.2,
+        "n_polls": 83,
+        "point_estimate": 0.0109,
+        "age_moyen_j": 42.4
+      },
+      "Mélenchon (LFI)": {
+        "omega": 1332.9,
+        "n_polls": 84,
+        "point_estimate": 0.1478,
+        "age_moyen_j": 40.7
+      },
+      "Ruffin": {
+        "omega": 106.4,
+        "n_polls": 4,
+        "point_estimate": 0.0591,
+        "age_moyen_j": 33.7
+      },
+      "Roussel (PCF)": {
+        "omega": 1277.1,
+        "n_polls": 78,
+        "point_estimate": 0.0251,
+        "age_moyen_j": 39.6
+      },
+      "Glucksmann (PP)": {
+        "omega": 1012.1,
+        "n_polls": 61,
+        "point_estimate": 0.1051,
+        "age_moyen_j": 41.1
+      },
+      "Tondelier (EELV)": {
+        "omega": 959.4,
+        "n_polls": 68,
+        "point_estimate": 0.0382,
+        "age_moyen_j": 42.5
+      },
+      "Philippe (Horizons)": {
+        "omega": 958.0,
+        "n_polls": 51,
+        "point_estimate": 0.1784,
+        "age_moyen_j": 40.6
+      },
+      "Retailleau (LR)": {
+        "omega": 1331.9,
+        "n_polls": 75,
+        "point_estimate": 0.0878,
+        "age_moyen_j": 40.1
+      },
+      "Dupont-Aignan": {
+        "omega": 930.2,
+        "n_polls": 80,
+        "point_estimate": 0.0161,
+        "age_moyen_j": 44.4
+      },
+      "RN": {
+        "omega": 1101.8,
+        "n_polls": 38,
+        "point_estimate": 0.3518,
+        "age_moyen_j": 35.4
+      },
+      "Zemmour (Reconquête)": {
+        "omega": 1330.6,
+        "n_polls": 79,
+        "point_estimate": 0.0368,
+        "age_moyen_j": 40.5
       }
     },
-    "rhat_max": 1.0017,
-    "ess_min": 1668.8,
-    "n_divergences": 0,
-    "tendance_pts_pourcent_par_mois": null,
-    "tau_par_candidat": null
+    "derive_vers_as_of": {
+      "applique": true,
+      "avec_loc": true,
+      "tau_j": 73.4,
+      "age_moyen_pondere_j": 40.1,
+      "horizon_as_of_j": 250
+    }
   },
   "polls": [
     {
@@ -310,14 +358,6 @@
       "institut": "Cluster17",
       "slot": "Mélenchon (LFI)",
       "part": 0.175,
-      "notice": "Cluster17 18-20 octobre 2023 (WP)",
-      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2023/octobre/9701-cluster-17-nupes-le-point-25-octobre.pdf"
-    },
-    {
-      "date_fin": "2023-10-20",
-      "institut": "Cluster17",
-      "slot": "Poutou (NPA)",
-      "part": 0.005,
       "notice": "Cluster17 18-20 octobre 2023 (WP)",
       "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2023/octobre/9701-cluster-17-nupes-le-point-25-octobre.pdf"
     },
@@ -366,14 +406,6 @@
       "institut": "Cluster17",
       "slot": "Mélenchon (LFI)",
       "part": 0.2,
-      "notice": "Cluster17 4-6 novembre 2022 (WP)",
-      "notice_url": "https://cluster17.com/wp-content/uploads/2022/11/sondage_presidentielle_081122_C17_Notice_technique_Commission_des.pdf"
-    },
-    {
-      "date_fin": "2022-11-06",
-      "institut": "Cluster17",
-      "slot": "Poutou (NPA)",
-      "part": 0.01,
       "notice": "Cluster17 4-6 novembre 2022 (WP)",
       "notice_url": "https://cluster17.com/wp-content/uploads/2022/11/sondage_presidentielle_081122_C17_Notice_technique_Commission_des.pdf"
     },
@@ -510,14 +542,6 @@
       "institut": "Elabe",
       "slot": "Mélenchon (LFI)",
       "part": 0.185,
-      "notice": "Elabe 3-5 avril 2023 (WP)",
-      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2023/avril/9685-pres-leg-5-avril-elabe-bfm.pdf"
-    },
-    {
-      "date_fin": "2023-04-05",
-      "institut": "Elabe",
-      "slot": "Poutou (NPA)",
-      "part": 0.01,
       "notice": "Elabe 3-5 avril 2023 (WP)",
       "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2023/avril/9685-pres-leg-5-avril-elabe-bfm.pdf"
     },
@@ -1052,14 +1076,6 @@
     {
       "date_fin": "2022-10-26",
       "institut": "Ifop",
-      "slot": "Poutou (NPA)",
-      "part": 0.01,
-      "notice": "Ifop 25-26 octobre 2022 (WP)",
-      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2022/octobre/9681-pdt-ifop-jdd.pdf"
-    },
-    {
-      "date_fin": "2022-10-26",
-      "institut": "Ifop",
       "slot": "RN",
       "part": 0.3,
       "notice": "Ifop 25-26 octobre 2022 (WP)",
@@ -1270,14 +1286,6 @@
       "institut": "Ifop",
       "slot": "Mélenchon (LFI)",
       "part": 0.17,
-      "notice": "Ifop 30-31 mars 2023 (WP)",
-      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2023/avril/9686-pres-ifop-7-04-fig-mag-sud-radio.pdf"
-    },
-    {
-      "date_fin": "2023-03-31",
-      "institut": "Ifop",
-      "slot": "Poutou (NPA)",
-      "part": 0.01,
       "notice": "Ifop 30-31 mars 2023 (WP)",
       "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2023/avril/9686-pres-ifop-7-04-fig-mag-sud-radio.pdf"
     },
@@ -1542,14 +1550,6 @@
       "institut": "Odoxa",
       "slot": "Mélenchon (LFI)",
       "part": 0.19,
-      "notice": "Odoxa 5-6 avril 2023 (WP)",
-      "notice_url": "https://www.odoxa.fr/sondage/si-on-refaisait-voter-aujourdhui-les-francais-ils-eliraient-nettement-marine-le-pen/"
-    },
-    {
-      "date_fin": "2023-04-06",
-      "institut": "Odoxa",
-      "slot": "Poutou (NPA)",
-      "part": 0.01,
       "notice": "Odoxa 5-6 avril 2023 (WP)",
       "notice_url": "https://www.odoxa.fr/sondage/si-on-refaisait-voter-aujourdhui-les-francais-ils-eliraient-nettement-marine-le-pen/"
     },

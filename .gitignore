@@ -21,8 +21,8 @@ model/traces/
 # OS
 .DS_Store
 
-# Figures générées (régénérables)
-notebooks/figures/*.png
+# notebooks expérimentaux
+notebooks/
 
 # Secrets locaux (clés API)
 .env

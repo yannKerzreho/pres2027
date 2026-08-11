@@ -44,7 +44,11 @@ ELECTION_T1 = pd.Timestamp("2027-04-18")
 # code n'a besoin de changer (`map_candidate` référence directement `SLOTS`).
 SLOTS = {
     "Arthaud (LO)":        ("gauche_radicale", ["Nathalie Arthaud"]),
-    "Poutou (NPA)":        ("gauche_radicale", ["Philippe Poutou"]),
+    # Poutou (NPA) retiré le 2026-08-11 : il n'est pas candidat. Ses dernières
+    # intentions dataient de 2023 (1026 jours avant la dernière mise à jour),
+    # ce qui produisait en plus un IC90 faussement étroit — le poids demi-vie
+    # de ces sondages était tombé à 1e-19, mais le bruit tiré restait celui,
+    # serré, d'un sondage de 1000 personnes (cf. `resample_slot`).
     "Mélenchon (LFI)":     ("gauche_radicale", ["Jean-Luc Mélenchon"]),
     "Ruffin":              ("gauche_radicale", ["François Ruffin"]),
     "Roussel (PCF)":       ("gauche", ["Fabien Roussel"]),
