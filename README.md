@@ -13,8 +13,8 @@ Carlo du second tour.
 | **0 — Setup** | Repo, licence, récupération données historiques, backtest exploratoire | ✅ fait |
 | **1 — Calibration historique** | Modèle hiérarchique biais/variance par institut × bloc, sur 2017 + 2022 | ✅ fait |
 | **2 — Parsing PDF + ingestion live** | `sondages-commission-index` → intentions structurées | ✅ 4 instituts (Ifop, Odoxa, Ipsos, Harris) = 86 % des sondages d'intentions |
-| **3 — MVP modèle live** | Nowcast bayésien + house effects + Monte Carlo qualification/duels | 🟡 MVP (1er tour + duels ; vainqueur 2nd tour = reports à venir) |
-| 4 — CI/CD | Tests sur PR + cron quotidien + GitHub Pages | à venir |
+| **3 — MVP modèle live** | Nowcast + saut terminal calibré + Monte Carlo qualification/duels | 🟡 MVP (1er tour + duels ; vainqueur 2nd tour = reports à venir) |
+| **4 — CI/CD** | Tests sur PR + cron quotidien + GitHub Pages | ✅ fait |
 | 5 — Contenu data science | Articles `docs/` expliquant le modèle | à venir |
 
 ## Installation
@@ -79,15 +79,33 @@ Chaîne : `data/parsed/intentions_2027.csv` (sondages) + `model/models/bayesian_
   renormalisation qui déforme les queues). On fait évoluer la dynamique sur
   `α = log(π) ∈ ℝ` puis `π = softmax(α)` : les parts restent toujours dans (0,1)
   et somment à 1 (approche « The Economist » / Gelman-Morris).
-- **Dérive mesurée, pas supposée** (`model/core/drift_analysis.py`) : on débiaise les
-  sondages 2017/2022 (biais + échantillonnage connus) pour isoler le mouvement
-  réel de chaque candidat, mesuré **en log-ratio**. Il est **non gaussien** —
-  queues épaisses (excès de kurtosis +1,6) et asymétrique (surges d'outsiders),
-  jusqu'à **±11 pts** (Mélenchon 2022) ; il **sature** avec l'horizon (mean-
-  reversion, pas marche aléatoire pure : Mélenchon dérive ~−11 pts à J-68 *comme*
-  à J-258). La simulation **ré-échantillonne ce mouvement réel par bootstrap**.
-  Effet : P(RN qualifié) passe de **97 % surconfiant à ~82 %**, et des scénarios
-  où le RN rate le 2nd tour apparaissent enfin — réaliste.
+- **Dérive mesurée, pas supposée** (`model/core/terminal_jump.py`) : on isole le
+  mouvement réel de chaque candidat entre un sondage et le résultat, en 2017 et
+  2022, mesuré **en log-ratio centré** (59 mouvements). On y ajuste une loi
+  sinh-arcsinh — famille asymétrique à queues ajustables, parce que le pool l'est.
+- **La dérive sature, elle ne diffuse pas indéfiniment.** La dispersion observée
+  des mouvements est **plate** de 63 à 267 jours du scrutin (0,508 / 0,610 /
+  0,590) : reculer la date d'un sondage n'ajoute quasiment plus d'incertitude
+  sur le résultat, l'essentiel du mouvement se joue près du vote. Une loi en
+  `√horizon` prédirait 0,286 / 0,402 / 0,590 — elle est donc **contredite par
+  les données** et a été remplacée par `σ(h) = scale·√(1−e^(−h/τ))`, la variance
+  d'un processus d'Ornstein-Uhlenbeck (`τ ≈ 73 j`). Elle reproduit la dispersion
+  observée à 0,03 près, quantiles 5 %/95 % compris.
+- **Une seule loi, appliquée deux fois.** Le même saut projette le dernier
+  sondage jusqu'à `as_of`, puis `as_of` jusqu'au scrutin. Les variances
+  s'additionnent **exactement** (`sat(h₁)−sat(h₂)` puis `sat(h₂)−sat(0)`), donc
+  ni double comptage ni segment perdu. Sans la première jambe, l'incertitude du
+  nowcast ne bougeait pas d'un pouce quand les sondages vieillissaient — mesuré :
+  0,000 pt d'écart entre un calcul le jour du dernier sondage et 32 jours plus tard.
+- **Aucune dérive systématique par famille politique.** Les mouvements étant en
+  log-ratio centré, leur moyenne vaut exactement 0 : un terme de dérive moyenne
+  par bloc ne mesurerait rien, il **répartirait ce zéro** entre familles à partir
+  de 3 à 18 observations issues de 2 campagnes. Il valait −0,50 sur `droite`,
+  soit Fillon puis Pécresse — ce qui imposait à tout candidat LR de 2027 de perdre
+  la moitié de sa part quels que soient ses sondages. On échantillonne la
+  *distribution* des dérives de campagne, on ne rejoue pas le passé : ce qui est
+  arrivé à la droite en 2017 et 2022 peut arriver à n'importe qui, et la loi est
+  donc la même pour tous les candidats.
 - **Sortie** (`site/data/<modèle>/<date>.json`) : parts + IC 90 %, P(qualifié top 2),
   P(arrive 1er), duels de 2nd tour probables. Le **vainqueur** du 2nd tour n'est
   pas encore modélisé (nécessite une matrice de reports de voix) — on s'arrête aux
@@ -113,18 +131,25 @@ Le back-end est conçu pour comparer des approches et accueillir des contributio
 - **Sorties namespacées** : `site/data/<model_id>/AAAA-MM-JJ.json` + `index.json`,
   et `site/data/models.json` **généré depuis le registre**.
 
-**Ajouter un modèle** : créer `model/models/mon_modele.py`, sous-classer `ForecastModel`
-(ou `BayesianModel`), l'importer dans `model/core/registered.py`, `@register`. Le
-runner, le backfill, le front (dropdown) et les tests de contrat le prennent
-automatiquement. Deux modèles en place : `bayesian-nowcast` (avec house effects,
-débiaisage par institut) et `bayesian-nowcast-no-house-effects` (même modèle,
-sans le débiaisage) — comparer les deux MESURE l'apport de la calibration au
-lieu de le supposer acquis.
+**Ajouter un modèle** : créer `model/models/mon_modele/`, sous-classer `ForecastModel`,
+l'importer dans `model/core/registered.py`, `@register`. Le runner, le backfill, le
+front (dropdown) et les tests de contrat le prennent automatiquement.
+
+**Publié ≠ enregistré.** `ForecastModel.public` décide de la présence dans le
+sélecteur du site, et `python -m model.run` ne lance **que les modèles publics** :
+une variante de diagnostic est un run d'inférence complet dont personne ne lit la
+courbe, l'empiler dans le cron quotidien allonge le job pour rien. Elle reste
+lançable explicitement.
+
+Sur cette branche, un seul modèle est publié : **`linear-pooling`** (lissage par
+demi-vie). Le nowcast bayésien SSM et le modèle spatial vivent sur la branche
+`dev`, le temps que leurs points ouverts soient tranchés.
 
 ```bash
-python -m model.run                 # tous les modèles, aujourd'hui (job quotidien)
-python -m model.backfill            # rejoue chaque modèle sur les dates passées
-python -m model.run --model bayesian-nowcast-no-house-effects --as-of 2026-03-01
+python -m model.run                        # modèles publics, aujourd'hui (job quotidien)
+python -m model.run --all                  # + variantes de comparaison
+python -m model.backfill --since 2026-01-01
+python -m model.run --model linear-pooling --as-of 2026-03-01
 ```
 
 ## Source ingestion Phase 2
@@ -191,8 +216,14 @@ estimées et exportées (voir [`docs/methodo_house_effects.md`](docs/methodo_hou
 La **variance** est elle aussi décomposée : plancher d'échantillonnage connu
 `p(100−p)/n` + excès house-effect + incertitude de **dérive future**
 `τ_derive · √horizon`. La croissance temporelle suit **√horizon** (marche
-aléatoire, cohérent avec la littérature — Linzer, The Economist, pollsposition ;
-choix validé par le backtest, cf. plus bas), pas une forme ad hoc.
+aléatoire, cohérent avec la littérature — Linzer, The Economist, pollsposition),
+pas une forme ad hoc.
+
+> ⚠️ **Cette hypothèse `√horizon` est contredite par nos propres données.**
+> Mesurée directement sur le pool de mouvements 2017/2022, la dispersion est
+> **plate** entre 63 et 267 jours (cf. Phase 3 ci-dessus). La prévision, elle,
+> est passée à une loi qui sature (`model/core/terminal_jump.py`) ; le `√horizon`
+> ne subsiste que dans la calibration des house effects, où il reste à réexaminer.
 
 Point clé de modélisation : l'écart brut `intention(t) − résultat` est décomposé
 en **biais** (house effect à J-0) + **dérive temporelle** `derive[élection, bloc]`

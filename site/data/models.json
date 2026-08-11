@@ -1,11 +1,5 @@
 [
   {
-    "id": "bayesian-nowcast",
-    "label": "Nowcast bayésien (SSM)",
-    "description": "Opinion modélisée comme état latent (State Space Model linéaire-gaussien en coordonnées ILR), saut terminal sinh-arcsinh calibré sur 2017/2022 — pas une quantité statique unique moyennant tous les sondages sans pondération temporelle. Pas de débiaisage par institut par défaut (cf. use_biais).",
-    "trains_on_history": true
-  },
-  {
     "id": "linear-pooling",
     "label": "Lissage linéaire (demi-vie)",
     "description": "Moyenne pondérée directe des sondages par candidat/slot — poids = taille d'échantillon × décroissance demi-vie, sans état latent ni marche aléatoire. Incertitude par mélange pondéré (rééchantillonnage + bruit Beta d'échantillonnage), saut terminal sinh-arcsinh calibré sur 2017/2022 pour la projection jusqu'au scrutin (même mécanisme que bayesian-nowcast).",

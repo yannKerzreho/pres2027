@@ -26,9 +26,9 @@ import xarray as xr
 
 from model.core.bank import Bank
 from model.core.base import ForecastModel, Nowcast, register
-from model.core.live_dataset import SLOTS, aggregate_to_slots
+from model.core.live_dataset import ELECTION_T1, SLOTS, aggregate_to_slots
 from model.core.simulate import forecast_from_draws
-from model.models.bayesian_nowcast.calibration import TerminalJumpCalibration
+from model.core.terminal_jump import TerminalJumpCalibration, jump_moves
 
 BANK_JUMP_PATH = Path(__file__).parent / "bank_jump.json"
 
@@ -47,16 +47,26 @@ def half_life_weight(age_days: np.ndarray, n_effectif: np.ndarray, half_life_day
 
 
 def resample_slot(sub: pd.DataFrame, as_of: pd.Timestamp, half_life_days: float,
-                  n_draws: int, rng: np.random.Generator) -> tuple[np.ndarray, dict]:
+                  n_draws: int, rng: np.random.Generator) -> tuple[np.ndarray, np.ndarray, dict]:
     """Tirages (n_draws,) pour UN slot : mélange pondéré par demi-vie (spec
     §4) — on choisit un sondage par tirage (probabilité ∝ poids demi-vie),
     puis on tire dans SA loi Beta(n_p·Y_p, n_p·(1-Y_p)) : le poids demi-vie ne
     sert qu'à la sélection, le bruit d'échantillonnage reste celui, réel, du
-    sondage choisi (pas dilué/gonflé par la décroissance temporelle)."""
+    sondage choisi (pas dilué/gonflé par la décroissance temporelle).
+
+    Renvoie aussi l'ÂGE (jours) du sondage sélectionné à chaque tirage : le
+    bruit ci-dessous est celui du terrain du sondage, valable le jour où il a
+    été mesuré, pas à `as_of`. La dérive d'opinion depuis cette date est
+    ajoutée en amont par `linear_pooling_nowcast` — sans quoi un sondage
+    vieux de trois ans serait aussi « précis » qu'un sondage d'hier.
+    """
     if sub.empty:
         draws = rng.beta(FALLBACK_MEAN_PCT / 100.0 * FALLBACK_N,
                          (1.0 - FALLBACK_MEAN_PCT / 100.0) * FALLBACK_N, size=n_draws)
-        return draws, {"omega": 0.0, "n_polls": 0, "point_estimate": FALLBACK_MEAN_PCT / 100.0}
+        # Âge 0 : le repli est déjà une loi large (n=100 équivalent), il ne
+        # décrit aucun sondage daté qu'il faudrait projeter.
+        return draws, np.zeros(n_draws), {"omega": 0.0, "n_polls": 0,
+                                          "point_estimate": FALLBACK_MEAN_PCT / 100.0}
 
     age = (as_of - pd.to_datetime(sub["date_fin"])).dt.days.to_numpy().astype(float)
     # n_eff (déflaté par n_hypotheses) sert à la SÉLECTION — évite qu'un
@@ -84,8 +94,9 @@ def resample_slot(sub: pd.DataFrame, as_of: pd.Timestamp, half_life_days: float,
     alpha = np.clip(y_pick * n_pick, 1e-3, None)
     beta = np.clip((1.0 - y_pick) * n_pick, 1e-3, None)
     draws = rng.beta(alpha, beta)
-    return draws, {"omega": round(omega, 1), "n_polls": int(len(sub)),
-                   "point_estimate": round(point_estimate, 4)}
+    return draws, age[picks], {"omega": round(omega, 1), "n_polls": int(len(sub)),
+                               "point_estimate": round(point_estimate, 4),
+                               "age_moyen_j": round(float(age[picks].mean()), 1)}
 
 
 @dataclass
@@ -96,25 +107,69 @@ class LinearPoolingResult:
 
 
 def linear_pooling_nowcast(raw_polls: pd.DataFrame, as_of: str, slots: list[str],
-                           half_life_days: float, n_draws: int, seed: int) -> LinearPoolingResult:
-    """Cœur du nowcast : mélange pondéré indépendant par slot (§4), puis
-    renormalisation de CHAQUE tirage sur le simplexe (§4, dernier paragraphe)
-    — nécessaire pour respecter le contrat `Nowcast.draws` (une ligne = une
-    composition), pas seulement la moyenne agrégée."""
+                           half_life_days: float, n_draws: int, seed: int,
+                           jump_bank=None, candidate_blocs: dict[str, str] | None = None,
+                           drift_loc: bool = True) -> LinearPoolingResult:
+    """Cœur du nowcast : mélange pondéré indépendant par slot (§4), **projeté à
+    `as_of`**, puis renormalisation de CHAQUE tirage sur le simplexe — nécessaire
+    pour respecter le contrat `Nowcast.draws` (une ligne = une composition), pas
+    seulement la moyenne agrégée.
+
+    Deux étapes distinctes, à ne pas confondre :
+
+    1. *Mesure* — le mélange donne la part telle que le sondage sélectionné l'a
+       mesurée, avec le bruit d'échantillonnage de SON terrain, valable au jour
+       de ce terrain.
+    2. *Dérive jusqu'à `as_of`* — l'opinion a bougé depuis. On applique le saut
+       calibré (`model/core/terminal_jump.py`) sur l'âge PROPRE À CHAQUE TIRAGE,
+       en espace log-ratio. Sans cette étape, l'incertitude du nowcast ne
+       grandissait pas d'un pouce quand les sondages vieillissaient (mesuré :
+       0,000 pt d'écart entre un calcul le jour du dernier sondage et 32 jours
+       plus tard), et un sondage de 2023 restait aussi « précis » qu'un sondage
+       d'hier.
+
+    `forecast()` applique ensuite la MÊME loi sur la jambe `as_of → scrutin`.
+    Les deux tirages sont indépendants : la variance se cumule exactement
+    (`scale²·âge + scale²·horizon = scale²·(âge+horizon)`, propriété d'une
+    diffusion à variance ∝ t). `drift_loc=False` retire la composante
+    systématique de CETTE jambe-ci — cf. `jump_moves` pour pourquoi `loc`, lui,
+    ne se découpe pas proprement.
+    """
     obs = aggregate_to_slots(raw_polls)
     as_of_ts = pd.Timestamp(as_of)
     rng = np.random.default_rng(seed)
 
     theta = np.empty((n_draws, len(slots)))
+    ages = np.zeros((n_draws, len(slots)))
     diag_per_slot = {}
     for k, s in enumerate(slots):
         sub = obs[obs["slot"] == s]
-        draws, diag = resample_slot(sub, as_of_ts, half_life_days, n_draws, rng)
+        draws, age, diag = resample_slot(sub, as_of_ts, half_life_days, n_draws, rng)
         theta[:, k] = draws
+        ages[:, k] = age
         diag_per_slot[s] = diag
 
-    pi = theta / theta.sum(axis=1, keepdims=True)
     diagnostics = {"half_life_days": half_life_days, "par_slot": diag_per_slot}
+    alpha = np.log(np.clip(theta, 1e-6, None))
+    if jump_bank is not None and candidate_blocs is not None:
+        blocs = [candidate_blocs[s] for s in slots]
+        # Horizons comptés en jours AVANT LE SCRUTIN : le sondage sélectionné
+        # est à `h_as_of + âge`, `as_of` est à `h_as_of`. La jambe couvre donc
+        # exactement l'intervalle sondage -> as_of, et `forecast()` enchaîne
+        # sur as_of -> scrutin sans recouvrement (cf. `jump_moves`).
+        h_as_of = float((ELECTION_T1 - as_of_ts).days)
+        alpha = alpha + jump_moves(jump_bank, blocs, h_from=h_as_of + ages, h_to=h_as_of,
+                                   size=alpha.shape, seed=seed + 1, with_loc=drift_loc)
+        tau, _ = jump_bank.jump_tau.item()
+        diagnostics["derive_vers_as_of"] = {
+            "applique": True, "avec_loc": drift_loc, "tau_j": round(float(tau), 1),
+            "age_moyen_pondere_j": round(float(ages.mean()), 1),
+            "horizon_as_of_j": round(h_as_of),
+        }
+    else:
+        diagnostics["derive_vers_as_of"] = {"applique": False}
+    e = np.exp(alpha - alpha.max(axis=1, keepdims=True))
+    pi = e / e.sum(axis=1, keepdims=True)
     return LinearPoolingResult(pi=pi, slots=slots, diagnostics=diagnostics)
 
 
@@ -151,7 +206,9 @@ class LinearPooling(ForecastModel):
     def nowcast(self, raw_polls, as_of) -> Nowcast:
         slots = list(SLOTS)
         res = linear_pooling_nowcast(raw_polls, as_of, slots, self.half_life_days,
-                                     self.n_draws, self.seed)
+                                     self.n_draws, self.seed,
+                                     jump_bank=self.jump_bank,
+                                     candidate_blocs=self._candidate_blocs())
         draws = xr.DataArray(res.pi, dims=("draw", "candidat"), coords={"candidat": slots})
         return Nowcast(draws=draws, diagnostics=res.diagnostics)
 

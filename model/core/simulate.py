@@ -26,9 +26,8 @@ s'arrête aux duels, honnêtement.
 from __future__ import annotations
 
 import numpy as np
-import jax
 
-from model.core.utils import SinhArcsinh
+from model.core.terminal_jump import jump_moves
 
 
 def _softmax(a: np.ndarray) -> np.ndarray:
@@ -52,22 +51,18 @@ def _sinh_arcsinh_moves(S: int, slots: list[str], candidate_blocs: dict[str, str
     `sqrt(forecast_horizon / horizon_ref)` : un mouvement mesuré à J-400 et un
     mouvement à J-50 ne sont pas la même quantité (la dérive continue jusqu'au
     scrutin), même loi en racine du temps que `campaign_drift`/
-    `horizon_diffusion` dans `calibration.py` (indépendamment reproduite ici
-    plutôt qu'importée : ce module reste générique, `horizon_diffusion` est un
-    choix du modèle `bayesian-nowcast`, pas une règle imposée par le
-    framework)."""
+    `horizon_diffusion` dans `calibration.py`). La loi elle-même vit dans
+    `model/core/terminal_jump.py` (`jump_moves`) : une seule implémentation
+    pour les deux usages, projeter un sondage jusqu'à `as_of` et projeter
+    `as_of` jusqu'au scrutin."""
     K = len(slots)
-    skew, _ = jump_bank.jump_skew.item()
-    tail, _ = jump_bank.jump_tail.item()
-    horizon_ref, _ = jump_bank.jump_horizon_ref.item()
-    loc = np.array([jump_bank.jump_loc.at(bloc=candidate_blocs[s])[0] for s in slots])
-    scale = np.array([jump_bank.jump_scale.at(bloc=candidate_blocs[s])[0] for s in slots])
-
-    d = SinhArcsinh(loc=loc, scale=scale, skewness=skew, tailweight=tail)
-    move_at_href = np.asarray(d.sample(jax.random.PRNGKey(rng_seed), sample_shape=(S,)))
-    move = move_at_href * np.sqrt(max(forecast_horizon, 0.0) / horizon_ref)
-    return move, (f"sinh-arcsinh calibré (2017/2022, par bloc, K={K}, "
-                 f"horizon_ref={horizon_ref:.0f}j -> {forecast_horizon}j)")
+    tau, _ = jump_bank.jump_tau.item()
+    # Jambe `as_of -> scrutin` : de l'horizon courant jusqu'à J-0.
+    move = jump_moves(jump_bank, [candidate_blocs[s] for s in slots],
+                      h_from=max(forecast_horizon, 0.0), h_to=0.0,
+                      size=(S, K), seed=rng_seed)
+    return move, (f"sinh-arcsinh calibré (2017/2022, saturation tau={tau:.0f}j, "
+                 f"K={K}, horizon {forecast_horizon}j -> scrutin)")
 
 
 def forecast_from_draws(pi: np.ndarray, slots: list[str], forecast_horizon: int,

@@ -1,34 +1,55 @@
 name: Daily update
 on:
   schedule:
-    - cron: "0 7 * * *" 
+    - cron: "0 7 * * *"
   workflow_dispatch:
 permissions:
   contents: write
   pages: write
   id-token: write
+
+# Deux exécutions simultanées (cron + lancement manuel) se marcheraient dessus :
+# elles écrivent le même snapshot du jour et poussent sur la même branche.
+concurrency:
+  group: daily-update
+  cancel-in-progress: false
+
 jobs:
   update:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     environment: github-pages
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "3.11", cache: pip }
       - run: pip install -r requirements.txt
+
+      # --min-sondages : la source est une page wiki éditable par n'importe qui.
+      # En dessous de ce seuil, on considère que le parsing s'est dégradé, on
+      # n'écrase PAS le CSV et le job échoue bruyamment plutôt que de publier un
+      # snapshot calculé sur presque rien.
       - name: Ingestion sondages (Wikipedia)
-        run: python -m sondages.wiki
-      - name: Modèle live (tous les modèles enregistrés) -> site/data/
+        run: python -m sondages.wiki --min-sondages 15
+
+      # Modèles PUBLICS uniquement (cf. model/run.py) : les variantes de
+      # diagnostic sont des runs NUTS complets dont le site n'affiche rien.
+      - name: Modèle live -> site/data/
         run: python -m model.run
-      # (optionnel) versionner l'historique des prévisions dans git
+
       - name: Commit résultats
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add site/data
-          git commit -m "chore: maj quotidienne du modèle" || echo "rien à committer"
-          git push
-      # déploiement Pages (voir §3)
+          git diff --cached --quiet && echo "rien à committer" && exit 0
+          git commit -m "chore: maj quotidienne du modèle"
+          # Rebase avant push : un commit humain arrivé entre le checkout et
+          # ici ferait échouer un push direct, et on perdrait le snapshot du
+          # jour pour une raison sans rapport avec le modèle.
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+
       - uses: actions/upload-pages-artifact@v3
         with: { path: site }
       - uses: actions/deploy-pages@v4
