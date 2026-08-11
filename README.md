@@ -34,9 +34,9 @@ python3 -m venv .venv
 # Phase 0 — backtest exploratoire (figures dans notebooks/figures/)
 .venv/bin/python notebooks/00_exploration_backtest.py
 
-# Phase 1 — fit hiérarchique des house effects (écrit calibration/priors.json)
+# Phase 1 — fit hiérarchique des house effects (écrit model/models/bayesian_nowcast/bank.json)
 #           défaut prod : sqrt(horizon), NumPyro (HMC/JAX), 1000/1000 × 4
-.venv/bin/python calibration/fit_house_effects.py
+.venv/bin/python -m model.models.bayesian_nowcast
 
 # Visualisation des priors appris (biais, fan chart d'IC, décomposition variance)
 .venv/bin/python notebooks/01_calibration_results.py
@@ -50,19 +50,18 @@ python3 -m venv .venv
 
 ```bash
 # Pipeline live de bout en bout : index NSPPolls -> PDF -> intentions structurées
-.venv/bin/python -m pipeline.build_live_dataset --since 2025 --limit 40
+.venv/bin/python -m sondages.build --since 2025 --limit 40
 # -> data/parsed/intentions_2027.csv + rapport de couverture par institut/statut
 ```
 
 ## Phase 3 — modèle live (MVP)
 
 ```bash
-# Nowcast bayésien + house effects calibrés + Monte Carlo -> model/resultats_2027.json
-.venv/bin/python -m model.simulate
-.venv/bin/python -m model.plot_results     # figure notebooks/figures/forecast_2027.png
+# Tous les modèles enregistrés -> site/data/<modèle>/AAAA-MM-JJ.json (consommé par le front)
+.venv/bin/python -m model.run
 ```
 
-Chaîne : `data/parsed/intentions_2027.csv` (sondages) + `calibration/priors.json`
+Chaîne : `data/parsed/intentions_2027.csv` (sondages) + `model/models/bayesian_nowcast/bank.json`
 (house effects) → parts du 1er tour → probabilités de qualification et de duels.
 
 - **Slots de candidature** : les alternatives mutuellement exclusives sont
@@ -80,7 +79,7 @@ Chaîne : `data/parsed/intentions_2027.csv` (sondages) + `calibration/priors.jso
   renormalisation qui déforme les queues). On fait évoluer la dynamique sur
   `α = log(π) ∈ ℝ` puis `π = softmax(α)` : les parts restent toujours dans (0,1)
   et somment à 1 (approche « The Economist » / Gelman-Morris).
-- **Dérive mesurée, pas supposée** (`model/drift_analysis.py`) : on débiaise les
+- **Dérive mesurée, pas supposée** (`model/core/drift_analysis.py`) : on débiaise les
   sondages 2017/2022 (biais + échantillonnage connus) pour isoler le mouvement
   réel de chaque candidat, mesuré **en log-ratio**. Il est **non gaussien** —
   queues épaisses (excès de kurtosis +1,6) et asymétrique (surges d'outsiders),
@@ -89,10 +88,44 @@ Chaîne : `data/parsed/intentions_2027.csv` (sondages) + `calibration/priors.jso
   à J-258). La simulation **ré-échantillonne ce mouvement réel par bootstrap**.
   Effet : P(RN qualifié) passe de **97 % surconfiant à ~82 %**, et des scénarios
   où le RN rate le 2nd tour apparaissent enfin — réaliste.
-- **Sortie** (`model/resultats_2027.json`) : parts + IC 90 %, P(qualifié top 2),
+- **Sortie** (`site/data/<modèle>/<date>.json`) : parts + IC 90 %, P(qualifié top 2),
   P(arrive 1er), duels de 2nd tour probables. Le **vainqueur** du 2nd tour n'est
   pas encore modélisé (nécessite une matrice de reports de voix) — on s'arrête aux
   duels, honnêtement (point de vigilance §8 : communiquer des probabilités).
+
+## Architecture multi-modèles (back-end)
+
+Le back-end est conçu pour comparer des approches et accueillir des contributions.
+
+- **`ForecastModel`** ([`model/core/base.py`](model/core/base.py)) : contrat commun. Phase
+  d'apprentissage `calibrate()` **optionnelle** (c'est ainsi qu'on gère « certains
+  estiment des params sur le passé, d'autres non »), puis `nowcast()` + `forecast()`.
+  L'orchestration `run()` fige le **schéma du snapshot** ; `validate_snapshot()`
+  protège des contributions cassées.
+- **`BayesianModel`** ([`model/core/bayesian_base.py`](model/core/bayesian_base.py)) : couche
+  intermédiaire où l'on **écrit seulement la likelihood NumPyro** (un site `pi` sur
+  le simplexe) + la préparation des données. Inférence NUTS, extraction des tirages
+  et dérive sont hérités.
+- **Données brutes riches** : `run()` reçoit les sondages au **niveau candidat**
+  avec `institut`, `echantillon`, `methode`, `hypothese`… L'agrégation en slots est
+  un helper *optionnel* — un modèle peut utiliser l'info brute (le baseline pondère
+  par la taille d'échantillon). Seule l'agrégation d'affichage est fixée.
+- **Sorties namespacées** : `site/data/<model_id>/AAAA-MM-JJ.json` + `index.json`,
+  et `site/data/models.json` **généré depuis le registre**.
+
+**Ajouter un modèle** : créer `model/models/mon_modele.py`, sous-classer `ForecastModel`
+(ou `BayesianModel`), l'importer dans `model/core/registered.py`, `@register`. Le
+runner, le backfill, le front (dropdown) et les tests de contrat le prennent
+automatiquement. Deux modèles en place : `bayesian-nowcast` (avec house effects,
+débiaisage par institut) et `bayesian-nowcast-no-house-effects` (même modèle,
+sans le débiaisage) — comparer les deux MESURE l'apport de la calibration au
+lieu de le supposer acquis.
+
+```bash
+python -m model.run                 # tous les modèles, aujourd'hui (job quotidien)
+python -m model.backfill            # rejoue chaque modèle sur les dates passées
+python -m model.run --model bayesian-nowcast-no-house-effects --as-of 2026-03-01
+```
 
 ## Source ingestion Phase 2
 
@@ -128,16 +161,20 @@ On ne re-scrape pas la Commission — on consomme l'index et on parse les notice
 ## Structure
 
 ```
+sondages/           MODULE AUTONOME parsing notices -> intentions structurées (réutilisable)
+  ingest, parse_pdf, build, audit, schema (contrat), tests/ + fixtures, README, requirements
 data/historical/    Sondages 2017 (pollsposition) + 2022 (nsppolls) + résultats + blocs
-data/raw/ parsed/   PDF de notices (cache) + intentions live extraites
-pipeline/           historical.py, ingest_2017.py (hist.) ; ingest.py, parse_pdf.py,
-                    build_live_dataset.py (live Phase 2)
-calibration/        Modèle hiérarchique -> priors.json + priors_utils.py (consommation)
-model/              Modèle live 2027 : live_dataset, bayesian_model, simulate, plot_results
+data/raw/ parsed/   PDF de notices (cache) + intentions live extraites (sortie de sondages/)
+pipeline/           historical.py, ingest_2017.py — données de CALIBRATION historique
+model/              run.py, backfill.py (entrées) ; core/ (moteur+utils) ; models/
+model/core/         base (contrat ForecastModel + registre), inference (run_numpyro_mcmc),
+                    bank (Bank/Param génériques), simulate, live_dataset, registered
+model/models/       un dossier par modèle (ex. bayesian_nowcast/ : calibration.py + nowcast.py +
+                    bank.json, ré-exportés par __init__.py) — la calibration est OPTIONNELLE et
+                    vit à côté du nowcast qui la consomme, pas dans un framework séparé
 model/backtest/     Validation hors-échantillon + sensibilité aux priors
 notebooks/          Exploration (00) + visualisation des priors appris (01)
-tests/fixtures/pdf/ Notices Ifop de référence (tests du parseur)
-site/               Front statique (Phase 3)
+site/               Front statique (nowcast + évolution + points cliquables -> notices)
 docs/               Articles data science (méthodo house effects)
 ```
 

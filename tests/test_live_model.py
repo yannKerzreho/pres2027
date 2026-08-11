@@ -8,23 +8,23 @@ import pytest
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
-from model.live_dataset import map_candidate, load_live_observations, SLOTS
-from calibration.priors_utils import load_priors, PRIORS_PATH
+from model.core.live_dataset import map_candidate, load_live_observations, SLOTS
 
-PARSED = ROOT / "data" / "parsed" / "intentions_2027.csv"
-needs_data = pytest.mark.skipif(not PARSED.exists(), reason="intentions_2027.csv absent")
-needs_priors = pytest.mark.skipif(not PRIORS_PATH.exists(), reason="priors.json absent")
+PARSED = ROOT / "data" / "parsed" / "intentions_2027_wiki.csv"
+needs_data = pytest.mark.skipif(not PARSED.exists(), reason="intentions_2027_wiki.csv absent")
 
 
 def test_slots_fusionnent_les_alternatives():
-    # Le Pen et Bardella ne coexistent jamais -> même slot RN.
+    # Modèle de base = une seule hypothèse par bloc (cf. SLOTS, session du
+    # 2026-08-09) : Le Pen est LE candidat RN retenu, Bardella (scénario
+    # d'inéligibilité) n'est plus mappé du tout.
     assert map_candidate("Marine Le Pen")[0] == "RN"
-    assert map_candidate("Jordan Bardella")[0] == "RN"
+    assert map_candidate("Jordan Bardella") == (None, None)
     # variantes d'accent / trait d'union canonicalisées
     assert map_candidate("Eric Zemmour") == map_candidate("Éric Zemmour")
     assert map_candidate("Nicolas Dupont Aignan")[0] == "Dupont-Aignan"
-    assert map_candidate("Gabriel Attal")[0] == "Centre"
-    assert map_candidate("Édouard Philippe")[0] == "Centre"
+    assert map_candidate("Édouard Philippe")[0] == "Philippe (Horizons)"
+    assert map_candidate("Gabriel Attal") == (None, None)
 
 
 def test_chaque_slot_a_un_bloc_connu():
@@ -41,20 +41,17 @@ def test_observations_horizon_positif():
     assert obs["slot"].isin(SLOTS).all()
 
 
-@needs_priors
-def test_simulate_probabilites_bien_formees():
-    # idata synthétique : π connu et net (RN dominant), pour vérifier la logique.
-    import arviz as az
-    from model.simulate import simulate
+def test_forecast_from_draws_probabilites_bien_formees():
+    # tirages π synthétiques : connu et net (RN dominant), pour vérifier la logique.
+    from model.core.simulate import forecast_from_draws
 
     slots = list(SLOTS)
     K = len(slots)
     base = np.full(K, 0.5 / (K - 1))
     base[slots.index("RN")] = 0.5           # RN très haut
-    draws = np.random.default_rng(0).dirichlet(base * 200, size=(2, 500))  # (chain, draw, K)
-    idata = az.from_dict(posterior={"pi": draws}, coords={"slot": slots}, dims={"pi": ["slot"]})
+    pi = np.random.default_rng(0).dirichlet(base * 200, size=1000)  # (S, K)
 
-    res = simulate(idata, slots, load_priors(), forecast_horizon=200)
+    res = forecast_from_draws(pi, slots, forecast_horizon=200)
     fc = res["forecast_scrutin"]
     # probabilités dans [0,1]
     for s in slots:

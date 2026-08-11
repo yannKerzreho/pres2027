@@ -1,0 +1,5 @@
+# Dépendance OPTIONNELLE : fallback LLM (extract_llm.py), désactivé par défaut.
+# Utile surtout en spot-check ponctuel des notices PDF (cf. wiki.py) plutôt
+# qu'en ingestion primaire depuis que celle-ci passe par Wikipedia.
+anthropic>=0.40
+pydantic

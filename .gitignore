@@ -8,8 +8,9 @@ __pycache__/
 # Données volumineuses / PDF bruts (récupérés par le pipeline, non versionnés)
 data/raw/*.pdf
 data/raw/pdf/
+data/raw/pdf_wiki/
 data/raw/notices_index.csv
-# Sorties du parsing live (régénérables via pipeline/build_live_dataset.py)
+# Sorties du parsing live (régénérables via sondages/wiki.py ou sondages/build.py)
 data/parsed/*.csv
 # NB : tests/fixtures/pdf/ EST versionné (petites notices de référence pour les tests)
 
@@ -22,3 +23,9 @@ model/traces/
 
 # Figures générées (régénérables)
 notebooks/figures/*.png
+
+# Secrets locaux (clés API)
+.env
+
+# Note de dev
+docs/

@@ -1,0 +1,7 @@
+# Dépendances du module `sondages` (parsing des notices). Volontairement minimales :
+# aucune dépendance de modélisation (jax / numpyro / pymc) ne doit fuir ici.
+pandas
+requests
+pdfplumber
+mwparserfromhell
+pytest

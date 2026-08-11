@@ -5,21 +5,30 @@ matplotlib<3.9.0
 requests
 pyarrow
 
-# Modèle bayésien (calibration hiérarchique + modèle live)
-# NB : sur Python 3.9, scipy est épinglé <1.13 car arviz 0.17 importe encore
-# scipy.signal.gaussian, alias supprimé dans scipy 1.13.
-pymc==5.12.0
-arviz==0.17.1
-scipy==1.12.0
-# Sampler HMC rapide (JAX) — nuts_sampler="numpyro"
+# Modèle bayésien — un seul moteur (NumPyro/JAX) pour la calibration hiérarchique
+# ET les modèles live : tout modèle du dépôt (calibration incluse) s'écrit dans
+# la même syntaxe NumPyro, cf. model/models/bayesian_nowcast.py.
+# xarray : format du résultat de calibration (model/core/bank.py) et des
+# tirages de nowcast (model/core/base.py:Nowcast) — accès par coordonnées
+# nommées (institut, bloc, candidat...) plutôt que par index entier.
 numpyro
 jax
+xarray
+scipy==1.12.0
 
-# Parsing PDF des notices (Phase 2)
+# Filtre de Kalman JAX pur (dynamax.linear_gaussian_ssm) pour marginaliser
+# analytiquement le chemin gaussien du nowcast SSM (cf. docs/spec_ssm_nowcast.md
+# §4) — NumPyro garde le rôle d'orchestrateur des hyperparamètres, dynamax
+# calcule la vraisemblance marginale des sondages injectée via numpyro.factor.
+dynamax==0.1.8
+
+# Ingestion sondages (sondages/wiki.py, source primaire) + parsing PDF (spot-check)
+mwparserfromhell
 pdfplumber
+# Fallback d'extraction par LLM (sondages/extract_llm.py) — spot-check PDF
+# ponctuel uniquement, plus utilisé en ingestion primaire. Optionnel, activé
+# par SONDAGES_USE_LLM (cf. sondages/requirements-llm.txt).
+anthropic>=0.40
 
 # Tests
 pytest
-
-# Sauvegarde des traces d'inférence (.nc)
-h5py
