@@ -20,7 +20,6 @@ from __future__ import annotations
 
 import time
 from dataclasses import dataclass
-from pathlib import Path
 
 import jax
 import jax.numpy as jnp
@@ -34,10 +33,6 @@ from model.core.bank import Bank
 from model.core.inference import run_numpyro_mcmc
 from model.core.live_dataset import load_raw_polls
 from model.core.simulate import forecast_from_draws
-from model.core.terminal_jump import TerminalJumpCalibration
-from pipeline.historical import _resolve_candidate, load_blocs
-
-BANK_JUMP_PATH = Path(__file__).parent / "bank_jump.json"
 
 # --- Grille spatiale (spec §1) --------------------------------------------------
 B = 50
@@ -266,6 +261,137 @@ def spatial_pooling_model_tau(slot_of, n_slots, tested_mask, Y, Np, date_idx, dt
     numpyro.factor("ll", jnp.sum(ll))
 
 
+# --- EKF + Ornstein-Uhlenbeck pour w (spec §3.ter, session du 2026-08-12) --------
+# Remplace la vraisemblance tempérée (§3.1) ET la marche brownienne parquée
+# (§3.bis, mode dégénéré) par un vrai filtre séquentiel (extended_kalman_filter,
+# dynamax -- déjà une dépendance du projet, cf. model/core/gp_math.py qui
+# utilise le MÊME noyau OU pour une observation LINÉAIRE en CLR, avec forme
+# close). Ici l'observation (softmax masqué sur la grille) est NON-LINÉAIRE en
+# w, pas de forme close possible (contrairement à gp_pooling) -- EKF nécessaire,
+# comme anticipé en session. `tau_w`/`sigma_w` échantillonnés par NUTS, prior
+# faible, PAS calibrés sur 2017/2022 (contrairement à `sigma2`/`tau` de
+# model/core/opinion.py, qui vivent dans un autre espace -- CLR agrégé, pas
+# w candidat par candidat -- et ne sont donc pas directement transférables).
+PADDING_VAR_EKF = 1e6   # même esprit que PADDING_VAR (bayesian_nowcast/latent.py) : neutralise
+                        # la contribution des candidats non testés à un nœud, sans les exclure
+                        # du vecteur d'émission à taille FIXE qu'exige l'EKF.
+
+
+def sort_by_date(arrays: dict) -> dict:
+    """Trie les nœuds de `build_poll_arrays` par date croissante et ajoute
+    `dt_forward[p]` = écart (jours) vers le nœud SUIVANT (dernier = 0,
+    inutilisé) -- nécessaire pour un filtre SÉQUENTIEL (EKF), contrairement
+    au modèle tempéré/à la marche dense qui n'ont pas besoin d'ordre
+    temporel explicite. Même convention que `dt_forward` dans
+    `bayesian_nowcast/nowcast.py::NowcastData`."""
+    order = np.argsort(arrays["dates"])
+    out = dict(arrays)
+    out["tested_mask"] = arrays["tested_mask"][order]
+    out["Y"] = arrays["Y"][order]
+    out["Np"] = arrays["Np"][order]
+    out["dates"] = arrays["dates"][order]
+    out["instituts"] = [arrays["instituts"][i] for i in order]
+    dt_forward = np.diff(out["dates"])
+    out["dt_forward"] = np.append(dt_forward, 0.0)
+    return out
+
+
+def spatial_pooling_model_ekf(slot_of, n_slots, tested_mask, Y, Np, dt_forward, as_of_dt, excess_var=None,
+                              sd_delta_mu_scale=0.06, sd_delta_sigma_scale=0.15,
+                              tau_w_log_mu=None, tau_w_log_sd=0.8, sigma_w_prior_scale=1.0,
+                              sigma_slot_log_mu=None, sigma_slot_log_scale=0.4):
+    """`w_i(t)` suit un Ornstein-Uhlenbeck (mean-reversion vers 0 -- inoffensif,
+    la jauge de `w` n'est pas identifiée en niveau absolu, §3.2), filtré par
+    EKF : NUTS n'échantillonne que les hyperparamètres GLOBAUX (`mu`,`sigma`,
+    `tau_w`,`sigma_w`), pas un `w` par nœud (évite la dimension `N x P`
+    qu'un NUTS-sur-chemin-complet aurait demandée). `tested_mask`/`Y`/`Np`
+    DOIVENT être triés par date croissante (`sort_by_date`) : le filtre est
+    séquentiel, contrairement aux autres variantes.
+
+    Transition OU exacte (pas une approximation Euler) sur un pas `dt` :
+    `w(t+dt) | w(t) ~ N(w(t)·e^{-dt/τ}, σ_w²·(1-e^{-2dt/τ}))`. Observation
+    `h(w) = spatial_shares(mu, sigma, w, mask)` -- non-linéaire, d'où l'EKF
+    (linéarise `h` à chaque pas via le Jacobien, `jax.jacfwd` dans dynamax).
+    `R` construit à partir des valeurs OBSERVÉES `Y` (pas de `pi` prédit par
+    l'état) -- même convention que `poll_observation_values`
+    (bayesian_nowcast/latent.py) : évite toute circularité (R ne doit pas
+    dépendre de l'état filtré)."""
+    from dynamax.nonlinear_gaussian_ssm.inference_ekf import extended_kalman_filter
+    from dynamax.nonlinear_gaussian_ssm.models import ParamsNLGSSM
+
+    N = slot_of.shape[0]
+    P = tested_mask.shape[0]
+    if sigma_slot_log_mu is None:
+        sigma_slot_log_mu = jnp.log(0.15)
+    if tau_w_log_mu is None:
+        tau_w_log_mu = jnp.log(45.0)   # ordre de grandeur du `tau` calibré pour la
+                                       # diffusion CLR (model/core/opinion.py, médiane ~60j)
+                                       # -- repli raisonnable, PAS calibré pour w lui-même
+
+    slot_pos = sample_ordered_slots("mu", n_slots)
+    sigma_slot = numpyro.sample("sigma_slot",
+                                dist.LogNormal(sigma_slot_log_mu, sigma_slot_log_scale).expand([n_slots]))
+    sd_delta_mu = numpyro.sample("sd_delta_mu", dist.HalfNormal(sd_delta_mu_scale))
+    sd_delta_sigma = numpyro.sample("sd_delta_sigma", dist.HalfNormal(sd_delta_sigma_scale))
+    z_mu = numpyro.sample("z_mu", dist.Normal(0.0, 1.0).expand([N]))
+    z_sigma = numpyro.sample("z_sigma", dist.Normal(0.0, 1.0).expand([N]))
+    mu = numpyro.deterministic("mu", slot_pos[slot_of] + z_mu * sd_delta_mu)
+    sigma = numpyro.deterministic("sigma", sigma_slot[slot_of] * jnp.exp(z_sigma * sd_delta_sigma))
+
+    tau_w = numpyro.sample("tau_w", dist.LogNormal(tau_w_log_mu, tau_w_log_sd))
+    sigma_w = numpyro.sample("sigma_w", dist.HalfNormal(sigma_w_prior_scale))
+    sigma_w2 = sigma_w ** 2
+
+    def f(w, u):
+        dt = u[-1]
+        return w * jnp.exp(-dt / tau_w)
+
+    def h(w, u):
+        mask = u[:-1]
+        return spatial_shares(mu, sigma, w, mask)
+
+    var_obs = Y * (1.0 - Y) / jnp.clip(Np[:, None], 1.0, None)
+    if excess_var is not None:
+        var_obs = var_obs + excess_var[:, None]
+    var_obs = jnp.where(tested_mask > 0, var_obs, PADDING_VAR_EKF)
+    R = jax.vmap(jnp.diag)(var_obs)                                   # (P,N,N)
+
+    Q_scale = sigma_w2 * (1.0 - jnp.exp(-2.0 * dt_forward / tau_w))    # (P,) -- vers le nœud SUIVANT
+    Q = jax.vmap(lambda q: q * jnp.eye(N))(Q_scale)                    # (P,N,N)
+
+    inputs = jnp.concatenate([tested_mask, dt_forward[:, None]], axis=1)   # (P, N+1)
+
+    params = ParamsNLGSSM(
+        initial_mean=jnp.zeros(N), initial_covariance=sigma_w2 * jnp.eye(N),
+        dynamics_function=f, dynamics_covariance=Q,
+        emission_function=h, emission_covariance=R,
+    )
+    post = extended_kalman_filter(params, Y, inputs=inputs,
+                                  output_fields=["filtered_means", "filtered_covariances", "marginal_loglik"])
+    # `post.marginal_loglik` est la trace CUMULATIVE par pas de temps (dynamax
+    # accumule `ll` dans le carry du scan et la restitue à chaque pas, cf.
+    # source lue en session) -- seul le DERNIER élément est le vrai
+    # log-vraisemblance marginal total ; sommer tout le tableau compterait
+    # les termes en double (bug trouvé par contrôle direct, valeurs non
+    # monotones sinon).
+    ll_total = post.marginal_loglik[-1] if P > 0 else 0.0
+    numpyro.factor("ekf_ll", ll_total)
+
+    # Extrapolation d'UN pas au-delà du dernier nœud, jusqu'à `as_of` -- même
+    # logique que l'extrapolation finale du SSM historique (`extrap_cov`),
+    # PAS une nouvelle observation.
+    if P > 0:
+        last_mean, last_cov = post.filtered_means[-1], post.filtered_covariances[-1]
+    else:
+        last_mean, last_cov = jnp.zeros(N), sigma_w2 * jnp.eye(N)
+    decay = jnp.exp(-as_of_dt / tau_w)
+    extrap_mean = last_mean * decay
+    extrap_cov = (decay ** 2) * last_cov + sigma_w2 * (1.0 - decay ** 2) * jnp.eye(N)
+    L = jnp.linalg.cholesky(extrap_cov + 1e-9 * jnp.eye(N))
+    z_extra = numpyro.sample("z_w_extrap", dist.Normal(0.0, 1.0).expand([N]))
+    numpyro.deterministic("w_now", extrap_mean + L @ z_extra)
+
+
 # --- Roster & mise en forme des sondages -----------------------------------------
 def build_roster(raw: pd.DataFrame) -> tuple[list[str], np.ndarray, list[str]]:
     """Filtre les candidats à >= MIN_POLLS sondages RÉELS distincts (spec §6),
@@ -362,25 +488,6 @@ def excess_var_for_nodes(instituts: list[str], bank) -> np.ndarray:
     if bank is None:
         return np.zeros(len(instituts))
     return np.array([(excess_sigma_spatial(bank, inst) / 100.0) ** 2 for inst in instituts])
-
-
-def candidate_blocs_2027(candidates: list[str]) -> dict[str, str]:
-    """candidat (nom COURT, ex. "Le Pen" -- vocabulaire de `load_raw_polls()`)
-    -> bloc politique (data/historical/candidat_blocs.csv, ligne election=2027,
-    noms COMPLETS "Marine Le Pen") -- nécessaire pour le saut terminal
-    (`forecast_from_draws`, loc/scale par bloc), cf. spec section "Saut
-    terminal". Résolution nom court -> nom complet par `_resolve_candidate`
-    (même mécanisme que `pipeline/historical.load_calibration_frame`, suffixe
-    de tokens -- la source Wikipedia n'expose que le nom de famille)."""
-    blocs = load_blocs()
-    blocs_2027 = blocs[blocs["election"] == 2027]
-    real = set(blocs_2027["candidat"])
-    resolved = {c: _resolve_candidate(c, real) for c in candidates}
-    missing = [c for c, r in resolved.items() if r not in real]
-    if missing:
-        raise KeyError(f"candidats sans bloc dans candidat_blocs.csv (election=2027) : {missing}")
-    lookup = blocs_2027.set_index("candidat")["bloc"]
-    return {c: lookup.loc[r] for c, r in resolved.items()}
 
 
 # --- Fit + lecture AVEC incertitude (pas un point estimate) ----------------------
@@ -486,47 +593,24 @@ def summarize_pi(pi_draws: np.ndarray, labels: list[str]) -> dict:
     return out
 
 
-# --- Saut terminal (nowcast -> scrutin) : réutilisé tel quel ---------------------
-# Même mécanisme que linear_pooling/bayesian_nowcast (sinh-arcsinh calibré sur
-# 2017/2022, `forecast_from_draws`) -- rien de neuf à construire ici, cf.
-# spec_spatial_pooling.md section "Saut terminal". Bank propre à ce modèle
-# (comme linear_pooling, PAS celle de bayesian_nowcast) : spatial_pooling ne
-# modélise pas de house effects côté nowcast (limite assumée, spec §8), donc
-# son movement pool historique ne doit pas être débiaisé par une calibration
-# house-effects qui suppose l'inverse (`bank=None`, même choix que
-# `LinearPooling.calibrate`).
-def calibrate_jump() -> None:
-    """Calibre le saut terminal et écrit BANK_JUMP_PATH.
-    `.venv/bin/python -m model.models.spatial_pooling`"""
-    TerminalJumpCalibration().calibrate(None).save(BANK_JUMP_PATH)
-
-
-def load_jump_bank() -> Bank | None:
-    return Bank.load(BANK_JUMP_PATH)
-
-
-def forecast_spatial_pooling(fit: SpatialPoolingFit, mask: np.ndarray, horizon_days: int,
-                             jump_bank: Bank) -> dict:
+# --- Saut terminal (nowcast -> scrutin) : machinerie PARTAGÉE, plus rien à faire ici --
+# `model/core/projection.py::projeter_au_scrutin` + `model/core/opinion.py::load_law()`
+# -- diffusion d'opinion (Ornstein-Uhlenbeck) puis écart sondages-urne δ,
+# calibrés une seule fois pour tout le dépôt (`bank_opinion.json`), pas par
+# modèle. `spatial_pooling` n'a plus de saut/Bank qui lui soit propre (l'ancien
+# `TerminalJumpCalibration`/`BANK_JUMP_PATH` par modèle a disparu avec la
+# restructuration -- cf. `bayesian_nowcast`/`gp_pooling`, même pattern partout).
+def forecast_spatial_pooling(fit: SpatialPoolingFit, mask: np.ndarray, horizon_days: int) -> dict:
     """Projette un scénario (`mask`, ex. coché par un utilisateur) jusqu'au
     scrutin. `pi_draws_for_mask` donne l'incertitude au nowcast (spec section
-    "Incertitude") ; le saut terminal ajoute la dérive résiduelle d'ici au
-    scrutin, EXACTEMENT comme les deux autres modèles -- même fonction
-    partagée (`model/core/simulate.py`), rien de spécifique à spatial_pooling
-    au-delà de fournir `pi`/`candidate_blocs` dans le bon format."""
-    mask_bool = mask.astype(bool)
-    labels = [c for c, keep in zip(fit.candidates, mask_bool) if keep]
-    pi_full = pi_draws_for_mask(fit, mask)
-    pi = pi_full[:, mask_bool]
-    # Projection partagée (cf. model/core/projection.py) : diffusion d'opinion
-    # puis écart sondages-urne. `jump_bank` n'est plus utilisé.
+    "Incertitude") ; `projeter_au_scrutin` ajoute la dérive résiduelle d'ici
+    au scrutin, EXACTEMENT comme les autres modèles -- rien de spécifique à
+    spatial_pooling au-delà de fournir `pi` dans le bon format."""
     from model.core.opinion import load_law
     from model.core.projection import projeter_au_scrutin
 
+    mask_bool = mask.astype(bool)
+    labels = [c for c, keep in zip(fit.candidates, mask_bool) if keep]
+    pi = pi_draws_for_mask(fit, mask)[:, mask_bool]
     pi = projeter_au_scrutin(pi, horizon_days, load_law())
     return forecast_from_draws(pi, labels, horizon_days)
-
-
-def main() -> None:
-    print("Calibration du saut terminal (spatial-pooling, sans débiaisage house-effects)...")
-    calibrate_jump()
-    print(f"Bank (saut terminal) écrite dans {BANK_JUMP_PATH}")

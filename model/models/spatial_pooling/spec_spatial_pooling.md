@@ -552,20 +552,35 @@ rapport au SSM (qui, lui, fige un vocabulaire de slots à l'inférence).
 L'intégration à un endpoint du site (quel scénario par défaut, quelle API)
 reste à faire — décision explicitement différée par l'utilisateur.
 
-## 9. Saut terminal (nowcast → scrutin) — réutilisé tel quel, implémenté
+## 9. Saut terminal (nowcast → scrutin) — machinerie PARTAGÉE (session du 2026-08-12)
 
-`forecast_spatial_pooling` (`model.py`) appelle `forecast_from_draws`
-(`model/core/simulate.py`) sur les tirages de `pi_draws_for_mask`, exactement
-comme `linear_pooling`/`bayesian_nowcast` : même saut sinh-arcsinh calibré sur
-2017/2022 (`TerminalJumpCalibration`). Aucune nouvelle spec ici — seule
-particularité : `candidate_blocs_2027` résout les noms COURTS de
-`load_raw_polls` ("Le Pen") vers les noms COMPLETS de `candidat_blocs.csv`
-("Marine Le Pen", via `pipeline.historical._resolve_candidate`) pour donner à
-`forecast_from_draws` le bloc politique de chaque candidat (loc/scale du saut
-par bloc). `Bank` propre à ce modèle (`bank_jump.json`, `bank=None` au fit —
-même choix que `linear_pooling`, cf. §9 de sa spec) : `spatial_pooling` ne
-modélise pas de house effects côté nowcast, débiaiser son movement pool
-historique avec la Bank house-effects de `bayesian_nowcast` serait incohérent.
+Révisé : le projet a remplacé, pour TOUS les modèles, l'ancien saut sinh-arcsinh
+par-modèle par une machinerie commune à noyau Ornstein-Uhlenbeck --
+`model/core/opinion.py` (banque commune `bank_opinion.json`, REML sur
+2017/2022 : diffusion d'opinion `sigma2`/`tau`, écarts d'institut `sigma_h`/
+`sigma_p`, écart sondages→urne `delta_*`) + `model/core/projection.py::projeter_au_scrutin`
+(applique la diffusion OU puis δ, en espace log-ratio). Plus aucun modèle
+n'a de Bank de saut qui lui soit propre -- `spatial_pooling` n'échappe pas à
+la règle, `bank_jump.json`/`TerminalJumpCalibration`/`candidate_blocs_2027`
+ont disparu de ce dossier.
+
+`forecast_spatial_pooling` (`model.py`) : `pi_draws_for_mask` -> `projeter_au_scrutin(pi,
+horizon_days, load_law())` -> `forecast_from_draws(pi, labels, horizon_days)`
+(dont la signature a aussi changé -- `jump_bank`/`candidate_blocs` ont disparu,
+la dérive est désormais appliquée par l'appelant AVANT, `model/core/simulate.py`
+ne fait plus que le comptage top2/duels). Aucune spec propre à ce modèle ici,
+`model/core/opinion.py`/`projection.py` documentent la justification (mean-
+reversion contredisant l'ancienne loi en `√h`, dispersion PLATE de 63 à 267
+jours mesurée sur le pool).
+
+**Point ouvert, pas encore traité** : ce mécanisme partagé est calibré en
+espace CLR/log-ratio, sur des données historiques où le roster de candidats
+est FIXE par élection (`filter_scenarios_by_exact_slots` pour `gp_pooling`).
+`spatial_pooling` a un roster qui change selon le scénario coché (§8) -- la
+diffusion `2σ²(1−e^{-h/τ})` s'applique bien au niveau `pi` (indépendante du
+roster), donc `projeter_au_scrutin` reste correct tel quel, mais ça n'a pas
+été vérifié empiriquement sur ce modèle spécifiquement (contrairement à
+`gp_pooling`, dont les critères d'acceptation §8 de sa spec sont mesurés).
 
 ## 10. Limitations connues / travaux non faits
 

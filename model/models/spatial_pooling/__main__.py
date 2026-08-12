@@ -1,7 +1,10 @@
-"""`.venv/bin/python -m model.models.spatial_pooling` : calibre et exporte la Bank
-du saut terminal (mêmes données 2017/2022 que linear_pooling/bayesian_nowcast)."""
+"""`.venv/bin/python -m model.models.spatial_pooling` : calibre la variance
+d'excès (house effects) propre à ce modèle (`calibration.py`). Le saut
+terminal (nowcast -> scrutin) n'a plus de calibration propre à ce modèle --
+il vient de la banque commune (`model/core/opinion.py`), calibrée par
+`.venv/bin/python -m model.core.opinion`, pas d'ici."""
 
-from .model import main
+from .calibration import main
 
 if __name__ == "__main__":
     main()
