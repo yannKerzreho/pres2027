@@ -34,8 +34,5 @@ notebooks/
 # Secrets locaux (clés API)
 .env
 
-# Note de dev
-docs/
-
 # Claude
 .claude
