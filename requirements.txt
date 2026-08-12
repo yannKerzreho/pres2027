@@ -12,6 +12,10 @@ requests
 numpyro
 jax
 xarray
+# scipy : Cholesky du postérieur GP (`cho_factor`/`cho_solve`) et optimisation
+# REML. Dépendance DIRECTE, pas transitive — elle doit être déclarée même si
+# jax/numpyro l'installent au passage.
+scipy
 
 # Ingestion sondages (sondages/wiki.py, source primaire) + parsing PDF (spot-check)
 mwparserfromhell

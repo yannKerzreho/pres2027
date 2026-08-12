@@ -54,7 +54,7 @@ def run(model_id: str = "all", as_of: str | None = None, include_private: bool =
         if diag and "hyperparametres" in diag:
             # Schéma bayesian-nowcast (NUTS) — PAS imposé par le framework
             # (cf. Nowcast.diagnostics, model/core/base.py) : un modèle sans
-            # inférence MCMC (ex. linear-pooling) a son propre schéma, affiché
+            # inférence MCMC (ex. gp-pooling) a son propre schéma, affiché
             # tel quel ci-dessous plutôt que de supposer ces clés.
             hp = ", ".join(f"{k}={v['mean']:.4f}±{v['sd']:.4f}"
                           for k, v in diag["hyperparametres"].items() if v)

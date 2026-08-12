@@ -27,7 +27,7 @@ def clr(shares: np.ndarray, floor: float = FLOOR) -> np.ndarray:
     Espace naturel des mouvements d'opinion : une différence de parts brutes
     n'a pas de sens géométrique sur le simplexe (elle peut sortir de [0,1]),
     une différence de CLR si — c'est ce qui rend `movement_pool`
-    (`model/core/terminal_jump.py`) additif et donc fittable.
+    (`model/core/movements.py`) additif et donc fittable.
     """
     v = np.clip(np.asarray(shares, dtype=float), floor, None)
     v = v / v.sum()

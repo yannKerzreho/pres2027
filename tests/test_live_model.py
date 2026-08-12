@@ -63,9 +63,47 @@ def test_forecast_from_draws_probabilites_bien_formees():
     assert abs(sum(fc[s]["p_arrive_premier"] for s in slots) - 1.0) < 0.02
     # RN dominant doit être quasi certainement qualifié
     assert fc["RN"]["p_qualifie_top2"] > 0.9
-    # la dérive ajoute de l'incertitude (sd log-ratio > 0)
-    assert res["drift_sd_logratio"] > 0
+    # Par défaut `forecast_from_draws` ne dérive plus : il compte des tirages
+    # DÉJÀ projetés au scrutin par le modèle (cf. son docstring). Le repli
+    # gaussien reste disponible et doit, lui, élargir la distribution.
+    assert res["drift_sd_logratio"] == 0
+    large = forecast_from_draws(pi, slots, forecast_horizon=200, drift_sd=0.5)
+    for s in slots:
+        etroit = res["forecast_scrutin"][s]["ic90"]
+        elargi = large["forecast_scrutin"][s]["ic90"]
+        assert (elargi[1] - elargi[0]) > (etroit[1] - etroit[0])
     # simplexe respecté : toutes les parts prévues dans [0, 1]
     for s in slots:
         assert 0.0 <= fc[s]["part_moyenne"] <= 1.0
         assert 0.0 <= fc[s]["ic90"][0] <= fc[s]["ic90"][1] <= 1.0
+
+
+def test_aggregate_to_slots_ne_perd_pas_un_sondage_aux_metadonnees_incompletes():
+    """Non-régression : `aggregate_to_slots` groupe sur des colonnes dont
+    certaines sont FACULTATIVES (`notice_url` absente de Wikipedia,
+    `echantillon` non publié). Par défaut pandas supprime tout groupe dont une
+    clé vaut NaN — un sondage réel disparaissait alors de TOUS les modèles sans
+    le moindre message, et le nombre affiché sur le site devenait faux.
+
+    Constaté en production : « Ifop 7-8 juillet », l'un des 6 sondages retenus,
+    était écarté faute de taille d'échantillon publiée. Un `fillna` existait
+    bien, mais APRÈS le groupby qui avait déjà supprimé les lignes.
+    """
+    import numpy as np
+    import pandas as pd
+    from model.core.live_dataset import aggregate_to_slots
+
+    base = {"notice": "s1", "notice_url": "http://x/s1", "institut": "Ifop",
+            "date_fin": "2026-08-01", "echantillon": 1000.0, "hypothese": None,
+            "bloc": "droite_radicale"}
+    lignes = [
+        {**base, "candidat": "Marine Le Pen", "intention": 33.0, "slot": "RN"},
+        {**base, "candidat": "Édouard Philippe", "intention": 20.0,
+         "slot": "Philippe (Horizons)", "bloc": "centre"},
+        {**base, "notice": "s2", "notice_url": None, "echantillon": np.nan,
+         "candidat": "Marine Le Pen", "intention": 35.0, "slot": "RN"},
+    ]
+    out = aggregate_to_slots(pd.DataFrame(lignes))
+    assert set(out["notice"]) == {"s1", "s2"}, "un sondage a disparu de l'agrégation"
+    # et sa taille d'échantillon est imputée, sinon les poids seraient NaN
+    assert out["echantillon"].notna().all()

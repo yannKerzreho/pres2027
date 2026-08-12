@@ -1,8 +1,8 @@
 [
   {
-    "id": "linear-pooling",
-    "label": "Lissage linéaire (demi-vie)",
-    "description": "Moyenne pondérée directe des sondages par candidat — poids = taille d'échantillon × décroissance demi-vie (14 jours), sans état latent ni marche aléatoire. L'incertitude vient d'un mélange pondéré : on tire un sondage, puis dans son propre bruit d'échantillonnage — elle reflète donc le désaccord réel entre instituts, et ne s'annule pas en accumulant les sondages. Pas de débiaisage par institut. La dérive d'opinion suit une loi sinh-arcsinh calibrée sur 2017/2022, dont la dispersion sature avec l'horizon ; elle est appliquée deux fois, du dernier sondage à aujourd'hui puis d'aujourd'hui au scrutin.",
+    "id": "gp-pooling",
+    "label": "Estimation de l'opinion",
+    "description": "Chaque sondage est une mesure imparfaite de l'opinion du moment : il comporte une marge d'erreur liée au nombre de personnes interrogées, et chaque institut a ses habitudes de mesure. Plutôt que de faire une simple moyenne, le modèle reconstitue l'opinion qui explique le mieux l'ensemble des sondages — deux sondages proches dans le temps se confirment donc l'un l'autre et resserrent l'estimation. Il ajoute ensuite deux incertitudes : l'opinion peut encore bouger d'ici au vote, et le résultat des urnes s'écarte toujours un peu des intentions déclarées. Ces deux effets sont mesurés sur les campagnes de 2017 et 2022.",
     "trains_on_history": true
   }
 ]

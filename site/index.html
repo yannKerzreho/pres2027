@@ -390,10 +390,15 @@ async function loadModel(id){
     <p><b>Méthode.</b> ${(MODELS.find(m=>m.id===id)||{}).description||""}
     ${latest.drift_modele?(" Dérive : "+latest.drift_modele+"."):""}
     Le vainqueur du 2<sup>nd</sup> tour n'est pas encore modélisé (reports).</p>
-    <p><b>Sources.</b> Notices Commission des sondages via
-    <a href="https://codeberg.org/nsppolls/sondages-commission-index">nsppolls/sondages-commission-index</a> ;
-    historique <a href="https://github.com/nsppolls/nsppolls">nsppolls</a> &amp;
-    <a href="https://github.com/pollsposition/data">pollsposition</a>. Code MIT.</p>`;
+    <p><b>Sources.</b> Les sondages proviennent de
+    <a href="https://fr.wikipedia.org/wiki/Liste_de_sondages_sur_l%27élection_présidentielle_française_de_2027">Wikipédia</a>
+    (CC BY-SA 4.0) ; les notices détaillées de la
+    <a href="https://codeberg.org/nsppolls/sondages-commission-index">Commission des sondages</a> ;
+    l'historique 2017-2022 de <a href="https://github.com/nsppolls/nsppolls">nsppolls</a> et
+    <a href="https://github.com/pollsposition/data">pollsposition</a>. Code MIT.</p>
+    <p><b>Merci</b> aux contributrices et contributeurs de Wikipédia, qui recensent et
+    vérifient bénévolement ces sondages au fil de la campagne. Sans ce travail
+    d'archivage patient, ce site n'aurait rien à afficher.</p>`;
 }
 
 (async ()=>{

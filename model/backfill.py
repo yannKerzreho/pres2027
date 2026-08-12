@@ -4,7 +4,7 @@ Peuple les courbes d'évolution dès le jour 1. Le job quotidien n'ajoute ensuit
 qu'un point par jour.
 
 Usage : python -m model.backfill [--since 2026-01-01] [--min-sondages 3]
-                                 [--models linear-pooling] [--skip-existing]
+                                 [--models gp-pooling] [--skip-existing]
 """
 
 from __future__ import annotations

@@ -212,8 +212,14 @@ def aggregate_to_slots(raw: pd.DataFrame) -> pd.DataFrame:
 
     # somme par (sondage, hypothèse, slot) — fusionne, au sein d'une même
     # hypothèse, plusieurs lignes candidat qui retomberaient sur le même slot.
+    #
+    # `dropna=False` est ESSENTIEL : par défaut pandas supprime les groupes dont
+    # une clé vaut NaN. `notice_url` est facultative (Wikipedia ne donne pas
+    # toujours le lien de notice) — sans cette option, un sondage sans URL
+    # disparaîtrait de TOUS les modèles sans le moindre message, et le compte
+    # affiché sur le site serait faux. Reproduit en test.
     g = (df.groupby(["notice", "notice_url", "institut", "date_fin", "echantillon",
-                     "hypothese", "slot", "bloc"])["intention"]
+                     "hypothese", "slot", "bloc"], dropna=False)["intention"]
            .sum().reset_index())
     g["n_hypotheses"] = g.groupby("notice")["hypothese"].transform("nunique")
 
