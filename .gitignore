@@ -12,6 +12,13 @@ data/raw/pdf_wiki/
 data/raw/notices_index.csv
 # Sorties du parsing live (régénérables via sondages/wiki.py ou sondages/build.py)
 data/parsed/*.csv
+# ... SAUF les deux jeux historiques : ce sont les données d'ENTRÉE de la
+# calibration (pipeline/historical.py), figées puisque 2017 et 2022 sont passées.
+# Sans elles, un clone frais ne peut ni calibrer, ni lancer les backtests, ni
+# passer la CI. Le fichier 2027, lui, reste ignoré : le cron le régénère chaque
+# jour depuis Wikipedia.
+!data/parsed/intentions_2017_wiki.csv
+!data/parsed/intentions_2022_wiki.csv
 # NB : tests/fixtures/pdf/ EST versionné (petites notices de référence pour les tests)
 
 # Sorties de modèle / traces d'inférence
