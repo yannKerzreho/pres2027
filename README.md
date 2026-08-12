@@ -1,5 +1,7 @@
 # pres2027 — Agrégateur bayésien de sondages, présidentielle française 2027
 
+Disclaimer : Le text ci-dessous a été généré par IA, une relecture à été faite.
+
 Agrégation des sondages du 1er tour (**18 avril 2027**) : parts par candidature,
 intervalles de crédibilité, probabilités de qualification et de duels de 2nd tour.
 
