@@ -7,11 +7,13 @@ automatiquement.
 
 Être enregistré ≠ être exposé : `ForecastModel.public` décide de la présence
 dans le sélecteur du site, et `python -m model.run` ne lance par défaut que les
-modèles publics (les variantes de comparaison restent lançables à la main via
-`--model <id>`).
+modèles publics.
+
+Cette branche ne publie que `gp-pooling`. Le nowcast bayésien SSM et le modèle
+spatial vivent sur `dev` : les importer ici sans que leur code soit présent est
+exactement ce qui a cassé la CI et le job quotidien (cf. e84212d).
 """
 
-from model.models import bayesian_nowcast  # noqa: F401  (registre bayesian-nowcast + variantes)
-from model.models import linear_pooling  # noqa: F401  (registre linear-pooling)
+from model.models import gp_pooling  # noqa: F401  (registre gp-pooling)
 
 from model.core.base import all_models  # noqa: F401

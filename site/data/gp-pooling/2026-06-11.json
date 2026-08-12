@@ -1,0 +1,507 @@
+{
+  "model": "gp-pooling",
+  "as_of": "2026-06-11",
+  "meta": {
+    "genere_le": "2026-08-12",
+    "as_of": "2026-06-11",
+    "scrutin_t1": "2027-04-18",
+    "n_sondages": 3,
+    "n_sondages_disponibles": 16,
+    "horizon_prevision_jours": 311,
+    "instituts": [
+      "Harris Interactive",
+      "Opinion Way"
+    ],
+    "note": "Parts au 1er tour par slot (alternatives fusionnées). Probabilités, pas des prédictions."
+  },
+  "nowcast": {
+    "Arthaud (LO)": {
+      "mean": 0.0101,
+      "ic90": [
+        0.0072,
+        0.0137
+      ]
+    },
+    "Mélenchon (LFI)": {
+      "mean": 0.1325,
+      "ic90": [
+        0.1084,
+        0.1594
+      ]
+    },
+    "Roussel (PCF)": {
+      "mean": 0.0318,
+      "ic90": [
+        0.0246,
+        0.0406
+      ]
+    },
+    "Glucksmann (PP)": {
+      "mean": 0.1212,
+      "ic90": [
+        0.0995,
+        0.1454
+      ]
+    },
+    "Tondelier (EELV)": {
+      "mean": 0.0412,
+      "ic90": [
+        0.0326,
+        0.0514
+      ]
+    },
+    "Philippe (Horizons)": {
+      "mean": 0.1899,
+      "ic90": [
+        0.1591,
+        0.2244
+      ]
+    },
+    "Retailleau (LR)": {
+      "mean": 0.0887,
+      "ic90": [
+        0.0715,
+        0.1081
+      ]
+    },
+    "Dupont-Aignan": {
+      "mean": 0.0182,
+      "ic90": [
+        0.0135,
+        0.0236
+      ]
+    },
+    "RN": {
+      "mean": 0.3219,
+      "ic90": [
+        0.2765,
+        0.3685
+      ]
+    },
+    "Zemmour (Reconquête)": {
+      "mean": 0.0445,
+      "ic90": [
+        0.0348,
+        0.0555
+      ]
+    }
+  },
+  "forecast_scrutin": {
+    "Arthaud (LO)": {
+      "part_moyenne": 0.0108,
+      "ic90": [
+        0.0029,
+        0.0254
+      ],
+      "p_qualifie_top2": 0.0,
+      "p_arrive_premier": 0.0
+    },
+    "Mélenchon (LFI)": {
+      "part_moyenne": 0.1305,
+      "ic90": [
+        0.0416,
+        0.2789
+      ],
+      "p_qualifie_top2": 0.2627,
+      "p_arrive_premier": 0.0803
+    },
+    "Roussel (PCF)": {
+      "part_moyenne": 0.036,
+      "ic90": [
+        0.01,
+        0.0832
+      ],
+      "p_qualifie_top2": 0.0037,
+      "p_arrive_premier": 0.0003
+    },
+    "Glucksmann (PP)": {
+      "part_moyenne": 0.1214,
+      "ic90": [
+        0.0383,
+        0.2569
+      ],
+      "p_qualifie_top2": 0.2107,
+      "p_arrive_premier": 0.0612
+    },
+    "Tondelier (EELV)": {
+      "part_moyenne": 0.0438,
+      "ic90": [
+        0.0119,
+        0.1006
+      ],
+      "p_qualifie_top2": 0.009,
+      "p_arrive_premier": 0.0013
+    },
+    "Philippe (Horizons)": {
+      "part_moyenne": 0.19,
+      "ic90": [
+        0.0636,
+        0.3787
+      ],
+      "p_qualifie_top2": 0.5457,
+      "p_arrive_premier": 0.2162
+    },
+    "Retailleau (LR)": {
+      "part_moyenne": 0.0953,
+      "ic90": [
+        0.0292,
+        0.2072
+      ],
+      "p_qualifie_top2": 0.1182,
+      "p_arrive_premier": 0.0275
+    },
+    "Dupont-Aignan": {
+      "part_moyenne": 0.0181,
+      "ic90": [
+        0.0048,
+        0.0429
+      ],
+      "p_qualifie_top2": 0.0003,
+      "p_arrive_premier": 0.0
+    },
+    "RN": {
+      "part_moyenne": 0.3051,
+      "ic90": [
+        0.1211,
+        0.5508
+      ],
+      "p_qualifie_top2": 0.8365,
+      "p_arrive_premier": 0.6102
+    },
+    "Zemmour (Reconquête)": {
+      "part_moyenne": 0.0489,
+      "ic90": [
+        0.0141,
+        0.1111
+      ],
+      "p_qualifie_top2": 0.013,
+      "p_arrive_premier": 0.003
+    }
+  },
+  "duels_probables": [
+    {
+      "candidats": [
+        "Philippe (Horizons)",
+        "RN"
+      ],
+      "probabilite": 0.4198
+    },
+    {
+      "candidats": [
+        "Mélenchon (LFI)",
+        "RN"
+      ],
+      "probabilite": 0.1762
+    },
+    {
+      "candidats": [
+        "Glucksmann (PP)",
+        "RN"
+      ],
+      "probabilite": 0.1432
+    },
+    {
+      "candidats": [
+        "Retailleau (LR)",
+        "RN"
+      ],
+      "probabilite": 0.0795
+    },
+    {
+      "candidats": [
+        "Mélenchon (LFI)",
+        "Philippe (Horizons)"
+      ],
+      "probabilite": 0.0602
+    },
+    {
+      "candidats": [
+        "Glucksmann (PP)",
+        "Philippe (Horizons)"
+      ],
+      "probabilite": 0.042
+    },
+    {
+      "candidats": [
+        "Philippe (Horizons)",
+        "Retailleau (LR)"
+      ],
+      "probabilite": 0.0195
+    },
+    {
+      "candidats": [
+        "Mélenchon (LFI)",
+        "Glucksmann (PP)"
+      ],
+      "probabilite": 0.015
+    }
+  ],
+  "drift_modele": "l'opinion a encore 311 jours pour bouger d'ici au vote, et le résultat des urnes s'écarte toujours un peu des intentions déclarées",
+  "diagnostics": {
+    "noyau": "Ornstein-Uhlenbeck",
+    "tau_j": 261.7,
+    "sigma": 0.3402,
+    "sigma_h": 0.1258,
+    "sigma_p": 0.0389,
+    "n_sondages": 3,
+    "instituts": [
+      "Harris Interactive",
+      "Opinion Way"
+    ],
+    "age_sondage_le_plus_recent_j": 0.0,
+    "sd_latente_par_slot": {
+      "Arthaud (LO)": 0.1909,
+      "Mélenchon (LFI)": 0.1214,
+      "Roussel (PCF)": 0.1474,
+      "Glucksmann (PP)": 0.1219,
+      "Tondelier (EELV)": 0.1382,
+      "Philippe (Horizons)": 0.1183,
+      "Retailleau (LR)": 0.1268,
+      "Dupont-Aignan": 0.1628,
+      "RN": 0.1152,
+      "Zemmour (Reconquête)": 0.1432
+    }
+  },
+  "polls": [
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "Arthaud (LO)",
+      "part": 0.01,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "Dupont-Aignan",
+      "part": 0.02,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "Glucksmann (PP)",
+      "part": 0.11,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "Mélenchon (LFI)",
+      "part": 0.14,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "Philippe (Horizons)",
+      "part": 0.19,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "RN",
+      "part": 0.31,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "Retailleau (LR)",
+      "part": 0.1,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "Roussel (PCF)",
+      "part": 0.03,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "Tondelier (EELV)",
+      "part": 0.03,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "Zemmour (Reconquête)",
+      "part": 0.06,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "Arthaud (LO)",
+      "part": 0.01,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "Dupont-Aignan",
+      "part": 0.01,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "Glucksmann (PP)",
+      "part": 0.11,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "Mélenchon (LFI)",
+      "part": 0.12,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "Philippe (Horizons)",
+      "part": 0.19,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "RN",
+      "part": 0.32,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "Retailleau (LR)",
+      "part": 0.1,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "Roussel (PCF)",
+      "part": 0.04,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "Tondelier (EELV)",
+      "part": 0.04,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "Zemmour (Reconquête)",
+      "part": 0.06,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    },
+    {
+      "date_fin": "2026-06-11",
+      "institut": "Opinion Way",
+      "slot": "Arthaud (LO)",
+      "part": 0.01,
+      "notice": "Opinion Way 10-11 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10205-pres-iv-opinionway-jdd-13-juin.pdf"
+    },
+    {
+      "date_fin": "2026-06-11",
+      "institut": "Opinion Way",
+      "slot": "Dupont-Aignan",
+      "part": 0.02,
+      "notice": "Opinion Way 10-11 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10205-pres-iv-opinionway-jdd-13-juin.pdf"
+    },
+    {
+      "date_fin": "2026-06-11",
+      "institut": "Opinion Way",
+      "slot": "Glucksmann (PP)",
+      "part": 0.13,
+      "notice": "Opinion Way 10-11 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10205-pres-iv-opinionway-jdd-13-juin.pdf"
+    },
+    {
+      "date_fin": "2026-06-11",
+      "institut": "Opinion Way",
+      "slot": "Mélenchon (LFI)",
+      "part": 0.13,
+      "notice": "Opinion Way 10-11 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10205-pres-iv-opinionway-jdd-13-juin.pdf"
+    },
+    {
+      "date_fin": "2026-06-11",
+      "institut": "Opinion Way",
+      "slot": "Philippe (Horizons)",
+      "part": 0.19,
+      "notice": "Opinion Way 10-11 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10205-pres-iv-opinionway-jdd-13-juin.pdf"
+    },
+    {
+      "date_fin": "2026-06-11",
+      "institut": "Opinion Way",
+      "slot": "RN",
+      "part": 0.33,
+      "notice": "Opinion Way 10-11 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10205-pres-iv-opinionway-jdd-13-juin.pdf"
+    },
+    {
+      "date_fin": "2026-06-11",
+      "institut": "Opinion Way",
+      "slot": "Retailleau (LR)",
+      "part": 0.08,
+      "notice": "Opinion Way 10-11 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10205-pres-iv-opinionway-jdd-13-juin.pdf"
+    },
+    {
+      "date_fin": "2026-06-11",
+      "institut": "Opinion Way",
+      "slot": "Roussel (PCF)",
+      "part": 0.03,
+      "notice": "Opinion Way 10-11 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10205-pres-iv-opinionway-jdd-13-juin.pdf"
+    },
+    {
+      "date_fin": "2026-06-11",
+      "institut": "Opinion Way",
+      "slot": "Tondelier (EELV)",
+      "part": 0.05,
+      "notice": "Opinion Way 10-11 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10205-pres-iv-opinionway-jdd-13-juin.pdf"
+    },
+    {
+      "date_fin": "2026-06-11",
+      "institut": "Opinion Way",
+      "slot": "Zemmour (Reconquête)",
+      "part": 0.03,
+      "notice": "Opinion Way 10-11 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10205-pres-iv-opinionway-jdd-13-juin.pdf"
+    }
+  ]
+}

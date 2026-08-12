@@ -113,7 +113,7 @@
   <header class="masthead">
     <p class="eyebrow">Agrégateur bayésien · open source</p>
     <h1>Présidentielle 2027 — 1<sup>er</sup> tour</h1>
-    <p class="sub">Sondages agrégés jour par jour par un modèle bayésien. <b>Ce sont des probabilités, pas des prédictions.</b></p>
+    <p class="sub">Sondages agrégés jour par jour, avec la dérive d'opinion d'ici au scrutin calibrée sur 2017 et 2022. <b>Ce sont des probabilités, pas des prédictions.</b></p>
     <div class="topbar">
       <div class="meta" id="meta"></div>
       <div class="switch" id="model"></div>
@@ -165,6 +165,10 @@ const el=(t,a={})=>{const e=document.createElementNS(NS,t);for(const k in a)e.se
 const days=s=>Date.parse(s)/8.64e7;
 
 async function getJSON(u){const r=await fetch(u);if(!r.ok)throw new Error(u);return r.json();}
+// Manifeste des modèles (data/models.json), partagé entre le sélecteur et le
+// pied de page : la description de la méthode doit venir DU modèle affiché, pas
+// d'un texte figé — sinon le site décrit un modèle qu'il n'affiche pas.
+let MODELS=[];
 
 function interpAt(pts, day){
   // valeur interpolée linéairement à un jour donné (pts triés, y non nul)
@@ -383,23 +387,28 @@ async function loadModel(id){
   timeChart(document.getElementById("chartB"),seriesB,{scatter,xMin:CHART_START});
 
   document.getElementById("footer").innerHTML=`
-    <p><b>Méthode.</b> ${latest.drift_modele?("Dérive : "+latest.drift_modele+". "):""}
-    Nowcast bayésien débiaisé des house effects calibrés sur 2017/2022, dérive ré-échantillonnée
-    en espace log-ratio. Le vainqueur du 2<sup>nd</sup> tour n'est pas encore modélisé (reports).</p>
-    <p><b>Sources.</b> Notices Commission des sondages via
-    <a href="https://codeberg.org/nsppolls/sondages-commission-index">nsppolls/sondages-commission-index</a> ;
-    historique <a href="https://github.com/nsppolls/nsppolls">nsppolls</a> &amp;
-    <a href="https://github.com/pollsposition/data">pollsposition</a>. Code MIT.</p>`;
+    <p><b>Méthode.</b> ${(MODELS.find(m=>m.id===id)||{}).description||""}
+    ${latest.drift_modele?(" Dérive : "+latest.drift_modele+"."):""}
+    Le vainqueur du 2<sup>nd</sup> tour n'est pas encore modélisé (reports).</p>
+    <p><b>Sources.</b> Les sondages proviennent de
+    <a href="https://fr.wikipedia.org/wiki/Liste_de_sondages_sur_l%27élection_présidentielle_française_de_2027">Wikipédia</a>
+    (CC BY-SA 4.0) ; les notices détaillées de la
+    <a href="https://codeberg.org/nsppolls/sondages-commission-index">Commission des sondages</a> ;
+    l'historique 2017-2022 de <a href="https://github.com/nsppolls/nsppolls">nsppolls</a> et
+    <a href="https://github.com/pollsposition/data">pollsposition</a>. Code MIT.</p>
+    <p><b>Merci</b> aux contributrices et contributeurs de Wikipédia, qui recensent et
+    vérifient bénévolement ces sondages au fil de la campagne. Sans ce travail
+    d'archivage patient, ce site n'aurait rien à afficher.</p>`;
 }
 
 (async ()=>{
   try{
-    const models=await getJSON("./data/models.json");
+    MODELS=await getJSON("./data/models.json");
     const sw=document.getElementById("model");
-    let current=models[0].id;
+    let current=MODELS[0].id;
     function paint(){
       sw.innerHTML="";
-      models.forEach(m=>{
+      MODELS.forEach(m=>{
         const b=document.createElement("button");
         b.type="button"; b.className=m.id===current?"active":"";
         b.innerHTML=`${m.label}`;
