@@ -9,7 +9,7 @@ Ce module ne modélise plus aucune dérive. C'était le cas avant : il proposait
 saut terminal paramétrique et un bootstrap empirique. Les mesures ont montré que
 la loi correcte dépend du modèle qui l'emploie — la diffusion d'opinion et
 l'écart sondages-urne sont deux quantités distinctes, calibrées séparément
-(cf. `model/models/gp_pooling/terminal.py`). Laisser ce choix ici revenait à
+(cf. `model/core/projection.py`). Laisser ce choix ici revenait à
 imposer une stratégie de projection à tous les modèles.
 
 Une dérive gaussienne isotrope reste disponible (`drift_sd`) comme repli pour un

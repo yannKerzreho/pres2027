@@ -9,7 +9,7 @@ n'en ajuste aucune : la mesure et le modèle qui l'exploite sont séparés, parc
 que la même quantité sert à estimer deux choses distinctes — la diffusion
 d'opinion (qui grandit avec l'horizon) et l'écart entre intention mesurée et
 bulletin déposé (qui n'en dépend pas). Cf.
-`model/models/gp_pooling/terminal.py`.
+`model/core/opinion.py` (banque commune) et `model/core/projection.py`.
 """
 
 from __future__ import annotations

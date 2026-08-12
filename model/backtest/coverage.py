@@ -23,9 +23,9 @@ import pandas as pd
 
 from model.core.bank import Bank
 from model.core.simulate import forecast_from_draws
-from model.models.gp_pooling.calibration import history_blocks, load_params
-from model.models.gp_pooling.gp import gp_posterior
-from model.models.gp_pooling.terminal import BANK_PATH as DELTA_BANK_PATH, delta_draws
+from model.core.opinion import history_blocks, load_law
+from model.core.gp_math import gp_posterior
+from model.core.projection import delta_draws
 from pipeline.historical import load_results
 
 HORIZONS = [30, 60, 90, 120, 180, 250]
@@ -39,7 +39,7 @@ def _softmax(a):
     return e / e.sum(axis=-1, keepdims=True)
 
 
-def scrutin_gp(bloc, pool, params, delta_bank, rng) -> np.ndarray:
+def scrutin_gp(bloc, pool, params, rng) -> np.ndarray:
     """Parts au scrutin selon `gp-pooling` : le postérieur prolongé jusqu'à
     `h = 0` (diffusion), puis l'écart de traduction δ (`terminal.py`). Les deux
     mécanismes sont séparés, contrairement au saut terminal historique."""
@@ -49,7 +49,7 @@ def scrutin_gp(bloc, pool, params, delta_bank, rng) -> np.ndarray:
                          sigma_h=params["sigma_h"])
     theta = rng.normal(post0.mean, np.sqrt(np.maximum(post0.var_latent, 0.0)),
                        size=(N_DRAWS, bloc.K))
-    return _softmax(theta + delta_draws(delta_bank, theta.shape, SEED + 3))
+    return _softmax(theta + delta_draws(params, theta.shape, SEED + 3))
 
 
 def main() -> None:
@@ -58,8 +58,7 @@ def main() -> None:
     args = ap.parse_args()
     lo_q, hi_q = 50 * (1 - args.niveau), 100 - 50 * (1 - args.niveau)
 
-    params = load_params()
-    delta_bank = Bank.load(DELTA_BANK_PATH)
+    params = load_law()
     res = load_results(); res = res[res["tour"] == "Premier tour"]
     blocs = history_blocks(min_polls=3)
     rng = np.random.default_rng(SEED)
@@ -74,7 +73,7 @@ def main() -> None:
             pool = np.where(b.h >= h)[0]
             if len(pool) < 3:
                 continue
-            pi = scrutin_gp(b, pool, params, delta_bank, rng)
+            pi = scrutin_gp(b, pool, params, rng)
             fc = forecast_from_draws(pi, list(b.roster), h, drift_sd=0.0)
             for c in b.roster:
                 if c not in verite:

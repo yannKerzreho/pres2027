@@ -34,7 +34,7 @@ from model.core.bank import Bank
 from model.core.inference import run_numpyro_mcmc
 from model.core.live_dataset import load_raw_polls
 from model.core.simulate import forecast_from_draws
-from model.models.bayesian_nowcast.calibration import TerminalJumpCalibration
+from model.core.terminal_jump import TerminalJumpCalibration
 from pipeline.historical import _resolve_candidate, load_blocs
 
 BANK_JUMP_PATH = Path(__file__).parent / "bank_jump.json"
@@ -517,8 +517,13 @@ def forecast_spatial_pooling(fit: SpatialPoolingFit, mask: np.ndarray, horizon_d
     labels = [c for c, keep in zip(fit.candidates, mask_bool) if keep]
     pi_full = pi_draws_for_mask(fit, mask)
     pi = pi_full[:, mask_bool]
-    return forecast_from_draws(pi, labels, horizon_days, jump_bank=jump_bank,
-                               candidate_blocs=candidate_blocs_2027(labels))
+    # Projection partagée (cf. model/core/projection.py) : diffusion d'opinion
+    # puis écart sondages-urne. `jump_bank` n'est plus utilisé.
+    from model.core.opinion import load_law
+    from model.core.projection import projeter_au_scrutin
+
+    pi = projeter_au_scrutin(pi, horizon_days, load_law())
+    return forecast_from_draws(pi, labels, horizon_days)
 
 
 def main() -> None:

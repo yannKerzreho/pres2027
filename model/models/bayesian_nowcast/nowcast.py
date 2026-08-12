@@ -690,6 +690,23 @@ def bayesian_nowcast_ssm_model(data: NowcastData, priors_cfg: dict | None = None
     numpyro.deterministic("pi", ilr_decode(alpha_now, data.V))
 
 
+def _projeter_au_scrutin(pi, slots, candidate_blocs, jump_bank, horizon_days, seed=27):
+    """Projection jusqu'au scrutin — délègue à `model/core/projection.py`.
+
+    Ce modèle ne définit plus sa propre loi de projection : diffusion
+    d'opinion (Ornstein-Uhlenbeck) puis écart sondages-urne δ, comme tous les
+    modèles du dépôt. Les paramètres viennent de la banque COMMUNE
+    (`model/core/opinion.py`) — aucun modèle ne lit dans le dossier d'un autre.
+
+    `jump_bank` (ancien saut terminal sinh-arcsinh) n'est plus utilisé ; le
+    paramètre reste accepté pour ne pas casser les appelants.
+    """
+    from model.core.opinion import load_law
+    from model.core.projection import projeter_au_scrutin
+
+    return projeter_au_scrutin(pi, horizon_days, load_law(), seed)
+
+
 @register
 class BayesianNowcast(ForecastModel):
     id = "bayesian-nowcast"
@@ -894,9 +911,10 @@ class BayesianNowcast(ForecastModel):
     def forecast(self, nc: Nowcast, horizon_days: int) -> dict:
         # choix explicite de CE modèle (saut terminal sinh-arcsinh en espace
         # CLR par candidat) — pas hérité silencieusement d'une classe de base.
-        return forecast_from_draws(nc.draws.values, nc.draws.candidat.values.tolist(),
-                                   horizon_days, jump_bank=self.jump_bank,
-                                   candidate_blocs=self._candidate_blocs())
+        slots = nc.draws.candidat.values.tolist()
+        pi = _projeter_au_scrutin(nc.draws.values, slots, self._candidate_blocs(),
+                                  self.jump_bank, horizon_days)
+        return forecast_from_draws(pi, slots, horizon_days)
 
     def _candidate_blocs(self) -> dict[str, str]:
         return {slot: bloc for slot, (bloc, _names) in SLOTS.items()}

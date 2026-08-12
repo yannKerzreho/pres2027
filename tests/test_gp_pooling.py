@@ -15,7 +15,7 @@ import pytest
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from model.models.gp_pooling.gp import (
+from model.core.gp_math import (
     clr_rows, draws_from_posterior, gp_posterior, ou_kernel, sampling_cov_clr_diag,
 )
 

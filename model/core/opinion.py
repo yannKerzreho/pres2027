@@ -1,14 +1,35 @@
-"""Calibration des hyperparamètres du noyau et du house effect (spec §6).
+"""Ce que 2017 et 2022 nous apprennent sur les sondages et sur l'opinion.
+
+Banque **commune** : ces quantités ne sont propriétés d'aucun modèle. La vitesse
+à laquelle l'opinion dérive, le biais d'un institut, l'écart entre une intention
+déclarée et un bulletin déposé — tout modèle de suivi en a besoin, et tous
+doivent employer les mêmes valeurs sous peine d'être incomparables. Elles vivent
+donc dans `core`, avec leur estimation, et sont écrites dans `bank_opinion.json`.
+
+Loger ces paramètres dans un modèle obligerait les autres à lire dans son
+dossier — c'est exactement le couplage qui a cassé la branche `main` quand le
+modèle en question a été retiré.
+
+Contenu de la banque :
+
+| clé | quantité | estimation |
+|---|---|---|
+| `sigma2`, `tau` | diffusion d'opinion (Ornstein-Uhlenbeck) | REML, mouvement sondage à sondage |
+| `sigma_h` | effet d'institut, partagé par ses sondages | REML |
+| `sigma_p` | effet propre à un sondage | REML |
+| `delta_*` | écart sondages → urne, indépendant de l'horizon | MCMC, résidu à diffusion fixée |
+
+Estimateur des quatre premiers : **maximum de vraisemblance restreint (REML)**
 
 Estimateur : **maximum de vraisemblance restreint (REML)** dans le modèle exact
-du §3.3, sur les sondages 2017/2022. « Restreint » = la moyenne `mu` de chaque
-slot est marginalisée avec un prior plat, exactement comme dans
-`gp.gp_posterior` — l'estimation et l'usage partagent donc la même définition
-de la vraisemblance, pas deux approximations voisines.
+sur les sondages 2017/2022. « Restreint » = la moyenne `mu` de chaque slot est
+marginalisée avec un prior plat, exactement comme à l'usage — l'estimation et
+l'usage partagent donc la même définition de la vraisemblance, pas deux
+approximations voisines.
 
 Pourquoi ne PAS reprendre `sigma2` du saut terminal
 ---------------------------------------------------
-La spec §2 pariait que le noyau était « déjà calibré » : `sigma2 = scale²/2`
+On a d'abord parié que le noyau était « déjà calibré » : `sigma2 = scale²/2`
 avec `scale` issu de `bank_jump.json`. **Les données démentent ce pari.** Le
 `scale` du saut terminal est ajusté sur `clr(résultat) − clr(sondage)`, un écart
 qui contient deux choses :
@@ -25,9 +46,9 @@ l'opinion bouge cinq fois plus vite qu'elle ne bouge, donc à jeter tout sondage
 de plus d'une semaine et à produire des intervalles massivement trop larges.
 
 On réestime donc `sigma2` (et `tau`) par REML **sur le mouvement sondage à
-sondage**, qui est la quantité dont le modèle a besoin. Le saut terminal, lui,
-reste utilisé tel quel pour la jambe `as_of → scrutin` (`model/core/simulate.py`),
-où il est calibré sur exactement la bonne quantité.
+sondage**, qui est la quantité dont un modèle a besoin pour pondérer deux
+sondages entre eux. L'écart sondages → urne, lui, est estimé séparément comme
+résidu (`delta_*`), à diffusion fixée.
 """
 
 from __future__ import annotations
@@ -37,14 +58,22 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
+import numpyro
+import numpyro.distributions as dist
 import pandas as pd
 from scipy.linalg import cho_factor, cho_solve
 from scipy.optimize import minimize
 
-from model.models.gp_pooling.gp import JITTER, clr_rows, ou_kernel, sampling_cov_clr_diag
+from model.core.bank import Bank
+from model.core.inference import run_numpyro_mcmc
+from model.core.movements import movement_pool
+from model.core.projection import diffusion_var
+from model.core.utils import SinhArcsinh
+
+from model.core.gp_math import JITTER, clr_rows, ou_kernel, sampling_cov_clr_diag
 from pipeline.historical import load_calibration_frame
 
-PARAMS_PATH = Path(__file__).parent / "params_gp.json"
+BANK_PATH = Path(__file__).parent / "bank_opinion.json"
 
 # Plancher sur les parts avant le log : un candidat crédité de 0,0 % rendrait le
 # CLR et sa variance d'échantillonnage infinis. 0,3 % est sous le plus petit
@@ -182,17 +211,80 @@ def fit(blocks: list[PollBlock], with_sigma_p: bool = True) -> dict:
             "n_obs": int(sum(b.P * b.K for b in blocks))}
 
 
-def save_params(params: dict, path: Path = PARAMS_PATH) -> Path:
-    path.write_text(json.dumps(params, ensure_ascii=False, indent=2))
+def save_law(params: dict, path: Path = BANK_PATH) -> Path:
+    """Écrit la banque commune en fusionnant : les deux calibrations (REML et
+    écart terminal) l'alimentent chacune de leur côté et ne doivent pas
+    s'écraser mutuellement."""
+    actuel = json.loads(path.read_text()) if path.exists() else {}
+    actuel.update(params)
+    path.write_text(json.dumps(actuel, ensure_ascii=False, indent=2))
     return path
 
 
-def load_params(path: Path = PARAMS_PATH) -> dict:
+def load_law(path: Path = BANK_PATH) -> dict:
+    """Paramètres communs. Tout modèle passe par ici — aucun ne lit dans le
+    dossier d'un autre."""
     return json.loads(path.read_text())
 
 
+
+# --- Écart sondages → urne (δ) --------------------------------------------
+
+DEFAULT_PRIORS = {
+    "log_scale_mu": float(np.log(0.4)), "log_scale_sd": 1.0,
+    "skew_sd": 1.0, "tail_log_sd": 0.5,
+}
+
+
+
+
+def terminal_model(move, var_diff, priors_cfg: dict | None = None):
+    """`move_i ~ SinhArcsinh(0, √(var_diff_i + scale_δ²), skew, tail)`.
+
+    `var_diff` est **fixé** (noyau du GP, calibré sur le mouvement sondage à
+    sondage) : le seul paramètre d'échelle libre est celui de δ. C'est ce qui
+    fait de δ un résidu et non un fourre-tout.
+
+    Moyenne nulle : les mouvements sont en log-ratio centré, donc leur moyenne
+    est exactement 0 par construction.
+    `skew`/`tail` restent libres — le pool est asymétrique et à queues épaisses,
+    et c'est précisément ce qui évite des probabilités de qualification
+    surconfiantes.
+    """
+    import jax.numpy as jnp
+    cfg = {**DEFAULT_PRIORS, **(priors_cfg or {})}
+    log_scale = numpyro.sample("delta_log_scale",
+                               dist.Normal(cfg["log_scale_mu"], cfg["log_scale_sd"]))
+    scale_d = numpyro.deterministic("delta_scale", jnp.exp(log_scale))
+    skew = numpyro.sample("delta_skew", dist.Normal(0.0, cfg["skew_sd"]))
+    tail = numpyro.sample("delta_tail", dist.LogNormal(0.0, cfg["tail_log_sd"]))
+    s = jnp.sqrt(jnp.asarray(var_diff) + scale_d ** 2)
+    numpyro.sample("move_obs", SinhArcsinh(loc=0.0, scale=s, skewness=skew, tailweight=tail),
+                   obs=jnp.asarray(move))
+
+
+class TerminalGapCalibration:
+    """Ajuste δ sur le pool de mouvements, diffusion fixée par le noyau du GP."""
+    draws = 1000
+    tune = 1000
+    chains = 4
+    target_accept = 0.9
+    seed = 27
+    hmin = 45.0
+
+    def calibrate(self) -> Bank:
+        p = load_law()
+        moves = movement_pool(None, hmin=self.hmin)
+        var_diff = diffusion_var(moves["horizon"].to_numpy(), p["sigma2"], p["tau"])
+        samples, _ = run_numpyro_mcmc(
+            terminal_model, {"move": moves["move"].to_numpy(), "var_diff": var_diff},
+            draws=self.draws, tune=self.tune, chains=self.chains,
+            seed=self.seed, target_accept=self.target_accept)
+        return Bank(samples, dims={}, coords={})
+
+
 def main() -> None:
-    """`.venv/bin/python -m model.models.gp_pooling.calibration`"""
+    """`.venv/bin/python -m model.core.opinion`"""
     blocks = history_blocks()
     print(f"{len(blocks)} blocs (élection × roster), "
           f"{sum(b.P for b in blocks)} sondages, {sum(b.P * b.K for b in blocks)} obs slot×sondage")
@@ -207,15 +299,9 @@ def main() -> None:
     print(f"  sans sigma_p : sigma_h = {sans['sigma_h']:.4f}  nll {sans['reml_nll']:.1f} "
           f"(vs {params['reml_nll']:.1f}, soit 2Δ = {2*(sans['reml_nll']-params['reml_nll']):.1f} à 1 ddl)")
 
-    # Comparaison au noyau du saut terminal, que la spec §2 proposait de
-    # reprendre tel quel.
-    from model.core.bank import Bank
-    from model.core.movements import BANK_JUMP_LEGACY
-    jb = Bank.load(BANK_JUMP_LEGACY)
-    tau_b, s2_b = jb.jump_tau.item()[0], 0.5 * jb.jump_scale.at(bloc="droite")[0] ** 2
-    nll_b = reml_nll(blocks, tau_b, s2_b, params["sigma_h"], params["sigma_p"])
-    print(f"  noyau du saut terminal (tau={tau_b:.0f}, sigma²={s2_b:.3f}) : "
-          f"nll {nll_b:.1f} — soit {nll_b - params['reml_nll']:+.0f} vs le noyau réestimé")
+    # (La comparaison au noyau de l'ancien saut terminal — qu'il dégrade la
+    # vraisemblance de 465 unités — est documentée dans le README et la spec.
+    # Elle n'est pas refaite ici : `core` ne lit pas l'artefact d'un modèle.)
 
     # Profil de vraisemblance : intervalle de confiance sur sigma_h.
     print("\nProfil sur sigma_h (sigma², tau, sigma_p réoptimisés) :")
@@ -228,7 +314,18 @@ def main() -> None:
     params["methode"] = ("REML dans le modèle §3.3 (+ sigma_p), blocs "
                          "(élection × roster exact) 2017/2022, mu marginalisé par slot, "
                          "vraisemblance composite sur les slots")
-    print(f"\nParamètres écrits dans {save_params(params)}")
+    print(f"\nParamètres écrits dans {save_law(params)}")
+
+    # δ dépend de la diffusion qu'on vient d'estimer : il est ajusté APRÈS, à
+    # `sigma2`/`tau` fixés, pour rester un résidu et non un fourre-tout.
+    print("\nÉcart sondages → urne (δ), diffusion fixée...")
+    d = TerminalGapCalibration().calibrate()
+    delta = {"delta_scale": float(d.delta_scale.item()[0]),
+             "delta_skew": float(d.delta_skew.item()[0]),
+             "delta_tail": float(d.delta_tail.item()[0])}
+    print(f"  scale = {delta['delta_scale']:.4f}  skew = {delta['delta_skew']:+.4f}  "
+          f"tail = {delta['delta_tail']:.4f}")
+    print(f"Banque commune complétée : {save_law(delta)}")
 
 
 if __name__ == "__main__":

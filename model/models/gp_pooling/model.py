@@ -47,9 +47,9 @@ from model.core.live_dataset import (
     ELECTION_T1, SLOTS, aggregate_to_slots, filter_scenarios_by_exact_slots,
 )
 from model.core.simulate import forecast_from_draws
-from model.models.gp_pooling.calibration import load_params
-from model.models.gp_pooling.terminal import BANK_PATH as DELTA_BANK_PATH, delta_draws
-from model.models.gp_pooling.gp import (
+from model.core.opinion import load_law
+from model.core.projection import delta_draws
+from model.core.gp_math import (
     clr_rows, draws_from_posterior, gp_posterior, sampling_cov_clr_diag,
 )
 
@@ -125,8 +125,7 @@ class GPPooling(ForecastModel):
     seed = 27
 
     def load_artifacts(self) -> None:
-        self.params = load_params()
-        self.delta_bank = Bank.load(DELTA_BANK_PATH)
+        self.params = load_law()
 
     def used_polls(self, raw_polls):
         return filter_scenarios_by_exact_slots(raw_polls, set(SLOTS))
@@ -187,7 +186,7 @@ class GPPooling(ForecastModel):
         """
         slots = nc.draws.candidat.values.tolist()
         theta0 = self._theta_scrutin                      # (S, K) posé par nowcast()
-        pi = _softmax(theta0 + delta_draws(self.delta_bank, theta0.shape, self.seed + 3))
+        pi = _softmax(theta0 + delta_draws(self.params, theta0.shape, self.seed + 3))
         out = forecast_from_draws(pi, slots, horizon_days, drift_sd=0.0)
         # Texte affiché sur le site : sans jargon (les détails sont dans la spec).
         out["drift_modele"] = (f"l'opinion a encore {horizon_days} jours pour bouger "

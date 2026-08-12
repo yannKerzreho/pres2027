@@ -25,8 +25,8 @@ import argparse
 import numpy as np
 import pandas as pd
 
-from model.models.gp_pooling.calibration import history_blocks, load_params
-from model.models.gp_pooling.gp import gp_posterior
+from model.core.opinion import history_blocks, load_law
+from model.core.gp_math import gp_posterior
 
 N_DRAWS = 4000
 SEED = 27
@@ -59,7 +59,7 @@ def main() -> None:
     args = ap.parse_args()
     lo_q, hi_q = 50 * (1 - args.niveau), 100 - 50 * (1 - args.niveau)
 
-    params = load_params()
+    params = load_law()
     rng = np.random.default_rng(SEED)
 
     lignes = []

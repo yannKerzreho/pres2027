@@ -5,8 +5,9 @@ Ne relance pas l'inférence (coûteuse) ; vérifie la structure produite par
 `model/core/simulate.py` (`_sinh_arcsinh_moves`) — si un de ces sites ou une
 de ces dimensions disparaît, la prévision casse silencieusement.
 
-La Bank testée est celle de `linear-pooling`, seul modèle publié. Ignorés si
-elle n'a pas encore été calibrée.
+La Bank testée est celle de `bayesian-nowcast`, seul modèle de cette branche
+à utiliser encore le saut terminal paramétrique. Ignorés si elle n'a pas
+encore été calibrée.
 """
 
 import sys
@@ -16,12 +17,12 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from model.core.bank import Bank
-from model.models.linear_pooling.model import BANK_JUMP_PATH
+from model.models.bayesian_nowcast import JUMP_BANK_PATH as BANK_JUMP_PATH
 
 pytestmark = pytest.mark.skipif(
     not BANK_JUMP_PATH.exists(),
     reason="Bank (saut terminal) absente — lancer d'abord "
-           ".venv/bin/python -m model.models.linear_pooling",
+           ".venv/bin/python -m model.models.bayesian_nowcast",
 )
 
 

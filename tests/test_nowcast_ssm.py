@@ -34,23 +34,26 @@ BANK = ROOT / "model" / "models" / "bayesian_nowcast" / "bank.json"
 
 
 def test_historical_prior_reflete_les_rapports_de_force():
-    # RN/Centre/Mélenchon (grands blocs 2022) doivent dominer très largement
-    # Arthaud/Poutou (candidats marginaux 2022) — pas un prior uniforme.
+    # RN/Centre (grands blocs 2022) doivent dominer très largement les
+    # candidats marginaux — pas un prior uniforme.
     slots = list(SLOTS)
     p = historical_prior_pi(slots)
     by_slot = dict(zip(slots, p))
     assert by_slot["RN"] > 15.0
     assert by_slot["Philippe (Horizons)"] > 15.0
     assert by_slot["Arthaud (LO)"] < 3.0
-    assert by_slot["Poutou (NPA)"] < 3.0
+    assert by_slot["Dupont-Aignan"] < 5.0
     np.testing.assert_allclose(p.sum(), 100.0)
 
 
 def test_historical_prior_plancher_nouvel_entrant():
-    # Ruffin (aucune candidature 2022) reçoit le plancher, pas zéro.
-    slots = list(SLOTS)
+    # Un slot sans équivalent en 2022 doit recevoir le plancher, pas zéro :
+    # sinon le prior le condamnerait avant tout sondage. Testé sur un nom
+    # arbitraire, pour ne pas dépendre de la composition du jour de `SLOTS`.
+    slots = list(SLOTS) + ["Nouvel Entrant (inconnu 2022)"]
     p = historical_prior_pi(slots)
-    assert dict(zip(slots, p))["Ruffin"] > 0.0
+    assert dict(zip(slots, p))["Nouvel Entrant (inconnu 2022)"] > 0.0
+    np.testing.assert_allclose(p.sum(), 100.0)
 
 
 def test_min_poll_date_exclut_les_sondages_premonitoires():
@@ -89,9 +92,9 @@ def test_historical_prior_cov_plus_serree_pour_petit_candidat():
     rng = np.random.default_rng(0)
     alphas = rng.multivariate_normal(mean, cov, size=3000)
     pis = np.array([np.asarray(ilr_decode(a, V)) for a in alphas])
-    sd_poutou = pis[:, slots.index("Poutou (NPA)")].std()
+    sd_petit = pis[:, slots.index("Arthaud (LO)")].std()
     sd_rn = pis[:, slots.index("RN")].std()
-    assert sd_poutou < sd_rn, f"écart-type Poutou ({sd_poutou}) >= RN ({sd_rn})"
+    assert sd_petit < sd_rn, f"écart-type Arthaud ({sd_petit}) >= RN ({sd_rn})"
 
 
 def test_filter_scenarios_by_required_slots_garde_les_scenarios_compatibles():

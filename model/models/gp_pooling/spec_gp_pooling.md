@@ -122,9 +122,13 @@ REML sur 15 blocs (élection × champ exact), 215 sondages, 2 410 observations
 slot × sondage, $\mu_s$ marginalisé par slot et vraisemblance composite sur les
 slots.
 
+Ces paramètres ne sont propriétés d'aucun modèle : ils décrivent les sondages et
+l'opinion. Ils vivent donc dans la banque commune `model/core/bank_opinion.json`,
+que tous les modèles du dépôt partagent, et se régénèrent d'une seule commande —
+δ étant ajusté après la diffusion, à `σ²`/`τ` fixés :
+
 ```bash
-.venv/bin/python -m model.models.gp_pooling.calibration   # tau, sigma, sigma_h, sigma_p
-.venv/bin/python -m model.models.gp_pooling.terminal      # sigma_delta, gamma, eta
+.venv/bin/python -m model.core.opinion
 ```
 
 ## 7. Approximations et limites
