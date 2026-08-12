@@ -2,22 +2,19 @@
 
 Disclaimer : Le text ci-dessous a été généré par IA, une relecture à été faite.
 
-Agrégation bayésienne des sondages de la présidentielle française 2027
-(1er tour le **18 avril 2027**, 2nd tour le **2 mai 2027**), avec calibration
-des *house effects* par institut sur données historiques, et simulation Monte
-Carlo du second tour.
+Agrégation des sondages du 1er tour (**18 avril 2027**) : parts par candidature,
+intervalles de crédibilité, probabilités de qualification et de duels de 2nd tour.
 
+Une nouvelle estimation est publiée chaque jour sur GitHub Pages.
 
 ## État d'avancement
 
-| Phase | Description | État |
-|------|-------------|------|
-| **0 — Setup** | Repo, licence, récupération données historiques, backtest exploratoire | ✅ fait |
-| **1 — Calibration historique** | Modèle hiérarchique biais/variance par institut × bloc, sur 2017 + 2022 | ✅ fait |
-| **2 — Parsing PDF + ingestion live** | `sondages-commission-index` → intentions structurées | ✅ 4 instituts (Ifop, Odoxa, Ipsos, Harris) = 86 % des sondages d'intentions |
-| **3 — MVP modèle live** | Nowcast + saut terminal calibré + Monte Carlo qualification/duels | 🟡 MVP (1er tour + duels ; vainqueur 2nd tour = reports à venir) |
-| **4 — CI/CD** | Tests sur PR + cron quotidien + GitHub Pages | ✅ fait |
-| 5 — Contenu data science | Articles `docs/` expliquant le modèle | à venir |
+| Phase | État |
+|------|------|
+| Récupération des données historiques (2017, 2022) | ✅ |
+| Ingestion live des sondages 2027 (Wikipedia + parsing PDF) | ✅ |
+| Modèle live (opinion latente + projection au scrutin) | 🟡 MVP — 1er tour et duels ; le *vainqueur* du 2nd tour n'est pas modélisé |
+| CI, cron quotidien, GitHub Pages | ✅ |
 
 ## Installation
 
@@ -26,263 +23,188 @@ python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
 ```
 
-> Note Python : le projet a été mis en place sous Python 3.9. `scipy` est épinglé
-> à `1.12` car `arviz` 0.17 importe encore `scipy.signal.gaussian`, alias retiré
-> dans scipy 1.13. Sous Python ≥ 3.11 ces contraintes peuvent être relâchées.
-
-## Reproduire les phases 0 et 1
+## Utilisation
 
 ```bash
-# Phase 0 — backtest exploratoire (figures dans notebooks/figures/)
-.venv/bin/python notebooks/00_exploration_backtest.py
+# 1. Ingestion des sondages -> data/parsed/intentions_2027_wiki.csv (non versionné)
+.venv/bin/python -m sondages.wiki
 
-# Phase 1 — fit hiérarchique des house effects (écrit model/models/bayesian_nowcast/bank.json)
-#           défaut prod : sqrt(horizon), NumPyro (HMC/JAX), 1000/1000 × 4
-.venv/bin/python -m model.models.bayesian_nowcast
-
-# Visualisation des priors appris (biais, fan chart d'IC, décomposition variance)
-.venv/bin/python notebooks/01_calibration_results.py
-
-# Validation hors-échantillon (fit 2017 -> prédiction 2022) + sensibilité priors
-.venv/bin/python model/backtest/backtest_loo.py
-.venv/bin/python model/backtest/prior_sensitivity.py
-```
-
-## Phase 2 — ingestion live + parsing PDF (MVP)
-
-```bash
-# Pipeline live de bout en bout : index NSPPolls -> PDF -> intentions structurées
-.venv/bin/python -m sondages.build --since 2025 --limit 40
-# -> data/parsed/intentions_2027.csv + rapport de couverture par institut/statut
-```
-
-## Phase 3 — modèle live (MVP)
-
-```bash
-# Tous les modèles enregistrés -> site/data/<modèle>/AAAA-MM-JJ.json (consommé par le front)
+# 2. Estimation du jour -> site/data/<modèle>/AAAA-MM-JJ.json
 .venv/bin/python -m model.run
+
+# 3. (optionnel) Rejouer l'historique pour peupler la courbe
+.venv/bin/python -m model.backfill --since 2026-01-01
 ```
 
-Chaîne : `data/parsed/intentions_2027.csv` (sondages) + `model/models/bayesian_nowcast/bank.json`
-(house effects) → parts du 1er tour → probabilités de qualification et de duels.
-
-- **Slots de candidature** : les alternatives mutuellement exclusives sont
-  fusionnées (RN = Le Pen *ou* Bardella ; Centre = Attal/Philippe/Lecornu ;
-  LR = Retailleau/Wauquiez ; PS-PP = Glucksmann/Faure/Hollande), ce qui rend tous
-  les sondages comparables quelle que soit l'hypothèse testée et colle aux blocs
-  calibrés.
-- **Débiaisage** : chaque part sondée est corrigée du biais `biais[institut,bloc]`
-  calibré en Phase 1.
-- **Deux incertitudes séparées** : bruit de sondage (échantillonnage + excès,
-  *réductible* en accumulant les sondages) et **dérive d'opinion d'ici au scrutin**
-  (*irréductible*, commune à tous les sondages).
-- **Dérive dans l'espace log-ratio (softmax), pas en pourcentages bruts.**
-  Appliquer une dérive additive sur les % viole le simplexe (parts < 0, clip,
-  renormalisation qui déforme les queues). On fait évoluer la dynamique sur
-  `α = log(π) ∈ ℝ` puis `π = softmax(α)` : les parts restent toujours dans (0,1)
-  et somment à 1 (approche « The Economist » / Gelman-Morris).
-- **Dérive mesurée, pas supposée** (`model/core/terminal_jump.py`) : on isole le
-  mouvement réel de chaque candidat entre un sondage et le résultat, en 2017 et
-  2022, mesuré **en log-ratio centré** (59 mouvements). On y ajuste une loi
-  sinh-arcsinh — famille asymétrique à queues ajustables, parce que le pool l'est.
-- **La dérive sature, elle ne diffuse pas indéfiniment.** La dispersion observée
-  des mouvements est **plate** de 63 à 267 jours du scrutin (0,508 / 0,610 /
-  0,590) : reculer la date d'un sondage n'ajoute quasiment plus d'incertitude
-  sur le résultat, l'essentiel du mouvement se joue près du vote. Une loi en
-  `√horizon` prédirait 0,286 / 0,402 / 0,590 — elle est donc **contredite par
-  les données** et a été remplacée par `σ(h) = scale·√(1−e^(−h/τ))`, la variance
-  d'un processus d'Ornstein-Uhlenbeck (`τ ≈ 73 j`). Elle reproduit la dispersion
-  observée à 0,03 près, quantiles 5 %/95 % compris.
-- **Une seule loi, appliquée deux fois.** Le même saut projette le dernier
-  sondage jusqu'à `as_of`, puis `as_of` jusqu'au scrutin. Les variances
-  s'additionnent **exactement** (`sat(h₁)−sat(h₂)` puis `sat(h₂)−sat(0)`), donc
-  ni double comptage ni segment perdu. Sans la première jambe, l'incertitude du
-  nowcast ne bougeait pas d'un pouce quand les sondages vieillissaient — mesuré :
-  0,000 pt d'écart entre un calcul le jour du dernier sondage et 32 jours plus tard.
-- **Aucune dérive systématique par famille politique.** Les mouvements étant en
-  log-ratio centré, leur moyenne vaut exactement 0 : un terme de dérive moyenne
-  par bloc ne mesurerait rien, il **répartirait ce zéro** entre familles à partir
-  de 3 à 18 observations issues de 2 campagnes. Il valait −0,50 sur `droite`,
-  soit Fillon puis Pécresse — ce qui imposait à tout candidat LR de 2027 de perdre
-  la moitié de sa part quels que soient ses sondages. On échantillonne la
-  *distribution* des dérives de campagne, on ne rejoue pas le passé : ce qui est
-  arrivé à la droite en 2017 et 2022 peut arriver à n'importe qui, et la loi est
-  donc la même pour tous les candidats.
-- **Sortie** (`site/data/<modèle>/<date>.json`) : parts + IC 90 %, P(qualifié top 2),
-  P(arrive 1er), duels de 2nd tour probables. Le **vainqueur** du 2nd tour n'est
-  pas encore modélisé (nécessite une matrice de reports de voix) — on s'arrête aux
-  duels, honnêtement (point de vigilance §8 : communiquer des probabilités).
-
-## Architecture multi-modèles (back-end)
-
-Le back-end est conçu pour comparer des approches et accueillir des contributions.
-
-- **`ForecastModel`** ([`model/core/base.py`](model/core/base.py)) : contrat commun. Phase
-  d'apprentissage `calibrate()` **optionnelle** (c'est ainsi qu'on gère « certains
-  estiment des params sur le passé, d'autres non »), puis `nowcast()` + `forecast()`.
-  L'orchestration `run()` fige le **schéma du snapshot** ; `validate_snapshot()`
-  protège des contributions cassées.
-- **`BayesianModel`** ([`model/core/bayesian_base.py`](model/core/bayesian_base.py)) : couche
-  intermédiaire où l'on **écrit seulement la likelihood NumPyro** (un site `pi` sur
-  le simplexe) + la préparation des données. Inférence NUTS, extraction des tirages
-  et dérive sont hérités.
-- **Données brutes riches** : `run()` reçoit les sondages au **niveau candidat**
-  avec `institut`, `echantillon`, `methode`, `hypothese`… L'agrégation en slots est
-  un helper *optionnel* — un modèle peut utiliser l'info brute (le baseline pondère
-  par la taille d'échantillon). Seule l'agrégation d'affichage est fixée.
-- **Sorties namespacées** : `site/data/<model_id>/AAAA-MM-JJ.json` + `index.json`,
-  et `site/data/models.json` **généré depuis le registre**.
-
-**Ajouter un modèle** : créer `model/models/mon_modele/`, sous-classer `ForecastModel`,
-l'importer dans `model/core/registered.py`, `@register`. Le runner, le backfill, le
-front (dropdown) et les tests de contrat le prennent automatiquement.
-
-**Publié ≠ enregistré.** `ForecastModel.public` décide de la présence dans le
-sélecteur du site, et `python -m model.run` ne lance **que les modèles publics** :
-une variante de diagnostic est un run d'inférence complet dont personne ne lit la
-courbe, l'empiler dans le cron quotidien allonge le job pour rien. Elle reste
-lançable explicitement.
-
-Sur cette branche, un seul modèle est publié : **`linear-pooling`** (lissage par
-demi-vie). Le nowcast bayésien SSM et le modèle spatial vivent sur la branche
-`dev`, le temps que leurs points ouverts soient tranchés.
+Les paramètres appris sur 2017/2022 sont versionnés : le job quotidien les
+recharge, il ne réapprend rien. À relancer seulement si le modèle ou les données
+historiques changent :
 
 ```bash
-python -m model.run                        # modèles publics, aujourd'hui (job quotidien)
-python -m model.run --all                  # + variantes de comparaison
-python -m model.backfill --since 2026-01-01
-python -m model.run --model linear-pooling --as-of 2026-03-01
+.venv/bin/python -m model.models.gp_pooling.calibration   # diffusion de l'opinion
+.venv/bin/python -m model.models.gp_pooling.terminal      # écart sondages-urne
 ```
 
-## Source ingestion Phase 2
+## Le modèle
 
-Source : [`nsppolls/sondages-commission-index`](https://codeberg.org/nsppolls/sondages-commission-index)
-(index des notices + URL des PDF ; **interagir sur Codeberg**, pas le mirroir GitHub).
-On ne re-scrape pas la Commission — on consomme l'index et on parse les notices.
+Un modèle est publié : **`gp-pooling`**. L'opinion y est une quantité latente
+θ(t) dont chaque sondage est une mesure bruitée (échantillonnage, effet
+d'institut, effet propre au sondage). θ diffuse selon un processus
+d'Ornstein-Uhlenbeck ; le postérieur est en forme close, sans MCMC.
 
-État du parsing (risque technique n°1 du projet, §8 : notices hétérogènes) :
+Conséquence directe : deux sondages proches **resserrent** l'estimation, au lieu
+de l'élargir comme le ferait un simple mélange pondéré. Mesuré sur six instituts
+ramenés au même jour, l'IC 90 % du RN passe de 10,9 à 6,4 pt à mesure qu'on les
+ajoute.
 
-- **Instituts outillés** : **Ifop, Odoxa, Ipsos, Harris/Toluna** — métadonnées +
-  toutes les hypothèses de 1er tour, mises en page différentes gérées (Ifop : une
-  hypothèse par page ; Odoxa/Ipsos : lignes `Nom 12%` avec/ sans marges d'erreur ;
-  Harris : récapitulatif à N colonnes côte à côte).
-- **Garde-fou qualité** : on ne conserve un groupe (hypothèse) que si les
-  intentions **somment à ~100 %** — élimine récapitulatifs de duels, croisements
-  et pages de rappel captés par erreur.
-- **Pièges gérés** : tables de *rappel* de vote passé (résultats/redressement
-  2022, législatives/européennes 2024) ignorées ; baromètres d'image / d'ambition
-  sans intentions → `no_intentions` (pas d'erreur) ; croisements
-  démographiques/régionaux filtrés (règles de nom propre).
-- **Couverture mesurée** (sur les 106 notices présidentielles 2025+, dont **22**
-  contiennent de vraies intentions de vote 2027) : les 4 instituts outillés
-  couvrent **19/22 = 86 %** des sondages d'intentions. Décision assumée de s'en
-  tenir aux instituts principaux tant qu'on dépasse ~80 %.
-- **Volontairement non outillés** :
-  - **Elabe, Cluster17** → **0** sondage d'intentions dans l'échantillon (ce sont
-    des baromètres d'image/personnalités) : rien à parser, aucun coût à les laisser ;
-  - **Opinion Way** (+2 sondages, ~95 % si ajouté) → résultats à 9 colonnes de
-    redressement (Brut / Socio-Démo / +Présid2022 / +Légis2024) ; extraire la
-    bonne colonne « Publié » est fragile pour 2 sondages → différé.
-  Ces instituts restent en `unsupported_institut` (fallback, pas d'erreur).
+Spécification complète :
+[`spec_gp_pooling.md`](model/models/gp_pooling/spec_gp_pooling.md).
+
+- **Slots de candidature** — un seul candidat par bloc là où plusieurs
+  personnalités sont testées en alternative (RN, centre, LR, PS-PP).
+- **Roster exact** — seules sont retenues les hypothèses testant *exactement* ces
+  candidats, ni moins ni plus. La part d'un candidat dépend du champ face auquel
+  il est testé : Philippe mesuré face à Attal n'est pas Philippe mesuré seul.
+  C'est coûteux — 6 sondages retenus sur 22 aujourd'hui — mais la cohérence des
+  mesures prime sur leur nombre, et le volume croîtra avec la campagne.
+- **Tout se passe en log-ratio.** Une dérive additive sur les pourcentages sort
+  du simplexe (parts négatives, renormalisations qui déforment les queues). On
+  travaille sur `α = log(π)` puis `π = softmax(α)` : les parts restent dans (0,1)
+  et somment à 1.
+- **Trois sources de bruit séparées** dans un sondage : l'échantillonnage (connu,
+  décroît en 1/√n), l'effet d'institut (partagé par tous les sondages d'une même
+  maison, donc non réductible en les empilant) et un effet propre au sondage.
+- **La dérive d'opinion est mesurée, pas supposée**, sur les mouvements réels de
+  2017 et 2022. Elle **sature** : la dispersion observée est plate de 63 à
+  267 jours du scrutin (0,508 / 0,610 / 0,590), là où une loi en `√horizon`
+  prédirait 0,286 / 0,402 / 0,590. D'où le processus d'Ornstein-Uhlenbeck, qui
+  revient vers un niveau moyen au lieu de diffuser sans borne.
+- **Aucune dérive systématique par famille politique.** Les mouvements étant en
+  log-ratio centré, leur moyenne vaut exactement 0 : un terme de dérive par bloc
+  ne mesurerait rien, il répartirait ce zéro sur 3 à 18 observations issues de
+  2 campagnes. Il valait −0,50 sur la droite — Fillon puis Pécresse — et imposait
+  à tout candidat LR de perdre la moitié de sa part quels que soient ses
+  sondages. On échantillonne la *distribution* des dérives, on ne rejoue pas le
+  passé.
+- **L'écart entre sondages et urne est modélisé à part.** À deux semaines du
+  scrutin, l'écart `sondage → résultat` vaut déjà 0,111 quand `sondage → sondage`
+  sur la même durée ne vaut que 0,018 : ce n'est pas de la dérive, c'est une
+  constante (participation, indécis, vote utile). La confondre avec la diffusion
+  faussait la loi d'horizon.
+
+Sortie (`site/data/<modèle>/<date>.json`) : parts et IC 90 %, P(qualifié top 2),
+P(arrive 1er), duels de 2nd tour probables.
+
+## Les intervalles tiennent-ils leur promesse ?
+
+Un IC 90 % qui ne contient la vérité que 60 % du temps est un mensonge chiffré,
+et rien dans les sorties du modèle ne le signalerait. Deux backtests sur 2017 et
+2022, qui testent des choses différentes — un modèle doit passer les deux.
+
+```bash
+.venv/bin/python -m model.backtest.predictive_coverage   # les intentions du jour
+.venv/bin/python -m model.backtest.coverage              # la prévision au scrutin
+```
+
+**Le nowcast** (ce que le site affiche sous « intentions ») se teste en retirant
+un sondage et en le prédisant à partir des seuls sondages antérieurs. La
+couverture est ventilée par nombre de sondages disponibles, parce que c'est là
+que tout se joue :
+
+| sondages disponibles | couverture | largeur médiane |
+|---|---|---|
+| 1-2 | 0,870 | 6,0 pt |
+| 3-4 | 0,900 | 4,2 pt |
+| 5-9 | 0,906 | 3,9 pt |
+| 10 et plus | 0,900 | 2,3 pt |
+| global | **0,898** | |
+
+Le nominal est tenu presque partout. À titre de comparaison, une moyenne pondérée
+classique (testée puis écartée) ne couvrait que 0,663 avec un ou deux sondages,
+et 0,981 au-delà de dix — c'est-à-dire surconfiante quand les données manquent,
+et inutilement vague quand elles abondent.
+
+**La prévision au scrutin** couvre 0,834 pour un nominal de 0,90. Cette
+sous-couverture est un point ouvert assumé : elle vient de la projection jusqu'au
+vote, pas de l'estimation du moment. Séparer explicitement la dérive d'opinion de
+l'écart sondages-urne (fait, cf. la spec §5) ne l'a pas résorbée.
+
+## Ajouter un modèle
+
+Créer `model/models/mon_modele/`, sous-classer `ForecastModel`
+([`model/core/base.py`](model/core/base.py)), décorer `@register`, l'importer dans
+[`model/core/registered.py`](model/core/registered.py). Le runner, le backfill, le
+sélecteur du site et les tests de contrat le prennent automatiquement.
+
+`calibrate()` est **optionnelle** : c'est ainsi qu'on gère « certains modèles
+apprennent des paramètres sur le passé, d'autres non ». `run()` reçoit les
+sondages bruts au niveau candidat (institut, échantillon, méthode, hypothèse…) ;
+l'agrégation en slots est un helper, pas une obligation.
+
+**Publié ≠ enregistré** : `ForecastModel.public` décide de la présence dans le
+sélecteur du site, et `python -m model.run` ne lance que les modèles publics —
+une variante de diagnostic est un run d'inférence complet dont personne ne lit la
+courbe. `python -m model.run --all` les inclut.
 
 ## Structure
 
 ```
-sondages/           MODULE AUTONOME parsing notices -> intentions structurées (réutilisable)
-  ingest, parse_pdf, build, audit, schema (contrat), tests/ + fixtures, README, requirements
-data/historical/    Sondages 2017 (pollsposition) + 2022 (nsppolls) + résultats + blocs
-data/raw/ parsed/   PDF de notices (cache) + intentions live extraites (sortie de sondages/)
-pipeline/           historical.py, ingest_2017.py — données de CALIBRATION historique
-model/              run.py, backfill.py (entrées) ; core/ (moteur+utils) ; models/
-model/core/         base (contrat ForecastModel + registre), inference (run_numpyro_mcmc),
-                    bank (Bank/Param génériques), simulate, live_dataset, registered
-model/models/       un dossier par modèle (ex. bayesian_nowcast/ : calibration.py + nowcast.py +
-                    bank.json, ré-exportés par __init__.py) — la calibration est OPTIONNELLE et
-                    vit à côté du nowcast qui la consomme, pas dans un framework séparé
-model/backtest/     Validation hors-échantillon + sensibilité aux priors
-notebooks/          Exploration (00) + visualisation des priors appris (01)
-site/               Front statique (nowcast + évolution + points cliquables -> notices)
-docs/               Articles data science (méthodo house effects)
+sondages/       Module autonome : Wikipedia / notices PDF -> intentions structurées
+pipeline/       Données de calibration historique (2017, 2022)
+data/           historical/ (versionné) ; parsed/ et raw/ (régénérables, ignorés)
+model/          run.py, backfill.py (entrées) ; core/ (moteur) ; models/ (un dossier par modèle)
+model/core/     base (contrat + registre), movements (mouvements observés 2017/2022),
+                bank, inference, simulate, live_dataset, utils, registered
+model/models/   gp_pooling/ — le modèle, sa spec et ses paramètres calibrés
+model/backtest/ coverage (au scrutin) et predictive_coverage (le nowcast)
+site/           Front statique + site/data/ (snapshots datés, index, manifeste)
 ```
 
-## Le modèle de calibration (Phase 1)
+Le nowcast bayésien SSM, le modèle spatial et les notebooks d'exploration vivent
+sur la branche `dev`.
 
-Le house effect d'un institut a **deux composantes orthogonales**, toutes deux
-estimées et exportées (voir [`docs/methodo_house_effects.md`](docs/methodo_house_effects.md)) :
+## Limites
 
-1. **Biais directionnel** `biais[institut, bloc]` — décalage signé sur une famille
-   politique, partagé entre élections (composante structurelle transférable).
-2. **Dispersion / fiabilité** `s_inst[institut]` — niveau de bruit général de
-   l'institut (inflation de variance non signée).
-
-La **variance** est elle aussi décomposée : plancher d'échantillonnage connu
-`p(100−p)/n` + excès house-effect + incertitude de **dérive future**
-`τ_derive · √horizon`. La croissance temporelle suit **√horizon** (marche
-aléatoire, cohérent avec la littérature — Linzer, The Economist, pollsposition),
-pas une forme ad hoc.
-
-> ⚠️ **Cette hypothèse `√horizon` est contredite par nos propres données.**
-> Mesurée directement sur le pool de mouvements 2017/2022, la dispersion est
-> **plate** entre 63 et 267 jours (cf. Phase 3 ci-dessus). La prévision, elle,
-> est passée à une loi qui sature (`model/core/terminal_jump.py`) ; le `√horizon`
-> ne subsiste que dans la calibration des house effects, où il reste à réexaminer.
-
-Point clé de modélisation : l'écart brut `intention(t) − résultat` est décomposé
-en **biais** (house effect à J-0) + **dérive temporelle** `derive[élection, bloc]`
-(mouvement réel de l'opinion pendant la campagne, spécifique à chaque scrutin,
-nul le jour du vote). Sans cette séparation, le bloc droite ressortait à un biais
-absurde de **+6,1 pts** en 2022 ; après séparation il tombe à un niveau modéré
-(~+2,7 pt à J-0, surestimation persistante de la droite classique en 2017 *et*
-2022), l'essentiel de l'effondrement Pécresse partant dans la dérive. La dérive
-2017 du même bloc est de signe opposé
-(Fillon), ce qui valide de la rendre spécifique à l'élection.
-
-## Ce qui a été trouvé (backtest 2017 + 2022)
-
-- Le **biais moyen d'un institut, tous candidats confondus, est ~nul** : les
-  sur/sous-estimations se compensent entre familles politiques → justifie de
-  mesurer le biais **par bloc**.
-- Après décomposition, les **biais à J-0 sont modérés** (la plupart sous ±1 pt),
-  sauf la droite classique (~+2,7 pt, surestimée près du vote en 2017 et 2022) :
-  l'essentiel de l'« erreur » apparente vient de la dérive d'opinion et du bruit,
-  pas d'un biais d'institut.
-- La **dispersion de l'erreur croît en √horizon** (marche aléatoire) : mesurée,
-  pas décrétée.
-
-## Validation hors-échantillon & robustesse
-
-- **Backtest** (`model/backtest/backtest_loo.py`) : calibré sur **2017 seul**,
-  appliqué à **2022** (jamais vu). Le biais se transfère bien (résidus centrés) ;
-  la couverture des IC 90 % est ≈ **0,87** (un peu sous 0,90 : 5 semaines calmes
-  de 2017 ne peuvent pas anticiper la volatilité de début de campagne 2022).
-- **Forme d'horizon** : le backtest départage `√h` (couverture 0,87) contre
-  `log(1+h)` (0,82) → **√h retenu par défaut**, en accord avec la littérature.
-- **Sensibilité aux priors** (`model/backtest/prior_sensitivity.py`) : les biais
-  bougent de < 0,05 pt quand on fait varier les priors d'un facteur 5 (dominés par
-  les données) ; la sous-couverture n'est **pas** un effet de priors trop serrés
-  (desserrer `τ_derive` ne la change pas) mais une limite structurelle de données.
-- **Qualité d'échantillonnage** (config prod, √h, NumPyro 1000/1000 × 4) :
-  R-hat max **1,005**, ESS bulk min **~900**, 0 divergence.
-
-## Limites (à assumer explicitement)
-
-- **Deux élections disponibles** (2017 + 2022) pour la calibration, c'est peu :
-  les intervalles de crédibilité sur les biais par institut restent larges — le
-  *partial pooling* rend cette incertitude visible au lieu de la masquer. 2017 ne
+- **Deux élections seulement** (2017, 2022) pour tout calibrer, et 2017 ne
   couvre que les ~5 dernières semaines de campagne (voir
-  [`data/historical/README.md`](data/historical/README.md)) : il informe surtout
-  le biais près du scrutin, peu la dérive longue.
-- Les probabilités produites par le modèle sont **des probabilités**, pas des
-  certitudes (point de vigilance §8 du plan).
+  [`data/historical/README.md`](data/historical/README.md)).
+- **Sous-couverture au jour du scrutin** (0,834 contre 0,90 nominal), sur
+  338 observations. Ce n'est pas l'estimation du moment qui est en cause — elle
+  est calibrée — mais la projection jusqu'au vote. Séparer la dérive d'opinion de
+  l'écart sondages-urne n'a pas suffi.
+- **Peu de sondages exploitables** : le roster exact n'en retient que 6 sur 22
+  aujourd'hui. Ce n'est pas un défaut du modèle mais de la couverture des
+  sondages, et le volume croîtra avec la campagne.
+- Le **vainqueur** du 2nd tour n'est pas modélisé : il faudrait une matrice de
+  reports de voix. On s'arrête aux duels.
+- Ce que le modèle produit, ce sont **des probabilités**, pas des prédictions.
 
 ## Sources & crédits
 
-- **Données sondages historiques** : [`nsppolls/nsppolls`](https://github.com/nsppolls/nsppolls) (MIT) — cycle 2022 ; [`pollsposition/data`](https://github.com/pollsposition/data) — cycle 2017 + résultats officiels (Conseil constitutionnel).
-- **Index live 2027** (Phase 2) : [`nsppolls/sondages-commission-index`](https://codeberg.org/nsppolls/sondages-commission-index)
-  — interagir sur **Codeberg**, pas sur le mirroir GitHub (demande explicite des mainteneurs).
-- **Résultats officiels** : Ministère de l'Intérieur.
+- **Sondages 2027 (source primaire)** :
+  [Wikipédia — Liste de sondages sur l'élection présidentielle française de 2027](https://fr.wikipedia.org/wiki/Liste_de_sondages_sur_l%27élection_présidentielle_française_de_2027),
+  sous licence [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.fr).
+- **Sondages historiques** : [`nsppolls/nsppolls`](https://github.com/nsppolls/nsppolls) (MIT, cycle 2022) ;
+  [`pollsposition/data`](https://github.com/pollsposition/data) (cycle 2017 + résultats).
+- **Notices de sondages** : [`nsppolls/sondages-commission-index`](https://codeberg.org/nsppolls/sondages-commission-index)
+  — interagir sur **Codeberg**, pas sur le mirroir GitHub (demande des mainteneurs).
+- **Résultats officiels** : Conseil constitutionnel, Ministère de l'Intérieur.
 - Les notices de sondages sont publiques (Commission des sondages) ; créditer les
   instituts et leurs notices.
+
+### Remerciements
+
+Ce projet ne serait pas possible sans le travail bénévole des **contributrices et
+contributeurs de Wikipédia**, qui recensent, vérifient et tiennent à jour les
+sondages au fil de la campagne, avec leurs sources et leurs notices. C'est un
+travail d'archivage patient et rarement crédité : il constitue ici l'intégralité
+des données d'entrée du modèle.
+
+Merci également aux mainteneurs de **NSPPolls** et de **PollsPosition**, dont les
+jeux de données historiques rendent la calibration possible, et aux **instituts
+de sondage** qui publient leurs notices détaillées auprès de la Commission des
+sondages — sans lesquelles la taille d'échantillon et les hypothèses testées
+resteraient inaccessibles.
 
 ## Licence
 
