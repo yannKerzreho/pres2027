@@ -1711,3 +1711,231 @@ Contrairement au regroupement temporel, ceci retire des paramètres **non
 contraints** sans forcer aucune réconciliation. Seuil de 5 % non calibré ; à
 terme le critère devrait porter sur la VARIABILITÉ observée de la part, pas sur
 son niveau — un petit candidat en dynamique mériterait un chemin.
+
+### 12.21 Roster historique reconstruit depuis les SONDAGES, pas depuis les candidats
+
+`notebooks/04b::load_historical_long` ne gardait que les candidats présents dans
+`candidat_blocs.csv`, c'est-à-dire ceux qui se sont **réellement présentés** —
+11 sur 2022. Or les sondages de 2021 testaient massivement des hypothèses qui ne
+se sont jamais concrétisées : **24 candidats à ≥ 5 sondages distincts**.
+
+| candidat testé, jamais parti | sondages | part moyenne |
+|---|---|---|
+| Bertrand | 59 | **15,0 %** |
+| Wauquiez | | 10,8 % |
+| Barnier | 9 | 9,2 % |
+| Ciotti | | 5,3 % |
+
+Les écarter creusait un **trou de normalisation de 10 à 20 %** des intentions —
+et concentré sur la droite, c'est-à-dire précisément la zone que le modèle doit
+apprendre à découper. C'est le même défaut qu'en §12.1, mais du côté du roster
+plutôt que du côté de la renormalisation : le trou est ramené à ~1 %.
+
+Ce n'est pas un correctif cosmétique de backtest. Ce que ce modèle prétend
+faire, c'est **redistribuer entre hypothèses** (§12.20) : lui cacher les
+hypothèses effectivement testées, c'est le valider sur autre chose que sa
+promesse. La règle est désormais la même qu'en live (`build_roster`) — tout
+candidat réellement testé compte, sans savoir de l'avenir.
+
+Deux conséquences de mise en œuvre :
+
+- **Nom canonique.** Bertrand, Barnier, Wauquiez n'existent pas dans la table
+  des blocs : le nom brut du sondage sert de clé, `_resolve_candidate` ne
+  s'appliquant qu'aux candidats réels.
+- **`BLOCS_HYPOTHETIQUES` prime sur la table.** Elle sert aussi à replacer sur
+  l'axe des candidats que `candidat_blocs.csv` classe `divers` — Lassalle,
+  169 sondages à 1,3 %, n'appartenait à aucun bloc ordonné et retombait donc
+  dans le trou qu'on ferme. Un candidat éligible sans bloc lève désormais une
+  `ValueError` au lieu d'être silencieusement écarté.
+
+**Affectations à confirmer.** Le placement gauche/centre/droite de Bertrand,
+Barnier, Wauquiez, Ciotti, Juvin, Montebourg, Taubira ne fait pas débat. Les
+quatre suivantes sont discutables et personne ne les a arbitrées :
+**Asselineau** et **Poisson** (rangés `droite_radicale` et `droite` — souverainisme
+et conservatisme religieux ne sont pas la même chose que le RN), **Thouy**
+(`ecologistes` : le parti animaliste recrute transversalement, ce que l'axe
+unique ne peut pas représenter, cf. notice §7), **Lassalle** (`centre` par
+défaut). Ces quatre pèsent peu, mais ils sont placés par convention, pas par
+mesure.
+
+### 12.22 Troncature de Karhunen-Loève du chemin de `w` — la dimension tombe, la profondeur d'arbre NON
+
+**Le constat de départ.** Le temps de fit vaut exactement
+`(tirages + warmup) × pas_de_leapfrog × chaînes`, vérifié. Or NUTS faisait
+**exactement 255 pas par itération** (profondeur 8 pleine, jamais le plafond de
+10) : la trajectoire est intégrale, à chaque itération, sans jamais faire de
+demi-tour. Améliorer le conditionnement vaut donc plus que toute optimisation de
+code.
+
+**L'hypothèse.** `tau_ou ≈ 262 j` avec des sondages espacés de 2-3 jours donne
+`rho ≈ 0,99` : sur une fenêtre de campagne, l'OU est presque une constante.
+Mesuré, la première composante de `exp(-|t-t'|/tau)` porte **76 à 89 %** de la
+variance. Échantillonner les `M` valeurs du chemin par candidat créait donc des
+dizaines de directions que la vraisemblance ne contraint pas — supposées
+responsables des 255 pas.
+
+**La mise en œuvre** (`ou_kl_basis`) diagonalise cette covariance **une fois,
+hors échantillonnage** (`tau_ou` est fixé, §11.4) et ne garde que les
+composantes portant 99 % de la variance. `as_of` est dans la grille, donc
+l'extrapolation sort de la même base au lieu d'être ajoutée après coup.
+
+**Résultat sur 2027** (78 nœuds, 13 candidats, 4 chaînes, 400+600) :
+
+| | avant | après |
+|---|---|---|
+| dimension du chemin | 169 | 91 |
+| dimension latente totale | | 138 |
+| **pas de leapfrog (médiane)** | **255** | **255** |
+| R-hat max | 1,032 | 1,022 |
+| ESS min | | 245 |
+| divergences | | 0 |
+
+**Et sur 2022 J-150**, la coupure la plus difficile du protocole corrigé
+(§12.20), avec le roster reconstruit de §12.21 — 24 candidats, 195 nœuds,
+`M = 44`, `K = 13` :
+
+| | |
+|---|---|
+| **pas de leapfrog** | **médiane 511, max 1023 — profondeur 10 SATURÉE** |
+| R-hat max | **1,387** |
+| ESS min | **10,2** |
+| divergences | 0 |
+| temps | 1444 s |
+| `sigma_w` | 0,788 |
+
+**L'hypothèse est fausse.** Sur 2027 la dimension tombe de 46 % et la profondeur
+d'arbre ne bouge pas d'un pas — 93,5 % des itérations restent à 255. Sur 2022
+J-150 elle est carrément pire, et l'échantillonneur touche le plafond de
+profondeur. Les directions plates n'étaient donc pas la cause : NUTS traverse un
+espace mal *conditionné*, pas seulement grand. C'est cohérent avec la théorie
+(une direction de prior pur est parfaitement conditionnée : elle coûte de la
+mémoire, pas de la profondeur), et ça réoriente le travail vers la géométrie du
+postérieur — cf. §12.23.
+
+> **Ne pas lire ce 1,387 comme une régression du KL.** §12.18 relevait
+> R-hat 1,021 à J-150, mais sur l'ANCIEN roster de 11 candidats. §12.21 en met
+> 24. Les deux chiffres ne portent pas sur le même problème et la comparaison
+> n'a pas de sens ; ce qui est établi ici, c'est seulement que la troncature ne
+> rachète pas la convergence à J-150, et que la profondeur y sature.
+
+La troncature est **conservée** : elle ne coûte rien, elle réduit la mémoire, et
+elle est la condition technique de §12.23 (on ne peut séparer niveau et dérive
+qu'en manipulant explicitement les composantes). Mais elle ne doit pas être
+créditée d'un gain de vitesse.
+
+**D'où vient alors le gain de temps** (377 s → 160 s) : entièrement du coût par
+gradient, puisque le nombre de pas est inchangé. C'est `B = 50 → 25` (§12.8) qui
+le produit — le tenseur `P×N×B` domine le gradient, et Gauss-Legendre donne
+0,00000 pt d'erreur sur `pi` dès `B = 20`. La troncature KL n'y contribue pas.
+
+**`chain_method` (`model/core/inference.py`) — et ce que ça invalide.** Le
+paramètre est devenu explicite (défaut `"sequential"` inchangé, pour ne pas
+toucher aux autres modèles) ; `04k` passe `"vectorized"`. Deux mesures :
+
+- **Aucun gain de temps** : 377 s contre 378 s sur 2027. La docstring qui
+  annonce `"vectorized"` « nettement plus rapide sur CPU » est démentie ; seul
+  le pic mémoire change, et vers le haut.
+- **Les verdicts de convergence changent** : sur 2027, mêmes données et même
+  graine, **R-hat 2,417 en `sequential` contre 1,032 en `vectorized`**.
+
+Le second point est le sérieux : une partie des échecs de convergence attribués
+au modèle plus haut dans §12 ont été établis en `sequential` et sont
+peut-être des artefacts d'échantillonneur. Le tableau « 3 échecs sur 5 » de
+§12.20 est à rejuger dans ce cadre avant d'en tirer quoi que ce soit — la
+lecture « le modèle échoue hors de son domaine » reste plausible, mais elle
+n'est plus étayée par ces chiffres-là.
+
+### 12.24 Audit du traitement des données — deux défauts, dont un qui renverse §12.20
+
+Cadrage utilisateur : *l'essentiel des problèmes de 2027 s'est réglé en
+choisissant soigneusement quels candidats modéliser et lesquels écarter.* Audit
+complet de la chaîne de données (2027 live + les 5 coupures 2022), sans aucun
+fit.
+
+**Ce qui est correct** et n'a pas besoin d'être retouché : la sous-composition
+(renormalisation de `Y` + déflation de `N_p`) est la loi exacte et elle est
+appliquée ; la déflation par `n_hyp` est en place, `Np_full` conservé pour la
+vraisemblance bloquée ; les nœuds à moins de 2 candidats sont jetés (3 par
+coupure) ; 2027 est propre — aucun candidat du roster non testé, aucun `Y = 0`,
+un seul nœud sous 0,5 %.
+
+**Défaut 1 — le roster de backtest connaissait l'avenir.** `MIN_NOTICES` était
+appliqué sur les 400 jours entiers, puis les sondages seulement étaient tranchés
+à la coupure. Conséquence : des candidats entraient dans le roster avec **zéro
+nœud**, parce qu'ils ne sont testés qu'APRÈS la coupure — Taubira et Thouy à
+J-150, cinq candidats à J-240 et J-300. Ce sont des paramètres de prior pur, et
+c'est une fuite. Corrigé par `load_historical_long(election, as_of=...)`, qui
+compte les sondages à la coupure comme le fait `build_roster` en live :
+
+| coupure | roster avant | roster as-of | retirés |
+|---|---|---|---|
+| J-150 | 24 | **21** | Juvin, Taubira, Thouy |
+| J-180 | 24 | 20 | + Ciotti |
+| J-210 | 24 | 19 | + Philippot |
+| J-240 | 24 | 16 | + Barnier, Zemmour, Montebourg |
+| J-300 | 24 | **15** | + Wauquiez |
+
+**Le trou de normalisation, mesuré pour de bon.** Il a fallu trois tentatives et
+les deux premières étaient fausses — à noter, c'est un piège qui se represente :
+
+1. mesurée sur le DataFrame déjà filtré par le roster → 1,000 tautologique ;
+2. mesurée sur le fichier brut sans rejouer `_resolve_candidate` → 0,000,
+   l'appariement échouait silencieusement (le brut porte les noms de sondage,
+   le roster les noms canoniques).
+
+La bonne mesure rejoue la résolution PUIS compare. Masse du bulletin conservée :
+
+| coupure | ancien roster (11) | roster as-of |
+|---|---|---|
+| J-150 | méd **0,865**, min 0,750 | méd **1,000**, min 0,900, p05 0,980 |
+| J-300 | méd 0,846, min 0,750 | méd 1,000, min 0,900, p05 0,920 |
+
+Le trou de 13 à 25 % annoncé en §12.21 est confirmé et refermé. Le résidu (min
+0,900) vient de `MIN_NOTICES = 5`, qui laisse dehors Baroin (1 sondage, 10 %),
+Retailleau (3, 6,7 %) et Juvin (4, 4,0 %) — arbitrage assumé : un candidat à 1
+sondage ne serait pas identifiable, et la renormalisation traite le trou
+exactement.
+
+**Défaut 2 — le « champ figé » de §12.20 est un ARTEFACT du roster tronqué, et
+c'est le point important.** §12.20 concluait que 2022 sort du domaine de
+validité du modèle parce que la liste se fige en décembre 2021, et en tirait que
+les échecs de convergence n'étaient pas un défaut mais « le symptôme correct
+d'un modèle appliqué hors de son domaine ». Cette conclusion reposait sur un
+comptage de champs distincts fait avec l'ancien roster de 11 candidats. Or
+retirer Bertrand, Barnier, Wauquiez et Ciotti **fait collapser sur le même
+masque des hypothèses réellement différentes**. Recompté :
+
+| coupure | \| ancien roster : nœuds / champs / dominant | \| roster complet : nœuds / champs / dominant |
+|---|---|---|
+| J-30 | 308 / **21** / 36,7 % | 308 / **112** / **5,8 %** |
+| J-120 | 234 / 20 / 32,1 % | 234 / 99 / 5,1 % |
+| J-150 | 195 / 20 / 29,2 % | 195 / **92** / 5,6 % |
+| J-210 | 86 / 17 / 41,9 % | 86 / 51 / 12,8 % |
+| J-300 | 36 / 14 / 47,2 % | 36 / 23 / 19,4 % |
+
+La première colonne reproduit exactement les chiffres de §12.20 (21 champs,
+36,7 % à J-30) — c'est bien la même mesure, sur le mauvais roster. Avec le bon,
+**2022 est PLUS riche en champs que 2027** (30 champs sur 78 nœuds, dominant
+15,4 %) : 92 champs sur 195 nœuds à J-150, champ dominant 5,6 %.
+
+Conséquences, à prendre au sérieux :
+
+- **L'explication des échecs de convergence de 2022 tombe.** Le théorème de
+  §12.20 (sans variation de champ, la géométrie n'est pas identifiée, `w`
+  absorbe tout) reste vrai ; c'est sa prémisse empirique qui était fausse. 2022
+  J-150 est largement dans le domaine du modèle, et il faut donc chercher la
+  cause ailleurs — la thèse rassurante « un modèle qui convergerait là-dessus
+  devrait inquiéter » ne tient plus.
+- **La conclusion de production est fragilisée, pas annulée.** « `spatial_pooling`
+  se retire quand la liste se fige » reste un énoncé raisonnable, mais il n'est
+  plus étayé par 2022 : sur les données réelles correctement traitées, la liste
+  ne se fige pas au sens du modèle.
+- §12.11 et §12.12 (« 2022 ne peut pas arbitrer ») sont à rejuger pour la même
+  raison.
+
+**Défaut mineur, non corrigé.** 2022 porte 15 nœuds où un candidat TESTÉ est à
+`Y = 0` exactement, et ~170 couples (nœud, candidat) sous 0,5 %. C'est la limite
+de vraisemblance gaussienne déjà listée en notice §7, mais elle mord sur 2022
+bien plus que sur 2027 (0 et 1 respectivement) : à 0,3 % de part, l'écart-type
+d'échantillonnage vaut ~0,004 et la gaussienne met une masse non négligeable
+sous zéro. À traiter le jour où la vraisemblance passera en Beta/Dirichlet.

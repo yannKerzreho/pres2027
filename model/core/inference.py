@@ -32,10 +32,18 @@ def run_numpyro_mcmc(model_fn, model_kwargs: dict, draws: int = 1000, tune: int 
     `chain_method` reste `"sequential"` par défaut : c'est le comportement
     historique de tous les modèles du dépôt, et le changer globalement
     modifierait leurs temps et leurs empreintes mémoire sans qu'on l'ait
-    demandé. `"vectorized"` exécute les chaînes en un seul `scan` vmappé — sur
-    CPU c'est nettement plus rapide (chaque pas devient un produit matriciel
-    groupé au lieu de N séparés) au prix d'une empreinte mémoire multipliée par
-    le nombre de chaînes. À passer explicitement là où on en a besoin.
+    demandé. `"vectorized"` exécute les chaînes en un seul `scan` vmappé, au
+    prix d'une empreinte mémoire multipliée par le nombre de chaînes.
+
+    Attention à deux choses mesurées sur `spatial_pooling` (spec §12.22) :
+
+    - ce n'est PAS plus rapide sur CPU (377 s contre 378 s sur le roster 2027).
+      L'intuition « un produit matriciel groupé au lieu de N séparés » ne se
+      vérifie pas ici, le coût étant déjà dominé par un grand tenseur par pas ;
+    - ça change les VERDICTS de convergence : mêmes données, même graine,
+      R-hat 2,417 en `"sequential"` contre 1,032 en `"vectorized"`. Un
+      diagnostic de non-convergence n'est donc pas comparable d'un
+      `chain_method` à l'autre — le noter avec le chiffre.
 
     Retourne `(samples, extra)` : `samples` est le dict `{site: array (chains,
     draws, ...)}` du postérieur (chaînes séparées — nécessaire pour R-hat/ESS

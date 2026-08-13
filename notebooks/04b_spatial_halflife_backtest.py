@@ -63,11 +63,19 @@ BLOCS_HYPOTHETIQUES = {
 MIN_NOTICES = 5
 
 
-def load_historical_long(election: int) -> tuple[pd.DataFrame, list[str], np.ndarray]:
+def load_historical_long(election: int, as_of=None) -> tuple[pd.DataFrame, list[str], np.ndarray]:
     """Roster construit depuis les SONDAGES (>= MIN_NOTICES sondages distincts),
     pas depuis la liste des candidats effectivement partis — même règle que
     `model.build_roster` sur 2027, et pour la même raison : ce modèle sert à
-    explorer des hypothèses, donc tout candidat réellement testé compte."""
+    explorer des hypothèses, donc tout candidat réellement testé compte.
+
+    `as_of` : date de coupure pour le COMPTAGE des sondages (spec §12.24). Sans
+    elle, `MIN_NOTICES` est appliqué sur les 400 jours entiers et le roster d'un
+    backtest connaît l'avenir : à J-150, Taubira et Thouy y entrent avec **zéro**
+    nœud (ils ne sont testés qu'après la coupure), et jusqu'à 5 candidats sur
+    zéro nœud à J-240/J-300. Ce sont des paramètres de prior pur, et c'est une
+    fuite. Les lignes renvoyées ne sont PAS tronquées : l'appelant découpe
+    train/test comme il l'entend, seul le roster est arrêté à `as_of`."""
     polls = pd.read_csv(PARSED_DIR / POLL_FILES[election])
     t1 = polls[polls["tour"] == "Premier tour"].copy()
 
@@ -88,7 +96,8 @@ def load_historical_long(election: int) -> tuple[pd.DataFrame, list[str], np.nda
         r if (_resolve_candidate(r, real) not in real) else _resolve_candidate(r, real)
         for r in t1["candidat"]
     ]
-    counts = t1.groupby("candidat")["notice"].nunique()
+    vus = t1 if as_of is None else t1[t1["date_fin"] <= pd.Timestamp(as_of)]
+    counts = vus.groupby("candidat")["notice"].nunique()
     eligible = [c for c in counts[counts >= MIN_NOTICES].index]
 
     def bloc_of(c):

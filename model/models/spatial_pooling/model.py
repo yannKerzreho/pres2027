@@ -540,7 +540,7 @@ def spatial_pooling_model_tau(slot_of, n_slots, tested_mask, Y, Np, date_idx, dt
     numpyro.factor("ll", jnp.sum(ll))
 
 
-def ou_kl_basis(unique_dates, as_of, tau_ou, var_cible=0.99, k_max=15):
+def ou_kl_basis(unique_dates, as_of, tau_ou, var_cible=0.99, k_max=15, center=False):
     """Base de Karhunen-Loève du chemin OU, calculée UNE FOIS hors échantillonnage.
 
     `tau_ou` étant fixé (banque commune, §11.4), la covariance
@@ -557,12 +557,24 @@ def ou_kl_basis(unique_dates, as_of, tau_ou, var_cible=0.99, k_max=15):
     vraisemblance ne contraint pas — directions plates que NUTS doit parcourir,
     d'où une profondeur d'arbre bloquée à 255 pas et des chaînes qui errent.
 
+    `center=True` retire d'abord la direction CONSTANTE (projection orthogonale
+    sur le complément de `1`) : la base ne porte alors plus que la DÉRIVE autour
+    de la moyenne temporelle, le niveau étant confié à un paramètre séparé
+    (`level_scale` de `spatial_pooling_model_ou`, §12.23). Sans ça, la première
+    composante EST le niveau — mesuré `|<v_0, 1/sqrt(M)>| = 0,999` sur la grille
+    2027 — et l'échelle `sigma_w` se retrouve à porter deux quantités sans
+    rapport : l'écart de niveau ENTRE candidats (écart-type 1,14 en log-odds sur
+    2027) et la dérive temporelle de chacun.
+
     Renvoie `(base (K, M+1), k)` : la dernière colonne est `as_of`, incluse dans
     la grille pour que l'extrapolation sorte de la même base plutôt que d'un
     terme ajouté à part.
     """
     t = np.concatenate([np.asarray(unique_dates, dtype=float), [float(as_of)]])
     C = np.exp(-np.abs(t[:, None] - t[None, :]) / tau_ou)
+    if center:
+        Pp = np.eye(len(t)) - np.ones((len(t), len(t))) / len(t)
+        C = Pp @ C @ Pp
     val, vec = np.linalg.eigh(C)
     val, vec = val[::-1], vec[:, ::-1]
     val = np.clip(val, 0.0, None)
@@ -574,7 +586,7 @@ def ou_kl_basis(unique_dates, as_of, tau_ou, var_cible=0.99, k_max=15):
 def spatial_pooling_model_ou(slot_of, n_slots, tested_mask, Y, Np, date_idx, kl_basis,
                              excess_var=None, sd_delta_mu_scale=0.06,
                              sd_delta_sigma_scale=SD_DELTA_SIGMA_SCALE,
-                             tau_ou=None, sigma_w_prior=0.5,
+                             tau_ou=None, sigma_w_prior=0.5, level_scale=None,
                              sigma_slot_log_mu=None, sigma_slot_log_scale=SIGMA_PRIOR_LOG_SCALE,
                              slot_prior_pos=None, dynamic_mask=None):
     """Modèle JOINT à noyau Ornstein-Uhlenbeck sur `w` (spec §12.17).
@@ -633,15 +645,44 @@ def spatial_pooling_model_ou(slot_of, n_slots, tested_mask, Y, Np, date_idx, kl_
     #
     # La dernière colonne de `kl_basis` est `as_of` : l'extrapolation sort de la
     # même base au lieu d'être un terme ajouté après coup.
-    if dynamic_mask is None:
-        dyn = jnp.ones(N, dtype=bool)
+    dyn = np.ones(N, dtype=bool) if dynamic_mask is None else np.asarray(dynamic_mask, dtype=bool)
+
+    if level_scale is None:
+        # Variante D'ORIGINE (§12.17) : `w` est un OU CENTRÉ, sans moyenne par
+        # candidat. Conservée pour l'A/B de §12.23, à ne pas utiliser -- elle
+        # oblige `sigma_w` à porter le niveau ET la dérive.
+        z_w = numpyro.sample("z_w", dist.Normal(0.0, 1.0).expand([N, kl_basis.shape[0]]))
+        w_full = sigma_w * (z_w @ kl_basis)                             # (N, M+1)
+        w_static = numpyro.sample("w_static", dist.Normal(0.0, 1.0).expand([N])) * sigma_w
+        w_full = jnp.where(jnp.asarray(dyn)[:, None], w_full, w_static[:, None])
     else:
-        dyn = jnp.asarray(dynamic_mask, dtype=bool)
-    z_w = numpyro.sample("z_w", dist.Normal(0.0, 1.0).expand([N, kl_basis.shape[0]]))
-    w_full = sigma_w * (z_w @ kl_basis)                                 # (N, M+1)
-    # Candidats sous le seuil : `w` STATIQUE (§12.19), un seul paramètre.
-    w_static = numpyro.sample("w_static", dist.Normal(0.0, 1.0).expand([N])) * sigma_w
-    w_full = jnp.where(dyn[:, None], w_full, w_static[:, None])
+        # NIVEAU et DÉRIVE séparés (§12.23). `m_i` est le niveau moyen du
+        # candidat sur la fenêtre, d'échelle FIXE ; `sigma_w` ne porte plus que
+        # l'écart à ce niveau, et `kl_basis` doit être construite avec
+        # `center=True` (base du complément orthogonal de la constante).
+        #
+        # Pourquoi c'est une correction et pas un réglage : sans `m`, la même
+        # échelle doit couvrir un écart de niveau entre candidats d'écart-type
+        # 1,14 (log-odds, roster 2027 : Bardella 36 %, Arthaud 1,1 %) et une
+        # dérive que les sondages montrent bien plus petite. Le postérieur
+        # arbitre à `sigma_w ≈ 0,70`, ce qui SOUS-DISPERSE les niveaux et
+        # SUR-DISPERSE la dérive (0,895 × sigma_w bout à bout sur 134 j).
+        # C'est aussi la source de l'entonnoir : le niveau étant précisément
+        # mesuré, `z_w` doit varier en `1/sigma_w` pour le reproduire --
+        # signature mesurée corr(log sigma_w, log||z_w||) = -0,428.
+        #
+        # `m` restaure la structure de §11 (krigeage universel : moyenne par
+        # candidat + OU autour), perdue en passant au modèle joint.
+        z_m = numpyro.sample("z_m", dist.Normal(0.0, 1.0).expand([N]))
+        m = numpyro.deterministic("w_level", z_m * level_scale)
+        idx = np.flatnonzero(dyn)
+        # `z_w` n'est tiré QUE pour les candidats à chemin : les lignes des
+        # candidats statiques n'entraient dans aucune vraisemblance, c'étaient
+        # `K` directions de prior pur par candidat écarté.
+        z_w = numpyro.sample("z_w", dist.Normal(0.0, 1.0).expand([len(idx), kl_basis.shape[0]]))
+        w_full = jnp.zeros((N, kl_basis.shape[1])) + m[:, None]
+        w_full = w_full.at[idx].add(sigma_w * (z_w @ kl_basis))
+    numpyro.deterministic("w_full", w_full)
     numpyro.deterministic("w_now", w_full[:, -1])
     w_path = w_full[:, :-1]
 

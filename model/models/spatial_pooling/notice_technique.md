@@ -15,7 +15,7 @@ $N$ candidats, indice $i$. $P$ nœuds d'observation, indice $p$ : un nœud = une
 $S_p \subseteq \{1..N\}$ est le champ testé au nœud $p$, de cardinal $K_p$,
 encodé par le masque $M_{i,p}\in\{0,1\}$.
 
-L'espace politique est l'intervalle $[0{,}01\,;0{,}99]$, discrétisé en $B=50$
+L'espace politique est l'intervalle $[0{,}01\,;0{,}99]$, discrétisé en $B=25$
 nœuds de quadrature $V_b$ de poids $W_b$ (**Gauss-Legendre**, $\sum_b W_b = 1$).
 Ces poids représentent une densité électorale **uniforme** ; les nœuds ne sont
 pas équidistants parce que la grille est une quadrature d'intégrale, pas un
@@ -134,6 +134,17 @@ Cette températion ne sert plus qu'à rendre tenable l'hypothèse d'un $w$
 $w$ est traitée en §5, par un mécanisme qui, lui, a un plancher.
 
 ## 5. Dynamique de $w$ — inversion locale exacte + Ornstein-Uhlenbeck
+
+> **Ce §5 décrit ce que `fit_spatial_pooling` exécute aujourd'hui, pas la cible.**
+> La lecture en deux temps ne peut pas propager l'incertitude de géométrie, et
+> c'est démontré, pas soupçonné (spec §12.16-12.17). Le remplaçant est
+> `spatial_pooling_model_ou` : une inférence **jointe** de la géométrie et du
+> chemin de $w$, où $\sigma_w$ est un paramètre du modèle — donc plus de banque
+> `bank_w_ou.json` ni de couplage géométrie/calibration. Il tient sur données
+> simulées (89,5 % d'IC90 contre 99,0 % ici) et sur le roster 2027, mais **pas
+> encore sur les coupures 2022** (R-hat 1,387 à J-150, spec §12.22-12.23). Tant
+> que ce n'est pas réglé, la production reste sur la chaîne ci-dessous et
+> `w_dynamics.py` n'est pas supprimable.
 
 Le fit ci-dessus n'estime que la **géométrie**. $w$ est relu ensuite, sans MCMC.
 Motif : la variance de la vraisemblance tempérée vaut
