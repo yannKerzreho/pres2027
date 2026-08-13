@@ -40,7 +40,7 @@ def main():
                     help="inclure les modèles non publics (variantes de comparaison)")
     ap.add_argument("--skip-existing", action="store_true",
                     help="ne recalcule pas un snapshot déjà écrit sur disque "
-                        "(site/data/<model>/<as_of>.json) — reprise après interruption")
+                        "(docs/data/<model>/<as_of>.json) — reprise après interruption")
     args = ap.parse_args()
 
     all_polls = load_raw_polls()

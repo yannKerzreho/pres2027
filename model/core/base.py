@@ -23,7 +23,11 @@ import pandas as pd
 import xarray as xr
 
 ROOT = Path(__file__).resolve().parents[2]
-SITE_DATA = ROOT / "site" / "data"
+# `docs/` et pas `site/` : GitHub Pages publie ce dossier (renommage du
+# 2026-08-12). Les snapshots doivent atterrir dans l'arborescence réellement
+# servie, sinon le job quotidien recrée un `site/` fantôme et le site public
+# reste figé sur le dernier snapshot d'avant le renommage.
+SITE_DATA = ROOT / "docs" / "data"
 ELECTION_T1 = pd.Timestamp("2027-04-18")
 
 
