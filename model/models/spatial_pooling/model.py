@@ -34,14 +34,51 @@ from model.core.inference import run_numpyro_mcmc
 from model.core.live_dataset import load_raw_polls
 from model.core.simulate import forecast_from_draws
 
-# --- Grille spatiale (spec §1) --------------------------------------------------
-B = 50
-V = jnp.linspace(0.01, 0.99, B)
-W = jnp.ones(B) / B
+# --- Grille spatiale (spec §1, révisée §12.8) ------------------------------------
+# `pi_i = ∫ softmax(A(v))_i f(v) dv` est une INTÉGRALE ; la grille en est la
+# quadrature. Elle était échantillonnée uniformément (`linspace` + poids 1/B),
+# ce qui converge en O(1/B) seulement : l'intégrande ne s'annule pas aux bords
+# de [0,01 ; 0,99], donc les extrémités dominent l'erreur. Mesuré sur la
+# géométrie réellement fittée, erreur maximale sur `pi` :
+#
+#     B        uniforme     Gauss-Legendre
+#     25        1,204 pt        0,0015 pt
+#     50        0,599 pt        0,0015 pt
+#   1000        0,028 pt        0,0015 pt
+#
+# 0,6 pt à B=50 n'est pas négligeable : c'est PLUS que l'écart de modèle estimé
+# (0,32 pt, §12.7) et une fraction notable du bruit d'échantillonnage (~1 pt).
+# L'erreur est en outre maximale là où `sigma` est petit (3,9 nœuds par sigma
+# pour le plus étroit), donc elle biaise justement les `sigma` les plus serrés.
+#
+# Gauss-Legendre intègre exactement les polynômes de degré 2B-1 : même
+# intégrale, même électorat UNIFORME (les poids somment à 1), simplement des
+# nœuds et poids choisis au lieu d'un pas constant.
+#
+# B=25 : mesuré sur un roster de 24 candidats avec des sigma jusqu'à 0,35,
+# l'erreur maximale sur `pi` vaut 0,00000 pt dès B=20 (0,00008 pt à B=15).
+# Le tenseur `P×N×B` domine le coût du gradient, donc passer de 50 à 25 divise
+# par deux la vraisemblance sans aucune perte -- c'est la propriété de
+# convergence spectrale de Gauss-Legendre sur un intégrande lisse.
+B = 25
+_gl_x, _gl_w = np.polynomial.legendre.leggauss(B)
+V = jnp.asarray(0.01 + (0.99 - 0.01) * (_gl_x + 1.0) / 2.0)
+W = jnp.asarray(_gl_w / 2.0)
 
 # --- Roster / fenêtre de campagne (spec §6) --------------------------------------
 MIN_POLL_DATE = pd.Timestamp("2026-01-01")   # même repli que bayesian_nowcast.nowcast
 MIN_POLLS = 5                                 # sondages RÉELS distincts (`notice`), pas hypothèses
+# Un candidat cesse d'être modélisé s'il n'a plus été testé depuis assez
+# longtemps (retrait, hypothèse abandonnée par les instituts). NON CALIBRÉ :
+# aucun candidat éligible n'en est proche aujourd'hui (le plus ancien est
+# Bardella à 16 jours), c'est un garde-fou pour la suite, pas un réglage.
+MAX_LAST_POLL_AGE_DAYS = 90
+# Pas de la ligne du temps du chemin de `w` (modèle joint). Testé à 7 jours
+# pour réduire la dimension : DÉGRADE la convergence (J-150 passe de R-hat
+# 1,021 à 1,330). Regrouper force plusieurs sondages à se réconcilier sur une
+# même valeur de `w`, ce qui durcit la géométrie -- l'inverse du but recherché.
+# Laissé à 1 jour (spec §12.18).
+TIME_BIN_DAYS = 1.0
 
 # Ordre gauche->droite fourni à la main (session du 2026-08-10, corrigé le
 # 2026-08-10 -- retour utilisateur) : un groupe = un point de la séquence,
@@ -53,20 +90,44 @@ MIN_POLLS = 5                                 # sondages RÉELS distincts (`noti
 # passe pas le filtre >=5 sondages -- listé ici en repli inerte, tant qu'il
 # n'atteint pas le seuil ça ne change rien) ; (2) "ecolo_ps_coco" scindé en
 # deux points ordonnés, Coco/Écolo (PCF/EELV) < PS (Glucksmann/Hollande/Faure) ;
-# (3) Bardella retiré du groupe MLP -- Marine Le Pen est la candidate
-# OFFICIELLE du RN, il n'y a plus de scénario alternatif à modéliser sur ce
-# point (contrairement à Attal/Philippe, encore ouvert).
+# (3) Bardella RÉINTÉGRÉ au groupe MLP (session du 2026-08-12, cf. spec §12).
+# Il en avait été retiré au motif que Le Pen est la candidate OFFICIELLE du RN
+# -- mais c'est un choix de SCÉNARIO, et ce modèle choisit ses scénarios à la
+# LECTURE (`pi_draws_for_mask`, §8), pas au fit. L'appliquer au roster créait
+# un trou de normalisation : Bardella est testé dans 46 nœuds sur 78, donc
+# ~35% du bulletin disparaissait du modèle sans disparaître des données, et la
+# somme des intentions par nœud tombait à 0,66 en médiane face à un `pi` qui
+# somme à 1 par construction. Mesuré : 0,660 -> 1,000 en le réintégrant.
+# Pour n'afficher que Le Pen, masquer Bardella À LA LECTURE.
+#
+# ORDER_GROUPS est un CATALOGUE, pas le roster : il doit couvrir tout candidat
+# susceptible de franchir le seuil, y compris ceux qui ne l'ont pas encore
+# franchi (inertes tant qu'ils ne l'atteignent pas). Les groupes réellement
+# vides sont retirés à l'exécution par `build_roster`, donc en pré-classer
+# davantage ne change pas la géométrie du modèle.
 ORDER_GROUPS: list[tuple[str, list[str]]] = [
     ("LO",         ["Arthaud", "Poutou"]),
     ("LFI",        ["Mélenchon", "Ruffin"]),
     ("coco_ecolo", ["Roussel", "Tondelier"]),
     ("PS",         ["Glucksmann", "Hollande", "Faure"]),
-    ("Attal",      ["Attal"]),
+    ("Villepin",   ["Villepin"]),
+    ("Attal",      ["Attal", "Lecornu"]),
     ("Philippe",   ["Philippe"]),
-    ("LR",         ["Retailleau", "Wauquiez"]),
-    ("MLP",        ["Le Pen", "Dupont-Aignan"]),
-    ("Zemmour",    ["Zemmour"]),
+    ("LR",         ["Retailleau", "Wauquiez", "Lisnard", "Darmanin"]),
+    ("MLP",        ["Le Pen", "Bardella", "Dupont-Aignan"]),
+    ("Zemmour",    ["Zemmour", "Knafo"]),
 ]
+
+# Affectations PAR DÉFAUT, à confirmer (même statut que les réserves de §2.1
+# sur Dupont-Aignan et Hollande) -- aucune n'est active aujourd'hui, tous ces
+# candidats étant sous le seuil :
+#   - Villepin : groupe PROPRE, placé entre PS et Attal. Placement réellement
+#     ambigu (ex-Premier ministre gaulliste, donc à droite par trajectoire,
+#     mais qui capte aujourd'hui un électorat de gauche/centre-gauche). C'est
+#     le plus proche du seuil (4 sondages, testé le 2026-07-10 à 3,8 %) : à
+#     trancher en priorité.
+#   - Darmanin, Lisnard -> LR ; Lecornu -> Attal (macronie) ; Knafo -> Zemmour
+#     (Reconquête).
 
 # half_life (jours) : calibré par backtest hors-échantillon 2017/2022
 # (notebooks/04b_spatial_halflife_backtest.py, cf. spec §5.2) -- 15j nettement
@@ -76,16 +137,123 @@ ORDER_GROUPS: list[tuple[str, list[str]]] = [
 # `half_life_days` sur linear_pooling (model/models/linear_pooling/model.py).
 DEFAULT_HALF_LIFE_DAYS = 15.0
 
+# --- Rayon d'action : prior d'ORIGINE, resserrement ANNULÉ (spec §12.13) --------
+# Un resserrement à 0,06 avait été introduit au motif qu'un `sigma` large
+# ferait « recruter Zemmour à l'extrême gauche ». MESURÉ : faux. Le noyau n'est
+# pas le profil de recrutement -- la compétition du softmax écrase tout, et
+# même au sigma le plus large 0,04 % seulement de l'électorat de Zemmour vient
+# de la gauche (0,12 % en médiane sur 4000 tirages de `w`).
+#
+# `sigma` n'étant identifié par AUCUNE donnée (§12.12 : contraction ≈ 0, le
+# postérieur suit le prior), il ne reste que deux critères mesurables. Les deux
+# désignent la valeur d'origine :
+#
+#   prior sigma | redistribution | div. 2027 | div. 2022
+#         0,06  |     0,893 pt   |     3     |  69-275
+#         0,10  |     0,845 pt   |     0     |   14-18
+#         0,15  |     0,845 pt   |     0     |    5-6
+#
+# Le prior serré dégrade la REDISTRIBUTION -- exactement ce que le modèle
+# promet -- en plus de la stabilité. Annulé.
+NORMALIZE_KERNEL = True      # bascule de diagnostic (spec §12.10)
+SIGMA_PRIOR_MEDIAN = 0.15
+SIGMA_PRIOR_LOG_SCALE = 0.4
+SD_DELTA_SIGMA_SCALE = 0.15
+
+# --- Prior de position ancré sur 2022 -- DISPONIBLE, PAS ACTIVÉ (spec §12.5) -----
+# Une fois le centrage de `sample_ordered_slots` corrigé (§12.4), la seule
+# CONTRAINTE D'ORDRE suffit : R-hat 1,002, ESS 1970, 0 divergence sur le roster
+# 2027. Ce prior informatif n'est donc pas nécessaire, et `use_position_prior`
+# vaut False par défaut -- on ne paie pas une hypothèse dont on n'a pas besoin,
+# et un prior d'analogie historique est précisément ce que §2 avait écarté pour
+# de bonnes raisons (Attal et Philippe n'ont pas de prédécesseur direct).
+# Le mécanisme reste implémenté et testé, prêt à servir si un roster futur
+# (plus de groupes, moins de sondages) redevenait mal identifié.
+#
+# À n'utiliser QUE sur le roster live. Employer les positions 2022 comme prior
+# d'un fit SUR 2022 (le backtest de §11.5) serait circulaire : `fit_geometry`
+# (notebooks/04g) ne le passe donc pas.
+BLOC_ANALOGUE_2022: dict[str, str] = {
+    "LO": "gauche_radicale",
+    "LFI": "gauche_radicale",
+    "coco_ecolo": "ecologistes",
+    "PS": "gauche",
+    "Villepin": "centre",
+    "Attal": "centre",
+    "Philippe": "centre",
+    "LR": "droite",
+    "MLP": "droite_radicale",
+    "Zemmour": "droite_radicale",
+}
+BANK_POS_PATH = __file__.replace("model.py", "bank_positions_2022.json")
+
+
+def slot_prior_positions(slot_names: list[str]) -> np.ndarray | None:
+    """Positions a priori des groupes, reprises des blocs 2022 analogues.
+
+    Plusieurs groupes 2027 partagent un bloc 2022 (LO et LFI sont tous deux
+    `gauche_radicale`) : leur prior de position est alors le MÊME, et c'est aux
+    données de les séparer. L'ordre strict reste garanti par construction
+    (§2.2), donc deux priors égaux n'autorisent pas une inversion.
+
+    `None` si la banque n'a pas été produite -- repli sur le prior faible.
+    """
+    import json
+    from pathlib import Path
+    p = Path(BANK_POS_PATH)
+    if not p.exists():
+        return None
+    pos = json.loads(p.read_text())["bloc_pos"]
+    out = []
+    for g in slot_names:
+        bloc = BLOC_ANALOGUE_2022.get(g)
+        if bloc is None or bloc not in pos:
+            return None
+        out.append(pos[bloc])
+    out = np.asarray(out, dtype=float)
+    # Les groupes partageant un bloc reçoivent la même valeur : on les écarte
+    # d'un epsilon croissant pour que les `gap` a priori restent > 0.
+    for i in range(1, len(out)):
+        out[i] = max(out[i], out[i - 1] + 1e-3)
+    return np.clip(out, 1e-3, 1 - 1e-3)
+
 
 def sample_ordered_slots(name: str, n_slots: int, base_loc=0.0, base_scale=1.2,
-                         gap_log_mu=-0.5, gap_log_scale=0.7):
+                         gap_log_mu=-0.5, gap_log_scale=0.7, target_pos=None):
     """n_slots positions STRICTEMENT croissantes dans (0,1) : base + sauts positifs
     (LogNormal) cumulés, écrasés par sigmoid (monotone -> préserve l'ordre sans
-    transformation `Ordered` explicite). Cf. spec §2.2."""
+    transformation `Ordered` explicite). Cf. spec §2.2.
+
+    La somme cumulée est **CENTRÉE** avant d'ajouter `base` (spec §12.4). Sans
+    ce centrage, `raw` part de 0 et ne fait que croître : à la médiane du prior
+    (donc au point de départ d'`init_to_median`) les positions valent
+    `sigmoid([0, 0.6, ..., 4.8])` = `[0.50, 0.65, ..., 0.99]`, c'est-à-dire
+    toute la configuration écrasée dans la MOITIÉ DROITE de la grille. Le prior
+    affirmait ainsi que le champ politique occupe la droite de l'axe -- ce qui
+    n'a aucun sens, l'axe étant latent -- et surtout les chaînes démarraient
+    dans un mauvais bassin qu'elles ne quittaient pas toutes : mesuré sur le
+    roster 2027, 2 chaînes sur 4 restaient bloquées à 932 unités de
+    log-vraisemblance du bon mode (R-hat 1,59). Centré, `base = 0` donne
+    `sigmoid([-2.4, ..., +2.4])` = `[0.08, ..., 0.92]`, qui couvre la grille.
+    `base` reste libre : c'est une re-paramétrisation de la LOCALISATION du
+    prior, pas une contrainte ajoutée."""
+    if target_pos is not None:
+        # Prior INFORMATIF : on centre chaque écart sur celui qu'on observe
+        # entre les blocs analogues d'une élection passée (spec §12.5). On agit
+        # sur les GAPS, pas sur les positions : c'est la seule façon de garder
+        # l'ordre strict garanti par construction (§2.2) tout en informant la
+        # localisation. `gap_log_scale` reste inchangé, donc le prior est
+        # informatif sur le CENTRE et pas plus serré qu'avant.
+        raw_t = jnp.log(target_pos / (1.0 - target_pos))
+        d = jnp.clip(jnp.diff(raw_t), 1e-3, None)
+        gap_log_mu = jnp.log(d)
+        base_loc = jnp.mean(raw_t)   # pas de float() : `target_pos` peut être tracé
+
     base = numpyro.sample(f"{name}_base", dist.Normal(base_loc, base_scale))
     if n_slots > 1:
         gaps = numpyro.sample(f"{name}_gaps", dist.LogNormal(gap_log_mu, gap_log_scale).expand([n_slots - 1]))
-        raw = base + jnp.concatenate([jnp.zeros(1), jnp.cumsum(gaps)])
+        cum = jnp.concatenate([jnp.zeros(1), jnp.cumsum(gaps)])
+        raw = base + cum - jnp.mean(cum)
     else:
         raw = jnp.reshape(base, (1,))
     return numpyro.deterministic(f"{name}_slot_pos", jax.nn.sigmoid(raw))
@@ -99,7 +267,27 @@ def spatial_shares(mu, sigma, w, tested_mask) -> jnp.ndarray:
     dans ce dernier cas `tested_mask` doit être (N,) (un seul scénario) et la
     sortie est (S,N)."""
     D = -((V[None, :] - mu[..., None]) ** 2) / (2 * sigma[..., None] ** 2)   # (...,N,B)
-    A = w[..., None] + D
+    # Noyau NORMALISÉ sur la grille (spec §12.10) : on retranche
+    # `log(Σ_b W_b e^{D_b})` pour que le profil d'attractivité de chaque
+    # candidat intègre à 1, quels que soient `mu` et `sigma`.
+    #
+    # Deux effets. (a) `w` devient comparable entre candidats : sans ça, un
+    # candidat proche d'un bord perd la part de son noyau tombant hors de
+    # [0,1] et doit compenser par un `w` plus grand, que le prior N(0,1.5)
+    # pénalise -- il repoussait donc artificiellement les candidats loin des
+    # bords. (b) Surtout, ça SUPPRIME la crête `w ↔ log σ` de §12.9 : la part
+    # d'un candidat non dominant valait `∝ exp(w)·σ·κ(mu,σ)`, donc seul
+    # `w + log σ` était identifié ; elle vaut désormais `∝ exp(w)` seul, et
+    # `σ` n'est plus contraint que par la FORME, c'est-à-dire par la
+    # redistribution observée sur les hypothèses imbriquées.
+    #
+    # C'est une reparamétrisation exacte (une constante par candidat, avant un
+    # softmax) : la famille de vraisemblance est inchangée, et toute la
+    # mécanique de §11 reste valable (`Φ` garde le même hessien).
+    if NORMALIZE_KERNEL:
+        A = w[..., None] + D - jax.nn.logsumexp(D, axis=-1, b=W, keepdims=True)
+    else:
+        A = w[..., None] + D
     A = A - jnp.max(A, axis=-2, keepdims=True)
     expA = jnp.exp(A)
     numerator = expA * tested_mask[..., :, None]
@@ -126,6 +314,73 @@ def weighted_loglik(mu, sigma, w, tested_mask, Y, Np, kappa, excess_var=None) ->
     return pi, jnp.sum(kappa[:, None] * ll)
 
 
+def weighted_loglik_blocked(mu, sigma, w, tested_mask, Y, Np_full, kappa, notice_idx, n_notices,
+                            rho, sigma_model=0.0, excess_var=None):
+    """Vraisemblance à erreurs CORRÉLÉES entre hypothèses d'un même sondage
+    (spec §12.7). Remplace `weighted_loglik`, qui les traite comme des nœuds
+    indépendants à échantillon déflaté.
+
+    Les `h` hypothèses d'un sondage sont posées aux **mêmes répondants** (ici
+    jusqu'à 11 pour un seul sondage). Deux conséquences que le traitement
+    indépendant rend incompatibles :
+
+    - le NIVEAU ne doit pas gagner d'information en ajoutant des hypothèses —
+      ce que la déflation `n/h` obtenait déjà, correctement ;
+    - la DIFFÉRENCE entre deux hypothèses est mesurée bien plus PRÉCISÉMENT
+      qu'entre deux sondages distincts, puisque le bruit d'échantillonnage se
+      compense. Or c'est exactement ce différentiel qui identifie la géométrie
+      (`mu`, `sigma`) : une hypothèse isolée s'explique par `w` seul, c'est le
+      retrait d'un candidat qui révèle OÙ vont ses électeurs. La déflation
+      gonfle la variance de cette différence d'un facteur `h` et dilue donc
+      précisément le signal le plus informatif du jeu de données.
+
+    Modèle : `Y_{i,p} = pi_{i,p} + u_{i,notice} + eps_{i,p}`, soit une
+    corrélation `rho` entre hypothèses d'un même sondage, à variance TOTALE
+    `v = pi(1-pi)/n + excès` bâtie sur l'échantillon PLEIN (`Np_full`) — plus
+    de déflation, la corrélation joue son rôle. `rho -> 1` redonne « h
+    hypothèses = un sondage » ; `rho -> 0` redonne l'indépendance à `n` plein.
+
+    Forme close d'une gaussienne équicorrélée (bloc de taille `m`) :
+    `Sigma = v[(1-rho)I + rho·11ᵀ]`, d'où
+    `quad = [S2 - rho/(1+(m-1)rho)·S1²]/(1-rho)` et
+    `logdet = Σ log v + (m-1)log(1-rho) + log(1+(m-1)rho)`,
+    avec `S1 = Σ z`, `S2 = Σ z²`, `z` le résidu standardisé.
+
+    `kappa` est constant par sondage (toutes les hypothèses partagent la date),
+    donc la pondération de récence s'applique proprement au BLOC entier — elle
+    n'aurait pas de sens appliquée à une composante d'un vecteur corrélé.
+    """
+    pi = spatial_shares(mu, sigma, w, tested_mask)                       # (P,N)
+    var = pi * (1.0 - pi) / jnp.clip(Np_full[:, None], 1.0, None)
+    if excess_var is not None:
+        var = var + excess_var[:, None]
+    var = var + 1e-8
+
+    r = jnp.where(tested_mask > 0, Y - pi, 0.0)                          # résidus BRUTS
+    seg = lambda x: jax.ops.segment_sum(x, notice_idx, num_segments=n_notices)
+    S1, S2 = seg(r), seg(r ** 2)                                         # (n_notices, N)
+    m = seg(tested_mask)
+    v_bar = seg(jnp.where(tested_mask > 0, var, 0.0)) / jnp.clip(m, 1.0, None)
+
+    # Sigma = a·I + b·11ᵀ  avec  a = (1-rho)·v + delta²  et  b = rho·v.
+    # `delta` est l'ÉCART DE MODÈLE, indépendant entre hypothèses : chaque
+    # hypothèse est un champ différent, donc l'erreur du modèle y diffère. Sans
+    # lui, retirer la déflation exige du modèle qu'il reproduise un sondage à la
+    # précision d'échantillonnage -- ce qu'un spatial à N candidats sur une
+    # grille ne peut pas faire, et il se contorsionne (mesuré : Arthaud et
+    # Mélenchon fusionnant à la même position, spec §12.7).
+    a = (1.0 - rho) * v_bar + sigma_model ** 2
+    b = rho * v_bar
+    quad = (S2 - b / (a + m * b) * S1 ** 2) / a
+    logdet = m * jnp.log(a) + jnp.log1p(m * b / a)
+    ll_bc = -0.5 * (quad + logdet + m * jnp.log(2.0 * jnp.pi))
+    ll_bc = jnp.where(m > 0, ll_bc, 0.0)                                 # candidat absent du sondage
+
+    kappa_notice = jax.ops.segment_sum(kappa, notice_idx, num_segments=n_notices) / jnp.clip(
+        jax.ops.segment_sum(jnp.ones_like(kappa), notice_idx, num_segments=n_notices), 1.0, None)
+    return pi, jnp.sum(kappa_notice[:, None] * ll_bc)
+
+
 def make_kappa(dates: np.ndarray, as_of: float, half_life: float) -> np.ndarray:
     if half_life >= 9999:
         return np.ones_like(dates, dtype=float)
@@ -133,8 +388,11 @@ def make_kappa(dates: np.ndarray, as_of: float, half_life: float) -> np.ndarray:
 
 
 def spatial_pooling_model(slot_of, n_slots, tested_mask, Y, Np, kappa, excess_var=None,
-                          sd_delta_mu_scale=0.06, sd_delta_sigma_scale=0.15,
-                          w_scale=1.5, sigma_slot_log_mu=None, sigma_slot_log_scale=0.4):
+                          sd_delta_mu_scale=0.06, sd_delta_sigma_scale=SD_DELTA_SIGMA_SCALE,
+                          w_scale=1.5, sigma_slot_log_mu=None,
+                          sigma_slot_log_scale=SIGMA_PRIOR_LOG_SCALE,
+                          slot_prior_pos=None, notice_idx=None, n_notices=None,
+                          Np_full=None, rho_hyp=None, sigma_model_fixed=None):
     """`slot_of` : (N,) indice de groupe d'ordre par candidat (spec §2.1).
     Positions ordonnées au niveau des GROUPES ; chaque candidat a son propre
     delta (mu, spec §2.3), son propre sigma (pooling par groupe), et son
@@ -150,9 +408,9 @@ def spatial_pooling_model(slot_of, n_slots, tested_mask, Y, Np, kappa, excess_va
     sur 2017/2022 (RMS(z)=1,58 entre sondages de MÊME champ à écart nul)."""
     N = slot_of.shape[0]
     if sigma_slot_log_mu is None:
-        sigma_slot_log_mu = jnp.log(0.15)
+        sigma_slot_log_mu = jnp.log(SIGMA_PRIOR_MEDIAN)
 
-    slot_pos = sample_ordered_slots("mu", n_slots)
+    slot_pos = sample_ordered_slots("mu", n_slots, target_pos=slot_prior_pos)
     sigma_slot = numpyro.sample("sigma_slot",
                                 dist.LogNormal(sigma_slot_log_mu, sigma_slot_log_scale).expand([n_slots]))
 
@@ -165,7 +423,28 @@ def spatial_pooling_model(slot_of, n_slots, tested_mask, Y, Np, kappa, excess_va
 
     w = numpyro.sample("w_now", dist.Normal(0.0, w_scale).expand([N]))
 
-    pi, ll = weighted_loglik(mu, sigma, w, tested_mask, Y, Np, kappa, excess_var=excess_var)
+    if rho_hyp is not None and notice_idx is not None:
+        # `rho_hyp="sample"` : la corrélation entre hypothèses d'un même sondage
+        # est ESTIMÉE. Contrairement à `half_life` (§3.1), c'est un paramètre de
+        # vraisemblance légitime -- il apparaît dans une densité normalisée (le
+        # terme `logdet` est bien inclus), donc rien ne pousse à le dégénérer.
+        # `rho` et `delta` décrivent le PROTOCOLE de sondage (hypothèses posées
+        # au même panel, capacité du modèle à reproduire un champ), pas la
+        # campagne : les échantillonner rend NUTS fragile là où le signal est
+        # ténu -- sur 2022, dont les sondages testent 10 candidats sur 11, les
+        # hypothèses d'un même sondage diffèrent trop peu pour identifier `rho`,
+        # qui dérive (R-hat 2,52, 103 divergences à J-120). Les FIXER retire les
+        # deux directions difficiles, comme la variance d'excès est fixée depuis
+        # sa propre banque (spec §12.7).
+        rho = (numpyro.sample("rho_hyp", dist.Beta(2.0, 2.0))
+               if isinstance(rho_hyp, str) else rho_hyp)
+        sig_m = (numpyro.sample("sigma_model", dist.HalfNormal(0.01))
+                 if sigma_model_fixed is None else sigma_model_fixed)
+        pi, ll = weighted_loglik_blocked(mu, sigma, w, tested_mask, Y, Np_full, kappa,
+                                         notice_idx, n_notices, rho, sigma_model=sig_m,
+                                         excess_var=excess_var)
+    else:
+        pi, ll = weighted_loglik(mu, sigma, w, tested_mask, Y, Np, kappa, excess_var=excess_var)
     numpyro.deterministic("pi", pi)
     numpyro.factor("weighted_ll", ll)
 
@@ -257,6 +536,121 @@ def spatial_pooling_model_tau(slot_of, n_slots, tested_mask, Y, Np, date_idx, dt
 
     var = pi * (1.0 - pi) / jnp.clip(Np[:, None], 1.0, None) + 1e-8
     ll = dist.Normal(pi, jnp.sqrt(var)).log_prob(Y) * tested_mask
+    numpyro.deterministic("pi", pi)
+    numpyro.factor("ll", jnp.sum(ll))
+
+
+def ou_kl_basis(unique_dates, as_of, tau_ou, var_cible=0.99, k_max=15):
+    """Base de Karhunen-Loève du chemin OU, calculée UNE FOIS hors échantillonnage.
+
+    `tau_ou` étant fixé (banque commune, §11.4), la covariance
+    `exp(-|t-t'|/tau)` sur la grille des dates est connue avant tout tirage :
+    on peut donc la diagonaliser et ne garder que les composantes qui portent
+    la variance.
+
+    Pourquoi c'est nécessaire et pas seulement économique. Avec `tau ≈ 262 j` et
+    des sondages espacés de 2-3 jours, `rho = exp(-dt/tau) ≈ 0,99` : le
+    processus est presque une constante sur une fenêtre de campagne. Mesuré, la
+    première composante porte 76 à 89 % de la variance, et 3 à 4 composantes en
+    portent 95 %. Échantillonner `M` valeurs indépendantes par candidat (44 sur
+    2022 J-150) revient donc à créer des dizaines de directions que la
+    vraisemblance ne contraint pas — directions plates que NUTS doit parcourir,
+    d'où une profondeur d'arbre bloquée à 255 pas et des chaînes qui errent.
+
+    Renvoie `(base (K, M+1), k)` : la dernière colonne est `as_of`, incluse dans
+    la grille pour que l'extrapolation sorte de la même base plutôt que d'un
+    terme ajouté à part.
+    """
+    t = np.concatenate([np.asarray(unique_dates, dtype=float), [float(as_of)]])
+    C = np.exp(-np.abs(t[:, None] - t[None, :]) / tau_ou)
+    val, vec = np.linalg.eigh(C)
+    val, vec = val[::-1], vec[:, ::-1]
+    val = np.clip(val, 0.0, None)
+    k = int(np.searchsorted(np.cumsum(val) / val.sum(), var_cible)) + 1
+    k = max(3, min(k, k_max, len(t)))
+    return (vec[:, :k] * np.sqrt(val[:k])).T, k
+
+
+def spatial_pooling_model_ou(slot_of, n_slots, tested_mask, Y, Np, date_idx, kl_basis,
+                             excess_var=None, sd_delta_mu_scale=0.06,
+                             sd_delta_sigma_scale=SD_DELTA_SIGMA_SCALE,
+                             tau_ou=None, sigma_w_prior=0.5,
+                             sigma_slot_log_mu=None, sigma_slot_log_scale=SIGMA_PRIOR_LOG_SCALE,
+                             slot_prior_pos=None, dynamic_mask=None):
+    """Modèle JOINT à noyau Ornstein-Uhlenbeck sur `w` (spec §12.17).
+
+    Combine les deux propriétés qu'aucune version précédente n'avait ensemble :
+
+    - **inférence jointe** de la géométrie et du chemin de `w`, donc propagation
+      exacte de l'incertitude. La lecture en deux temps de §11 ne peut pas le
+      faire : les mêmes données informent les deux étapes, et aucune répartition
+      des rôles ne l'évite (mesuré sur données simulées, §12.16 — 99,0 % d'IC90
+      en géométrie variable, 79,4 % en géométrie figée, le vrai étant encadré).
+    - **noyau OU** plutôt que marche aléatoire : la variance de dérive sature à
+      `sigma_w²(1-e^{-2h/tau})` au lieu de croître sans borne. C'est l'argument
+      du §11.1, et c'est ce qui manquait à `spatial_pooling_model_tau` (mesuré :
+      sur-dispersion d'un facteur 3 à 7 jours d'horizon, d'où 93,7 % d'IC90).
+
+    Transition exacte, sans approximation d'Euler :
+    `w(t_k) | w(t_{k-1}) ~ N(rho_k·w(t_{k-1}), sigma_w²(1-rho_k²))`,
+    `rho_k = exp(-dt_k/tau_ou)`. Écrit sous forme matricielle `w = L·z` (L
+    triangulaire des produits cumulés de `rho`) plutôt qu'en `scan` : `M` est
+    petit (13 dates uniques sur le roster 2027) et NUTS différentie mieux un
+    produit matriciel qu'une boucle.
+
+    `tau_ou` est FIXÉ, repris de la banque commune (`model/core/opinion.py`) :
+    sur une fenêtre de campagne, seul le rapport `sigma_w²/tau` est contraint
+    (§11.4), les laisser libres tous deux revient à choisir un point d'une
+    crête plate.
+    """
+    N = slot_of.shape[0]
+    if sigma_slot_log_mu is None:
+        sigma_slot_log_mu = jnp.log(SIGMA_PRIOR_MEDIAN)
+    if tau_ou is None:
+        from model.core.opinion import load_law
+        tau_ou = float(load_law()["tau"])
+
+    slot_pos = sample_ordered_slots("mu", n_slots, target_pos=slot_prior_pos)
+    sigma_slot = numpyro.sample("sigma_slot",
+                                dist.LogNormal(sigma_slot_log_mu, sigma_slot_log_scale).expand([n_slots]))
+    sd_delta_mu = numpyro.sample("sd_delta_mu", dist.HalfNormal(sd_delta_mu_scale))
+    sd_delta_sigma = numpyro.sample("sd_delta_sigma", dist.HalfNormal(sd_delta_sigma_scale))
+    z_mu = numpyro.sample("z_mu", dist.Normal(0.0, 1.0).expand([N]))
+    z_sigma = numpyro.sample("z_sigma", dist.Normal(0.0, 1.0).expand([N]))
+    mu = numpyro.deterministic("mu", slot_pos[slot_of] + z_mu * sd_delta_mu)
+    sigma = numpyro.deterministic("sigma", sigma_slot[slot_of] * jnp.exp(z_sigma * sd_delta_sigma))
+
+    sigma_w = numpyro.sample("sigma_w", dist.HalfNormal(sigma_w_prior))
+
+    # Chemin dans la base de Karhunen-Loève tronquée (`ou_kl_basis`) : K
+    # composantes au lieu de M valeurs par candidat -- K vaut 3 à 13 quand M va
+    # de 12 à 44. Les composantes écartées sont exactement celles dont la
+    # vraisemblance ne dit rien : avec tau ≈ 262 j et des sondages espacés de
+    # 2-3 jours, la première composante porte déjà 76 à 89 % de la variance.
+    # Les échantillonner créait des dizaines de directions PLATES que NUTS
+    # devait parcourir sans contrainte -- d'où une profondeur d'arbre bloquée à
+    # 255 pas de leapfrog par itération, et des chaînes qui errent (§12.22).
+    #
+    # La dernière colonne de `kl_basis` est `as_of` : l'extrapolation sort de la
+    # même base au lieu d'être un terme ajouté après coup.
+    if dynamic_mask is None:
+        dyn = jnp.ones(N, dtype=bool)
+    else:
+        dyn = jnp.asarray(dynamic_mask, dtype=bool)
+    z_w = numpyro.sample("z_w", dist.Normal(0.0, 1.0).expand([N, kl_basis.shape[0]]))
+    w_full = sigma_w * (z_w @ kl_basis)                                 # (N, M+1)
+    # Candidats sous le seuil : `w` STATIQUE (§12.19), un seul paramètre.
+    w_static = numpyro.sample("w_static", dist.Normal(0.0, 1.0).expand([N])) * sigma_w
+    w_full = jnp.where(dyn[:, None], w_full, w_static[:, None])
+    numpyro.deterministic("w_now", w_full[:, -1])
+    w_path = w_full[:, :-1]
+
+    w_at_node = w_path[:, date_idx].T                                   # (P,N)
+    pi = spatial_shares(mu, sigma, w_at_node, tested_mask)
+    var = pi * (1.0 - pi) / jnp.clip(Np[:, None], 1.0, None)
+    if excess_var is not None:
+        var = var + excess_var[:, None]
+    ll = dist.Normal(pi, jnp.sqrt(var + 1e-8)).log_prob(Y) * tested_mask
     numpyro.deterministic("pi", pi)
     numpyro.factor("ll", jnp.sum(ll))
 
@@ -393,25 +787,52 @@ def spatial_pooling_model_ekf(slot_of, n_slots, tested_mask, Y, Np, dt_forward, 
 
 
 # --- Roster & mise en forme des sondages -----------------------------------------
-def build_roster(raw: pd.DataFrame) -> tuple[list[str], np.ndarray, list[str]]:
-    """Filtre les candidats à >= MIN_POLLS sondages RÉELS distincts (spec §6),
-    puis assigne chacun à son groupe d'ordre (ORDER_GROUPS). Un candidat
-    éligible mais absent de ORDER_GROUPS est signalé (à classer), pas planté."""
+def build_roster(raw: pd.DataFrame, as_of=None) -> tuple[list[str], np.ndarray, list[str]]:
+    """Roster modélisé : tout candidat testé dans >= MIN_POLLS sondages RÉELS
+    distincts (`notice`, pas hypothèses) ET encore testé récemment
+    (MAX_LAST_POLL_AGE_DAYS), assigné à son groupe d'ordre.
+
+    Un candidat éligible absent de ORDER_GROUPS **lève une erreur**. Il était
+    auparavant écarté avec un simple `warning`, et c'est ce qui a produit le
+    défaut le plus grave du modèle (spec §12) : Bardella, testé dans 46 nœuds
+    sur 78, disparaissait du roster sans disparaître des données, faisant
+    tomber la somme des intentions à 0,66 par nœud face à un `pi` qui somme à
+    1. Un candidat non classé n'est pas une nuisance cosmétique : c'est un trou
+    dans le bulletin que la vraisemblance ne peut pas absorber. Mieux vaut un
+    job qui échoue avec la liste à classer qu'un modèle publié faux.
+
+    Les groupes SANS aucun candidat éligible sont retirés : `ORDER_GROUPS` peut
+    donc pré-classer des candidats encore sous le seuil sans que leur groupe
+    vide n'occupe une position dans la séquence ordonnée (ce qui resserrerait
+    inutilement les autres).
+    """
     counts = raw.groupby("candidat")["notice"].nunique()
     eligible = set(counts[counts >= MIN_POLLS].index)
 
-    candidates, slot_of, slot_names = [], [], []
-    for gi, (gname, members) in enumerate(ORDER_GROUPS):
-        for m in members:
-            if m in eligible:
-                candidates.append(m)
-                slot_of.append(gi)
-        slot_names.append(gname)
+    dates = pd.to_datetime(raw["date_fin"])
+    as_of_ts = pd.Timestamp(as_of) if as_of is not None else dates.max()
+    last_seen = raw.assign(_d=dates).groupby("candidat")["_d"].max()
+    stale = {c for c in eligible
+             if (as_of_ts - last_seen[c]).days > MAX_LAST_POLL_AGE_DAYS}
+    eligible -= stale
 
-    dropped = eligible - set(candidates)
-    if dropped:
-        import warnings
-        warnings.warn(f"candidats éligibles mais absents de ORDER_GROUPS, à classer : {sorted(dropped)}")
+    unclassified = eligible - {m for _, members in ORDER_GROUPS for m in members}
+    if unclassified:
+        raise ValueError(
+            f"candidats éligibles absents de ORDER_GROUPS : {sorted(unclassified)}. "
+            "Les classer dans model.py (cf. spec §12) — les ignorer creuserait un "
+            "trou de normalisation dans la vraisemblance."
+        )
+
+    candidates, slot_of, slot_names = [], [], []
+    for gname, members in ORDER_GROUPS:
+        members_in = [m for m in members if m in eligible]
+        if not members_in:
+            continue
+        for m in members_in:
+            candidates.append(m)
+            slot_of.append(len(slot_names))
+        slot_names.append(gname)
     return candidates, np.array(slot_of), slot_names
 
 
@@ -434,6 +855,7 @@ def build_poll_arrays(df: pd.DataFrame, candidates: list[str], notice_col="notic
 
     N = len(candidates)
     tested_mask, Y, Np, dates, instituts = [], [], [], [], []
+    Np_full, notices = [], []          # cf. `notice_idx` plus bas (spec §12.7)
     for (notice, hyp), grp in g.groupby([notice_col, hyp_col], sort=False):
         mask = np.zeros(N)
         y = np.zeros(N)
@@ -444,9 +866,26 @@ def build_poll_arrays(df: pd.DataFrame, candidates: list[str], notice_col="notic
                 y[idx[cand]] = getattr(r, intention_col) / 100.0
         if mask.sum() < 2:
             continue
+        # SOUS-COMPOSITION (session du 2026-08-12, spec §12) : `spatial_shares`
+        # renvoie un `pi` qui somme à 1 sur le champ masqué, alors que `Y`
+        # restreint au roster ne somme à 1 que si le roster couvre TOUT le
+        # bulletin -- 0,94 en médiane sur 2017/2022 (petits candidats hors
+        # blocs), et jusqu'à 0,66 sur 2027 avant la réintégration de Bardella.
+        # Comparer les deux tels quels rend la vraisemblance structurellement
+        # insatisfiable. La restriction d'un multinomial à un sous-ensemble EST
+        # un multinomial : on renormalise `Y` et on déflate `N_p` d'autant
+        # (nombre de répondants exprimant une préférence pour un candidat du
+        # roster) -- pas d'ajustement ad hoc, c'est la loi exacte.
+        tot = float(y[mask > 0].sum())
+        if tot <= 0:
+            continue
+        y = y / tot
         tested_mask.append(mask)
         Y.append(y)
-        Np.append(float(grp[echantillon_col].iloc[0]) / float(grp["n_hyp"].iloc[0]))
+        n_raw = float(grp[echantillon_col].iloc[0])
+        Np.append(n_raw / float(grp["n_hyp"].iloc[0]) * tot)
+        Np_full.append(n_raw * tot)     # SANS déflation par n_hyp
+        notices.append(notice)
         dates.append(pd.Timestamp(grp[date_col].iloc[0]))
         instituts.append(str(grp[institut_col].iloc[0]))
 
@@ -458,12 +897,30 @@ def build_poll_arrays(df: pd.DataFrame, candidates: list[str], notice_col="notic
     # position du nœud p sur cette ligne, `dt_gaps[m]` l'écart (jours) entre
     # deux dates uniques consécutives. Calculé systématiquement (coût nul
     # pour le modèle tempéré, qui ignore juste ces clés).
-    unique_dates = np.sort(np.unique(dates_num))
-    date_idx = np.searchsorted(unique_dates, dates_num)
+    # Ligne du temps regroupée par PAS DE `TIME_BIN_DAYS` jours (spec §12.18).
+    # Le chemin de `w` du modèle joint est échantillonné à chaque pas : à la
+    # journée, 2022 J-30 en compte 97 (dimension N·M = 1067) alors que le
+    # roster 2027 n'en a que 13 (169). On demandait donc au modèle d'estimer
+    # l'opinion jour par jour, à une résolution où elle ne bouge pas de façon
+    # mesurable -- sur-paramétrisation qui casse NUTS (R-hat 1,59 à 2,60 sur 3
+    # coupures 2022 sur 5) sans rien apporter.
+    binned = np.floor(dates_num / TIME_BIN_DAYS) * TIME_BIN_DAYS
+    unique_dates = np.sort(np.unique(binned))
+    date_idx = np.searchsorted(unique_dates, binned)
     dt_gaps = np.diff(unique_dates)
 
+    # `notice_idx` : à quel SONDAGE appartient chaque nœud. Deux hypothèses d'un
+    # même sondage sont posées aux MÊMES répondants, leurs erreurs sont donc
+    # corrélées -- `weighted_loglik_blocked` s'en sert (spec §12.7). `Np_full`
+    # est la taille d'échantillon NON déflatée par `n_hyp` : la déflation est
+    # le procédé de repli qui suppose l'indépendance, l'autre vraisemblance
+    # modélise la corrélation explicitement et n'en a pas besoin.
+    uniq_notices = {n: i for i, n in enumerate(dict.fromkeys(notices))}
+    notice_idx = np.array([uniq_notices[n] for n in notices])
+
     return dict(tested_mask=np.array(tested_mask), Y=np.array(Y), Np=np.array(Np), dates=dates_num,
-               unique_dates=unique_dates, date_idx=date_idx, dt_gaps=dt_gaps, instituts=instituts)
+               unique_dates=unique_dates, date_idx=date_idx, dt_gaps=dt_gaps, instituts=instituts,
+               Np_full=np.array(Np_full), notice_idx=notice_idx, n_notices=len(uniq_notices))
 
 
 # --- Variance d'excès (house effects) -- calibration PROPRE à spatial_pooling ------
@@ -495,7 +952,14 @@ def excess_var_for_nodes(instituts: list[str], bank) -> np.ndarray:
 class SpatialPoolingFit:
     """Résultat d'un fit : tirages POSTÉRIEURS complets (mu, sigma, w), pas
     des moyennes -- nécessaire pour propager l'incertitude (cf. spec section
-    "Incertitude", et `pi_draws_for_mask` ci-dessous)."""
+    "Incertitude", et `pi_draws_for_mask` ci-dessous).
+
+    `w_draws` ne vient PAS forcément du même postérieur que `mu`/`sigma` : par
+    défaut (`w_dynamics=True`) il est ré-estimé après coup par
+    `w_dynamics.w_draws_ou` (inversion locale exacte + Ornstein-Uhlenbeck en
+    forme close, spec §11), la vraisemblance tempérée n'ayant aucun plancher de
+    variance temporel. `w_source` dit laquelle des deux lectures a été
+    employée."""
     candidates: list[str]
     slot_of: np.ndarray
     slot_names: list[str]
@@ -503,11 +967,14 @@ class SpatialPoolingFit:
     sigma_draws: np.ndarray   # (S, N)
     w_draws: np.ndarray       # (S, N)
     diagnostics: dict
+    w_source: str = "tempered"
 
 
 def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, half_life_days: float = DEFAULT_HALF_LIFE_DAYS,
                         draws: int = 1000, tune: int = 1000, chains: int = 4, seed: int = 27,
-                        target_accept: float = 0.95, excess_bank=None) -> SpatialPoolingFit:
+                        target_accept: float = 0.95, excess_bank=None,
+                        w_dynamics: bool = True, n_geom: int = 200,
+                        use_position_prior: bool = False, blocked: bool = False) -> SpatialPoolingFit:
     """Fit complet : roster -> arrays -> NUTS. Retourne les tirages bruts
     (mu/sigma/w), PAS un pi déjà agrégé -- `pi_draws_for_mask` construit pi
     APRÈS coup pour un scénario donné (le point de cette architecture, cf.
@@ -518,9 +985,19 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, half_life_days: flo
     -- `None` (défaut) charge celle calibrée pour CE modèle
     (`calibration.BANK_EXCESS_PATH`) si présente, repli sans excès sinon (pas
     d'erreur si jamais calibrée). PAS la Bank `bayesian_nowcast` -- mesurée en
-    sur-correction sévère, cf. `excess_var_for_nodes`."""
+    sur-correction sévère, cf. `excess_var_for_nodes`.
+
+    `w_dynamics` (défaut True) : ré-estime `w_now` par
+    `w_dynamics.w_draws_ou` au lieu de garder le `w_now` tempéré du fit NUTS.
+    Le fit NUTS lui-même est INCHANGÉ -- il ne sert plus qu'à la géométrie
+    (`mu`, `sigma`), la seule chose qu'il estime bien. Coût de l'ajout :
+    quelques secondes, aucun MCMC (spec §11). `False` restaure la lecture
+    d'origine (spec §3.1), utile pour comparer.
+    `n_geom` : tirages de géométrie propagés dans la dynamique de `w` (la
+    résolution linéaire est en `O((P·N)³)` par tirage -- 200 suffit largement
+    à résumer un postérieur, cf. la stabilité mesurée en §11)."""
     raw = raw_polls[pd.to_datetime(raw_polls["date_fin"]) >= MIN_POLL_DATE].copy()
-    candidates, slot_of, slot_names = build_roster(raw)
+    candidates, slot_of, slot_names = build_roster(raw, as_of=as_of)
     arrays = build_poll_arrays(raw, candidates)
     as_of_ord = pd.Timestamp(as_of).toordinal()
     kappa = make_kappa(arrays["dates"], as_of=as_of_ord, half_life=half_life_days)
@@ -530,11 +1007,28 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, half_life_days: flo
         excess_bank = Bank.load(BANK_EXCESS_PATH)
     excess_var = excess_var_for_nodes(arrays["instituts"], excess_bank)
 
+    prior_pos = slot_prior_positions(slot_names) if use_position_prior else None
     kwargs = dict(
         slot_of=jnp.asarray(slot_of), n_slots=len(slot_names),
         tested_mask=jnp.asarray(arrays["tested_mask"]), Y=jnp.asarray(arrays["Y"]),
         Np=jnp.asarray(arrays["Np"]), kappa=jnp.asarray(kappa), excess_var=jnp.asarray(excess_var),
+        slot_prior_pos=None if prior_pos is None else jnp.asarray(prior_pos),
     )
+    if blocked:
+        # NON RECOMMANDÉ en production (spec §12.11) : converge sur le roster
+        # 2027 (78 nœuds) mais PAS sur les fits historiques 2022 (234 nœuds,
+        # R-hat 2,35 même à `rho`/`delta` fixés). Retirer la déflation multiplie
+        # l'information par 7,6 et rend la vraisemblance trop piquée pour un
+        # modèle qui ne reproduit pas les sondages à cette précision. Gardée
+        # pour reprise éventuelle, désactivée par défaut.
+        # Vraisemblance à erreurs corrélées entre hypothèses d'un même sondage
+        # + écart de modèle (spec §12.7) : les hypothèses partagent les mêmes
+        # répondants, donc leur DIFFÉRENCE -- le signal qui identifie la
+        # géométrie -- est bien plus précise que ne le suppose un traitement
+        # indépendant à échantillon déflaté.
+        kwargs.update(notice_idx=jnp.asarray(arrays["notice_idx"]),
+                      n_notices=int(arrays["n_notices"]),
+                      Np_full=jnp.asarray(arrays["Np_full"]), rho_hyp="sample")
     t0 = time.time()
     samples, extra = run_numpyro_mcmc(spatial_pooling_model, kwargs, draws=draws, tune=tune,
                                       chains=chains, seed=seed, target_accept=target_accept,
@@ -553,13 +1047,48 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, half_life_days: flo
         "n_divergences": int(np.sum(extra["diverging"])),
         "excess_var_moyenne_pt": round(float(np.mean(excess_var)) * 10000, 3),   # fraction² -> pt²
         "excess_bank_chargee": excess_bank is not None,
+        "vraisemblance": "bloquee+delta" if blocked else "independante",
     }
+    for site in ("rho_hyp", "sigma_model"):
+        if site in samples:
+            diagnostics[site] = round(float(np.mean(np.asarray(samples[site]))), 4)
+    mu_draws = np.asarray(samples["mu"]).reshape(-1, N)
+    sigma_draws = np.asarray(samples["sigma"]).reshape(-1, N)
+    w_draws = np.asarray(samples["w_now"]).reshape(-1, N)
+    w_source = "tempered"
+
+    if w_dynamics:
+        from model.models.spatial_pooling.w_dynamics import (build_pseudo_observations, load_w_law,
+                                                             w_draws_ou)
+        law = load_w_law()
+        sel = np.linspace(0, len(mu_draws) - 1, min(n_geom, len(mu_draws))).astype(int)
+        t0 = time.time()
+        pobs = build_pseudo_observations(mu_draws[sel], sigma_draws[sel], arrays["tested_mask"],
+                                         arrays["Y"], arrays["Np"], arrays["dates"],
+                                         arrays["instituts"], excess_var)
+        w_draws = w_draws_ou(pobs, as_of=float(as_of_ord), sigma_w2=law["sigma_w2"],
+                             tau_w=law["tau_w"], sigma_house=law.get("sigma_house", 0.0),
+                             seed=seed, n_draw_per_geom=5)
+        mu_draws, sigma_draws = np.repeat(mu_draws[sel], 5, axis=0), np.repeat(sigma_draws[sel], 5, axis=0)
+        w_source = "ou"
+        # `gap_jours` : âge du dernier sondage AYANT TESTÉ chaque candidat --
+        # c'est lui, et non l'âge du sondage le plus récent tous candidats
+        # confondus, qui pilote le plancher de variance de ce candidat.
+        tested_any = arrays["tested_mask"] > 0
+        gaps = [float(as_of_ord - arrays["dates"][tested_any[:, i]].max()) if tested_any[:, i].any()
+                else float("nan") for i in range(N)]
+        diagnostics.update({
+            "w_source": "ou",
+            "w_sigma_w2": round(float(law["sigma_w2"]), 4),
+            "w_tau_w": round(float(law["tau_w"]), 1),
+            "w_temps_secondes": round(time.time() - t0, 1),
+            "w_gap_jours": {c: g for c, g in zip(candidates, gaps)},
+        })
+
     return SpatialPoolingFit(
         candidates=candidates, slot_of=slot_of, slot_names=slot_names,
-        mu_draws=np.asarray(samples["mu"]).reshape(-1, N),
-        sigma_draws=np.asarray(samples["sigma"]).reshape(-1, N),
-        w_draws=np.asarray(samples["w_now"]).reshape(-1, N),
-        diagnostics=diagnostics,
+        mu_draws=mu_draws, sigma_draws=sigma_draws, w_draws=w_draws,
+        diagnostics=diagnostics, w_source=w_source,
     )
 
 

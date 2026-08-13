@@ -13,8 +13,8 @@ from numpyro.infer import MCMC, NUTS, init_to_median
 
 def run_numpyro_mcmc(model_fn, model_kwargs: dict, draws: int = 1000, tune: int = 1000,
                      chains: int = 4, seed: int = 27, target_accept: float = 0.9,
-                     extra_fields: tuple[str, ...] = (), init_strategy=init_to_median
-                     ) -> tuple[dict, dict]:
+                     extra_fields: tuple[str, ...] = (), init_strategy=init_to_median,
+                     chain_method: str = "sequential") -> tuple[dict, dict]:
     """Lance NUTS sur `model_fn(**model_kwargs)`.
 
     `init_strategy=init_to_median` (défaut NumPyro : `init_to_uniform`, un
@@ -29,13 +29,21 @@ def run_numpyro_mcmc(model_fn, model_kwargs: dict, draws: int = 1000, tune: int 
     `init_to_median` démarre au médian du prior — évite cette queue par
     construction, sans changer la géométrie explorée une fois démarré.
 
+    `chain_method` reste `"sequential"` par défaut : c'est le comportement
+    historique de tous les modèles du dépôt, et le changer globalement
+    modifierait leurs temps et leurs empreintes mémoire sans qu'on l'ait
+    demandé. `"vectorized"` exécute les chaînes en un seul `scan` vmappé — sur
+    CPU c'est nettement plus rapide (chaque pas devient un produit matriciel
+    groupé au lieu de N séparés) au prix d'une empreinte mémoire multipliée par
+    le nombre de chaînes. À passer explicitement là où on en a besoin.
+
     Retourne `(samples, extra)` : `samples` est le dict `{site: array (chains,
     draws, ...)}` du postérieur (chaînes séparées — nécessaire pour R-hat/ESS
     et pour construire une `Bank` avec dims `("chain", "draw", ...)`), `extra`
     les champs demandés dans `extra_fields` (ex. `"diverging"`)."""
     kernel = NUTS(model_fn, target_accept_prob=target_accept, init_strategy=init_strategy)
     mcmc = MCMC(kernel, num_warmup=tune, num_samples=draws, num_chains=chains,
-                chain_method="sequential", progress_bar=False)
+                chain_method=chain_method, progress_bar=False)
     mcmc.run(jax.random.PRNGKey(seed), **model_kwargs, extra_fields=extra_fields)
     extra = {f: mcmc.get_extra_fields()[f] for f in extra_fields}
     return mcmc.get_samples(group_by_chain=True), extra

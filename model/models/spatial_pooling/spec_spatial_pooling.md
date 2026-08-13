@@ -9,6 +9,12 @@ de production) : `notebooks/_spatial_core.py`, `03_spatial_prototype.py`,
 `03b_spatial_debug.py`, `04_spatial_real_data.py`, `04b_spatial_halflife_backtest.py`,
 `04c_spatial_sanity_check.py`.
 
+**Ordre de lecture** : les sections sont dans l'ordre où les découvertes ont eu
+lieu, pas dans l'ordre de l'état actuel. Deux conclusions y ont été RÉVISÉES
+depuis (encadrés en place) : la lecture de `w_now` par vraisemblance tempérée
+(§3.1) est remplacée par §11, et le diagnostic « la diffusion n'est pas la
+cause dominante » (§6.4) est erroné pour une raison identifiée en §11.1.
+
 ## 0. Motivation — pourquoi ce modèle, en plus du SSM en production
 
 Le SSM compositionnel (`model/models/bayesian_nowcast/`) fusionne les alternates
@@ -163,6 +169,13 @@ processus/bruit d'observation, avec `tau` échantillonné normalement par NUTS �
 reporté explicitement ("on commence simple, EKF/UKF ensuite") pour ne pas
 cumuler la complexité de l'ordre/hiérarchie ET du filtrage séquentiel dans la
 même itération.
+
+> **DÉPASSÉ (§11).** Cette section décrit toujours le FIT, qui est inchangé,
+> mais `w_now` n'est plus LU depuis ce postérieur : la vraisemblance tempérée
+> n'a aucun plancher de variance temporel (démonstration en §11.1), ce qui la
+> rend structurellement incapable de porter l'incertitude du nowcast. Elle ne
+> sert plus qu'à rendre tenable l'hypothèse d'un `w` statique pendant
+> l'estimation de la géométrie.
 
 ### 3.2 Jauge non identifiée de $w$ (découverte du prototype, `03b_spatial_debug.py`)
 
@@ -378,6 +391,15 @@ identique à 2017 (5 sondages train) **élimine l'hypothèse d'un artefact de
 petit échantillon** — c'est un problème structurel de spécification du
 modèle, pas un manque de données.
 
+> **CONCLUSION RÉVISÉE (§11.1).** La stratification par âge ci-dessous conclut
+> que la diffusion n'est pas la cause dominante. **Ce raisonnement est faux** :
+> la signature testée est l'âge du sondage TENU (0-21 j après la coupure),
+> alors que le plancher de variance manquant est piloté par l'âge des sondages
+> d'ENTRAÎNEMENT (15-60 j avant), identique pour tous les points du test. Une
+> couverture plate est donc exactement ce qu'un plancher manquant prédit — ce
+> test ne pouvait pas départager les deux hypothèses. La cause dominante EST
+> temporelle, cf. §11.
+
 **Stratification par âge du sondage tenu (`AGE_BUCKETS`,
 `04d_spatial_coverage_check.py`) — hypothèse diffusion INFIRMÉE comme cause
 dominante.** Deux hypothèses concurrentes envisagées en session : (a) `w_now`
@@ -584,16 +606,24 @@ roster), donc `projeter_au_scrutin` reste correct tel quel, mais ça n'a pas
 
 ## 10. Limitations connues / travaux non faits
 
-- **Variance d'excès (house effects) implémentée mais pas parfaitement
-  calibrée** (§6.6) — réduit la sous-couverture sans l'éliminer (IC90
-  empirique ~70% au lieu de 90% sur 2022, contre 54% sans elle) ; reste
-  sous-confiant, mode d'échec plus sûr que la sur-confiance mais pas résolu.
-  Pas de composante par bloc/candidat, ni dépendante de l'horizon (§6.4 avait
-  écarté la piste diffusion sur la base d'un diagnostic utilisant alors une
-  mauvaise variance de référence — à revérifier maintenant que la variance
-  de base est corrigée).
+- **Variance d'excès (house effects)** (§6.6) — la sous-couverture qu'elle
+  laissait subsister (IC90 ~70 % au lieu de 90 %) est **traitée en §11** : sa
+  cause n'était pas l'amplitude de l'excès mais l'absence de plancher de
+  variance temporel. La Bank d'excès elle-même reste employée telle quelle,
+  sans composante par bloc/candidat ni dépendante de l'horizon.
+- **`sigma_w2` ne vaut pas la même chose sur 2017 et sur 2022** (§11.5) :
+  facteur ~4 entre les deux optimums de couverture. Une loi de diffusion
+  stationnaire ne peut pas être juste sur les deux ; le réglage retenu suit
+  2022 (échantillon fiable) et sous-couvre sur 2017.
 - **`half_life` non affiné** : balayage grossier {15,45,∞}, pas de recherche
-  autour de 15j (ex. 5/10/15/20/25j).
+  autour de 15j (ex. 5/10/15/20/25j). Depuis §11 il ne pilote plus QUE la
+  géométrie (`mu`, `sigma`), plus l'incertitude de `w` — son réglage est donc
+  devenu beaucoup moins critique. Il reste nécessaire : `spatial_pooling_model`
+  n'a qu'un `w` statique, et c'est la températion qui rend cette hypothèse
+  tenable sur toute une campagne.
+- ~~Fit NUTS de géométrie non convergé sur le roster 2027~~ — **RÉSOLU**
+  (§12.4) : prior de position mal centré. R-hat 1,62 → 1,002, ESS 8,6 → 1970,
+  67 divergences → 0.
 - **Jauge de `w` non fixée** (§3.2) — inoffensif tant que seul `pi` est
   consommé, à corriger avant d'afficher `w` comme diagnostic.
 - **Rattachements de groupe non tranchés avec l'utilisateur** : Dupont-Aignan
@@ -605,5 +635,1079 @@ roster), donc `projeter_au_scrutin` reste correct tel quel, mais ça n'a pas
 - **Pas branché sur `ForecastModel`** (`model/core/base.py`) ni sur le contrat
   de sortie du site (`assemble_snapshot`/`validate_snapshot`) — décision
   explicite de l'utilisateur, à traiter dans une étape séparée.
-- **Grille $W$ uniforme** — l'extension "densité électorale en cloche" de la
-  spec d'origine n'a pas été testée.
+- ~~Grille $W$ uniforme, extension "densité électorale en cloche" non testée~~
+  — **CLOS (§12.6) : la densité électorale n'est pas identifiable séparément
+  des positions.** Ce n'est pas une extension à faire, c'est un degré de
+  liberté redondant.
+
+## 11. Dynamique de `w` — inversion locale exacte + OU en forme close (session du 2026-08-12)
+
+Statut : **implémenté et calibré** (`w_dynamics.py`, `bank_w_ou.json`), branché
+par défaut sur `fit_spatial_pooling(w_dynamics=True)`. Remplace la LECTURE de
+`w_now` (§3.1) ; le fit NUTS lui-même est **inchangé** et ne sert plus qu'à la
+géométrie (`mu`, `sigma`). Résultat en une ligne : sur 2022 (l'échantillon
+fiable, n=231) la couverture IC90 passe de **66,2 % à 93,9 %** (nominal 90),
+dont 66,2 → 78,8 par le seul plancher de variance à convention de lecture
+identique. Sur 2017 (n=80) elle passe de 66,2 % à 72,5 %, nettement en dessous
+du nominal — cf. §11.5 pour ce désaccord entre les deux élections, qui n'est
+PAS résolu.
+
+### 11.1 Diagnostic — pourquoi la vraisemblance tempérée ne pouvait pas y arriver
+
+§6.6 laissait deux hypothèses ouvertes pour la sous-couverture résiduelle
+(IC90 ≈ 70 % au lieu de 90 %) : échelle d'excès encore trop petite, ou
+composante temporelle résiduelle. C'est la seconde, et pour une raison
+**structurelle**, pas d'amplitude.
+
+La variance de Laplace du modèle tempéré vaut
+$\big(\text{prior}^{-1} + \sum_p \kappa_p I_p\big)^{-1}$ : elle décroît en
+$1/n$ **sans borne inférieure**, quel que soit l'âge des sondages. Un
+Ornstein-Uhlenbeck impose au contraire un plancher
+$\sigma_w^2(1 - e^{-2g/\tau_w})$ qui ne dépend QUE de l'écart $g$ au dernier
+sondage et qu'aucune accumulation ne franchit. Mesuré (grille réaliste,
+$N_p{=}1000$, excès de §6.6, candidat médian à 7,3 %) :
+
+| âge des sondages | n=1 | n=5 | n=20 | n=100 | plancher OU seul |
+|---|---|---|---|---|---|
+| 15 j | 1,176 | 0,530 | 0,266 | 0,119 | **0,805** |
+| 30 j | 1,646 | 0,748 | 0,375 | 0,168 | **1,107** |
+
+(écart-type de `pi` en points). À 30 jours et 20 sondages, le modèle actuel
+annonce 0,375 pt là où le seul plancher en vaut 1,107 — et il descend encore à
+0,017 pt à n=10 000. **Aucun choix de $\kappa_p$ ne corrige ça** : la famille
+tempérée est incapable de produire un plancher, puisque sa variance tend vers 0
+avec $n$ pour tout $\kappa > 0$ fixé.
+
+**Ceci corrige aussi le raisonnement de §6.4.** La stratification par âge y
+était PLATE, et on en avait conclu « la diffusion n'est pas la cause
+dominante ». La signature testée était la mauvaise : ce qui pilote le plancher
+n'est pas l'âge du sondage TENU (0-21 j après la coupure) mais l'âge des
+sondages d'ENTRAÎNEMENT (15-60 j avant), qui est le même pour tous les points
+du test. Une couverture plate est donc exactement ce qu'un plancher manquant
+prédit — §6.4 ne pouvait pas trancher.
+
+### 11.2 Le mécanisme
+
+Trois temps, aucun MCMC (cf. l'en-tête de `w_dynamics.py` pour le détail).
+
+1. **Inversion locale EXACTE.** Pour chaque nœud on résout $\pi(w) = \tilde Y_p$
+   sur le champ testé. Ce n'est pas une linéarisation : c'est bien posé, parce
+   que $\pi = \nabla\Phi$ avec
+   $\Phi(w) = \sum_b W_b\,\mathrm{logsumexp}_{j\in S_p}(w_j + D_{jb})$, dont le
+   hessien est
+   $J = \sum_b W_b\,(\mathrm{diag}(P_b) - P_b P_b^\top)$ — **SDP, de noyau
+   exactement $\mathrm{span}(1)$** (la jauge de §3.2 ; vérifié contre
+   `jax.jacfwd` à $10^{-17}$ près). $\Phi$ est donc strictement convexe sur
+   $\{\sum w = 0\}$ et l'inversion y est un difféomorphisme (dualité de
+   Legendre). Newton amorti converge en **6 itérations médianes** (p95 : 16),
+   exactement, y compris sur une composition contenant un candidat à 0,5 %.
+
+   C'est la différence de fond avec l'EKF parqué (§3.ter) : l'EKF linéarise
+   autour de la moyenne PRÉDITE, à chaque nœud, et re-différentie le tout sous
+   NUTS (44 min sans converger sur le roster réel). Ici on linéarise autour de
+   **la donnée**, une fois, hors de tout MCMC.
+
+2. **Méthode delta.** $\hat w_p \approx w(t_p) + \text{bruit}$, de covariance
+   $C_p = J_p^{+}\Sigma_p J_p^{+}$. On a donc une pseudo-observation
+   **linéaire-gaussienne** de $w(t_p)$ — la situation exacte où `gp_pooling`
+   sait travailler en forme close, et que l'agrégation sur la grille
+   interdisait jusqu'ici.
+
+3. **Krigeage universel à noyau OU.** $w_i(t) = m_i + u_i(t)$,
+   $u \sim \mathrm{OU}(0,\sigma_w^2,\tau_w)$ indépendant par candidat, $m$
+   marginalisé par prior plat — même choix que `gp_math.gp_posterior`, et pour
+   la même raison : aux grands écarts la prévision revient vers le niveau MOYEN
+   estimé du candidat, pas vers 0 (qui n'aurait aucun sens), avec une variance
+   qui sature proprement. Une seule factorisation de Cholesky
+   $(P{\cdot}N)\times(P{\cdot}N)$ par tirage de géométrie.
+
+**Jauge et masques.** Chaque nœud teste un champ différent, donc n'informe que
+les CONTRASTES internes à $S_p$. C'est encodé exactement, sans bricolage, par
+le projecteur orthogonal $C_{S_p} = \mathrm{diag}(m_p) - m_p m_p^\top/K_p$ pris
+comme matrice de design du nœud ; les directions non identifiées reçoivent
+`PADDING_VAR`, même procédé que dans `bayesian_nowcast/latent.py`.
+
+**`tau_w` n'est pas réestimé** : repris de la banque COMMUNE
+(`model/core/opinion.py`, $\tau \approx 262$ j). Deux raisons — (a)
+*identifiabilité* : sur une fenêtre de campagne tous les écarts sont petits
+devant $\tau_w$ et $\sigma_w^2(1-e^{-\Delta/\tau_w}) \approx \sigma_w^2\Delta/\tau_w$,
+seul le RAPPORT est contraint (mesuré sur 2017 : `(0,2 ; 262 j)` et
+`(0,4 ; 500 j)` sont à 0,0 de nll l'un de l'autre — crête plate) ; (b)
+*cohérence* : $\tau$ mesure la vitesse de retour de l'opinion, la même pour
+tous les modèles du dépôt, seule l'AMPLITUDE dépend de l'espace de
+paramétrage. C'est exactement l'argument de `opinion.py` sur ce qui se reprend
+et ce qui ne se reprend pas du saut terminal.
+
+### 11.3 Validation synthétique (vérité terrain connue, aucun NUTS)
+
+`scratchpad t3_synth.py` — 10 candidats, chemin OU simulé sur 150 jours, 80
+nœuds de champ et de taille aléatoires, bruit d'échantillonnage + excès.
+Couverture de `pi(as_of)` sur 150 réplications indépendantes :
+
+| lecture de `w` | IC50 | IC80 | IC90 |
+|---|---|---|---|
+| **OU + inversion locale** | **50,8 %** | **80,7 %** | **89,8 %** |
+| tempérée (half_life=15 j), MÊME jeu | 15,7 % | 30,4 % | 38,3 % |
+
+Les deux propriétés qualitatives demandées sont vérifiées séparément :
+
+- **des sondages qui se confirment resserrent** : à écart fixe de 10 j,
+  sd(`pi`) passe de 1,109 pt (n=1) à 0,609 pt (n=32) — et **sature** au
+  plancher OU au lieu de tendre vers 0 ;
+- **le temps qui passe élargit** : pour 16 sondages groupés, sd(`pi`) va de
+  0,173 pt (écart 0) à 1,854 pt (écart 120 j), en suivant de près le plancher
+  (0,472 vs 0,429 à 5 j ; 1,042 vs 0,988 à 30 j).
+
+### 11.4 Identifiabilité mesurée sur données réelles — la crête est bien plate
+
+Profil REML des pseudo-observations (`notebooks/04g_spatial_w_ou.py eval`),
+2022 J-60 (276 nœuds, 11 candidats) :
+
+| σ_w² \ τ_w | 60 j | 120 j | 262 j | 500 j |
+|---|---|---|---|---|
+| 0,1 | **2189,7** | 2195,6 | 2222,0 | 2263,0 |
+| 0,2 | 2202,9 | 2190,7 | 2196,2 | 2217,9 |
+| 0,4 | 2243,6 | 2208,1 | **2191,6** | 2195,2 |
+| 0,8 | 2316,7 | 2251,2 | 2207,8 | 2192,9 |
+
+`(0,1 ; 60 j)`, `(0,2 ; 120 j)`, `(0,4 ; 262 j)` et `(0,8 ; 500 j)` tiennent
+dans **3,2 unités de nll** — sur un intervalle de 8× en `σ_w²`. La crête
+annoncée en §11.2 n'est donc pas un artefact du synthétique : laisser les deux
+paramètres libres reviendrait à choisir un point arbitraire dessus.
+`tau_w = 262 j` (banque commune) est fixé, `σ_w²` seul est calibré.
+
+### 11.5 Backtest de couverture 2017/2022 — protocole de §6.4 inchangé
+
+`notebooks/04g_spatial_w_ou.py`. Le fit NUTS de géométrie est celui de 04f
+(`half_life=15 j`, variance d'excès de §6.6) ; seule la lecture de `w` change.
+2017 J-30 : 21 nœuds train / n=80 test. 2022 J-60 : 276 nœuds train / n=231
+test (l'échantillon fiable, cf. §5.2).
+
+**Deux conventions de lecture, à ne pas mélanger.** La lecture tempérée est
+figée à `as_of` *par construction* (elle n'a aucun mécanisme temporel), alors
+que l'OU peut prédire `w` **à la date du sondage tenu**. C'est légitime — la
+date d'un sondage est une métadonnée connue, pas sa valeur — et c'est ce que
+fait une vraie prévision ; le protocole de §6.4/§6.5/§6.6 comparait en fait un
+nowcast à `as_of` à un sondage publié jusqu'à 21 jours plus tard, confondant
+erreur d'estimation et dérive réelle. Les deux sont donc rapportées :
+
+| lecture de `w` | 2017 IC50/80/90 | 2022 IC50/80/90 | pooled (n=311) |
+|---|---|---|---|
+| tempérée (§3.1 + §6.6), figée | 28,7 / 51,2 / 66,2 | 35,1 / 58,4 / 66,2 | 33,4 / 56,6 / 66,2 |
+| OU σ_w²=0,2, **figée à as_of** | 26,2 / 52,5 / 65,0 | 42,4 / 70,1 / 78,8 | 38,2 / 65,6 / 75,2 |
+| OU σ_w²=0,1, à la date du sondage | 40,0 / 62,5 / 72,5 | 46,3 / 77,5 / 88,3 | 44,7 / 73,6 / 84,2 |
+| OU σ_w²=0,13, à la date du sondage | 41,2 / 65,0 / 72,5 | 48,9 / 79,2 / 89,6 | 46,9 / 75,5 / 85,2 |
+| OU σ_w²=0,16, à la date du sondage | 43,8 / 65,0 / 71,2 | 52,8 / 82,3 / 92,2 | 50,5 / 77,9 / 86,8 |
+| **OU σ_w²=0,2, à la date du sondage** | 43,8 / 66,2 / 72,5 | 55,8 / 84,8 / 93,9 | **52,7 / 80,0 / 88,4** |
+| OU σ_w²=0,4, à la date du sondage | 52,5 / 68,8 / 80,0 | 62,8 / 89,6 / 96,5 | 60,2 / 84,2 / 92,3 |
+| OU σ_w²=0,8, à la date du sondage | 60,0 / 83,8 / 91,2 | 74,9 / 95,2 / 99,1 | 71,1 / 92,3 / 97,1 |
+
+Les deux gains se décomposent proprement sur 2022 (IC90) : **66,2 → 78,8** par
+le seul plancher de variance, à convention de lecture IDENTIQUE à la tempérée ;
+puis **78,8 → 93,9** en prédisant à la date du sondage.
+
+**`σ_w² = 0,2` retenu** (`bank_w_ou.json`) : c'est le réglage dont l'écart
+total au nominal sur l'échantillon *pooled* est le plus faible (4,3 points
+cumulés sur les trois niveaux, contre 5,8 à 0,16 et 12,4 à 0,13), et il tombe
+dans la zone plate du REML (Δnll = 3,2 vs l'argmin à τ=262 j). `σ_w² = 0,16`
+lui est statistiquement indiscernable.
+
+**Ce qui reste franchement imparfait, et qu'il ne faut pas maquiller** :
+
+1. *Le réglage optimal n'est pas le même sur les deux élections.* 2022 est
+   quasi-nominal à `σ_w² ≈ 0,13` (48,9 / 79,2 / 89,6) ; 2017 n'atteint le
+   nominal qu'à `σ_w² ≈ 0,8`, où 2022 sur-couvre massivement (IC90 99,1 %).
+   Facteur ~5. Interprétation la plus plausible, NON vérifiée : 2017 J-30 n'a
+   que **5 sondages d'entraînement** (limite de la source Wikipedia, §5.2) et
+   couvre le dernier mois de campagne, exceptionnellement volatil — une loi de
+   diffusion STATIONNAIRE ne peut pas être juste sur les deux à la fois. Le
+   choix retenu privilégie 2022 (3× plus d'observations de test, 13× plus de
+   nœuds d'entraînement).
+2. *À `σ_w²=0,2`, 2022 sur-couvre légèrement et 2017 sous-couvre* — le pooled
+   n'est au nominal que parce que les deux erreurs se compensent. C'est un
+   compromis assumé, pas une réussite sur chaque élection prise à part.
+
+### 11.6 Effet d'institut persistant (`sigma_house`) — testé, PAS adopté
+
+Le solveur accepte un terme `sigma_house` (effet partagé par tous les sondages
+d'un même institut, comme `sigma_h` dans `gp_math.gp_posterior`). Testé à la
+valeur de la banque commune (0,126) :
+
+| réglage | 2017 | 2022 | pooled |
+|---|---|---|---|
+| σ_w²=0,10, σ_house=0,126 | 46,2 / 67,5 / 77,5 | 50,6 / 81,8 / 89,2 | 49,5 / 78,1 / 86,2 |
+| σ_w²=0,13, σ_house=0,126 | 50,0 / 68,8 / 80,0 | 52,8 / 82,7 / 90,5 | 52,1 / 79,1 / 87,8 |
+
+Il fait **mieux** que le réglage retenu : il rapproche 2017 du nominal sans
+dégrader 2022. Il n'est pourtant pas adopté, pour une raison de méthode : ce
+serait un **second paramètre libre réglé sur le même backtest** que le premier,
+et son articulation avec la variance d'excès de §6.6 n'est pas tranchée. Les
+deux termes n'ont pas la même FORME selon la taille du candidat — l'excès de
+§6.6 est une constante en points de `pi` (il corrige donc surtout les petits
+candidats), `sigma_house` vit dans l'espace `w` et son effet suit la courbure
+multinomiale (mesuré : 0,14 pt sur un candidat à 1 %, 1,64 pt sur un candidat
+à 18 %, donc il élargit surtout les GROS). Ils sont peut-être complémentaires
+plutôt que redondants — mais c'est aux 8135 paires model-free de §6.5 de
+l'arbitrer (l'excès y a été ajusté en supposant une forme constante en points,
+hypothèse jamais testée contre l'autre), pas au backtest de couverture. À
+traiter dans une session dédiée.
+
+### 11.7 Contrôle sur le roster 2027 (`notebooks/04h_spatial_w_ou_2027.py`)
+
+Géométrie fittée une fois au 2026-07-10 (dernier sondage), puis `w` relu à
+plusieurs `as_of`. Largeur de l'IC90 sur `pi`, scénario « tous les candidats » :
+
+| candidat | moy. | as_of+0 | +15 j | +30 j | +60 j | tempérée |
+|---|---|---|---|---|---|---|
+| Le Pen | 30,8 % | 3,32 | 9,14 | 12,33 | 16,58 | 3,59 |
+| Philippe | 15,7 % | 2,65 | 5,50 | 7,12 | 9,92 | 2,06 |
+| Mélenchon | 12,8 % | 2,55 | 4,71 | 6,02 | 8,08 | 2,62 |
+| Glucksmann | 8,6 % | 1,57 | 4,34 | 5,42 | 7,13 | 1,39 |
+| Zemmour | 3,0 % | 0,92 | 1,83 | 2,33 | 3,04 | 0,85 |
+| Arthaud | 1,0 % | 0,46 | 0,68 | 0,82 | 1,13 | 0,46 |
+
+Deux lectures. **(a)** À `as_of+0`, les deux méthodes donnent quasiment la même
+largeur (3,32 vs 3,59 pour Le Pen) — le mécanisme ne gonfle rien gratuitement
+quand il n'y a pas de temps écoulé. **(b)** La colonne `tempérée` est la MÊME
+quel que soit `as_of` : c'est exactement le défaut de §11.1, rendu visible sur
+données réelles. Le job quotidien tourne à J+33 du dernier sondage au moment
+de l'écriture — la lecture tempérée y annoncerait toujours 3,59 pt sur Le Pen.
+
+**Contrôle de magnitude indépendant du backtest** : la loi de diffusion
+COMMUNE du dépôt (`bank_opinion.json`, σ²=0,1158, τ=262 j, calibrée par REML
+sur 2017/2022 en espace CLR) implique à elle seule, pour un candidat à 30,8 %,
+un IC90 de 11,58 / 16,23 / 22,55 pt à +15 / +30 / +60 j. Le mécanisme en
+produit 9,14 / 12,33 / 16,58 — **du même ordre, systématiquement ~25 % plus
+étroit** (normal : le krigeage conserve l'information de l'historique de
+sondages, alors que le calcul de diffusion pure part d'un point). `σ_w² = 0,2`
+n'est donc pas un réglage arbitraire ajusté sur un backtest : il correspond à
+une diffusion un peu plus lente que celle que le dépôt mesure par ailleurs.
+
+*Limite de ce contrôle* : au 2026-07-10 les 12 candidats du roster ont TOUS été
+testés le jour même (`écart j-0` = 0 partout), donc la différenciation
+PAR CANDIDAT de l'écart au dernier test — le cas Bardella de §5.3 — n'est pas
+exercée par ce jeu de données. Le mécanisme l'implémente (chaque candidat n'est
+informé que par les nœuds qui le testent) et la différenciation par quantité
+d'information est bien visible (Hollande, 6,4 %, a 2,06 pt là où Retailleau,
+7,2 %, en a 1,34), mais l'effet de l'écart lui-même reste à vérifier sur un
+roster où il varie.
+
+### 11.8 Coût
+
+Sur le roster 2027 réel (12 candidats, 78 nœuds, `D = P·N = 936`) :
+pseudo-observations **~40 s**, postérieur OU + tirages **~6 s**, pour 200
+tirages de géométrie — soit **~1 min** ajoutée à un fit qui en prend ~6.
+La factorisation reste praticable bien au-delà : sur 2022 J-60 (276 nœuds,
+`D = 3036`) un Cholesky complet prend 0,8 s.
+
+Le risque de budget CI (§ contrainte `timeout-minutes: 30`) n'est donc PAS ce
+mécanisme mais le fit NUTS de géométrie qui le précède (353 s en local sur
+2027, davantage sur un runner GitHub). Optimisations évidentes si besoin :
+réduire `n_geom` (la résolution est en `O((P·N)³)` par tirage), ou exploiter
+le fait que le noyau OU est markovien pour passer à un filtre de Kalman en
+`O(P·N³)` — non fait, inutile aux tailles actuelles.
+
+## 12. Trou de normalisation — la vraisemblance était structurellement insatisfiable (session du 2026-08-12)
+
+Trouvé en cherchant pourquoi le fit NUTS de géométrie ne convergeait pas sur le
+roster 2027 (R-hat 1,62, ESS 8,6, cf. §10) alors qu'il converge sans problème
+sur 2022. **Ce n'était pas un problème d'échantillonnage.**
+
+### 12.1 Le défaut
+
+`spatial_shares` renvoie un `pi` qui **somme à 1** sur le champ masqué : c'est
+un softmax normalisé sur les candidats testés, agrégé sur la grille. La
+vraisemblance (§4) compare ce `pi` à `Y`, les intentions rapportées restreintes
+au roster du modèle. Or `Y` ne somme à 1 que si le roster couvre TOUT le
+bulletin. Mesuré, somme des intentions par nœud :
+
+| jeu | médiane | min | nœuds sous 0,80 |
+|---|---|---|---|
+| 2017 | 0,955 | 0,470 | 12 / 35 |
+| 2022 | 0,940 | 0,750 | 19 / 356 |
+| **2027 (roster d'alors)** | **0,660** | **0,425** | **46 / 78** |
+
+Sur 2027, la vraisemblance demandait donc à `(mu, sigma, w)` de produire un
+`pi` sommant à 0,66 — ce qu'**aucune** valeur ne peut faire. NUTS ne diverge
+pas au hasard : il est poussé dans des directions arbitraires pour absorber un
+écart irréductible, ce qui aplatit la géométrie et fait converger les chaînes
+vers des compromis différents. Sur 2017/2022 l'écart n'était que de ~5 %, absorbé
+comme un biais quasi uniforme — d'où le contraste entre les deux.
+
+**Cause immédiate** : Bardella avait été retiré de `ORDER_GROUPS` (§2.1) au motif
+que Le Pen est la candidate officielle du RN. Mais c'est un choix de **scénario**,
+et ce modèle choisit ses scénarios **à la lecture** (`pi_draws_for_mask`, §8),
+pas au fit. Appliqué au roster, il retirait ~35 % du bulletin du modèle sans le
+retirer des données : Bardella est testé dans **46 nœuds sur 78**.
+
+Ce défaut est probablement aussi à la racine du **mode dégénéré de §3.bis**
+(les `mu` s'effondrant entre 0,70 et 0,99) : même cause, le modèle déformant sa
+géométrie pour approcher une contrainte impossible. Non revérifié.
+
+### 12.2 Les correctifs
+
+1. **Bardella réintégré au roster de fit** (groupe MLP). Somme médiane par
+   nœud : **0,660 → 1,000**, plus aucun nœud sous 0,80. Pour n'afficher que Le
+   Pen, on masque Bardella à la lecture — ce pour quoi §8 existe.
+2. **Sous-composition explicite** (`build_poll_arrays`) : `Y` est renormalisé
+   sur le champ modélisé et `N_p` déflaté d'autant. Ce n'est pas un rustinage :
+   la restriction d'un multinomial à un sous-ensemble EST un multinomial, de
+   taille `N_p·ΣY` (les répondants exprimant une préférence pour un candidat du
+   roster). Corrige aussi le résidu de ~5 % sur 2017/2022. Après correctif, les
+   trois jeux ont une somme de 1,0000 exactement.
+3. **Roster élargi et garde-fou** (`build_roster`) : tout candidat à
+   `>= MIN_POLLS` sondages distincts **et** testé depuis moins de
+   `MAX_LAST_POLL_AGE_DAYS` (90 j, non calibré — garde-fou, aucun éligible n'en
+   approche aujourd'hui) est modélisé. Un candidat éligible absent de
+   `ORDER_GROUPS` **lève désormais une erreur** au lieu d'un `warning` : c'est
+   précisément le `warning` silencieux qui a laissé passer ce défaut. Les
+   groupes vides sont élagués, ce qui permet à `ORDER_GROUPS` de pré-classer
+   des candidats encore sous le seuil sans déformer la séquence ordonnée.
+
+Roster 2027 après correctifs : **13 candidats, 9 groupes**, Hollande et
+Bardella inclus.
+
+**Le plus proche du seuil, à trancher** : **Villepin** (4 sondages, encore
+testé le 2026-07-10, 3,8 %). Pré-classé dans un groupe propre entre PS et
+Attal, mais ce placement est réellement ambigu (ex-Premier ministre gaulliste,
+donc à droite par trajectoire, qui capte aujourd'hui un électorat de
+gauche/centre-gauche). Il basculera dans le roster au prochain sondage qui le
+teste. Même statut, moins urgent : Darmanin/Lisnard → LR, Lecornu → Attal,
+Knafo → Zemmour.
+
+### 12.3 Ce que ça implique pour §11
+
+La calibration de `sigma_w2` de §11.5 a été faite **avant** ces correctifs.
+Les fits de géométrie 2017/2022 employés sont donc entachés du résidu de ~5 %
+(pas du trou de 34 %, propre à 2027). L'ordre de grandeur des conclusions de
+§11 n'est pas en cause — le diagnostic du plancher de variance manquant (§11.1)
+est analytique et indépendant des données — mais **`sigma_w2 = 0,2` doit être
+réétalonné** sur des fits corrigés. En cours.
+
+### 12.4 Le prior de position était mal centré — vraie cause du R-hat 1,62
+
+Le trou de normalisation (§12.1) corrigé, le fit 2027 ne convergeait **toujours
+pas**. Le diagnostic par site montrait `mu`/`mu_slot_pos`/`mu_base` à R-hat
+~1,6 mais `mu_gaps` à 1,06 : les ÉCARTS entre groupes étaient identifiés, pas
+la position absolue. Les moyennes par chaîne montraient la configuration
+entière glissant le long de l'axe (Arthaud à 0,055 sur deux chaînes, 0,267 et
+0,411 sur les deux autres).
+
+**Première hypothèse, DÉMENTIE** : une invariance par translation de la
+vraisemblance (`W` uniforme sur la grille ⇒ translater tous les `mu` laisserait
+`pi` inchangé). Testé directement : la vraisemblance perd **62 unités** pour
+δ = ±0,05 et 1072 pour δ = +0,20. Elle est au contraire très piquée. Ce n'était
+donc pas une direction plate.
+
+**Cause réelle** : les chaînes étaient dans des modes de qualité TRÈS
+différente. Log-vraisemblance à la moyenne postérieure de chaque chaîne : 699,1
+et 698,6 (chaînes 1-2) contre −79,5 et −233,4 (chaînes 0 et 3), soit **932
+unités d'écart**. Deux chaînes sur quatre n'avaient simplement jamais trouvé le
+bon mode.
+
+Pourquoi ? `raw_k = base + Σ_{j≤k} gap_j` ne fait que **croître** depuis 0. À la
+médiane du prior — c'est-à-dire au point de départ d'`init_to_median` — les
+positions valent `sigmoid([0 ; 0,6 ; ... ; 4,8])` :
+
+| | positions initiales |
+|---|---|
+| 6 groupes (2017/2022) | 0,50 · 0,65 · 0,77 · 0,86 · 0,92 · 0,95 |
+| **9 groupes (2027)** | 0,50 · 0,65 · 0,77 · 0,86 · 0,92 · 0,95 · **0,974 · 0,986 · 0,992** |
+
+Toute la configuration démarre dans la moitié DROITE de la grille, et avec 9
+groupes les quatre derniers démarrent **empilés entre 0,974 et 0,992**, là où
+la dérivée du sigmoid vaut ~10⁻³ : gradient quasi nul, bassin dont on ne sort
+pas. **C'est le nombre de groupes qui explique le contraste 2022/2027** : avec
+6 blocs le défaut est gênant mais franchissable, avec 9 il ne l'est plus. 2022
+convergeait par chance de dimension, pas par robustesse — le défaut y était
+déjà présent.
+
+**Correctif** (`sample_ordered_slots`) : centrer la somme cumulée,
+`raw = base + cum − mean(cum)`. À `base = 0` la configuration devient
+`sigmoid([−2,4 ; ... ; +2,4])` = `[0,08 ; ... ; 0,92]`, qui couvre la grille.
+`base` reste libre : c'est une re-paramétrisation de la LOCALISATION du prior,
+pas une contrainte. Accessoirement le prior d'origine affirmait que le champ
+politique occupe la droite de l'axe — ce qui n'a aucun sens, l'axe étant latent.
+
+**Résultat sur le roster 2027** (13 candidats, 78 nœuds, 9 groupes) :
+
+| | avant | après |
+|---|---|---|
+| R-hat max | 1,616 | **1,002** |
+| ESS min | 8,6 | **1970** |
+| divergences | 67 | **0** |
+
+Les 4 chaînes s'accordent désormais à la 3ᵉ décimale sur chaque candidat, et la
+géométrie est interprétable : Arthaud 0,021 < Mélenchon 0,042 < Roussel/Tondelier
+0,09 < Glucksmann/Hollande 0,15 < Attal 0,34 < Philippe 0,41 < Retailleau 0,63 <
+Le Pen/Bardella/Dupont-Aignan 0,82 < Zemmour 0,89.
+
+**À revérifier** : le mode dégénéré de §3.bis (`spatial_pooling_model_tau`, les
+`mu` effondrés entre 0,70 et 0,99) ressemble beaucoup à ce mauvais bassin —
+mêmes positions écrasées à droite. Il a probablement été condamné par ce défaut
+d'initialisation plutôt que par sa propre spécification. Non revérifié.
+
+### 12.5 Prior de position ancré sur 2022 — implémenté, PAS activé
+
+Piste proposée en session : informer les positions des groupes 2027 par celles
+des blocs politiques mesurées sur 2022, plutôt que de partir d'un prior faible.
+§2 avait écarté l'ancrage historique pour deux raisons — les nouveaux entrants
+sans prédécesseur (Attal, Philippe) et le coût d'un fit historique préalable.
+La seconde ne tient plus : les fits 2022 existent déjà pour calibrer
+`bank_w_ou`, donc les positions sont **gratuites** (`notebooks/04i_positions_2022.py`).
+
+Implémenté (`sample_ordered_slots(target_pos=...)`, `BLOC_ANALOGUE_2022`,
+`slot_prior_positions`). Le prior agit sur les **écarts**, pas sur les positions :
+c'est la seule façon d'informer la localisation sans casser l'ordre strict
+garanti par construction (§2.2). `gap_log_scale` est laissé inchangé — le prior
+informe le CENTRE, il n'est pas plus serré qu'avant. Plusieurs groupes 2027
+partageant un bloc 2022 (LO et LFI sont tous deux `gauche_radicale`) reçoivent
+le même prior, à charge pour les données de les séparer. Vérifié : sur une
+cible `[0,05 … 0,92]`, la médiane a priori retombe sur `[0,03 … 0,96]`, ordre
+strict respecté.
+
+**Non activé** (`use_position_prior=False` par défaut). Une fois le centrage de
+§12.4 corrigé, la seule **contrainte d'ordre** suffit : R-hat 1,002, ESS 1970,
+0 divergence. On ne paie pas une hypothèse dont on n'a pas besoin — et
+l'objection de fond de §2 reste valable (Attal et Philippe n'ont pas de
+prédécesseur direct, les ancrer sur « le centre de 2022 » n'est pas neutre).
+Le mécanisme est gardé, testé, prêt à servir si un roster futur — plus de
+groupes, moins de sondages — redevenait mal identifié.
+
+**Circularité à ne pas commettre** : ce prior ne doit jamais servir à un fit
+SUR 2022 (le backtest de §11.5), ce qui reviendrait à donner au modèle la
+réponse qu'on lui demande de prédire. `fit_geometry` (04g) ne le passe pas ;
+pour 2022 il faudrait des priors faits à la main, indépendants des données.
+
+### 12.6 Densité électorale non uniforme — REDONDANTE, question close
+
+La spec d'origine prévoyait une densité électorale « en cloche » à la place de
+`W` uniforme, restée non implémentée et listée en §10 comme travail à faire.
+**Elle ne doit pas être faite** : ce paramètre n'est pas identifiable
+séparément des positions.
+
+*Argument exact.* Soit `f` la densité électorale et `F` sa CDF. Alors
+
+$$\int g(v)\,f(v)\,dv = \int g(F^{-1}(u))\,du$$
+
+Un électorat non uniforme sur l'axe `v` est donc **exactement** équivalent à un
+électorat uniforme sur l'axe `u = F(v)`, les positions étant transportées en
+`F(μ)`. Intuitivement (formulation utilisateur) : si l'électorat est de droite,
+le PS se retrouve vers 0,3, Attal/Philippe vers 0,4 et LR vers 0,5 — le modèle
+dit la même chose avec d'autres coordonnées. L'axe étant **latent**, ces
+coordonnées n'ont aucun sens absolu à préserver.
+
+Seule la FORME du noyau n'est pas absorbée (une gaussienne en `v` n'est pas une
+gaussienne en `u` si `F` n'est pas affine). Cet effet résiduel est-il
+exploitable ? Mesuré : on génère `pi` sous une densité Beta pour 10 champs
+différents, puis on ajuste positions/σ/w sous `W` uniforme.
+
+| densité génératrice | résidu max sur `pi` |
+|---|---|
+| Beta(2,3) — électorat de gauche | 0,034 pt |
+| Beta(3,2) — électorat de droite | 0,023 pt |
+| Beta(4,4) — en cloche centrée | 0,018 pt |
+
+Soit **30 à 50 fois moins que le bruit d'échantillonnage d'un seul sondage**
+(~1 pt). Ajouter une densité libre reviendrait donc à ajouter un paramètre
+mou, invisible aux données, sur un modèle dont §12.4 vient de montrer qu'il
+souffre déjà des directions mal identifiées. `W` reste uniforme.
+
+**Corollaire sur le noyau.** La même logique répond à la question « faut-il une
+Beta plutôt qu'une gaussienne pour le rayon d'action ». Non : `A = w − d²/2σ²`
+est une perte quadratique d'utilité (vote spatial classique), pas une densité,
+et Beta y couple localisation et forme via (α, β) — sa variance est bornée par
+μ(1−μ), donc elle IMPOSERAIT qu'un candidat extrême soit étroit au lieu de le
+laisser estimer. Le vrai défaut visé est l'asymétrie de bord (avec μ=0,021 et
+σ=0,136, l'essentiel du noyau d'Arthaud tombe hors de [0,1]) ; l'extension
+minimale et interprétable serait un σ ASYMÉTRIQUE (σ_gauche, σ_droite), qui
+garde la perte quadratique. Non fait, non prioritaire.
+
+### 12.7 Hypothèses d'un même sondage : erreurs corrélées, pas nœuds indépendants
+
+Remarque utilisateur, et c'est là que se trouve l'information de géométrie.
+Une hypothèse ISOLÉE s'explique par `w` seul (la force de chaque candidat) ;
+c'est le RETRAIT d'un candidat qui révèle où vont ses électeurs, donc qui
+identifie `mu` et `sigma`. Or les `h` hypothèses d'un sondage sont posées aux
+**mêmes répondants** — jusqu'à 11 pour un seul sondage du roster 2027.
+
+`build_poll_arrays` les traitait comme des nœuds indépendants à échantillon
+déflaté (`Np = n/h`). Ce procédé est correct pour le NIVEAU (l'information
+totale vaut `h × 1/(h·v) = 1/v`, soit un seul sondage — l'incertitude ne
+diminue pas en ajoutant des hypothèses, ce qui est la propriété voulue), mais
+il attribue à la DIFFÉRENCE entre deux hypothèses une variance `2·h·v` alors
+que les mêmes répondants la rendent bien plus précise. **Il amortit le niveau
+correctement et détruit le signal différentiel** — celui qui identifie la
+géométrie.
+
+Modèle retenu (`weighted_loglik_blocked`) :
+`Y_{i,p} = pi_{i,p} + u_{i,notice} + d_{i,p} + eps_{i,p}`, soit une gaussienne
+équicorrélée par (sondage, candidat), `Sigma = a·I + b·11ᵀ` avec
+`a = (1-rho)·v + delta²` et `b = rho·v`, sur l'échantillon PLEIN. `kappa` étant
+constant par sondage (même date), la pondération de récence s'applique au bloc.
+
+- `rho` : corrélation entre hypothèses. **Estimée à 0,630** [0,499 ; 0,777].
+- `delta` (`sigma_model`) : **écart de MODÈLE**, indépendant entre hypothèses
+  puisque chaque hypothèse est un champ différent. **Estimé à 0,34 pt.**
+
+`delta` s'est révélé indispensable. Sans lui, retirer la déflation multiplie
+l'information par 7,6 et exige du modèle qu'il reproduise un sondage à la
+précision d'échantillonnage — ce qu'un spatial à 13 candidats ne peut pas
+faire ; il se contorsionne et le fit se dégrade (R-hat 1,277, ESS 11). Avec
+`delta`, `rho` redevient identifiable et la convergence revient.
+
+| variante | R-hat | ESS | temps |
+|---|---|---|---|
+| indépendante (d'origine) | 1,002 | 1970 | 275 s |
+| bloquée, `rho` estimé, sans `delta` | 1,277 | 11 | 1214 s |
+| bloquée, `rho` figé, sans `delta` | 1,009 | 450 | 314 s |
+| **bloquée + `delta`, `rho` estimé** | 1,006 | 431 | 301 s |
+
+Gain sur la redistribution (45 paires 2027) : 0,843 -> 0,816 pt de MAE, soit
+-3 %. Modeste mais dans le sens attendu, et cohérent avec la théorie.
+
+**Réserve** : l'ESS chute d'un facteur ~4,5. Suffisant, mais les tirages de
+géométrie qui alimentent `w_dynamics` sont plus autocorrélés. À surveiller.
+**À vérifier aussi** : `delta` (0,34 pt) et la variance d'excès de §6.6
+(0,317 pt) sont du même ordre — ils pourraient se recouvrir partiellement.
+
+### 12.8 Quadrature — la grille uniforme était une source d'erreur
+
+`pi_i = ∫ softmax(A(v))_i f(v) dv` est une intégrale ; la grille en est la
+quadrature. Elle était uniforme (`linspace` + poids `1/B`), ce qui converge en
+**O(1/B)** seulement — l'intégrande ne s'annule pas aux bords, donc les
+extrémités dominent l'erreur. Erreur maximale sur `pi`, géométrie réellement
+fittée :
+
+| B | uniforme | Gauss-Legendre |
+|---|---|---|
+| 25 | 1,204 pt | **0,0015 pt** |
+| 50 | 0,599 pt | 0,0015 pt |
+| 1000 | 0,028 pt | 0,0015 pt |
+
+**0,6 pt à B=50** — plus que l'écart de modèle estimé (0,32 pt) et une fraction
+notable du bruit d'échantillonnage. Gauss-Legendre atteint 0,0015 pt dès B=25,
+soit 400× mieux qu'une grille uniforme à B=1000, pour moitié moins de coût.
+Adopté à B=50 (marge gratuite). **Ce n'était donc pas la finesse de la grille
+qui était en cause mais la règle de quadrature** : passer à B=1000 uniforme
+n'aurait rien réglé d'utile.
+
+*Mesure honnête du gain* : le refit à géométrie identique donne exactement les
+mêmes `sigma`, le même `sigma_model` (0,322 pt) et le même `rho` (0,630). La
+quadrature n'expliquait donc AUCUN des symptômes observés — et `sigma_model`
+est bien de l'écart de modèle, pas du bruit numérique.
+
+### 12.9 `w` et `sigma` n'étaient pas identifiés séparément
+
+Pour un candidat **non dominant**, la part vaut
+`∫ exp(w − d²/2σ²)/D(v) dv ≈ exp(w)·σ·√(2π)·κ(μ,σ)/D(μ)` où `κ` est la part du
+noyau tombant dans [0,1]. **Seule la combinaison `w + log σ` est identifiée.**
+
+Vérifié directement — on multiplie `σ` d'un candidat par `f` en compensant
+`w -= log f`, la part devrait bouger si les deux étaient estimés :
+
+| candidat | part | ×0,5 | ×1,0 | ×2,0 |
+|---|---|---|---|---|
+| **Zemmour** (2,0 %) | | 1,96 | 1,96 | 1,91 |
+| Mélenchon (12,9 %) | | 9,25 | 12,94 | 16,61 |
+
+Zemmour est **parfaitement plat** : `σ` multiplié par 4 ne change pas sa part de
+0,05 pt. Mélenchon, lui, est dominant, donc son `σ` est bien identifié. C'est
+une non-identifiabilité structurelle, cousine de la jauge de `w` (§3.2), jamais
+relevée jusqu'ici — et elle invalidait toute lecture de `sigma` chez les petits
+candidats.
+
+Conséquence de fond : la valeur de ce modèle est d'**extrapoler à des scénarios
+non sondés** (§0, §8), et la redistribution y dépend de la FORME des profils,
+donc de `sigma`. Un `sigma` non identifié rend cette extrapolation
+prior-dépendante sans que ça se voie. Une bonne couverture sur les champs
+observés ne suffit donc pas comme critère d'acceptation.
+
+### 12.10 Deux correctifs : prior de `sigma` resserré + noyau normalisé
+
+**(a) Prior resserré.** `sigma_slot` était `LogNormal(log 0,15 ; 0,4)` :
+médiane 0,15, et `P(sigma > 0,10) = 0,85`. Or avec ~9 groupes sur [0,1], deux
+groupes voisins sont distants de ~0,1 : un rayon d'action supérieur rend les
+positions indiscernables. Un `sigma` large signifie que le NOYAU d'un candidat
+s'étend loin — à 0,193 centré sur 0,873, celui de Zemmour couvre encore
+l'extrême gauche.
+
+> **PRÉMISSE DÉMENTIE (§12.13).** On en a conclu, à tort, que le modèle faisait
+> recruter Zemmour à gauche. C'est faux : le noyau n'est pas le profil de
+> recrutement, la compétition du softmax écrase tout. Mesuré, même au `sigma`
+> le plus large : 0,04 % de son électorat vient de la gauche. Un candidat de niche
+recrutant sur tout le spectre pour une idée transversale existe, mais un modèle
+à UNE dimension ne peut pas le représenter : il ne peut l'exprimer que par un
+`sigma` large, donc symétrique, ce qui est faux. Nouveau prior : médiane 0,06,
+`P(sigma > 0,10) = 0,07`.
+
+**(b) Noyau normalisé sur la grille** (suggestion utilisateur) :
+`A_{i,b} = w_i + D_{i,b} − log(Σ_b W_b e^{D_{i,b}})`. Chaque profil intègre
+alors à 1 quels que soient `μ` et `σ`. Deux effets :
+
+- `w` devient **comparable entre candidats** : sans ça, un candidat proche d'un
+  bord perd la part de son noyau hors de [0,1] et doit compenser par un `w`
+  plus grand, que le prior `N(0 ; 1,5)` pénalise — il repoussait donc
+  artificiellement les candidats loin des bords ;
+- surtout, la part d'un candidat non dominant devient `∝ exp(w)` **seul**, ce
+  qui **supprime la crête** de §12.9. `sigma` n'est plus contraint que par la
+  forme, c'est-à-dire par la redistribution observée sur les hypothèses
+  imbriquées — la bonne source.
+
+C'est une reparamétrisation exacte (constante par candidat avant un softmax) :
+famille de vraisemblance inchangée, mécanique du §11 intacte.
+
+**Résultats** (roster 2027, vraisemblance bloquée + `delta`) :
+
+| | avant | après |
+|---|---|---|
+| `sigma` max | 0,210 | **0,129** |
+| `sigma` de Zemmour | 0,193 | **0,057** |
+| candidats à `sigma > 0,10` | 11 / 13 | 5 / 13 |
+| amplitude le long de la crête (Zemmour) | 0,05 pt | **0,58 pt** |
+| MAE redistribution | 0,816 pt | 0,823 pt |
+| R-hat / ESS | 1,006 / 431 | 1,007 / 387 |
+
+**Le point décisif est la dernière ligne du milieu** : contraindre `sigma` et
+normaliser le noyau ne coûte rien sur la redistribution (0,823 contre 0,816,
+dans le bruit) — sur le roster 2027.
+
+> **CORRIGÉ (§12.12).** La phrase « rendant les paramètres identifiés » était
+> fausse. La normalisation casse bien la CRÊTE (corrélation `w`/`log σ` de
+> −0,67 à −0,1), mais `sigma` reste **non identifié** : son postérieur suit son
+> prior sur les deux élections. Et le prior resserré à 0,06, validé ici sur
+> 2027 seul, provoque 69 à 275 divergences sur 2022 — régression introduite
+> puis mesurée après coup.
+
+Ordre des positions obtenu : Arthaud 0,062 < Mélenchon 0,069 < Roussel 0,148 <
+Tondelier 0,180 < Hollande 0,225 < Glucksmann 0,233 < Attal 0,385 <
+Philippe 0,413 < Retailleau 0,540 < Dupont-Aignan 0,651 < Bardella 0,677 <
+Le Pen 0,689 < Zemmour 0,730.
+
+**À refaire suite à ces changements** : `sigma_w2` (§11.5) et toute la
+couverture ont été calibrés avant §12.8-12.10. À reprendre.
+
+### 12.11 La vraisemblance bloquée ne survit pas à 2022 — et 2022 ne peut pas l'arbitrer
+
+Portée en production, la vraisemblance bloquée à `rho`/`delta` ÉCHANTILLONNÉS
+échoue sur les fits historiques :
+
+| jeu | R-hat | ESS | divergences | `rho` estimé | `delta` |
+|---|---|---|---|---|---|
+| 2027 (78 nœuds) | 1,007 | 387 | 11 | 0,64 | 0,34 pt |
+| 2022 J-120 (234 nœuds) | **2,52** | **2,4** | **103** | 0,85 | 0,55 pt |
+| 2022 J-150 (195 nœuds) | **1,94** | **2,7** | **63** | 0,68 | 0,13 pt |
+
+`rho` varie de 0,64 à 0,85 et `delta` d'un facteur 4 selon la coupure : ces
+paramètres ne sont pas identifiés sur 2022. **Inacceptable en production** — un
+job quotidien publierait des intervalles faux sans qu'aucun signal ne le dise.
+
+**Cause, et elle est instructive.** Les sondages 2022 testent **10 candidats
+sur 11** : deux hypothèses d'un même sondage y sont presque identiques, donc le
+signal qui identifie `rho` (la façon dont les hypothèses d'un panel se
+ressemblent) est quasi nul. 2027 teste 10 sur 13, avec une médiane de **5
+hypothèses par sondage** (jusqu'à 11) et des champs réellement différents.
+
+| | 2022 J-150 | 2027 |
+|---|---|---|
+| sondages | 51 | 15 |
+| hypothèses / sondage (médiane, max) | 3 ; 10 | 5 ; 11 |
+| champ testé (médiane) | 10 / 11 | 10 / 13 |
+| sondages à 1 seule hypothèse | 3 / 51 | 2 / 15 |
+
+**Conséquence méthodologique, qui dépasse ce paramètre.** Le bénéfice de la
+vraisemblance bloquée est la précision du DIFFÉRENTIEL entre hypothèses ; il
+n'existe que si les champs varient. Sur 2022 ils ne varient presque pas : le
+bénéfice y est nul et le coût (paramètre non identifié) maximal. **2022 teste
+donc ce mécanisme dans le régime où il ne peut pas servir.** Le jeu de
+validation historique n'est pas représentatif du régime live sur ce point
+précis — ce qui ne vaut PAS pour la dynamique de `w` (§11), indépendante du
+régime, ni pour la couverture.
+
+**Décision.** `rho` et `delta` décrivent le protocole de sondage (hypothèses
+posées au même panel, capacité du modèle à reproduire un champ), pas la
+campagne : ils sont **fixés** et non échantillonnés, comme la variance d'excès
+l'est depuis sa propre banque. Ça retire les deux directions difficiles. Si
+même fixés les fits historiques ne convergent pas, la vraisemblance
+INDÉPENDANTE reste le choix de production : son gain mesuré (3 % de MAE sur la
+redistribution) ne justifie aucun risque de non-convergence silencieuse en CI.
+
+**À ne pas confondre avec le reste de §12** : la grille Gauss-Legendre (§12.8),
+le noyau normalisé et le prior de `sigma` resserré (§12.10), le roster et le
+centrage (§12.2/§12.4) sont indépendants de ce choix et restent acquis. C'est
+notamment le noyau normalisé, et non la vraisemblance bloquée, qui rend `sigma`
+identifiable.
+
+### 12.12 `sigma` n'est pas identifié — et 2022 ne peut pas arbitrer la géométrie
+
+**Constat 1 : la donnée ne détermine pas `sigma`.** Contraction
+prior→postérieur (`1 - sd(post)/sd(prior)`) sur le roster 2027 :
+
+| paramètre | contraction |
+|---|---|
+| `w` | 0,39 à 0,62 — informé |
+| `sigma` | −0,96 à +0,36, la plupart ≈ 0 — **non informé** |
+
+Confirmé par un prior délibérément large (`LogNormal(log 0,12 ; 0,8)`,
+IC90 [0,032 ; 0,446]) :
+
+| jeu | variation de champ | `sigma` postérieur médian | IC90 |
+|---|---|---|---|
+| 2027 | forte (10/13 testés, 5 hyp./sondage) | 0,111 | [0,042 ; 0,372] |
+| 2022 | faible (10/11 testés, 3 hyp./sondage) | 0,156 | [0,046 ; 0,448] |
+
+L'IC90 postérieur est celui du prior. **Choisir `sigma` est donc une décision de
+modélisation, pas une estimation** — ce qui légitime de le fixer par jugement,
+mais interdit de présenter la valeur obtenue comme un résultat.
+
+**Constat 2 : pourquoi 2022 tire `sigma` vers le haut.** Avec un noyau
+normalisé et `sigma` grand, tous les profils s'aplatissent et
+`pi -> softmax(w)` : le modèle dégénère vers un modèle **non spatial**, où
+chaque candidat n'a qu'une force. Or un modèle non spatial explique
+parfaitement n'importe quel champ UNIQUE — seule la VARIATION de champ
+distingue les deux. Les sondages 2022 testant presque toujours les mêmes 10
+candidats sur 11, ils contiennent très peu d'information spatiale, et la
+vraisemblance y glisse vers la limite non spatiale.
+
+**Conséquence, et c'est la deuxième fois qu'on la rencontre** (cf. §12.11 pour
+la vraisemblance bloquée) : **2022 peut valider la machinerie temporelle et la
+couverture, mais ni calibrer ni valider la GÉOMÉTRIE spatiale.** Les deux
+mécanismes concernés vivent du différentiel entre hypothèses, absent de ce jeu.
+Ce n'est pas une coïncidence mais une propriété du jeu de validation.
+
+**Constat 3 : le prix d'un `sigma` serré.** Sur 2022 J-150 (250 tirages,
+400 warmup, noyau normalisé) :
+
+| prior `sigma` médian | divergences | R-hat | `sigma` fitté |
+|---|---|---|---|
+| 0,15 | 5-6 | 1,06-1,13 | 0,173 |
+| 0,12 | 5 | 1,04 | 0,156 |
+| 0,10 | 14-18 | 1,12-1,16 | 0,103 |
+| **0,06** | **69-275** | 1,04-2,38 | 0,069 |
+
+Le conflit est réel : la vraisemblance 2022 tire vers 0,16, un prior à 0,06 la
+combat. Sur 2027 le même prior ne pose aucun problème (11 divergences,
+R-hat 1,007) — il n'y a pas de conflit là où le champ varie.
+
+`sd_delta_sigma` (0,10 vs 0,15) ne change rien (14 vs 18 divergences) : le
+soupçon d'entonnoir de ce côté était infondé.
+
+**Piste écartée** : l'erreur de quadrature aux petits `sigma`. Mesurée nulle —
+Gauss-Legendre reste exact à 0,0000 pt jusqu'à `sigma`=0,06 et 0,005 pt à 0,03
+(l'intégrande étant lisse, GL converge spectralement ; le raisonnement « nœuds
+par sigma » ne vaut que pour une grille uniforme).
+
+**Métastabilité observée.** La configuration `sigma`=0,06 + normalisation donne
+R-hat 1,039 à 250 tirages/400 warmup et **R-hat 2,60 avec 925 divergences** à
+500/750 — même modèle, même graine. Le compte de divergences est ici un
+indicateur bien plus fiable que R-hat, et c'est lui qu'il faut surveiller en
+production.
+
+### 12.13 Le noyau n'est pas le profil de recrutement — la prémisse était fausse
+
+Le resserrement du prior de `sigma` (§12.10) reposait sur un argument
+d'interprétation : un `sigma` large signifierait « attire des électeurs à
+toutes les positions », donc un Zemmour à `sigma`=0,19 recruterait à l'extrême
+gauche, ce qui est absurde. **Cet argument est faux**, et il fallait le
+mesurer avant d'agir dessus.
+
+`sigma` décrit le NOYAU du candidat, avant compétition. Le profil de
+recrutement, lui, sort du softmax : à gauche, Mélenchon et Arthaud dominent
+Zemmour de plusieurs ordres de grandeur, quelle que soit la largeur de son
+noyau. D'où viennent réellement ses électeurs, par zone de l'axe :
+
+| prior `sigma` | `sigma` Zemmour | gauche (<0,35) | centre | droite (>0,6) |
+|---|---|---|---|---|
+| 0,15 | 0,177 | **0,04 %** | 3,4 % | 96,6 % |
+| 0,10 | 0,115 | 0,00 % | 0,6 % | 99,4 % |
+| 0,06 | 0,057 | 0,00 % | 0,3 % | 99,7 % |
+
+Robustesse au choix de `w` (4000 tirages du prior complet, au `sigma` le plus
+large) : part gauche médiane **0,12 %**, p95 0,55 %, max 4,8 %. Même en forçant
+`w_Zemmour = +3` et tous les autres à −3, on plafonne à 5,2 %.
+
+**Le modèle n'a donc jamais fait recruter Zemmour à gauche**, à aucun `sigma`
+testé et pour aucun `w` plausible. Le problème d'interprétation qui a motivé
+§12.10 n'existait pas.
+
+**Ce qu'il faut en retenir pour la suite.** `sigma` n'étant identifié par
+aucune donnée (§12.12) et son interprétation directe étant trompeuse, il ne
+doit être choisi ni sur une intuition politique ni sur une lecture littérale du
+paramètre, mais sur les deux seuls critères mesurables : la **qualité
+d'échantillonnage** et la **qualité de la redistribution**, qui est ce que le
+modèle promet.
+
+| prior `sigma` | divergences 2027 | divergences 2022 |
+|---|---|---|
+| 0,15 | 4 | 5-6 |
+| **0,10** | **0** | 14-18 |
+| 0,06 | 11 | 69-275 |
+
+### 12.14 `sigma_w2` dépend de la géométrie — la banque n'est pas transférable
+
+Mesuré deux fois dans la même session : **l'optimum de `sigma_w2` se déplace
+d'un ordre de grandeur quand la géométrie change**, à protocole de backtest
+identique.
+
+| configuration de géométrie | `sigma_w2` optimal | couverture à 0,05 |
+|---|---|---|
+| avant §12.8-12.10 | ~0,20 | — |
+| noyau non normalisé, prior sigma 0,06 | ~0,05-0,08 | 50,0 / 78,4 / 86,7 |
+| **noyau normalisé, prior sigma 0,15** | **< 0,05** | 66,6 / 92,0 / 96,6 |
+
+Raison : `w_dynamics` inverse `pi(w) = Y` et propage le bruit par
+`C_p = J⁺ Σ J⁺`. Le jacobien `J` dépend entièrement de la géométrie — noyau
+normalisé ou non, valeur de `sigma`, règle de quadrature. À `sigma_w2` égal, la
+dynamique de `w` hérite donc d'une incertitude différente.
+
+**Conséquence opérationnelle** : `bank_w_ou.json` est valide POUR UNE GÉOMÉTRIE
+DONNÉE. Tout changement de noyau, de prior sur `sigma`, de grille ou de roster
+l'invalide et impose de refaire les 5 fits et le balayage. Ce n'est pas une
+banque « commune » au sens de `model/core/opinion.py` — celle-là vit dans un
+espace (CLR des parts) indépendant du modèle qui la consomme.
+
+**Contrôle de non-régression utile** : la référence tempérée n'utilise PAS
+`w_dynamics`. Elle est restée à 45,8 / 68,3 / 76,8 contre 45,7 / 67,7 / 75,9
+avant les correctifs, alors que l'OU se décalait fortement. Si un jour la
+référence tempérée bouge alors qu'on n'a touché qu'à la dynamique de `w`, c'est
+qu'il existe une fuite entre les deux chemins de lecture.
+
+**Piège de protocole** : la grille de balayage était figée à [0,05 ; 0,30].
+L'optimum étant passé sous 0,05, le balayage l'a manqué en entier et a désigné
+sa borne inférieure. Une grille de calibration doit être vérifiée non bornante
+avant d'être lue — `S2_GRID` est désormais surchargeable.
+
+### 12.15 Le protocole de couverture surestimait le bruit d'observation
+
+**Défaut du PROTOCOLE, pas du modèle**, présent depuis `04d` et donc dans tous
+les chiffres de couverture de cette spec, §6.4 à §6.6 comprises.
+
+`build_poll_arrays` déflate `Np` par le nombre d'hypothèses du sondage, pour
+que le FIT ne compte pas `h` fois l'information d'un même panel. `04d`/`04e`/
+`04f` réutilisaient ce `Np` déflaté comme **bruit d'observation du sondage
+tenu**. Or un sondage de `n` personnes posant `h` hypothèses interroge les
+MÊMES `n` personnes sur chaque scénario : la variance marginale d'une hypothèse
+vaut `pi(1-pi)/n`, pas `pi(1-pi)/(n/h)`. La déflation décrit la vraisemblance
+JOINTE, pas la loi marginale d'une observation.
+
+Ampleur, facteur `Np_plein / Np_déflaté` sur les nœuds de test 2022 :
+
+| coupure | facteur médian | nœuds test |
+|---|---|---|
+| J-30, J-60, J-120 | 1,0 | 31, 21, 8 |
+| J-90 | 2,0 | 17 |
+| **J-150** | **5,0** (max 6) | 31 |
+
+Le biais touche ~44 % de l'échantillon poolé et n'est PAS uniforme : il déforme
+la comparaison entre coupures, il ne se contente pas de décaler le niveau.
+
+**Contrôle** : J-120, dont les sondages de test n'ont qu'une hypothèse, est
+rigoureusement inchangé par la correction (37,5 / 84,1 / 89,8 avant comme
+après), alors que J-150 passe de 66,6 / 95,5 / 99,0 à 55,1 / 87,6 / 95,5.
+L'effet apparaît exactement là où il doit apparaître, et nulle part ailleurs.
+
+**Effet sur les conclusions** (2022, 5 coupures, n=1161) :
+
+| lecture | avant (`Np` déflaté) | après (`Np` plein) |
+|---|---|---|
+| tempérée | 45,8 / 68,3 / 76,8 | **39,8 / 60,7 / 71,5** |
+| OU, `sigma_w2`=0,01 | 61,2 / 88,7 / 95,3 | **58,3 / 85,8 / 94,2** |
+
+La lecture tempérée était donc **plus** sur-confiante que ne le disait la spec
+(IC90 réel 71,5 %, pas 76,8 %). Le diagnostic du §11 en sort renforcé, mais
+**les chiffres de §6.4-§6.6 ne sont pas comparables aux nouveaux** : ils sont
+optimistes, d'un facteur qui dépend de la coupure.
+
+`04d`/`04e`/`04f` n'ont pas été corrigés (ce sont des prototypes historiques) ;
+`04g` l'est, via `Np_full_te` dans le cache.
+
+### 12.16 BLOCAGE OUVERT — la couverture est erratique entre coupures
+
+Sur le protocole corrigé (§12.15), `sigma_w2` = 0,01, 2022 :
+
+| coupure | train | n | IC90 | écart au nominal |
+|---|---|---|---|---|
+| J-30 | 308 | 341 | 98,2 ± 3,2 | **+5,0 sd** |
+| J-60 | 276 | 231 | 91,3 ± 3,9 | +0,7 sd |
+| J-90 | 250 | 187 | 83,4 ± 4,3 | **−3,0 sd** |
+| J-120 | 234 | 88 | 92,0 ± 6,3 | +0,6 sd |
+| J-150 | 195 | 314 | 96,2 ± 3,3 | **+3,7 sd** |
+| **poolé** | | 1161 | **93,4** | |
+
+Trois coupures sur cinq sont significativement hors nominal, **dans des
+directions opposées**. Le poolé à 93,4 % est une moyenne sans signification.
+
+**Ce n'est pas un problème de réglage.** Aucune valeur de `sigma_w2` ne peut
+élargir J-90 (trop étroit) et resserrer J-30 (trop large) simultanément. Le
+balayage le confirme : optimum toujours sur la borne basse, et `sd(w)`
+insensible à un facteur 10 sur `sigma_w2`.
+
+**Explications testées et ÉCARTÉES** (corrélation avec l'IC90 par coupure) :
+
+| hypothèse | mesure |
+|---|---|
+| volume d'entraînement | corr. **+0,11** |
+| position dans la campagne | corr. **−0,09** |
+| biais de déflation du protocole | corrigé (§12.15), le motif subsiste |
+
+Pour mémoire, les autres pistes déjà démenties sur cette même question :
+invariance par translation (§12.4), erreur de quadrature (§12.8, §12.12),
+conditionnement du jacobien (§12.12), largeur du prior de `sigma` (levier réel
+mais de −21 % seulement, insuffisant).
+
+**Ce qui EST établi sur la cause** : la largeur du prédictif vient de la
+variation de `w` **entre tirages de géométrie** (mesuré : `sd(w)` = 0,64 entre
+géométries contre 0,036-0,082 à l'intérieur d'un tirage), et non de la
+dynamique OU. La lecture jointe (postérieur NUTS complet) donne `sd(pi)` =
+0,21 pt là où la lecture OU en donne 1,71 : ré-inférer `w` par tirage de
+géométrie **casse l'anti-corrélation `w` ↔ géométrie** que le postérieur joint
+maintient pour garder `pi` stable.
+
+**Hypothèse restante, non testée** : le défaut est architectural, dans le
+découpage en deux temps (§11), et non dans un paramètre. Prochain diagnostic
+proposé : calibration sur données SIMULÉES depuis le modèle lui-même — si la
+chaîne fit → lecture OU → prédictif ne retrouve pas le nominal sur ses propres
+données, le défaut est dans la chaîne. À noter que le test synthétique de
+§11.3 (50,8 / 80,7 / 89,8) utilisait la VRAIE géométrie sans fit NUTS : il ne
+couvrait donc pas le chemin par lequel l'incertitude de géométrie se propage,
+qui est précisément le suspect.
+
+**Statut : la mise en production est suspendue à cette question.** La
+géométrie et la redistribution (0,470 vs 0,790 pt hors échantillon) sont
+acquises et utilisables ; c'est l'incertitude AFFICHÉE qui ne l'est pas.
+
+### 12.17 RÉSOLUTION — inférence jointe + noyau OU
+
+Le blocage de §12.16 est levé. Le défaut n'était ni un réglage ni une
+spécification du modèle spatial : c'était le **découpage en deux temps** de
+§11, et un noyau de diffusion inadapté.
+
+**Diagnostic, sur données SIMULÉES depuis le modèle** (chaîne complète, fit
+NUTS inclus — ce que §11.3 ne faisait pas, d'où son verdict trompeur) :
+
+| architecture | noyau de `w` | IC50 | IC80 | IC90 |
+|---|---|---|---|---|
+| deux temps, géométrie variable *(§11)* | OU | 66,0 | 95,4 | **99,0** |
+| deux temps, mixte | OU | 58,8 | 88,1 | 96,4 |
+| deux temps, géométrie figée | OU | 33,5 | 64,4 | 79,4 |
+| joint (`spatial_pooling_model_tau`) | marche aléatoire | 60,2 | 85,3 | 93,7 |
+| **joint (`spatial_pooling_model_ou`)** | **OU** | **52,4** | **82,2** | **89,5** |
+| *nominal* | | *50* | *80* | *90* |
+
+Chaque ligne isole une cause :
+
+1. *Le découpage en deux temps ne peut pas propager l'incertitude de
+   géométrie.* Faire varier la géométrie et ré-inverser `Y` à chaque tirage
+   compte le bruit d'échantillonnage DEUX FOIS (le postérieur `p(mu,sigma|Y)`
+   le contient déjà, `C_p = J⁺ Σ J⁺` le rajoute) ; figer la géométrie perd une
+   incertitude réelle. Le vrai est encadré, et aucune répartition intermédiaire
+   ne le corrige — le mode « mixte » est même incohérent (`w` inféré sous une
+   géométrie, utilisé sous une autre), ce qui ajoute sa propre variance.
+2. *La marche aléatoire sur-disperse.* À 7 jours d'horizon elle ajoute
+   `tau·sqrt(7)` = 0,070 d'écart-type là où la dérive OU en vaut 0,023 — un
+   facteur 3.
+
+**Le modèle retenu** combine les deux propriétés qu'aucune version précédente
+n'avait ensemble : inférence **jointe** de la géométrie et du chemin de `w`
+(propagation exacte par construction) et noyau **OU** (variance de dérive
+saturante, l'argument du §11.1). Transition exacte
+`w(t_k) | w(t_{k-1}) ~ N(rho_k w(t_{k-1}), sigma_w²(1-rho_k²))` écrite sous
+forme matricielle ; covariance implicite vérifiée contre
+`sigma_w² exp(-|dt|/tau)` à **1,6e-9** près.
+
+**Coût** : 271 s, contre 275 s de fit + ~50 s de lecture pour la chaîne en deux
+temps. L'architecture est donc plus simple ET plus rapide.
+
+**Ce que ça rend obsolète** : `w_dynamics.py` en entier, `bank_w_ou.json`, et
+avec eux le couplage géométrie/calibration de §12.14 (l'optimum de `sigma_w2`
+qui se déplaçait d'un ordre de grandeur à chaque changement de géométrie).
+`sigma_w` est désormais un paramètre du modèle, estimé par NUTS, sans banque à
+maintenir.
+
+**Pourquoi `spatial_pooling_model_tau` avait été parqué à tort** (§3.bis) : son
+« mode dégénéré » (mu effondrés entre 0,70 et 0,99) et sa lenteur (2066 s)
+étaient des symptômes du prior de position mal centré (§12.4). Après
+correction, le même modèle donne des mu de 0,023 à 0,869, 0 divergence, en
+310 s. Une piste abandonnée sur un artefact d'initialisation.
+
+**À faire** : confirmer sur données réelles (backtest 2022, 5 coupures) — le
+simulé valide la CHAÎNE, pas l'adéquation aux vraies données.
+
+### 12.20 DOMAINE DE VALIDITÉ — un modèle d'exploration d'hypothèses
+
+Cadrage utilisateur, et il réorganise rétrospectivement une bonne partie de
+§12 : **ce modèle ne sert que tant que la liste de candidats bouge**. Une fois
+le champ figé, il n'apporte rien que `gp_pooling` ne fasse mieux — et il
+devient MAL POSÉ.
+
+*Pourquoi c'est un théorème et pas une préférence.* L'inversion `pi(w) = Y` est
+un difféomorphisme sur l'intérieur du simplexe (§11.2) : pour **n'importe
+quelle** géométrie `(mu, sigma)`, il existe un `w` qui reproduit exactement les
+parts observées. Un sondage à champ unique ne contraint donc RIEN sur la
+géométrie — `w` absorbe tout. L'information géométrique ne peut venir que de la
+**variation de champ**. Si le champ ne varie pas, le postérieur en `(mu,sigma)`
+a des directions plates, et NUTS ne peut pas les explorer.
+
+*Mesuré sur 2022* (élection le 10 avril) :
+
+| période | nœuds | champs distincts | nouveaux champs |
+|---|---|---|---|
+| 2021-04 → 2021-11 | 225 | 4 à 11 par mois | 19 |
+| 2021-12 | 16 | 1 | 0 |
+| 2022-01 | 25 | 2 | 1 |
+| **2022-02 → 04** | **89** | **1** | **0** |
+
+La liste se fige en décembre 2021. Et le contraste avec le régime live est net :
+
+| | nœuds | champs distincts | champ dominant |
+|---|---|---|---|
+| 2022 J-30 (figé) | 308 | 21 | 36,7 % |
+| **2027 (actif)** | **78** | **30** | **15,4 %** |
+
+2027 a PLUS de champs distincts avec quatre fois moins de nœuds.
+
+**Ce que ça explique d'un coup**, et que j'avais diagnostiqué comme trois
+problèmes séparés :
+
+- 2022 ne peut pas valider la vraisemblance bloquée (§12.11) ;
+- 2022 ne peut pas calibrer `sigma` (§12.12) ;
+- le modèle joint ne converge pas sur 2022 alors qu'il converge sur 2027
+  (R-hat 1,59 à 2,60 sur 3 coupures / 5) et sur données simulées (1,012).
+
+**Une seule cause** : les coupures J-30 à J-120 entraînent majoritairement sur
+la période FIGÉE. Passer de J-150 à J-30 ajoute 113 nœuds pour **un seul champ
+distinct de plus**. Ces échecs de convergence n'étaient pas un défaut du
+modèle : c'était le symptôme correct d'un modèle appliqué hors de son domaine.
+Un modèle qui convergerait franchement là-dessus devrait inquiéter — il
+prétendrait estimer ce que les données ne contiennent pas.
+
+**Protocole corrigé** : coupures J-150 / J-180 / J-210 / J-240 / J-300, toutes
+dans la période active (mai à novembre 2021). J-270 écarté, aucun sondage dans
+sa fenêtre de test. La dimension latente tombe de 484 à 132 sans rien forcer :
+moins de sondages, mais autant de champs distincts (14 à 20 partout).
+
+**Conséquence en production** : `spatial_pooling` est un outil de **2026**, pas
+de 2027. Il se retire quand la liste se fige et `gp_pooling` prend le relais.
+Ça détend aussi la contrainte de budget CI : il tourne précisément quand les
+champs sont nombreux et les sondages encore peu nombreux, soit le régime le
+moins coûteux.
+
+### 12.18/12.19 — deux pistes de réduction de dimension, une seule retenue
+
+**Regroupement temporel hebdomadaire : ÉCARTÉ.** Testé pour réduire la
+dimension du chemin de `w` (2022 J-30 : 1067 -> 440). **Dégrade** la
+convergence : J-150 passe de R-hat 1,021 à 1,330. Regrouper force plusieurs
+sondages à se réconcilier sur une même valeur de `w`, ce qui durcit la
+géométrie au lieu de l'assouplir (`sigma_w` chute de 0,78 à 0,53). Réduire la
+dimension ne suffit pas — c'est QUELLES contraintes on impose qui compte.
+`TIME_BIN_DAYS` laissé à 1 jour.
+
+**Chemin temporel réservé aux gros candidats : retenu** (suggestion
+utilisateur). Un candidat à 1 % a une trajectoire non identifiable — le bruit
+d'un sondage (±1 pt) dépasse ce qu'on prétendrait y lire. Les candidats sous
+5 % de part moyenne gardent un `w` STATIQUE. Sur 2027 : Arthaud, Roussel,
+Tondelier, Dupont-Aignan et Zemmour, soit une dimension de 169 -> 69.
+Contrairement au regroupement temporel, ceci retire des paramètres **non
+contraints** sans forcer aucune réconciliation. Seuil de 5 % non calibré ; à
+terme le critère devrait porter sur la VARIABILITÉ observée de la part, pas sur
+son niveau — un petit candidat en dynamique mériterait un chemin.

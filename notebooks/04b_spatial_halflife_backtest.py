@@ -45,33 +45,66 @@ RESULTS_DIR = Path(__file__).resolve().parent / "figures"
 RESULTS_DIR.mkdir(exist_ok=True)
 
 
+# Blocs des candidats TESTÉS mais jamais candidats (spec §12.21). `candidat_blocs.csv`
+# ne contient que ceux qui se sont réellement présentés — or les sondages 2021
+# testaient massivement des hypothèses qui ne se sont pas concrétisées : Bertrand
+# pesait 15 % sur 59 sondages, Wauquiez 10,8 %, Barnier 9,2 %, Ciotti 5,3 %. Les
+# écarter creusait un trou de 10 à 20 % des intentions, concentré sur la droite,
+# c'est-à-dire précisément la zone que le modèle doit apprendre à distinguer.
+# Affectations à confirmer ; les quatre dernières sont discutables (cf. §12.21).
+BLOCS_HYPOTHETIQUES = {
+    "Montebourg": "gauche", "Taubira": "gauche",
+    "Lagarde": "centre", "Jean Lassalle": "centre",   # nom résolu : il s'est présenté
+    "Juvin": "droite", "Barnier": "droite", "Bertrand": "droite",
+    "Wauquiez": "droite", "Ciotti": "droite", "Poisson": "droite",
+    "Philippot": "droite_radicale", "Asselineau": "droite_radicale",
+    "Thouy": "ecologistes",
+}
+MIN_NOTICES = 5
+
+
 def load_historical_long(election: int) -> tuple[pd.DataFrame, list[str], np.ndarray]:
+    """Roster construit depuis les SONDAGES (>= MIN_NOTICES sondages distincts),
+    pas depuis la liste des candidats effectivement partis — même règle que
+    `model.build_roster` sur 2027, et pour la même raison : ce modèle sert à
+    explorer des hypothèses, donc tout candidat réellement testé compte."""
     polls = pd.read_csv(PARSED_DIR / POLL_FILES[election])
     t1 = polls[polls["tour"] == "Premier tour"].copy()
 
     blocs = load_blocs()
     blocs_e = blocs[blocs["election"] == election]
-    blocs_e = blocs_e[blocs_e["bloc"].isin(BLOC_ORDER)]
     real = set(blocs_e["candidat"])
-
-    t1["candidat"] = t1["candidat"].apply(lambda raw: _resolve_candidate(raw, real))
-    t1 = t1[t1["candidat"].isin(real)]
+    bloc_of_real = dict(zip(blocs_e["candidat"], blocs_e["bloc"]))
 
     date_fin = pd.to_datetime(t1["date_fin"], errors="coerce")
-    date_notice = pd.to_datetime(t1.get("date_notice"), errors="coerce")
-    t1["date_fin"] = date_fin.fillna(date_notice)
+    t1["date_fin"] = date_fin.fillna(pd.to_datetime(t1.get("date_notice"), errors="coerce"))
     t1 = t1[t1["date_fin"].notna()]
-
-    # Le fichier wiki d'une élection contient aussi des sondages "prémonitoires"
-    # d'un cycle précédent/suivant (ex. 2022_wiki.csv va de 2017-10 à 2022-12) --
-    # régime différent (cf. MIN_POLL_DATE, model/models/bayesian_nowcast/nowcast.py),
-    # à exclure : fenêtre de campagne = 400 jours avant le scrutin, jamais après.
     elec_date = pd.Timestamp(ELECTION_DATES[election])
     t1 = t1[(t1["date_fin"] > elec_date - pd.Timedelta(days=400)) & (t1["date_fin"] <= elec_date)]
 
-    t1 = t1.merge(blocs_e[["candidat", "bloc"]], on="candidat", how="left")
-    candidates = sorted(real)
-    slot_of = np.array([BLOC_ORDER.index(blocs_e.set_index("candidat").loc[c, "bloc"]) for c in candidates])
+    # nom canonique : celui de la table quand le candidat s'est présenté, sinon
+    # le nom brut du sondage (Bertrand, Barnier... n'existent pas dans la table)
+    t1["candidat"] = [
+        r if (_resolve_candidate(r, real) not in real) else _resolve_candidate(r, real)
+        for r in t1["candidat"]
+    ]
+    counts = t1.groupby("candidat")["notice"].nunique()
+    eligible = [c for c in counts[counts >= MIN_NOTICES].index]
+
+    def bloc_of(c):
+        # la table locale PRIME : elle sert justement à replacer sur l'axe des
+        # candidats que `candidat_blocs.csv` classe `divers` (Lassalle, 169
+        # sondages à 1,3 %), lequel n'appartient à aucun bloc ordonné et les
+        # ferait retomber dans le trou de normalisation qu'on cherche à fermer.
+        return BLOCS_HYPOTHETIQUES.get(c) or bloc_of_real.get(c)
+
+    non_classes = [c for c in eligible if bloc_of(c) is None]
+    if non_classes:
+        raise ValueError(f"candidats éligibles sans bloc : {sorted(non_classes)} — "
+                         "les ajouter à BLOCS_HYPOTHETIQUES")
+    candidates = sorted(c for c in eligible if bloc_of(c) in BLOC_ORDER)
+    t1 = t1[t1["candidat"].isin(candidates)]
+    slot_of = np.array([BLOC_ORDER.index(bloc_of(c)) for c in candidates])
     return t1, candidates, slot_of
 
 
