@@ -32,17 +32,13 @@ jobs:
       - name: Ingestion sondages (Wikipedia)
         run: python -m sondages.wiki --min-sondages 15
 
-      # Modèles PUBLICS uniquement (cf. model/run.py) : les variantes de
-      # diagnostic sont des runs NUTS complets dont le site n'affiche rien.
-      - name: Modèle live -> docs/data/
+      # Tout modèle rattaché à une rubrique du site (cf. `ForecastModel.surface`)
+      # — donc le suivi des intentions ET les scénarios, qui ont chacun besoin
+      # d'une version fraîche chaque jour. Les variantes de diagnostic
+      # (`surface=None`) sont des runs NUTS complets dont le site n'affiche
+      # rien : `--all` seulement, jamais ici.
+      - name: Modèles du site -> docs/data/
         run: python -m model.run
-
-      # `spatial-pooling` n'est pas `public` (il ne trace pas de trajectoire et
-      # n'a pas sa place dans le sélecteur de prévision), donc `model.run` sans
-      # argument ne le lance pas — mais l'onglet Scénarios a besoin de son
-      # `scenarios.json` frais. On l'appelle explicitement.
-      - name: Scénarios (spatial-pooling) -> docs/data/
-        run: python -m model.run --model spatial-pooling
 
       - name: Commit résultats
         run: |

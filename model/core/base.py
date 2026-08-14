@@ -26,6 +26,10 @@ ROOT = Path(__file__).resolve().parents[2]
 SITE_DATA = ROOT / "docs" / "data"   # `docs/` : dossier publié par GitHub Pages
 ELECTION_T1 = pd.Timestamp("2027-04-18")
 
+# Rubriques du site, dans l'ordre de la barre d'onglets. Un modèle s'y rattache
+# par `ForecastModel.surface` ; le manifeste `models.json` est groupé dessus.
+SURFACES = ("suivi", "scenarios")
+
 
 @dataclass
 class Nowcast:
@@ -90,12 +94,29 @@ class ForecastModel(ABC):
     label: str = ""
     description: str = ""
     trains_on_history: bool = False
-    # Visible dans le sélecteur du site public (docs/data/models.json) — False
-    # pour une variante de comparaison/diagnostic qu'on veut garder exécutable
-    # (CLI, tests, backfill) sans l'exposer comme option publique. N'affecte
-    # PAS le registre (`all_models()`) : le modèle reste pleinement utilisable
-    # partout ailleurs, seul `write_manifest()` filtre dessus.
-    public: bool = True
+
+    # RUBRIQUE du site où ce modèle apparaît. Remplace l'ancien booléen `public`,
+    # qui confondait deux questions distinctes : « est-ce montré ? » et « où ? ».
+    #
+    #   "suivi"     — sélecteur de l'onglet « Suivi des intentions ». C'est la
+    #                 rubrique CODIFIÉE : il suffit de respecter le contrat de
+    #                 `run()` (snapshot daté) pour y apparaître, sans toucher au
+    #                 front. C'est la porte d'entrée d'un contributeur.
+    #   "scenarios" — onglet « Scénarios ». Le modèle produit en plus un artefact
+    #                 SUR MESURE (`scenario_artifact`) que la page sait lire ;
+    #                 y entrer demande donc du travail front dédié, ce n'est pas
+    #                 un simple enregistrement. Volontairement plus exigeant.
+    #   None        — enregistré et exécutable (CLI, tests, backfill) mais hors du
+    #                 site : variante de comparaison ou de diagnostic.
+    #
+    # N'affecte PAS le registre (`all_models()`) : seuls `write_manifest()` et la
+    # portée par défaut des runners filtrent dessus.
+    surface: str | None = "suivi"
+
+    # Rubrique "scenarios" uniquement : nom du fichier écrit sous
+    # `docs/data/<id>/`, publié dans le manifeste pour que la page le charge
+    # sans que son chemin soit codé en dur dans le HTML.
+    scenario_artifact: str | None = None
 
     # --- phase HORS-LIGNE (optionnelle) ---
     def calibrate(self, history=None) -> None:
@@ -235,13 +256,31 @@ def write_snapshot(snapshot: dict) -> Path:
     return mdir / f"{as_of}.json"
 
 
+def models_by_surface() -> dict[str, list["ForecastModel"]]:
+    """Modèles du registre groupés par rubrique de site (cf. `ForecastModel.surface`).
+    Les modèles `surface=None` sont absents. Clés toujours présentes, même vides,
+    pour que le front n'ait pas à tester leur existence."""
+    out: dict[str, list[ForecastModel]] = {s: [] for s in SURFACES}
+    for m in sorted(all_models().values(), key=lambda m: m.id):
+        if m.surface in out:
+            out[m.surface].append(m)
+    return out
+
+
 def write_manifest() -> None:
-    """(Re)génère docs/data/models.json depuis le registre — seuls les
-    modèles `public=True` apparaissent (cf. `ForecastModel.public`) ; les
-    autres restent exécutables (CLI, tests, backfill) mais hors du
-    sélecteur du site."""
+    """(Re)génère docs/data/models.json depuis le registre, GROUPÉ PAR RUBRIQUE.
+
+    Le front lit `models.suivi` pour peupler le sélecteur de l'onglet « Suivi des
+    intentions » et `models.scenarios` pour savoir quel artefact charger dans
+    l'onglet « Scénarios ». Un modèle `surface=None` n'y figure pas : il reste
+    exécutable (CLI, tests, backfill) mais le site l'ignore.
+    """
     SITE_DATA.mkdir(parents=True, exist_ok=True)
-    manifest = [{"id": m.id, "label": m.label, "description": m.description,
-                 "trains_on_history": m.trains_on_history}
-                for m in sorted(all_models().values(), key=lambda m: m.id) if m.public]
+    def entree(m: ForecastModel) -> dict:
+        e = {"id": m.id, "label": m.label, "description": m.description,
+             "trains_on_history": m.trains_on_history}
+        if m.scenario_artifact:
+            e["artefact"] = f"{m.id}/{m.scenario_artifact}"
+        return e
+    manifest = {s: [entree(m) for m in ms] for s, ms in models_by_surface().items()}
     (SITE_DATA / "models.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2))

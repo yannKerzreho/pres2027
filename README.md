@@ -29,7 +29,7 @@ python3 -m venv .venv
 # 1. Ingestion des sondages -> data/parsed/intentions_2027_wiki.csv (non versionné)
 .venv/bin/python -m sondages.wiki
 
-# 2. Estimation du jour -> site/data/<modèle>/AAAA-MM-JJ.json
+# 2. Estimation du jour -> docs/data/<modèle>/AAAA-MM-JJ.json
 .venv/bin/python -m model.run
 
 # 3. (optionnel) Rejouer l'historique pour peupler la courbe
@@ -92,7 +92,7 @@ Spécification complète :
   constante (participation, indécis, vote utile). La confondre avec la diffusion
   faussait la loi d'horizon.
 
-Sortie (`site/data/<modèle>/<date>.json`) : parts et IC 90 %, P(qualifié top 2),
+Sortie (`docs/data/<modèle>/<date>.json`) : parts et IC 90 %, P(qualifié top 2),
 P(arrive 1er), duels de 2nd tour probables.
 
 ## Les intervalles tiennent-ils leur promesse ?
@@ -129,22 +129,48 @@ sous-couverture est un point ouvert assumé : elle vient de la projection jusqu'
 vote, pas de l'estimation du moment. Séparer explicitement la dérive d'opinion de
 l'écart sondages-urne (fait, cf. la spec §5) ne l'a pas résorbée.
 
-## Ajouter un modèle
+## Ajouter un modèle de suivi des intentions
 
-Créer `model/models/mon_modele/`, sous-classer `ForecastModel`
+C'est la voie **codifiée**, et elle ne demande aucune ligne de front. Créer
+`model/models/mon_modele/`, sous-classer `ForecastModel`
 ([`model/core/base.py`](model/core/base.py)), décorer `@register`, l'importer dans
-[`model/core/registered.py`](model/core/registered.py). Le runner, le backfill, le
-sélecteur du site et les tests de contrat le prennent automatiquement.
+[`model/core/registered.py`](model/core/registered.py). Le runner, le backfill,
+les tests de contrat et la **pastille de sélection** de l'onglet « Suivi des
+intentions » le prennent automatiquement — c'est la rubrique par défaut
+(`surface = "suivi"`).
 
 `calibrate()` est **optionnelle** : c'est ainsi qu'on gère « certains modèles
 apprennent des paramètres sur le passé, d'autres non ». `run()` reçoit les
 sondages bruts au niveau candidat (institut, échantillon, méthode, hypothèse…) ;
 l'agrégation en slots est un helper, pas une obligation.
 
-**Publié ≠ enregistré** : `ForecastModel.public` décide de la présence dans le
-sélecteur du site, et `python -m model.run` ne lance que les modèles publics —
-une variante de diagnostic est un run d'inférence complet dont personne ne lit la
-courbe. `python -m model.run --all` les inclut.
+Le contrat de sortie est figé par `assemble_snapshot` / `validate_snapshot`. Les
+modèles qui passent par `forecast_from_draws` publient en plus, gratuitement, les
+**quantiles et la densité** de chaque candidature — ce qui alimente le survol des
+barres sur le site. Un modèle qui assemble `forecast_scrutin` à la main peut les
+omettre : le front se replie sur la moyenne et l'IC 90 %.
+
+**Enregistré ≠ affiché** : `ForecastModel.surface` décide de la rubrique du site.
+
+| `surface` | où | pour qui |
+|---|---|---|
+| `"suivi"` (défaut) | sélecteur de l'onglet Suivi des intentions | contributeur externe : rien d'autre à faire |
+| `"scenarios"` | onglet Scénarios | demande un artefact sur mesure **et** du code front dédié |
+| `None` | nulle part | variante de comparaison ou de diagnostic |
+
+`python -m model.run` lance tout ce qui a une rubrique ; `--all` y ajoute le
+reste. Le backfill, lui, ne rejoue par défaut que la rubrique « suivi » : c'est la
+seule qui affiche des courbes à peupler.
+
+## Ajouter un scénario
+
+Volontairement plus exigeant : cette rubrique ne se contente pas d'un snapshot.
+Le modèle exporte la **géométrie** de son postérieur (`scenario_artifact`, publié
+dans `models.json`), et la page la pousse dans le navigateur pour répondre à une
+question que le contrat commun ne sait pas poser — ici « et si la liste des
+candidats changeait ? », soit 2^N listes dont aucune n'est pré-calculée. Il faut
+donc écrire l'export **et** la page qui le lit
+([`docs/scenarios.html`](docs/scenarios.html) comme modèle de référence).
 
 ## Structure
 
@@ -157,7 +183,9 @@ model/core/     base (contrat + registre), movements (mouvements observés 2017/
                 bank, inference, simulate, live_dataset, utils, registered
 model/models/   gp_pooling/ — le modèle, sa spec et ses paramètres calibrés
 model/backtest/ coverage (au scrutin) et predictive_coverage (le nowcast)
-site/           Front statique + site/data/ (snapshots datés, index, manifeste)
+docs/           Site publié (GitHub Pages) : 3 onglets + data/ (snapshots, manifeste)
+docs/assets/    palette.js (banque de couleurs), site.css / site.js (briques communes),
+                generate_bg.py (bandeaux pointillistes, titre incrusté)
 ```
 
 Le nowcast bayésien SSM, le modèle spatial et les notebooks d'exploration vivent

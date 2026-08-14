@@ -717,12 +717,12 @@ class BayesianNowcast(ForecastModel):
                   "les sondages sans pondération temporelle. Pas de débiaisage par "
                   "institut par défaut (cf. use_biais).")
     trains_on_history = True
-    # Hors du sélecteur public tant que §6.8 de spec_ssm.md (décalage RN vs
-    # sondages bruts) reste ouvert : publier une courbe dont on sait qu'elle a
-    # un biais non expliqué contredirait la ligne du projet (communiquer des
-    # probabilités honnêtes). Le modèle reste pleinement exécutable — CLI,
-    # tests de contrat, backfill — et repasse public en changeant cette ligne.
-    public = False
+    # Hors du site tant que §6.8 de spec_ssm.md (décalage RN vs sondages bruts)
+    # reste ouvert : publier une courbe dont on sait qu'elle a un biais non
+    # expliqué contredirait la ligne du projet (communiquer des probabilités
+    # honnêtes). Le modèle reste pleinement exécutable — CLI, tests de contrat,
+    # backfill — et rejoint la rubrique « suivi » en changeant cette ligne.
+    surface = None
     use_house_effects = True
     # `biais[institut,bloc]` DÉSACTIVÉ par défaut : avec ~20-45 groupes et
     # parfois aussi peu que 5 sondages en début de campagne, le postérieur
@@ -932,7 +932,7 @@ class BayesianNowcastNoHouseEffects(BayesianNowcast):
                   "(priors faibles sur tau et le saut terminal) — sert de comparaison.")
     trains_on_history = False
     use_house_effects = False
-    public = False   # comparaison interne, hors du sélecteur du site (cf. ForecastModel.public)
+    surface = None   # comparaison interne, hors du site (cf. ForecastModel.surface)
 
 
 @register
@@ -950,7 +950,7 @@ class BayesianNowcastAvecBiaisInstitut(BayesianNowcast):
     trains_on_history = True
     use_house_effects = True
     use_biais = True
-    public = False   # comparaison interne, hors du sélecteur du site (cf. ForecastModel.public)
+    surface = None   # comparaison interne, hors du site (cf. ForecastModel.surface)
 
 
 @register
@@ -971,7 +971,7 @@ class BayesianNowcastCovarianceComplete(BayesianNowcast):
     trains_on_history = True
     use_house_effects = True
     full_covariance = True
-    public = False   # comparaison interne, hors du sélecteur du site (cf. ForecastModel.public)
+    surface = None   # comparaison interne, hors du site (cf. ForecastModel.surface)
 
 
 @register
@@ -992,7 +992,7 @@ class BayesianNowcastObsIsotrope(BayesianNowcast):
     trains_on_history = True
     use_house_effects = True
     isotropic_obs_noise = True
-    public = False   # comparaison interne, hors du sélecteur du site (cf. ForecastModel.public)
+    surface = None   # comparaison interne, hors du site (cf. ForecastModel.surface)
 
 
 @register
@@ -1015,7 +1015,7 @@ class BayesianNowcastTauCandidat(BayesianNowcast):
     trains_on_history = True
     use_house_effects = True
     use_tau_candidat = True
-    public = False   # comparaison interne, hors du sélecteur du site (cf. ForecastModel.public)
+    surface = None   # comparaison interne, hors du site (cf. ForecastModel.surface)
 
 
 @register
@@ -1036,7 +1036,7 @@ class BayesianNowcastRosterMixte(BayesianNowcast):
     trains_on_history = True
     use_house_effects = True
     roster_filter_slots: tuple[str, ...] = ()
-    public = False
+    surface = None   # comparaison interne, hors du site (cf. ForecastModel.surface)
 
 
 @register
@@ -1049,4 +1049,4 @@ class BayesianNowcastNoHouseEffectsRoster12(BayesianNowcastNoHouseEffects):
                    "gardant que les hypothèses testant exactement les 12 slots du modèle.")
     roster_filter_slots = EXACT_ROSTER_12_SLOTS
     roster_filter_exact = True
-    public = False
+    surface = None   # comparaison interne, hors du site (cf. ForecastModel.surface)

@@ -35,9 +35,9 @@ def main():
     ap.add_argument("--draws", type=int, default=400, help="draws réduits pour le backfill")
     ap.add_argument("--models", default=None,
                     help="sous-ensemble d'ids de modèles, séparés par des virgules "
-                        "(défaut : les modèles publics, cf. --all)")
+                        "(défaut : les modèles de la rubrique « suivi », cf. --all)")
     ap.add_argument("--all", dest="include_private", action="store_true",
-                    help="inclure les modèles non publics (variantes de comparaison)")
+                    help="inclure les modèles des autres rubriques et hors site")
     ap.add_argument("--skip-existing", action="store_true",
                     help="ne recalcule pas un snapshot déjà écrit sur disque "
                         "(site/data/<model>/<as_of>.json) — reprise après interruption")
@@ -52,10 +52,12 @@ def main():
         wanted = set(args.models.split(","))
         models = {mid: m for mid, m in models.items() if mid in wanted}
     elif not args.include_private:
-        # Même portée par défaut que `model.run` : rejouer 23 dates × 8
-        # variantes NUTS de diagnostic coûte des heures pour des courbes que
-        # le site n'affiche pas.
-        models = {mid: m for mid, m in models.items() if m.public}
+        # Rubrique « suivi » SEULEMENT — portée plus étroite que `model.run`, et
+        # c'est voulu : le backfill sert à peupler des COURBES d'évolution, ce
+        # que seule cette rubrique affiche. Un modèle de scénarios n'a pas de
+        # trajectoire à remplir (son artefact décrit le présent), et rejouer 23
+        # dates × 8 variantes NUTS de diagnostic coûte des heures pour rien.
+        models = {mid: m for mid, m in models.items() if m.surface == "suivi"}
     for m in models.values():                        # backfill rapide (draws réduits)
         for attr in ("draws", "tune"):
             if hasattr(m, attr):

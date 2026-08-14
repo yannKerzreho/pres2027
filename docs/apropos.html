@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pres2027 — À propos</title>
+<meta name="description" content="Ce que fait ce site, comment le lire, d'où viennent les sondages et ce que le modèle ne sait pas faire.">
+<link rel="stylesheet" href="./assets/site.css">
+</head>
+<body>
+
+<a href="./index.html" class="lien-titre" aria-label="Pres2027 — accueil">
+  <picture>
+    <source srcset="./assets/bg-top-dark.png" media="(prefers-color-scheme: dark)">
+    <img class="band" src="./assets/bg-top.png" width="2400" height="300" alt="Pres2027">
+  </picture>
+</a>
+
+<div class="onglets">
+  <nav aria-label="Rubriques">
+    <a href="./index.html">Suivi des intentions</a>
+    <a href="./scenarios.html">Scénarios</a>
+    <a href="./apropos.html" aria-current="page">À propos</a>
+  </nav>
+</div>
+
+<div class="wrap">
+  <header class="entete">
+    <p class="eyebrow">À propos</p>
+    <h1>Ce que ce site fait, et ce qu'il ne fait pas</h1>
+    <p class="chapo">Pres2027 agrège les sondages du 1<sup>er</sup> tour de l'élection
+      présidentielle du 18 avril 2027 et publie une estimation par jour. Le code, les
+      données et les méthodes sont ouverts.</p>
+  </header>
+
+  <div class="prose">
+    <h2>Comment lire les chiffres</h2>
+    <p><b>Ce sont des probabilités, pas des prédictions.</b> Dire qu'une candidature a
+      85 % de chances d'être au 2<sup>nd</sup> tour, c'est dire qu'environ une fois sur
+      sept, elle n'y sera pas. Un événement à une chance sur sept se produit
+      régulièrement&nbsp;: c'est à peu près la probabilité de tirer deux fois de suite
+      le même chiffre à un dé.</p>
+    <p><b>Les intervalles sont larges, et c'est voulu.</b> Ce que le site affiche n'est
+      pas l'opinion d'aujourd'hui, mais celle du jour du vote. Deux incertitudes
+      s'ajoutent donc à la marge d'erreur des sondages&nbsp;: l'opinion peut encore bouger
+      d'ici avril 2027, et le résultat des urnes s'écarte toujours un peu des intentions
+      déclarées. Ces deux effets sont mesurés sur les campagnes de 2017 et 2022, pas
+      supposés.</p>
+    <p><b>Survolez une barre</b> pour voir la distribution complète derrière la moyenne.
+      Elle est rarement symétrique&nbsp;: la moyenne et la médiane s'écartent, et c'est
+      exactement ce qu'un intervalle seul cacherait.</p>
+
+    <h2>Les deux rubriques</h2>
+    <table>
+      <tr><th>Rubrique</th><th>La question posée</th><th>Le modèle</th></tr>
+      <tr>
+        <td><a href="./index.html">Suivi des intentions</a></td>
+        <td>Où en est l'opinion, et où sera-t-elle le jour du vote&nbsp;?</td>
+        <td>Un modèle au choix, dans le sélecteur en haut de page.</td>
+      </tr>
+      <tr>
+        <td><a href="./scenarios.html">Scénarios</a></td>
+        <td>Et si la liste des candidats n'était pas celle que les instituts testent&nbsp;?</td>
+        <td><code>spatial-pooling</code>, qui place les candidats sur un axe et
+            redistribue les voix aux voisins.</td>
+      </tr>
+    </table>
+    <p>Les deux ne répondent pas à la même question et ne sont pas interchangeables&nbsp;:
+      le modèle spatial n'est pas fait pour tracer une trajectoire d'opinion, et le
+      modèle de suivi ne sait pas chiffrer une liste que personne n'a sondée. C'est
+      pourquoi le sélecteur de modèles n'apparaît que dans le suivi des intentions.</p>
+
+    <h2>D'où viennent les sondages</h2>
+    <p>La source primaire est la page
+      <a class="lien" href="https://fr.wikipedia.org/wiki/Liste_de_sondages_sur_l%27élection_présidentielle_française_de_2027">Liste
+      de sondages sur l'élection présidentielle française de 2027</a> de Wikipédia
+      (CC BY-SA 4.0), complétée par les notices de la
+      <a class="lien" href="https://codeberg.org/nsppolls/sondages-commission-index">Commission
+      des sondages</a>. L'historique 2017-2022 qui sert à la calibration vient de
+      <a class="lien" href="https://github.com/nsppolls/nsppolls">nsppolls</a> et de
+      <a class="lien" href="https://github.com/pollsposition/data">pollsposition</a>.</p>
+    <p>Sur les graphiques d'intentions, chaque point est un sondage&nbsp;: cliquer dessus
+      ouvre sa notice source. Rien n'est affiché qui ne soit vérifiable.</p>
+
+    <h2>Ce que le modèle ne sait pas faire</h2>
+    <ul>
+      <li><b>Le vainqueur du 2<sup>nd</sup> tour n'est pas modélisé.</b> Il faudrait une
+        matrice de reports de voix. Le site s'arrête aux duels probables.</li>
+      <li><b>Deux élections seulement</b> (2017 et 2022) servent à tout calibrer, et 2017
+        ne couvre que les cinq dernières semaines de campagne.</li>
+      <li><b>La prévision au jour du scrutin est sous-couverte</b>&nbsp;: un intervalle
+        annoncé à 90 % contient la vérité 83 % du temps sur les backtests. C'est la
+        projection jusqu'au vote qui est en cause, pas l'estimation du moment — c'est
+        écrit ici plutôt que caché.</li>
+      <li><b>Peu de sondages exploitables</b> pour l'instant&nbsp;: les modèles à roster
+        exact n'en retiennent qu'une partie. Le volume croîtra avec la campagne.</li>
+      <li><b>Les positions gauche-droite du modèle spatial sont un choix éditorial</b>,
+        pas une mesure&nbsp;: l'ordre des candidats sur l'axe est une donnée d'entrée.
+        Seuls leurs écarts sont estimés.</li>
+    </ul>
+
+    <h2>Contribuer</h2>
+    <p>Le projet est sous licence MIT et vit sur
+      <a class="lien" href="https://github.com/yannKerzreho/pres2027">GitHub</a>.
+      Ajouter un modèle de suivi des intentions demande d'écrire une classe et de
+      l'enregistrer&nbsp;: le runner, les tests, le backfill et la pastille de sélection
+      le prennent ensuite tout seuls, sans une ligne de code front. Les scénarios sont
+      plus exigeants — ils supposent un artefact sur mesure et la page qui va avec.
+      Le <code>README</code> détaille les deux chemins.</p>
+
+    <h2>Remerciements</h2>
+    <p>Ce site n'existerait pas sans le travail bénévole des <b>contributrices et
+      contributeurs de Wikipédia</b>, qui recensent, vérifient et tiennent à jour les
+      sondages au fil de la campagne, avec leurs sources et leurs notices. C'est un
+      travail d'archivage patient et rarement crédité&nbsp;: il constitue ici
+      l'intégralité de la matière première.</p>
+  </div>
+</div>
+
+<picture>
+  <source srcset="./assets/bg-bottom-dark.png" media="(prefers-color-scheme: dark)">
+  <img class="band pied" src="./assets/bg-bottom.png" width="2400" height="160" alt="" role="presentation">
+</picture>
+
+<div class="wrap">
+  <footer>
+    <p>Code sous licence MIT · sondages sous licence CC BY-SA 4.0 ·
+      mis à jour chaque jour par un job automatique.</p>
+  </footer>
+</div>
+
+</body>
+</html>

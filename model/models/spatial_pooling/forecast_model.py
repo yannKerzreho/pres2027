@@ -63,13 +63,18 @@ class SpatialPooling(ForecastModel):
     # proportionnel sur 106 paires jamais vues du fit, 75 % des paires gagnées
     # (87 % sur la moitié la plus difficile). Les réglages calés sur 2021
     # transfèrent donc.
-    # PAS dans le sélecteur de prévision : ce modèle n'est pas fait pour tracer
-    # une trajectoire d'opinion, et le présenter à côté de `gp-pooling` inviterait
-    # à comparer deux choses qui ne répondent pas à la même question. Il alimente
-    # l'onglet Scénarios, qui est son usage. Il reste lançable explicitement
-    # (`--model spatial-pooling`) et le job quotidien doit l'appeler pour
-    # rafraîchir `scenarios.json`.
-    public = False
+    # Rubrique « Scénarios », PAS « suivi » : ce modèle n'est pas fait pour tracer
+    # une trajectoire d'opinion, et le présenter dans le sélecteur à côté de
+    # `gp-pooling` inviterait à comparer deux choses qui ne répondent pas à la
+    # même question. Il alimente l'onglet Scénarios, qui est son usage — et le
+    # job quotidien le lance donc à ce titre, sans argument supplémentaire.
+    surface = "scenarios"
+    # Artefact sur mesure lu par docs/scenarios.html : ce ne sont pas des
+    # résultats pré-calculés mais la GÉOMÉTRIE du postérieur, que le navigateur
+    # pousse à travers le softmax masqué pour n'importe quelle liste cochée
+    # (cf. `_export_scenarios`). C'est ce qui rend cette rubrique bespoke : le
+    # contrat de snapshot ne saurait pas décrire un tel objet.
+    scenario_artifact = "scenarios.json"
 
     def nowcast(self, polls: pd.DataFrame, as_of: str) -> Nowcast:
         fit = fit_spatial_pooling(polls, as_of=as_of)

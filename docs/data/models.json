@@ -1,8 +1,19 @@
-[
-  {
-    "id": "gp-pooling",
-    "label": "Estimation de l'opinion",
-    "description": "Chaque sondage est une mesure imparfaite de l'opinion du moment : il comporte une marge d'erreur liée au nombre de personnes interrogées, et chaque institut a ses habitudes de mesure. Plutôt que de faire une simple moyenne, le modèle reconstitue l'opinion qui explique le mieux l'ensemble des sondages — deux sondages proches dans le temps se confirment donc l'un l'autre et resserrent l'estimation. Il ajoute ensuite deux incertitudes : l'opinion peut encore bouger d'ici au vote, et le résultat des urnes s'écarte toujours un peu des intentions déclarées. Ces deux effets sont mesurés sur les campagnes de 2017 et 2022.",
-    "trains_on_history": true
-  }
-]
+{
+  "suivi": [
+    {
+      "id": "gp-pooling",
+      "label": "Estimation de l'opinion",
+      "description": "Chaque sondage est une mesure imparfaite de l'opinion du moment : il comporte une marge d'erreur liée au nombre de personnes interrogées, et chaque institut a ses habitudes de mesure. Plutôt que de faire une simple moyenne, le modèle reconstitue l'opinion qui explique le mieux l'ensemble des sondages — deux sondages proches dans le temps se confirment donc l'un l'autre et resserrent l'estimation. Il ajoute ensuite deux incertitudes : l'opinion peut encore bouger d'ici au vote, et le résultat des urnes s'écarte toujours un peu des intentions déclarées. Ces deux effets sont mesurés sur les campagnes de 2017 et 2022.",
+      "trains_on_history": true
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "spatial-pooling",
+      "label": "Spatial pooling",
+      "description": "Les candidats occupent une position sur un axe latent gauche-droite et recrutent par un softmax sur cet axe. Retirer un candidat redistribue ses électeurs vers ses voisins, par construction — ce qui permet de chiffrer n'importe quelle liste, y compris jamais sondée.",
+      "trains_on_history": true,
+      "artefact": "spatial-pooling/scenarios.json"
+    }
+  ]
+}

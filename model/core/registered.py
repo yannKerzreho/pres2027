@@ -5,9 +5,12 @@ Un contributeur ajoute son modèle en créant `model/models/mon_modele/`
 runner, le backfill, le manifeste `models.json` et les tests le prennent alors
 automatiquement.
 
-Être enregistré ≠ être exposé : `ForecastModel.public` décide de la présence
-dans le sélecteur du site, et `python -m model.run` ne lance par défaut que les
-modèles publics.
+Être enregistré ≠ être exposé : `ForecastModel.surface` décide de la RUBRIQUE du
+site où le modèle apparaît — « suivi » (le sélecteur de l'onglet Suivi des
+intentions, la voie codifiée et la valeur par défaut), « scenarios » (onglet
+Scénarios, qui demande en plus un artefact sur mesure), ou `None` (hors du site).
+`python -m model.run` ne lance par défaut que les modèles rattachés à une
+rubrique.
 
 Branche `dev` : en plus du modèle publié, elle porte les modèles expérimentaux.
 """

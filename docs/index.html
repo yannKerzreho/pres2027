@@ -3,137 +3,45 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>pres2027 — Agrégateur bayésien de sondages</title>
-<style>
-  :root {
-    /* Identité "Marianne" (charte graphique de l'État, 2020) : bleu marine
-       plus sombre adopté sous Macron pour le drapeau/logo de l'État. */
-    --bg:#ffffff; --fg:#0d1117; --muted:#5b6472; --line:#e4e7eb; --card:#f7f8fa;
-    --red:#e1000f; --blue:#000091; --track:#eef0f3; --ci:#0d1117;
-    --warn-bg:#fff6ec; --warn-line:var(--red); --grid:#eef0f3; --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
-    --sans:-apple-system,BlinkMacSystemFont,"Inter","Segoe UI",Helvetica,Arial,sans-serif;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root { --bg:#0d1117; --fg:#eef1f5; --muted:#8b96a5; --line:#232a35; --card:#141a22;
-      --red:#ff5a64; --blue:#6e6eff; --track:#1a212b; --ci:#eef1f5;
-      --warn-bg:#20160f; --warn-line:var(--red); --grid:#1a212b; }
-  }
-  * { box-sizing:border-box; }
-  html { scroll-behavior:smooth; }
-  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.55 var(--sans); }
-  .wrap { max-width:920px; margin:0 auto; padding:0 22px; }
-
-  /* ---------- masthead ---------- */
-  .band { width:100%; height:150px; background-size:cover; background-position:center;
-    background-color:var(--card); position:relative; }
-  .band#band-top { background-image:url('./assets/bg-top.png'); }
-  .band#band-bottom { background-image:url('./assets/bg-bottom.png'); height:110px; margin-top:52px; }
-  @media (prefers-color-scheme: dark) {
-    .band#band-top { background-image:url('./assets/bg-top-dark.png'); }
-    .band#band-bottom { background-image:url('./assets/bg-bottom-dark.png'); }
-  }
-  header.masthead { border-bottom:1px solid var(--line); padding-bottom:22px; margin-bottom:6px; }
-  .eyebrow { font:600 0.72rem/1 var(--mono); letter-spacing:.12em; text-transform:uppercase;
-    color:var(--red); margin:22px 0 10px; }
-  h1 { font-size:2.15rem; font-weight:800; margin:0 0 8px; letter-spacing:-0.03em; line-height:1.08; }
-  .sub { color:var(--muted); margin:0 0 20px; max-width:60ch; font-size:1.02rem; }
-  .topbar { display:flex; flex-wrap:wrap; gap:14px 22px; align-items:center; justify-content:space-between; }
-  .meta { display:flex; flex-wrap:wrap; gap:5px 20px; color:var(--muted); font:0.8rem/1.4 var(--mono); }
-  .meta b { color:var(--fg); font-weight:600; }
-
-  /* ---------- model switch (pills) ---------- */
-  .switch { display:flex; flex-wrap:wrap; gap:6px; }
-  .switch button { appearance:none; border:1px solid var(--line); background:var(--card); color:var(--fg);
-    border-radius:999px; padding:7px 14px; font:600 0.8rem var(--sans); cursor:pointer; transition:.15s; }
-  .switch button:hover { border-color:var(--red); }
-  .switch button.active { background:var(--fg); color:var(--bg); border-color:var(--fg); }
-  .switch button span { color:var(--muted); font-weight:500; }
-  .switch button.active span { color:var(--bg); opacity:.65; }
-
-  .nav { display:flex; gap:6px; margin:0 0 18px; }
-  .nav a { text-decoration:none; border:1px solid var(--line); background:var(--card); color:var(--fg);
-    border-radius:999px; padding:7px 14px; font:600 0.8rem var(--sans); }
-  .nav a:hover { border-color:var(--red); }
-  .nav a.active { background:var(--fg); color:var(--bg); border-color:var(--fg); }
-
-  h2 { font-size:1.05rem; font-weight:800; text-transform:uppercase; letter-spacing:.04em;
-    margin:52px 0 4px; display:flex; align-items:baseline; gap:10px; }
-  h2::after { content:""; flex:1; height:1px; background:var(--line); }
-  .legend { font-size:0.85rem; color:var(--muted); margin:0 0 16px; }
-  .warn { background:var(--warn-bg); border-left:3px solid var(--warn-line); padding:10px 14px;
-    border-radius:4px; font-size:0.87rem; margin:18px 0 0; }
-  .chips { display:flex; flex-wrap:wrap; gap:6px 16px; font-size:0.8rem; margin:0 0 12px; font-family:var(--mono); }
-  .chip { display:inline-flex; align-items:center; gap:6px; }
-  .chip i { width:10px; height:10px; border-radius:2px; display:inline-block; }
-
-  /* barres nowcast */
-  .row { display:grid; grid-template-columns:150px 1fr 96px; align-items:center; gap:14px; padding:9px 0;
-    border-bottom:1px solid var(--line); }
-  .row:first-child { border-top:1px solid var(--line); }
-  .name { font-weight:700; font-size:0.92rem; }
-  .track { position:relative; height:24px; background:var(--track); border-radius:3px; }
-  .bar { position:absolute; left:0; top:0; height:100%; border-radius:3px; }
-  .ci { position:absolute; top:50%; height:2px; background:var(--ci); transform:translateY(-50%); opacity:.55; }
-  .ci::before,.ci::after { content:""; position:absolute; top:-4px; width:2px; height:10px; background:var(--ci); }
-  .ci::before{left:0;} .ci::after{right:0;}
-  .val { position:absolute; top:50%; transform:translateY(-50%); white-space:nowrap; font:700 0.78rem var(--mono);
-    color:var(--fg); padding-left:7px; text-shadow:0 0 4px var(--bg),0 0 4px var(--bg),0 0 4px var(--bg); }
-  .prob { text-align:right; font-family:var(--mono); }
-  .prob b { font-size:1rem; } .prob span { color:var(--muted); font-size:0.72rem; display:block; margin-top:1px; }
-
-  .duel { display:grid; grid-template-columns:1fr 74px; align-items:center; gap:14px; padding:8px 0;
-    border-bottom:1px solid var(--line); }
-  .duel:first-child { border-top:1px solid var(--line); }
-  .dtrack { height:20px; background:var(--track); border-radius:3px; position:relative; }
-  .dbar { position:absolute; height:100%; background:var(--fg); opacity:.13; border-radius:3px; }
-  .dlabel { position:relative; padding-left:10px; font:600 0.85rem/20px var(--sans); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .dp { text-align:right; font:700 0.92rem var(--mono); }
-
-  svg { width:100%; height:auto; display:block; }
-  .axis { stroke:var(--line); stroke-width:1; } .grid { stroke:var(--grid); stroke-width:1; }
-  .tick { fill:var(--muted); font-size:10px; font-family:var(--mono); }
-  .xline { stroke:var(--fg); stroke-width:1; stroke-dasharray:2 2; opacity:.5; pointer-events:none; }
-  .tt { background:var(--card); border:1px solid var(--line); border-radius:6px; padding:7px 9px;
-    font:0.72rem/1.45 var(--mono); color:var(--fg); box-sizing:border-box; }
-  .tt .tdate { font:700 0.72rem var(--sans); margin:0 0 4px; }
-  .tt .trow { display:flex; align-items:center; gap:6px; white-space:nowrap; }
-  .tt .trow i { width:8px; height:8px; border-radius:2px; flex:none; display:inline-block; }
-  .tt .trow b { margin-left:auto; padding-left:10px; font-variant-numeric:tabular-nums; }
-  .tt .tpoll { margin-top:5px; padding-top:5px; border-top:1px dashed var(--line); }
-  .tt .tpoll div { white-space:normal; }
-  .tt .tpoll div + div { margin-top:3px; }
-  .tt a { color:var(--red); text-decoration:none; border-bottom:1px solid currentColor; }
-
-  footer { margin-top:0; padding:20px 0 60px; color:var(--muted); font-size:0.85rem; }
-  footer p { max-width:70ch; }
-  footer a { color:var(--red); text-decoration:none; border-bottom:1px solid currentColor; }
-  footer a:hover { opacity:.75; }
-  code { background:var(--card); padding:1px 5px; border-radius:3px; font-size:0.85em; font-family:var(--mono); }
-</style>
+<title>Pres2027 — Suivi des intentions de vote</title>
+<meta name="description" content="Agrégation bayésienne des sondages du 1er tour de la présidentielle française de 2027, mise à jour chaque jour.">
+<link rel="stylesheet" href="./assets/site.css">
 </head>
 <body>
 
-<div class="band" id="band-top" role="presentation"></div>
+<a href="./index.html" class="lien-titre" aria-label="Pres2027 — accueil">
+  <picture>
+    <source srcset="./assets/bg-top-dark.png" media="(prefers-color-scheme: dark)">
+    <img class="band" src="./assets/bg-top.png" width="2400" height="300" alt="Pres2027">
+  </picture>
+</a>
+
+<div class="onglets">
+  <nav aria-label="Rubriques">
+    <a href="./index.html" aria-current="page">Suivi des intentions</a>
+    <a href="./scenarios.html">Scénarios</a>
+    <a href="./apropos.html">À propos</a>
+  </nav>
+</div>
 
 <div class="wrap">
-  <header class="masthead">
-    <p class="eyebrow">Agrégateur bayésien · open source</p>
-    <h1>Présidentielle 2027 — 1<sup>er</sup> tour</h1>
-    <p class="sub">Sondages agrégés jour par jour, avec la dérive d'opinion d'ici au scrutin calibrée sur 2017 et 2022. <b>Ce sont des probabilités, pas des prédictions.</b></p>
-    <nav class="nav">
-      <a href="./index.html" class="active">Suivi des intentions</a>
-      <a href="./scenarios.html">Scénarios</a>
-    </nav>
-    <div class="topbar">
+  <header class="entete">
+    <p class="eyebrow">Élection présidentielle · 1<sup>er</sup> tour · 18 avril 2027</p>
+    <h1>Où en sont les intentions de vote</h1>
+    <p class="chapo">Les sondages, agrégés jour après jour, plus la dérive d'opinion d'ici
+      au scrutin — calibrée sur les campagnes de 2017 et 2022.
+      <b>Ce sont des probabilités, pas des prédictions.</b></p>
+    <div class="barre-outils">
       <div class="meta" id="meta"></div>
       <div class="switch" id="model"></div>
     </div>
-
     <div class="warn" id="note"></div>
   </header>
 
   <h2>Prévision au jour du scrutin</h2>
-  <p class="legend">Barre = part moyenne · trait = IC 90 % · à droite = P(qualifié au 2<sup>nd</sup> tour), et P(1<sup>er</sup>).</p>
+  <p class="legend">Barre et chiffre = part moyenne · trait = IC 90 % ·
+    à droite, la probabilité d'être qualifié·e au 2<sup>nd</sup> tour et celle d'arriver
+    en tête au 1<sup>er</sup>. <b>Survolez une ligne</b> pour voir la distribution complète.</p>
   <div id="forecast"></div>
 
   <h2>Qualification au 2<sup>nd</sup> tour</h2>
@@ -142,7 +50,8 @@
   <svg id="chartA" viewBox="0 0 760 240" preserveAspectRatio="xMidYMid meet"></svg>
 
   <h2>Intentions &amp; sondages</h2>
-  <p class="legend">Points = sondages (part brute par institut) · ligne = estimation du modèle · bande = IC 90 % · <b>cliquer un point → la notice source</b>.</p>
+  <p class="legend">Points = sondages (part brute par institut) · ligne = estimation du modèle ·
+    bande = IC 90 % · <b>cliquer un point → la notice source</b>.</p>
   <div class="chips" id="legendB"></div>
   <svg id="chartB" viewBox="0 0 760 240" preserveAspectRatio="xMidYMid meet"></svg>
 
@@ -150,36 +59,32 @@
   <div id="duels"></div>
 </div>
 
-<div class="band" id="band-bottom" role="presentation"></div>
+<picture>
+  <source srcset="./assets/bg-bottom-dark.png" media="(prefers-color-scheme: dark)">
+  <img class="band pied" src="./assets/bg-bottom.png" width="2400" height="160" alt="" role="presentation">
+</picture>
 
 <div class="wrap">
   <footer id="footer"></footer>
 </div>
 
+<script src="./assets/palette.js"></script>
+<script src="./assets/site.js"></script>
 <script>
-const NS="http://www.w3.org/2000/svg";
-// --red/--blue (Bleu/Rouge Marianne) sont éclaircis en dark mode dans le CSS —
-// on les relit à l'affichage pour que les 2 séries dominantes restent lisibles
-// sur fond sombre, au lieu de figer le bleu marine très sombre en dur.
-const cssVar=(name,fallback)=>getComputedStyle(document.body).getPropertyValue(name).trim()||fallback;
-const PALETTE_REST=["#0891b2","#c026d3","#ea580c","#65a30d","#7c3aed","#0f766e"];
-function paletteColor(i){
-  if(i===0) return cssVar("--red","#e1000f");
-  if(i===1) return cssVar("--blue","#000091");
-  return PALETTE_REST[(i-2)%PALETTE_REST.length] || "#8b96a5";
-}
+const {el, pct, prob, jours, getJSON, barres} = Site;
+const couleur = (nom) => Couleurs.couleur(nom);
+
 // quelques sondages hypothétiques 2022/2023 très épars écrasent sinon tout
 // l'axe temporel des graphes — on affiche à partir du vrai début de campagne.
-const CHART_START="2026-01-01";
-const pct=x=>(100*x).toFixed(1)+" %", prob=x=>Math.round(100*x)+" %";
-const el=(t,a={})=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
-const days=s=>Date.parse(s)/8.64e7;
+const CHART_START = "2026-01-01";
 
-async function getJSON(u){const r=await fetch(u);if(!r.ok)throw new Error(u);return r.json();}
-// Manifeste des modèles (data/models.json), partagé entre le sélecteur et le
-// pied de page : la description de la méthode doit venir DU modèle affiché, pas
-// d'un texte figé — sinon le site décrit un modèle qu'il n'affiche pas.
-let MODELS=[];
+// Manifeste des modèles (data/models.json), RUBRIQUE « suivi » : cette page ne
+// propose que les modèles qui répondent à SA question. Le modèle spatial, par
+// exemple, est un modèle du site mais appartient à l'onglet Scénarios — le faire
+// apparaître ici inviterait à comparer deux choses qui ne se comparent pas.
+let MODELES = [];
+let COURANT = null;
+let DERNIER = null;   // dernier snapshot chargé, pour re-rendre au changement de thème
 
 function interpAt(pts, day){
   // valeur interpolée linéairement à un jour donné (pts triés, y non nul)
@@ -201,12 +106,12 @@ function timeChart(svg, series, {yMax=null, scatter=[], xMin=null, fmt=pct}={}) 
   svg.innerHTML=""; const W=760,H=240,L=38,R=12,T=10,B=26;
   // xMin : coupe les points antérieurs (ex. sondages hypothétiques 2022/2023 très
   // épars, qui écrasent sinon toute la période récente sur l'axe).
-  if(xMin!=null){ const cut=days(xMin);
-    series=series.map(s=>({...s, points:s.points.filter(p=>days(p.x)>=cut),
-      band:(s.band||[]).filter(p=>days(p.x)>=cut)}));
-    scatter=scatter.filter(p=>days(p.x)>=cut);
+  if(xMin!=null){ const cut=jours(xMin);
+    series=series.map(s=>({...s, points:s.points.filter(p=>jours(p.x)>=cut),
+      band:(s.band||[]).filter(p=>jours(p.x)>=cut)}));
+    scatter=scatter.filter(p=>jours(p.x)>=cut);
   }
-  const xs=[...series.flatMap(s=>s.points.map(p=>days(p.x))), ...scatter.map(p=>days(p.x))];
+  const xs=[...series.flatMap(s=>s.points.map(p=>jours(p.x))), ...scatter.map(p=>jours(p.x))];
   if(!xs.length) return;
   const x0=Math.min(...xs), x1=Math.max(...xs)||x0+1;
   const ally=[...series.flatMap(s=>s.points.map(p=>p.y)),
@@ -224,16 +129,16 @@ function timeChart(svg, series, {yMax=null, scatter=[], xMin=null, fmt=pct}={}) 
     t.textContent=new Date(v*8.64e7).toISOString().slice(0,7);svg.appendChild(t);});
   // bandes IC 90 % (remplissage opaque, derrière les lignes)
   series.forEach(s=>{
-    const b=(s.band||[]).filter(p=>p.lo!=null && p.hi!=null).sort((a,b)=>days(a.x)-days(b.x));
+    const b=(s.band||[]).filter(p=>p.lo!=null && p.hi!=null).sort((a,b)=>jours(a.x)-jours(b.x));
     if(b.length<2) return;
-    const top=b.map((p,i)=>(i?"L":"M")+X(days(p.x))+" "+Y(p.hi)).join(" ");
-    const bot=b.slice().reverse().map(p=>"L"+X(days(p.x))+" "+Y(p.lo)).join(" ");
+    const top=b.map((p,i)=>(i?"L":"M")+X(jours(p.x))+" "+Y(p.hi)).join(" ");
+    const bot=b.slice().reverse().map(p=>"L"+X(jours(p.x))+" "+Y(p.lo)).join(" ");
     svg.appendChild(el("path",{d:top+" "+bot+" Z",fill:s.color,"fill-opacity":0.13,stroke:"none"}));
   });
   // scatter (sondages) — cliquable vers la notice source
   const cmap={}; series.forEach((s,i)=>cmap[s.label]=s.color);
   scatter.forEach(p=>{
-    const c=el("circle",{cx:X(days(p.x)),cy:Y(p.y),r:3.2,
+    const c=el("circle",{cx:X(jours(p.x)),cy:Y(p.y),r:3.2,
       fill:cmap[p.label]||"#999","fill-opacity":0.6});
     const t=el("title");
     t.textContent=`${p.label} — ${p.institut||""} (${p.x})`+(p.url?" · cliquer pour la notice":"");
@@ -242,8 +147,8 @@ function timeChart(svg, series, {yMax=null, scatter=[], xMin=null, fmt=pct}={}) 
     svg.appendChild(c);
   });
   // lignes
-  const linePts=series.map(s=>s.points.filter(p=>p.y!=null).sort((a,b)=>days(a.x)-days(b.x))
-    .map(p=>({d:days(p.x),y:p.y})));
+  const linePts=series.map(s=>s.points.filter(p=>p.y!=null).sort((a,b)=>jours(a.x)-jours(b.x))
+    .map(p=>({d:jours(p.x),y:p.y})));
   series.forEach((s,i)=>{
     const pts=linePts[i];
     if(pts.length>1){const d=pts.map((p,j)=>(j?"L":"M")+X(p.d)+" "+Y(p.y)).join(" ");
@@ -272,8 +177,8 @@ function timeChart(svg, series, {yMax=null, scatter=[], xMin=null, fmt=pct}={}) 
 
   // sondages groupés par jour (pour affichage au survol)
   const pollsByDay={};
-  scatter.forEach(p=>{const d=days(p.x); (pollsByDay[d]=pollsByDay[d]||[]).push(p);});
-  const candDays=[...new Set([...linePts.flatMap(p=>p.map(pt=>pt.d)), ...scatter.map(p=>days(p.x))])].sort((a,b)=>a-b);
+  scatter.forEach(p=>{const d=jours(p.x); (pollsByDay[d]=pollsByDay[d]||[]).push(p);});
+  const candDays=[...new Set([...linePts.flatMap(p=>p.map(pt=>pt.d)), ...scatter.map(p=>jours(p.x))])].sort((a,b)=>a-b);
 
   const overlay=el("rect",{x:L,y:T,width:Math.max(0,W-L-R),height:Math.max(0,H-T-B),fill:"transparent"});
   overlay.style.cursor="crosshair";
@@ -333,20 +238,19 @@ function chips(host, series){host.innerHTML="";series.forEach(s=>{
   c.innerHTML=`<i style="background:${s.color}"></i>${s.label}`;host.appendChild(c);});}
 
 // Le vocabulaire de candidats/slots n'est pas fixe d'un modèle à l'autre : on le
-// dérive toujours des clés du snapshot chargé (cf. model/core/base.py validate_snapshot).
+// dérive toujours des clés du snapshot chargé (cf. model/core/base.py
+// validate_snapshot), et les couleurs viennent de la banque, jamais du rang.
 function renderNowcast(latest){
   const fc=latest.forecast_scrutin;
-  const slots=Object.keys(fc).sort((a,b)=>fc[b].p_qualifie_top2-fc[a].p_qualifie_top2);
-  const scale=Math.max(...slots.map(s=>fc[s].ic90[1]))*1.02;
-  const host=document.getElementById("forecast");host.innerHTML="";
-  slots.forEach((s,i)=>{const f=fc[s];const row=document.createElement("div");row.className="row";
-    const color=paletteColor(i);
-    row.innerHTML=`<div class="name">${s}</div>
-      <div class="track"><div class="bar" style="width:${100*f.part_moyenne/scale}%;background:${color}"></div>
-        <div class="ci" style="left:${100*f.ic90[0]/scale}%;width:${100*(f.ic90[1]-f.ic90[0])/scale}%"></div>
-        <div class="val" style="left:${100*f.part_moyenne/scale}%">${pct(f.part_moyenne)}</div></div>
-      <div class="prob"><b>${prob(f.p_qualifie_top2)}</b><span>1er : ${prob(f.p_arrive_premier)}</span></div>`;
-    host.appendChild(row);});
+  // Tri sur la PART, c'est-à-dire sur la longueur de la barre : un classement par
+  // probabilité de qualification produisait des barres en désordre, dont l'œil
+  // cherchait la logique.
+  const slots=Object.keys(fc).sort((a,b)=>fc[b].part_moyenne-fc[a].part_moyenne);
+  barres(document.getElementById("forecast"), slots.map(s=>({
+    nom:s, moyenne:fc[s].part_moyenne, ic90:fc[s].ic90,
+    pTop2:fc[s].p_qualifie_top2, pPremier:fc[s].p_arrive_premier,
+    quantiles:fc[s].quantiles, densite:fc[s].densite,
+  })));
   return slots;
 }
 
@@ -360,12 +264,9 @@ function renderDuels(latest){
       <div class="dp">${prob(d.probabilite)}</div>`;host.appendChild(e);});
 }
 
-async function loadModel(id){
-  const idx=await getJSON(`./data/${id}/index.json`);
-  const snaps=await Promise.all(idx.map(d=>getJSON(`./data/${id}/${d}.json`)));
-  snaps.sort((a,b)=>days(a.as_of)-days(b.as_of));
+function peindre(snaps){
+  DERNIER=snaps;
   const latest=snaps[snaps.length-1];
-
   const m=latest.meta;
   document.getElementById("meta").innerHTML=[
     `Généré le <b>${m.genere_le}</b>`,`Scrutin <b>${m.scrutin_t1}</b> (J-${m.horizon_prevision_jours})`,
@@ -375,16 +276,15 @@ async function loadModel(id){
 
   const topSlots=renderNowcast(latest).slice(0,5);
   renderDuels(latest);
-  const colorOf=s=>paletteColor(topSlots.indexOf(s));
 
   // Chart A : évolution P(top2)
-  const seriesA=topSlots.map(s=>({label:s,color:colorOf(s),
+  const seriesA=topSlots.map(s=>({label:s,color:couleur(s),
     points:snaps.map(sn=>({x:sn.as_of,y:sn.forecast_scrutin[s]?.p_qualifie_top2 ?? null}))}));
   chips(document.getElementById("legendA"),seriesA);
   timeChart(document.getElementById("chartA"),seriesA,{yMax:1,xMin:CHART_START});
 
   // Chart B : intentions (nowcast) + sondages en points
-  const seriesB=topSlots.map(s=>({label:s,color:colorOf(s),
+  const seriesB=topSlots.map(s=>({label:s,color:couleur(s),
     points:snaps.map(sn=>({x:sn.as_of,y:sn.nowcast[s]?.mean ?? null})),
     band:snaps.map(sn=>({x:sn.as_of, lo:sn.nowcast[s]?.ic90?.[0] ?? null,
                          hi:sn.nowcast[s]?.ic90?.[1] ?? null}))}));
@@ -397,10 +297,12 @@ async function loadModel(id){
   chips(document.getElementById("legendB"),seriesB);
   timeChart(document.getElementById("chartB"),seriesB,{scatter,xMin:CHART_START});
 
+  const desc=(MODELES.find(x=>x.id===COURANT)||{}).description||"";
   document.getElementById("footer").innerHTML=`
-    <p><b>Méthode.</b> ${(MODELS.find(m=>m.id===id)||{}).description||""}
+    <p><b>Méthode.</b> ${desc}
     ${latest.drift_modele?(" Dérive : "+latest.drift_modele+"."):""}
-    Le vainqueur du 2<sup>nd</sup> tour n'est pas encore modélisé (reports).</p>
+    Le vainqueur du 2<sup>nd</sup> tour n'est pas encore modélisé (reports de voix).
+    <a href="./apropos.html">En savoir plus</a>.</p>
     <p><b>Sources.</b> Les sondages proviennent de
     <a href="https://fr.wikipedia.org/wiki/Liste_de_sondages_sur_l%27élection_présidentielle_française_de_2027">Wikipédia</a>
     (CC BY-SA 4.0) ; les notices détaillées de la
@@ -412,27 +314,43 @@ async function loadModel(id){
     d'archivage patient, ce site n'aurait rien à afficher.</p>`;
 }
 
+async function loadModel(id){
+  COURANT=id;
+  const idx=await getJSON(`./data/${id}/index.json`);
+  const snaps=await Promise.all(idx.map(d=>getJSON(`./data/${id}/${d}.json`)));
+  snaps.sort((a,b)=>jours(a.as_of)-jours(b.as_of));
+  peindre(snaps);
+}
+
 (async ()=>{
   try{
-    MODELS=await getJSON("./data/models.json");
+    const manifeste=await getJSON("./data/models.json");
+    MODELES=manifeste.suivi||[];
+    if(!MODELES.length) throw new Error("aucun modèle dans la rubrique « suivi »");
     const sw=document.getElementById("model");
-    let current=MODELS[0].id;
+    // Un seul modèle publié : on affiche quand même la pastille, pour dire au
+    // lecteur QUEL modèle il regarde — et pour que la place du sélecteur existe
+    // déjà le jour où un deuxième arrive.
+    sw.dataset.unique=MODELES.length>1?"0":"1";
     function paint(){
-      sw.innerHTML="";
-      MODELS.forEach(m=>{
+      sw.innerHTML=`<span class="etiq">Modèle</span>`;
+      MODELES.forEach(m=>{
         const b=document.createElement("button");
-        b.type="button"; b.className=m.id===current?"active":"";
-        b.innerHTML=`${m.label}`;
+        b.type="button"; b.className=m.id===COURANT?"active":"";
+        b.textContent=m.label;
         b.title=m.description||"";
-        b.onclick=()=>{ if(current===m.id) return; current=m.id; paint(); loadModel(current); };
+        b.onclick=()=>{ if(COURANT===m.id) return; loadModel(m.id).then(paint); };
         sw.appendChild(b);
       });
     }
+    await loadModel(MODELES[0].id);
     paint();
-    await loadModel(current);
+    // Les couleurs sont résolues en JS : sans ce rappel, basculer le thème
+    // système laisserait des courbes au marine illisible sur fond sombre.
+    Couleurs.surChangementDeTheme(()=>{ if(DERNIER) peindre(DERNIER); });
   }catch(e){
     document.getElementById("forecast").innerHTML=
-      `<p class="warn">Données indisponibles (<code>site/data/…</code>). Lance le job / le backfill. (${e})</p>`;
+      `<p class="warn">Données indisponibles (<code>docs/data/…</code>). Lance le job / le backfill. (${e})</p>`;
   }
 })();
 </script>

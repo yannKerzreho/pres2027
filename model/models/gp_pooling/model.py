@@ -113,13 +113,13 @@ class GPPooling(ForecastModel):
                    "s'écarte toujours un peu des intentions déclarées. Ces deux effets sont "
                    "mesurés sur les campagnes de 2017 et 2022.")
     trains_on_history = True
-    # Public : les quatre critères d'acceptation de la spec §8 sont atteints
-    # (couverture prédictive 0,870 / 0,900 / 0,906 / 0,900 selon la taille du
-    # pool, contre 0,663 / 0,900 / 0,900 / 0,981 pour `linear-pooling` ; même
-    # couverture au scrutin avec des intervalles 15 % plus étroits). Publier un
-    # IC 90 % mesuré à ~81 % quand une alternative calibrée existe irait contre
-    # la ligne du projet.
-    public = True
+    # Rubrique « Suivi des intentions » : les quatre critères d'acceptation de la
+    # spec §8 sont atteints (couverture prédictive 0,870 / 0,900 / 0,906 / 0,900
+    # selon la taille du pool, contre 0,663 / 0,900 / 0,900 / 0,981 pour
+    # `linear-pooling` ; même couverture au scrutin avec des intervalles 15 %
+    # plus étroits). Publier un IC 90 % mesuré à ~81 % quand une alternative
+    # calibrée existe irait contre la ligne du projet.
+    surface = "suivi"
 
     n_draws = 4000
     seed = 27

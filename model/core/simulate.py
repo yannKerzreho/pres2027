@@ -30,6 +30,39 @@ def _softmax(a: np.ndarray) -> np.ndarray:
     return e / e.sum(axis=1, keepdims=True)
 
 
+# --- Résumés de forme, pour le survol des barres sur le site ---------------------
+# Un IC 90 % dit où la masse se trouve, jamais COMMENT elle s'y répartit. Or les
+# distributions publiées ici sont franchement asymétriques (softmax d'un latent
+# gaussien + saut sinh-arcsinh à queue épaisse) : la moyenne peut sortir du
+# triangle central, et l'écart moyenne/médiane est l'information la plus utile
+# qu'on puisse donner au lecteur qui survole une barre. On exporte donc la forme
+# elle-même, pas des paramètres qu'il faudrait supposer gaussiens.
+N_BINS_DENSITE = 24        # assez pour la forme, ~250 octets par candidature
+
+
+def quantiles(a: np.ndarray) -> list[float]:
+    """[q05, q25, q50, q75, q95] — la boîte et les moustaches."""
+    return [round(float(x), 4) for x in np.percentile(a, [5, 25, 50, 75, 95])]
+
+
+def densite(a: np.ndarray) -> dict:
+    """Histogramme normalisé sur [q0.5 %, q99.5 %] : `{x0, dx, y}`.
+
+    `y` est entier sur 0-100 (hauteur relative au pic) : c'est un croquis de
+    forme destiné à être dessiné, pas une densité à intégrer — l'arrondi divise
+    la taille du JSON par trois sans qu'aucun pixel ne bouge. Les 1 % de queues
+    exclus évitent qu'un seul tirage extrême n'écrase toute la figure.
+    """
+    lo, hi = np.percentile(a, [0.5, 99.5])
+    if not np.isfinite(lo) or hi <= lo:
+        return {"x0": round(float(lo), 4), "dx": 0.0, "y": []}
+    y, bords = np.histogram(a, bins=N_BINS_DENSITE, range=(float(lo), float(hi)))
+    pic = max(int(y.max()), 1)
+    return {"x0": round(float(bords[0]), 4),
+            "dx": round(float(bords[1] - bords[0]), 6),
+            "y": [int(round(100 * v / pic)) for v in y]}
+
+
 def forecast_from_draws(pi: np.ndarray, slots: list[str], forecast_horizon: int,
                         drift_sd: float = 0.0, rng_seed: int = 27) -> dict:
     """Comptage des probabilités. `pi` : tirages `(S, K)` de la composition au
@@ -74,6 +107,8 @@ def forecast_from_draws(pi: np.ndarray, slots: list[str], forecast_horizon: int,
                 "ic90": band(theta[:, k]),
                 "p_qualifie_top2": round(float(p_top2[k]), 4),
                 "p_arrive_premier": round(float(p_first[k]), 4),
+                "quantiles": quantiles(theta[:, k]),
+                "densite": densite(theta[:, k]),
             } for k in range(K)
         },
         "duels_probables": duels[:8],
