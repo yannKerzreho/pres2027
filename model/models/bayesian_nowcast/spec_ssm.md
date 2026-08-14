@@ -260,17 +260,27 @@ devenue le nouveau défaut.
 ### 4.4 Marginalisation par filtre de Kalman
 
 Le chemin est un SSM linéaire-gaussien standard : NumPyro échantillonne
-`tau` et `biais` par NUTS ; pour un tirage donné, `dynamax.lgssm_filter`
-calcule la vraisemblance marginale des sondages avec le chemin latent intégré
-analytiquement, injectée via `numpyro.factor("chemin_marginal", ...)`. Aucun
-`alpha_t` par nœud n'est échantillonné individuellement — coût O(nœuds), pas
-de paramètre latent supplémentaire pour NUTS.
+`tau` et `biais` par NUTS ; pour un tirage donné,
+`model.core.lgssm.kalman_filter` calcule la vraisemblance marginale des
+sondages avec le chemin latent intégré analytiquement, injectée via
+`numpyro.factor("chemin_marginal", ...)`. Aucun `alpha_t` par nœud n'est
+échantillonné individuellement — coût O(nœuds), pas de paramètre latent
+supplémentaire pour NUTS.
 
-**[TRANCHÉ]** : dynamax choisi pour cette raison précise (marginalisation
-analytique, pur JAX, différentiable), pas pour remplacer NumPyro/NUTS qui
-garde le rôle d'orchestrateur des hyperparamètres. Pour l'affichage (courbe
-lissée), le smoother de dynamax tourne une fois par tirage postérieur des
-hyperparamètres (ou sur un sous-échantillon) — toujours O(nœuds).
+**[TRANCHÉ]** : la marginalisation analytique par filtre de Kalman est choisie
+pour cette raison précise (pur JAX, différentiable), pas pour remplacer
+NumPyro/NUTS qui garde le rôle d'orchestrateur des hyperparamètres.
+
+**[RÉVISÉ le 2026-08-14]** : ce filtre venait de `dynamax`, dont c'était le seul
+usage du dépôt. dynamax tire tensorflow-probability, dont la dernière version
+(0.25) casse à partir de jax 0.7 alors que numpyro >= 0.20 exige jax >= 0.7 :
+deux bornes inconciliables qui enfermaient ce modèle dans un environnement figé.
+Le filtre est réimplémenté dans `model/core/lgssm.py` (50 lignes de `lax.scan`,
+mêmes conventions), vérifié identique à dynamax au bit près sur la
+log-vraisemblance et les covariances, et testé contre la marginale gaussienne
+exacte dans `tests/test_lgssm.py`. Le smoother n'a jamais été utilisé : si
+l'affichage d'une courbe lissée le redemande un jour, il s'ajoutera au même
+endroit (RTS backward, ~20 lignes de plus).
 
 ### 4.5 Extrapolation jusqu'à `as_of`
 

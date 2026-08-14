@@ -12,11 +12,6 @@ import pytest
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-# `bayesian_nowcast` importe dynamax, absent des requirements de `main` où ce
-# modèle monte sans être enregistré (cf. model/core/registered.py). Skip plutôt
-# qu'échec de collecte : la même suite doit passer sur les deux branches.
-pytest.importorskip("dynamax")
-
 from model.models.bayesian_nowcast.latent import (
     PADDING_VAR, clr, helmert_basis, ilr_decode, ilr_encode, poll_observation,
 )

@@ -28,12 +28,17 @@ anthropic>=0.40
 # Tests
 pytest
 
-# Retirés de cette branche (aucun import DEPUIS LE REGISTRE) :
-#   dynamax    — filtre de Kalman du nowcast SSM. Le code de
-#     `model/models/bayesian_nowcast/` est présent dans l'arbre, mais
-#     `model/core/registered.py` ne l'importe pas ici : ce modèle ne tourne que
-#     sur `dev`. Les tests qui le touchent skippent d'eux-mêmes
-#     (`pytest.importorskip("dynamax")`).
+# Retirés du dépôt (aucun import, sur AUCUNE branche) :
+#   dynamax    — ne servait qu'au filtre de Kalman du nowcast SSM, réimplémenté
+#     dans `model/core/lgssm.py` le 2026-08-14. Il tirait tensorflow-probability,
+#     dont la DERNIÈRE version (0.25) utilise `jax.interpreters.xla.
+#     pytype_aval_mappings`, retiré en jax 0.7 — alors que numpyro >= 0.20 exige
+#     jax >= 0.7. Aucun jax ne satisfaisait les deux : la dépendance enfermait le
+#     SSM dans un env figé (jax 0.4, numpyro 0.19) pendant que le reste avançait.
+#     Ne pas la réintroduire sans reposer la question du conflit de bornes.
+#     NB : `model/models/bayesian_nowcast/` reste hors du registre de CETTE
+#     branche (cf. model/core/registered.py) — c'est désormais un choix de
+#     publication, plus une contrainte technique.
 #   matplotlib — servait aux notebooks d'exploration, non versionnés ;
 #   pyarrow    — plus aucun format colonne en lecture/écriture ;
 #   scipy==1.12.0 — épinglé pour arviz 0.17 (`scipy.signal.gaussian`, retiré en

@@ -192,11 +192,12 @@ docs/assets/    palette.js (banque de couleurs), site.css / site.js (briques com
                 generate_bg.py (bandeaux pointillistes, titre incrusté)
 ```
 
-Le nowcast bayésien SSM (`bayesian_nowcast/`) est versionné pour référence mais
-**ne tourne pas sur cette branche** : il dépend de dynamax, absent des
-requirements, et [`model/core/registered.py`](model/core/registered.py) ne
-l'importe donc pas. Il s'exécute sur `dev`, qui porte aussi les notebooks
-d'exploration (non versionnés).
+Le nowcast bayésien SSM (`bayesian_nowcast/`) est versionné mais **pas
+enregistré** ici : [`model/core/registered.py`](model/core/registered.py) ne
+l'importe pas, donc le job quotidien ne le lance pas. Rien ne l'en empêche
+techniquement — c'est un choix, le site ne l'affiche pas et un run NUTS
+quotidien que personne ne lit allonge le cron pour rien. Il tourne sur `dev`,
+qui porte aussi les notebooks d'exploration (non versionnés).
 
 ## Limites
 

@@ -15,15 +15,19 @@ rubrique.
 Branche `main` : `gp-pooling` (rubrique « suivi ») et `spatial-pooling`
 (rubrique « scénarios ») sont enregistrés et tournent chaque jour.
 `model/models/bayesian_nowcast/` est présent dans l'arbre mais VOLONTAIREMENT
-absent de ce fichier : il dépend de dynamax, qui n'est pas dans les requirements
-de cette branche. L'importer ici planterait le registre entier — donc la CI et
-le job quotidien — pour un modèle que le site n'affiche pas. Il reste lançable
-sur `dev`, où dynamax est installé.
+absent de ce fichier. C'est un CHOIX DE PUBLICATION, plus une contrainte
+technique : jusqu'au 2026-08-14 ce modèle dépendait de dynamax, absent des
+requirements, et l'importer ici aurait fait tomber le registre entier — donc la
+CI et le job quotidien. Depuis que le filtre de Kalman vit dans
+`model/core/lgssm.py`, l'import ne casserait plus rien ; l'enregistrer ici
+suffirait à le faire tourner chaque jour. Il reste dehors parce que le site ne
+l'affiche pas et qu'un run NUTS quotidien que personne ne lit allonge le cron
+pour rien.
 
 ⚠️ Divergence assumée entre les branches : ce fichier est le seul qui diffère
-structurellement entre `main` et `dev` (avec `requirements.txt`). Chaque fusion
-`dev` -> `main` le remettra en conflit ; la résolution est toujours la même,
-garder la version de la branche d'arrivée.
+structurellement entre `main` et `dev`. Chaque fusion `dev` -> `main` le remettra
+en conflit ; la résolution est toujours la même, garder la version de la branche
+d'arrivée.
 """
 
 from model.models import gp_pooling  # noqa: F401  (registre gp-pooling)
