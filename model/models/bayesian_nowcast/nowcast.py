@@ -5,7 +5,7 @@ SSM linéaire-gaussien (docs/spec_ssm_nowcast.md) : l'opinion est un état laten
 dates de sondage — pas la quantité statique unique d'avant (tous les sondages,
 d'hier ou d'il y a 4 ans, comme observations bruitées de LA MÊME valeur). Le
 chemin reste gaussien du début à la fin, marginalisé analytiquement par le
-filtre de Kalman de `dynamax` (JAX pur, différentiable) ; NumPyro garde le
+filtre de Kalman de `model/core/lgssm.py` (JAX pur, différentiable) ; NumPyro garde le
 rôle d'orchestrateur des hyperparamètres (`tau`, `biais`), injectés dans le
 chemin marginal via `numpyro.factor` — cf. spec §4 pour la justification
 complète de cette architecture (évite d'échantillonner un paramètre latent par
@@ -31,13 +31,10 @@ import numpyro
 import numpyro.distributions as dist
 import pandas as pd
 import xarray as xr
-from dynamax.linear_gaussian_ssm.inference import (
-    ParamsLGSSM, ParamsLGSSMDynamics, ParamsLGSSMEmissions, ParamsLGSSMInitial, lgssm_filter,
-)
-
 from model.core.bank import Bank
 from model.core.base import ForecastModel, Nowcast, register
 from model.core.inference import run_numpyro_mcmc
+from model.core.lgssm import kalman_filter
 from model.core.live_dataset import SLOTS, aggregate_to_slots
 from model.core.simulate import forecast_from_draws
 from pipeline.historical import load_calibration_frame, load_results
@@ -493,7 +490,7 @@ class NowcastData:
 
 
 def bayesian_nowcast_ssm_model(data: NowcastData, priors_cfg: dict | None = None):
-    """NumPyro + dynamax : chemin gaussien marginalisé analytiquement (filtre
+    """NumPyro + filtre de Kalman : chemin gaussien marginalisé analytiquement (filtre
     de Kalman), hyperparamètres et `biais` échantillonnés par NUTS. Débiaisage
     en points de % AVANT la transformation ILR (pas un terme additif dans
     l'espace log-ratio) : préserve les unités déjà calibrées de
@@ -612,14 +609,7 @@ def bayesian_nowcast_ssm_model(data: NowcastData, priors_cfg: dict | None = None
             last_mean, last_cov = pred_mean, pred_cov
         else:
             Q_arr = jnp.stack([dt_arr[t] * Q_unit for t in range(n_polls)])
-            params = ParamsLGSSM(
-                initial=ParamsLGSSMInitial(mean=pred_mean, cov=pred_cov),
-                dynamics=ParamsLGSSMDynamics(weights=eye, bias=jnp.zeros(Km1),
-                                             input_weights=jnp.zeros((Km1, 0)), cov=Q_arr),
-                emissions=ParamsLGSSMEmissions(weights=H_level, bias=jnp.zeros(Km1),
-                                               input_weights=jnp.zeros((Km1, 0)), cov=R_arr),
-            )
-            posterior = lgssm_filter(params, emissions)
+            posterior = kalman_filter(pred_mean, pred_cov, eye, Q_arr, H_level, R_arr, emissions)
             numpyro.factor("chemin_marginal", posterior.marginal_loglik)
             last_mean, last_cov = posterior.filtered_means[-1], posterior.filtered_covariances[-1]
 
@@ -660,14 +650,7 @@ def bayesian_nowcast_ssm_model(data: NowcastData, priors_cfg: dict | None = None
         F_arr, Q_arr = zip(*[kinematic_step(dt_arr[t]) for t in range(n_polls)])
         F_arr, Q_arr = jnp.stack(F_arr), jnp.stack(Q_arr)
 
-        params = ParamsLGSSM(
-            initial=ParamsLGSSMInitial(mean=pred_mean, cov=pred_cov),
-            dynamics=ParamsLGSSMDynamics(weights=F_arr, bias=jnp.zeros(D),
-                                         input_weights=jnp.zeros((D, 0)), cov=Q_arr),
-            emissions=ParamsLGSSMEmissions(weights=H_arr, bias=jnp.zeros(Km1),
-                                           input_weights=jnp.zeros((Km1, 0)), cov=R_arr),
-        )
-        posterior = lgssm_filter(params, emissions)
+        posterior = kalman_filter(pred_mean, pred_cov, F_arr, Q_arr, H_arr, R_arr, emissions)
         numpyro.factor("chemin_marginal", posterior.marginal_loglik)
         last_mean, last_cov = posterior.filtered_means[-1], posterior.filtered_covariances[-1]
 

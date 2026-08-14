@@ -12,8 +12,8 @@ chaque sondage comme une observation linéaire de l'état complet, de taille
 FIXE K-1 (padding H=0/R=variance énorme sur les dimensions non testées —
 contribution EXACTEMENT constante donc neutre à la vraisemblance, pas une
 approximation, cf. docstring de la fonction), pour satisfaire la forme
-rectangulaire qu'exige `dynamax.linear_gaussian_ssm.inference.lgssm_filter`
-(un array `(ntime, emission_dim)`, `emission_dim` fixe)."""
+rectangulaire qu'exige `model.core.lgssm.kalman_filter` (un array
+`(ntime, emission_dim)`, `emission_dim` fixe)."""
 
 from __future__ import annotations
 
