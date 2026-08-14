@@ -29,10 +29,15 @@ anthropic>=0.40
 # (model/models/bayesian_nowcast/). Importé par `model/core/registered.py`, donc
 # par TOUT le registre — sans lui, même `python -m model.run` ne démarre pas.
 # Ne pas remonter tel quel sur `main`, qui ne publie pas ce modèle.
-# ATTENTION : dynamax passe par tensorflow-probability[jax], dont la version 0.25
-# est incompatible avec jax >= 0.7 (`jax.interpreters.xla.pytype_aval_mappings`,
-# retiré). Un environnement installé de zéro résout des versions compatibles ;
-# un environnement mis à jour par morceaux casse à l'import.
+# ATTENTION, conflit de bornes RÉEL et non résoluble en montant les versions :
+#   - dynamax passe par tensorflow-probability, dont la 0.25 (la DERNIÈRE publiée)
+#     utilise `jax.interpreters.xla.pytype_aval_mappings`, retiré en jax 0.7 ;
+#   - numpyro >= 0.20 exige `jax >= 0.7`.
+# Aucun jax ne satisfait les deux : un env qui fait tourner le SSM doit rester sur
+# numpyro 0.19 / jax 0.4-0.6. C'est ce que contient le `.venv` du projet
+# (jax 0.4.30, numpyro 0.19.0, dynamax 0.1.8), et c'est pourquoi le README lance
+# tout par `.venv/bin/python`. Un interpréteur plus récent (conda, système) fera
+# tourner gp-pooling et spatial-pooling mais PAS bayesian_nowcast.
 dynamax
 
 # Tests
