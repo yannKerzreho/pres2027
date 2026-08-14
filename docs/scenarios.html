@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pres2027 — Scénarios de candidatures</title>
+<style>
+  :root {
+    --bg:#ffffff; --fg:#0d1117; --muted:#5b6472; --line:#e4e7eb; --card:#f7f8fa;
+    --red:#e1000f; --blue:#000091; --track:#eef0f3; --ci:#0d1117;
+    --warn-bg:#fff6ec; --warn-line:var(--red); --grid:#eef0f3;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Inter","Segoe UI",Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0d1117; --fg:#eef1f5; --muted:#8b96a5; --line:#232a35; --card:#141a22;
+      --red:#ff5a64; --blue:#6e6eff; --track:#1a212b; --ci:#eef1f5;
+      --warn-bg:#20160f; --grid:#1a212b; }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.55 var(--sans); }
+  .wrap { max-width:920px; margin:0 auto; padding:0 22px 60px; }
+  .band { width:100%; height:150px; background:var(--card) center/cover url('./assets/bg-top.png'); }
+  @media (prefers-color-scheme: dark) { .band { background-image:url('./assets/bg-top-dark.png'); } }
+  header.masthead { border-bottom:1px solid var(--line); padding-bottom:22px; }
+  .eyebrow { font:600 0.72rem/1 var(--mono); letter-spacing:.12em; text-transform:uppercase;
+    color:var(--red); margin:22px 0 10px; }
+  h1 { font-size:2.15rem; font-weight:800; margin:0 0 8px; letter-spacing:-0.03em; line-height:1.08; }
+  .sub { color:var(--muted); margin:0 0 18px; max-width:64ch; font-size:1.02rem; }
+  .nav { display:flex; gap:6px; }
+  .nav a { text-decoration:none; border:1px solid var(--line); background:var(--card); color:var(--fg);
+    border-radius:999px; padding:7px 14px; font:600 0.8rem var(--sans); }
+  .nav a.active { background:var(--fg); color:var(--bg); border-color:var(--fg); }
+  h2 { font-size:1.05rem; font-weight:800; text-transform:uppercase; letter-spacing:.04em;
+    margin:44px 0 4px; display:flex; align-items:baseline; gap:10px; }
+  h2::after { content:""; flex:1; height:1px; background:var(--line); }
+  .legend { font-size:0.85rem; color:var(--muted); margin:0 0 16px; max-width:70ch; }
+  .warn { background:var(--warn-bg); border-left:3px solid var(--warn-line); padding:10px 14px;
+    border-radius:4px; font-size:0.87rem; margin:18px 0; }
+  .picker { display:flex; flex-wrap:wrap; gap:7px; margin:0 0 8px; }
+  .picker button { appearance:none; border:1px solid var(--line); background:var(--card); color:var(--muted);
+    border-radius:999px; padding:6px 13px; font:600 0.8rem var(--sans); cursor:pointer; transition:.12s; }
+  .picker button.on { color:#fff; border-color:transparent;
+    text-shadow:0 0 2px rgba(0,0,0,.45); }
+  .picker button:hover { border-color:var(--fg); }
+  .presets { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 22px; font-size:0.8rem; }
+  .presets a { color:var(--muted); cursor:pointer; text-decoration:underline dotted; }
+  .presets a:hover { color:var(--fg); }
+  /* barres : même DA que l'onglet Prévision (docs/index.html) */
+  .row { display:grid; grid-template-columns:150px 1fr 118px; align-items:center; gap:14px;
+    padding:9px 0; border-bottom:1px solid var(--line); }
+  .row:first-child { border-top:1px solid var(--line); }
+  .name { font-weight:700; font-size:0.92rem; }
+  .track { position:relative; height:24px; background:var(--track); border-radius:3px; }
+  .bar { position:absolute; left:0; top:0; height:100%; border-radius:3px; }
+  .ci { position:absolute; top:50%; height:2px; background:var(--ci); transform:translateY(-50%); opacity:.55; }
+  .ci::before,.ci::after { content:""; position:absolute; top:-4px; width:2px; height:10px; background:var(--ci); }
+  .ci::before{left:0;} .ci::after{right:0;}
+  .val { position:absolute; top:50%; transform:translateY(-50%); white-space:nowrap; font:700 0.78rem var(--mono);
+    color:var(--fg); padding-left:7px; text-shadow:0 0 4px var(--bg),0 0 4px var(--bg),0 0 4px var(--bg); }
+  .prob { text-align:right; font-family:var(--mono); }
+  .prob b { font-size:0.86rem; } .prob span { color:var(--muted); font-size:0.72rem; display:block; margin-top:1px; }
+  svg { width:100%; height:auto; display:block; }
+  .axlab { font:500 0.7rem var(--mono); fill:var(--muted); }
+  footer { margin-top:54px; padding-top:18px; border-top:1px solid var(--line);
+    color:var(--muted); font-size:0.82rem; }
+  code { font-family:var(--mono); font-size:0.85em; background:var(--card); padding:1px 5px; border-radius:3px; }
+</style>
+</head>
+<body>
+<div class="band" role="presentation"></div>
+<div class="wrap">
+  <header class="masthead">
+    <div class="eyebrow">pres2027 — modèle spatial</div>
+    <h1>Et si la liste des candidats changeait&nbsp;?</h1>
+    <p class="sub">Cochez les candidats en lice. Le modèle recalcule les intentions de vote
+      pour <em>cette</em> liste — y compris une liste qu'aucun institut n'a jamais testée.
+      Le calcul se fait dans votre navigateur, à partir des tirages du modèle.</p>
+    <nav class="nav">
+      <a href="./index.html">Suivi des intentions</a>
+      <a href="./scenarios.html" class="active">Scénarios</a>
+    </nav>
+  </header>
+
+  <h2>La liste</h2>
+  <p class="legend">Un candidat retiré ne disparaît pas : ses électeurs se répartissent
+    entre les candidats les plus proches de lui sur l'axe, ce que montre le graphique
+    ci-dessous.</p>
+  <div class="picker" id="picker"></div>
+  <div class="presets">
+    <span>Raccourcis&nbsp;:</span>
+    <a data-preset="tous">tout le monde</a>
+    <a data-preset="sondage">hypothèse la plus sondée</a>
+    <a data-preset="rn-lepen">RN = Le&nbsp;Pen</a>
+    <a data-preset="rn-bardella">RN = Bardella</a>
+  </div>
+
+  <h2>Intentions de vote</h2>
+  <p class="legend">Part estimée <strong>au jour du scrutin</strong>, pas aujourd'hui&nbsp;:
+    l'incertitude inclut la dérive d'opinion d'ici avril 2027 et l'écart habituel entre
+    intentions déclarées et bulletins déposés. C'est pourquoi les intervalles sont larges.
+    Les barres somment à 100&nbsp;% sur la liste cochée.</p>
+  <div class="rows" id="rows"></div>
+
+  <h2>Le modèle sur l'axe</h2>
+  <p class="legend">Chaque courbe est le <em>noyau</em> d'un candidat&nbsp;: son sommet
+    marque sa position estimée (μ), sa largeur son rayon d'action (σ), et
+    l'<strong>aire sous la courbe est son score</strong>. La bande du bas montre qui
+    l'emporte à chaque endroit de l'axe — retirez un candidat et regardez son territoire
+    passer à ses voisins immédiats, pas se répartir au prorata.</p>
+  <svg id="axe" viewBox="0 0 760 300" preserveAspectRatio="xMidYMid meet"></svg>
+
+  <div class="warn" id="caveat"></div>
+
+  <footer id="foot"></footer>
+</div>
+
+<script>
+const PAL = ["#b51963","#e1000f","#f2617a","#ff8c42","#e8a33d","#7cb342","#2e9e6b",
+             "#00a0a0","#3d8bd4","#4a5bd0","#7d5fd6","#a86bb8","#8b94a3"];
+const fmt = x => (100*x).toFixed(1).replace(".", ",");
+let D = null, on = [];
+
+// pi pour un champ arbitraire, tirage par tirage : c'est exactement le calcul du
+// modèle (softmax masqué sur la grille de quadrature), et il tient dans le
+// navigateur — d'où l'absence de serveur.
+function partsParTirage(masque) {
+  const {mu, sigma, w} = D.tirages, V = D.grille.v, W = D.grille.w;
+  const S = mu.length, N = D.candidats.length, B = V.length;
+  const idx = []; for (let i=0;i<N;i++) if (masque[i]) idx.push(i);
+  const out = [];
+  for (let s=0; s<S; s++) {
+    // attractivité normalisée : le noyau de chaque candidat intègre à 1
+    const A = idx.map(i => {
+      const m = mu[s][i], sg = sigma[s][i];
+      const d = V.map(v => -((v-m)*(v-m))/(2*sg*sg));
+      let mx = -Infinity; for (const x of d) if (x > mx) mx = x;
+      let z = 0; for (let b=0;b<B;b++) z += W[b]*Math.exp(d[b]-mx);
+      const lz = mx + Math.log(z);
+      return d.map(x => w[s][i] + x - lz);
+    });
+    const pi = new Array(idx.length).fill(0);
+    for (let b=0;b<B;b++) {
+      let mx = -Infinity; for (let k=0;k<idx.length;k++) if (A[k][b] > mx) mx = A[k][b];
+      let den = 0; const e = [];
+      for (let k=0;k<idx.length;k++) { const x = Math.exp(A[k][b]-mx); e.push(x); den += x; }
+      for (let k=0;k<idx.length;k++) pi[k] += (e[k]/den)*W[b];
+    }
+    out.push(pi);
+  }
+  return {idx, tirages: out};
+}
+
+// capture par POSITION, sur une grille fine (affichage seulement : l'intégrale,
+// elle, se fait sur les nœuds de quadrature)
+function captureParPosition(masque, nx=180) {
+  const {mu, sigma, w} = D.tirages, S = mu.length, N = D.candidats.length;
+  const idx = []; for (let i=0;i<N;i++) if (masque[i]) idx.push(i);
+  const xs = Array.from({length:nx}, (_,j) => 0.01 + (0.98*j)/(nx-1));
+  const acc = idx.map(() => new Array(nx).fill(0));
+  // 150 tirages : à 60, l'aire d'une bande s'écartait de 0,4 pt du score affiché
+  // juste au-dessus, et la légende promet qu'ils coïncident.
+  const pas = Math.max(1, Math.floor(S/150));
+  const Vq = D.grille.v, Wq = D.grille.w;
+  const lz = [];                                        // log-normalisateur par tirage
+  for (let s=0; s<S; s+=pas) {
+    lz[s] = idx.map(i => {
+      const m = mu[s][i], sg = sigma[s][i];
+      const d = Vq.map(v => -((v-m)*(v-m))/(2*sg*sg));
+      let mx = -Infinity; for (const x of d) if (x > mx) mx = x;
+      let z = 0; for (let b=0;b<Vq.length;b++) z += Wq[b]*Math.exp(d[b]-mx);
+      return mx + Math.log(z);
+    });
+  }
+  let nS = 0;
+  for (let s=0; s<S; s+=pas) {
+    nS++;
+    for (let j=0;j<nx;j++) {
+      const v = xs[j]; const a = [];
+      for (let k=0;k<idx.length;k++) {
+        const i = idx[k], m = mu[s][i], sg = sigma[s][i];
+        // MÊME normalisation que pour les parts : le terme exact se calcule sur
+        // la grille de quadrature. L'approximer par -log(sigma) (le normalisateur
+        // gaussien non tronqué) décalerait les candidats proches d'un bord, dont
+        // le noyau déborde de [0,1] — les bandes n'intégreraient alors plus aux
+        // scores affichés, alors que c'est ce que la légende promet.
+        a.push(w[s][i] - ((v-m)*(v-m))/(2*sg*sg) - lz[s][k]);
+      }
+      let mx = -Infinity; for (const x of a) if (x > mx) mx = x;
+      let den = 0; const e = a.map(x => { const y = Math.exp(x-mx); den += y; return y; });
+      for (let k=0;k<idx.length;k++) acc[k][j] += e[k]/den;
+    }
+  }
+  return {idx, xs, bandes: acc.map(r => r.map(x => x/nS))};
+}
+
+// Générateur normal reproductible (Box-Muller + LCG) : le visiteur doit voir
+// le même chiffre à chaque visite, pas un intervalle qui frémit à chaque clic.
+function rng(graine) {
+  let e = graine >>> 0;
+  return () => { e = (e*1664525 + 1013904223) >>> 0; return (e >>> 8) / 16777216; };
+}
+function normales(n, graine) {
+  const u = rng(graine), out = new Array(n);
+  for (let i=0;i<n;i+=2) {
+    const a = Math.max(u(), 1e-12), b = u(), r = Math.sqrt(-2*Math.log(a));
+    out[i] = r*Math.cos(2*Math.PI*b);
+    if (i+1 < n) out[i+1] = r*Math.sin(2*Math.PI*b);
+  }
+  return out;
+}
+
+// MÊME projection que `model/core/projection.py` : diffusion d'opinion d'ici au
+// scrutin, puis écart sondages-urne (loi sinh-arcsinh), en log-ratio. Sans elle
+// l'onglet afficherait l'incertitude d'AUJOURD'HUI pour une élection à des mois
+// de distance — des intervalles beaucoup trop serrés.
+const REPLIQUES = 6;   // par tirage postérieur
+
+function projeteAuScrutin(tirages) {
+  const L = D.projection; if (!L) return tirages;
+  const h = Math.max(L.horizon_jours, 0);
+  const sd = Math.sqrt(2*L.sigma2*(1 - Math.exp(-h/L.tau)));
+  const K = tirages[0].length;
+  // Chaque tirage postérieur est répliqué avec un bruit de projection
+  // indépendant : l'écart sondages-urne a des queues épaisses, et 300 tirages
+  // en estiment mal les quantiles à 5/95 %. Mesuré contre le calcul Python de
+  // référence, 6 répliques ramènent l'écart sur la borne haute de 2,3 pt à
+  // quelques dixièmes, sans alourdir le fichier exporté.
+  const base = [];
+  for (let r=0; r<REPLIQUES; r++) for (const t of tirages) base.push(t);
+  const S = base.length;
+  const g1 = normales(S*K, 20260814), g2 = normales(S*K, 987654321);
+  const out = [];
+  for (let s=0; s<S; s++) {
+    const al = new Array(K); let mx = -Infinity;
+    for (let k=0;k<K;k++) {
+      const z = g2[s*K+k];
+      // sinh-arcsinh : loc + scale*sinh((asinh(z) + skew)/tail)
+      const d = L.delta_scale * Math.sinh((Math.asinh(z) + L.delta_skew)/L.delta_tail);
+      al[k] = Math.log(Math.max(base[s][k], 1e-9)) + sd*g1[s*K+k] + d;
+      if (al[k] > mx) mx = al[k];
+    }
+    let tot = 0; const e = al.map(x => { const y = Math.exp(x-mx); tot += y; return y; });
+    out.push(e.map(x => x/tot));
+  }
+  return out;
+}
+
+function quantile(a, q) {
+  const b = a.slice().sort((x,y)=>x-y);
+  const p = (b.length-1)*q, lo = Math.floor(p), hi = Math.ceil(p);
+  return b[lo] + (b[hi]-b[lo])*(p-lo);
+}
+
+function dessine() {
+  const masque = D.candidats.map((_,i) => on[i]);
+  const nb = masque.filter(Boolean).length;
+  const rows = document.getElementById("rows");
+  const axe = document.getElementById("axe");
+  if (nb < 2) {
+    rows.innerHTML = '<p class="legend">Cochez au moins deux candidats.</p>';
+    axe.innerHTML = ""; return;
+  }
+  const {idx, tirages} = partsParTirage(masque);
+  const auScrutin = projeteAuScrutin(tirages);
+  const stats = idx.map((i,k) => {
+    const col = auScrutin.map(t => t[k]);
+    return {i, nom: D.candidats[i], moy: col.reduce((a,b)=>a+b,0)/col.length,
+            lo: quantile(col,0.05), hi: quantile(col,0.95)};
+  }).sort((a,b) => b.moy - a.moy);
+
+  const max = Math.max(...stats.map(s => s.hi)) * 1.02;
+  rows.innerHTML = stats.map(s => `
+    <div class="row">
+      <div class="name">${s.nom}</div>
+      <div class="track">
+        <div class="bar" style="width:${100*s.moy/max}%;background:${PAL[s.i%PAL.length]}"></div>
+        <div class="ci" style="left:${100*s.lo/max}%;width:${100*(s.hi-s.lo)/max}%"></div>
+        <div class="val" style="left:${100*s.moy/max}%">${fmt(s.moy)} %</div>
+      </div>
+      <div class="prob"><b>${fmt(s.lo)}–${fmt(s.hi)}</b><span>IC 90 %</span></div>
+    </div>`).join("");
+
+  // NOYAUX sur [0,1] : c'est la géométrie du modèle elle-même — mu au sommet,
+  // sigma en largeur, poids en hauteur. Sous l'axe, une bande de territoire qui
+  // montre qui l'emporte à chaque position : c'est elle qui rend le report
+  // visible quand on retire un candidat.
+  const cp = captureParPosition(masque);
+  const ai = cp.idx, xs = cp.xs, bandes = cp.bandes;
+  const Wd = 760, H = 300, mL = 8, mR = 8, hBande = 26, mB = 34, mT = 24;
+  const yBas = H - mB - hBande;
+  const px = j => mL + (Wd-mL-mR)*j/(xs.length-1);
+  const {mu, sigma, w} = D.tirages, S = mu.length;
+  // noyau moyen (sur les tirages) de chaque candidat, à la même échelle
+  // Chaque courbe est mise à l'échelle de sa PART : l'aire sous la courbe est le
+  // score du candidat, cohérent avec les barres ci-dessus et avec la bande de
+  // territoire. Une première version traçait `exp(w)`, l'attractivité brute —
+  // trompeur : Le Pen y culminait 12 fois plus haut que Mélenchon pour un score
+  // seulement 1,8 fois supérieur, parce que `w` mesure l'intensité EN UN POINT
+  // et non les voix. Le Pen est intense mais son territoire est disputé
+  // (Bardella, Zemmour) ; Mélenchon est moins intense mais seul sur le sien.
+  const partDe = {}; stats.forEach(t => partDe[t.i] = t.moy);
+  const noyaux = ai.map(i => {
+    const brut = xs.map(v => {
+      let acc = 0, n = 0;
+      for (let s=0; s<S; s+=5) {
+        const m = mu[s][i], sg = sigma[s][i];
+        acc += Math.exp(-((v-m)*(v-m))/(2*sg*sg)) / sg; n++;
+      }
+      return acc/n;
+    });
+    const dx = (xs[xs.length-1]-xs[0])/(xs.length-1);
+    let aire = 0; brut.forEach((y,j) => aire += y*dx*((j===0||j===xs.length-1)?0.5:1));
+    const k = (partDe[i] || 0) / Math.max(aire, 1e-9);
+    return brut.map(y => y*k);
+  });
+  const hmax = Math.max(...noyaux.map(c => Math.max(...c)));
+  let out = "";
+  ai.forEach((i, k) => {
+    const c = PAL[i%PAL.length];
+    const pts = xs.map((_,j) => `${px(j)},${mT + (yBas-mT)*(1 - noyaux[k][j]/hmax)}`).join(" ");
+    out += `<polygon points="${px(0)},${yBas} ${pts} ${px(xs.length-1)},${yBas}"
+      fill="${c}" opacity="0.16"/>`;
+    out += `<polyline points="${pts}" fill="none" stroke="${c}" stroke-width="1.8"/>`;
+    let jm = 0, em = -1;
+    for (let j=0;j<xs.length;j++) if (noyaux[k][j] > em) { em = noyaux[k][j]; jm = j; }
+    out += `<text x="${px(jm)}" y="${mT + (yBas-mT)*(1-em/hmax) - 5}" text-anchor="middle"
+      style="font:600 10px var(--sans);fill:${c}">${D.candidats[i]}</text>`;
+  });
+  // bande de territoire : part de chaque candidat parmi les électeurs situés là
+  let cum = new Array(xs.length).fill(0);
+  for (let k=0;k<ai.length;k++) {
+    const bas = cum.slice();
+    cum = cum.map((c,j) => c + bandes[k][j]);
+    const haut = xs.map((_,j) => `${px(j)},${yBas + hBande*(1-cum[j])}`).join(" ");
+    const ret = xs.map((_,j) => { const j2 = xs.length-1-j;
+      return `${px(j2)},${yBas + hBande*(1-bas[j2])}`; }).join(" ");
+    out += `<polygon points="${haut} ${ret}" fill="${PAL[ai[k]%PAL.length]}" opacity="0.9"
+      ><title>${D.candidats[ai[k]]}</title></polygon>`;
+  }
+  out += `<line x1="${mL}" y1="${yBas}" x2="${Wd-mR}" y2="${yBas}" stroke="var(--line)"/>`;
+  out += `<text class="axlab" x="${mL}" y="${H-8}">← gauche</text>`;
+  out += `<text class="axlab" x="${Wd-mR}" y="${H-8}" text-anchor="end">droite →</text>`;
+  out += `<text class="axlab" x="${Wd/2}" y="${H-8}" text-anchor="middle">axe politique latent · la bande colorée = qui l'emporte ici</text>`;
+  axe.innerHTML = out;
+}
+
+function preset(nom) {
+  const c = D.candidats;
+  const a = (liste) => c.map(x => liste.includes(x));
+  if (nom === "tous") on = c.map(() => true);
+  if (nom === "sondage") on = a(D.champ_modal || c);
+  if (nom === "rn-lepen") on = a((D.champ_modal||c).filter(x => x !== "Bardella").concat(["Le Pen"]));
+  if (nom === "rn-bardella") on = a((D.champ_modal||c).filter(x => x !== "Le Pen").concat(["Bardella"]));
+  rendPicker(); dessine();
+}
+
+function rendPicker() {
+  document.getElementById("picker").innerHTML = D.candidats.map((c,i) =>
+    `<button data-i="${i}" class="${on[i]?"on":""}"
+      style="${on[i]?`background:${PAL[i%PAL.length]}`:""}">${c}</button>`).join("");
+}
+
+fetch("./data/spatial-pooling/scenarios.json").then(r => r.json()).then(d => {
+  D = d;
+  // On part de la MÊME liste que l'onglet Prévision (RN = Le Pen), pour que les
+  // deux pages soient lisibles ensemble. « Tout le monde » reste à un clic,
+  // mais ce n'est pas une hypothèse de référence : elle fait concourir Le Pen
+  // ET Bardella, ce qu'aucun scrutin ne verra.
+  const base = (D.champ_modal || D.candidats).filter(x => x !== "Bardella");
+  if (!base.includes("Le Pen")) base.push("Le Pen");
+  on = D.candidats.map(c => base.includes(c));
+  rendPicker(); dessine();
+  document.getElementById("picker").addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    const i = +b.dataset.i; on[i] = !on[i]; rendPicker(); dessine();
+  });
+  document.querySelectorAll(".presets a").forEach(a =>
+    a.addEventListener("click", () => preset(a.dataset.preset)));
+  document.getElementById("caveat").innerHTML =
+    `<b>À lire avant de conclure.</b> L'axe est <em>latent</em> : sa graduation n'a pas
+     d'unité, seules les positions relatives comptent. L'ordre gauche-droite des candidats
+     est une donnée d'entrée du modèle, pas un résultat ; leurs écarts, eux, sont estimés.
+     Le modèle a été validé sur des retraits de candidats <em>réellement sondés</em> — il y
+     bat la règle du prorata sur 75&nbsp;% des cas. Une liste jamais testée repose sur
+     l'extrapolation de la géométrie, ce qui est le pari du modèle et non une mesure.`;
+  document.getElementById("foot").innerHTML =
+    `Modèle <code>spatial-pooling</code> — ${D.diagnostics.n_noeuds} hypothèses de sondage,
+     ${D.diagnostics.n_candidats} candidats, ${D.diagnostics.n_champs_distincts} listes distinctes
+     testées. Arrêté au ${D.as_of}. Calcul effectué dans le navigateur sur
+     ${D.tirages.mu.length} tirages du postérieur.`;
+});
+</script>
+</body>
+</html>

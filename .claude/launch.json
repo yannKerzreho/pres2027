@@ -1,11 +1,8 @@
 {
   "version": "0.0.1",
   "configurations": [
-    {
-      "name": "site-preview",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8791", "--directory", "site"],
-      "port": 8791
-    }
+    { "name": "site", "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8765", "--directory", "docs"],
+      "port": 8765 }
   ]
 }

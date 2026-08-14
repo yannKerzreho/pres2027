@@ -50,6 +50,12 @@
   .switch button span { color:var(--muted); font-weight:500; }
   .switch button.active span { color:var(--bg); opacity:.65; }
 
+  .nav { display:flex; gap:6px; margin:0 0 18px; }
+  .nav a { text-decoration:none; border:1px solid var(--line); background:var(--card); color:var(--fg);
+    border-radius:999px; padding:7px 14px; font:600 0.8rem var(--sans); }
+  .nav a:hover { border-color:var(--red); }
+  .nav a.active { background:var(--fg); color:var(--bg); border-color:var(--fg); }
+
   h2 { font-size:1.05rem; font-weight:800; text-transform:uppercase; letter-spacing:.04em;
     margin:52px 0 4px; display:flex; align-items:baseline; gap:10px; }
   h2::after { content:""; flex:1; height:1px; background:var(--line); }
@@ -114,10 +120,15 @@
     <p class="eyebrow">Agrégateur bayésien · open source</p>
     <h1>Présidentielle 2027 — 1<sup>er</sup> tour</h1>
     <p class="sub">Sondages agrégés jour par jour, avec la dérive d'opinion d'ici au scrutin calibrée sur 2017 et 2022. <b>Ce sont des probabilités, pas des prédictions.</b></p>
+    <nav class="nav">
+      <a href="./index.html" class="active">Suivi des intentions</a>
+      <a href="./scenarios.html">Scénarios</a>
+    </nav>
     <div class="topbar">
       <div class="meta" id="meta"></div>
       <div class="switch" id="model"></div>
     </div>
+
     <div class="warn" id="note"></div>
   </header>
 

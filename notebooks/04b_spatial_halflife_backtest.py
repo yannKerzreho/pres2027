@@ -62,6 +62,33 @@ BLOCS_HYPOTHETIQUES = {
 }
 MIN_NOTICES = 5
 
+# ORDRE POLITIQUE STRICT, gauche -> droite (spec §12.26, décision utilisateur :
+# « on connaît l'ordre politique »). Sert à donner UN SLOT PAR CANDIDAT à
+# `sample_ordered_slots`, qui impose alors l'ordre par construction.
+#
+# Pourquoi c'est nécessaire : à l'intérieur d'un bloc, rien n'ordonnait les
+# candidats, et les chaînes ne s'accordaient pas sur qui est à droite de qui —
+# mesuré sur J-210, désaccord entre chaînes de 0,574 sur la position de Le Pen,
+# dans un bloc qu'elle partage avec Zemmour. Multimodalité par permutation, que
+# NUTS ne peut pas résoudre puisque les deux ordres expliquent les données
+# presque aussi bien. L'ordre est une connaissance qu'on a et qu'on ne donnait
+# pas au modèle.
+#
+# Les couples DISCUTABLES, à trancher (ils changent le modèle, pas juste un
+# réglage) : Poutou/Arthaud ; Roussel vs Montebourg ; la place de Lassalle, mis
+# ici à la gauche du centre faute de mieux ; Bertrand/Barnier/Pécresse entre
+# eux ; Poisson vs Ciotti ; et Philippot vs Le Pen.
+ORDRE_POLITIQUE_2022 = [
+    "Nathalie Arthaud", "Philippe Poutou", "Jean-Luc Mélenchon",
+    "Fabien Roussel", "Montebourg", "Anne Hidalgo", "Taubira",
+    "Yannick Jadot", "Thouy", "Rousseau",
+    "Jean Lassalle", "Emmanuel Macron", "Lagarde",
+    "Barnier", "Bertrand", "Valérie Pécresse", "Juvin", "Wauquiez",
+    "Poisson", "Ciotti",
+    "Nicolas Dupont-Aignan", "Asselineau", "Philippot",
+    "Marine Le Pen", "Eric Zemmour",
+]
+
 
 def load_historical_long(election: int, as_of=None) -> tuple[pd.DataFrame, list[str], np.ndarray]:
     """Roster construit depuis les SONDAGES (>= MIN_NOTICES sondages distincts),

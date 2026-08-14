@@ -23,7 +23,7 @@ import pandas as pd
 import xarray as xr
 
 ROOT = Path(__file__).resolve().parents[2]
-SITE_DATA = ROOT / "site" / "data"
+SITE_DATA = ROOT / "docs" / "data"   # `docs/` : dossier publié par GitHub Pages
 ELECTION_T1 = pd.Timestamp("2027-04-18")
 
 
@@ -90,7 +90,7 @@ class ForecastModel(ABC):
     label: str = ""
     description: str = ""
     trains_on_history: bool = False
-    # Visible dans le sélecteur du site public (site/data/models.json) — False
+    # Visible dans le sélecteur du site public (docs/data/models.json) — False
     # pour une variante de comparaison/diagnostic qu'on veut garder exécutable
     # (CLI, tests, backfill) sans l'exposer comme option publique. N'affecte
     # PAS le registre (`all_models()`) : le modèle reste pleinement utilisable
@@ -236,7 +236,7 @@ def write_snapshot(snapshot: dict) -> Path:
 
 
 def write_manifest() -> None:
-    """(Re)génère site/data/models.json depuis le registre — seuls les
+    """(Re)génère docs/data/models.json depuis le registre — seuls les
     modèles `public=True` apparaissent (cf. `ForecastModel.public`) ; les
     autres restent exécutables (CLI, tests, backfill) mais hors du
     sélecteur du site."""

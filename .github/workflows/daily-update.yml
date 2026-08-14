@@ -34,14 +34,21 @@ jobs:
 
       # Modèles PUBLICS uniquement (cf. model/run.py) : les variantes de
       # diagnostic sont des runs NUTS complets dont le site n'affiche rien.
-      - name: Modèle live -> site/data/
+      - name: Modèle live -> docs/data/
         run: python -m model.run
+
+      # `spatial-pooling` n'est pas `public` (il ne trace pas de trajectoire et
+      # n'a pas sa place dans le sélecteur de prévision), donc `model.run` sans
+      # argument ne le lance pas — mais l'onglet Scénarios a besoin de son
+      # `scenarios.json` frais. On l'appelle explicitement.
+      - name: Scénarios (spatial-pooling) -> docs/data/
+        run: python -m model.run --model spatial-pooling
 
       - name: Commit résultats
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add site/data
+          git add docs/data
           git diff --cached --quiet && echo "rien à committer" && exit 0
           git commit -m "chore: maj quotidienne du modèle"
           # Rebase avant push : un commit humain arrivé entre le checkout et
@@ -51,5 +58,5 @@ jobs:
           git push origin "HEAD:${GITHUB_REF_NAME}"
 
       - uses: actions/upload-pages-artifact@v3
-        with: { path: site }
+        with: { path: docs }
       - uses: actions/deploy-pages@v4

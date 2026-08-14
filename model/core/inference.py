@@ -14,7 +14,8 @@ from numpyro.infer import MCMC, NUTS, init_to_median
 def run_numpyro_mcmc(model_fn, model_kwargs: dict, draws: int = 1000, tune: int = 1000,
                      chains: int = 4, seed: int = 27, target_accept: float = 0.9,
                      extra_fields: tuple[str, ...] = (), init_strategy=init_to_median,
-                     chain_method: str = "sequential") -> tuple[dict, dict]:
+                     chain_method: str = "sequential",
+                     dense_mass: bool = False) -> tuple[dict, dict]:
     """Lance NUTS sur `model_fn(**model_kwargs)`.
 
     `init_strategy=init_to_median` (défaut NumPyro : `init_to_uniform`, un
@@ -48,8 +49,18 @@ def run_numpyro_mcmc(model_fn, model_kwargs: dict, draws: int = 1000, tune: int 
     Retourne `(samples, extra)` : `samples` est le dict `{site: array (chains,
     draws, ...)}` du postérieur (chaînes séparées — nécessaire pour R-hat/ESS
     et pour construire une `Bank` avec dims `("chain", "draw", ...)`), `extra`
-    les champs demandés dans `extra_fields` (ex. `"diverging"`)."""
-    kernel = NUTS(model_fn, target_accept_prob=target_accept, init_strategy=init_strategy)
+    les champs demandés dans `extra_fields` (ex. `"diverging"`).
+
+    `dense_mass` (défaut `False`, comportement NumPyro d'origine) : estime une
+    matrice de masse PLEINE au lieu d'une diagonale. À essayer quand le nombre
+    de pas de leapfrog colle à `2^k - 1` presque à chaque itération (255, 511) :
+    ça veut dire que la trajectoire ne fait jamais demi-tour, ce qui est la
+    signature d'un postérieur corrélé qu'une masse diagonale ne peut pas
+    précondionner. Coût : `dim²` en mémoire et une covariance à estimer pendant
+    le warmup — inutilisable si `dim` dépasse quelques centaines.
+    """
+    kernel = NUTS(model_fn, target_accept_prob=target_accept, init_strategy=init_strategy,
+                  dense_mass=dense_mass)
     mcmc = MCMC(kernel, num_warmup=tune, num_samples=draws, num_chains=chains,
                 chain_method=chain_method, progress_bar=False)
     mcmc.run(jax.random.PRNGKey(seed), **model_kwargs, extra_fields=extra_fields)

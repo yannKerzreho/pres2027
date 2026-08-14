@@ -10,11 +10,10 @@ dans le sélecteur du site, et `python -m model.run` ne lance par défaut que le
 modèles publics.
 
 Branche `dev` : en plus du modèle publié, elle porte les modèles expérimentaux.
-`spatial_pooling` n'est volontairement PAS importé ici — il n'est pas encore un
-`ForecastModel` enregistré (décision documentée dans son `__init__.py`).
 """
 
 from model.models import bayesian_nowcast  # noqa: F401  (registre les variantes SSM)
 from model.models import gp_pooling  # noqa: F401  (registre gp-pooling)
+from model.models import spatial_pooling  # noqa: F401  (registre spatial-pooling)
 
 from model.core.base import all_models  # noqa: F401
