@@ -139,8 +139,18 @@ def load_raw_polls(path: Path | None = None, tour: str = "Premier tour",
     # modèle qui veut raisonner par scénario (masque de présence/absence des
     # candidats, reports de voix...) fait un simple groupby("scenario_id")
     # au lieu de reconstruire une clé composite à partir de plusieurs colonnes.
-    scenario_key = (df["institut"].astype(str) + "|" + df["date_fin"].astype(str)
-                    + "|" + df["hypothese"].astype(str))
+    # `fillna` AVANT `astype(str)`, et pas seulement par confort : un sondage à
+    # champ unique n'a pas d'hypothèse nommée (`hypothese` = NaN, cf. le même
+    # repli "__unique__" dans `aggregate_to_slots`). Avec la dtype `str` de
+    # pandas >= 3, `astype(str)` PROPAGE la valeur manquante au lieu de produire
+    # la chaîne "nan" comme en pandas 2 ; la concaténation rendait alors NaN et
+    # `s.encode()` levait `AttributeError: 'float' object has no attribute
+    # 'encode'` — le job quotidien tombait dès qu'un sondage sans hypothèse
+    # nommée entrait dans le lot. `date_fin` est garanti non-NaT ici (filtré
+    # juste au-dessus par `horizon`).
+    scenario_key = (df["institut"].fillna("?").astype(str)
+                    + "|" + df["date_fin"].astype(str)
+                    + "|" + df["hypothese"].fillna("__unique__").astype(str))
     df["scenario_id"] = scenario_key.apply(lambda s: hashlib.sha1(s.encode()).hexdigest()[:12])
     return df.reset_index(drop=True)
 

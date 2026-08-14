@@ -78,6 +78,47 @@ def test_forecast_from_draws_probabilites_bien_formees():
         assert 0.0 <= fc[s]["ic90"][0] <= fc[s]["ic90"][1] <= 1.0
 
 
+def test_scenario_id_sur_sondage_sans_hypothese_nommee(tmp_path):
+    """Non-régression : un sondage à champ unique n'a pas d'hypothèse nommée
+    (`hypothese` vide). Avec la dtype `str` de pandas >= 3, `astype(str)`
+    propage la valeur manquante au lieu d'écrire "nan", la clé de scénario
+    devenait NaN et le hachage levait `AttributeError: 'float' object has no
+    attribute 'encode'` — `python -m model.run` tombait, job quotidien cassé.
+
+    Le test force la dtype string quand la version de pandas installée ne
+    l'active pas encore par défaut, pour reproduire l'environnement de la CI.
+    """
+    import pandas as pd
+    from model.core.live_dataset import load_raw_polls
+
+    csv = tmp_path / "polls.csv"
+    csv.write_text(
+        "notice,notice_url,institut,date_debut,date_fin,date_notice,echantillon,"
+        "methode,tour,hypothese,candidat,intention\n"
+        "s1,,Ifop,2026-08-01,2026-08-01,2026-08-01,1000,,Premier tour,,Le Pen,33\n"
+        "s1,,Ifop,2026-08-01,2026-08-01,2026-08-01,1000,,Premier tour,,Philippe,20\n"
+        "s2,,Elabe,2026-08-02,2026-08-02,2026-08-02,1000,,Premier tour,variante_1,Le Pen,35\n",
+        encoding="utf-8")
+
+    ancien = pd.get_option("future.infer_string")
+    try:
+        pd.set_option("future.infer_string", True)   # défaut en pandas >= 3
+    except (KeyError, ValueError):                   # option retirée : déjà le défaut
+        ancien = None
+    try:
+        raw = load_raw_polls(path=csv)
+    finally:
+        if ancien is not None:
+            pd.set_option("future.infer_string", ancien)
+
+    assert raw["scenario_id"].map(type).eq(str).all(), "clé de scénario non hachée"
+    # les deux candidats du sondage sans hypothèse restent le MÊME scénario,
+    # distinct de celui d'un autre institut
+    ids = raw.groupby("notice")["scenario_id"].nunique()
+    assert ids["s1"] == 1
+    assert raw["scenario_id"].nunique() == 2
+
+
 def test_aggregate_to_slots_ne_perd_pas_un_sondage_aux_metadonnees_incompletes():
     """Non-régression : `aggregate_to_slots` groupe sur des colonnes dont
     certaines sont FACULTATIVES (`notice_url` absente de Wikipedia,

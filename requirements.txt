@@ -25,11 +25,20 @@ pdfplumber
 # par SONDAGES_USE_LLM (cf. sondages/requirements-llm.txt).
 anthropic>=0.40
 
+# Branche `dev` uniquement : filtre de Kalman du nowcast SSM
+# (model/models/bayesian_nowcast/). Importé par `model/core/registered.py`, donc
+# par TOUT le registre — sans lui, même `python -m model.run` ne démarre pas.
+# Ne pas remonter tel quel sur `main`, qui ne publie pas ce modèle.
+# ATTENTION : dynamax passe par tensorflow-probability[jax], dont la version 0.25
+# est incompatible avec jax >= 0.7 (`jax.interpreters.xla.pytype_aval_mappings`,
+# retiré). Un environnement installé de zéro résout des versions compatibles ;
+# un environnement mis à jour par morceaux casse à l'import.
+dynamax
+
 # Tests
 pytest
 
 # Retirés de cette branche (aucun import) :
-#   dynamax    — filtre de Kalman du nowcast SSM, qui vit sur `dev` ;
 #   matplotlib — servait aux notebooks d'exploration, non versionnés ;
 #   pyarrow    — plus aucun format colonne en lecture/écriture ;
 #   scipy==1.12.0 — épinglé pour arviz 0.17 (`scipy.signal.gaussian`, retiré en

@@ -180,16 +180,20 @@ pipeline/       Données de calibration historique (2017, 2022)
 data/           historical/ (versionné) ; parsed/ et raw/ (régénérables, ignorés)
 model/          run.py, backfill.py (entrées) ; core/ (moteur) ; models/ (un dossier par modèle)
 model/core/     base (contrat + registre), movements (mouvements observés 2017/2022),
-                bank, inference, simulate, live_dataset, utils, registered
-model/models/   gp_pooling/ — le modèle, sa spec et ses paramètres calibrés
+                bank, inference, simulate, live_dataset, utils, registered ;
+                gp_math, opinion, projection, terminal_jump — briques partagées
+                entre modèles (extraites de gp_pooling)
+model/models/   un dossier par modèle : gp_pooling/ (publié), bayesian_nowcast/
+                et spatial_pooling/ (expérimentaux), chacun avec sa spec
 model/backtest/ coverage (au scrutin) et predictive_coverage (le nowcast)
 docs/           Site publié (GitHub Pages) : 3 onglets + data/ (snapshots, manifeste)
 docs/assets/    palette.js (banque de couleurs), site.css / site.js (briques communes),
                 generate_bg.py (bandeaux pointillistes, titre incrusté)
+notebooks/      Explorations : prototypes spatiaux, backtests de dérive, calibration
 ```
 
-Le nowcast bayésien SSM, le modèle spatial et les notebooks d'exploration vivent
-sur la branche `dev`.
+Branche `dev` : en plus du modèle publié, elle porte les modèles expérimentaux et
+les notebooks d'exploration.
 
 ## Limites
 

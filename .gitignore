@@ -36,3 +36,6 @@ notebooks/
 
 # Note de dev
 historic/
+
+# Claude
+.claude
