@@ -12,10 +12,20 @@ Scénarios, qui demande en plus un artefact sur mesure), ou `None` (hors du site
 `python -m model.run` ne lance par défaut que les modèles rattachés à une
 rubrique.
 
-Branche `dev` : en plus du modèle publié, elle porte les modèles expérimentaux.
+Branche `main` : `gp-pooling` (rubrique « suivi ») et `spatial-pooling`
+(rubrique « scénarios ») sont enregistrés et tournent chaque jour.
+`model/models/bayesian_nowcast/` est présent dans l'arbre mais VOLONTAIREMENT
+absent de ce fichier : il dépend de dynamax, qui n'est pas dans les requirements
+de cette branche. L'importer ici planterait le registre entier — donc la CI et
+le job quotidien — pour un modèle que le site n'affiche pas. Il reste lançable
+sur `dev`, où dynamax est installé.
+
+⚠️ Divergence assumée entre les branches : ce fichier est le seul qui diffère
+structurellement entre `main` et `dev` (avec `requirements.txt`). Chaque fusion
+`dev` -> `main` le remettra en conflit ; la résolution est toujours la même,
+garder la version de la branche d'arrivée.
 """
 
-from model.models import bayesian_nowcast  # noqa: F401  (registre les variantes SSM)
 from model.models import gp_pooling  # noqa: F401  (registre gp-pooling)
 from model.models import spatial_pooling  # noqa: F401  (registre spatial-pooling)
 

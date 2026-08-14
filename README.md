@@ -183,17 +183,20 @@ model/core/     base (contrat + registre), movements (mouvements observés 2017/
                 bank, inference, simulate, live_dataset, utils, registered ;
                 gp_math, opinion, projection, terminal_jump — briques partagées
                 entre modèles (extraites de gp_pooling)
-model/models/   un dossier par modèle : gp_pooling/ (publié), bayesian_nowcast/
-                et spatial_pooling/ (expérimentaux), chacun avec sa spec
+model/models/   un dossier par modèle, chacun avec sa spec : gp_pooling/ (onglet
+                Suivi), spatial_pooling/ (onglet Scénarios), bayesian_nowcast/
+                (présent, mais non enregistré ici — voir ci-dessous)
 model/backtest/ coverage (au scrutin) et predictive_coverage (le nowcast)
 docs/           Site publié (GitHub Pages) : 3 onglets + data/ (snapshots, manifeste)
 docs/assets/    palette.js (banque de couleurs), site.css / site.js (briques communes),
                 generate_bg.py (bandeaux pointillistes, titre incrusté)
-notebooks/      Explorations : prototypes spatiaux, backtests de dérive, calibration
 ```
 
-Branche `dev` : en plus du modèle publié, elle porte les modèles expérimentaux et
-les notebooks d'exploration.
+Le nowcast bayésien SSM (`bayesian_nowcast/`) est versionné pour référence mais
+**ne tourne pas sur cette branche** : il dépend de dynamax, absent des
+requirements, et [`model/core/registered.py`](model/core/registered.py) ne
+l'importe donc pas. Il s'exécute sur `dev`, qui porte aussi les notebooks
+d'exploration (non versionnés).
 
 ## Limites
 
