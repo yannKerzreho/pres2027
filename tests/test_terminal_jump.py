@@ -17,6 +17,12 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from model.core.bank import Bank
+
+# `bayesian_nowcast` importe dynamax, absent des requirements de `main` où ce
+# modèle monte sans être enregistré (cf. model/core/registered.py). Skip plutôt
+# qu'échec de collecte : la même suite doit passer sur les deux branches.
+pytest.importorskip("dynamax")
+
 from model.models.bayesian_nowcast import JUMP_BANK_PATH as BANK_JUMP_PATH
 
 pytestmark = pytest.mark.skipif(

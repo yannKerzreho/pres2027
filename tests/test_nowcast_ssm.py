@@ -23,6 +23,12 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 from model.core.live_dataset import SLOTS
 from model.core.utils import SinhArcsinh
+
+# `bayesian_nowcast` importe dynamax, absent des requirements de `main` où ce
+# modèle monte sans être enregistré (cf. model/core/registered.py). Skip plutôt
+# qu'échec de collecte : la même suite doit passer sur les deux branches.
+pytest.importorskip("dynamax")
+
 from model.models.bayesian_nowcast.latent import helmert_basis, ilr_decode
 from model.models.bayesian_nowcast.nowcast import (
     MIN_POLL_DATE, filter_scenarios_by_exact_slots, filter_scenarios_by_required_slots,
