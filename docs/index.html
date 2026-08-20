@@ -102,7 +102,7 @@ function interpAt(pts, day){
 }
 
 // --- graphe temporel générique : séries de lignes + points ---
-function timeChart(svg, series, {yMax=null, scatter=[], xMin=null, fmt=pct}={}) {
+function timeChart(svg, series, {yMax=null, scatter=[], xMin=null, fmt=pct, joursInfo=null}={}) {
   svg.innerHTML=""; const W=760,H=240,L=38,R=12,T=10,B=26;
   // xMin : coupe les points antérieurs (ex. sondages hypothétiques 2022/2023 très
   // épars, qui écrasent sinon toute la période récente sur l'axe).
@@ -153,7 +153,15 @@ function timeChart(svg, series, {yMax=null, scatter=[], xMin=null, fmt=pct}={}) 
     const pts=linePts[i];
     if(pts.length>1){const d=pts.map((p,j)=>(j?"L":"M")+X(p.d)+" "+Y(p.y)).join(" ");
       svg.appendChild(el("path",{d,fill:"none",stroke:s.color,"stroke-width":2}));}
-    pts.forEach(p=>svg.appendChild(el("circle",{cx:X(p.d),cy:Y(p.y),r:2.8,fill:s.color})));
+    // joursInfo : ne marque d'un point que les jours qui apportent de
+    // l'information (un snapshot est produit chaque jour, même sans sondage
+    // neuf — les marquer tous alignait des points sur un plateau constant).
+    // Un point de ligne est marqué s'il est le premier à intégrer un jour
+    // d'info (date_fin d'un sondage), le dernier point (= aujourd'hui) l'étant
+    // toujours. Sans l'option, on marque tout, comme avant.
+    const marque=(p,j)=>!joursInfo || j===pts.length-1
+      || joursInfo.some(d=>d<=p.d && (j===0 || d>pts[j-1].d));
+    pts.filter(marque).forEach(p=>svg.appendChild(el("circle",{cx:X(p.d),cy:Y(p.y),r:2.8,fill:s.color})));
   });
 
   // --- interaction : trait vertical au survol + valeurs exactes + sondages du jour ---
@@ -295,7 +303,8 @@ function peindre(snaps){
               url:p.notice_url,institut:p.institut}))
     .filter(p=>p.label && topSlots.includes(p.label) && p.y!=null && p.x);
   chips(document.getElementById("legendB"),seriesB);
-  timeChart(document.getElementById("chartB"),seriesB,{scatter,xMin:CHART_START});
+  const joursInfo=[...new Set(scatter.map(p=>jours(p.x)))].sort((a,b)=>a-b);
+  timeChart(document.getElementById("chartB"),seriesB,{scatter,xMin:CHART_START,joursInfo});
 
   const desc=(MODELES.find(x=>x.id===COURANT)||{}).description||"";
   document.getElementById("footer").innerHTML=`
