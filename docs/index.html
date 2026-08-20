@@ -285,11 +285,18 @@ function peindre(snaps){
   const topSlots=renderNowcast(latest).slice(0,5);
   renderDuels(latest);
 
+  // Jours qui apportent de l'information : les dates de fin de sondage. Les deux
+  // graphes temporels n'y marquent leurs points que là (cf. timeChart) — un
+  // snapshot étant produit chaque jour, les marquer tous alignait des points sur
+  // des plateaux constants.
+  const joursInfo=[...new Set((latest.polls||[]).map(p=>p.date_fin)
+    .filter(Boolean).map(jours))].sort((a,b)=>a-b);
+
   // Chart A : évolution P(top2)
   const seriesA=topSlots.map(s=>({label:s,color:couleur(s),
     points:snaps.map(sn=>({x:sn.as_of,y:sn.forecast_scrutin[s]?.p_qualifie_top2 ?? null}))}));
   chips(document.getElementById("legendA"),seriesA);
-  timeChart(document.getElementById("chartA"),seriesA,{yMax:1,xMin:CHART_START});
+  timeChart(document.getElementById("chartA"),seriesA,{yMax:1,xMin:CHART_START,joursInfo});
 
   // Chart B : intentions (nowcast) + sondages en points
   const seriesB=topSlots.map(s=>({label:s,color:couleur(s),
@@ -303,7 +310,6 @@ function peindre(snaps){
               url:p.notice_url,institut:p.institut}))
     .filter(p=>p.label && topSlots.includes(p.label) && p.y!=null && p.x);
   chips(document.getElementById("legendB"),seriesB);
-  const joursInfo=[...new Set(scatter.map(p=>jours(p.x)))].sort((a,b)=>a-b);
   timeChart(document.getElementById("chartB"),seriesB,{scatter,xMin:CHART_START,joursInfo});
 
   const desc=(MODELES.find(x=>x.id===COURANT)||{}).description||"";
