@@ -27,9 +27,9 @@
 <div class="wrap">
   <header class="entete">
     <p class="eyebrow">À propos</p>
-    <h1>Ce que ce site fait, et ce qu'il ne fait pas</h1>
     <p class="chapo">Pres2027 agrège les sondages du 1<sup>er</sup> tour de l'élection
-      présidentielle du 18 avril 2027 et publie une estimation par jour. Le code, les
+      présidentielle du 18 avril 2027 et modélise les intentions de vote pour
+      suivre les évolutions et se projetter au jour du vote. Le code, les
       données et les méthodes sont ouverts.</p>
   </header>
 
@@ -41,34 +41,21 @@
       régulièrement&nbsp;: c'est à peu près la probabilité de tirer deux fois de suite
       le même chiffre à un dé.</p>
     <p><b>Les intervalles sont larges, et c'est voulu.</b> Ce que le site affiche n'est
-      pas l'opinion d'aujourd'hui, mais celle du jour du vote. Deux incertitudes
-      s'ajoutent donc à la marge d'erreur des sondages&nbsp;: l'opinion peut encore bouger
+      pas l'intention d'aujourd'hui, mais celle du jour du vote. Deux incertitudes
+      s'ajoutent donc à la marge d'erreur des sondages&nbsp;: les intentions peut encore bouger
       d'ici avril 2027, et le résultat des urnes s'écarte toujours un peu des intentions
-      déclarées. Ces deux effets sont mesurés sur les campagnes de 2017 et 2022, pas
-      supposés.</p>
+      déclarées (cf. LR en 2022 avec environs -4%). Ces deux effets sont mesurés et validés
+      sur les campagnes de 2017 et 2022, mais les dynamiques changes. La couverture, i.e. 
+      la probabilité qu'un intervalle contienne la vérité le bon nombre de fois, est très
+      bonne sur les backtest et les données de 2026 pour les intentions de vote, mais moins
+      bonne pour le résultat final. Un intervalle annoncé à 90 % contient la vérité 83 %
+      du temps sur les backtests. La différence entre les derniers sondages et les résultats
+      des urnes sont en cause (biais des sondages, vote utile...)
+      et reste très dure à modéliser pour le moment. À l'inverse, l'évolution des intentions
+      est bien meilleur car les données sont plus nombreuses.</b></p>
     <p><b>Survolez une barre</b> pour voir la distribution complète derrière la moyenne.
       Elle est rarement symétrique&nbsp;: la moyenne et la médiane s'écartent, et c'est
       exactement ce qu'un intervalle seul cacherait.</p>
-
-    <h2>Les deux rubriques</h2>
-    <table>
-      <tr><th>Rubrique</th><th>La question posée</th><th>Le modèle</th></tr>
-      <tr>
-        <td><a href="./index.html">Suivi des intentions</a></td>
-        <td>Où en est l'opinion, et où sera-t-elle le jour du vote&nbsp;?</td>
-        <td>Un modèle au choix, dans le sélecteur en haut de page.</td>
-      </tr>
-      <tr>
-        <td><a href="./scenarios.html">Scénarios</a></td>
-        <td>Et si la liste des candidats n'était pas celle que les instituts testent&nbsp;?</td>
-        <td><code>spatial-pooling</code>, qui place les candidats sur un axe et
-            redistribue les voix aux voisins.</td>
-      </tr>
-    </table>
-    <p>Les deux ne répondent pas à la même question et ne sont pas interchangeables&nbsp;:
-      le modèle spatial n'est pas fait pour tracer une trajectoire d'opinion, et le
-      modèle de suivi ne sait pas chiffrer une liste que personne n'a sondée. C'est
-      pourquoi le sélecteur de modèles n'apparaît que dans le suivi des intentions.</p>
 
     <h2>D'où viennent les sondages</h2>
     <p>La source primaire est la page
@@ -79,25 +66,6 @@
       des sondages</a>. L'historique 2017-2022 qui sert à la calibration vient de
       <a class="lien" href="https://github.com/nsppolls/nsppolls">nsppolls</a> et de
       <a class="lien" href="https://github.com/pollsposition/data">pollsposition</a>.</p>
-    <p>Sur les graphiques d'intentions, chaque point est un sondage&nbsp;: cliquer dessus
-      ouvre sa notice source. Rien n'est affiché qui ne soit vérifiable.</p>
-
-    <h2>Ce que le modèle ne sait pas faire</h2>
-    <ul>
-      <li><b>Le vainqueur du 2<sup>nd</sup> tour n'est pas modélisé.</b> Il faudrait une
-        matrice de reports de voix. Le site s'arrête aux duels probables.</li>
-      <li><b>Deux élections seulement</b> (2017 et 2022) servent à tout calibrer, et 2017
-        ne couvre que les cinq dernières semaines de campagne.</li>
-      <li><b>La prévision au jour du scrutin est sous-couverte</b>&nbsp;: un intervalle
-        annoncé à 90 % contient la vérité 83 % du temps sur les backtests. C'est la
-        projection jusqu'au vote qui est en cause, pas l'estimation du moment — c'est
-        écrit ici plutôt que caché.</li>
-      <li><b>Peu de sondages exploitables</b> pour l'instant&nbsp;: les modèles à roster
-        exact n'en retiennent qu'une partie. Le volume croîtra avec la campagne.</li>
-      <li><b>Les positions gauche-droite du modèle spatial sont un choix éditorial</b>,
-        pas une mesure&nbsp;: l'ordre des candidats sur l'axe est une donnée d'entrée.
-        Seuls leurs écarts sont estimés.</li>
-    </ul>
 
     <h2>Contribuer</h2>
     <p>Le projet est sous licence MIT et vit sur
@@ -105,15 +73,13 @@
       Ajouter un modèle de suivi des intentions demande d'écrire une classe et de
       l'enregistrer&nbsp;: le runner, les tests, le backfill et la pastille de sélection
       le prennent ensuite tout seuls, sans une ligne de code front. Les scénarios sont
-      plus exigeants — ils supposent un artefact sur mesure et la page qui va avec.
+      plus exigeants: ils supposent un artefact sur mesure et la page qui va avec.
       Le <code>README</code> détaille les deux chemins.</p>
 
     <h2>Remerciements</h2>
-    <p>Ce site n'existerait pas sans le travail bénévole des <b>contributrices et
+    <p>Ce site n'existerait pas sans le travail des <b>contributrices et
       contributeurs de Wikipédia</b>, qui recensent, vérifient et tiennent à jour les
-      sondages au fil de la campagne, avec leurs sources et leurs notices. C'est un
-      travail d'archivage patient et rarement crédité&nbsp;: il constitue ici
-      l'intégralité de la matière première.</p>
+      sondages au fil de la campagne, avec leurs sources et leurs notices.
   </div>
 </div>
 
