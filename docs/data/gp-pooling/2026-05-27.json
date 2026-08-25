@@ -1,0 +1,1035 @@
+{
+  "model": "gp-pooling",
+  "as_of": "2026-05-27",
+  "meta": {
+    "genere_le": "2026-08-25",
+    "as_of": "2026-05-27",
+    "scrutin_t1": "2027-04-18",
+    "n_sondages": 2,
+    "n_sondages_disponibles": 13,
+    "horizon_prevision_jours": 326,
+    "instituts": [
+      "Harris Interactive"
+    ]
+  },
+  "nowcast": {
+    "Arthaud (LO)": {
+      "mean": 0.0102,
+      "ic90": [
+        0.0069,
+        0.0142
+      ]
+    },
+    "Mélenchon (LFI)": {
+      "mean": 0.136,
+      "ic90": [
+        0.1069,
+        0.1691
+      ]
+    },
+    "Roussel (PCF)": {
+      "mean": 0.0333,
+      "ic90": [
+        0.0248,
+        0.044
+      ]
+    },
+    "Glucksmann (PP)": {
+      "mean": 0.1102,
+      "ic90": [
+        0.0866,
+        0.1374
+      ]
+    },
+    "Tondelier (EELV)": {
+      "mean": 0.0331,
+      "ic90": [
+        0.0248,
+        0.0432
+      ]
+    },
+    "Philippe (Horizons)": {
+      "mean": 0.1895,
+      "ic90": [
+        0.1529,
+        0.2311
+      ]
+    },
+    "Retailleau (LR)": {
+      "mean": 0.0999,
+      "ic90": [
+        0.0777,
+        0.1254
+      ]
+    },
+    "Dupont-Aignan": {
+      "mean": 0.0169,
+      "ic90": [
+        0.012,
+        0.0227
+      ]
+    },
+    "RN": {
+      "mean": 0.3103,
+      "ic90": [
+        0.2569,
+        0.3664
+      ]
+    },
+    "Zemmour (Reconquête)": {
+      "mean": 0.0604,
+      "ic90": [
+        0.0463,
+        0.0767
+      ]
+    }
+  },
+  "forecast_scrutin": {
+    "Arthaud (LO)": {
+      "part_moyenne": 0.011,
+      "ic90": [
+        0.0028,
+        0.027
+      ],
+      "p_qualifie_top2": 0.0,
+      "p_arrive_premier": 0.0,
+      "quantiles": [
+        0.0028,
+        0.0054,
+        0.0086,
+        0.014,
+        0.027
+      ],
+      "densite": {
+        "x0": 0.0015,
+        "dx": 0.001952,
+        "y": [
+          52,
+          100,
+          96,
+          89,
+          66,
+          48,
+          38,
+          32,
+          22,
+          16,
+          14,
+          13,
+          6,
+          6,
+          4,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    "Mélenchon (LFI)": {
+      "part_moyenne": 0.1321,
+      "ic90": [
+        0.0419,
+        0.2838
+      ],
+      "p_qualifie_top2": 0.2735,
+      "p_arrive_premier": 0.084,
+      "quantiles": [
+        0.0419,
+        0.0744,
+        0.1141,
+        0.1702,
+        0.2838
+      ],
+      "densite": {
+        "x0": 0.0234,
+        "dx": 0.017297,
+        "y": [
+          35,
+          74,
+          100,
+          95,
+          89,
+          79,
+          70,
+          57,
+          43,
+          39,
+          30,
+          25,
+          19,
+          16,
+          14,
+          11,
+          6,
+          6,
+          5,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      }
+    },
+    "Roussel (PCF)": {
+      "part_moyenne": 0.0366,
+      "ic90": [
+        0.0103,
+        0.0852
+      ],
+      "p_qualifie_top2": 0.0027,
+      "p_arrive_premier": 0.0003,
+      "quantiles": [
+        0.0103,
+        0.0192,
+        0.0304,
+        0.0467,
+        0.0852
+      ],
+      "densite": {
+        "x0": 0.0053,
+        "dx": 0.00565,
+        "y": [
+          34,
+          84,
+          100,
+          82,
+          74,
+          68,
+          48,
+          37,
+          34,
+          25,
+          18,
+          12,
+          12,
+          7,
+          8,
+          7,
+          4,
+          3,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    "Glucksmann (PP)": {
+      "part_moyenne": 0.1121,
+      "ic90": [
+        0.0338,
+        0.2502
+      ],
+      "p_qualifie_top2": 0.182,
+      "p_arrive_premier": 0.0563,
+      "quantiles": [
+        0.0338,
+        0.0627,
+        0.0952,
+        0.1442,
+        0.2502
+      ],
+      "densite": {
+        "x0": 0.0184,
+        "dx": 0.015086,
+        "y": [
+          36,
+          71,
+          99,
+          100,
+          92,
+          75,
+          69,
+          52,
+          47,
+          35,
+          26,
+          26,
+          17,
+          14,
+          10,
+          9,
+          7,
+          7,
+          3,
+          6,
+          4,
+          2,
+          2,
+          0
+        ]
+      }
+    },
+    "Tondelier (EELV)": {
+      "part_moyenne": 0.0367,
+      "ic90": [
+        0.0101,
+        0.0868
+      ],
+      "p_qualifie_top2": 0.0043,
+      "p_arrive_premier": 0.001,
+      "quantiles": [
+        0.0101,
+        0.0192,
+        0.03,
+        0.0459,
+        0.0868
+      ],
+      "densite": {
+        "x0": 0.0055,
+        "dx": 0.006239,
+        "y": [
+          44,
+          82,
+          100,
+          81,
+          71,
+          55,
+          39,
+          32,
+          25,
+          17,
+          12,
+          11,
+          7,
+          6,
+          6,
+          4,
+          2,
+          2,
+          3,
+          2,
+          2,
+          1,
+          0,
+          1
+        ]
+      }
+    },
+    "Philippe (Horizons)": {
+      "part_moyenne": 0.1907,
+      "ic90": [
+        0.0622,
+        0.3929
+      ],
+      "p_qualifie_top2": 0.5258,
+      "p_arrive_premier": 0.2132,
+      "quantiles": [
+        0.0622,
+        0.1141,
+        0.1696,
+        0.2445,
+        0.3929
+      ],
+      "densite": {
+        "x0": 0.0315,
+        "dx": 0.021802,
+        "y": [
+          24,
+          63,
+          89,
+          92,
+          100,
+          98,
+          92,
+          78,
+          69,
+          60,
+          46,
+          42,
+          30,
+          23,
+          20,
+          17,
+          16,
+          12,
+          5,
+          8,
+          4,
+          4,
+          4,
+          3
+        ]
+      }
+    },
+    "Retailleau (LR)": {
+      "part_moyenne": 0.104,
+      "ic90": [
+        0.0311,
+        0.2304
+      ],
+      "p_qualifie_top2": 0.1515,
+      "p_arrive_premier": 0.0423,
+      "quantiles": [
+        0.0311,
+        0.0584,
+        0.0874,
+        0.1337,
+        0.2304
+      ],
+      "densite": {
+        "x0": 0.0169,
+        "dx": 0.013823,
+        "y": [
+          34,
+          72,
+          88,
+          100,
+          90,
+          67,
+          62,
+          56,
+          44,
+          36,
+          30,
+          20,
+          17,
+          13,
+          14,
+          10,
+          8,
+          5,
+          4,
+          4,
+          2,
+          2,
+          2,
+          2
+        ]
+      }
+    },
+    "Dupont-Aignan": {
+      "part_moyenne": 0.0167,
+      "ic90": [
+        0.0046,
+        0.0402
+      ],
+      "p_qualifie_top2": 0.0,
+      "p_arrive_premier": 0.0,
+      "quantiles": [
+        0.0046,
+        0.0087,
+        0.0134,
+        0.0212,
+        0.0402
+      ],
+      "densite": {
+        "x0": 0.0023,
+        "dx": 0.002976,
+        "y": [
+          40,
+          96,
+          100,
+          85,
+          68,
+          48,
+          40,
+          32,
+          21,
+          15,
+          13,
+          9,
+          7,
+          8,
+          3,
+          4,
+          3,
+          3,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    "RN": {
+      "part_moyenne": 0.2974,
+      "ic90": [
+        0.112,
+        0.5489
+      ],
+      "p_qualifie_top2": 0.824,
+      "p_arrive_premier": 0.5958,
+      "quantiles": [
+        0.112,
+        0.1968,
+        0.2798,
+        0.3792,
+        0.5489
+      ],
+      "densite": {
+        "x0": 0.0644,
+        "dx": 0.026096,
+        "y": [
+          21,
+          44,
+          61,
+          77,
+          93,
+          100,
+          100,
+          95,
+          93,
+          83,
+          72,
+          77,
+          68,
+          43,
+          46,
+          34,
+          26,
+          23,
+          25,
+          18,
+          11,
+          8,
+          5,
+          3
+        ]
+      }
+    },
+    "Zemmour (Reconquête)": {
+      "part_moyenne": 0.0627,
+      "ic90": [
+        0.0168,
+        0.1479
+      ],
+      "p_qualifie_top2": 0.0362,
+      "p_arrive_premier": 0.0073,
+      "quantiles": [
+        0.0168,
+        0.0329,
+        0.0514,
+        0.0791,
+        0.1479
+      ],
+      "densite": {
+        "x0": 0.009,
+        "dx": 0.009454,
+        "y": [
+          41,
+          82,
+          100,
+          90,
+          85,
+          69,
+          55,
+          41,
+          33,
+          24,
+          19,
+          18,
+          13,
+          11,
+          10,
+          6,
+          5,
+          4,
+          2,
+          3,
+          3,
+          2,
+          2,
+          2
+        ]
+      }
+    }
+  },
+  "duels_probables": [
+    {
+      "candidats": [
+        "Philippe (Horizons)",
+        "RN"
+      ],
+      "probabilite": 0.3935
+    },
+    {
+      "candidats": [
+        "Mélenchon (LFI)",
+        "RN"
+      ],
+      "probabilite": 0.1885
+    },
+    {
+      "candidats": [
+        "Glucksmann (PP)",
+        "RN"
+      ],
+      "probabilite": 0.1217
+    },
+    {
+      "candidats": [
+        "Retailleau (LR)",
+        "RN"
+      ],
+      "probabilite": 0.0943
+    },
+    {
+      "candidats": [
+        "Mélenchon (LFI)",
+        "Philippe (Horizons)"
+      ],
+      "probabilite": 0.0535
+    },
+    {
+      "candidats": [
+        "Philippe (Horizons)",
+        "Retailleau (LR)"
+      ],
+      "probabilite": 0.0343
+    },
+    {
+      "candidats": [
+        "Glucksmann (PP)",
+        "Philippe (Horizons)"
+      ],
+      "probabilite": 0.0343
+    },
+    {
+      "candidats": [
+        "RN",
+        "Zemmour (Reconquête)"
+      ],
+      "probabilite": 0.0217
+    }
+  ],
+  "drift_modele": "l'opinion a encore 326 jours pour bouger d'ici au vote, et le résultat des urnes s'écarte toujours un peu des intentions déclarées",
+  "diagnostics": {
+    "noyau": "Ornstein-Uhlenbeck",
+    "tau_j": 261.7,
+    "sigma": 0.3402,
+    "sigma_h": 0.1258,
+    "sigma_p": 0.0389,
+    "n_sondages": 2,
+    "instituts": [
+      "Harris Interactive"
+    ],
+    "age_sondage_le_plus_recent_j": 0.0,
+    "sd_latente_par_slot": {
+      "Arthaud (LO)": 0.2121,
+      "Mélenchon (LFI)": 0.1451,
+      "Roussel (PCF)": 0.1678,
+      "Glucksmann (PP)": 0.1471,
+      "Tondelier (EELV)": 0.1678,
+      "Philippe (Horizons)": 0.1428,
+      "Retailleau (LR)": 0.1481,
+      "Dupont-Aignan": 0.1869,
+      "RN": 0.1404,
+      "Zemmour (Reconquête)": 0.1547
+    }
+  },
+  "trajectoire": {
+    "dates": [
+      "2026-04-30",
+      "2026-05-07",
+      "2026-05-14",
+      "2026-05-21",
+      "2026-05-27"
+    ],
+    "slots": {
+      "Arthaud (LO)": {
+        "mean": [
+          0.01,
+          0.0102,
+          0.0101,
+          0.0101,
+          0.0101
+        ],
+        "ic90_lo": [
+          0.0068,
+          0.0069,
+          0.0068,
+          0.0069,
+          0.0069
+        ],
+        "ic90_hi": [
+          0.0144,
+          0.0142,
+          0.0144,
+          0.0142,
+          0.0141
+        ]
+      },
+      "Mélenchon (LFI)": {
+        "mean": [
+          0.1236,
+          0.1262,
+          0.1299,
+          0.1327,
+          0.1359
+        ],
+        "ic90_lo": [
+          0.097,
+          0.097,
+          0.0999,
+          0.103,
+          0.1072
+        ],
+        "ic90_hi": [
+          0.153,
+          0.1594,
+          0.1655,
+          0.1661,
+          0.1682
+        ]
+      },
+      "Roussel (PCF)": {
+        "mean": [
+          0.0373,
+          0.0362,
+          0.0351,
+          0.0341,
+          0.0333
+        ],
+        "ic90_lo": [
+          0.0278,
+          0.0265,
+          0.0254,
+          0.0251,
+          0.0245
+        ],
+        "ic90_hi": [
+          0.0484,
+          0.0475,
+          0.0467,
+          0.0452,
+          0.0436
+        ]
+      },
+      "Glucksmann (PP)": {
+        "mean": [
+          0.1096,
+          0.1099,
+          0.1099,
+          0.1099,
+          0.1103
+        ],
+        "ic90_lo": [
+          0.0853,
+          0.0847,
+          0.0844,
+          0.0842,
+          0.0858
+        ],
+        "ic90_hi": [
+          0.1365,
+          0.1392,
+          0.1396,
+          0.1387,
+          0.1384
+        ]
+      },
+      "Tondelier (EELV)": {
+        "mean": [
+          0.0372,
+          0.0361,
+          0.0352,
+          0.0342,
+          0.0333
+        ],
+        "ic90_lo": [
+          0.0274,
+          0.0266,
+          0.0262,
+          0.0252,
+          0.0246
+        ],
+        "ic90_hi": [
+          0.0486,
+          0.0472,
+          0.0465,
+          0.045,
+          0.0436
+        ]
+      },
+      "Philippe (Horizons)": {
+        "mean": [
+          0.189,
+          0.1899,
+          0.1893,
+          0.1903,
+          0.1898
+        ],
+        "ic90_lo": [
+          0.1515,
+          0.1497,
+          0.1471,
+          0.1494,
+          0.152
+        ],
+        "ic90_hi": [
+          0.2305,
+          0.2366,
+          0.2354,
+          0.2358,
+          0.2316
+        ]
+      },
+      "Retailleau (LR)": {
+        "mean": [
+          0.1003,
+          0.1001,
+          0.1,
+          0.1001,
+          0.1002
+        ],
+        "ic90_lo": [
+          0.0775,
+          0.0763,
+          0.0767,
+          0.0765,
+          0.078
+        ],
+        "ic90_hi": [
+          0.1264,
+          0.1284,
+          0.1283,
+          0.1267,
+          0.1254
+        ]
+      },
+      "Dupont-Aignan": {
+        "mean": [
+          0.0143,
+          0.0148,
+          0.0156,
+          0.0163,
+          0.0168
+        ],
+        "ic90_lo": [
+          0.0099,
+          0.0104,
+          0.011,
+          0.0114,
+          0.0121
+        ],
+        "ic90_hi": [
+          0.0197,
+          0.0205,
+          0.0217,
+          0.0221,
+          0.0224
+        ]
+      },
+      "RN": {
+        "mean": [
+          0.3187,
+          0.3163,
+          0.3147,
+          0.3123,
+          0.3098
+        ],
+        "ic90_lo": [
+          0.2662,
+          0.2584,
+          0.2593,
+          0.2559,
+          0.2575
+        ],
+        "ic90_hi": [
+          0.3732,
+          0.376,
+          0.3761,
+          0.3725,
+          0.3657
+        ]
+      },
+      "Zemmour (Reconquête)": {
+        "mean": [
+          0.06,
+          0.0604,
+          0.0602,
+          0.0599,
+          0.0604
+        ],
+        "ic90_lo": [
+          0.0456,
+          0.0452,
+          0.0453,
+          0.0451,
+          0.0459
+        ],
+        "ic90_hi": [
+          0.0765,
+          0.0787,
+          0.0785,
+          0.0772,
+          0.0768
+        ]
+      }
+    }
+  },
+  "polls": [
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "Arthaud (LO)",
+      "part": 0.01,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "Dupont-Aignan",
+      "part": 0.02,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "Glucksmann (PP)",
+      "part": 0.11,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "Mélenchon (LFI)",
+      "part": 0.14,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "Philippe (Horizons)",
+      "part": 0.19,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "RN",
+      "part": 0.31,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "Retailleau (LR)",
+      "part": 0.1,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "Roussel (PCF)",
+      "part": 0.03,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "Tondelier (EELV)",
+      "part": 0.03,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "Zemmour (Reconquête)",
+      "part": 0.06,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "Arthaud (LO)",
+      "part": 0.01,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "Dupont-Aignan",
+      "part": 0.01,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "Glucksmann (PP)",
+      "part": 0.11,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "Mélenchon (LFI)",
+      "part": 0.12,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "Philippe (Horizons)",
+      "part": 0.19,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "RN",
+      "part": 0.32,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "Retailleau (LR)",
+      "part": 0.1,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "Roussel (PCF)",
+      "part": 0.04,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "Tondelier (EELV)",
+      "part": 0.04,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "Zemmour (Reconquête)",
+      "part": 0.06,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    }
+  ]
+}
