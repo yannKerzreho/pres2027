@@ -55,6 +55,16 @@ from model.core.gp_math import (
 
 SHARE_FLOOR = 1e-4
 
+# Pas de la grille de la trajectoire lissée, en jours. Les DATES DE SONDAGE y
+# sont ajoutées telles quelles : les trajectoires d'un Ornstein-Uhlenbeck sont
+# continues mais nulle part dérivables, donc la moyenne postérieure a un angle
+# exactement à chaque observation — échantillonner à côté l'arrondirait au lieu
+# de le montrer. Entre deux sondages la courbe est quasi droite (τ ≈ 262 j,
+# corrélation 0,98 sur 7 jours), 7 jours suffisent donc au remplissage : ~25
+# points au lieu de ~120 en journalier, pour un tracé identique à l'œil et un
+# snapshot qui reste sous les 40 Ko.
+TRAJ_PAS_JOURS = 7.0
+
 
 def _softmax(a):
     e = np.exp(a - a.max(axis=-1, keepdims=True))
@@ -174,7 +184,51 @@ class GPPooling(ForecastModel):
             "sd_latente_par_slot": {s: round(float(np.sqrt(v)), 4)
                                     for s, v in zip(slots, post.var_latent)},
         }
-        return Nowcast(draws=draws, diagnostics=diagnostics)
+        return Nowcast(draws=draws, diagnostics=diagnostics,
+                       trajectoire=self._trajectoire(Z, V, h, inst_idx, slots, h_as_of))
+
+    def _trajectoire(self, Z, V, h, inst_idx, slots, h_as_of) -> dict:
+        """θ(t) sur une grille de dates, chacune conditionnée à TOUS les sondages.
+
+        Exactement le postérieur du nowcast (`gp_posterior`), à `h_star` variable
+        au lieu du seul `h_as_of` : aucune interpolation, aucun paramètre en plus.
+        L'IC en sort juste, ce qu'une interpolation des bornes ne saurait pas
+        faire — la variance conditionnelle entre deux sondages ne se situe pas
+        ENTRE celles des deux extrémités, elle BOMBE au milieu (pont d'OU : loin
+        des deux mesures on en sait moins qu'aux deux bouts). Mesuré sur le trou
+        du 8 juillet au 19 août 2026 : ±5,38 pt au milieu contre ±3,74 et ±4,37
+        aux bornes, soit 35 % d'incertitude que des bornes interpolées auraient
+        escamotée.
+
+        Coût négligeable : la factorisation de Cholesky de Σ ne dépend pas de
+        `h_star` (seul le vecteur `k_lat` change), et P est de l'ordre de la
+        dizaine de sondages.
+        """
+        h_sondages = {float(x) for x in h}
+        h_debut = max(h_sondages)
+        remplissage = np.arange(h_debut, h_as_of, -TRAJ_PAS_JOURS).tolist()
+        # décroissant en horizon = croissant en date
+        grille = sorted({*h_sondages, *remplissage, float(h_as_of)}, reverse=True)
+
+        # Graine dédiée et FIXE : le rejeu quotidien recalcule des dates déjà
+        # publiées (cf. model/run.py), un tirage non reproductible ferait un diff
+        # git à chaque passage sans qu'aucune donnée n'ait changé.
+        rng = np.random.default_rng(self.seed + 4)
+        cols = {s: {"mean": [], "ic90_lo": [], "ic90_hi": []} for s in slots}
+        dates = []
+        for h_star in grille:
+            post = gp_posterior(Z, V, h, inst_idx, h_star=h_star,
+                                tau=self.params["tau"], sigma2=self.params["sigma2"],
+                                sigma_h=self.params["sigma_h"])
+            pi = _softmax(rng.normal(post.mean, np.sqrt(np.maximum(post.var_latent, 0.0)),
+                                     size=(self.n_draws, len(slots))))
+            lo, hi = np.percentile(pi, [5, 95], axis=0)
+            dates.append(str((ELECTION_T1 - pd.Timedelta(days=h_star)).date()))
+            for i, s in enumerate(slots):
+                cols[s]["mean"].append(round(float(pi[:, i].mean()), 4))
+                cols[s]["ic90_lo"].append(round(float(lo[i]), 4))
+                cols[s]["ic90_hi"].append(round(float(hi[i]), 4))
+        return {"dates": dates, "slots": cols}
 
     def forecast(self, nc: Nowcast, horizon_days: int) -> dict:
         """Deux mécanismes distincts, chacun estimé sur ce qui le mesure :

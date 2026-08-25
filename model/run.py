@@ -41,6 +41,10 @@ auto-diagnostic, pas un journal à tenir : rien à mémoriser entre deux passage
 et une correction de la page wiki (valeur rectifiée, sondage retiré) est
 rattrapée au même titre qu'un ajout.
 
+Portée : les modèles qui le demandent (`ForecastModel.rejeu_historique`). Un
+modèle dont personne ne relit les snapshots datés et dont l'ajustement coûte des
+minutes n'a rien à y gagner — c'est le cas de `spatial-pooling`, exclu.
+
 Contrepartie assumée : la courbe devient RÉVISABLE. Un point publié hier peut
 changer aujourd'hui si un sondage antérieur est arrivé entre-temps. C'est le
 comportement correct d'une estimation qui date l'opinion plutôt que la croyance
@@ -61,15 +65,19 @@ import model.core.registered  # noqa: F401  (peuple le registre)
 from model.core.base import SITE_DATA, all_models, get_model, write_snapshot
 from model.core.live_dataset import load_raw_polls
 
-# Plafond de rejeu par passage. Le régime de croisière est de 0 à quelques dates
-# (un sondage a rarement plus d'une semaine de retard), mais le PREMIER passage
-# après une évolution du roster ou du modèle peut en trouver des dizaines : un
-# run `spatial-pooling` est une inférence NUTS d'environ 100 s, de quoi faire
-# sauter le `timeout-minutes` du job et perdre le snapshot du jour pour une
-# raison sans rapport avec le jour. On rattrape donc les plus RÉCENTES d'abord
-# (celles que le lecteur regarde) et le reste au fil des jours suivants — le
-# rattrapage converge tout seul puisque la détection est un auto-diagnostic.
-MAX_REJEU_DEFAUT = 6
+# Plafond de rejeu par passage. `None` = illimité, et c'est le défaut : ce qui
+# protège le job n'est plus un plafond mais l'opt-out par modèle
+# (`ForecastModel.rejeu_historique`). Les modèles qui rejouent sont ceux dont un
+# ajustement est bon marché — `gp-pooling` est en forme close, 86 ms, donc même
+# un arriéré de cent dates tient en dix secondes ; celui dont l'inférence coûte
+# des minutes (`spatial-pooling`, NUTS) ne rejoue pas du tout.
+#
+# L'option reste utile en secours : le jour où un modèle CHER voudra rejouer, on
+# borne le passage ici plutôt que de perdre le snapshot du jour sur un timeout.
+# Quand elle mord, on rattrape les dates les plus RÉCENTES d'abord (celles que
+# le lecteur regarde) et le reste au fil des jours suivants — la détection étant
+# un auto-diagnostic, le rattrapage converge tout seul.
+MAX_REJEU_DEFAUT = None
 
 
 def _selection(model_id: str, include_private: bool) -> dict:
@@ -110,7 +118,7 @@ def _notices_attendues(mdl, raw: pd.DataFrame, jour: str) -> set[str]:
 
 
 def dates_a_produire(mdl, raw: pd.DataFrame, as_of: str,
-                     max_rejeu: int = MAX_REJEU_DEFAUT) -> tuple[list[str], list[str]]:
+                     max_rejeu: int | None = MAX_REJEU_DEFAUT) -> tuple[list[str], list[str]]:
     """(dates à calculer dans l'ordre chronologique, dates écartées par le plafond).
 
     `as_of` en fait TOUJOURS partie, même si son snapshot est déjà à jour : le
@@ -124,6 +132,11 @@ def dates_a_produire(mdl, raw: pd.DataFrame, as_of: str,
     apparaître un point de courbe le jour même de la mesure, là où le nuage de
     sondages du site place déjà son point.
     """
+    if not getattr(mdl, "rejeu_historique", True):
+        # Modèle qui ne relit jamais son propre passé (cf.
+        # `ForecastModel.rejeu_historique`) : seule la date du jour est produite.
+        return [as_of], []
+
     mdir = SITE_DATA / mdl.id
     idx = mdir / "index.json"
     publiees = set(json.loads(idx.read_text())) if idx.exists() else set()
@@ -147,13 +160,14 @@ def dates_a_produire(mdl, raw: pd.DataFrame, as_of: str,
     # chronologique : `spatial-pooling` réécrit `scenarios.json` à CHAQUE
     # nowcast (cf. `_export_scenarios`), donc la dernière date calculée est
     # celle qui reste dans l'artefact — ce doit être `as_of`.
-    ecartees = sorted(perimees[:-max_rejeu]) if len(perimees) > max_rejeu else []
+    ecartees = (sorted(perimees[:-max_rejeu])
+                if max_rejeu is not None and len(perimees) > max_rejeu else [])
     retenues = sorted(perimees[len(ecartees):] + [as_of])
     return retenues, ecartees
 
 
 def run(model_id: str = "all", as_of: str | None = None, include_private: bool = False,
-        rejeu: bool | None = None, max_rejeu: int = MAX_REJEU_DEFAUT) -> None:
+        rejeu: bool | None = None, max_rejeu: int | None = MAX_REJEU_DEFAUT) -> None:
     as_of_explicite = as_of is not None
     as_of = as_of or date.today().isoformat()
     # Un `--as-of` explicite est un backfill ponctuel : on produit CETTE date et
@@ -215,7 +229,7 @@ def main():
     ap.add_argument("--no-rejeu", dest="rejeu", action="store_false",
                     help="ne produire que la date demandée")
     ap.add_argument("--max-rejeu", type=int, default=MAX_REJEU_DEFAUT,
-                    help=f"plafond de dates passées rejouées par passage (défaut {MAX_REJEU_DEFAUT})")
+                    help="plafond de dates passées rejouées par passage (défaut : illimité)")
     args = ap.parse_args()
     run(args.model, args.as_of, args.include_private, args.rejeu, args.max_rejeu)
 

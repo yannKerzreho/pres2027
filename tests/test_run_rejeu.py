@@ -131,3 +131,40 @@ def test_snapshot_illisible_est_rejoue(site):
     dates, _ = dates_a_produire(FauxModele(), raw, "2026-08-25")
 
     assert "2026-08-20" in dates
+
+
+class FauxModeleSansRejeu(FauxModele):
+    """Modèle cher dont personne ne relit les snapshots datés (cf.
+    `ForecastModel.rejeu_historique`) — profil de `spatial-pooling`."""
+    id = "faux-sans-rejeu"
+    rejeu_historique = False
+
+
+def test_modele_exclu_du_rejeu_ne_produit_que_le_jour(tmp_path, monkeypatch):
+    """L'opt-out prime sur la détection : même avec des snapshots périmés et des
+    dates de terrain sans fichier, seul `as_of` est calculé. C'est ce qui garde
+    le job quotidien à ~3 min quand un modèle coûte 180 s par ajustement."""
+    monkeypatch.setattr("model.run.SITE_DATA", tmp_path)
+    site = tmp_path / FauxModeleSansRejeu.id
+    raw = _polls(("2026-08-10", "Ifop"), ("2026-08-19", "Harris"))
+    for jour in ("2026-08-19", "2026-08-20"):
+        _publie(site, jour, ["Ifop"])          # périmés : Harris leur manque
+
+    dates, ecartees = dates_a_produire(FauxModeleSansRejeu(), raw, "2026-08-22")
+
+    assert dates == ["2026-08-22"]
+    assert ecartees == []
+
+
+def test_plafond_illimite_par_defaut(site):
+    """`MAX_REJEU_DEFAUT = None` : un modèle bon marché rattrape tout son arriéré
+    en un passage. Le plafond n'est plus la protection du job — l'opt-out l'est."""
+    raw = _polls(("2026-08-01", "Ifop"), ("2026-08-19", "Harris"))
+    for jour in ("2026-08-19", "2026-08-20", "2026-08-21", "2026-08-22"):
+        _publie(site, jour, ["Ifop"])
+
+    dates, ecartees = dates_a_produire(FauxModele(), raw, "2026-08-25")
+
+    assert ecartees == []
+    assert dates == ["2026-08-01", "2026-08-19", "2026-08-20",
+                     "2026-08-21", "2026-08-22", "2026-08-25"]

@@ -46,6 +46,20 @@ class Nowcast:
     présent."""
     draws: xr.DataArray
     diagnostics: dict | None = None
+    # Trajectoire LISSÉE de l'état latent : θ(t) pour une grille de dates, chacune
+    # conditionnée à TOUS les sondages — pas seulement à ceux antérieurs à t.
+    # C'est ce qui distingue un lisseur d'un filtre, et c'est ce que la courbe du
+    # site doit montrer : « l'opinion au temps t » et non « ce qu'on croyait au
+    # temps t ». Sans elle, le front n'a d'autre choix que d'enchaîner les
+    # millésimes, où l'information arrive par paliers — un sondage saisi avec du
+    # retard y fait un coude à sa date d'ARRIVÉE.
+    #
+    # Optionnelle, comme `diagnostics` : un modèle qui ne la fournit pas reste
+    # affichable (le front retombe sur les millésimes). Schéma, quand elle est
+    # là — tableaux parallèles indexés par `dates`, parts sur [0,1] :
+    #   {"dates": ["2026-04-30", ...],
+    #    "slots": {"RN": {"mean": [...], "ic90_lo": [...], "ic90_hi": [...]}, ...}}
+    trajectoire: dict | None = None
 
     def summary(self) -> dict:
         d = self.draws
@@ -117,6 +131,18 @@ class ForecastModel(ABC):
     # `docs/data/<id>/`, publié dans le manifeste pour que la page le charge
     # sans que son chemin soit codé en dur dans le HTML.
     scenario_artifact: str | None = None
+
+    # Le passage quotidien recalcule-t-il les dates PASSÉES dont le jeu de
+    # sondages a changé (cf. `model/run.py`) ? Un sondage saisi avec du retard
+    # périme tous les snapshots depuis sa date de terrain ; les rejouer garde
+    # l'archive datée cohérente avec les données.
+    #
+    # À mettre à `False` quand les deux conditions sont réunies : personne ne
+    # relit les snapshots datés de ce modèle, ET un ajustement coûte cher.
+    # C'est le cas de `spatial-pooling` (inférence NUTS, ~180 s sur le runner,
+    # et l'onglet Scénarios ne lit que `scenarios.json`) ; ce ne l'est pas de
+    # `gp-pooling` (forme close, 86 ms).
+    rejeu_historique: bool = True
 
     # Avertissement affiché en tête de la rubrique « suivi », au-dessus des
     # graphes. PROPRE AU MODÈLE, pas au framework : la limite à signaler dépend
@@ -231,6 +257,7 @@ def assemble_snapshot(model: ForecastModel, as_of: str, nc: Nowcast, fc: dict,
         "duels_probables": fc["duels_probables"],
         "drift_modele": fc.get("drift_modele"),
         "diagnostics": nc.diagnostics,
+        "trajectoire": nc.trajectoire,
         "polls": polls_list,
     }
 

@@ -43,11 +43,6 @@
     en tête au 1<sup>er</sup>. <b>Survolez une ligne</b> pour voir la distribution complète.</p>
   <div id="forecast"></div>
 
-  <h2>Qualification au 2<sup>nd</sup> tour</h2>
-  <p class="legend">Probabilité d'être au 2<sup>nd</sup> tour, ré-estimée à chaque nouveau sondage.</p>
-  <div class="chips" id="legendA"></div>
-  <svg id="chartA" viewBox="0 0 760 240" preserveAspectRatio="xMidYMid meet"></svg>
-
   <h2>Intentions &amp; sondages</h2>
   <p class="legend">Points = sondages (part brute par institut) · ligne = estimation du modèle ·
     bande = IC 90 % · <b>cliquer un point → la notice source</b>.</p>
@@ -288,24 +283,31 @@ function peindre(snaps){
   const topSlots=renderNowcast(latest).slice(0,5);
   renderDuels(latest);
 
-  // Jours qui apportent de l'information : les dates de fin de sondage. Les deux
-  // graphes temporels n'y marquent leurs points que là (cf. timeChart) — un
-  // snapshot étant produit chaque jour, les marquer tous alignait des points sur
-  // des plateaux constants.
+  // Jours qui apportent de l'information : les dates de fin de sondage. Le graphe
+  // temporel n'y marque ses points que là (cf. timeChart) — la trajectoire étant
+  // échantillonnée tous les 7 jours, marquer chaque point de grille alignerait
+  // des repères sur des dates où rien n'a été mesuré.
   const joursInfo=[...new Set((latest.polls||[]).map(p=>p.date_fin)
     .filter(Boolean).map(jours))].sort((a,b)=>a-b);
 
-  // Chart A : évolution P(top2)
-  const seriesA=topSlots.map(s=>({label:s,color:couleur(s),
-    points:snaps.map(sn=>({x:sn.as_of,y:sn.forecast_scrutin[s]?.p_qualifie_top2 ?? null}))}));
-  chips(document.getElementById("legendA"),seriesA);
-  timeChart(document.getElementById("chartA"),seriesA,{yMax:1,xMin:CHART_START,joursInfo});
-
-  // Chart B : intentions (nowcast) + sondages en points
-  const seriesB=topSlots.map(s=>({label:s,color:couleur(s),
-    points:snaps.map(sn=>({x:sn.as_of,y:sn.nowcast[s]?.mean ?? null})),
-    band:snaps.map(sn=>({x:sn.as_of, lo:sn.nowcast[s]?.ic90?.[0] ?? null,
-                         hi:sn.nowcast[s]?.ic90?.[1] ?? null}))}));
+  // Chart B : intentions + sondages en points.
+  //
+  // La TRAJECTOIRE LISSÉE du dernier snapshot, quand le modèle la publie : θ(t)
+  // conditionné à tous les sondages, donc l'axe des x est la date de l'OPINION.
+  // Enchaîner les nowcast des millésimes (le repli ci-dessous) donne un autre
+  // objet — la date de la CROYANCE — où un sondage saisi en retard fait un
+  // palier puis une marche à sa date d'arrivée, à côté de son propre point.
+  const traj=latest.trajectoire;
+  const seriesB=topSlots.map(s=>{
+    const t=traj?.slots?.[s];
+    if(!t) return {label:s,color:couleur(s),
+      points:snaps.map(sn=>({x:sn.as_of,y:sn.nowcast[s]?.mean ?? null})),
+      band:snaps.map(sn=>({x:sn.as_of, lo:sn.nowcast[s]?.ic90?.[0] ?? null,
+                           hi:sn.nowcast[s]?.ic90?.[1] ?? null}))};
+    return {label:s,color:couleur(s),
+      points:traj.dates.map((d,i)=>({x:d,y:t.mean[i]})),
+      band:traj.dates.map((d,i)=>({x:d,lo:t.ic90_lo[i],hi:t.ic90_hi[i]}))};
+  });
   // display_polls() peut différer d'un modèle à l'autre : on tente plusieurs noms
   // de champ plausibles pour le libellé plutôt que de supposer "slot" figé.
   const scatter=(latest.polls||[])

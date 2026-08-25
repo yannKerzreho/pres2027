@@ -35,9 +35,11 @@ jobs:
       # Rejoue aussi les dates PASSÉES dont le jeu de sondages a changé (défaut
       # quand `--as-of` est absent, cf. docstring de `model/run.py`) : un sondage
       # saisi sur Wikipedia plusieurs jours après son terrain doit déplacer la
-      # courbe à sa date de TERRAIN, pas à sa date d'arrivée. Plafonné à 6 dates
-      # par passage (~80 s par run `spatial-pooling`, soit ~9 min au pire) pour
-      # tenir dans `timeout-minutes` ; le reliquat est rattrapé les jours suivants.
+      # courbe à sa date de TERRAIN, pas à sa date d'arrivée. Seuls les modèles
+      # bon marché rejouent (`ForecastModel.rejeu_historique`) : `gp-pooling` est
+      # en forme close, 86 ms par date ; `spatial-pooling` (NUTS, ~180 s par date
+      # sur ce runner) est exclu, rien ne relit ses snapshots datés. Le job reste
+      # donc à ~3 min quel que soit l'arriéré.
       #
       # Tout modèle rattaché à une rubrique du site (cf. `ForecastModel.surface`)
       # — donc le suivi des intentions ET les scénarios, qui ont chacun besoin

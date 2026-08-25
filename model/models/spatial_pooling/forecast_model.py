@@ -69,6 +69,14 @@ class SpatialPooling(ForecastModel):
     # même question. Il alimente l'onglet Scénarios, qui est son usage — et le
     # job quotidien le lance donc à ce titre, sans argument supplémentaire.
     surface = "scenarios"
+    # Pas de rejeu des dates passées : un ajustement est une inférence NUTS
+    # (~180 s sur le runner GitHub, contre 86 ms pour `gp-pooling`), et RIEN ne
+    # relit les snapshots datés de ce modèle — `docs/scenarios.html` ne charge
+    # que `models.json` et `scenarios.json`, réécrit à chaque passage. Ce modèle
+    # n'a pas à raconter une trajectoire d'opinion : on lui demande les positions
+    # et le rapport de force COURANTS. Rejouer six dates lui coûtait 16 min de
+    # job pour réécrire des fichiers que personne n'ouvre.
+    rejeu_historique = False
     # Artefact sur mesure lu par docs/scenarios.html : ce ne sont pas des
     # résultats pré-calculés mais la GÉOMÉTRIE du postérieur, que le navigateur
     # pousse à travers le softmax masqué pour n'importe quelle liste cochée
