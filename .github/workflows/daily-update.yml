@@ -32,6 +32,13 @@ jobs:
       - name: Ingestion sondages (Wikipedia)
         run: python -m sondages.wiki --min-sondages 15
 
+      # Rejoue aussi les dates PASSÉES dont le jeu de sondages a changé (défaut
+      # quand `--as-of` est absent, cf. docstring de `model/run.py`) : un sondage
+      # saisi sur Wikipedia plusieurs jours après son terrain doit déplacer la
+      # courbe à sa date de TERRAIN, pas à sa date d'arrivée. Plafonné à 6 dates
+      # par passage (~80 s par run `spatial-pooling`, soit ~9 min au pire) pour
+      # tenir dans `timeout-minutes` ; le reliquat est rattrapé les jours suivants.
+      #
       # Tout modèle rattaché à une rubrique du site (cf. `ForecastModel.surface`)
       # — donc le suivi des intentions ET les scénarios, qui ont chacun besoin
       # d'une version fraîche chaque jour. Les variantes de diagnostic
