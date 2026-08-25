@@ -34,7 +34,7 @@
       <div class="meta" id="meta"></div>
       <div class="switch" id="model"></div>
     </div>
-    <div class="warn" id="note"></div>
+    <div class="warn" id="note" hidden></div>
   </header>
 
   <h2>Prévision au jour du scrutin</h2>
@@ -284,7 +284,6 @@ function peindre(snaps){
     `Généré le <b>${m.genere_le}</b>`,`Scrutin <b>${m.scrutin_t1}</b> (J-${m.horizon_prevision_jours})`,
     `<b>${m.n_sondages}</b> sondages`,`Instituts : <b>${m.instituts.join(", ")}</b>`
   ].map(s=>`<span>${s}</span>`).join("");
-  document.getElementById("note").textContent=m.note;
 
   const topSlots=renderNowcast(latest).slice(0,5);
   renderDuels(latest);
@@ -316,7 +315,13 @@ function peindre(snaps){
   chips(document.getElementById("legendB"),seriesB);
   timeChart(document.getElementById("chartB"),seriesB,{scatter,xMin:CHART_START,joursInfo});
 
-  const desc=(MODELES.find(x=>x.id===COURANT)||{}).description||"";
+  // Avertissement et méthode : lus dans le MANIFESTE (models.json), pas dans le
+  // snapshot — ils décrivent le modèle courant, pas la journée affichée.
+  const modele=MODELES.find(x=>x.id===COURANT)||{};
+  const note=document.getElementById("note");
+  note.textContent=modele.avertissement||"";
+  note.hidden=!modele.avertissement;
+  const desc=modele.description||"";
   document.getElementById("footer").innerHTML=`
     <p><b>Méthode.</b> ${desc}
     ${latest.drift_modele?(" Dérive : "+latest.drift_modele+"."):""}

@@ -118,6 +118,20 @@ class ForecastModel(ABC):
     # sans que son chemin soit codé en dur dans le HTML.
     scenario_artifact: str | None = None
 
+    # Avertissement affiché en tête de la rubrique « suivi », au-dessus des
+    # graphes. PROPRE AU MODÈLE, pas au framework : la limite à signaler dépend
+    # de la méthode (`gp-pooling` ne consomme que les sondages au roster exact,
+    # `spatial-pooling` sait au contraire chiffrer une liste jamais testée), et
+    # un texte unique imposé à tous mentirait pour l'un ou pour l'autre.
+    #
+    # Publié dans `models.json` (le manifeste, régénéré à chaque passage) et NON
+    # dans le snapshot : une mise en garde qualifie la MÉTHODE, pas le jour. La
+    # version précédente vivait dans `meta.note`, donc recopiée à l'identique
+    # dans chaque fichier daté — la corriger demandait de régénérer tout
+    # l'historique, et le texte a survécu des mois après être devenu faux.
+    # `None` : aucun bandeau (le front masque la zone).
+    avertissement: str | None = None
+
     # --- phase HORS-LIGNE (optionnelle) ---
     def calibrate(self, history=None) -> None:
         """No-op par défaut. À surcharger pour apprendre des paramètres sur les
@@ -211,8 +225,6 @@ def assemble_snapshot(model: ForecastModel, as_of: str, nc: Nowcast, fc: dict,
             "n_sondages_disponibles": n_recus,
             "horizon_prevision_jours": horizon,
             "instituts": sorted(used["institut"].unique().tolist()),
-            "note": ("Parts au 1er tour par slot (alternatives fusionnées). "
-                     "Probabilités, pas des prédictions."),
         },
         "nowcast": nc.summary(),
         "forecast_scrutin": fc["forecast_scrutin"],
@@ -279,6 +291,8 @@ def write_manifest() -> None:
     def entree(m: ForecastModel) -> dict:
         e = {"id": m.id, "label": m.label, "description": m.description,
              "trains_on_history": m.trains_on_history}
+        if m.avertissement:
+            e["avertissement"] = m.avertissement
         if m.scenario_artifact:
             e["artefact"] = f"{m.id}/{m.scenario_artifact}"
         return e

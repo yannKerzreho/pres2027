@@ -112,6 +112,9 @@ class GPPooling(ForecastModel):
                    "l'opinion peut encore bouger d'ici au vote, et le résultat des urnes "
                    "s'écarte toujours un peu des intentions déclarées. Ces deux effets sont "
                    "mesurés sur les campagnes de 2017 et 2022.")
+    avertissement = ("Attention : ce sont des probabilités, pas des prédictions. Seuls "
+                     "les sondages testant exactement la liste de candidats que nous "
+                     "modélisons sont exploitables, d'où le faible nombre de points.")
     trains_on_history = True
     # Rubrique « Suivi des intentions » : les quatre critères d'acceptation de la
     # spec §8 sont atteints (couverture prédictive 0,870 / 0,900 / 0,906 / 0,900

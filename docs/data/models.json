@@ -4,7 +4,8 @@
       "id": "gp-pooling",
       "label": "gp-pooling",
       "description": "Chaque sondage est une mesure imparfaite de l'opinion du moment : il comporte une marge d'erreur liée au nombre de personnes interrogées, et chaque institut a ses habitudes de mesure. Plutôt que de faire une simple moyenne, le modèle reconstitue l'opinion qui explique le mieux l'ensemble des sondages — deux sondages proches dans le temps se confirment donc l'un l'autre et resserrent l'estimation. Il ajoute ensuite deux incertitudes : l'opinion peut encore bouger d'ici au vote, et le résultat des urnes s'écarte toujours un peu des intentions déclarées. Ces deux effets sont mesurés sur les campagnes de 2017 et 2022.",
-      "trains_on_history": true
+      "trains_on_history": true,
+      "avertissement": "Attention : ce sont des probabilités, pas des prédictions. Seuls les sondages testant exactement la liste de candidats que nous modélisons sont exploitables, d'où le faible nombre de points."
     }
   ],
   "scenarios": [
