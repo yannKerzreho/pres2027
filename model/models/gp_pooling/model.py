@@ -100,7 +100,7 @@ def scenarios_matrix(raw_polls: pd.DataFrame, slots: list[str]
 @register
 class GPPooling(ForecastModel):
     id = "gp-pooling"
-    label = "Estimation de l'opinion"
+    label = "gp-pooling"
     # Texte affiché sur le site : il s'adresse à un lecteur non technique. Les
     # détails (noyau, postérieur, calibration) sont dans spec_gp_pooling.md.
     description = ("Chaque sondage est une mesure imparfaite de l'opinion du moment : il "

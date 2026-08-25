@@ -29,8 +29,7 @@
     <p class="eyebrow">Élection présidentielle · 1<sup>er</sup> tour · 18 avril 2027</p>
     <h1>Où en sont les intentions de vote</h1>
     <p class="chapo">Les sondages, agrégés jour après jour, plus la dérive d'opinion d'ici
-      au scrutin — calibrée sur les campagnes de 2017 et 2022.
-      <b>Ce sont des probabilités, pas des prédictions.</b></p>
+      au scrutin — calibrée sur les campagnes de 2017 et 2022.</p>
     <div class="barre-outils">
       <div class="meta" id="meta"></div>
       <div class="switch" id="model"></div>
@@ -149,19 +148,22 @@ function timeChart(svg, series, {yMax=null, scatter=[], xMin=null, fmt=pct, jour
   // lignes
   const linePts=series.map(s=>s.points.filter(p=>p.y!=null).sort((a,b)=>jours(a.x)-jours(b.x))
     .map(p=>({d:jours(p.x),y:p.y})));
+  // joursInfo : ne retient que les jours qui apportent de l'information (un
+  // snapshot est produit chaque jour, même sans sondage neuf — tous les garder
+  // alignait des points sur un plateau constant). Un jour est retenu s'il est le
+  // premier snapshot à intégrer une date de sondage, le dernier (= aujourd'hui)
+  // l'étant toujours. Sans l'option, on garde tout, comme avant. Ces jours-là
+  // sont les SEULS à exister, points dessinés comme arrêts du survol : un jour
+  // écarté du dessin mais gardé dans l'interaction se signalerait quand même à
+  // la souris, ce qui est l'inverse de ce qu'on veut dire.
+  const joursLigne=[...new Set(linePts.flatMap(pts=>pts.map(p=>p.d)))].sort((a,b)=>a-b);
+  const marques=new Set(joursLigne.filter((d,j)=>!joursInfo || j===joursLigne.length-1
+    || joursInfo.some(i=>i<=d && (j===0 || i>joursLigne[j-1]))));
   series.forEach((s,i)=>{
     const pts=linePts[i];
     if(pts.length>1){const d=pts.map((p,j)=>(j?"L":"M")+X(p.d)+" "+Y(p.y)).join(" ");
       svg.appendChild(el("path",{d,fill:"none",stroke:s.color,"stroke-width":2}));}
-    // joursInfo : ne marque d'un point que les jours qui apportent de
-    // l'information (un snapshot est produit chaque jour, même sans sondage
-    // neuf — les marquer tous alignait des points sur un plateau constant).
-    // Un point de ligne est marqué s'il est le premier à intégrer un jour
-    // d'info (date_fin d'un sondage), le dernier point (= aujourd'hui) l'étant
-    // toujours. Sans l'option, on marque tout, comme avant.
-    const marque=(p,j)=>!joursInfo || j===pts.length-1
-      || joursInfo.some(d=>d<=p.d && (j===0 || d>pts[j-1].d));
-    pts.filter(marque).forEach(p=>svg.appendChild(el("circle",{cx:X(p.d),cy:Y(p.y),r:2.8,fill:s.color})));
+    pts.filter(p=>marques.has(p.d)).forEach(p=>svg.appendChild(el("circle",{cx:X(p.d),cy:Y(p.y),r:2.8,fill:s.color})));
   });
 
   // --- interaction : trait vertical au survol + valeurs exactes + sondages du jour ---
@@ -186,7 +188,9 @@ function timeChart(svg, series, {yMax=null, scatter=[], xMin=null, fmt=pct, jour
   // sondages groupés par jour (pour affichage au survol)
   const pollsByDay={};
   scatter.forEach(p=>{const d=jours(p.x); (pollsByDay[d]=pollsByDay[d]||[]).push(p);});
-  const candDays=[...new Set([...linePts.flatMap(p=>p.map(pt=>pt.d)), ...scatter.map(p=>jours(p.x))])].sort((a,b)=>a-b);
+  // arrêts du survol : les jours marqués, plus les jours de sondage antérieurs
+  // au premier snapshot (leurs points existent, on doit pouvoir les lire).
+  const candDays=[...new Set([...marques, ...scatter.map(p=>jours(p.x))])].sort((a,b)=>a-b);
 
   const overlay=el("rect",{x:L,y:T,width:Math.max(0,W-L-R),height:Math.max(0,H-T-B),fill:"transparent"});
   overlay.style.cursor="crosshair";
