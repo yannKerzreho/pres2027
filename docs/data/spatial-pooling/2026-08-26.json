@@ -1,0 +1,1947 @@
+{
+  "model": "spatial-pooling",
+  "as_of": "2026-08-26",
+  "meta": {
+    "genere_le": "2026-08-26",
+    "as_of": "2026-08-26",
+    "scrutin_t1": "2027-04-18",
+    "n_sondages": 17,
+    "n_sondages_disponibles": 23,
+    "horizon_prevision_jours": 235,
+    "instituts": [
+      "Elabe",
+      "Harris Interactive",
+      "Ifop",
+      "Ipsos",
+      "Odoxa",
+      "Opinion Way",
+      "Verian"
+    ]
+  },
+  "nowcast": {
+    "Arthaud (LO)": {
+      "mean": 0.0076,
+      "ic90": [
+        0.0063,
+        0.009
+      ]
+    },
+    "Mélenchon (LFI)": {
+      "mean": 0.1563,
+      "ic90": [
+        0.1432,
+        0.1714
+      ]
+    },
+    "Roussel (PCF)": {
+      "mean": 0.0247,
+      "ic90": [
+        0.0214,
+        0.0278
+      ]
+    },
+    "Tondelier (EELV)": {
+      "mean": 0.0345,
+      "ic90": [
+        0.0305,
+        0.0385
+      ]
+    },
+    "Glucksmann (PP)": {
+      "mean": 0.1029,
+      "ic90": [
+        0.0878,
+        0.1194
+      ]
+    },
+    "Philippe (Horizons)": {
+      "mean": 0.1867,
+      "ic90": [
+        0.1676,
+        0.2061
+      ]
+    },
+    "Retailleau (LR)": {
+      "mean": 0.0763,
+      "ic90": [
+        0.0644,
+        0.0887
+      ]
+    },
+    "Dupont-Aignan": {
+      "mean": 0.0168,
+      "ic90": [
+        0.0144,
+        0.0196
+      ]
+    },
+    "RN": {
+      "mean": 0.358,
+      "ic90": [
+        0.3411,
+        0.3743
+      ]
+    },
+    "Zemmour (Reconquête)": {
+      "mean": 0.0362,
+      "ic90": [
+        0.031,
+        0.0419
+      ]
+    }
+  },
+  "forecast_scrutin": {
+    "Arthaud (LO)": {
+      "part_moyenne": 0.0083,
+      "ic90": [
+        0.0022,
+        0.0202
+      ],
+      "p_qualifie_top2": 0.0,
+      "p_arrive_premier": 0.0,
+      "quantiles": [
+        0.0022,
+        0.0044,
+        0.0067,
+        0.0104,
+        0.0202
+      ],
+      "densite": {
+        "x0": 0.0012,
+        "dx": 0.001445,
+        "y": [
+          54,
+          85,
+          100,
+          99,
+          70,
+          59,
+          46,
+          31,
+          24,
+          20,
+          13,
+          8,
+          6,
+          8,
+          4,
+          5,
+          5,
+          1,
+          2,
+          2,
+          2,
+          0,
+          0,
+          2
+        ]
+      }
+    },
+    "Mélenchon (LFI)": {
+      "part_moyenne": 0.1573,
+      "ic90": [
+        0.0518,
+        0.3177
+      ],
+      "p_qualifie_top2": 0.3831,
+      "p_arrive_premier": 0.0988,
+      "quantiles": [
+        0.0518,
+        0.0959,
+        0.1406,
+        0.2014,
+        0.3177
+      ],
+      "densite": {
+        "x0": 0.0309,
+        "dx": 0.017739,
+        "y": [
+          33,
+          51,
+          81,
+          100,
+          93,
+          87,
+          79,
+          59,
+          68,
+          53,
+          38,
+          40,
+          29,
+          24,
+          16,
+          14,
+          10,
+          8,
+          5,
+          7,
+          4,
+          4,
+          2,
+          3
+        ]
+      }
+    },
+    "Roussel (PCF)": {
+      "part_moyenne": 0.0266,
+      "ic90": [
+        0.0079,
+        0.0576
+      ],
+      "p_qualifie_top2": 0.0013,
+      "p_arrive_premier": 0.0006,
+      "quantiles": [
+        0.0079,
+        0.0144,
+        0.0219,
+        0.034,
+        0.0576
+      ],
+      "densite": {
+        "x0": 0.0045,
+        "dx": 0.004492,
+        "y": [
+          44,
+          91,
+          100,
+          84,
+          68,
+          53,
+          44,
+          33,
+          27,
+          17,
+          14,
+          13,
+          5,
+          2,
+          4,
+          3,
+          5,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1,
+          2
+        ]
+      }
+    },
+    "Tondelier (EELV)": {
+      "part_moyenne": 0.037,
+      "ic90": [
+        0.0113,
+        0.0876
+      ],
+      "p_qualifie_top2": 0.005,
+      "p_arrive_premier": 0.0006,
+      "quantiles": [
+        0.0113,
+        0.0198,
+        0.0298,
+        0.0463,
+        0.0876
+      ],
+      "densite": {
+        "x0": 0.0066,
+        "dx": 0.006559,
+        "y": [
+          53,
+          100,
+          100,
+          95,
+          67,
+          48,
+          39,
+          27,
+          21,
+          16,
+          12,
+          9,
+          8,
+          7,
+          5,
+          4,
+          2,
+          1,
+          2,
+          1,
+          1,
+          1,
+          0,
+          0
+        ]
+      }
+    },
+    "Glucksmann (PP)": {
+      "part_moyenne": 0.1068,
+      "ic90": [
+        0.0347,
+        0.234
+      ],
+      "p_qualifie_top2": 0.1388,
+      "p_arrive_premier": 0.0362,
+      "quantiles": [
+        0.0347,
+        0.0608,
+        0.0917,
+        0.1368,
+        0.234
+      ],
+      "densite": {
+        "x0": 0.0197,
+        "dx": 0.013658,
+        "y": [
+          35,
+          70,
+          100,
+          97,
+          93,
+          80,
+          72,
+          56,
+          43,
+          37,
+          34,
+          22,
+          20,
+          17,
+          12,
+          9,
+          9,
+          6,
+          3,
+          3,
+          4,
+          5,
+          2,
+          1
+        ]
+      }
+    },
+    "Philippe (Horizons)": {
+      "part_moyenne": 0.1828,
+      "ic90": [
+        0.0634,
+        0.3655
+      ],
+      "p_qualifie_top2": 0.5088,
+      "p_arrive_premier": 0.1581,
+      "quantiles": [
+        0.0634,
+        0.114,
+        0.166,
+        0.2337,
+        0.3655
+      ],
+      "densite": {
+        "x0": 0.0341,
+        "dx": 0.019983,
+        "y": [
+          22,
+          53,
+          77,
+          87,
+          100,
+          93,
+          87,
+          74,
+          71,
+          59,
+          50,
+          45,
+          33,
+          23,
+          20,
+          18,
+          10,
+          10,
+          7,
+          6,
+          5,
+          5,
+          3,
+          2
+        ]
+      }
+    },
+    "Retailleau (LR)": {
+      "part_moyenne": 0.08,
+      "ic90": [
+        0.0233,
+        0.1819
+      ],
+      "p_qualifie_top2": 0.0725,
+      "p_arrive_premier": 0.01,
+      "quantiles": [
+        0.0233,
+        0.0438,
+        0.0681,
+        0.1023,
+        0.1819
+      ],
+      "densite": {
+        "x0": 0.0145,
+        "dx": 0.010841,
+        "y": [
+          55,
+          79,
+          93,
+          100,
+          78,
+          78,
+          60,
+          52,
+          44,
+          28,
+          29,
+          25,
+          16,
+          11,
+          8,
+          11,
+          6,
+          8,
+          5,
+          4,
+          3,
+          3,
+          3,
+          2
+        ]
+      }
+    },
+    "Dupont-Aignan": {
+      "part_moyenne": 0.0181,
+      "ic90": [
+        0.0053,
+        0.042
+      ],
+      "p_qualifie_top2": 0.0,
+      "p_arrive_premier": 0.0,
+      "quantiles": [
+        0.0053,
+        0.0096,
+        0.0148,
+        0.023,
+        0.042
+      ],
+      "densite": {
+        "x0": 0.0031,
+        "dx": 0.003108,
+        "y": [
+          56,
+          91,
+          100,
+          85,
+          70,
+          54,
+          46,
+          30,
+          23,
+          20,
+          16,
+          6,
+          8,
+          3,
+          5,
+          4,
+          4,
+          3,
+          2,
+          0,
+          1,
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    "RN": {
+      "part_moyenne": 0.3442,
+      "ic90": [
+        0.1454,
+        0.5797
+      ],
+      "p_qualifie_top2": 0.885,
+      "p_arrive_premier": 0.6944,
+      "quantiles": [
+        0.1454,
+        0.2449,
+        0.3324,
+        0.4385,
+        0.5797
+      ],
+      "densite": {
+        "x0": 0.0889,
+        "dx": 0.026353,
+        "y": [
+          21,
+          32,
+          41,
+          59,
+          73,
+          73,
+          86,
+          76,
+          100,
+          91,
+          85,
+          70,
+          61,
+          64,
+          60,
+          47,
+          39,
+          24,
+          29,
+          19,
+          7,
+          8,
+          7,
+          2
+        ]
+      }
+    },
+    "Zemmour (Reconquête)": {
+      "part_moyenne": 0.0387,
+      "ic90": [
+        0.0119,
+        0.0879
+      ],
+      "p_qualifie_top2": 0.0056,
+      "p_arrive_premier": 0.0013,
+      "quantiles": [
+        0.0119,
+        0.0217,
+        0.0323,
+        0.0477,
+        0.0879
+      ],
+      "densite": {
+        "x0": 0.0068,
+        "dx": 0.005968,
+        "y": [
+          42,
+          71,
+          89,
+          100,
+          80,
+          58,
+          54,
+          29,
+          30,
+          18,
+          19,
+          13,
+          9,
+          10,
+          5,
+          5,
+          3,
+          4,
+          2,
+          1,
+          1,
+          1,
+          2,
+          1
+        ]
+      }
+    }
+  },
+  "duels_probables": [
+    {
+      "candidats": [
+        "Philippe (Horizons)",
+        "RN"
+      ],
+      "probabilite": 0.4138
+    },
+    {
+      "candidats": [
+        "Mélenchon (LFI)",
+        "RN"
+      ],
+      "probabilite": 0.3056
+    },
+    {
+      "candidats": [
+        "Glucksmann (PP)",
+        "RN"
+      ],
+      "probabilite": 0.1037
+    },
+    {
+      "candidats": [
+        "Mélenchon (LFI)",
+        "Philippe (Horizons)"
+      ],
+      "probabilite": 0.0581
+    },
+    {
+      "candidats": [
+        "Retailleau (LR)",
+        "RN"
+      ],
+      "probabilite": 0.055
+    },
+    {
+      "candidats": [
+        "Glucksmann (PP)",
+        "Philippe (Horizons)"
+      ],
+      "probabilite": 0.0213
+    },
+    {
+      "candidats": [
+        "Philippe (Horizons)",
+        "Retailleau (LR)"
+      ],
+      "probabilite": 0.0131
+    },
+    {
+      "candidats": [
+        "Mélenchon (LFI)",
+        "Glucksmann (PP)"
+      ],
+      "probabilite": 0.0131
+    }
+  ],
+  "drift_modele": "aucune (dérive appliquée par le modèle)",
+  "diagnostics": {
+    "n_noeuds": 83,
+    "n_candidats": 13,
+    "n_champs_distincts": 30,
+    "n_dynamiques": 8,
+    "K_composantes": 10,
+    "temps_secondes": 173.2,
+    "rhat_max": 1.0311,
+    "rhat_pires_sites": [
+      [
+        "z_m",
+        1.031
+      ],
+      [
+        "w_now",
+        1.031
+      ],
+      [
+        "w_level",
+        1.031
+      ]
+    ],
+    "ess_min": 235.6,
+    "n_divergences": 0,
+    "pas_leapfrog_median": 127,
+    "sigma_w": 0.2928,
+    "sigma_global": 0.1441,
+    "scenario": "champ SLOTS (= champ le plus testé sur 2026)",
+    "candidats_hors_scenario": [
+      "Hollande",
+      "Attal",
+      "Bardella"
+    ]
+  },
+  "trajectoire": null,
+  "polls": [
+    {
+      "date_fin": "2026-08-19",
+      "institut": "Harris Interactive",
+      "slot": "Arthaud (LO)",
+      "part": 0.0113,
+      "notice": "Harris Interactive 18-19 août (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/08/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-4-M6-RTL-Aout-2026.pdf"
+    },
+    {
+      "date_fin": "2026-08-19",
+      "institut": "Harris Interactive",
+      "slot": "Mélenchon (LFI)",
+      "part": 0.1893,
+      "notice": "Harris Interactive 18-19 août (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/08/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-4-M6-RTL-Aout-2026.pdf"
+    },
+    {
+      "date_fin": "2026-08-19",
+      "institut": "Harris Interactive",
+      "slot": "Roussel (PCF)",
+      "part": 0.0293,
+      "notice": "Harris Interactive 18-19 août (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/08/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-4-M6-RTL-Aout-2026.pdf"
+    },
+    {
+      "date_fin": "2026-08-19",
+      "institut": "Harris Interactive",
+      "slot": "Tondelier (EELV)",
+      "part": 0.0385,
+      "notice": "Harris Interactive 18-19 août (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/08/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-4-M6-RTL-Aout-2026.pdf"
+    },
+    {
+      "date_fin": "2026-08-19",
+      "institut": "Harris Interactive",
+      "slot": "Retailleau (LR)",
+      "part": 0.0865,
+      "notice": "Harris Interactive 18-19 août (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/08/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-4-M6-RTL-Aout-2026.pdf"
+    },
+    {
+      "date_fin": "2026-08-19",
+      "institut": "Harris Interactive",
+      "slot": "Dupont-Aignan",
+      "part": 0.0245,
+      "notice": "Harris Interactive 18-19 août (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/08/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-4-M6-RTL-Aout-2026.pdf"
+    },
+    {
+      "date_fin": "2026-08-19",
+      "institut": "Harris Interactive",
+      "slot": "RN",
+      "part": 0.4067,
+      "notice": "Harris Interactive 18-19 août (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/08/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-4-M6-RTL-Aout-2026.pdf"
+    },
+    {
+      "date_fin": "2026-08-19",
+      "institut": "Harris Interactive",
+      "slot": "Zemmour (Reconquête)",
+      "part": 0.0405,
+      "notice": "Harris Interactive 18-19 août (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/08/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-4-M6-RTL-Aout-2026.pdf"
+    },
+    {
+      "date_fin": "2026-08-19",
+      "institut": "Harris Interactive",
+      "slot": "Philippe (Horizons)",
+      "part": 0.1762,
+      "notice": "Harris Interactive 18-19 août (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/08/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-4-M6-RTL-Aout-2026.pdf"
+    },
+    {
+      "date_fin": "2026-08-19",
+      "institut": "Harris Interactive",
+      "slot": "Glucksmann (PP)",
+      "part": 0.1127,
+      "notice": "Harris Interactive 18-19 août (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/08/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-4-M6-RTL-Aout-2026.pdf"
+    },
+    {
+      "date_fin": "2026-07-10",
+      "institut": "Elabe",
+      "slot": "Arthaud (LO)",
+      "part": 0.0168,
+      "notice": "Elabe 9-10 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10226-pres-elabe-11-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-10",
+      "institut": "Elabe",
+      "slot": "Mélenchon (LFI)",
+      "part": 0.1746,
+      "notice": "Elabe 9-10 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10226-pres-elabe-11-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-10",
+      "institut": "Elabe",
+      "slot": "Roussel (PCF)",
+      "part": 0.0292,
+      "notice": "Elabe 9-10 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10226-pres-elabe-11-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-10",
+      "institut": "Elabe",
+      "slot": "Tondelier (EELV)",
+      "part": 0.0416,
+      "notice": "Elabe 9-10 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10226-pres-elabe-11-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-10",
+      "institut": "Elabe",
+      "slot": "Glucksmann (PP)",
+      "part": 0.1107,
+      "notice": "Elabe 9-10 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10226-pres-elabe-11-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-10",
+      "institut": "Elabe",
+      "slot": "Philippe (Horizons)",
+      "part": 0.1866,
+      "notice": "Elabe 9-10 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10226-pres-elabe-11-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-10",
+      "institut": "Elabe",
+      "slot": "Retailleau (LR)",
+      "part": 0.1097,
+      "notice": "Elabe 9-10 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10226-pres-elabe-11-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-10",
+      "institut": "Elabe",
+      "slot": "Dupont-Aignan",
+      "part": 0.0176,
+      "notice": "Elabe 9-10 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10226-pres-elabe-11-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-10",
+      "institut": "Elabe",
+      "slot": "RN",
+      "part": 0.4083,
+      "notice": "Elabe 9-10 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10226-pres-elabe-11-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-10",
+      "institut": "Elabe",
+      "slot": "Zemmour (Reconquête)",
+      "part": 0.0364,
+      "notice": "Elabe 9-10 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10226-pres-elabe-11-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-10",
+      "institut": "Verian",
+      "slot": "Mélenchon (LFI)",
+      "part": 0.163,
+      "notice": "Verian 8-10 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10225-pres-iv-1er-tour-verian-lhemicycle-10-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-10",
+      "institut": "Verian",
+      "slot": "Roussel (PCF)",
+      "part": 0.0217,
+      "notice": "Verian 8-10 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10225-pres-iv-1er-tour-verian-lhemicycle-10-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-10",
+      "institut": "Verian",
+      "slot": "Glucksmann (PP)",
+      "part": 0.1196,
+      "notice": "Verian 8-10 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10225-pres-iv-1er-tour-verian-lhemicycle-10-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-10",
+      "institut": "Verian",
+      "slot": "Philippe (Horizons)",
+      "part": 0.1848,
+      "notice": "Verian 8-10 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10225-pres-iv-1er-tour-verian-lhemicycle-10-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-10",
+      "institut": "Verian",
+      "slot": "Retailleau (LR)",
+      "part": 0.0761,
+      "notice": "Verian 8-10 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10225-pres-iv-1er-tour-verian-lhemicycle-10-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-10",
+      "institut": "Verian",
+      "slot": "RN",
+      "part": 0.4022,
+      "notice": "Verian 8-10 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10225-pres-iv-1er-tour-verian-lhemicycle-10-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-10",
+      "institut": "Verian",
+      "slot": "Zemmour (Reconquête)",
+      "part": 0.0326,
+      "notice": "Verian 8-10 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10225-pres-iv-1er-tour-verian-lhemicycle-10-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-09",
+      "institut": "Opinion Way",
+      "slot": "Arthaud (LO)",
+      "part": 0.0108,
+      "notice": "Opinion Way 8-9 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10224-pres-presitrack-opinionway-les-echos-9-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-09",
+      "institut": "Opinion Way",
+      "slot": "Mélenchon (LFI)",
+      "part": 0.1556,
+      "notice": "Opinion Way 8-9 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10224-pres-presitrack-opinionway-les-echos-9-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-09",
+      "institut": "Opinion Way",
+      "slot": "Roussel (PCF)",
+      "part": 0.0217,
+      "notice": "Opinion Way 8-9 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10224-pres-presitrack-opinionway-les-echos-9-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-09",
+      "institut": "Opinion Way",
+      "slot": "Tondelier (EELV)",
+      "part": 0.0509,
+      "notice": "Opinion Way 8-9 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10224-pres-presitrack-opinionway-les-echos-9-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-09",
+      "institut": "Opinion Way",
+      "slot": "Glucksmann (PP)",
+      "part": 0.1016,
+      "notice": "Opinion Way 8-9 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10224-pres-presitrack-opinionway-les-echos-9-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-09",
+      "institut": "Opinion Way",
+      "slot": "Philippe (Horizons)",
+      "part": 0.2057,
+      "notice": "Opinion Way 8-9 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10224-pres-presitrack-opinionway-les-echos-9-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-09",
+      "institut": "Opinion Way",
+      "slot": "Retailleau (LR)",
+      "part": 0.106,
+      "notice": "Opinion Way 8-9 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10224-pres-presitrack-opinionway-les-echos-9-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-09",
+      "institut": "Opinion Way",
+      "slot": "RN",
+      "part": 0.3803,
+      "notice": "Opinion Way 8-9 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10224-pres-presitrack-opinionway-les-echos-9-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-09",
+      "institut": "Opinion Way",
+      "slot": "Zemmour (Reconquête)",
+      "part": 0.0359,
+      "notice": "Opinion Way 8-9 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10224-pres-presitrack-opinionway-les-echos-9-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-08",
+      "institut": "Ifop",
+      "slot": "Arthaud (LO)",
+      "part": 0.0054,
+      "notice": "Ifop 7-8 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10222-pres-ifop-le-figaro-8-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-08",
+      "institut": "Ifop",
+      "slot": "Mélenchon (LFI)",
+      "part": 0.1633,
+      "notice": "Ifop 7-8 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10222-pres-ifop-le-figaro-8-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-08",
+      "institut": "Ifop",
+      "slot": "Roussel (PCF)",
+      "part": 0.0267,
+      "notice": "Ifop 7-8 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10222-pres-ifop-le-figaro-8-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-08",
+      "institut": "Ifop",
+      "slot": "Tondelier (EELV)",
+      "part": 0.0411,
+      "notice": "Ifop 7-8 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10222-pres-ifop-le-figaro-8-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-08",
+      "institut": "Ifop",
+      "slot": "Glucksmann (PP)",
+      "part": 0.1156,
+      "notice": "Ifop 7-8 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10222-pres-ifop-le-figaro-8-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-08",
+      "institut": "Ifop",
+      "slot": "Retailleau (LR)",
+      "part": 0.0988,
+      "notice": "Ifop 7-8 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10222-pres-ifop-le-figaro-8-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-08",
+      "institut": "Ifop",
+      "slot": "Dupont-Aignan",
+      "part": 0.0217,
+      "notice": "Ifop 7-8 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10222-pres-ifop-le-figaro-8-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-08",
+      "institut": "Ifop",
+      "slot": "RN",
+      "part": 0.3917,
+      "notice": "Ifop 7-8 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10222-pres-ifop-le-figaro-8-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-08",
+      "institut": "Ifop",
+      "slot": "Zemmour (Reconquête)",
+      "part": 0.0406,
+      "notice": "Ifop 7-8 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10222-pres-ifop-le-figaro-8-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-08",
+      "institut": "Ifop",
+      "slot": "Philippe (Horizons)",
+      "part": 0.19,
+      "notice": "Ifop 7-8 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10222-pres-ifop-le-figaro-8-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-08",
+      "institut": "Harris Interactive",
+      "slot": "Arthaud (LO)",
+      "part": 0.0114,
+      "notice": "Harris Interactive 7-8 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10223-pres-iv-toluna-harris-interactive-rtl-8-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-08",
+      "institut": "Harris Interactive",
+      "slot": "Mélenchon (LFI)",
+      "part": 0.1818,
+      "notice": "Harris Interactive 7-8 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10223-pres-iv-toluna-harris-interactive-rtl-8-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-08",
+      "institut": "Harris Interactive",
+      "slot": "Roussel (PCF)",
+      "part": 0.0299,
+      "notice": "Harris Interactive 7-8 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10223-pres-iv-toluna-harris-interactive-rtl-8-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-08",
+      "institut": "Harris Interactive",
+      "slot": "Tondelier (EELV)",
+      "part": 0.0393,
+      "notice": "Harris Interactive 7-8 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10223-pres-iv-toluna-harris-interactive-rtl-8-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-08",
+      "institut": "Harris Interactive",
+      "slot": "Retailleau (LR)",
+      "part": 0.0911,
+      "notice": "Harris Interactive 7-8 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10223-pres-iv-toluna-harris-interactive-rtl-8-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-08",
+      "institut": "Harris Interactive",
+      "slot": "Dupont-Aignan",
+      "part": 0.014,
+      "notice": "Harris Interactive 7-8 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10223-pres-iv-toluna-harris-interactive-rtl-8-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-08",
+      "institut": "Harris Interactive",
+      "slot": "RN",
+      "part": 0.4006,
+      "notice": "Harris Interactive 7-8 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10223-pres-iv-toluna-harris-interactive-rtl-8-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-08",
+      "institut": "Harris Interactive",
+      "slot": "Zemmour (Reconquête)",
+      "part": 0.0481,
+      "notice": "Harris Interactive 7-8 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10223-pres-iv-toluna-harris-interactive-rtl-8-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-08",
+      "institut": "Harris Interactive",
+      "slot": "Philippe (Horizons)",
+      "part": 0.1899,
+      "notice": "Harris Interactive 7-8 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10223-pres-iv-toluna-harris-interactive-rtl-8-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-07-08",
+      "institut": "Harris Interactive",
+      "slot": "Glucksmann (PP)",
+      "part": 0.1166,
+      "notice": "Harris Interactive 7-8 juillet (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/10223-pres-iv-toluna-harris-interactive-rtl-8-juillet.pdf"
+    },
+    {
+      "date_fin": "2026-06-24",
+      "institut": "Ifop",
+      "slot": "Arthaud (LO)",
+      "part": 0.0145,
+      "notice": "Ifop 22-24 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10211-pres-iv-ifop-le-figaro-25-juin.pdf"
+    },
+    {
+      "date_fin": "2026-06-24",
+      "institut": "Ifop",
+      "slot": "Mélenchon (LFI)",
+      "part": 0.2102,
+      "notice": "Ifop 22-24 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10211-pres-iv-ifop-le-figaro-25-juin.pdf"
+    },
+    {
+      "date_fin": "2026-06-24",
+      "institut": "Ifop",
+      "slot": "Roussel (PCF)",
+      "part": 0.0429,
+      "notice": "Ifop 22-24 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10211-pres-iv-ifop-le-figaro-25-juin.pdf"
+    },
+    {
+      "date_fin": "2026-06-24",
+      "institut": "Ifop",
+      "slot": "Tondelier (EELV)",
+      "part": 0.0505,
+      "notice": "Ifop 22-24 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10211-pres-iv-ifop-le-figaro-25-juin.pdf"
+    },
+    {
+      "date_fin": "2026-06-24",
+      "institut": "Ifop",
+      "slot": "Glucksmann (PP)",
+      "part": 0.1521,
+      "notice": "Ifop 22-24 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10211-pres-iv-ifop-le-figaro-25-juin.pdf"
+    },
+    {
+      "date_fin": "2026-06-24",
+      "institut": "Ifop",
+      "slot": "Philippe (Horizons)",
+      "part": 0.2916,
+      "notice": "Ifop 22-24 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10211-pres-iv-ifop-le-figaro-25-juin.pdf"
+    },
+    {
+      "date_fin": "2026-06-24",
+      "institut": "Ifop",
+      "slot": "Retailleau (LR)",
+      "part": 0.1609,
+      "notice": "Ifop 22-24 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10211-pres-iv-ifop-le-figaro-25-juin.pdf"
+    },
+    {
+      "date_fin": "2026-06-24",
+      "institut": "Ifop",
+      "slot": "Dupont-Aignan",
+      "part": 0.0373,
+      "notice": "Ifop 22-24 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10211-pres-iv-ifop-le-figaro-25-juin.pdf"
+    },
+    {
+      "date_fin": "2026-06-24",
+      "institut": "Ifop",
+      "slot": "Zemmour (Reconquête)",
+      "part": 0.0682,
+      "notice": "Ifop 22-24 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10211-pres-iv-ifop-le-figaro-25-juin.pdf"
+    },
+    {
+      "date_fin": "2026-06-24",
+      "institut": "Ifop",
+      "slot": "RN",
+      "part": 0.3483,
+      "notice": "Ifop 22-24 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10211-pres-iv-ifop-le-figaro-25-juin.pdf"
+    },
+    {
+      "date_fin": "2026-06-11",
+      "institut": "Opinion Way",
+      "slot": "Arthaud (LO)",
+      "part": 0.0135,
+      "notice": "Opinion Way 10-11 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10205-pres-iv-opinionway-jdd-13-juin.pdf"
+    },
+    {
+      "date_fin": "2026-06-11",
+      "institut": "Opinion Way",
+      "slot": "Mélenchon (LFI)",
+      "part": 0.1888,
+      "notice": "Opinion Way 10-11 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10205-pres-iv-opinionway-jdd-13-juin.pdf"
+    },
+    {
+      "date_fin": "2026-06-11",
+      "institut": "Opinion Way",
+      "slot": "Glucksmann (PP)",
+      "part": 0.194,
+      "notice": "Opinion Way 10-11 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10205-pres-iv-opinionway-jdd-13-juin.pdf"
+    },
+    {
+      "date_fin": "2026-06-11",
+      "institut": "Opinion Way",
+      "slot": "Philippe (Horizons)",
+      "part": 0.2379,
+      "notice": "Opinion Way 10-11 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10205-pres-iv-opinionway-jdd-13-juin.pdf"
+    },
+    {
+      "date_fin": "2026-06-11",
+      "institut": "Opinion Way",
+      "slot": "Retailleau (LR)",
+      "part": 0.1178,
+      "notice": "Opinion Way 10-11 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10205-pres-iv-opinionway-jdd-13-juin.pdf"
+    },
+    {
+      "date_fin": "2026-06-11",
+      "institut": "Opinion Way",
+      "slot": "Dupont-Aignan",
+      "part": 0.0271,
+      "notice": "Opinion Way 10-11 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10205-pres-iv-opinionway-jdd-13-juin.pdf"
+    },
+    {
+      "date_fin": "2026-06-11",
+      "institut": "Opinion Way",
+      "slot": "Zemmour (Reconquête)",
+      "part": 0.0459,
+      "notice": "Opinion Way 10-11 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10205-pres-iv-opinionway-jdd-13-juin.pdf"
+    },
+    {
+      "date_fin": "2026-06-11",
+      "institut": "Opinion Way",
+      "slot": "RN",
+      "part": 0.359,
+      "notice": "Opinion Way 10-11 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10205-pres-iv-opinionway-jdd-13-juin.pdf"
+    },
+    {
+      "date_fin": "2026-06-11",
+      "institut": "Opinion Way",
+      "slot": "Roussel (PCF)",
+      "part": 0.0499,
+      "notice": "Opinion Way 10-11 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10205-pres-iv-opinionway-jdd-13-juin.pdf"
+    },
+    {
+      "date_fin": "2026-06-11",
+      "institut": "Opinion Way",
+      "slot": "Tondelier (EELV)",
+      "part": 0.0624,
+      "notice": "Opinion Way 10-11 juin (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10205-pres-iv-opinionway-jdd-13-juin.pdf"
+    },
+    {
+      "date_fin": "2026-05-28",
+      "institut": "Ipsos",
+      "slot": "Arthaud (LO)",
+      "part": 0.0174,
+      "notice": "Ipsos 27-28 mai (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10195-pres-ipsos-bva-le-parisien-1er-juin.pdf"
+    },
+    {
+      "date_fin": "2026-05-28",
+      "institut": "Ipsos",
+      "slot": "Mélenchon (LFI)",
+      "part": 0.2303,
+      "notice": "Ipsos 27-28 mai (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10195-pres-ipsos-bva-le-parisien-1er-juin.pdf"
+    },
+    {
+      "date_fin": "2026-05-28",
+      "institut": "Ipsos",
+      "slot": "Roussel (PCF)",
+      "part": 0.0599,
+      "notice": "Ipsos 27-28 mai (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10195-pres-ipsos-bva-le-parisien-1er-juin.pdf"
+    },
+    {
+      "date_fin": "2026-05-28",
+      "institut": "Ipsos",
+      "slot": "Tondelier (EELV)",
+      "part": 0.0748,
+      "notice": "Ipsos 27-28 mai (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10195-pres-ipsos-bva-le-parisien-1er-juin.pdf"
+    },
+    {
+      "date_fin": "2026-05-28",
+      "institut": "Ipsos",
+      "slot": "Glucksmann (PP)",
+      "part": 0.196,
+      "notice": "Ipsos 27-28 mai (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10195-pres-ipsos-bva-le-parisien-1er-juin.pdf"
+    },
+    {
+      "date_fin": "2026-05-28",
+      "institut": "Ipsos",
+      "slot": "Philippe (Horizons)",
+      "part": 0.237,
+      "notice": "Ipsos 27-28 mai (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10195-pres-ipsos-bva-le-parisien-1er-juin.pdf"
+    },
+    {
+      "date_fin": "2026-05-28",
+      "institut": "Ipsos",
+      "slot": "Retailleau (LR)",
+      "part": 0.1547,
+      "notice": "Ipsos 27-28 mai (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10195-pres-ipsos-bva-le-parisien-1er-juin.pdf"
+    },
+    {
+      "date_fin": "2026-05-28",
+      "institut": "Ipsos",
+      "slot": "Dupont-Aignan",
+      "part": 0.026,
+      "notice": "Ipsos 27-28 mai (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10195-pres-ipsos-bva-le-parisien-1er-juin.pdf"
+    },
+    {
+      "date_fin": "2026-05-28",
+      "institut": "Ipsos",
+      "slot": "Zemmour (Reconquête)",
+      "part": 0.0708,
+      "notice": "Ipsos 27-28 mai (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10195-pres-ipsos-bva-le-parisien-1er-juin.pdf"
+    },
+    {
+      "date_fin": "2026-05-28",
+      "institut": "Ipsos",
+      "slot": "RN",
+      "part": 0.361,
+      "notice": "Ipsos 27-28 mai (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/juin/10195-pres-ipsos-bva-le-parisien-1er-juin.pdf"
+    },
+    {
+      "date_fin": "2026-05-28",
+      "institut": "Ifop",
+      "slot": "Arthaud (LO)",
+      "part": 0.012,
+      "notice": "Ifop 26-28 mai (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10193-pres-ifop-le-figaro-29-mai.pdf"
+    },
+    {
+      "date_fin": "2026-05-28",
+      "institut": "Ifop",
+      "slot": "Mélenchon (LFI)",
+      "part": 0.2283,
+      "notice": "Ifop 26-28 mai (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10193-pres-ifop-le-figaro-29-mai.pdf"
+    },
+    {
+      "date_fin": "2026-05-28",
+      "institut": "Ifop",
+      "slot": "Roussel (PCF)",
+      "part": 0.0596,
+      "notice": "Ifop 26-28 mai (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10193-pres-ifop-le-figaro-29-mai.pdf"
+    },
+    {
+      "date_fin": "2026-05-28",
+      "institut": "Ifop",
+      "slot": "Tondelier (EELV)",
+      "part": 0.0719,
+      "notice": "Ifop 26-28 mai (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10193-pres-ifop-le-figaro-29-mai.pdf"
+    },
+    {
+      "date_fin": "2026-05-28",
+      "institut": "Ifop",
+      "slot": "Glucksmann (PP)",
+      "part": 0.1608,
+      "notice": "Ifop 26-28 mai (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10193-pres-ifop-le-figaro-29-mai.pdf"
+    },
+    {
+      "date_fin": "2026-05-28",
+      "institut": "Ifop",
+      "slot": "Philippe (Horizons)",
+      "part": 0.3073,
+      "notice": "Ifop 26-28 mai (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10193-pres-ifop-le-figaro-29-mai.pdf"
+    },
+    {
+      "date_fin": "2026-05-28",
+      "institut": "Ifop",
+      "slot": "Retailleau (LR)",
+      "part": 0.162,
+      "notice": "Ifop 26-28 mai (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10193-pres-ifop-le-figaro-29-mai.pdf"
+    },
+    {
+      "date_fin": "2026-05-28",
+      "institut": "Ifop",
+      "slot": "Dupont-Aignan",
+      "part": 0.0364,
+      "notice": "Ifop 26-28 mai (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10193-pres-ifop-le-figaro-29-mai.pdf"
+    },
+    {
+      "date_fin": "2026-05-28",
+      "institut": "Ifop",
+      "slot": "Zemmour (Reconquête)",
+      "part": 0.0615,
+      "notice": "Ifop 26-28 mai (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10193-pres-ifop-le-figaro-29-mai.pdf"
+    },
+    {
+      "date_fin": "2026-05-28",
+      "institut": "Ifop",
+      "slot": "RN",
+      "part": 0.3659,
+      "notice": "Ifop 26-28 mai (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10193-pres-ifop-le-figaro-29-mai.pdf"
+    },
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "Arthaud (LO)",
+      "part": 0.0146,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "Mélenchon (LFI)",
+      "part": 0.2139,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "Roussel (PCF)",
+      "part": 0.0501,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "Tondelier (EELV)",
+      "part": 0.0439,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "Glucksmann (PP)",
+      "part": 0.1544,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "Philippe (Horizons)",
+      "part": 0.2226,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "Retailleau (LR)",
+      "part": 0.1387,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "Dupont-Aignan",
+      "part": 0.0292,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "Zemmour (Reconquête)",
+      "part": 0.0843,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-05-27",
+      "institut": "Harris Interactive",
+      "slot": "RN",
+      "part": 0.3432,
+      "notice": "Harris Interactive 25-27 mai (WP)",
+      "notice_url": "https://tolunacorporate.com/wp-content/uploads/2026/05/Rapport-Toluna-Barometre-Presidentielle-2027-Vague-2-M6-RTL-Mai-2026.pdf"
+    },
+    {
+      "date_fin": "2026-05-21",
+      "institut": "Odoxa",
+      "slot": "Arthaud (LO)",
+      "part": 0.0074,
+      "notice": "Odoxa 20-21 mai (WP)",
+      "notice_url": "https://www.odoxa.fr/sondage/philippe-seffondre-melenchon-decolle-bardella-simpose/"
+    },
+    {
+      "date_fin": "2026-05-21",
+      "institut": "Odoxa",
+      "slot": "Mélenchon (LFI)",
+      "part": 0.2353,
+      "notice": "Odoxa 20-21 mai (WP)",
+      "notice_url": "https://www.odoxa.fr/sondage/philippe-seffondre-melenchon-decolle-bardella-simpose/"
+    },
+    {
+      "date_fin": "2026-05-21",
+      "institut": "Odoxa",
+      "slot": "Roussel (PCF)",
+      "part": 0.0368,
+      "notice": "Odoxa 20-21 mai (WP)",
+      "notice_url": "https://www.odoxa.fr/sondage/philippe-seffondre-melenchon-decolle-bardella-simpose/"
+    },
+    {
+      "date_fin": "2026-05-21",
+      "institut": "Odoxa",
+      "slot": "Tondelier (EELV)",
+      "part": 0.0588,
+      "notice": "Odoxa 20-21 mai (WP)",
+      "notice_url": "https://www.odoxa.fr/sondage/philippe-seffondre-melenchon-decolle-bardella-simpose/"
+    },
+    {
+      "date_fin": "2026-05-21",
+      "institut": "Odoxa",
+      "slot": "Glucksmann (PP)",
+      "part": 0.1618,
+      "notice": "Odoxa 20-21 mai (WP)",
+      "notice_url": "https://www.odoxa.fr/sondage/philippe-seffondre-melenchon-decolle-bardella-simpose/"
+    },
+    {
+      "date_fin": "2026-05-21",
+      "institut": "Odoxa",
+      "slot": "Philippe (Horizons)",
+      "part": 0.25,
+      "notice": "Odoxa 20-21 mai (WP)",
+      "notice_url": "https://www.odoxa.fr/sondage/philippe-seffondre-melenchon-decolle-bardella-simpose/"
+    },
+    {
+      "date_fin": "2026-05-21",
+      "institut": "Odoxa",
+      "slot": "Retailleau (LR)",
+      "part": 0.1324,
+      "notice": "Odoxa 20-21 mai (WP)",
+      "notice_url": "https://www.odoxa.fr/sondage/philippe-seffondre-melenchon-decolle-bardella-simpose/"
+    },
+    {
+      "date_fin": "2026-05-21",
+      "institut": "Odoxa",
+      "slot": "Dupont-Aignan",
+      "part": 0.0294,
+      "notice": "Odoxa 20-21 mai (WP)",
+      "notice_url": "https://www.odoxa.fr/sondage/philippe-seffondre-melenchon-decolle-bardella-simpose/"
+    },
+    {
+      "date_fin": "2026-05-21",
+      "institut": "Odoxa",
+      "slot": "Zemmour (Reconquête)",
+      "part": 0.0882,
+      "notice": "Odoxa 20-21 mai (WP)",
+      "notice_url": "https://www.odoxa.fr/sondage/philippe-seffondre-melenchon-decolle-bardella-simpose/"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "Arthaud (LO)",
+      "part": 0.0141,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "Mélenchon (LFI)",
+      "part": 0.174,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "Roussel (PCF)",
+      "part": 0.0515,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "Tondelier (EELV)",
+      "part": 0.0564,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "Glucksmann (PP)",
+      "part": 0.1629,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "Philippe (Horizons)",
+      "part": 0.2389,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "Retailleau (LR)",
+      "part": 0.1557,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "Dupont-Aignan",
+      "part": 0.017,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "Zemmour (Reconquête)",
+      "part": 0.073,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    },
+    {
+      "date_fin": "2026-04-30",
+      "institut": "Harris Interactive",
+      "slot": "RN",
+      "part": 0.3518,
+      "notice": "Harris Interactive 28-30 avril (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mai/10180-pres-toluna-harris-interactive-rtl-4-mai.pdf"
+    },
+    {
+      "date_fin": "2026-03-27",
+      "institut": "Elabe",
+      "slot": "Arthaud (LO)",
+      "part": 0.0134,
+      "notice": "Elabe 25-27 mars (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mars/10166-pres-elabe-28-mars.pdf"
+    },
+    {
+      "date_fin": "2026-03-27",
+      "institut": "Elabe",
+      "slot": "Mélenchon (LFI)",
+      "part": 0.205,
+      "notice": "Elabe 25-27 mars (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mars/10166-pres-elabe-28-mars.pdf"
+    },
+    {
+      "date_fin": "2026-03-27",
+      "institut": "Elabe",
+      "slot": "Roussel (PCF)",
+      "part": 0.0557,
+      "notice": "Elabe 25-27 mars (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mars/10166-pres-elabe-28-mars.pdf"
+    },
+    {
+      "date_fin": "2026-03-27",
+      "institut": "Elabe",
+      "slot": "Tondelier (EELV)",
+      "part": 0.0754,
+      "notice": "Elabe 25-27 mars (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mars/10166-pres-elabe-28-mars.pdf"
+    },
+    {
+      "date_fin": "2026-03-27",
+      "institut": "Elabe",
+      "slot": "Glucksmann (PP)",
+      "part": 0.1952,
+      "notice": "Elabe 25-27 mars (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mars/10166-pres-elabe-28-mars.pdf"
+    },
+    {
+      "date_fin": "2026-03-27",
+      "institut": "Elabe",
+      "slot": "Philippe (Horizons)",
+      "part": 0.3571,
+      "notice": "Elabe 25-27 mars (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mars/10166-pres-elabe-28-mars.pdf"
+    },
+    {
+      "date_fin": "2026-03-27",
+      "institut": "Elabe",
+      "slot": "Retailleau (LR)",
+      "part": 0.148,
+      "notice": "Elabe 25-27 mars (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mars/10166-pres-elabe-28-mars.pdf"
+    },
+    {
+      "date_fin": "2026-03-27",
+      "institut": "Elabe",
+      "slot": "Dupont-Aignan",
+      "part": 0.0446,
+      "notice": "Elabe 25-27 mars (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mars/10166-pres-elabe-28-mars.pdf"
+    },
+    {
+      "date_fin": "2026-03-27",
+      "institut": "Elabe",
+      "slot": "Zemmour (Reconquête)",
+      "part": 0.0556,
+      "notice": "Elabe 25-27 mars (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mars/10166-pres-elabe-28-mars.pdf"
+    },
+    {
+      "date_fin": "2026-03-27",
+      "institut": "Elabe",
+      "slot": "RN",
+      "part": 0.3781,
+      "notice": "Elabe 25-27 mars (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mars/10166-pres-elabe-28-mars.pdf"
+    },
+    {
+      "date_fin": "2026-03-26",
+      "institut": "Odoxa",
+      "slot": "Arthaud (LO)",
+      "part": 0.0169,
+      "notice": "Odoxa 25-26 mars (WP)",
+      "notice_url": "https://www.odoxa.fr/sondage/spectaculaire-come-back-dedouard-philippe-il-remporterait-aujourdhui-la-presidentielle/"
+    },
+    {
+      "date_fin": "2026-03-26",
+      "institut": "Odoxa",
+      "slot": "Mélenchon (LFI)",
+      "part": 0.2124,
+      "notice": "Odoxa 25-26 mars (WP)",
+      "notice_url": "https://www.odoxa.fr/sondage/spectaculaire-come-back-dedouard-philippe-il-remporterait-aujourdhui-la-presidentielle/"
+    },
+    {
+      "date_fin": "2026-03-26",
+      "institut": "Odoxa",
+      "slot": "Roussel (PCF)",
+      "part": 0.034,
+      "notice": "Odoxa 25-26 mars (WP)",
+      "notice_url": "https://www.odoxa.fr/sondage/spectaculaire-come-back-dedouard-philippe-il-remporterait-aujourdhui-la-presidentielle/"
+    },
+    {
+      "date_fin": "2026-03-26",
+      "institut": "Odoxa",
+      "slot": "Tondelier (EELV)",
+      "part": 0.0761,
+      "notice": "Odoxa 25-26 mars (WP)",
+      "notice_url": "https://www.odoxa.fr/sondage/spectaculaire-come-back-dedouard-philippe-il-remporterait-aujourdhui-la-presidentielle/"
+    },
+    {
+      "date_fin": "2026-03-26",
+      "institut": "Odoxa",
+      "slot": "Glucksmann (PP)",
+      "part": 0.1696,
+      "notice": "Odoxa 25-26 mars (WP)",
+      "notice_url": "https://www.odoxa.fr/sondage/spectaculaire-come-back-dedouard-philippe-il-remporterait-aujourdhui-la-presidentielle/"
+    },
+    {
+      "date_fin": "2026-03-26",
+      "institut": "Odoxa",
+      "slot": "Philippe (Horizons)",
+      "part": 0.3914,
+      "notice": "Odoxa 25-26 mars (WP)",
+      "notice_url": "https://www.odoxa.fr/sondage/spectaculaire-come-back-dedouard-philippe-il-remporterait-aujourdhui-la-presidentielle/"
+    },
+    {
+      "date_fin": "2026-03-26",
+      "institut": "Odoxa",
+      "slot": "Retailleau (LR)",
+      "part": 0.1311,
+      "notice": "Odoxa 25-26 mars (WP)",
+      "notice_url": "https://www.odoxa.fr/sondage/spectaculaire-come-back-dedouard-philippe-il-remporterait-aujourdhui-la-presidentielle/"
+    },
+    {
+      "date_fin": "2026-03-26",
+      "institut": "Odoxa",
+      "slot": "Dupont-Aignan",
+      "part": 0.034,
+      "notice": "Odoxa 25-26 mars (WP)",
+      "notice_url": "https://www.odoxa.fr/sondage/spectaculaire-come-back-dedouard-philippe-il-remporterait-aujourdhui-la-presidentielle/"
+    },
+    {
+      "date_fin": "2026-03-22",
+      "institut": "Harris Interactive",
+      "slot": "Arthaud (LO)",
+      "part": 0.0175,
+      "notice": "Harris Interactive 22 mars (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mars/10165-pres-toluna-harris-interactive-22-mars.pdf"
+    },
+    {
+      "date_fin": "2026-03-22",
+      "institut": "Harris Interactive",
+      "slot": "Mélenchon (LFI)",
+      "part": 0.1925,
+      "notice": "Harris Interactive 22 mars (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mars/10165-pres-toluna-harris-interactive-22-mars.pdf"
+    },
+    {
+      "date_fin": "2026-03-22",
+      "institut": "Harris Interactive",
+      "slot": "Roussel (PCF)",
+      "part": 0.0525,
+      "notice": "Harris Interactive 22 mars (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mars/10165-pres-toluna-harris-interactive-22-mars.pdf"
+    },
+    {
+      "date_fin": "2026-03-22",
+      "institut": "Harris Interactive",
+      "slot": "Tondelier (EELV)",
+      "part": 0.0798,
+      "notice": "Harris Interactive 22 mars (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mars/10165-pres-toluna-harris-interactive-22-mars.pdf"
+    },
+    {
+      "date_fin": "2026-03-22",
+      "institut": "Harris Interactive",
+      "slot": "Glucksmann (PP)",
+      "part": 0.245,
+      "notice": "Harris Interactive 22 mars (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mars/10165-pres-toluna-harris-interactive-22-mars.pdf"
+    },
+    {
+      "date_fin": "2026-03-22",
+      "institut": "Harris Interactive",
+      "slot": "Philippe (Horizons)",
+      "part": 0.2769,
+      "notice": "Harris Interactive 22 mars (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mars/10165-pres-toluna-harris-interactive-22-mars.pdf"
+    },
+    {
+      "date_fin": "2026-03-22",
+      "institut": "Harris Interactive",
+      "slot": "Retailleau (LR)",
+      "part": 0.1519,
+      "notice": "Harris Interactive 22 mars (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mars/10165-pres-toluna-harris-interactive-22-mars.pdf"
+    },
+    {
+      "date_fin": "2026-03-22",
+      "institut": "Harris Interactive",
+      "slot": "Dupont-Aignan",
+      "part": 0.035,
+      "notice": "Harris Interactive 22 mars (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mars/10165-pres-toluna-harris-interactive-22-mars.pdf"
+    },
+    {
+      "date_fin": "2026-03-22",
+      "institut": "Harris Interactive",
+      "slot": "Zemmour (Reconquête)",
+      "part": 0.0874,
+      "notice": "Harris Interactive 22 mars (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mars/10165-pres-toluna-harris-interactive-22-mars.pdf"
+    },
+    {
+      "date_fin": "2026-02-27",
+      "institut": "Ifop",
+      "slot": "Arthaud (LO)",
+      "part": 0.0293,
+      "notice": "Ifop 26-27 février (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mars/10118-pres-ifop-le-figaro-4-mars.pdf"
+    },
+    {
+      "date_fin": "2026-02-27",
+      "institut": "Ifop",
+      "slot": "Mélenchon (LFI)",
+      "part": 0.1779,
+      "notice": "Ifop 26-27 février (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mars/10118-pres-ifop-le-figaro-4-mars.pdf"
+    },
+    {
+      "date_fin": "2026-02-27",
+      "institut": "Ifop",
+      "slot": "Roussel (PCF)",
+      "part": 0.0449,
+      "notice": "Ifop 26-27 février (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mars/10118-pres-ifop-le-figaro-4-mars.pdf"
+    },
+    {
+      "date_fin": "2026-02-27",
+      "institut": "Ifop",
+      "slot": "Tondelier (EELV)",
+      "part": 0.0735,
+      "notice": "Ifop 26-27 février (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mars/10118-pres-ifop-le-figaro-4-mars.pdf"
+    },
+    {
+      "date_fin": "2026-02-27",
+      "institut": "Ifop",
+      "slot": "Glucksmann (PP)",
+      "part": 0.2011,
+      "notice": "Ifop 26-27 février (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mars/10118-pres-ifop-le-figaro-4-mars.pdf"
+    },
+    {
+      "date_fin": "2026-02-27",
+      "institut": "Ifop",
+      "slot": "Philippe (Horizons)",
+      "part": 0.2883,
+      "notice": "Ifop 26-27 février (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mars/10118-pres-ifop-le-figaro-4-mars.pdf"
+    },
+    {
+      "date_fin": "2026-02-27",
+      "institut": "Ifop",
+      "slot": "Retailleau (LR)",
+      "part": 0.2037,
+      "notice": "Ifop 26-27 février (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mars/10118-pres-ifop-le-figaro-4-mars.pdf"
+    },
+    {
+      "date_fin": "2026-02-27",
+      "institut": "Ifop",
+      "slot": "Dupont-Aignan",
+      "part": 0.0437,
+      "notice": "Ifop 26-27 février (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mars/10118-pres-ifop-le-figaro-4-mars.pdf"
+    },
+    {
+      "date_fin": "2026-02-27",
+      "institut": "Ifop",
+      "slot": "Zemmour (Reconquête)",
+      "part": 0.0656,
+      "notice": "Ifop 26-27 février (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mars/10118-pres-ifop-le-figaro-4-mars.pdf"
+    },
+    {
+      "date_fin": "2026-02-27",
+      "institut": "Ifop",
+      "slot": "RN",
+      "part": 0.3836,
+      "notice": "Ifop 26-27 février (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/mars/10118-pres-ifop-le-figaro-4-mars.pdf"
+    }
+  ]
+}
