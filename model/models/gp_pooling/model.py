@@ -55,6 +55,48 @@ from model.core.gp_math import (
 
 SHARE_FLOOR = 1e-4
 
+# Correction de la diffusion : σ² et τ multipliés par le MÊME facteur.
+#
+# Ce que ça change et ce que ça ne change pas. Le noyau OU a deux régimes : un
+# taux à court terme 2σ²/τ, et un plateau 2σ². Multiplier les deux par le même
+# facteur laisse le taux court INCHANGÉ et ne relève que le plateau. Or les
+# backtests disent que le court terme est déjà juste — `predictive_coverage`
+# donne 0,899 pour un nominal 0,90, et ça tient à tous les écarts au sondage
+# précédent — tandis que la projection au scrutin sous-couvre : 0,831.
+#
+# Mesuré sur `model/backtest/coverage.py` (338 observations, 2017 et 2022), en
+# faisant varier le facteur :
+#
+#     facteur      1.0    1.5    2.0    2.5    3.0    4.0
+#     scrutin    0.831  0.849  0.870  0.870  0.888  0.891
+#     nowcast    0.899  0.898  0.899  0.899  0.899  0.899   <- inchangé
+#
+# Le nowcast ne bouge pas d'un millième, ce qui est la signature attendue : on
+# se déplace le long de la crête plate que la spec de `spatial-pooling`
+# identifie déjà (§11.4, `joint_model.py`) — sur une fenêtre de campagne seul
+# le rapport σ²/τ est contraint, le plateau ne l'est pas. La banque a tranché
+# cette indétermination par REML ; les résultats de 2017 et 2022 disent que ce
+# point de la crête donne des intervalles trop étroits au scrutin.
+#
+# Interprétation : avec τ ≈ 785 j, le processus reste en régime LINÉAIRE sur
+# les ~250 jours d'une campagne. À cette échelle l'opinion ne sature pas, et le
+# retour à la moyenne qu'impose τ = 262 j est un artefact de portée.
+#
+# RÉSERVES, à lire avant de toucher à ce nombre. Le facteur est choisi sur les
+# données qui servent à l'évaluer, et 338 observations viennent de DEUX
+# élections dont 2017 ne pèse que 27 sondages. Les facteurs 2 à 4 donnent 0,870
+# à 0,891 : la direction est solide, la valeur ne l'est pas. Et `delta_*` a été
+# calibré comme résidu à l'ANCIENNE diffusion ; le refitter redistribuerait
+# entre noyau et saut terminal.
+#
+# Pourquoi ici et pas dans la banque, qui serait sa vraie place. Parce que
+# `bank_opinion.json` est partagé : la corriger déplacerait aussi
+# `spatial-pooling`, qui n'a aucun backtest de couverture au scrutin (cf.
+# `model/backtest/coverage.py`, qui ne connaît que le GP) et dont le prior sur
+# `sigma_w` devrait être remis à l'échelle en √facteur pour rester neutre. À
+# remonter dans la banque le jour où ce backtest existe et confirme le gain.
+FACTEUR_DIFFUSION = 3.0
+
 # Pas de la grille de la trajectoire lissée, en jours. Les DATES DE SONDAGE y
 # sont ajoutées telles quelles : les trajectoires d'un Ornstein-Uhlenbeck sont
 # continues mais nulle part dérivables, donc la moyenne postérieure a un angle
@@ -138,7 +180,11 @@ class GPPooling(ForecastModel):
     seed = 27
 
     def load_artifacts(self) -> None:
-        self.params = load_law()
+        law = load_law()
+        # cf. FACTEUR_DIFFUSION : déplacement le long de la crête σ²/τ constante.
+        self.params = {**law,
+                       "sigma2": law["sigma2"] * FACTEUR_DIFFUSION,
+                       "tau": law["tau"] * FACTEUR_DIFFUSION}
 
     def used_polls(self, raw_polls):
         return filter_scenarios_by_exact_slots(raw_polls, set(SLOTS))

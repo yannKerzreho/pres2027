@@ -59,7 +59,12 @@ def main() -> None:
     args = ap.parse_args()
     lo_q, hi_q = 50 * (1 - args.niveau), 100 - 50 * (1 - args.niveau)
 
-    params = load_law()
+    # cf. `coverage.py` : on teste les paramètres du MODÈLE, pas ceux de la
+    # banque — `gp-pooling` corrige sa diffusion (`FACTEUR_DIFFUSION`).
+    import model.core.registered  # noqa: F401
+    from model.core.base import get_model
+    mdl = get_model("gp-pooling"); mdl.load_artifacts()
+    params = getattr(mdl, "params", None) or load_law()
     rng = np.random.default_rng(SEED)
 
     lignes = []
