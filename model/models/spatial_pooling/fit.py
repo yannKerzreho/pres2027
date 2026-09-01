@@ -44,7 +44,9 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
                         chains: int = 4, seed: int = 27, target_accept: float = 0.9,
                         excess_bank=None, pos_scale: float = POS_SCALE,
                         sigma_jitter: float = SIGMA_JITTER, min_gap: float = MIN_GAP_ANCRES,
-                        seuil_dynamique: float = SEUIL_DYNAMIQUE) -> SpatialPoolingFit:
+                        seuil_dynamique: float = SEUIL_DYNAMIQUE,
+                        min_poll_date=None, order_groups=None,
+                        tau_ou: float | None = None) -> SpatialPoolingFit:
     """Roster -> arrays -> NUTS, en une seule inférence jointe.
 
     `mu`, `sigma` et le chemin de `w` sont estimés ENSEMBLE. La chaîne en deux
@@ -61,11 +63,15 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
     sobre en mémoire — le contraire de ce que suggère l'intuition, et de ce que
     la docstring de `run_numpyro_mcmc` a longtemps affirmé.
     """
-    raw = raw_polls[pd.to_datetime(raw_polls["date_fin"]) >= MIN_POLL_DATE].copy()
-    candidates, _, _ = build_roster(raw, as_of=as_of)
+    # `min_poll_date` / `order_groups` / `tau_ou` sont injectables pour le
+    # backtest historique : la fenêtre de campagne et la table d'ordre sont
+    # propres à 2027, et `tau_ou` doit pouvoir suivre la banque qu'on teste.
+    plancher = MIN_POLL_DATE if min_poll_date is None else pd.Timestamp(min_poll_date)
+    raw = raw_polls[pd.to_datetime(raw_polls["date_fin"]) >= plancher].copy()
+    candidates, _, _ = build_roster(raw, as_of=as_of, order_groups=order_groups)
     arrays = build_poll_arrays(raw, candidates)
 
-    anchors = ancres_ecartees(position_anchors(candidates), min_gap)
+    anchors = ancres_ecartees(position_anchors(candidates, order_groups), min_gap)
 
     if excess_bank is None:
         from model.models.spatial_pooling.calibration import BANK_EXCESS_PATH
@@ -73,7 +79,7 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
     excess_var = excess_var_for_nodes(arrays["instituts"], excess_bank)
 
     from model.core.opinion import load_law
-    tau_ou = float(load_law()["tau"])
+    tau_ou = float(load_law()["tau"]) if tau_ou is None else float(tau_ou)
     as_of_num = float(pd.Timestamp(as_of).toordinal())
     kl, K = ou_kl_basis(arrays["unique_dates"], as_of_num, tau_ou, center=True)
 

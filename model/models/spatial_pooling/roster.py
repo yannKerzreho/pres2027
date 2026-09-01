@@ -46,14 +46,15 @@ TIME_BIN_DAYS = 1.0
 # bord. Et elle garantit mécaniquement un écart minimal, là où un placement
 # expert peut coller deux candidats au point de les rendre permutables — d'où
 # `ancres_ecartees`, qui reste le garde-fou si le placement vient d'ailleurs.
-def position_anchors(candidates: list[str]) -> np.ndarray:
+def position_anchors(candidates: list[str], order_groups=None) -> np.ndarray:
     """Ancre de chaque candidat : son rang dans `ORDER_GROUPS`, réparti sur (0,1).
 
     Lève si un candidat n'est pas au catalogue — un candidat qui franchit le
     seuil doit être placé sur l'axe, et ce placement est un choix éditorial, pas
     un défaut à combler silencieusement.
     """
-    rang = {c: i for i, (_, membres) in enumerate(ORDER_GROUPS) for c in membres}
+    order_groups = ORDER_GROUPS if order_groups is None else order_groups
+    rang = {c: i for i, (_, membres) in enumerate(order_groups) for c in membres}
     manquants = [c for c in candidates if c not in rang]
     if manquants:
         raise ValueError(
@@ -86,6 +87,47 @@ ORDER_GROUPS: list[tuple[str, list[str]]] = [
     ("Zemmour",    ["Zemmour", "Knafo"]),
 ]
 
+# ORDRES HISTORIQUES, pour le backtest de couverture au scrutin
+# (`model/backtest/coverage.py --model spatial-pooling`). Même statut ÉDITORIAL
+# que la table 2027 ci-dessus : on affirme qui est à gauche de qui, rien sur les
+# distances. Même convention d'ordre que 2027 (LO < LFI < coco/écolo < PS <
+# centre < LR < souverainistes < RN < Reconquête), pour que les deux campagnes
+# soient traitées de la même main.
+#
+# Deux affectations sont franchement discutables et il faut le savoir avant de
+# lire un résultat de backtest comme un verdict :
+#   - Cheminade (2017, testé dans 20 sondages sur 32, donc au-dessus du seuil) :
+#     hors axe gauche-droite dans toutes les classifications usuelles. Placé
+#     près d'Asselineau faute de mieux — c'est le placement le plus arbitraire
+#     des deux tables.
+#   - Lassalle (2017 et 2022) : ruraliste inclassable, placé entre le centre et
+#     LR. Il pèse 1 à 3 %, donc l'enjeu est faible.
+ORDER_GROUPS_HISTORIQUES: dict[int, list[tuple[str, list[str]]]] = {
+    2017: [
+        ("LO",         ["Nathalie Arthaud", "Philippe Poutou"]),
+        ("LFI",        ["Jean-Luc Mélenchon"]),
+        ("PS",         ["Benoît Hamon"]),
+        ("centre",     ["Emmanuel Macron"]),
+        ("Lassalle",   ["Jean Lassalle"]),
+        ("LR",         ["François Fillon"]),
+        ("souverain",  ["Nicolas Dupont-Aignan", "François Asselineau",
+                        "Jacques Cheminade"]),
+        ("FN",         ["Marine Le Pen"]),
+    ],
+    2022: [
+        ("LO",         ["Nathalie Arthaud", "Philippe Poutou"]),
+        ("LFI",        ["Jean-Luc Mélenchon"]),
+        ("coco_ecolo", ["Fabien Roussel", "Yannick Jadot"]),
+        ("PS",         ["Anne Hidalgo"]),
+        ("centre",     ["Emmanuel Macron"]),
+        ("Lassalle",   ["Jean Lassalle"]),
+        ("LR",         ["Valérie Pécresse"]),
+        ("souverain",  ["Nicolas Dupont-Aignan"]),
+        ("RN",         ["Marine Le Pen"]),
+        ("Reconquete", ["Eric Zemmour"]),
+    ],
+}
+
 # Affectations PAR DÉFAUT, à confirmer (même statut que les réserves de §2.1
 # sur Dupont-Aignan et Hollande) -- aucune n'est active aujourd'hui, tous ces
 # candidats étant sous le seuil :
@@ -105,7 +147,8 @@ ORDER_GROUPS: list[tuple[str, list[str]]] = [
 # `half_life_days` sur linear_pooling (model/models/linear_pooling/model.py).
 
 # --- Roster & mise en forme des sondages -----------------------------------------
-def build_roster(raw: pd.DataFrame, as_of=None) -> tuple[list[str], np.ndarray, list[str]]:
+def build_roster(raw: pd.DataFrame, as_of=None, order_groups=None
+                 ) -> tuple[list[str], np.ndarray, list[str]]:
     """Roster modélisé : tout candidat testé dans >= MIN_POLLS sondages RÉELS
     distincts (`notice`, pas hypothèses) ET encore testé récemment
     (MAX_LAST_POLL_AGE_DAYS), assigné à son groupe d'ordre.
@@ -124,6 +167,7 @@ def build_roster(raw: pd.DataFrame, as_of=None) -> tuple[list[str], np.ndarray, 
     vide n'occupe une position dans la séquence ordonnée (ce qui resserrerait
     inutilement les autres).
     """
+    order_groups = ORDER_GROUPS if order_groups is None else order_groups
     counts = raw.groupby("candidat")["notice"].nunique()
     eligible = set(counts[counts >= MIN_POLLS].index)
 
@@ -134,7 +178,7 @@ def build_roster(raw: pd.DataFrame, as_of=None) -> tuple[list[str], np.ndarray, 
              if (as_of_ts - last_seen[c]).days > MAX_LAST_POLL_AGE_DAYS}
     eligible -= stale
 
-    unclassified = eligible - {m for _, members in ORDER_GROUPS for m in members}
+    unclassified = eligible - {m for _, members in order_groups for m in members}
     if unclassified:
         raise ValueError(
             f"candidats éligibles absents de ORDER_GROUPS : {sorted(unclassified)}. "
@@ -143,7 +187,7 @@ def build_roster(raw: pd.DataFrame, as_of=None) -> tuple[list[str], np.ndarray, 
         )
 
     candidates, slot_of, slot_names = [], [], []
-    for gname, members in ORDER_GROUPS:
+    for gname, members in order_groups:
         members_in = [m for m in members if m in eligible]
         if not members_in:
             continue
