@@ -44,6 +44,8 @@
     <a data-preset="rn-lepen">RN = Le&nbsp;Pen</a>
     <a data-preset="rn-bardella">RN = Bardella</a>
   </div>
+  <p class="outil"><a id="mode-tend" role="button" tabindex="0">Ajouter une tendance</a>
+    <span>— « et si ce candidat gagnait un point par mois d\'ici au scrutin ? »</span></p>
 
   <h2>Intentions de vote</h2>
   <p class="legend">Part estimée <strong>au jour du scrutin</strong>, pas aujourd'hui&nbsp;:
@@ -51,6 +53,7 @@
     intentions déclarées et bulletins déposés. C'est pourquoi les intervalles sont larges.
     Les barres somment à 100&nbsp;% sur la liste cochée. <b>Survolez une ligne</b> pour
     voir la distribution complète.</p>
+  <div id="hypotheses" hidden></div>
   <div id="rows"></div>
 
   <h2>Le modèle sur l'axe</h2>
@@ -58,7 +61,10 @@
     marque sa position estimée (μ), sa largeur son rayon d'action (σ), et
     l'<strong>aire sous la courbe est son score</strong>. La bande du bas montre qui
     l'emporte à chaque endroit de l'axe — retirez un candidat et regardez son territoire
-    passer à ses voisins immédiats, pas se répartir au prorata.
+    passer à ses voisins immédiats, pas se répartir au prorata. Une <em>tendance</em>,
+    elle, se lit tout autrement : elle recrute sur <em>tout</em> l'axe, et le plus
+    fort là où le candidat était le plus faible — c'est ce que veut dire la prélever
+    uniformément, faute de savoir à qui elle prend vraiment.
     <b>Survolez un nom</b> pour lire son μ et son σ.</p>
   <svg id="axe" viewBox="0 0 760 300" preserveAspectRatio="xMidYMid meet"></svg>
 
@@ -74,6 +80,10 @@ const {pct, prob, nb, echappe, getJSON, barres, resumeDepuisTirages,
        montrerFiche, placerFiche, cacherFiche} = Site;
 const couleur = (nom) => Couleurs.couleur(nom);
 let D = null, on = [], ARTEFACT = "./data/spatial-pooling/scenarios.json";
+// Tendance posee par le lecteur, en points par mois et par candidat. Zero
+// partout par defaut : la page doit etre RIGOUREUSEMENT celle d'avant tant que
+// personne n'a rien affirme.
+let tend = [], modeTend = false, bornes = [];
 
 // pi pour un champ arbitraire, tirage par tirage : c'est exactement le calcul du
 // modèle (softmax masqué sur la grille de quadrature), et il tient dans le
@@ -146,6 +156,58 @@ function captureParPosition(masque, nx=180) {
     }
   }
   return {idx, xs, bandes: acc.map(r => r.map(x => x/nS))};
+}
+
+const JOURS_PAR_MOIS = 365.2425/12;   // le mois gregorien moyen, pas 30
+
+function medianes(tirages) {
+  const K = tirages[0].length, out = [];
+  for (let k=0;k<K;k++) {
+    const c = tirages.map(t => t[k]).sort((a,b) => a-b);
+    out.push(c[c.length >> 1]);
+  }
+  return out;
+}
+
+/* TENDANCE — bascule uniforme d'une fraction de l'electorat vers un candidat :
+ *
+ *     pi_i(t) = pi_i(0) * (1 - R*t)  +  rho_i * t,      R = somme des rho
+ *
+ * Lineaire en t, masse conservee exactement, aucun solveur. Meme formule que
+ * `model/models/spatial_pooling/tendance.py` -- si l'une change, l'autre aussi.
+ *
+ * Le prelevement est UNIFORME et c'est assume : retirer un candidat est une
+ * question de mecanisme (le modele spatial y gagne sa vie), poser une tendance
+ * est une affirmation d'agregat, sur laquelle le modele n'a rien a dire. Mesure
+ * sur les mouvements sondage a sondage de 2022 : les voisins bougent en sens
+ * inverse un peu plus qu'un null isotrope ne le predit, mais pas assez pour
+ * sortir du bruit. Corollaire : une tendance n'a AUCUNE signature spatiale,
+ * donc le graphique de l'axe plus bas en est inchange.
+ *
+ * `rho_k = cible / (1 - pi_k)` : le facteur vaut 0,65 a 0,99 selon le candidat,
+ * donc « +1 pp/mois » veut dire la meme chose sur toutes les lignes. */
+function appliqueTendance(idx, tirages) {
+  const h = D.projection ? Math.max(D.projection.horizon_jours, 0) : 0;
+  const cible = idx.map(i => tend[i] || 0);
+  const med = medianes(tirages);
+  // bornes memorisees pour le pas-a-pas : une trajectoire lineaire ne sature
+  // pas, elle finit par sortir du simplexe. Vers le BAS un candidat ne peut pas
+  // perdre plus qu'il n'a sur AUCUN tirage, ce qui mord vite ; vers le haut il
+  // suffit que R*t < 1, ce qui est tres lache.
+  bornes = [];
+  idx.forEach((i,k) => {
+    let r = Infinity;
+    for (const t of tirages) r = Math.min(r, t[k]/Math.max(1e-9, 1-t[k]));
+    bornes[i] = h ? {lo: -r/h*JOURS_PAR_MOIS*(1-med[k])*100, hi: (1-med[k])/h*JOURS_PAR_MOIS*100}
+                  : {lo: 0, hi: 0};
+  });
+  const actives = [];
+  cible.forEach((c,k) => { if (c) actives.push({i: idx[k], k, pp: c}); });
+  if (!h || !actives.length) return {tirages, actives, rho: null};
+  const rho = cible.map((c,k) => c ? (c/100)/Math.max(1e-6, 1-med[k])/JOURS_PAR_MOIS : 0);
+  const R = rho.reduce((a,b) => a+b, 0);
+  return {tirages: tirages.map(t => t.map((v,k) => v*(1 - R*h) + rho[k]*h)),
+          actives, rho, R, h};
 }
 
 // Générateur normal reproductible (Box-Muller + LCG) : le visiteur doit voir
@@ -256,10 +318,33 @@ function dessine() {
   const axe = document.getElementById("axe");
   if (nb_ < 2) {
     rows.innerHTML = '<p class="legend">Cochez au moins deux candidats.</p>';
-    axe.innerHTML = ""; return;
+    axe.innerHTML = ""; rendHypotheses([]); rendPicker(); return;
   }
   const {idx, tirages} = partsParTirage(masque);
-  const auScrutin = projeteAuScrutin(tirages);
+  // La tendance deplace la trajectoire CENTRALE avant la projection : le bruit
+  // de projection reste tire a graine fixe, donc bouger le pas-a-pas fait
+  // glisser la distribution sans la faire scintiller.
+  const tr = appliqueTendance(idx, tirages);
+  const auScrutin = projeteAuScrutin(tr.tirages);
+  // Effet REEL, pas l'effet voulu. Le cumul arithmetique (« +1 pp/mois sur sept
+  // mois = +7,4 pt ») ne se retrouve PAS sur la barre : la projection est un
+  // softmax a queues epaisses, donc non lineaire, et elle comprime les grosses
+  // parts -- mesure ici, +7,4 pt pose se lit +6,6 pt affiches. Annoncer le
+  // chiffre voulu pendant que le lecteur en voit un autre serait exactement le
+  // genre d'ecart qu'on reproche aux autres. On repasse donc le pipeline sans
+  // tendance et on affiche la difference constatee.
+  if (tr.actives.length) {
+    const t0 = projeteAuScrutin(tirages);
+    tr.actives.forEach(a => {
+      a.avant = t0.reduce((s,t) => s + t[a.k], 0) / t0.length;
+      a.apres = auScrutin.reduce((s,t) => s + t[a.k], 0) / auScrutin.length;
+    });
+  }
+  rendHypotheses(tr.actives);
+  // Le picker est redessine ICI, pas dans les gestionnaires : c'est `dessine`
+  // qui recalcule les bornes de faisabilite (elles dependent des tirages, donc
+  // du champ coche), et le pas-a-pas doit s'y griser au bon moment.
+  rendPicker();
   const P = probabilites(auScrutin);
   const stats = idx.map((i,k) => {
     const r = resumeDepuisTirages(auScrutin.map(t => t[k]));
@@ -275,7 +360,20 @@ function dessine() {
   // montre qui l'emporte à chaque position : c'est elle qui rend le report
   // visible quand on retire un candidat.
   const cp = captureParPosition(masque);
-  const ai = cp.idx, xs = cp.xs, bandes = cp.bandes;
+  const ai = cp.idx, xs = cp.xs;
+  // La bande de territoire doit subir la MEME transformation que les parts,
+  // sinon elle contredit les courbes juste au-dessus (dont l'aire est calee sur
+  // le score projete, tendance comprise). Le prelevement etant uniforme, la
+  // formule s'applique telle quelle a chaque position :
+  //     P_i(v,t) = P_i(v)*(1-R*t) + rho_i*t
+  // et la somme sur les candidats reste 1 en tout point, donc la bande reste
+  // pleine. Effet visuel : le gain vaut `rho*t*(1 - P_i(v))`, donc il est MAXIMAL
+  // la ou le candidat etait le plus faible et quasi nul la ou il domine deja
+  // (mesure : 0,111 contre 0,015 la ou il tient 86 % du terrain). C'est le
+  // contraire d'une conquete locale, et c'est exactement ce que l'hypothese
+  // uniforme affirme -- autant que le lecteur le voie.
+  const bandes = tr.rho ? cp.bandes.map((b,k) => b.map(v => v*(1 - tr.R*tr.h) + tr.rho[k]*tr.h))
+                        : cp.bandes;
   const Wd = 760, H = 300, mL = 8, mR = 8, hBande = 26, mB = 34, mT = 24;
   const yBas = H - mB - hBande;
   const px = j => mL + (Wd-mL-mR)*j/(xs.length-1);
@@ -360,10 +458,66 @@ function preset(nom) {
   rendPicker(); dessine();
 }
 
+const PAS_TEND = 0.25;      // points par mois
+// Plafond d'interface. La faisabilite laisse passer bien plus vers le haut
+// (+8 pp/mois reste dans le simplexe pour un gros candidat), mais c'est absurde :
+// +1 pp/mois fait deja passer la qualification de 69 % a 99 %. On borne a ce qui
+// garde un sens, et la borne de faisabilite mord par-dessus quand elle est plus
+// serree -- ce qui arrive vers le BAS pour les petits candidats.
+const CAP_TEND = 2.0;
+
+// Bornes ALIGNEES SUR LE PAS : sans ca, buter contre la faisabilite affichait
+// une valeur hors grille (-0,84 pour une borne a -0,8357), et le bouton ne se
+// grisait pas puisque la valeur restait strictement au-dessus de la borne.
+function borneDe(i) {
+  const b = bornes[i] || {lo: -CAP_TEND, hi: CAP_TEND};
+  const arr = (x) => Math.round(x/PAS_TEND*1e6)/1e6;
+  return {lo: Math.ceil(arr(Math.max(-CAP_TEND, b.lo))) * PAS_TEND,
+          hi: Math.floor(arr(Math.min(CAP_TEND, b.hi))) * PAS_TEND};
+}
+
+function signe(v, dec) { return (v > 0 ? "+" : v < 0 ? "\u2212" : "") + nb(Math.abs(v), dec); }
+
 function rendPicker() {
-  document.getElementById("picker").innerHTML = D.candidats.map((c,i) =>
-    `<button data-i="${i}" class="${on[i]?"on":""}" aria-pressed="${on[i]?"true":"false"}"
-      style="${on[i]?`background:${couleur(c)}`:""}">${echappe(c)}</button>`).join("");
+  const p = document.getElementById("picker");
+  p.className = "picker" + (modeTend ? " tendances" : "");
+  p.innerHTML = D.candidats.map((c,i) => {
+    const v = tend[i] || 0, col = couleur(c);
+    // Le badge reste visible HORS du mode tendance : une hypothese en vigueur ne
+    // doit jamais etre invisible, sinon une capture d'ecran circule comme si
+    // c'etait la sortie du modele.
+    const badge = (v && on[i]) ? ` <b class="bt">${signe(v,2)}</b>` : "";
+    if (!modeTend || !on[i])
+      return `<button data-i="${i}" class="${on[i]?"on":""}" aria-pressed="${on[i]?"true":"false"}"
+        style="${on[i]?`background:${col}`:""}">${echappe(c)}${badge}</button>`;
+    const b = borneDe(i);
+    const t0 = `Bascule uniforme d\u2019une part de l\u2019electorat vers ${echappe(c)}, `
+      + `en points par mois d\u2019ici au scrutin. Le reste du champ perd au prorata.`;
+    return `<span class="carte" style="--c:${col}">
+      <button data-i="${i}" class="nom" style="background:${col}">${echappe(c)}</button>
+      <span class="pas" title="${t0}">
+        <button data-p="${i}" data-d="-1" ${v <= b.lo + 1e-9 ? "disabled" : ""}
+          aria-label="baisser la tendance">\u2212</button>
+        <span class="pente ${v ? "actif" : ""}">${signe(v,2)}</span>
+        <button data-p="${i}" data-d="1" ${v >= b.hi - 1e-9 ? "disabled" : ""}
+          aria-label="augmenter la tendance">+</button>
+      </span></span>`;
+  }).join("");
+}
+
+/* Bandeau d'etat : ce que le lecteur a affirme, et ce que ca vaut CUMULE.
+ * « un point par mois » sonne anodin et vaut sept points d'ici avril — c'est la
+ * ligne qui rend l'hypothese lisible. */
+function rendHypotheses(actives) {
+  const el = document.getElementById("hypotheses");
+  el.hidden = !actives.length;
+  if (!actives.length) { el.innerHTML = ""; return; }
+  el.innerHTML = `<span class="tag">Sous hypothèse</span> ` + actives.map(a =>
+    `<span class="hyp"><i style="background:${couleur(D.candidats[a.i])}"></i>` +
+    `${echappe(D.candidats[a.i])} <b>${signe(a.pp,2)} pp/mois</b> ` +
+    `<em>${pct(a.avant)} \u2192 ${pct(a.apres)} au scrutin ` +
+    `(${signe(100*(a.apres-a.avant),1)} pt)</em></span>`).join("") +
+    ` <a id="raz" role="button" tabindex="0">tout réinitialiser</a>`;
 }
 
 // Le chemin de l'artefact vient du manifeste (rubrique « scenarios ») plutôt que
@@ -382,10 +536,32 @@ getJSON("./data/models.json")
     const base = (D.champ_modal || D.candidats).filter(x => x !== "Bardella");
     if (!base.includes("Le Pen")) base.push("Le Pen");
     on = D.candidats.map(c => base.includes(c));
+    tend = D.candidats.map(() => 0);
     rendPicker(); dessine();
     document.getElementById("picker").addEventListener("click", e => {
-      const b = e.target.closest("button"); if (!b) return;
-      const i = +b.dataset.i; on[i] = !on[i]; rendPicker(); dessine();
+      const b = e.target.closest("button"); if (!b || b.disabled) return;
+      if (b.dataset.p !== undefined) {          // pas-a-pas de tendance
+        const i = +b.dataset.p, lim = borneDe(i);
+        const v = (tend[i] || 0) + (+b.dataset.d) * PAS_TEND;
+        tend[i] = Math.round(Math.min(lim.hi, Math.max(lim.lo, v)) * 100) / 100;
+      } else {                                  // entrer / sortir du champ
+        const i = +b.dataset.i; on[i] = !on[i];
+      }
+      dessine();
+    });
+    // Le mode tendance est une entree SEPAREE : le clic sur une pastille veut
+    // deja dire « entrer / sortir du champ », on ne peut pas le surcharger.
+    const bascule = () => {
+      modeTend = !modeTend;
+      document.getElementById("mode-tend").textContent =
+        modeTend ? "Masquer les tendances" : "Ajouter une tendance";
+      rendPicker();
+    };
+    const mt = document.getElementById("mode-tend");
+    mt.addEventListener("click", bascule);
+    mt.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); bascule(); } });
+    document.getElementById("hypotheses").addEventListener("click", e => {
+      if (e.target.id === "raz") { tend = D.candidats.map(() => 0); dessine(); }
     });
     document.querySelectorAll(".presets a").forEach(a =>
       a.addEventListener("click", () => preset(a.dataset.preset)));

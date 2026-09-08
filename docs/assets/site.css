@@ -144,9 +144,61 @@ h3 { font-size:0.95rem; font-weight:700; margin:28px 0 6px; }
   border-radius:999px; padding:6px 13px; font:600 0.8rem var(--sans); cursor:pointer; transition:.12s; }
 .picker button.on { color:#fff; border-color:transparent; text-shadow:0 0 2px rgba(0,0,0,.45); }
 .picker button:hover { border-color:var(--fg); }
-.presets { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 22px; font-size:0.8rem; }
+.presets { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 8px; font-size:0.8rem; }
 .presets a { color:var(--muted); cursor:pointer; text-decoration:underline dotted; }
 .presets a:hover { color:var(--fg); }
+
+/* ---------- tendances ----------
+   Un SECOND paramètre par candidat, continu, et que la quasi-totalité des
+   visiteurs ne touchera jamais. Il ne doit donc rien coûter au cas fréquent —
+   entrer/sortir un candidat du champ — d'où le repli par défaut : tant que le
+   mode n'est pas ouvert, `.picker` est exactement la rangée de pastilles
+   d'avant. Un tableau permanent aurait donné treize lignes de colonnes vides
+   pour servir l'action rare, et repoussé les résultats sous la ligne de
+   flottaison. */
+.outil { display:flex; flex-wrap:wrap; align-items:baseline; gap:8px;
+  margin:0 0 22px; font-size:0.8rem; color:var(--muted); }
+.outil a { color:var(--blue); cursor:pointer; text-decoration:underline dotted;
+  font-weight:600; }
+.outil a:hover { text-decoration:underline; }
+
+/* Badge de tendance sur la pastille. Il reste visible HORS du mode tendance :
+   une hypothèse en vigueur ne doit jamais être invisible, sinon une capture
+   d'écran circule comme si c'était la sortie du modèle. */
+.picker .bt { font:700 0.72rem var(--mono); opacity:.85; margin-left:2px; }
+
+.picker.tendances { gap:8px; align-items:center; }
+.carte { display:inline-flex; align-items:stretch; border:1px solid var(--c);
+  border-radius:999px; overflow:hidden; background:var(--card); }
+.carte .nom { appearance:none; border:0; color:#fff; text-shadow:0 0 2px rgba(0,0,0,.45);
+  font:600 0.8rem var(--sans); padding:6px 12px; cursor:pointer; }
+.carte .pas { display:inline-flex; align-items:center; gap:2px; padding:0 5px 0 3px;
+  cursor:help; }
+.carte .pas button { appearance:none; border:0; background:transparent; color:var(--muted);
+  font:700 0.95rem var(--sans); line-height:1; width:20px; height:24px; cursor:pointer;
+  border-radius:4px; }
+.carte .pas button:hover:not(:disabled) { background:var(--track); color:var(--fg); }
+.carte .pas button:disabled { opacity:.28; cursor:not-allowed; }
+.carte .pente { min-width:34px; text-align:center; font:600 0.74rem var(--mono);
+  color:var(--muted); font-variant-numeric:tabular-nums; }
+.carte .pente.actif { color:var(--fg); }
+
+/* Bandeau d'état. Mesuré : ±1 pp/mois fait passer une qualification de 69 % à
+   99 %. Ce que le lecteur a affirmé doit donc rester sous les yeux, avec
+   l'effet CUMULÉ — « un point par mois » sonne anodin et vaut sept points. */
+#hypotheses[hidden] { display:none; }
+#hypotheses { display:flex; flex-wrap:wrap; align-items:center; gap:6px 14px;
+  background:var(--warn-bg); border-left:3px solid var(--warn-line); border-radius:4px;
+  padding:9px 14px; margin:0 0 14px; font-size:0.82rem; }
+#hypotheses .tag { font:700 0.68rem var(--sans); letter-spacing:.04em;
+  text-transform:uppercase; color:var(--muted); }
+#hypotheses .hyp { display:inline-flex; align-items:center; gap:6px; }
+#hypotheses .hyp i { width:9px; height:9px; border-radius:2px; flex:none; }
+#hypotheses b { font-family:var(--mono); font-variant-numeric:tabular-nums; }
+#hypotheses em { color:var(--muted); font-style:normal; }
+#hypotheses a { margin-left:auto; color:var(--muted); cursor:pointer;
+  text-decoration:underline dotted; }
+#hypotheses a:hover { color:var(--fg); }
 
 /* ---------- graphiques ---------- */
 svg { width:100%; height:auto; display:block; }

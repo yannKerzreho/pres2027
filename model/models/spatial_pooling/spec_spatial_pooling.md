@@ -205,6 +205,73 @@ noyau exactement $\mathrm{span}(\mathbb 1)$ — ce qui fonde le corollaire de
 portée du §0 : à champ unique, un $w$ reproduit exactement les parts observées
 quelle que soit la géométrie.
 
+## 6 bis. Tendances — « et si ce candidat gagnait un point par mois ? »
+
+Une couche **au-dessus** du modèle, offerte au lecteur : le modèle porte
+l'incertitude, l'utilisateur pose une trajectoire. Une fraction $\rho_i$ de
+l'électorat bascule vers $i$ par jour, prélevée **uniformément** sur le reste
+du champ :
+
+$$\pi_i(t) = \pi_i(0)\,(1 - Rt) + \rho_i t,\qquad R = \sum_j \rho_j$$
+
+Masse conservée exactement, trajectoire **linéaire en $t$** — donc forme fermée,
+sans solveur, y compris dans le navigateur (`model/.../tendance.py`, et le même
+calcul en JS dans `docs/scenarios.html`).
+
+**Prélèvement uniforme, et c'est le choix qui compte.** Retirer un candidat est
+une question de *mécanisme*, et c'est là que ce modèle gagne sa vie. Poser une
+tendance est une affirmation d'*agrégat* : le modèle n'a rien à dire sur qui
+perd, et prétendre le contraire ajouterait une affirmation gratuite — même
+argument de parcimonie qu'aux ancres de rang (§2).
+
+> Confronté aux données (`notebooks/04q`) : sur les mouvements sondage à sondage
+> du même institut en 2022, les voisins sur l'axe bougent en sens inverse un peu
+> plus qu'un null isotrope ne le prédit, mais la pente du résidu sur la distance
+> ne sort pas du bruit sur 66 couples. Il n'y a donc pas de mandat empirique
+> pour une captation locale. L'uniformité est retenue **par défaut mesuré**.
+
+Le calibrage du curseur est une division : pour un seul candidat en tendance,
+$\pi_k(t) = \pi_k(0) + \rho_k t (1-\pi_k(0))$, donc $\rho_k = c/(1-\pi_k)$. Le
+facteur vaut 0,65 à 0,99 selon le candidat : « +1 pp/mois » veut dire la même
+chose sur toutes les lignes. C'est la raison décisive de préférer l'uniforme au
+local, où le facteur tombait à 0,3–0,5 et variait du simple au double.
+
+**Deux propriétés à connaître.**
+
+*La saturation est asymétrique.* Une trajectoire linéaire finit par sortir du
+simplexe. Vers le bas, un candidat ne peut pas perdre plus qu'il n'a sur *aucun*
+tirage : la borne mord vite (un candidat à 5 points ne descend guère au-delà de
+−0,2 pp/mois sur sept mois). Vers le haut il suffit que $Rt<1$, ce qui est très
+lâche (+8 pp/mois reste admissible). L'interface borne donc les deux côtés
+séparément.
+
+*L'effet posé n'est pas l'effet obtenu.* Le cumul arithmétique (+1 pp/mois sur
+7,4 mois = +7,4 pt) ne se retrouve pas sur la barre : la projection au scrutin
+est un softmax à queues épaisses, donc non linéaire, et elle comprime les
+grosses parts — mesuré, +7,4 pt posés se lisent +6,6 pt affichés. Le site
+repasse donc le pipeline sans tendance et **affiche la différence constatée**,
+jamais la différence voulue.
+
+> **Ce qui a été essayé et écarté : la base fidèle.** Une fraction de
+> l'électorat acquise à un candidat quoi qu'il arrive, prélevée autour de sa
+> position. Trois protocoles l'ont mesurée à zéro sur la redistribution — retrait
+> (`04m`, nul sur le quartile décisif), substitution (`04o`, +0,000 avec IC95
+> [−0,017 ; +0,017]) — alors que la volatilité par candidat (`04n`) la
+> corroborait franchement. La raison est structurelle : $\lambda$ agit par le
+> même canal que $w$ et la géométrie, donc la vraisemblance ne peut pas les
+> séparer. **Non identifiable, donc écartée par parcimonie.** Le code et les
+> mesures restent dans `notebooks/` (non versionné, comme le reste de
+> l'expérimental) ; ce qui compte est ici.
+
+> **Résultat neuf obtenu au passage**, et sans rapport avec les tendances : sur
+> 234 substitutions 2022 hors échantillon ($B = A\setminus\{c\}\cup\{d\}$, même
+> échantillon), le modèle divise par 1,8 l'erreur sur le score du remplaçant
+> contre le réflexe « il hérite du sortant » — 3,89 pt contre 2,21 pt, IC95
+> [−2,15 ; −1,21]. §9 classait les champs jamais sondés comme « le pari du
+> modèle, pas une mesure » : pour la substitution, c'en est une, et elle porte
+> sur l'usage principal de l'onglet Scénarios.
+
+
 ## 7. Coût
 
 Le temps vaut exactement $(\text{tirages}+\text{warmup})\times
