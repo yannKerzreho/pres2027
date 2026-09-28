@@ -533,7 +533,10 @@ getJSON("./data/models.json")
     // deux pages soient lisibles ensemble. « Tout le monde » reste à un clic,
     // mais ce n'est pas une hypothèse de référence : elle fait concourir Le Pen
     // ET Bardella, ce qu'aucun scrutin ne verra.
-    const base = (D.champ_modal || D.candidats).filter(x => x !== "Bardella");
+    // Les candidats RETIRÉS (plus testés depuis 90 jours) restent dans le fit —
+    // leurs sondages y sont — mais on ne les coche pas d'office.
+    const retires = D.retires || [];
+    const base = (D.champ_modal || D.candidats).filter(x => x !== "Bardella" && !retires.includes(x));
     if (!base.includes("Le Pen")) base.push("Le Pen");
     on = D.candidats.map(c => base.includes(c));
     tend = D.candidats.map(() => 0);

@@ -17,8 +17,8 @@ import pytest
 from numpyro import handlers
 
 from model.models.spatial_pooling import (
-    ORDER_GROUPS, ancres_ecartees, build_poll_arrays, ou_kl_basis, position_anchors,
-    spatial_pooling_model_ou, spatial_shares,
+    MAX_LAST_POLL_AGE_DAYS, ORDER_GROUPS, ancres_ecartees, build_poll_arrays, build_roster,
+    candidats_retires, ou_kl_basis, position_anchors, spatial_pooling_model_ou, spatial_shares,
 )
 
 logit = lambda p: np.log(p / (1.0 - p))  # noqa: E731
@@ -130,6 +130,39 @@ def test_build_poll_arrays_jette_les_champs_a_moins_de_deux_candidats():
                                            echantillon=1000.0, institut="Ifop")])])
     a = build_poll_arrays(df, ["X", "Y", "Z"])
     assert a["tested_mask"].shape[0] == 2, "le nœud à un seul candidat est écarté"
+
+
+def _campagne_rn(jours_depuis_bardella: int) -> pd.DataFrame:
+    """Cinq sondages Bardella anciens, cinq Le Pen récents : le cas du 2026-09-23."""
+    fin = pd.Timestamp("2026-09-23")
+    lignes = []
+    for k in range(10):
+        rn = "Bardella" if k < 5 else "Le Pen"
+        d = fin - pd.Timedelta(days=(jours_depuis_bardella + k) if k < 5 else k)
+        for cand, val in {"Mélenchon": 15.0, "Philippe": 20.0, rn: 35.0, "Zemmour": 30.0}.items():
+            lignes.append(dict(notice=f"n{k}", hypothese=None, candidat=cand, intention=val,
+                               date_fin=d, echantillon=1000.0, institut="Ifop"))
+    return pd.DataFrame(lignes)
+
+
+def test_un_candidat_plus_teste_reste_dans_le_roster_mais_est_declare_retire():
+    """Régression du 2026-09-23 : Bardella sortait du roster alors que ses
+    hypothèses restaient dans les données, qui devenaient des sondages sans RN."""
+    df = _campagne_rn(MAX_LAST_POLL_AGE_DAYS + 1)
+    cands, _, _ = build_roster(df, as_of="2026-09-23")
+    assert "Bardella" in cands
+    assert candidats_retires(df, cands, "2026-09-23") == ["Bardella"]
+    assert candidats_retires(_campagne_rn(10), cands, "2026-09-23") == []
+
+
+def test_build_poll_arrays_leve_si_un_candidat_qui_pese_est_hors_roster():
+    df = _campagne_rn(0)
+    sans_bardella = ["Mélenchon", "Philippe", "Le Pen", "Zemmour"]
+    with pytest.raises(ValueError, match="Bardella"):
+        build_poll_arrays(df, sans_bardella, couverture_min=0.75)
+    # le contrôle est opt-in, et un roster complet le passe
+    build_poll_arrays(df, sans_bardella)
+    build_poll_arrays(df, sans_bardella + ["Bardella"], couverture_min=0.75)
 
 
 # --- le modèle trace ----------------------------------------------------------

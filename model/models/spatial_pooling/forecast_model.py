@@ -28,6 +28,13 @@ from .geometry import V, W
 from .roster import MIN_POLL_DATE, build_roster
 
 N_DRAWS_EXPORT = 300
+# Seuil de publication. Le 2026-09-23 le job a publié un fit à R-hat 5,6 (puis
+# 6,8) : des chaînes dans des modes différents, moyennées en une géométrie qui
+# n'existe dans aucune. Seuil LÂCHE, pas le 1,01 des manuels : sur les fits
+# sains de septembre R-hat valait 1,01 à 1,15, avec une pointe à 1,37 (ESS 13)
+# qu'on ne veut pas voir publiée non plus ; les fits cassés étaient au-delà de 5.
+RHAT_PUBLIABLE = 1.2
+GRAINE_SECOURS = 2027
 
 
 def _slot_de(candidat: str) -> str | None:
@@ -86,6 +93,19 @@ class SpatialPooling(ForecastModel):
 
     def nowcast(self, polls: pd.DataFrame, as_of: str) -> Nowcast:
         fit = fit_spatial_pooling(polls, as_of=as_of)
+        if fit.diagnostics["rhat_max"] > RHAT_PUBLIABLE:
+            # Une seconde graine d'abord : la convergence de ce modèle dépend
+            # notablement de la graine (ESS de 3 à 112 à réglage égal, cf.
+            # roster.py), un échec isolé n'est pas un verdict.
+            print(f"[{self.id}] R-hat {fit.diagnostics['rhat_max']} > {RHAT_PUBLIABLE}, "
+                  f"second essai avec une autre graine")
+            fit = fit_spatial_pooling(polls, as_of=as_of, seed=GRAINE_SECOURS)
+        if fit.diagnostics["rhat_max"] > RHAT_PUBLIABLE:
+            raise RuntimeError(
+                f"[{self.id}] fit non convergé à {as_of} (R-hat max "
+                f"{fit.diagnostics['rhat_max']}, ESS min {fit.diagnostics['ess_min']}, "
+                f"pires sites {fit.diagnostics['rhat_pires_sites']}) : rien n'est publié, "
+                "l'artefact de la veille reste en ligne.")
         _export_scenarios(fit, as_of)
 
         slots = [(_slot_de(c), i) for i, c in enumerate(fit.candidates)]
@@ -187,6 +207,9 @@ def _export_scenarios(fit, as_of: str) -> None:
         "candidats": list(fit.candidates),
         "ancres": [round(float(x), 4) for x in fit.anchors],
         "champ_modal": [fit.candidates[i] for i in modal],
+        # Toujours dans le fit, mais plus testés depuis MAX_LAST_POLL_AGE_DAYS :
+        # la page ne les coche pas par défaut.
+        "retires": list(fit.diagnostics.get("candidats_retires", [])),
         "grille": {"v": [round(float(x), 4) for x in np.asarray(V)],
                    "w": [round(float(x), 6) for x in np.asarray(W)]},
         "tirages": {"mu": r4(fit.mu_draws[sel]), "sigma": r4(fit.sigma_draws[sel]),

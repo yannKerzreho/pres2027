@@ -15,11 +15,31 @@ import pandas as pd
 # --- Roster / fenêtre de campagne (spec §6) --------------------------------------
 MIN_POLL_DATE = pd.Timestamp("2026-01-01")   # même repli que bayesian_nowcast.nowcast
 MIN_POLLS = 5                                 # sondages RÉELS distincts (`notice`), pas hypothèses
-# Un candidat cesse d'être modélisé s'il n'a plus été testé depuis assez
-# longtemps (retrait, hypothèse abandonnée par les instituts). NON CALIBRÉ :
-# aucun candidat éligible n'en est proche aujourd'hui (le plus ancien est
-# Bardella à 16 jours), c'est un garde-fou pour la suite, pas un réglage.
+# Un candidat qui n'a plus été testé depuis assez longtemps (retrait, hypothèse
+# abandonnée par les instituts) est déclaré RETIRÉ — étiquette d'AFFICHAGE
+# seulement (`candidats_retires`), il reste dans la vraisemblance.
+#
+# Il en sortait auparavant, et c'est ce qui a cassé le modèle le 2026-09-23 :
+# Bardella (dernier sondage le 24 juin) est tombé du roster, mais ses 46
+# hypothèses sont restées dans les données. Renormalisées sur le roster
+# restant, elles devenaient des sondages SANS AUCUN candidat RN, ses ~35 %
+# reversés au prorata sur tout l'axe — Mélenchon compris. Un modèle spatial ne
+# peut expliquer ça qu'en élargissant tous les rayons : sigma médian de
+# Mélenchon 0,07 -> 0,34, R-hat 5,6 à 6,8, ESS 2, et un graphique de l'axe où
+# la gauche recrute à l'extrême droite. Absent du roster n'est pas absent du
+# bulletin. Retirer aussi ses nœuds aurait été licite mais coûteux (46 nœuds
+# sur 136, dont l'essentiel de février à juin) ; le garder ne coûte que son
+# propre `w`, extrapolé par le processus OU avec l'incertitude qui va avec.
 MAX_LAST_POLL_AGE_DAYS = 90
+# Part minimale du bulletin d'un nœud couverte par le roster (cf. la
+# renormalisation de `build_poll_arrays`). Au-dessous, un candidat qui pèse est
+# hors roster et la renormalisation fabrique un report au prorata que le modèle
+# ne sait pas représenter. Mesuré : 2027 au plus bas 0,855 (0,48 sans Bardella),
+# 2022 au plus bas 0,765. Levée plutôt que nœud écarté, même doctrine que
+# `build_roster` : un job qui échoue vaut mieux qu'un modèle publié faux.
+# NE S'APPLIQUE PAS au backtest 2017, dont des sondages de 2012-2015 tombent à
+# 0,34 (le reste de leur bulletin manque au frame historique).
+COUVERTURE_MIN = 0.75
 # Pas de la ligne du temps du chemin de `w` (modèle joint). Testé à 7 jours
 # pour réduire la dimension : DÉGRADE la convergence (J-150 passe de R-hat
 # 1,021 à 1,330). Regrouper force plusieurs sondages à se réconcilier sur une
@@ -150,8 +170,10 @@ ORDER_GROUPS_HISTORIQUES: dict[int, list[tuple[str, list[str]]]] = {
 def build_roster(raw: pd.DataFrame, as_of=None, order_groups=None
                  ) -> tuple[list[str], np.ndarray, list[str]]:
     """Roster modélisé : tout candidat testé dans >= MIN_POLLS sondages RÉELS
-    distincts (`notice`, pas hypothèses) ET encore testé récemment
-    (MAX_LAST_POLL_AGE_DAYS), assigné à son groupe d'ordre.
+    distincts (`notice`, pas hypothèses), assigné à son groupe d'ordre. Un
+    candidat qui n'est plus testé RESTE modélisé (cf. MAX_LAST_POLL_AGE_DAYS et
+    `candidats_retires`) : `as_of` n'entre plus dans le calcul, il est gardé
+    pour la signature.
 
     Un candidat éligible absent de ORDER_GROUPS **lève une erreur**. Il était
     auparavant écarté avec un simple `warning`, et c'est ce qui a produit le
@@ -170,13 +192,6 @@ def build_roster(raw: pd.DataFrame, as_of=None, order_groups=None
     order_groups = ORDER_GROUPS if order_groups is None else order_groups
     counts = raw.groupby("candidat")["notice"].nunique()
     eligible = set(counts[counts >= MIN_POLLS].index)
-
-    dates = pd.to_datetime(raw["date_fin"])
-    as_of_ts = pd.Timestamp(as_of) if as_of is not None else dates.max()
-    last_seen = raw.assign(_d=dates).groupby("candidat")["_d"].max()
-    stale = {c for c in eligible
-             if (as_of_ts - last_seen[c]).days > MAX_LAST_POLL_AGE_DAYS}
-    eligible -= stale
 
     unclassified = eligible - {m for _, members in order_groups for m in members}
     if unclassified:
@@ -198,16 +213,34 @@ def build_roster(raw: pd.DataFrame, as_of=None, order_groups=None
     return candidates, np.array(slot_of), slot_names
 
 
+def candidats_retires(raw: pd.DataFrame, candidates: list[str], as_of=None) -> list[str]:
+    """Candidats du roster non testés depuis plus de MAX_LAST_POLL_AGE_DAYS à
+    `as_of` (défaut : dernier sondage). Pour l'AFFICHAGE : ils restent dans le
+    fit, le site ne les propose simplement plus par défaut."""
+    dates = pd.to_datetime(raw["date_fin"])
+    as_of_ts = pd.Timestamp(as_of) if as_of is not None else dates.max()
+    last_seen = raw.assign(_d=dates).groupby("candidat")["_d"].max()
+    return [c for c in candidates
+            if (as_of_ts - last_seen[c]).days > MAX_LAST_POLL_AGE_DAYS]
+
+
 def build_poll_arrays(df: pd.DataFrame, candidates: list[str], notice_col="notice", hyp_col="hypothese",
                       candidat_col="candidat", date_col="date_fin", intention_col="intention",
-                      echantillon_col="echantillon", institut_col="institut") -> dict:
+                      echantillon_col="echantillon", institut_col="institut",
+                      couverture_min: float | None = None) -> dict:
     """DataFrame long (une ligne = un candidat testé dans une hypothèse d'un
     sondage) -> (tested_mask, Y, Np, dates, instituts) restreint à
     `candidates`. Même déflation `echantillon / n_hypotheses` que
     `aggregate_to_slots` (model/core/live_dataset.py) : les hypothèses d'un
     même sondage partagent le terrain, pas des mesures indépendantes.
     `instituts` (P,) -- un nom d'institut par nœud, nécessaire pour
-    `excess_var_for_nodes` (variance d'excès par institut)."""
+    `excess_var_for_nodes` (variance d'excès par institut).
+
+    `couverture_min` : lève si un nœud a moins de cette part de son bulletin
+    dans le roster (cf. COUVERTURE_MIN). `None` désactive le contrôle."""
+    if couverture_min is not None:
+        _verifie_couverture(df, candidates, couverture_min, notice_col, hyp_col,
+                            candidat_col, intention_col)
     idx = {c: i for i, c in enumerate(candidates)}
     df = df[df[candidat_col].isin(candidates)].copy()
     df[hyp_col] = df[hyp_col].fillna("__unique__")
@@ -283,6 +316,32 @@ def build_poll_arrays(df: pd.DataFrame, candidates: list[str], notice_col="notic
     return dict(tested_mask=np.array(tested_mask), Y=np.array(Y), Np=np.array(Np), dates=dates_num,
                unique_dates=unique_dates, date_idx=date_idx, dt_gaps=dt_gaps, instituts=instituts,
                Np_full=np.array(Np_full), notice_idx=notice_idx, n_notices=len(uniq_notices))
+
+
+def _verifie_couverture(df, candidates, seuil, notice_col, hyp_col, candidat_col,
+                        intention_col) -> None:
+    """Lève si un nœud retenu (>= 2 candidats du roster) a moins de `seuil` de
+    son bulletin dans le roster, en nommant les candidats hors roster qui
+    creusent le trou."""
+    d = df.assign(_h=df[hyp_col].fillna("__unique__"),
+                  _in=df[candidat_col].isin(candidates))
+    fautifs = []
+    for (notice, hyp), g in d.groupby([notice_col, "_h"], sort=False):
+        if g["_in"].sum() < 2:
+            continue
+        couv = float(g.loc[g["_in"], intention_col].sum()) / 100.0
+        if couv < seuil:
+            hors = g.loc[~g["_in"]].sort_values(intention_col, ascending=False)
+            fautifs.append((couv, notice, hyp, [f"{r[candidat_col]} ({r[intention_col]:g})"
+                                               for _, r in hors.head(3).iterrows()]))
+    if fautifs:
+        fautifs.sort()
+        detail = "\n".join(f"  {c:.2f}  {n} [{h}] hors roster : {', '.join(x)}"
+                           for c, n, h, x in fautifs[:5])
+        raise ValueError(
+            f"{len(fautifs)} nœud(s) couverts à moins de {seuil:.0%} par le roster — "
+            "un candidat qui pèse est hors roster, la renormalisation fabriquerait "
+            f"un report au prorata (cf. COUVERTURE_MIN). Pires cas :\n{detail}")
 
 
 # --- Variance d'excès (house effects) -- calibration PROPRE à spatial_pooling ------

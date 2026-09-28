@@ -56,6 +56,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import traceback
 from datetime import date
 from pathlib import Path
 
@@ -183,38 +184,55 @@ def run(model_id: str = "all", as_of: str | None = None, include_private: bool =
     models = _selection(model_id, include_private)
     if not models:
         raise SystemExit("Aucun modèle à lancer (registre vide ou aucun rattaché au site).")
+    # Un modèle qui échoue ne doit pas priver les autres de leur snapshot du
+    # jour : `spatial-pooling` refuse de publier un fit non convergé (cf.
+    # RHAT_PUBLIABLE), et `gp-pooling` n'a aucune raison d'en pâtir. On
+    # termine la boucle, PUIS on échoue — le job reste rouge, donc visible.
+    echecs = []
     for mid, mdl in models.items():
-        if rejeu:
-            dates, ecartees = dates_a_produire(mdl, raw, as_of, max_rejeu)
-            if len(dates) > 1:
-                print(f"[{mid}] rejeu de {len(dates) - 1} date(s) dont le jeu de "
-                      f"sondages a changé : {', '.join(d for d in dates if d != as_of)}")
-            if ecartees:
-                print(f"[{mid}] {len(ecartees)} date(s) plus anciennes reportées au "
-                      f"prochain passage (plafond --max-rejeu={max_rejeu}) : "
-                      f"{ecartees[0]} → {ecartees[-1]}")
-        else:
-            dates = [as_of]
+        try:
+            _produit(mid, mdl, raw, as_of, rejeu, max_rejeu)
+        except Exception:
+            traceback.print_exc()
+            echecs.append(mid)
+    if echecs:
+        raise SystemExit(f"Échec de {len(echecs)} modèle(s) : {', '.join(echecs)} "
+                         "(les autres ont écrit leurs snapshots).")
 
-        for jour in dates:
-            raw_jour = raw if jour == as_of else raw[raw["date_fin"] <= pd.Timestamp(jour)]
-            snap = mdl.run(raw_jour, jour)
-            path = write_snapshot(snap)
-            rn = snap["forecast_scrutin"].get("RN", {}).get("p_qualifie_top2")
-            print(f"[{mid}] {jour} : {snap['meta']['n_sondages']} sondages, "
-                  f"P(RN top2)={rn} -> {path.name}")
-            diag = snap.get("diagnostics")
-            if diag and "hyperparametres" in diag:
-                # Schéma bayesian-nowcast (NUTS) — PAS imposé par le framework
-                # (cf. Nowcast.diagnostics, model/core/base.py) : un modèle sans
-                # inférence MCMC (ex. gp-pooling) a son propre schéma, affiché
-                # tel quel ci-dessous plutôt que de supposer ces clés.
-                hp = ", ".join(f"{k}={v['mean']:.4f}±{v['sd']:.4f}"
-                              for k, v in diag["hyperparametres"].items() if v)
-                print(f"    diagnostics : R-hat max={diag['rhat_max']}, "
-                      f"ESS min={diag['ess_min']}, divergences={diag['n_divergences']} | {hp}")
-            elif diag and jour == as_of:
-                print(f"    diagnostics : {diag}")
+
+def _produit(mid, mdl, raw, as_of, rejeu, max_rejeu) -> None:
+    """Snapshots d'UN modèle : `as_of`, plus les dates passées à rejouer."""
+    if rejeu:
+        dates, ecartees = dates_a_produire(mdl, raw, as_of, max_rejeu)
+        if len(dates) > 1:
+            print(f"[{mid}] rejeu de {len(dates) - 1} date(s) dont le jeu de "
+                  f"sondages a changé : {', '.join(d for d in dates if d != as_of)}")
+        if ecartees:
+            print(f"[{mid}] {len(ecartees)} date(s) plus anciennes reportées au "
+                  f"prochain passage (plafond --max-rejeu={max_rejeu}) : "
+                  f"{ecartees[0]} → {ecartees[-1]}")
+    else:
+        dates = [as_of]
+
+    for jour in dates:
+        raw_jour = raw if jour == as_of else raw[raw["date_fin"] <= pd.Timestamp(jour)]
+        snap = mdl.run(raw_jour, jour)
+        path = write_snapshot(snap)
+        rn = snap["forecast_scrutin"].get("RN", {}).get("p_qualifie_top2")
+        print(f"[{mid}] {jour} : {snap['meta']['n_sondages']} sondages, "
+              f"P(RN top2)={rn} -> {path.name}")
+        diag = snap.get("diagnostics")
+        if diag and "hyperparametres" in diag:
+            # Schéma bayesian-nowcast (NUTS) — PAS imposé par le framework
+            # (cf. Nowcast.diagnostics, model/core/base.py) : un modèle sans
+            # inférence MCMC (ex. gp-pooling) a son propre schéma, affiché
+            # tel quel ci-dessous plutôt que de supposer ces clés.
+            hp = ", ".join(f"{k}={v['mean']:.4f}±{v['sd']:.4f}"
+                          for k, v in diag["hyperparametres"].items() if v)
+            print(f"    diagnostics : R-hat max={diag['rhat_max']}, "
+                  f"ESS min={diag['ess_min']}, divergences={diag['n_divergences']} | {hp}")
+        elif diag and jour == as_of:
+            print(f"    diagnostics : {diag}")
 
 
 def main():
