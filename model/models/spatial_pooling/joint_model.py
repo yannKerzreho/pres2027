@@ -34,7 +34,24 @@ from .geometry import spatial_shares
 # --- Réglages retenus (spec §12.26-12.31) ----------------------------------------
 SIGMA_PRIOR_MEDIAN = 0.15     # médiane du prior sur le rayon global
 POS_SCALE = 0.4               # liberté de position autour de l'ancre, en logit
-SIGMA_JITTER = 0.30           # largeur FIXE du bruit de rayon par candidat
+# Largeur FIXE du bruit de rayon par candidat. 0,30 jusqu'au 2026-09-29 :
+# ramené à 0,20 pour lever une BIMODALITÉ. Depuis les sondages de septembre, un
+# second mode -- Mélenchon étroit (sigma 0,06) décalé à droite de Roussel (mu
+# 0,09 -> 0,22), Glucksmann élargi (sigma 0,10 -> 0,23) -- avait la MÊME
+# énergie que le mode principal : +4,9 nats de vraisemblance, gain diffus sur
+# des dizaines de nœuds, contre -5 nats de prior. Le runner Linux y envoyait une
+# chaîne sur quatre (R-hat 1,7 à 2,5, publication refusée), le Mac jamais. Le
+# mode B demande des rayons à ±2,2 écarts-types du jitter ; à 0,20 il en coûte
+# ~6 nats de plus. Mesuré : 0 graine sur 3 dans le mode B (3 sur 4 à 0,30), et
+# un coût invisible au backtest 2026 hors échantillon (`notebooks/04l`) --
+#   jitter | couverture 50/80/90 | redistribution | moitié difficile
+#    0,30  |  55,1 / 81,5 / 90,4 |    0,612 pt    |    0,652 pt
+#    0,25  |  54,7 / 81,1 / 90,0 |    0,620 pt    |    0,661 pt
+#    0,20  |  54,7 / 80,7 / 89,2 |    0,631 pt    |    0,678 pt
+# (proportionnel 1,268 pt, 80 % des 51 paires gagnées dans les trois cas). À ne
+# pas confondre avec le resserrement de SIGMA_PRIOR_MEDIAN annulé plus haut :
+# celui-là déplaçait TOUS les rayons, celui-ci borne leur dispersion.
+SIGMA_JITTER = 0.20
 MIN_GAP_ANCRES = 0.25         # écart minimal entre ancres voisines (identifiabilité)
 LEVEL_SCALE = 1.5             # échelle du niveau par candidat
 SEUIL_DYNAMIQUE = 0.05        # part moyenne au-dessus de laquelle `w` a un CHEMIN
@@ -42,7 +59,7 @@ SEUIL_DYNAMIQUE = 0.05        # part moyenne au-dessus de laquelle `w` a un CHEM
 def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
                              excess_var=None, tau_ou=None, sigma_w_prior=0.5,
                              level_scale=1.5, pos_scale=0.4,
-                             sigma_log_mu=None, sigma_log_scale=0.6, sigma_jitter=0.30,
+                             sigma_log_mu=None, sigma_log_scale=0.6, sigma_jitter=SIGMA_JITTER,
                              dynamic_mask=None):
     """Le modèle. Inférence JOINTE de la géométrie et du chemin de `w`.
 
