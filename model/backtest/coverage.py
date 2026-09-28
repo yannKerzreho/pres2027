@@ -84,7 +84,13 @@ def scrutin_spatial(election: int, h: int, params: dict) -> tuple[dict, list[str
         # à 2027 ; `tau_ou` suit la banque qu'on teste.
         min_poll_date="1900-01-01",
         order_groups=ORDER_GROUPS_HISTORIQUES[election],
-        tau_ou=params["tau"])
+        tau_ou=params["tau"],
+        # Pas de contrôle de couverture : en 2017, des sondages de 2012-2015
+        # ne sont couverts qu'à 0,34 par le roster, et le reste de leur
+        # bulletin n'est même pas dans le frame historique. Le lever ici
+        # casserait le backtest sans rien corriger ; c'est un défaut de
+        # données à traiter à part, pas à masquer.
+        couverture_min=None)
     fc = forecast_spatial_pooling(fit, np.ones(len(fit.candidates)), h)
     return fc["forecast_scrutin"], list(fit.candidates)
 

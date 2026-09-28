@@ -32,6 +32,6 @@ from .joint_model import (  # noqa: F401
     spatial_pooling_model_ou,
 )
 from .roster import (  # noqa: F401
-    MIN_POLL_DATE, MIN_POLLS, ORDER_GROUPS, build_poll_arrays, build_roster,
-    excess_var_for_nodes, position_anchors,
+    COUVERTURE_MIN, MAX_LAST_POLL_AGE_DAYS, MIN_POLL_DATE, MIN_POLLS, ORDER_GROUPS, build_poll_arrays, build_roster,
+    candidats_retires, excess_var_for_nodes, position_anchors,
 )

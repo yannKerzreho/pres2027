@@ -49,7 +49,11 @@ jobs:
       - name: Modèles du site -> docs/data/
         run: python -m model.run
 
+      # `!cancelled()` et pas le succès implicite : `model.run` échoue APRÈS
+      # avoir laissé les autres modèles écrire (cf. `run` dans model/run.py).
+      # Le job reste rouge, mais le snapshot des modèles sains est publié.
       - name: Commit résultats
+        if: ${{ !cancelled() }}
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -63,5 +67,7 @@ jobs:
           git push origin "HEAD:${GITHUB_REF_NAME}"
 
       - uses: actions/upload-pages-artifact@v3
+        if: ${{ !cancelled() }}
         with: { path: docs }
       - uses: actions/deploy-pages@v4
+        if: ${{ !cancelled() }}

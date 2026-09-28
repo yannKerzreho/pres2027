@@ -21,8 +21,8 @@ from model.core.simulate import forecast_from_draws
 from .geometry import ancres_ecartees, ou_kl_basis, spatial_shares
 from .joint_model import (LEVEL_SCALE, MIN_GAP_ANCRES, POS_SCALE, SEUIL_DYNAMIQUE,
                           SIGMA_JITTER, spatial_pooling_model_ou)
-from .roster import (MIN_POLL_DATE, build_poll_arrays, build_roster,
-                     excess_var_for_nodes, position_anchors)
+from .roster import (COUVERTURE_MIN, MIN_POLL_DATE, build_poll_arrays, build_roster,
+                     candidats_retires, excess_var_for_nodes, position_anchors)
 
 # --- Fit + lecture AVEC incertitude (pas un point estimate) ----------------------
 @dataclass
@@ -46,7 +46,8 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
                         sigma_jitter: float = SIGMA_JITTER, min_gap: float = MIN_GAP_ANCRES,
                         seuil_dynamique: float = SEUIL_DYNAMIQUE,
                         min_poll_date=None, order_groups=None,
-                        tau_ou: float | None = None) -> SpatialPoolingFit:
+                        tau_ou: float | None = None,
+                        couverture_min: float | None = COUVERTURE_MIN) -> SpatialPoolingFit:
     """Roster -> arrays -> NUTS, en une seule inférence jointe.
 
     `mu`, `sigma` et le chemin de `w` sont estimés ENSEMBLE. La chaîne en deux
@@ -54,6 +55,9 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
     ne pouvait pas propager l'incertitude de géométrie : mesuré sur données
     simulées, 99,0 % d'IC90 en géométrie variable contre 79,4 % figée, le vrai
     étant encadré sans qu'aucune répartition intermédiaire ne le corrige.
+
+    `couverture_min` : cf. COUVERTURE_MIN ; `None` désactive le contrôle
+    (backtest : des sondages 2012-2015 du frame 2017 sont couverts à 0,34).
 
     `excess_bank` : variance d'excès par institut (`excess_var_for_nodes`).
     `None` charge celle calibrée pour CE modèle, repli sans excès si absente.
@@ -69,7 +73,7 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
     plancher = MIN_POLL_DATE if min_poll_date is None else pd.Timestamp(min_poll_date)
     raw = raw_polls[pd.to_datetime(raw_polls["date_fin"]) >= plancher].copy()
     candidates, _, _ = build_roster(raw, as_of=as_of, order_groups=order_groups)
-    arrays = build_poll_arrays(raw, candidates)
+    arrays = build_poll_arrays(raw, candidates, couverture_min=couverture_min)
 
     anchors = ancres_ecartees(position_anchors(candidates, order_groups), min_gap)
 
@@ -111,6 +115,7 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
     diagnostics = {
         "n_noeuds": int(arrays["tested_mask"].shape[0]),
         "n_candidats": N,
+        "candidats_retires": candidats_retires(raw, candidates, as_of),
         "n_champs_distincts": len({tuple(np.flatnonzero(r)) for r in tested}),
         "n_dynamiques": int((part >= seuil_dynamique).sum()),
         "K_composantes": int(K),
