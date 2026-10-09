@@ -489,10 +489,21 @@ def extract_notices(grid: list[list[dict]], tour: str, hypothese_defaut: str | N
                         candidat = cell["linked_names"][0]
                     elif cell["colspan"] > 1:
                         m_name = _SUBST_NAME.search(txt)
-                        if not m_name:
+                        span = set(candidates[ci:ci + cell["colspan"]])
+                        if m_name:
+                            candidat = m_name.group(1).strip()
+                        elif len(span) == 1:
+                            # Cellule fusionnée SANS nom sous un en-tête fusionné
+                            # sur les mêmes colonnes : c'est le candidat de
+                            # l'en-tête (« Glucksmann, sauf précision contraire »,
+                            # page restructurée début octobre 2026). Les écarter
+                            # faisait tomber l'hypothèse sous SUM_LO, donc rejeter
+                            # le sondage entier : 8 notices perdues, `gp-pooling`
+                            # réduit à 4 sondages.
+                            candidat = cand
+                        else:
                             warnings.append(f"substitution non identifiée ({txt!r}) dans {notice_label}")
                             continue  # on ne devine pas -> on écarte plutôt qu'on mislabel
-                        candidat = m_name.group(1).strip()
                     if _GENERIC_PLACEHOLDER.match(candidat):
                         # En-tête générique ("Candidat RN"/"Candidat LR") ET
                         # aucun wikilien dans la cellule pour CETTE ligne -> le
