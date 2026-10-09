@@ -116,6 +116,47 @@ def test_extract_notices_multi_hypothesis_rowspan():
         assert r["institut"] == "Ifop"
 
 
+# --- En-tête fusionné « sauf précision contraire » (page restructurée, oct. 2026)
+# La colonne Glucksmann occupe DEUX colonnes dès l'en-tête ; une cellule
+# fusionnée sans nom vaut donc Glucksmann. Seule une cellule qui nomme
+# quelqu'un d'autre est une substitution.
+_ENTETE_FUSIONNE = """
+{| class="wikitable"
+! rowspan=3 | Sondeur
+! rowspan=3 | Date
+! rowspan=3 | Échantillon
+! | [[Fichier:a.jpg|50x50px]]
+! colspan=2 | [[Fichier:b.jpg|50x50px]]
+|-
+! scope=col | [[Jean-Luc Mélenchon|Mélenchon]]<br><small>([[La France insoumise|LFI]])</small>
+! colspan=2 scope=col | [[Raphaël Glucksmann|Glucksmann]]<br><small>([[Place publique (parti politique)|PP]])</small>
+|- style="line-height:5px;"
+| {{Infobox Parti politique français/couleurs|LFI}} |
+| colspan=2 {{Infobox Parti politique français/couleurs|PP}} |
+|-
+| rowspan="2" style="{{Sondeur|Verian}}" |[https://www.commission-des-sondages.fr/notices/files/notices/2026/juillet/1-verian.pdf Verian]
+| rowspan="2" |8-10 juillet
+| rowspan="2" |{{formatnum:1047}}
+|60
+|colspan=2 |40
+|-
+|55
+|colspan=2 |45<br><small>'''[[François Hollande|Hollande]] ([[Parti socialiste (France)|PS]])'''</small>
+|}
+"""
+
+
+def test_cellule_fusionnee_sans_nom_sous_entete_fusionne_vaut_l_entete():
+    warnings = []
+    records = extract_notices(parse_wikitables(_ENTETE_FUSIONNE)[0], "Premier tour", None, warnings)
+    by_hyp = {}
+    for r in records:
+        by_hyp.setdefault(r["hypothese"], {})[r["candidat"]] = r["intention"]
+    assert by_hyp["variante_1"] == {"Mélenchon": 60.0, "Glucksmann": 40.0}
+    assert by_hyp["variante_2"] == {"Mélenchon": 55.0, "Hollande": 45.0}
+    assert not [w for w in warnings if "substitution" in w]
+
+
 # --- Colonne RN à en-tête générique (bug réel : "Candidat RN" avalait tout) --
 # L'en-tête ne nomme PAS le candidat (pas encore arrêté au moment du sondage) ;
 # seule la cellule le fait, via un wikilien — sur une colonne NORMALE (colspan=1,
