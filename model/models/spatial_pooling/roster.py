@@ -40,6 +40,13 @@ MAX_LAST_POLL_AGE_DAYS = 90
 # NE S'APPLIQUE PAS au backtest 2017, dont des sondages de 2012-2015 tombent à
 # 0,34 (le reste de leur bulletin manque au frame historique).
 COUVERTURE_MIN = 0.75
+# Libellés de colonne qui ne sont PAS des candidats. La page Wikipedia a une
+# colonne « Autres » (petits candidats regroupés) ; quand les contributeurs la
+# remplissent dans assez de sondages, elle franchissait MIN_POLLS et
+# `build_roster` levait comme pour un candidat non classé (job du 2026-10-11).
+# Hors roster, sa masse est renormalisée comme celle des petits candidats --
+# et COUVERTURE_MIN reste le garde-fou si elle devenait grosse.
+NON_CANDIDATS = frozenset({"Autres", "Divers"})
 # Pas de la ligne du temps du chemin de `w` (modèle joint). Testé à 7 jours
 # pour réduire la dimension : DÉGRADE la convergence (J-150 passe de R-hat
 # 1,021 à 1,330). Regrouper force plusieurs sondages à se réconcilier sur une
@@ -191,7 +198,7 @@ def build_roster(raw: pd.DataFrame, as_of=None, order_groups=None
     """
     order_groups = ORDER_GROUPS if order_groups is None else order_groups
     counts = raw.groupby("candidat")["notice"].nunique()
-    eligible = set(counts[counts >= MIN_POLLS].index)
+    eligible = set(counts[counts >= MIN_POLLS].index) - NON_CANDIDATS
 
     unclassified = eligible - {m for _, members in order_groups for m in members}
     if unclassified:

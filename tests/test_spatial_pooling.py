@@ -155,6 +155,15 @@ def test_un_candidat_plus_teste_reste_dans_le_roster_mais_est_declare_retire():
     assert candidats_retires(_campagne_rn(10), cands, "2026-09-23") == []
 
 
+def test_autres_n_est_jamais_un_candidat_du_roster():
+    """Régression du 2026-10-11 : la colonne « Autres », remplie dans assez de
+    sondages, faisait lever `build_roster` comme un candidat non classé."""
+    df = _campagne_rn(10)
+    autres = df.drop_duplicates("notice").assign(candidat="Autres", intention=2.0)
+    cands, _, _ = build_roster(pd.concat([df, autres]), as_of="2026-09-23")
+    assert "Autres" not in cands
+
+
 def test_build_poll_arrays_leve_si_un_candidat_qui_pese_est_hors_roster():
     df = _campagne_rn(0)
     sans_bardella = ["Mélenchon", "Philippe", "Le Pen", "Zemmour"]
