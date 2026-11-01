@@ -11,7 +11,7 @@ import numpy as np
 import numpyro
 import numpyro.distributions as dist
 
-from .geometry import spatial_shares
+from .geometry import spatial_outside_share, spatial_shares
 
 # --- Rayon d'action : prior d'ORIGINE, resserrement ANNULÉ (spec §12.13) --------
 # Un resserrement à 0,06 avait été introduit au motif qu'un `sigma` large
@@ -60,7 +60,9 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
                              excess_var=None, tau_ou=None, sigma_w_prior=0.5,
                              level_scale=1.5, pos_scale=0.4,
                              sigma_log_mu=None, sigma_log_scale=0.6, sigma_jitter=SIGMA_JITTER,
-                             dynamic_mask=None):
+                             dynamic_mask=None, is_second_round=None, outside_omega=0.0,
+                             non_expression=None, non_expression_mask=None,
+                             participation_concentration=30.0):
     """Le modèle. Inférence JOINTE de la géométrie et du chemin de `w`.
 
     Trois paramètres par candidat, deux échelles globales, aucun bloc :
@@ -144,10 +146,26 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
     w_full = w_full.at[idx].add(sigma_w * (z_w @ kl_basis))
     numpyro.deterministic("w_now", w_full[:, -1])           # dernière colonne = `as_of`
 
-    pi = spatial_shares(mu, sigma, w_full[:, date_idx].T, tested_mask)
+    # Compatibilité des appels historiques : sans indicateur T2, le modèle est
+    # exactement celui d'avant (pas d'option extérieure).
+    if is_second_round is None:
+        pi = spatial_shares(mu, sigma, w_full[:, date_idx].T, tested_mask)
+    else:
+        pi = spatial_shares(mu, sigma, w_full[:, date_idx].T, tested_mask,
+                            outside_omega=outside_omega, outside_mask=is_second_round)
     var = pi * (1.0 - pi) / jnp.clip(Np[:, None], 1.0, None)
     if excess_var is not None:
         var = var + excess_var[:, None]
     numpyro.deterministic("pi", pi)
     numpyro.factor("ll", jnp.sum(dist.Normal(pi, jnp.sqrt(var + 1e-8)).log_prob(Y) * tested_mask))
-
+    if non_expression is not None and outside_omega is not None:
+        p_out = spatial_outside_share(mu, sigma, w_full[:, date_idx].T, tested_mask,
+                                      outside_omega=outside_omega,
+                                      outside_mask=is_second_round)
+        alpha = jnp.clip(p_out * participation_concentration, 1e-4, None)
+        beta = jnp.clip((1.0 - p_out) * participation_concentration, 1e-4, None)
+        obs = jnp.asarray(non_expression)
+        keep = jnp.asarray(non_expression_mask)
+        numpyro.deterministic("p_non_expression", p_out)
+        numpyro.factor("ll_non_expression", jnp.sum(
+            dist.Beta(alpha, beta).log_prob(jnp.clip(obs, 1e-4, 1 - 1e-4)) * keep))

@@ -29,6 +29,10 @@ import pandas as pd
 
 PARSED = Path(__file__).resolve().parents[2] / "data" / "parsed" / "intentions_2027_wiki.csv"
 ELECTION_T1 = pd.Timestamp("2027-04-18")
+# Le second tour est à deux semaines du premier. Cette date sert uniquement à
+# conserver les sondages T2 pendant l'entre-deux-tours : les projections du
+# premier tour restent, elles, ancrées sur ELECTION_T1.
+ELECTION_T2 = pd.Timestamp("2027-05-02")
 
 # slot -> (bloc, liste de candidats fusionnés). Les alternatives qui ne coexistent
 # jamais dans une même hypothèse sont regroupées en un slot unique.
@@ -109,7 +113,7 @@ def load_live_observations(path: Path | None = None,
     return aggregate_to_slots(load_raw_polls(path, tour, as_of))
 
 
-def load_raw_polls(path: Path | None = None, tour: str = "Premier tour",
+def load_raw_polls(path: Path | None = None, tour: str | None = "Premier tour",
                    as_of: str | None = None) -> pd.DataFrame:
     """Sondages 2027 **bruts et riches** passés aux modèles : niveau candidat, avec
     institut, commanditaire, echantillon, methode, hypothese, date_fin et horizon.
@@ -120,7 +124,12 @@ def load_raw_polls(path: Path | None = None, tour: str = "Premier tour",
 
     as_of : ne garde que les sondages terminés à cette date ou avant (backfill)."""
     df = pd.read_csv(path or PARSED)
-    df = df[df["tour"] == tour].copy()
+    # Compatibilité avec les CSV générés avant l'ajout de la participation.
+    # L'absence est une donnée manquante, pas zéro abstention.
+    if "non_expression" not in df.columns:
+        df["non_expression"] = np.nan
+    if tour is not None:
+        df = df[df["tour"] == tour].copy()
     # date_fin manquante -> repli sur date_notice (cf. sondages/schema.py : "repli
     # fiable"), sinon une bonne partie des sondages wiki (terrain non détaillé)
     # serait perdue faute de date exploitable.
@@ -129,7 +138,9 @@ def load_raw_polls(path: Path | None = None, tour: str = "Premier tour",
     df["date_fin"] = date_fin.fillna(date_notice)
     if as_of is not None:
         df = df[df["date_fin"] <= pd.Timestamp(as_of)]
-    df["horizon"] = (ELECTION_T1 - df["date_fin"]).dt.days
+    election = df["tour"].map({"Premier tour": ELECTION_T1,
+                                "Deuxième tour": ELECTION_T2}).fillna(ELECTION_T1)
+    df["horizon"] = (election - df["date_fin"]).dt.days
     df = df[df["horizon"].notna() & (df["horizon"] >= 0)]
     # slot/bloc ajoutés comme colonnes (utiles) mais SANS agréger — le brut reste
     sb = df["candidat"].apply(map_candidate)

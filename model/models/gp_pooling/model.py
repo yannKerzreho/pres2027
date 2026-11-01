@@ -187,7 +187,8 @@ class GPPooling(ForecastModel):
                        "tau": law["tau"] * FACTEUR_DIFFUSION}
 
     def used_polls(self, raw_polls):
-        return filter_scenarios_by_exact_slots(raw_polls, set(SLOTS))
+        t1 = raw_polls[raw_polls["tour"] == "Premier tour"]
+        return filter_scenarios_by_exact_slots(t1, set(SLOTS))
 
     def nowcast(self, raw_polls, as_of) -> Nowcast:
         slots = list(SLOTS)

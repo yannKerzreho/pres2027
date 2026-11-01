@@ -64,6 +64,38 @@ def test_desamorce_plusieurs_liens_meme_cellule():
     assert linked_names == ["Bardella", "Le Pen"]
 
 
+_SECOND_TOUR_AVEC_PARTICIPATION = """
+{| class="wikitable"
+! rowspan=3 | Sondeur
+! rowspan=3 | Date
+! rowspan=3 | Échantillon
+! rowspan=3 | Abstention, blancs ou nuls
+! | [[Fichier:a.jpg|50x50px]]
+! | [[Fichier:b.jpg|50x50px]]
+|-
+! scope=col | [[Édouard Philippe|Philippe]]
+! scope=col | [[Marine Le Pen|Le Pen]]
+|- style="line-height:5px;"
+| | | | | |
+|-
+| style="{{Sondeur|Ifop}}" |[https://example.test/ifop.pdf Ifop]
+| 1-2 octobre 2026
+| 1000
+| 36
+| 52
+| 48
+|}
+"""
+
+
+def test_extract_notices_keeps_non_expression_outside_candidate_simplex():
+    records = extract_notices(parse_wikitables(_SECOND_TOUR_AVEC_PARTICIPATION)[0],
+                              "Deuxième tour", "Philippe – Le Pen", [])
+    assert {r["candidat"] for r in records} == {"Philippe", "Le Pen"}
+    assert all(r["non_expression"] == 36.0 for r in records)
+    assert sum(r["intention"] for r in records) == 100.0
+
+
 # --- Bloc Ifop réel (8 hypothèses via rowspan), copié depuis la page 2027 ----
 _IFOP_MULTI_HYP = """
 {| class="wikitable"

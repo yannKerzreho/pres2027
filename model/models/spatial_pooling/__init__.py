@@ -26,7 +26,9 @@ from .fit import (  # noqa: F401
     SpatialPoolingFit, fit_spatial_pooling, forecast_spatial_pooling, pi_draws_for_mask,
     summarize_pi,
 )
-from .geometry import B, V, W, ancres_ecartees, ou_kl_basis, spatial_shares  # noqa: F401
+from .geometry import (  # noqa: F401
+    B, V, W, ancres_ecartees, ou_kl_basis, spatial_outside_share, spatial_shares,
+)
 from .joint_model import (  # noqa: F401
     LEVEL_SCALE, MIN_GAP_ANCRES, POS_SCALE, SEUIL_DYNAMIQUE, SIGMA_JITTER,
     spatial_pooling_model_ou,

@@ -255,6 +255,7 @@ def assemble_snapshot(model: ForecastModel, as_of: str, nc: Nowcast, fc: dict,
         "nowcast": nc.summary(),
         "forecast_scrutin": fc["forecast_scrutin"],
         "duels_probables": fc["duels_probables"],
+        "seconds_tours": fc.get("seconds_tours", []),
         "drift_modele": fc.get("drift_modele"),
         "diagnostics": nc.diagnostics,
         "trajectoire": nc.trajectoire,
@@ -266,6 +267,7 @@ def validate_snapshot(s: dict) -> None:
     """Garde-fou du contrat : lève AssertionError si le schéma est invalide."""
     for key in ("model", "as_of", "meta", "nowcast", "forecast_scrutin", "duels_probables"):
         assert key in s, f"clé manquante : {key}"
+    assert isinstance(s.get("seconds_tours", []), list), "seconds_tours invalide"
     fc = s["forecast_scrutin"]
     assert fc, "forecast_scrutin vide"
     tot = 0.0

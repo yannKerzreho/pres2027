@@ -24,6 +24,11 @@ from .joint_model import (LEVEL_SCALE, MIN_GAP_ANCRES, POS_SCALE, SEUIL_DYNAMIQU
 from .roster import (COUVERTURE_MIN, MIN_POLL_DATE, build_poll_arrays, build_roster,
                      candidats_retires, excess_var_for_nodes, position_anchors)
 
+# Option extérieure uniforme de référence : les puissances des candidats T2
+# sont exprimées relativement à elle. `None` désactive le mécanisme pour les
+# backtests de comparaison.
+OUTSIDE_OMEGA = 0.0
+
 # --- Fit + lecture AVEC incertitude (pas un point estimate) ----------------------
 @dataclass
 class SpatialPoolingFit:
@@ -38,6 +43,7 @@ class SpatialPoolingFit:
     sigma_draws: np.ndarray   # (S, N)
     w_draws: np.ndarray       # (S, N)
     diagnostics: dict
+    outside_omega: float | None = None
 
 
 def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, tune: int = 600,
@@ -47,7 +53,8 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
                         seuil_dynamique: float = SEUIL_DYNAMIQUE,
                         min_poll_date=None, order_groups=None,
                         tau_ou: float | None = None,
-                        couverture_min: float | None = COUVERTURE_MIN) -> SpatialPoolingFit:
+                        couverture_min: float | None = COUVERTURE_MIN,
+                        outside_omega: float | None = OUTSIDE_OMEGA) -> SpatialPoolingFit:
     """Roster -> arrays -> NUTS, en une seule inférence jointe.
 
     `mu`, `sigma` et le chemin de `w` sont estimés ENSEMBLE. La chaîne en deux
@@ -99,6 +106,9 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         kl_basis=jnp.asarray(kl), pos_anchor=jnp.asarray(anchors),
         excess_var=jnp.asarray(excess_var), tau_ou=tau_ou, pos_scale=pos_scale,
         sigma_jitter=sigma_jitter, dynamic_mask=part >= seuil_dynamique,
+        is_second_round=jnp.asarray(arrays["is_second_round"]), outside_omega=outside_omega,
+        non_expression=jnp.asarray(arrays["non_expression"]),
+        non_expression_mask=jnp.asarray(arrays["non_expression_mask"]),
     )
     t0 = time.time()
     samples, extra = run_numpyro_mcmc(spatial_pooling_model_ou, kwargs, draws=draws, tune=tune,
@@ -115,6 +125,7 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
     diagnostics = {
         "n_noeuds": int(arrays["tested_mask"].shape[0]),
         "n_candidats": N,
+        "n_non_expression_t2": int(np.sum(arrays["non_expression_mask"])),
         "candidats_retires": candidats_retires(raw, candidates, as_of),
         "n_champs_distincts": len({tuple(np.flatnonzero(r)) for r in tested}),
         "n_dynamiques": int((part >= seuil_dynamique).sum()),
@@ -130,13 +141,15 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         "pas_leapfrog_median": int(np.median(steps)),
         "sigma_w": round(float(np.mean(np.asarray(samples["sigma_w"]))), 4),
         "sigma_global": round(float(np.mean(np.asarray(samples["sigma_global"]))), 4),
+        "option_exterieure_t2": ("désactivée" if outside_omega is None else
+                                  f"uniforme, omega={outside_omega:g} (échelle de référence)"),
     }
     return SpatialPoolingFit(
         candidates=candidates, anchors=anchors, tested_mask=arrays["tested_mask"],
         mu_draws=np.asarray(samples["mu"]).reshape(-1, N),
         sigma_draws=np.asarray(samples["sigma"]).reshape(-1, N),
         w_draws=np.asarray(samples["w_now"]).reshape(-1, N),
-        diagnostics=diagnostics,
+        diagnostics=diagnostics, outside_omega=outside_omega,
     )
 
 def pi_draws_for_mask(fit: SpatialPoolingFit, mask: np.ndarray) -> np.ndarray:
@@ -154,6 +167,63 @@ def pi_draws_for_mask(fit: SpatialPoolingFit, mask: np.ndarray) -> np.ndarray:
     comparaison et ses limites connues)."""
     return np.asarray(spatial_shares(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
                                      jnp.asarray(fit.w_draws), jnp.asarray(mask)))
+
+
+def second_round_from_fit(fit: SpatialPoolingFit, raw_polls: pd.DataFrame) -> list[dict]:
+    """Duels T2 prédits par le *même posterior* que le premier tour.
+
+    Les positions ``mu``, rayons ``sigma`` et puissances ``w`` ont été ajustés
+    simultanément sur les hypothèses des deux tours. Pour un duel observé dans
+    Wikipédia, on ne ré-estime donc rien et on ne moyenne pas un modèle séparé :
+    chaque tirage est simplement évalué avec le masque des deux finalistes.
+
+    Les scores de duel sont des parts de suffrages exprimés. L'option
+    extérieure uniforme est présente dans la vraisemblance T2 et lors de cette
+    lecture : elle capte la sortie du duel (abstention/blanc/nul) sans devenir
+    un candidat élu, puis les deux parts sont reconditionnées sur les exprimés.
+    """
+    if raw_polls.empty or "tour" not in raw_polls:
+        return []
+    t2 = raw_polls[raw_polls["tour"] == "Deuxième tour"].copy()
+    if t2.empty:
+        return []
+    t2["hypothese"] = t2["hypothese"].fillna("__unique__")
+    index = {c: i for i, c in enumerate(fit.candidates)}
+    pairs: dict[tuple[str, str], set[str]] = {}
+    for (notice, _), group in t2.groupby(["notice", "hypothese"], sort=False):
+        listed = set(group["candidat"])
+        names = sorted(listed & set(index))
+        # Une hypothèse T2 doit être exactement un duel dans les données brutes.
+        # Ignorer un troisième libellé inconnu plutôt que renormaliser revient à
+        # fabriquer le report que le modèle cherche précisément à mesurer.
+        if len(listed) == 2 and len(names) == 2:
+            pairs.setdefault((names[0], names[1]), set()).add(str(notice))
+
+    out = []
+    for pair, notices in pairs.items():
+        mask = np.zeros(len(fit.candidates))
+        idx = [index[c] for c in pair]
+        mask[idx] = 1.0
+        # Même option uniforme que dans la vraisemblance T2. Les parts rendues
+        # restent conditionnées aux suffrages exprimés, comme les sondages.
+        draws = np.asarray(spatial_shares(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
+                                          jnp.asarray(fit.w_draws), jnp.asarray(mask),
+                                          outside_omega=fit.outside_omega, outside_mask=1.0))[:, idx]
+        p0 = float((draws[:, 0] > draws[:, 1]).mean())
+        out.append({
+            "candidats": list(pair),
+            "intentions": {
+                pair[0]: {"moyenne": round(float(draws[:, 0].mean()), 4),
+                          "ic90": [round(float(x), 4) for x in np.percentile(draws[:, 0], [5, 95])],
+                          "p_gagne": round(p0, 4)},
+                pair[1]: {"moyenne": round(float(draws[:, 1].mean()), 4),
+                          "ic90": [round(float(x), 4) for x in np.percentile(draws[:, 1], [5, 95])],
+                          "p_gagne": round(1.0 - p0, 4)},
+            },
+            "n_sondages_directs": len(notices),
+            "modele": "posterior spatial conjoint T1 + T2",
+        })
+    return sorted(out, key=lambda d: (-d["n_sondages_directs"], d["candidats"]))
 
 
 def summarize_pi(pi_draws: np.ndarray, labels: list[str]) -> dict:
@@ -190,3 +260,7 @@ def forecast_spatial_pooling(fit: SpatialPoolingFit, mask: np.ndarray, horizon_d
     pi = pi_draws_for_mask(fit, mask)[:, mask_bool]
     pi = projeter_au_scrutin(pi, horizon_days, load_law())
     return forecast_from_draws(pi, labels, horizon_days)
+# Échelle de l'option extérieure uniforme. Fixée à zéro : les w des candidats
+# deviennent relatifs à elle et le fit reste identifiable. Ce n'est pas un taux
+# observé d'abstention ; celui-ci exigera une série de participation séparée.
+OUTSIDE_OMEGA = 0.0

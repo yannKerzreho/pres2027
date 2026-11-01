@@ -90,7 +90,8 @@ def ancres_ecartees(anchors: np.ndarray, min_gap: float = 0.25) -> np.ndarray:
     return 1.0 / (1.0 + np.exp(-out))
 
 
-def spatial_shares(mu, sigma, w, tested_mask) -> jnp.ndarray:
+def spatial_shares(mu, sigma, w, tested_mask, outside_omega=None,
+                   outside_mask=None) -> jnp.ndarray:
     """Coeur du modèle d'observation (spec §4) : softmax masqué sur la grille +
     agrégation par les poids démographiques W -> pi (P,N) ou (N,) selon la
     forme de tested_mask. `mu`/`sigma`/`w` : (N,) OU (S,N) pour S tirages
@@ -119,8 +120,40 @@ def spatial_shares(mu, sigma, w, tested_mask) -> jnp.ndarray:
     A = A - jnp.max(A, axis=-2, keepdims=True)
     expA = jnp.exp(A)
     numerator = expA * tested_mask[..., :, None]
-    denom = jnp.clip(numerator.sum(axis=-2, keepdims=True), 1e-12, None)
-    return jnp.sum((numerator / denom) * W, axis=-1)
+    if outside_omega is None:
+        denom = jnp.clip(numerator.sum(axis=-2, keepdims=True), 1e-12, None)
+        return jnp.sum((numerator / denom) * W, axis=-1)
+
+    # Option extérieure uniforme (« ne pas exprimer de choix entre ces deux
+    # candidats »). Elle est active seulement pour les observations T2. Son
+    # attractivité ne dépend pas de v, contrairement aux noyaux candidats :
+    # elle retire donc davantage les zones où les deux finalistes sont peu
+    # attractifs et MODIFIE bien le rapport parmi exprimés après intégration.
+    #
+    # Les sondages publient les deux candidats parmi exprimés, pas la masse de
+    # l'option extérieure. On conditionne donc après l'intégrale, et non point
+    # par point : normaliser localement annulerait exactement son effet.
+    om = 0.0 if outside_mask is None else jnp.asarray(outside_mask)
+    outside = jnp.exp(outside_omega) * om[..., None, None]
+    denom = jnp.clip(numerator.sum(axis=-2, keepdims=True) + outside, 1e-12, None)
+    raw = jnp.sum((numerator / denom) * W, axis=-1)
+    return raw / jnp.clip(raw.sum(axis=-1, keepdims=True), 1e-12, None)
+
+
+def spatial_outside_share(mu, sigma, w, tested_mask, outside_omega=0.0,
+                          outside_mask=1.0) -> jnp.ndarray:
+    """Masse intégrée de l'option extérieure, avant conditionnement sur les
+    suffrages exprimés. Elle est la quantité à comparer aux sondages publiant
+    « abstention, blanc ou nul » ; ``spatial_shares`` rend, lui, les candidats
+    conditionnellement aux exprimés."""
+    D = -((V[None, :] - mu[..., None]) ** 2) / (2 * sigma[..., None] ** 2)
+    A = w[..., None] + D - jax.nn.logsumexp(D, axis=-1, b=W, keepdims=True)
+    A = A - jnp.max(A, axis=-2, keepdims=True)
+    numerator = jnp.exp(A) * tested_mask[..., :, None]
+    om = jnp.asarray(outside_mask)
+    outside = jnp.exp(outside_omega) * om[..., None, None]
+    denom = jnp.clip(numerator.sum(axis=-2, keepdims=True) + outside, 1e-12, None)
+    return jnp.sum((outside / denom).squeeze(axis=-2) * W, axis=-1)
 
 
 def ou_kl_basis(unique_dates, as_of, tau_ou, var_cible=0.99, k_max=15, center=False):
@@ -164,4 +197,3 @@ def ou_kl_basis(unique_dates, as_of, tau_ou, var_cible=0.99, k_max=15, center=Fa
     k = int(np.searchsorted(np.cumsum(val) / val.sum(), var_cible)) + 1
     k = max(3, min(k, k_max, len(t)))
     return (vec[:, :k] * np.sqrt(val[:k])).T, k
-

@@ -18,7 +18,8 @@ from numpyro import handlers
 
 from model.models.spatial_pooling import (
     MAX_LAST_POLL_AGE_DAYS, ORDER_GROUPS, ancres_ecartees, build_poll_arrays, build_roster,
-    candidats_retires, ou_kl_basis, position_anchors, spatial_pooling_model_ou, spatial_shares,
+    candidats_retires, ou_kl_basis, position_anchors, spatial_outside_share,
+    spatial_pooling_model_ou, spatial_shares,
 )
 
 logit = lambda p: np.log(p / (1.0 - p))  # noqa: E731
@@ -84,6 +85,27 @@ def test_spatial_shares_retirer_un_candidat_profite_a_son_VOISIN():
     assert gain_voisin > gain_lointain
 
 
+def test_option_exterieure_uniforme_change_le_duel_parmi_exprimes():
+    """Le blanc/abstention uniforme est ajouté AVANT l'intégrale spatiale.
+    Le normaliser localement l'annulerait ; ici il retire davantage les zones
+    où aucun finaliste n'est attirant et déplace donc le rapport final."""
+    mu = jnp.asarray([0.20, 0.68])
+    sigma = jnp.asarray([0.10, 0.22])
+    w = jnp.asarray([0.0, 0.0])
+    mask = np.ones(2)
+    sans = np.asarray(spatial_shares(mu, sigma, w, mask))
+    avec = np.asarray(spatial_shares(mu, sigma, w, mask, outside_omega=0.0, outside_mask=1.0))
+    assert avec.sum() == pytest.approx(1.0)
+    assert not np.allclose(avec, sans)
+
+
+def test_option_exterieure_expose_une_masse_de_non_expression():
+    blank = spatial_outside_share(jnp.asarray([0.3, 0.7]), jnp.asarray([0.12, 0.12]),
+                                  jnp.asarray([0.0, 0.0]), jnp.asarray([1.0, 1.0]),
+                                  outside_omega=0.0)
+    assert 0.0 < float(blank) < 1.0
+
+
 def test_ou_kl_basis_centree_est_orthogonale_a_la_constante():
     dates = np.arange(10, dtype=float) * 7.0
     base, k = ou_kl_basis(dates, dates.max() + 1.0, tau_ou=262.0, center=True)
@@ -121,6 +143,15 @@ def test_build_poll_arrays_renormalise_et_deflate():
         assert Y[p][tm[p] == 0].sum() == pytest.approx(0.0)
     # `Np` = échantillon x masse conservée ; ici le roster couvre tout le bulletin
     assert (a["Np"] <= 1000.0 + 1e-9).all()
+
+
+def test_build_poll_arrays_conserve_la_non_expression_t2():
+    df = _sondages_jouets()
+    df["tour"] = "Deuxième tour"
+    df["non_expression"] = 24.0
+    a = build_poll_arrays(df, ["X", "Y", "Z"])
+    assert np.allclose(a["non_expression"], 0.24)
+    assert a["non_expression_mask"].all()
 
 
 def test_build_poll_arrays_jette_les_champs_a_moins_de_deux_candidats():

@@ -234,6 +234,7 @@ def candidats_retires(raw: pd.DataFrame, candidates: list[str], as_of=None) -> l
 def build_poll_arrays(df: pd.DataFrame, candidates: list[str], notice_col="notice", hyp_col="hypothese",
                       candidat_col="candidat", date_col="date_fin", intention_col="intention",
                       echantillon_col="echantillon", institut_col="institut",
+                      tour_col="tour", non_expression_col="non_expression",
                       couverture_min: float | None = None) -> dict:
     """DataFrame long (une ligne = un candidat testé dans une hypothèse d'un
     sondage) -> (tested_mask, Y, Np, dates, instituts) restreint à
@@ -250,13 +251,21 @@ def build_poll_arrays(df: pd.DataFrame, candidates: list[str], notice_col="notic
                             candidat_col, intention_col)
     idx = {c: i for i, c in enumerate(candidates)}
     df = df[df[candidat_col].isin(candidates)].copy()
+    if non_expression_col not in df:
+        df[non_expression_col] = np.nan
     df[hyp_col] = df[hyp_col].fillna("__unique__")
-    g = (df.groupby([notice_col, hyp_col, date_col, echantillon_col, institut_col, candidat_col])[intention_col]
-          .sum().reset_index())
+    group_cols = [notice_col, hyp_col, date_col, echantillon_col, institut_col, candidat_col]
+    if tour_col in df:
+        group_cols.append(tour_col)
+    g = (df.groupby(group_cols)
+          .agg(**{intention_col: (intention_col, "sum"),
+                  non_expression_col: (non_expression_col, "first")})
+          .reset_index())
     g["n_hyp"] = g.groupby(notice_col)[hyp_col].transform("nunique")
 
     N = len(candidates)
-    tested_mask, Y, Np, dates, instituts = [], [], [], [], []
+    tested_mask, Y, Np, dates, instituts, is_second_round = [], [], [], [], [], []
+    non_expression, non_expression_mask = [], []
     Np_full, notices = [], []          # cf. `notice_idx` plus bas (spec §12.7)
     for (notice, hyp), grp in g.groupby([notice_col, hyp_col], sort=False):
         mask = np.zeros(N)
@@ -290,6 +299,10 @@ def build_poll_arrays(df: pd.DataFrame, candidates: list[str], notice_col="notic
         notices.append(notice)
         dates.append(pd.Timestamp(grp[date_col].iloc[0]))
         instituts.append(str(grp[institut_col].iloc[0]))
+        is_second_round.append(bool(tour_col in grp and grp[tour_col].iloc[0] == "Deuxième tour"))
+        value = grp[non_expression_col].dropna()
+        non_expression.append(float(value.iloc[0]) / 100.0 if len(value) else 0.0)
+        non_expression_mask.append(bool(len(value) and is_second_round[-1]))
 
     dates_num = np.array([d.toordinal() for d in dates], dtype=float)
 
@@ -322,7 +335,10 @@ def build_poll_arrays(df: pd.DataFrame, candidates: list[str], notice_col="notic
 
     return dict(tested_mask=np.array(tested_mask), Y=np.array(Y), Np=np.array(Np), dates=dates_num,
                unique_dates=unique_dates, date_idx=date_idx, dt_gaps=dt_gaps, instituts=instituts,
-               Np_full=np.array(Np_full), notice_idx=notice_idx, n_notices=len(uniq_notices))
+               Np_full=np.array(Np_full), notice_idx=notice_idx, n_notices=len(uniq_notices),
+               is_second_round=np.array(is_second_round, dtype=float),
+               non_expression=np.array(non_expression),
+               non_expression_mask=np.array(non_expression_mask, dtype=float))
 
 
 def _verifie_couverture(df, candidates, seuil, notice_col, hyp_col, candidat_col,
@@ -373,4 +389,3 @@ def excess_var_for_nodes(instituts: list[str], bank) -> np.ndarray:
     if bank is None:
         return np.zeros(len(instituts))
     return np.array([(excess_sigma_spatial(bank, inst) / 100.0) ** 2 for inst in instituts])
-

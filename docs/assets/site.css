@@ -137,6 +137,8 @@ h3 { font-size:0.95rem; font-weight:700; margin:28px 0 6px; }
 .dlabel { position:relative; padding-left:10px; font:600 0.85rem/20px var(--sans);
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .dp { text-align:right; font:700 0.92rem var(--mono); }
+.duel-t2 { grid-template-columns:1fr; font-size:0.88rem; line-height:1.65; }
+.t2-note { color:var(--muted); font:0.74rem var(--mono); }
 
 /* ---------- sélecteur de liste (Scénarios) ---------- */
 .picker { display:flex; flex-wrap:wrap; gap:7px; margin:0 0 10px; }

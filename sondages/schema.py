@@ -26,6 +26,7 @@ COLUMNS: dict[str, str] = {
     "hypothese":     "hypothèse de candidatures testée (ou None)",
     "candidat":      "nom du candidat",
     "intention":     "intention de vote en % des suffrages exprimés",
+    "non_expression": "abstention + blanc/nul en % des inscrits, si publié",
 }
 
 TOURS = {"Premier tour", "Deuxième tour"}
@@ -46,6 +47,9 @@ def validate(df: pd.DataFrame) -> pd.DataFrame:
     assert df["notice_url"].notna().all(), "notice_url manquant (traçabilité)"
     assert df["tour"].isin(TOURS).all(), "valeur de 'tour' invalide"
     assert df["intention"].between(0, 100).all(), "intention hors [0, 100]"
+    if df["non_expression"].notna().any():
+        assert df.loc[df["non_expression"].notna(), "non_expression"].between(0, 100).all(), \
+            "non_expression hors [0, 100]"
     # cohérence : chaque (sondage, hypothèse, tour) somme à ~100 %
     g = df.groupby(["notice", "hypothese", "tour"], dropna=False)["intention"].sum()
     bad = g[(g < 90) | (g > 110)]

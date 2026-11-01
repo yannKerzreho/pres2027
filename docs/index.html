@@ -51,6 +51,14 @@
 
   <h2>Duels de 2<sup>nd</sup> tour probables</h2>
   <div id="duels"></div>
+
+  <h2>Second tour · modèle spatial conjoint</h2>
+  <p class="legend">Les duels ci-dessous sont ajustés dans le même modèle spatial que le
+    premier tour : positions et puissances des candidats sont communes aux deux tours.
+    Les pourcentages portent sur les suffrages exprimés. Une option extérieure uniforme
+    (abstention/blanc/nul, ω fixé comme référence) est active dans les duels : elle retire
+    surtout les zones de l’axe où aucun finaliste n’est attractif.</p>
+  <div id="seconds-tours"></div>
 </div>
 
 <picture>
@@ -271,6 +279,23 @@ function renderDuels(latest){
       <div class="dp">${prob(d.probabilite)}</div>`;host.appendChild(e);});
 }
 
+function renderSecondsTours(duels){
+  const host=document.getElementById("seconds-tours"); host.innerHTML="";
+  if(!duels?.length){
+    host.innerHTML='<p class="legend">Aucun duel de second tour directement testé n’est encore exploitable.</p>';
+    return;
+  }
+  duels.forEach(d=>{
+    const [a,b]=d.candidats, aa=d.intentions[a], bb=d.intentions[b];
+    const e=document.createElement("div"); e.className="duel duel-t2";
+    e.innerHTML=`<div><b>${a} vs ${b}</b><br>
+      ${a} : ${pct(aa.moyenne)} · IC 90 % ${pct(aa.ic90[0])}–${pct(aa.ic90[1])} · P(gagner) ${prob(aa.p_gagne)}<br>
+      ${b} : ${pct(bb.moyenne)} · IC 90 % ${pct(bb.ic90[0])}–${pct(bb.ic90[1])} · P(gagner) ${prob(bb.p_gagne)}<br>
+      <span class="t2-note">${d.n_sondages_directs ?? d.n_sondages ?? 0} sondage(s) direct(s)</span></div>`;
+    host.appendChild(e);
+  });
+}
+
 function peindre(snaps){
   DERNIER=snaps;
   const latest=snaps[snaps.length-1];
@@ -282,6 +307,12 @@ function peindre(snaps){
 
   const topSlots=renderNowcast(latest).slice(0,5);
   renderDuels(latest);
+  // L'artefact spatial est indépendant du modèle choisi pour le suivi T1 :
+  // l'accueil peut donc afficher son posterior conjoint sans prétendre que le
+  // GP de la courbe principale sait répondre au second tour.
+  getJSON("./data/spatial-pooling/scenarios.json")
+    .then(d=>renderSecondsTours(d.seconds_tours||[]))
+    .catch(()=>renderSecondsTours([]));
 
   // Jours qui apportent de l'information : les dates de fin de sondage. Le graphe
   // temporel n'y marque ses points que là (cf. timeChart) — la trajectoire étant

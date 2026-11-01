@@ -374,6 +374,24 @@ def _is_meta_label(label: str) -> bool:
     return label in ("sondeur", "date", "dates", "echantillon") or label.startswith("abstention")
 
 
+def _is_non_expression_label(label: str) -> bool:
+    """Colonne séparée de participation, jamais un candidat.
+
+    Les intentions des candidats sont publiées parmi les suffrages exprimés et
+    doivent continuer à sommer à 100 %. « Abstention, blanc ou nul » vit sur un
+    autre dénominateur (les inscrits) : on la conserve donc comme covariable
+    répétée sur les lignes du duel, pour une future vraisemblance Beta de
+    participation, sans la mélanger au simplexe des candidats.
+    """
+    folded = _strip_accents(label).lower()
+    return "abstention" in folded or ("blanc" in folded and "nul" in folded)
+
+
+def _percent_or_none(text: str) -> float | None:
+    m = re.search(r"(\d{1,3}(?:[.,]\d+)?)", text)
+    return float(m.group(1).replace(",", ".")) if m else None
+
+
 def extract_notices(grid: list[list[dict]], tour: str, hypothese_defaut: str | None,
                     warnings: list[str], year_hint: str | None = None) -> list[dict]:
     # 1. repère la ligne d'en-tête "Sondeur"
@@ -387,6 +405,8 @@ def extract_notices(grid: list[list[dict]], tour: str, hypothese_defaut: str | N
             break
         n_meta += 1
     n_meta = max(n_meta, 3)  # Sondeur/Date/Échantillon toujours présents
+    non_expression_cols = [i for i, c in enumerate(grid[header_idx][:n_meta])
+                           if _is_non_expression_label(c["text"])]
     names_row = grid[header_idx + 1]
     candidates = _header_names(names_row[n_meta:])
 
@@ -438,6 +458,10 @@ def extract_notices(grid: list[list[dict]], tour: str, hypothese_defaut: str | N
             elif tour == "Premier tour" and not multi:
                 hypothese = None
 
+            values = [_percent_or_none(row[i]["text"]) for i in non_expression_cols
+                      if i < len(row)]
+            non_expression = next((v for v in values if v is not None), None)
+
             # Cellule à liens multiples (« [[Bardella]] / [[Le Pen]] » — même
             # score valable pour plusieurs candidats, cf. `_desamorce`) : la
             # 1ère alternative garde le libellé d'hypothèse d'origine
@@ -473,10 +497,9 @@ def extract_notices(grid: list[list[dict]], tour: str, hypothese_defaut: str | N
                     txt = cell["text"]
                     if not txt or txt in ("—", "-"):
                         continue
-                    m_pct = re.search(r"(\d{1,3}(?:[.,]\d+)?)", txt)
-                    if not m_pct:
+                    pct = _percent_or_none(txt)
+                    if pct is None:
                         continue
-                    pct = float(m_pct.group(1).replace(",", "."))
                     candidat = cand
                     if ci in name_override:
                         candidat = name_override[ci]
@@ -522,6 +545,7 @@ def extract_notices(grid: list[list[dict]], tour: str, hypothese_defaut: str | N
                         "echantillon": echantillon, "methode": None,
                         "tour": tour, "hypothese": combo_hypothese,
                         "candidat": candidat, "intention": pct,
+                        "non_expression": non_expression,
                     })
     return records
 
@@ -681,9 +705,13 @@ def main():
                     help="échoue (code 1) SANS écrire si moins de N sondages sont "
                          "extraits — garde-fou du job quotidien contre une "
                          "dégradation silencieuse du parsing Wikipedia")
+    ap.add_argument("--sans-repli-pdf", action="store_true",
+                    help="ne télécharge pas les notices PDF pour compléter les dates ; "
+                         "utile aux réimports historiques où seule la table Wikipédia "
+                         "est recherchée")
     args = ap.parse_args()
 
-    intentions, report = build_dataset(args.page)
+    intentions, report = build_dataset(args.page, pdf_date_fallback=not args.sans_repli_pdf)
 
     # Vérifier AVANT d'écrire : la source est une page wiki éditable par
     # n'importe qui, et un changement de gabarit ou un renommage de section

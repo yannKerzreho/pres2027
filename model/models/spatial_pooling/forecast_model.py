@@ -23,7 +23,7 @@ from model.core.base import ForecastModel, Nowcast, register
 from model.core.live_dataset import SLOTS
 from model.core.simulate import forecast_from_draws
 
-from .fit import fit_spatial_pooling, pi_draws_for_mask
+from .fit import fit_spatial_pooling, pi_draws_for_mask, second_round_from_fit
 from .geometry import V, W
 from .roster import MIN_POLL_DATE, build_roster
 
@@ -92,6 +92,10 @@ class SpatialPooling(ForecastModel):
     scenario_artifact = "scenarios.json"
 
     def nowcast(self, polls: pd.DataFrame, as_of: str) -> Nowcast:
+        # UN SEUL fit : les hypothèses T1 et les duels T2 contraignent les mêmes
+        # positions, rayons et puissances. Ajuster le T2 après coup sur le
+        # résultat T1 réintroduirait exactement le report mécanique que le
+        # modèle spatial doit éviter.
         fit = fit_spatial_pooling(polls, as_of=as_of)
         if fit.diagnostics["rhat_max"] > RHAT_PUBLIABLE:
             # Une seconde graine d'abord : la convergence de ce modèle dépend
@@ -106,7 +110,8 @@ class SpatialPooling(ForecastModel):
                 f"{fit.diagnostics['rhat_max']}, ESS min {fit.diagnostics['ess_min']}, "
                 f"pires sites {fit.diagnostics['rhat_pires_sites']}) : rien n'est publié, "
                 "l'artefact de la veille reste en ligne.")
-        _export_scenarios(fit, as_of)
+        self._seconds_tours = second_round_from_fit(fit, polls)
+        _export_scenarios(fit, as_of, self._seconds_tours)
 
         slots = [(_slot_de(c), i) for i, c in enumerate(fit.candidates)]
         garde = [(s, i) for s, i in slots if s is not None]
@@ -134,8 +139,10 @@ class SpatialPooling(ForecastModel):
         from model.core.projection import projeter_au_scrutin
         pi = np.asarray(nowcast.draws.values)
         labels = nowcast.draws.coords["candidat"].values.tolist()
-        return forecast_from_draws(projeter_au_scrutin(pi, horizon_days, load_law()),
-                                   labels, horizon_days)
+        out = forecast_from_draws(projeter_au_scrutin(pi, horizon_days, load_law()),
+                                  labels, horizon_days)
+        out["seconds_tours"] = self._seconds_tours
+        return out
 
     def used_polls(self, raw_polls: pd.DataFrame) -> pd.DataFrame:
         """Le modèle filtre par date plancher ET par roster : sans cette
@@ -174,7 +181,7 @@ class SpatialPooling(ForecastModel):
                 for v in moy.values()]
 
 
-def _export_scenarios(fit, as_of: str) -> None:
+def _export_scenarios(fit, as_of: str, seconds_tours: list[dict]) -> None:
     """Écrit les TIRAGES pour l'onglet scénarios du site.
 
     Le point de l'architecture : pour un champ arbitraire coché par un visiteur,
@@ -215,6 +222,7 @@ def _export_scenarios(fit, as_of: str) -> None:
         "tirages": {"mu": r4(fit.mu_draws[sel]), "sigma": r4(fit.sigma_draws[sel]),
                     "w": r4(fit.w_draws[sel])},
         "diagnostics": fit.diagnostics,
+        "seconds_tours": seconds_tours,
         # Loi de projection au scrutin (banque commune) : le navigateur applique
         # la MÊME transformation que `projeter_au_scrutin`, sinon l'onglet
         # afficherait l'incertitude d'aujourd'hui pour une élection dans des mois.
