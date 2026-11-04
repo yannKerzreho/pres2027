@@ -12,8 +12,10 @@ pas une validation de production.
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
 from pipeline.historical import (PARSED_DIR, POLL_FILES, _resolve_candidate,
@@ -22,6 +24,10 @@ from model.models.spatial_pooling.fit import fit_spatial_pooling, second_round_f
 from model.models.spatial_pooling.roster import ORDER_GROUPS_HISTORIQUES
 
 T2_DATES = {2017: pd.Timestamp("2017-05-07"), 2022: pd.Timestamp("2022-04-24")}
+VALIDATION_REVISION = "spatial-t2-v1"
+RHAT_MAX = 1.01
+COUVERTURE_MIN = 0.80
+DEFAULT_VALIDATION_OUT = Path(__file__).resolve().parents[1] / "models" / "spatial_pooling" / "t2_validation.json"
 
 
 def polls_historiques(election: int, as_of: pd.Timestamp,
@@ -92,10 +98,35 @@ def evaluate(election: int, omega: float | None, days_before: int, draws: int, t
     }
 
 
+def validation_report(rows: list[dict]) -> dict:
+    """Décision binaire de publication pour la variante T2 à option extérieure.
+
+    Une couverture est une fréquence : avec seulement deux élections, le seuil
+    de 80 % impose de couvrir les deux. C'est volontairement conservateur ; un
+    résultat non concluant ne doit jamais devenir un feu vert implicite.
+    """
+    t = pd.DataFrame(rows)
+    tested = t[t["option_exterieure"].eq("omega=0")]
+    rhat = tested["rhat_max"].to_numpy(dtype=float)
+    coverage = float(tested["couvre_ic90"].mean()) if len(tested) else 0.0
+    converged = bool(len(tested) and np.isfinite(rhat).all() and (rhat <= RHAT_MAX).all())
+    covered = bool(coverage >= COUVERTURE_MIN)
+    return {
+        "revision": VALIDATION_REVISION,
+        "decision": "accept" if converged and covered else "reject",
+        "criteria": {"rhat_max": RHAT_MAX, "coverage_ic90_min": COUVERTURE_MIN},
+        "summary": {"n_elections": int(len(tested)), "coverage_ic90": coverage,
+                    "rhat_max": None if not len(rhat) or not np.isfinite(rhat).all()
+                    else float(rhat.max())},
+        "rows": rows,
+    }
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--fast", action="store_true")
     ap.add_argument("--days-before", type=int, default=7)
+    ap.add_argument("--validation-out", type=Path, default=DEFAULT_VALIDATION_OUT)
     args = ap.parse_args()
     draws, tune, chains = (40, 40, 1) if args.fast else (400, 600, 4)
     rows = []
@@ -108,6 +139,12 @@ def main() -> None:
     print("\nErreur absolue moyenne / couverture IC90")
     print(out.groupby("option_exterieure").agg(erreur_abs=("erreur_abs", "mean"),
                                                   couverture=("couvre_ic90", "mean")).to_string())
+    report = validation_report(rows)
+    args.validation_out.parent.mkdir(parents=True, exist_ok=True)
+    args.validation_out.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
+    print(f"\nValidation T2 : {report['decision']} -> {args.validation_out}")
+    if report["decision"] != "accept":
+        raise SystemExit("REFUS DE PUBLICATION T2 : convergence ou couverture insuffisante")
 
 
 if __name__ == "__main__":

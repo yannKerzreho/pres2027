@@ -15,6 +15,9 @@ l'onglet scénarios du site.
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 import xarray as xr
@@ -33,8 +36,27 @@ N_DRAWS_EXPORT = 300
 # n'existe dans aucune. Seuil LÂCHE, pas le 1,01 des manuels : sur les fits
 # sains de septembre R-hat valait 1,01 à 1,15, avec une pointe à 1,37 (ESS 13)
 # qu'on ne veut pas voir publiée non plus ; les fits cassés étaient au-delà de 5.
-RHAT_PUBLIABLE = 1.2
+RHAT_PUBLIABLE = 1.01
 GRAINE_SECOURS = 2027
+T2_VALIDATION_REVISION = "spatial-t2-v1"
+T2_VALIDATION_PATH = Path(__file__).with_name("t2_validation.json")
+
+
+def _assert_t2_validation() -> None:
+    """Refuse de produire un scénario tant que le backtest T2 n'est pas vert."""
+    try:
+        verdict = json.loads(T2_VALIDATION_PATH.read_text())
+    except (OSError, json.JSONDecodeError) as exc:
+        raise RuntimeError(
+            "validation T2 absente ou illisible : rien n'est publié. "
+            "Lancer `python -m model.backtest.second_round`."
+        ) from exc
+    if (verdict.get("revision") != T2_VALIDATION_REVISION
+            or verdict.get("decision") != "accept"):
+        raise RuntimeError(
+            "validation T2 insuffisante : rien n'est publié "
+            f"({verdict.get('decision', 'absente')})."
+        )
 
 
 def _slot_de(candidat: str) -> str | None:
@@ -96,15 +118,18 @@ class SpatialPooling(ForecastModel):
         # positions, rayons et puissances. Ajuster le T2 après coup sur le
         # résultat T1 réintroduirait exactement le report mécanique que le
         # modèle spatial doit éviter.
+        _assert_t2_validation()
         fit = fit_spatial_pooling(polls, as_of=as_of)
-        if fit.diagnostics["rhat_max"] > RHAT_PUBLIABLE:
+        if (not np.isfinite(fit.diagnostics["rhat_max"])
+                or fit.diagnostics["rhat_max"] > RHAT_PUBLIABLE):
             # Une seconde graine d'abord : la convergence de ce modèle dépend
             # notablement de la graine (ESS de 3 à 112 à réglage égal, cf.
             # roster.py), un échec isolé n'est pas un verdict.
             print(f"[{self.id}] R-hat {fit.diagnostics['rhat_max']} > {RHAT_PUBLIABLE}, "
                   f"second essai avec une autre graine")
             fit = fit_spatial_pooling(polls, as_of=as_of, seed=GRAINE_SECOURS)
-        if fit.diagnostics["rhat_max"] > RHAT_PUBLIABLE:
+        if (not np.isfinite(fit.diagnostics["rhat_max"])
+                or fit.diagnostics["rhat_max"] > RHAT_PUBLIABLE):
             raise RuntimeError(
                 f"[{self.id}] fit non convergé à {as_of} (R-hat max "
                 f"{fit.diagnostics['rhat_max']}, ESS min {fit.diagnostics['ess_min']}, "
