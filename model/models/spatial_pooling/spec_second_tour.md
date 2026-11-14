@@ -291,6 +291,72 @@ critère : R-hat du fit publié inchangé sur 2027, ±0,02.
 - Le gate ne doit **jamais** bloquer le premier tour : un échec T2 retire les
   duels du snapshot, pas le snapshot.
 
+**Règle permanente (2026-11-14).** Aucune proposition de `PUBLIER_T2 = True`
+sans LES DEUX : (i) la validation historique ci-dessus (V1, V2, garde T2) sur
+2017 et 2022, ET (ii) le **diagnostic 2027** satisfaisant
+(`python -m model.backtest.diagnostic_2027`, fit joint sur les sondages
+courants, résidus pris contre la part prédite **à la date** de chaque sondage,
+$r_d = y_d - \bar s_d$, $z_d = r_d / \hat\sigma_d$ avec
+$\hat\sigma_d^2 = \mathrm{Var}_{post}(s_d) + \bar s_d(1-\bar s_d)/n_d + \sigma_{T2}^2$).
+Seuils de (ii), éditoriaux et fixés AVANT de regarder les chiffres :
+
+1. convergence : `rhat_max` ≤ 1,2 et `rhat_t2` ≤ 1,2 ;
+2. calibration : $\overline{z^2}$ global dans [0,5 ; 2] ;
+3. pas de biais par paire : pour toute paire à $n \ge 5$ sondages,
+   $|\bar r| \le 1{,}5$ pt **et** $|\bar z|\sqrt n \le 3$ (lâche : les sondages
+   d'un même institut sont corrélés) ;
+4. pas de biais par institut ($n \ge 10$) ni par candidat : $|\bar r| \le 1{,}5$ pt
+   (institut), ≤ 1 pt (candidat, résidu signé de son point de vue) ;
+5. tendance captée : pour toute paire à ≥ 3 sondages sur les 30 derniers jours,
+   $|\bar r_{30j}| \le 1{,}5$ pt et |duel du modèle aujourd'hui − moyenne brute
+   des 30 j| ≤ 2 pt.
+
+Un critère violé n'est pas tranché en silence : s'il oppose fidélité au passé et
+fidélité aux sondages 2027 (p. ex. un $\tau_{T2}$ ou un biais calibré sur
+2017/2022 qui décale les duels 2027), il va dans « Arbitrages ouverts » du
+journal, pour l'utilisateur.
+
+### 8.1 Diagnostic 2027 (2026-11-14, sondages au 2026-11-12)
+
+`python -m model.backtest.diagnostic_2027`, 92 duels, 12 paires, 7 instituts ;
+4 chaînes × (600+400). Résultats : `model/backtest/results/diagnostic_2027_{abst,eta}_2026-11-12.json`.
+Résidus **dans l'échantillon** (le duel a servi au fit) : ils testent la
+capacité à représenter les sondages, pas la prédiction.
+
+| | abst | eta |
+|---|---|---|
+| R-hat max / rhat_t2 / ESS min / div. | 1,040 / 1,040 / 202 / 0 | 1,034 / 1,034 / 125 / 0 |
+| κ / ω / σ_T2 | 0,75 / −3,45 / 1,3 pt | 1,75 / — / 1,5 pt |
+| résidu global moy. / é.-t. ; $\overline{z^2}$ | +0,06 / 1,67 pt ; 0,75 | +0,08 / 1,85 pt ; 0,77 |
+| max \|corr(log κ, η_i)\| | 0,22 (Retailleau) | 0,08 |
+
+Par paire (abst ; n ≥ 4) — résidu moyen, résidu des 30 derniers jours, modèle
+aujourd'hui vs moyenne brute 30 j (part du premier nommé), affiché site (T2, IC90) :
+
+| paire | n | $\bar r$ | $\bar r_{30j}$ (n) | auj. / brut 30 j | site |
+|---|---|---|---|---|---|
+| Philippe / Le Pen | 24 | −0,1 | −0,1 (8) | 43,9 / 44,6 | 45,1 [37,2 ; 52,4] |
+| Mélenchon / Le Pen | 23 | −0,0 | **−1,3** (8) | 33,3 / 31,5 | 32,8 [28,5 ; 37,5] |
+| Attal / Le Pen | 14 | +0,3 | +1,9 (2) | 40,1 / 43,5 | 41,5 [33,1 ; 49,5] |
+| Glucksmann / Le Pen | 13 | +0,2 | −0,0 (8) | 42,3 / 43,2 | 42,3 [36,2 ; 48,5] |
+| Hollande / Le Pen | 4 | +0,2 | −0,5 (2) | 42,9 / 43,0 | 43,2 [36,1 ; 50,0] |
+| Philippe / Bardella | 4 | +1,2 | — | 44,9 / — | 45,6 [36,5 ; 55,4] |
+
+Institut (n ≥ 10, abst) : Harris −0,9 pt (25), YouGov +0,9 (12), Elabe +0,5
+(18), Ifop 0,0, OpinionWay −0,1. Candidat : tous |r̄| ≤ 0,2 pt.
+P(élu), champ modal (abst) : Le Pen 0,85, Philippe 0,11, Glucksmann 0,03.
+
+**Verdict contre la règle (ii)** : les 5 critères passent, les deux variantes.
+Points limites : (5) Mélenchon / Le Pen, $\bar r_{30j} = -1{,}3$ pt et écart
+modèle–brut 1,8 pt (seuil 1,5 / 2) : le modèle **lisse** une baisse récente de
+Mélenchon en duel (corr résidu–date −0,47), il ne la suit qu'à moitié ;
+(4) Harris/YouGov à ±0,9 pt suggèrent des effets maison au T2 (non modélisés),
+sans franchir le seuil. $\overline{z^2} = 0{,}75 < 1$ : l'incertitude par
+sondage est un peu large dans l'échantillon (attendu : Var_post(s) y est
+comptée alors que le sondage a servi à l'estimer). abst et eta s'accordent à
+≤ 1 pt sur tous les duels sondés ; abst donne des IC site plus larges
+(P(Philippe bat Le Pen) 0,14 contre 0,09).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

@@ -24,7 +24,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] PRIORITAIRE dès que `data/parsed/intentions_2027_wiki.csv` est sur
+- [x] PRIORITAIRE dès que `data/parsed/intentions_2027_wiki.csv` est sur
       origin/main (sinon passer à la suite) — DIAGNOSTIC 2027 : fit joint T1+T2
       sur 2027 (variante abst), puis (a) résidus par duel sondé et par institut
       (moyenne, écart-type, signe), (b) tendance récente : le modèle suit-il ou
@@ -32,20 +32,24 @@ l'historique, ajouter en bas de « Historique ».
       (c) comparaison avec ce qu'afficherait le site (duels sondés, P(élu) champ
       modal via `p_elu`) et avec la moyenne brute récente des sondages de chaque
       paire. Consigner dans la spec §8 « Diagnostic 2027 ».
-      — EN COURS (début 2026-11-14T16:25Z, session routine 01JZeMw2) : CSV fusionné
-      depuis main, script `python -m model.backtest.diagnostic_2027 --variante abst|eta`.
-- [ ] CRITÈRE DE PUBLICATION (à écrire dans la spec §8, règle permanente) : aucune
+      — FAIT 2026-11-14 (spec §8.1) : 5 critères passent (abst et eta) ; limite :
+      Mélenchon/Le Pen lissé (r̄30j −1,3 pt, modèle−brut 1,8 pt) ; Harris −0,9 /
+      YouGov +0,9 pt. Relancer `python -m model.backtest.diagnostic_2027` (≈30 min,
+      1 cœur par variante) après tout changement de modèle.
+- [x] CRITÈRE DE PUBLICATION (à écrire dans la spec §8, règle permanente) : aucune
       proposition de `PUBLIER_T2 = True` sans LES DEUX : couverture historique
       2017/2022 ET diagnostic 2027 satisfaisant (résidus par duel petits devant
       l'incertitude affichée, pas de biais systématique par institut ou par
-      candidat, tendance récente captée).
-- [ ] ARBITRAGES À REMONTER À L'UTILISATEUR (ne pas trancher seul) : tout choix où
+      candidat, tendance récente captée). — FAIT : spec §8 « Règle permanente »,
+      seuils chiffrés.
+- [x] ARBITRAGES À REMONTER À L'UTILISATEUR (ne pas trancher seul) : tout choix où
       la fidélité au passé et la fidélité aux sondages actuels divergent — p. ex.
       un τ_T2 ou un biais directionnel anti-RN calibrés sur 2017/2022 qui
       écraseraient ou décaleraient les duels 2027 ; un prior qui lisse une
       tendance 2027 réelle. Les lister dans une section « Arbitrages ouverts » du
       journal avec chiffres (effet sur les duels 2027 publiés) et la ligne
-      « ARBITRAGE À TRANCHER : … » en fin de réponse du réveil.
+      « ARBITRAGE À TRANCHER : … » en fin de réponse du réveil. — FAIT : section
+      « Arbitrages ouverts » (à tenir à jour).
 
 Backtests unitaires (un fit NUTS complet chacun, ~30-40 min sur un cœur ;
 lancer 4 tâches en parallèle par réveil). Liste : `python -m model.backtest.second_round --lister`.
@@ -64,8 +68,12 @@ Résultats : `model/backtest/results/*.json` (committés).
 - [ ] abst : v1 2017 Macron|Le Pen, Fillon|Le Pen ; v2 2017 T1-30 (attendu : sans nœud T1), T1-1, T2-7
 - [ ] eta : mêmes tâches (comparaison)
 - [ ] Revue 2026-11-14, sans fit : corriger la base V2 (écart-type τ_T2 en plus
-      de « largeur du modèle », rapporter les deux) ; post-fit : corr(log κ, η_i),
-      résidus standardisés des duels (variance ≈ 1 ?) et corrélation intra-notice.
+      de « largeur du modèle », rapporter les deux) ; post-fit : corrélation
+      intra-notice des résidus (`duel_s` + `duels["notices"]` désormais dans le fit).
+      Déjà mesuré sur 2027 (§8.1) : |corr(log κ, η_i)| ≤ 0,22, z̄² = 0,75 —
+      à refaire sur les fits 2017/2022.
+- [ ] Effets maison au T2 (Harris −0,9 / YouGov +0,9 pt sur 2027) : mesurer
+      sur 2017/2022 avant toute modélisation ; maths dans la spec d'abord.
 - [ ] Décision τ_T2 (maths dans la spec §6 avant code) : la mesure du 14/11
       donne RMS ≈ 4,3 pt ⇒ τ ≈ 0,18-0,20 logit ; centrage sur 0 = choix
       éditorial, à faire trancher par l'utilisateur (ne pas coder de biais).
@@ -81,6 +89,21 @@ Résultats : `model/backtest/results/*.json` (committés).
   - effet aléatoire par notice sur les duels (si corr. intra-notice > 0,3) ;
   - tableaux croisés T1×T2 des instituts (si la session données les fournit).
 
+## Arbitrages ouverts (pour l'utilisateur — ne pas trancher seul)
+
+1. **Largeur τ_T2 de l'aléa de scrutin** (actuel 0,10 logit ; mesure
+   2017/2022 ⇒ 0,18-0,20). Effet sur 2027 (estimation analytique depuis
+   §8.1, abst) : P(Philippe bat Le Pen) 0,14 → ≈ 0,21 ; IC90 du duel
+   ≈ ±7,6 → ±10 pt. Fidélité au passé = élargir ; ne change pas les centres.
+2. **Biais directionnel des sondages de T2 (anti-RN en 2017/2022, ordre
+   2-3,5 pt)** : NON codé. Le corriger décalerait tous les duels 2027 de
+   ~+2,5 pt contre le RN : P(Philippe bat Le Pen) 0,14 → ≈ 0,30, P(élu)
+   Le Pen nettement en baisse — le modèle ne « représenterait » plus les
+   sondages actuels. Deux élections = pas d'estimation fiable.
+3. **Lissage des tendances récentes** (Mélenchon/Le Pen : modèle 33,3 contre
+   31,5 en brut sur 30 j) : suivre plus vite (τ_OU T2 plus court ou chemin
+   propre à η) = plus de bruit ; garder = retard de ~1-2 pt sur un mouvement réel.
+
 ## Faits établis (ne pas re-mesurer)
 
 - Géométrie T1 seule : MAE 6,3 pt sur les 11 paires 2027 ; abstention (κ, ω)
@@ -93,7 +116,8 @@ Résultats : `model/backtest/results/*.json` (committés).
   `python -m pip install --ignore-installed packaging -r requirements.txt`.
 - Réseau de la VM cloud : `fr.wikipedia.org` BLOQUÉ (proxy 403). Pas
   d'ingestion live ni de `model.run` 2027 dans la routine ; le CSV 2027 est
-  hors dépôt (.gitignore). Travailler sur 2017/2022 (CSV versionnés). Le test
+  désormais versionné sur main (job quotidien) : `git merge origin/main` le
+  rafraîchit. Diagnostic 2027 possible hors réseau. Le test
   `sondages/tests/test_wiki.py::test_build_dataset_live_page_matches_schema_contract`
   y échoue pour cette seule raison : ne pas le « corriger ».
 - Vérif versions épinglées (2026-11-14, VM cloud) : install OK, 152 tests passés,
@@ -109,6 +133,13 @@ Résultats : `model/backtest/results/*.json` (committés).
   ci-dessous) ; mesure sans fit de l'erreur des duels selon l'horizon (τ_T2
   sous-dimensionné, spec §6) ; spec §3 corrigée. 4 backtests `abst` lancés,
   tués à 55 min sans résultat ⇒ tâche prioritaire « une chaîne par cœur ».
+- 2026-11-14 16:10-16:50Z (routine) : main fusionnée (CSV 2027) ; `duel_s`
+  déterministe + `duels` dans le fit (sans effet sur l'inférence) ; script
+  `model/backtest/diagnostic_2027.py` ; diagnostic 2027 abst+eta (§8.1),
+  règle de publication (§8), arbitrages ouverts ; résultat de fumée périmé
+  retiré. Tests : 144 passés (hors réseau). Mesure utile pour le découpage :
+  un fit 2027 complet (4 chaînes séquentielles, 600+400, 92 duels) = 27-30 min
+  avec 2 fits en parallèle sur la VM 4 cœurs.
 
 ## Revue Opus 2026-11-14 (routine cloud) — intégration point par point
 

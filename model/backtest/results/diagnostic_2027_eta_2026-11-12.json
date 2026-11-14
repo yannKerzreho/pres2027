@@ -1,0 +1,1523 @@
+{
+ "as_of": "2026-11-12",
+ "variante": "eta",
+ "draws": 400,
+ "tune": 600,
+ "seed": 27,
+ "diagnostics": {
+  "n_noeuds": 223,
+  "n_candidats": 17,
+  "candidats_retires": [
+   "Bardella"
+  ],
+  "n_champs_distincts": 69,
+  "n_dynamiques": 9,
+  "K_composantes": 15,
+  "temps_secondes": 1611.2,
+  "rhat_max": 1.0344,
+  "rhat_pires_sites": [
+   [
+    "z_eta",
+    1.034
+   ],
+   [
+    "eta",
+    1.034
+   ],
+   [
+    "sigma_w",
+    1.026
+   ]
+  ],
+  "ess_min": 125.1,
+  "n_divergences": 0,
+  "pas_leapfrog_median": 255,
+  "sigma_w": 0.5415,
+  "sigma_global": 0.109,
+  "n_duels": 92,
+  "paires_duel": [
+   "Attal / Bardella",
+   "Attal / Le Pen",
+   "Glucksmann / Bardella",
+   "Glucksmann / Le Pen",
+   "Hollande / Le Pen",
+   "Mélenchon / Bardella",
+   "Mélenchon / Le Pen",
+   "Mélenchon / Philippe",
+   "Philippe / Bardella",
+   "Philippe / Le Pen",
+   "Retailleau / Bardella",
+   "Retailleau / Le Pen"
+  ],
+  "candidats_en_duel": [
+   "Mélenchon",
+   "Glucksmann",
+   "Hollande",
+   "Attal",
+   "Philippe",
+   "Retailleau",
+   "Bardella",
+   "Le Pen"
+  ],
+  "kappa": 1.7464,
+  "omega": null,
+  "rhat_t2": 1.0344,
+  "sigma_t2": 0.0154
+ },
+ "corr_logkappa_eta": {
+  "Mélenchon": -0.02,
+  "Glucksmann": 0.04,
+  "Hollande": 0.06,
+  "Attal": 0.03,
+  "Philippe": 0.03,
+  "Retailleau": -0.08,
+  "Bardella": 0.06,
+  "Le Pen": 0.06
+ },
+ "global": {
+  "n": 92,
+  "resid_moy_pt": 0.08,
+  "resid_sd_pt": 1.85,
+  "z_moy": 0.03,
+  "z_var": 0.77,
+  "sd_pred_moy_pt": 2.12
+ },
+ "par_paire": {
+  "Attal / Bardella": {
+   "n": 1,
+   "resid_moy_pt": -2.08,
+   "resid_sd_pt": 0.0,
+   "z_moy": -0.87,
+   "z_var": 0.75,
+   "sd_pred_moy_pt": 2.41,
+   "corr_resid_date": null,
+   "n_recents": 0,
+   "resid_moy_recents_pt": null,
+   "brut_recent_a": null,
+   "modele_recent_a_aux_dates": null,
+   "modele_aujourdhui_a": 0.412,
+   "site_a": 0.419,
+   "site_ic90_a": [
+    0.3176,
+    0.4994
+   ],
+   "site_p_gagne_a": 0.0494,
+   "dernier_sondage": "2026-05-27"
+  },
+  "Attal / Le Pen": {
+   "n": 14,
+   "resid_moy_pt": 0.18,
+   "resid_sd_pt": 1.42,
+   "z_moy": 0.07,
+   "z_var": 0.44,
+   "sd_pred_moy_pt": 2.13,
+   "corr_resid_date": -0.43,
+   "n_recents": 2,
+   "resid_moy_recents_pt": 0.37,
+   "brut_recent_a": 0.435,
+   "modele_recent_a_aux_dates": 0.4313,
+   "modele_aujourdhui_a": 0.4236,
+   "site_a": 0.4315,
+   "site_ic90_a": [
+    0.3724,
+    0.4898
+   ],
+   "site_p_gagne_a": 0.0256,
+   "dernier_sondage": "2026-10-19"
+  },
+  "Glucksmann / Bardella": {
+   "n": 1,
+   "resid_moy_pt": -0.81,
+   "resid_sd_pt": 0.0,
+   "z_moy": -0.35,
+   "z_var": 0.12,
+   "sd_pred_moy_pt": 2.3,
+   "corr_resid_date": null,
+   "n_recents": 0,
+   "resid_moy_recents_pt": null,
+   "brut_recent_a": null,
+   "modele_recent_a_aux_dates": null,
+   "modele_aujourdhui_a": 0.4307,
+   "site_a": 0.4292,
+   "site_ic90_a": [
+    0.3769,
+    0.4815
+   ],
+   "site_p_gagne_a": 0.0156,
+   "dernier_sondage": "2026-03-27"
+  },
+  "Glucksmann / Le Pen": {
+   "n": 13,
+   "resid_moy_pt": 0.1,
+   "resid_sd_pt": 1.7,
+   "z_moy": 0.04,
+   "z_var": 0.68,
+   "sd_pred_moy_pt": 2.12,
+   "corr_resid_date": -0.23,
+   "n_recents": 8,
+   "resid_moy_recents_pt": -0.02,
+   "brut_recent_a": 0.4319,
+   "modele_recent_a_aux_dates": 0.4321,
+   "modele_aujourdhui_a": 0.4278,
+   "site_a": 0.4261,
+   "site_ic90_a": [
+    0.378,
+    0.4737
+   ],
+   "site_p_gagne_a": 0.0031,
+   "dernier_sondage": "2026-11-12"
+  },
+  "Hollande / Le Pen": {
+   "n": 4,
+   "resid_moy_pt": 0.13,
+   "resid_sd_pt": 1.89,
+   "z_moy": 0.04,
+   "z_var": 0.76,
+   "sd_pred_moy_pt": 2.27,
+   "corr_resid_date": -0.68,
+   "n_recents": 2,
+   "resid_moy_recents_pt": -0.83,
+   "brut_recent_a": 0.43,
+   "modele_recent_a_aux_dates": 0.4383,
+   "modele_aujourdhui_a": 0.4355,
+   "site_a": 0.4368,
+   "site_ic90_a": [
+    0.3868,
+    0.4871
+   ],
+   "site_p_gagne_a": 0.0181,
+   "dernier_sondage": "2026-10-19"
+  },
+  "Mélenchon / Bardella": {
+   "n": 2,
+   "resid_moy_pt": -1.29,
+   "resid_sd_pt": 1.41,
+   "z_moy": -0.58,
+   "z_var": 0.75,
+   "sd_pred_moy_pt": 2.17,
+   "corr_resid_date": null,
+   "n_recents": 0,
+   "resid_moy_recents_pt": null,
+   "brut_recent_a": null,
+   "modele_recent_a_aux_dates": null,
+   "modele_aujourdhui_a": 0.3369,
+   "site_a": 0.3316,
+   "site_ic90_a": [
+    0.2882,
+    0.3759
+   ],
+   "site_p_gagne_a": 0.0,
+   "dernier_sondage": "2026-05-27"
+  },
+  "Mélenchon / Le Pen": {
+   "n": 23,
+   "resid_moy_pt": -0.08,
+   "resid_sd_pt": 1.92,
+   "z_moy": -0.05,
+   "z_var": 0.9,
+   "sd_pred_moy_pt": 2.01,
+   "corr_resid_date": -0.38,
+   "n_recents": 8,
+   "resid_moy_recents_pt": -1.27,
+   "brut_recent_a": 0.315,
+   "modele_recent_a_aux_dates": 0.3277,
+   "modele_aujourdhui_a": 0.329,
+   "site_a": 0.3272,
+   "site_ic90_a": [
+    0.2896,
+    0.3667
+   ],
+   "site_p_gagne_a": 0.0,
+   "dernier_sondage": "2026-11-12"
+  },
+  "Mélenchon / Philippe": {
+   "n": 2,
+   "resid_moy_pt": 2.89,
+   "resid_sd_pt": 2.63,
+   "z_moy": 1.23,
+   "z_var": 2.74,
+   "sd_pred_moy_pt": 2.36,
+   "corr_resid_date": null,
+   "n_recents": 1,
+   "resid_moy_recents_pt": 0.26,
+   "brut_recent_a": 0.34,
+   "modele_recent_a_aux_dates": 0.3374,
+   "modele_aujourdhui_a": 0.3473,
+   "site_a": 0.3357,
+   "site_ic90_a": [
+    0.2913,
+    0.384
+   ],
+   "site_p_gagne_a": 0.0,
+   "dernier_sondage": "2026-10-15"
+  },
+  "Philippe / Bardella": {
+   "n": 4,
+   "resid_moy_pt": 1.5,
+   "resid_sd_pt": 1.95,
+   "z_moy": 0.62,
+   "z_var": 1.08,
+   "sd_pred_moy_pt": 2.33,
+   "corr_resid_date": -0.96,
+   "n_recents": 0,
+   "resid_moy_recents_pt": null,
+   "brut_recent_a": null,
+   "modele_recent_a_aux_dates": null,
+   "modele_aujourdhui_a": 0.4524,
+   "site_a": 0.4574,
+   "site_ic90_a": [
+    0.3837,
+    0.5302
+   ],
+   "site_p_gagne_a": 0.165,
+   "dernier_sondage": "2026-05-27"
+  },
+  "Philippe / Le Pen": {
+   "n": 24,
+   "resid_moy_pt": -0.04,
+   "resid_sd_pt": 1.83,
+   "z_moy": -0.02,
+   "z_var": 0.8,
+   "sd_pred_moy_pt": 2.08,
+   "corr_resid_date": -0.55,
+   "n_recents": 8,
+   "resid_moy_recents_pt": -0.7,
+   "brut_recent_a": 0.4456,
+   "modele_recent_a_aux_dates": 0.4527,
+   "modele_aujourdhui_a": 0.447,
+   "site_a": 0.4546,
+   "site_ic90_a": [
+    0.3953,
+    0.5111
+   ],
+   "site_p_gagne_a": 0.0931,
+   "dernier_sondage": "2026-11-12"
+  },
+  "Retailleau / Bardella": {
+   "n": 1,
+   "resid_moy_pt": 0.45,
+   "resid_sd_pt": 0.0,
+   "z_moy": 0.18,
+   "z_var": 0.03,
+   "sd_pred_moy_pt": 2.52,
+   "corr_resid_date": null,
+   "n_recents": 0,
+   "resid_moy_recents_pt": null,
+   "brut_recent_a": null,
+   "modele_recent_a_aux_dates": null,
+   "modele_aujourdhui_a": 0.3888,
+   "site_a": 0.3976,
+   "site_ic90_a": [
+    0.2488,
+    0.5343
+   ],
+   "site_p_gagne_a": 0.1181,
+   "dernier_sondage": "2026-03-27"
+  },
+  "Retailleau / Le Pen": {
+   "n": 3,
+   "resid_moy_pt": -0.23,
+   "resid_sd_pt": 0.92,
+   "z_moy": -0.1,
+   "z_var": 0.17,
+   "sd_pred_moy_pt": 2.29,
+   "corr_resid_date": -0.1,
+   "n_recents": 0,
+   "resid_moy_recents_pt": null,
+   "brut_recent_a": null,
+   "modele_recent_a_aux_dates": null,
+   "modele_aujourdhui_a": 0.4033,
+   "site_a": 0.4159,
+   "site_ic90_a": [
+    0.3199,
+    0.5148
+   ],
+   "site_p_gagne_a": 0.0788,
+   "dernier_sondage": "2026-08-25"
+  }
+ },
+ "par_institut": {
+  "Cluster17": {
+   "n": 5,
+   "resid_moy_pt": 1.07,
+   "resid_sd_pt": 2.87,
+   "z_moy": 0.55,
+   "z_var": 2.29,
+   "sd_pred_moy_pt": 2.13
+  },
+  "Elabe": {
+   "n": 18,
+   "resid_moy_pt": 0.67,
+   "resid_sd_pt": 1.92,
+   "z_moy": 0.31,
+   "z_var": 0.91,
+   "sd_pred_moy_pt": 2.13
+  },
+  "Harris Interactive": {
+   "n": 25,
+   "resid_moy_pt": -0.89,
+   "resid_sd_pt": 1.34,
+   "z_moy": -0.45,
+   "z_var": 0.65,
+   "sd_pred_moy_pt": 2.01
+  },
+  "Ifop": {
+   "n": 14,
+   "resid_moy_pt": -0.07,
+   "resid_sd_pt": 1.57,
+   "z_moy": -0.03,
+   "z_var": 0.56,
+   "sd_pred_moy_pt": 2.09
+  },
+  "Odoxa": {
+   "n": 4,
+   "resid_moy_pt": 1.35,
+   "resid_sd_pt": 1.57,
+   "z_moy": 0.59,
+   "z_var": 0.86,
+   "sd_pred_moy_pt": 2.06
+  },
+  "Opinion Way": {
+   "n": 14,
+   "resid_moy_pt": -0.26,
+   "resid_sd_pt": 1.08,
+   "z_moy": -0.12,
+   "z_var": 0.25,
+   "sd_pred_moy_pt": 2.24
+  },
+  "YouGov": {
+   "n": 12,
+   "resid_moy_pt": 0.98,
+   "resid_sd_pt": 2.03,
+   "z_moy": 0.43,
+   "z_var": 0.99,
+   "sd_pred_moy_pt": 2.25
+  }
+ },
+ "par_candidat": {
+  "Attal": {
+   "n": 15,
+   "resid_moy_pt": 0.03,
+   "z_moy": 0.01
+  },
+  "Bardella": {
+   "n": 9,
+   "resid_moy_pt": -0.11,
+   "z_moy": -0.03
+  },
+  "Glucksmann": {
+   "n": 14,
+   "resid_moy_pt": 0.03,
+   "z_moy": 0.01
+  },
+  "Hollande": {
+   "n": 4,
+   "resid_moy_pt": 0.13,
+   "z_moy": 0.04
+  },
+  "Le Pen": {
+   "n": 81,
+   "resid_moy_pt": -0.01,
+   "z_moy": 0.0
+  },
+  "Mélenchon": {
+   "n": 27,
+   "resid_moy_pt": 0.05,
+   "z_moy": 0.01
+  },
+  "Philippe": {
+   "n": 30,
+   "resid_moy_pt": -0.02,
+   "z_moy": -0.02
+  },
+  "Retailleau": {
+   "n": 4,
+   "resid_moy_pt": -0.06,
+   "z_moy": -0.03
+  }
+ },
+ "p_elu_champ_modal": {
+  "p_elu": {
+   "Arthaud": 0.0,
+   "Mélenchon": 0.0,
+   "Roussel": 0.0,
+   "Tondelier": 0.0006,
+   "Glucksmann": 0.0231,
+   "Philippe": 0.1031,
+   "Retailleau": 0.01,
+   "Dupont-Aignan": 0.0,
+   "Le Pen": 0.8619,
+   "Zemmour": 0.0013
+  },
+  "duels_qualifies": [
+   {
+    "candidats": [
+     "Mélenchon",
+     "Le Pen"
+    ],
+    "p": 0.4238
+   },
+   {
+    "candidats": [
+     "Philippe",
+     "Le Pen"
+    ],
+    "p": 0.2944
+   },
+   {
+    "candidats": [
+     "Glucksmann",
+     "Le Pen"
+    ],
+    "p": 0.1381
+   },
+   {
+    "candidats": [
+     "Mélenchon",
+     "Philippe"
+    ],
+    "p": 0.0537
+   },
+   {
+    "candidats": [
+     "Retailleau",
+     "Le Pen"
+    ],
+    "p": 0.0394
+   },
+   {
+    "candidats": [
+     "Mélenchon",
+     "Glucksmann"
+    ],
+    "p": 0.0219
+   }
+  ]
+ },
+ "champ_modal": [
+  "Arthaud",
+  "Mélenchon",
+  "Roussel",
+  "Tondelier",
+  "Glucksmann",
+  "Philippe",
+  "Retailleau",
+  "Dupont-Aignan",
+  "Le Pen",
+  "Zemmour"
+ ],
+ "residus": [
+  {
+   "paire": "Attal / Le Pen",
+   "institut": "Ifop",
+   "date": "2026-10-19",
+   "y": 0.42,
+   "pred": 0.4317,
+   "sd_pred": 0.0199,
+   "resid": -0.0117,
+   "z": -0.5877,
+   "age_j": 24
+  },
+  {
+   "paire": "Attal / Le Pen",
+   "institut": "YouGov",
+   "date": "2026-10-15",
+   "y": 0.45,
+   "pred": 0.431,
+   "sd_pred": 0.0224,
+   "resid": 0.019,
+   "z": 0.8486,
+   "age_j": 28
+  },
+  {
+   "paire": "Attal / Le Pen",
+   "institut": "YouGov",
+   "date": "2026-09-21",
+   "y": 0.43,
+   "pred": 0.441,
+   "sd_pred": 0.0223,
+   "resid": -0.011,
+   "z": -0.4933,
+   "age_j": 52
+  },
+  {
+   "paire": "Attal / Le Pen",
+   "institut": "Harris Interactive",
+   "date": "2026-09-10",
+   "y": 0.44,
+   "pred": 0.442,
+   "sd_pred": 0.0198,
+   "resid": -0.002,
+   "z": -0.0999,
+   "age_j": 63
+  },
+  {
+   "paire": "Attal / Le Pen",
+   "institut": "Opinion Way",
+   "date": "2026-09-03",
+   "y": 0.45,
+   "pred": 0.4436,
+   "sd_pred": 0.0228,
+   "resid": 0.0064,
+   "z": 0.2826,
+   "age_j": 70
+  },
+  {
+   "paire": "Attal / Le Pen",
+   "institut": "Elabe",
+   "date": "2026-08-28",
+   "y": 0.43,
+   "pred": 0.4429,
+   "sd_pred": 0.0208,
+   "resid": -0.0129,
+   "z": -0.6172,
+   "age_j": 76
+  },
+  {
+   "paire": "Attal / Le Pen",
+   "institut": "Ifop",
+   "date": "2026-08-25",
+   "y": 0.46,
+   "pred": 0.4427,
+   "sd_pred": 0.0207,
+   "resid": 0.0173,
+   "z": 0.8359,
+   "age_j": 79
+  },
+  {
+   "paire": "Attal / Le Pen",
+   "institut": "Harris Interactive",
+   "date": "2026-08-19",
+   "y": 0.43,
+   "pred": 0.4438,
+   "sd_pred": 0.0204,
+   "resid": -0.0138,
+   "z": -0.6776,
+   "age_j": 85
+  },
+  {
+   "paire": "Attal / Le Pen",
+   "institut": "Cluster17",
+   "date": "2026-07-24",
+   "y": 0.44,
+   "pred": 0.4547,
+   "sd_pred": 0.0214,
+   "resid": -0.0147,
+   "z": -0.6871,
+   "age_j": 111
+  },
+  {
+   "paire": "Attal / Le Pen",
+   "institut": "Elabe",
+   "date": "2026-07-10",
+   "y": 0.46,
+   "pred": 0.4475,
+   "sd_pred": 0.0209,
+   "resid": 0.0125,
+   "z": 0.5977,
+   "age_j": 125
+  },
+  {
+   "paire": "Attal / Le Pen",
+   "institut": "Ifop",
+   "date": "2026-07-08",
+   "y": 0.45,
+   "pred": 0.4476,
+   "sd_pred": 0.0229,
+   "resid": 0.0024,
+   "z": 0.105,
+   "age_j": 127
+  },
+  {
+   "paire": "Attal / Le Pen",
+   "institut": "Harris Interactive",
+   "date": "2026-07-08",
+   "y": 0.45,
+   "pred": 0.4476,
+   "sd_pred": 0.0207,
+   "resid": 0.0024,
+   "z": 0.1162,
+   "age_j": 127
+  },
+  {
+   "paire": "Attal / Le Pen",
+   "institut": "Harris Interactive",
+   "date": "2026-05-27",
+   "y": 0.46,
+   "pred": 0.4629,
+   "sd_pred": 0.0209,
+   "resid": -0.0029,
+   "z": -0.1387,
+   "age_j": 169
+  },
+  {
+   "paire": "Attal / Le Pen",
+   "institut": "Elabe",
+   "date": "2026-03-27",
+   "y": 0.49,
+   "pred": 0.456,
+   "sd_pred": 0.0219,
+   "resid": 0.034,
+   "z": 1.5544,
+   "age_j": 230
+  },
+  {
+   "paire": "Glucksmann / Le Pen",
+   "institut": "Opinion Way",
+   "date": "2026-11-12",
+   "y": 0.42,
+   "pred": 0.4278,
+   "sd_pred": 0.023,
+   "resid": -0.0078,
+   "z": -0.3406,
+   "age_j": 0
+  },
+  {
+   "paire": "Glucksmann / Le Pen",
+   "institut": "Harris Interactive",
+   "date": "2026-11-05",
+   "y": 0.4,
+   "pred": 0.4266,
+   "sd_pred": 0.0197,
+   "resid": -0.0266,
+   "z": -1.3457,
+   "age_j": 7
+  },
+  {
+   "paire": "Glucksmann / Le Pen",
+   "institut": "Opinion Way",
+   "date": "2026-10-22",
+   "y": 0.44,
+   "pred": 0.4341,
+   "sd_pred": 0.0229,
+   "resid": 0.0059,
+   "z": 0.2599,
+   "age_j": 21
+  },
+  {
+   "paire": "Glucksmann / Le Pen",
+   "institut": "Harris Interactive",
+   "date": "2026-10-21",
+   "y": 0.41,
+   "pred": 0.4345,
+   "sd_pred": 0.0197,
+   "resid": -0.0245,
+   "z": -1.2416,
+   "age_j": 22
+  },
+  {
+   "paire": "Glucksmann / Le Pen",
+   "institut": "Ifop",
+   "date": "2026-10-19",
+   "y": 0.43,
+   "pred": 0.4348,
+   "sd_pred": 0.0198,
+   "resid": -0.0048,
+   "z": -0.2409,
+   "age_j": 24
+  },
+  {
+   "paire": "Glucksmann / Le Pen",
+   "institut": "Elabe",
+   "date": "2026-10-16",
+   "y": 0.465,
+   "pred": 0.4339,
+   "sd_pred": 0.0204,
+   "resid": 0.0311,
+   "z": 1.5242,
+   "age_j": 27
+  },
+  {
+   "paire": "Glucksmann / Le Pen",
+   "institut": "YouGov",
+   "date": "2026-10-15",
+   "y": 0.45,
+   "pred": 0.4332,
+   "sd_pred": 0.0223,
+   "resid": 0.0168,
+   "z": 0.7559,
+   "age_j": 28
+  },
+  {
+   "paire": "Glucksmann / Le Pen",
+   "institut": "Opinion Way",
+   "date": "2026-10-14",
+   "y": 0.44,
+   "pred": 0.432,
+   "sd_pred": 0.0225,
+   "resid": 0.008,
+   "z": 0.3536,
+   "age_j": 29
+  },
+  {
+   "paire": "Glucksmann / Le Pen",
+   "institut": "YouGov",
+   "date": "2026-09-21",
+   "y": 0.41,
+   "pred": 0.427,
+   "sd_pred": 0.0223,
+   "resid": -0.017,
+   "z": -0.7658,
+   "age_j": 52
+  },
+  {
+   "paire": "Glucksmann / Le Pen",
+   "institut": "Elabe",
+   "date": "2026-08-28",
+   "y": 0.43,
+   "pred": 0.4278,
+   "sd_pred": 0.0208,
+   "resid": 0.0022,
+   "z": 0.1042,
+   "age_j": 76
+  },
+  {
+   "paire": "Glucksmann / Le Pen",
+   "institut": "Ifop",
+   "date": "2026-08-25",
+   "y": 0.45,
+   "pred": 0.427,
+   "sd_pred": 0.0206,
+   "resid": 0.023,
+   "z": 1.1168,
+   "age_j": 79
+  },
+  {
+   "paire": "Glucksmann / Le Pen",
+   "institut": "Cluster17",
+   "date": "2026-07-24",
+   "y": 0.44,
+   "pred": 0.4275,
+   "sd_pred": 0.021,
+   "resid": 0.0125,
+   "z": 0.5967,
+   "age_j": 111
+  },
+  {
+   "paire": "Glucksmann / Le Pen",
+   "institut": "Elabe",
+   "date": "2026-07-10",
+   "y": 0.415,
+   "pred": 0.4213,
+   "sd_pred": 0.0211,
+   "resid": -0.0063,
+   "z": -0.298,
+   "age_j": 125
+  },
+  {
+   "paire": "Hollande / Le Pen",
+   "institut": "Ifop",
+   "date": "2026-10-19",
+   "y": 0.41,
+   "pred": 0.4386,
+   "sd_pred": 0.0212,
+   "resid": -0.0286,
+   "z": -1.3482,
+   "age_j": 24
+  },
+  {
+   "paire": "Hollande / Le Pen",
+   "institut": "YouGov",
+   "date": "2026-10-15",
+   "y": 0.45,
+   "pred": 0.438,
+   "sd_pred": 0.0236,
+   "resid": 0.012,
+   "z": 0.507,
+   "age_j": 28
+  },
+  {
+   "paire": "Hollande / Le Pen",
+   "institut": "YouGov",
+   "date": "2026-09-21",
+   "y": 0.44,
+   "pred": 0.4398,
+   "sd_pred": 0.0237,
+   "resid": 0.0002,
+   "z": 0.0072,
+   "age_j": 52
+  },
+  {
+   "paire": "Hollande / Le Pen",
+   "institut": "Ifop",
+   "date": "2026-08-25",
+   "y": 0.46,
+   "pred": 0.4381,
+   "sd_pred": 0.0222,
+   "resid": 0.0219,
+   "z": 0.9825,
+   "age_j": 79
+  },
+  {
+   "paire": "Mélenchon / Le Pen",
+   "institut": "Opinion Way",
+   "date": "2026-11-12",
+   "y": 0.32,
+   "pred": 0.3289,
+   "sd_pred": 0.0221,
+   "resid": -0.0089,
+   "z": -0.4014,
+   "age_j": 0
+  },
+  {
+   "paire": "Mélenchon / Le Pen",
+   "institut": "Harris Interactive",
+   "date": "2026-11-05",
+   "y": 0.32,
+   "pred": 0.3288,
+   "sd_pred": 0.0191,
+   "resid": -0.0088,
+   "z": -0.4635,
+   "age_j": 7
+  },
+  {
+   "paire": "Mélenchon / Le Pen",
+   "institut": "Opinion Way",
+   "date": "2026-10-22",
+   "y": 0.31,
+   "pred": 0.3279,
+   "sd_pred": 0.022,
+   "resid": -0.0179,
+   "z": -0.8149,
+   "age_j": 21
+  },
+  {
+   "paire": "Mélenchon / Le Pen",
+   "institut": "Harris Interactive",
+   "date": "2026-10-21",
+   "y": 0.3,
+   "pred": 0.3278,
+   "sd_pred": 0.019,
+   "resid": -0.0278,
+   "z": -1.4622,
+   "age_j": 22
+  },
+  {
+   "paire": "Mélenchon / Le Pen",
+   "institut": "Ifop",
+   "date": "2026-10-19",
+   "y": 0.32,
+   "pred": 0.3274,
+   "sd_pred": 0.019,
+   "resid": -0.0074,
+   "z": -0.392,
+   "age_j": 24
+  },
+  {
+   "paire": "Mélenchon / Le Pen",
+   "institut": "Elabe",
+   "date": "2026-10-16",
+   "y": 0.31,
+   "pred": 0.3269,
+   "sd_pred": 0.0196,
+   "resid": -0.0169,
+   "z": -0.866,
+   "age_j": 27
+  },
+  {
+   "paire": "Mélenchon / Le Pen",
+   "institut": "YouGov",
+   "date": "2026-10-15",
+   "y": 0.32,
+   "pred": 0.3268,
+   "sd_pred": 0.0213,
+   "resid": -0.0068,
+   "z": -0.3199,
+   "age_j": 28
+  },
+  {
+   "paire": "Mélenchon / Le Pen",
+   "institut": "Opinion Way",
+   "date": "2026-10-14",
+   "y": 0.32,
+   "pred": 0.3267,
+   "sd_pred": 0.0215,
+   "resid": -0.0067,
+   "z": -0.3126,
+   "age_j": 29
+  },
+  {
+   "paire": "Mélenchon / Le Pen",
+   "institut": "Harris Interactive",
+   "date": "2026-10-08",
+   "y": 0.33,
+   "pred": 0.3265,
+   "sd_pred": 0.019,
+   "resid": 0.0035,
+   "z": 0.1825,
+   "age_j": 35
+  },
+  {
+   "paire": "Mélenchon / Le Pen",
+   "institut": "Odoxa",
+   "date": "2026-10-07",
+   "y": 0.32,
+   "pred": 0.3265,
+   "sd_pred": 0.0165,
+   "resid": -0.0065,
+   "z": -0.3974,
+   "age_j": 36
+  },
+  {
+   "paire": "Mélenchon / Le Pen",
+   "institut": "Harris Interactive",
+   "date": "2026-09-24",
+   "y": 0.31,
+   "pred": 0.3273,
+   "sd_pred": 0.0191,
+   "resid": -0.0173,
+   "z": -0.9043,
+   "age_j": 49
+  },
+  {
+   "paire": "Mélenchon / Le Pen",
+   "institut": "YouGov",
+   "date": "2026-09-21",
+   "y": 0.36,
+   "pred": 0.3271,
+   "sd_pred": 0.0213,
+   "resid": 0.0329,
+   "z": 1.543,
+   "age_j": 52
+  },
+  {
+   "paire": "Mélenchon / Le Pen",
+   "institut": "Opinion Way",
+   "date": "2026-09-10",
+   "y": 0.33,
+   "pred": 0.3253,
+   "sd_pred": 0.0217,
+   "resid": 0.0047,
+   "z": 0.2168,
+   "age_j": 63
+  },
+  {
+   "paire": "Mélenchon / Le Pen",
+   "institut": "Harris Interactive",
+   "date": "2026-09-10",
+   "y": 0.33,
+   "pred": 0.3253,
+   "sd_pred": 0.019,
+   "resid": 0.0047,
+   "z": 0.2483,
+   "age_j": 63
+  },
+  {
+   "paire": "Mélenchon / Le Pen",
+   "institut": "Opinion Way",
+   "date": "2026-09-03",
+   "y": 0.34,
+   "pred": 0.3243,
+   "sd_pred": 0.0217,
+   "resid": 0.0157,
+   "z": 0.722,
+   "age_j": 70
+  },
+  {
+   "paire": "Mélenchon / Le Pen",
+   "institut": "Elabe",
+   "date": "2026-08-28",
+   "y": 0.305,
+   "pred": 0.3237,
+   "sd_pred": 0.02,
+   "resid": -0.0187,
+   "z": -0.934,
+   "age_j": 76
+  },
+  {
+   "paire": "Mélenchon / Le Pen",
+   "institut": "Ifop",
+   "date": "2026-08-25",
+   "y": 0.33,
+   "pred": 0.3236,
+   "sd_pred": 0.0198,
+   "resid": 0.0064,
+   "z": 0.3232,
+   "age_j": 79
+  },
+  {
+   "paire": "Mélenchon / Le Pen",
+   "institut": "Harris Interactive",
+   "date": "2026-08-19",
+   "y": 0.32,
+   "pred": 0.3239,
+   "sd_pred": 0.0195,
+   "resid": -0.0039,
+   "z": -0.2012,
+   "age_j": 85
+  },
+  {
+   "paire": "Mélenchon / Le Pen",
+   "institut": "Cluster17",
+   "date": "2026-07-24",
+   "y": 0.39,
+   "pred": 0.3262,
+   "sd_pred": 0.0201,
+   "resid": 0.0638,
+   "z": 3.1793,
+   "age_j": 111
+  },
+  {
+   "paire": "Mélenchon / Le Pen",
+   "institut": "Elabe",
+   "date": "2026-07-10",
+   "y": 0.325,
+   "pred": 0.3219,
+   "sd_pred": 0.0201,
+   "resid": 0.0031,
+   "z": 0.1518,
+   "age_j": 125
+  },
+  {
+   "paire": "Mélenchon / Le Pen",
+   "institut": "Ifop",
+   "date": "2026-07-08",
+   "y": 0.3,
+   "pred": 0.3216,
+   "sd_pred": 0.022,
+   "resid": -0.0216,
+   "z": -0.9858,
+   "age_j": 127
+  },
+  {
+   "paire": "Mélenchon / Le Pen",
+   "institut": "Harris Interactive",
+   "date": "2026-07-08",
+   "y": 0.33,
+   "pred": 0.3216,
+   "sd_pred": 0.0199,
+   "resid": 0.0084,
+   "z": 0.4196,
+   "age_j": 127
+  },
+  {
+   "paire": "Mélenchon / Le Pen",
+   "institut": "Harris Interactive",
+   "date": "2026-05-27",
+   "y": 0.33,
+   "pred": 0.3223,
+   "sd_pred": 0.0196,
+   "resid": 0.0077,
+   "z": 0.3949,
+   "age_j": 169
+  },
+  {
+   "paire": "Philippe / Le Pen",
+   "institut": "Opinion Way",
+   "date": "2026-11-12",
+   "y": 0.44,
+   "pred": 0.4471,
+   "sd_pred": 0.0233,
+   "resid": -0.0071,
+   "z": -0.3044,
+   "age_j": 0
+  },
+  {
+   "paire": "Philippe / Le Pen",
+   "institut": "Harris Interactive",
+   "date": "2026-11-05",
+   "y": 0.42,
+   "pred": 0.4462,
+   "sd_pred": 0.0199,
+   "resid": -0.0262,
+   "z": -1.3159,
+   "age_j": 7
+  },
+  {
+   "paire": "Philippe / Le Pen",
+   "institut": "Opinion Way",
+   "date": "2026-10-22",
+   "y": 0.44,
+   "pred": 0.4534,
+   "sd_pred": 0.0227,
+   "resid": -0.0134,
+   "z": -0.5899,
+   "age_j": 21
+  },
+  {
+   "paire": "Philippe / Le Pen",
+   "institut": "Harris Interactive",
+   "date": "2026-10-21",
+   "y": 0.43,
+   "pred": 0.454,
+   "sd_pred": 0.0195,
+   "resid": -0.024,
+   "z": -1.2346,
+   "age_j": 22
+  },
+  {
+   "paire": "Philippe / Le Pen",
+   "institut": "Ifop",
+   "date": "2026-10-19",
+   "y": 0.44,
+   "pred": 0.4549,
+   "sd_pred": 0.0194,
+   "resid": -0.0149,
+   "z": -0.7679,
+   "age_j": 24
+  },
+  {
+   "paire": "Philippe / Le Pen",
+   "institut": "Elabe",
+   "date": "2026-10-16",
+   "y": 0.475,
+   "pred": 0.4554,
+   "sd_pred": 0.0201,
+   "resid": 0.0196,
+   "z": 0.974,
+   "age_j": 27
+  },
+  {
+   "paire": "Philippe / Le Pen",
+   "institut": "YouGov",
+   "date": "2026-10-15",
+   "y": 0.48,
+   "pred": 0.4553,
+   "sd_pred": 0.022,
+   "resid": 0.0247,
+   "z": 1.1219,
+   "age_j": 28
+  },
+  {
+   "paire": "Philippe / Le Pen",
+   "institut": "Opinion Way",
+   "date": "2026-10-14",
+   "y": 0.44,
+   "pred": 0.4549,
+   "sd_pred": 0.0222,
+   "resid": -0.0149,
+   "z": -0.671,
+   "age_j": 29
+  },
+  {
+   "paire": "Philippe / Le Pen",
+   "institut": "Harris Interactive",
+   "date": "2026-10-08",
+   "y": 0.44,
+   "pred": 0.4516,
+   "sd_pred": 0.0196,
+   "resid": -0.0116,
+   "z": -0.5897,
+   "age_j": 35
+  },
+  {
+   "paire": "Philippe / Le Pen",
+   "institut": "Odoxa",
+   "date": "2026-10-07",
+   "y": 0.47,
+   "pred": 0.4515,
+   "sd_pred": 0.0168,
+   "resid": 0.0185,
+   "z": 1.1021,
+   "age_j": 36
+  },
+  {
+   "paire": "Philippe / Le Pen",
+   "institut": "Harris Interactive",
+   "date": "2026-09-24",
+   "y": 0.43,
+   "pred": 0.4588,
+   "sd_pred": 0.0197,
+   "resid": -0.0288,
+   "z": -1.461,
+   "age_j": 49
+  },
+  {
+   "paire": "Philippe / Le Pen",
+   "institut": "YouGov",
+   "date": "2026-09-21",
+   "y": 0.45,
+   "pred": 0.4604,
+   "sd_pred": 0.0221,
+   "resid": -0.0104,
+   "z": -0.4699,
+   "age_j": 52
+  },
+  {
+   "paire": "Philippe / Le Pen",
+   "institut": "Opinion Way",
+   "date": "2026-09-10",
+   "y": 0.45,
+   "pred": 0.4639,
+   "sd_pred": 0.0225,
+   "resid": -0.0139,
+   "z": -0.6185,
+   "age_j": 63
+  },
+  {
+   "paire": "Philippe / Le Pen",
+   "institut": "Harris Interactive",
+   "date": "2026-09-10",
+   "y": 0.45,
+   "pred": 0.4639,
+   "sd_pred": 0.0194,
+   "resid": -0.0139,
+   "z": -0.715,
+   "age_j": 63
+  },
+  {
+   "paire": "Philippe / Le Pen",
+   "institut": "Opinion Way",
+   "date": "2026-09-03",
+   "y": 0.48,
+   "pred": 0.467,
+   "sd_pred": 0.0226,
+   "resid": 0.013,
+   "z": 0.5762,
+   "age_j": 70
+  },
+  {
+   "paire": "Philippe / Le Pen",
+   "institut": "Elabe",
+   "date": "2026-08-28",
+   "y": 0.475,
+   "pred": 0.4642,
+   "sd_pred": 0.0206,
+   "resid": 0.0108,
+   "z": 0.5229,
+   "age_j": 76
+  },
+  {
+   "paire": "Philippe / Le Pen",
+   "institut": "Ifop",
+   "date": "2026-08-25",
+   "y": 0.48,
+   "pred": 0.4629,
+   "sd_pred": 0.0204,
+   "resid": 0.0171,
+   "z": 0.8389,
+   "age_j": 79
+  },
+  {
+   "paire": "Philippe / Le Pen",
+   "institut": "Harris Interactive",
+   "date": "2026-08-19",
+   "y": 0.45,
+   "pred": 0.4625,
+   "sd_pred": 0.0202,
+   "resid": -0.0125,
+   "z": -0.6199,
+   "age_j": 85
+  },
+  {
+   "paire": "Philippe / Le Pen",
+   "institut": "Cluster17",
+   "date": "2026-07-24",
+   "y": 0.48,
+   "pred": 0.4736,
+   "sd_pred": 0.0211,
+   "resid": 0.0064,
+   "z": 0.3025,
+   "age_j": 111
+  },
+  {
+   "paire": "Philippe / Le Pen",
+   "institut": "Elabe",
+   "date": "2026-07-10",
+   "y": 0.48,
+   "pred": 0.4686,
+   "sd_pred": 0.0207,
+   "resid": 0.0114,
+   "z": 0.5503,
+   "age_j": 125
+  },
+  {
+   "paire": "Philippe / Le Pen",
+   "institut": "Ifop",
+   "date": "2026-07-08",
+   "y": 0.46,
+   "pred": 0.4686,
+   "sd_pred": 0.0227,
+   "resid": -0.0086,
+   "z": -0.3786,
+   "age_j": 127
+  },
+  {
+   "paire": "Philippe / Le Pen",
+   "institut": "Harris Interactive",
+   "date": "2026-07-08",
+   "y": 0.49,
+   "pred": 0.4686,
+   "sd_pred": 0.0205,
+   "resid": 0.0214,
+   "z": 1.044,
+   "age_j": 127
+  },
+  {
+   "paire": "Philippe / Le Pen",
+   "institut": "Harris Interactive",
+   "date": "2026-05-27",
+   "y": 0.48,
+   "pred": 0.475,
+   "sd_pred": 0.0203,
+   "resid": 0.005,
+   "z": 0.2437,
+   "age_j": 169
+  },
+  {
+   "paire": "Philippe / Le Pen",
+   "institut": "Elabe",
+   "date": "2026-03-27",
+   "y": 0.53,
+   "pred": 0.4871,
+   "sd_pred": 0.0216,
+   "resid": 0.0429,
+   "z": 1.9875,
+   "age_j": 230
+  },
+  {
+   "paire": "Retailleau / Le Pen",
+   "institut": "Ifop",
+   "date": "2026-08-25",
+   "y": 0.42,
+   "pred": 0.4197,
+   "sd_pred": 0.0227,
+   "resid": 0.0003,
+   "z": 0.0134,
+   "age_j": 79
+  },
+  {
+   "paire": "Retailleau / Le Pen",
+   "institut": "Cluster17",
+   "date": "2026-07-24",
+   "y": 0.43,
+   "pred": 0.4447,
+   "sd_pred": 0.0232,
+   "resid": -0.0147,
+   "z": -0.632,
+   "age_j": 111
+  },
+  {
+   "paire": "Retailleau / Le Pen",
+   "institut": "Elabe",
+   "date": "2026-07-10",
+   "y": 0.44,
+   "pred": 0.4327,
+   "sd_pred": 0.0227,
+   "resid": 0.0073,
+   "z": 0.3223,
+   "age_j": 125
+  },
+  {
+   "paire": "Mélenchon / Philippe",
+   "institut": "YouGov",
+   "date": "2026-10-15",
+   "y": 0.34,
+   "pred": 0.3374,
+   "sd_pred": 0.0236,
+   "resid": 0.0026,
+   "z": 0.1101,
+   "age_j": 28
+  },
+  {
+   "paire": "Mélenchon / Philippe",
+   "institut": "YouGov",
+   "date": "2026-09-21",
+   "y": 0.39,
+   "pred": 0.3349,
+   "sd_pred": 0.0236,
+   "resid": 0.0551,
+   "z": 2.3402,
+   "age_j": 52
+  },
+  {
+   "paire": "Attal / Bardella",
+   "institut": "Harris Interactive",
+   "date": "2026-05-27",
+   "y": 0.43,
+   "pred": 0.4508,
+   "sd_pred": 0.0241,
+   "resid": -0.0208,
+   "z": -0.866,
+   "age_j": 169
+  },
+  {
+   "paire": "Glucksmann / Bardella",
+   "institut": "Elabe",
+   "date": "2026-03-27",
+   "y": 0.415,
+   "pred": 0.4231,
+   "sd_pred": 0.023,
+   "resid": -0.0081,
+   "z": -0.3512,
+   "age_j": 230
+  },
+  {
+   "paire": "Mélenchon / Bardella",
+   "institut": "Harris Interactive",
+   "date": "2026-05-27",
+   "y": 0.32,
+   "pred": 0.3188,
+   "sd_pred": 0.0214,
+   "resid": 0.0012,
+   "z": 0.0563,
+   "age_j": 169
+  },
+  {
+   "paire": "Mélenchon / Bardella",
+   "institut": "Elabe",
+   "date": "2026-03-27",
+   "y": 0.285,
+   "pred": 0.312,
+   "sd_pred": 0.022,
+   "resid": -0.027,
+   "z": -1.2249,
+   "age_j": 230
+  },
+  {
+   "paire": "Philippe / Bardella",
+   "institut": "Harris Interactive",
+   "date": "2026-05-27",
+   "y": 0.46,
+   "pred": 0.4725,
+   "sd_pred": 0.0216,
+   "resid": -0.0125,
+   "z": -0.5802,
+   "age_j": 169
+  },
+  {
+   "paire": "Philippe / Bardella",
+   "institut": "Odoxa",
+   "date": "2026-05-21",
+   "y": 0.48,
+   "pred": 0.474,
+   "sd_pred": 0.0239,
+   "resid": 0.006,
+   "z": 0.25,
+   "age_j": 175
+  },
+  {
+   "paire": "Philippe / Bardella",
+   "institut": "Elabe",
+   "date": "2026-03-27",
+   "y": 0.515,
+   "pred": 0.4842,
+   "sd_pred": 0.0224,
+   "resid": 0.0308,
+   "z": 1.3764,
+   "age_j": 230
+  },
+  {
+   "paire": "Philippe / Bardella",
+   "institut": "Odoxa",
+   "date": "2026-03-26",
+   "y": 0.52,
+   "pred": 0.4841,
+   "sd_pred": 0.0253,
+   "resid": 0.0359,
+   "z": 1.4173,
+   "age_j": 231
+  },
+  {
+   "paire": "Retailleau / Bardella",
+   "institut": "Elabe",
+   "date": "2026-03-27",
+   "y": 0.42,
+   "pred": 0.4155,
+   "sd_pred": 0.0252,
+   "resid": 0.0045,
+   "z": 0.1771,
+   "age_j": 230
+  }
+ ]
+}
