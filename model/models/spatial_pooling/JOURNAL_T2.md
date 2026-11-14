@@ -8,6 +8,12 @@ l'historique, ajouter en bas de « Historique ».
 ## État (mis à jour à chaque réveil)
 
 - Dernière revue Opus : 2026-11-14 (routine cloud, cf. « Revue 2026-11-14 »).
+- OBJECTIF (utilisateur, via l'orchestrateur, 2026-11-14) : « un modèle qui est
+  backé par le passé mais qui représente bien les sondages et tendances
+  actuels ». 2017/2022 servent à CALIBRER et VALIDER ; le critère final est la
+  crédibilité face aux sondages 2027. Le CSV `data/parsed/intentions_2027_wiki.csv`
+  va être versionné sur main (mis à jour par le job quotidien) : le récupérer
+  par `git merge origin/main` dès qu'il y est.
 - Production : `PUBLIER_T2 = False` (forecast_model.py). Ne PAS passer à True
   sans accord explicite de l'utilisateur.
 - Modèle courant : géométrie T1 + κ + valence η agrégée + abstention par valeur
@@ -17,6 +23,27 @@ l'historique, ajouter en bas de « Historique ».
   (voir Faits établis) ; fusion/push = orchestrateur.
 
 ## File de tâches (prendre la première non cochée)
+
+- [ ] PRIORITAIRE dès que `data/parsed/intentions_2027_wiki.csv` est sur
+      origin/main (sinon passer à la suite) — DIAGNOSTIC 2027 : fit joint T1+T2
+      sur 2027 (variante abst), puis (a) résidus par duel sondé et par institut
+      (moyenne, écart-type, signe), (b) tendance récente : le modèle suit-il ou
+      lisse-t-il les duels des dernières semaines ? (résidus contre la date),
+      (c) comparaison avec ce qu'afficherait le site (duels sondés, P(élu) champ
+      modal via `p_elu`) et avec la moyenne brute récente des sondages de chaque
+      paire. Consigner dans la spec §8 « Diagnostic 2027 ».
+- [ ] CRITÈRE DE PUBLICATION (à écrire dans la spec §8, règle permanente) : aucune
+      proposition de `PUBLIER_T2 = True` sans LES DEUX : couverture historique
+      2017/2022 ET diagnostic 2027 satisfaisant (résidus par duel petits devant
+      l'incertitude affichée, pas de biais systématique par institut ou par
+      candidat, tendance récente captée).
+- [ ] ARBITRAGES À REMONTER À L'UTILISATEUR (ne pas trancher seul) : tout choix où
+      la fidélité au passé et la fidélité aux sondages actuels divergent — p. ex.
+      un τ_T2 ou un biais directionnel anti-RN calibrés sur 2017/2022 qui
+      écraseraient ou décaleraient les duels 2027 ; un prior qui lisse une
+      tendance 2027 réelle. Les lister dans une section « Arbitrages ouverts » du
+      journal avec chiffres (effet sur les duels 2027 publiés) et la ligne
+      « ARBITRAGE À TRANCHER : … » en fin de réponse du réveil.
 
 Backtests unitaires (un fit NUTS complet chacun, ~30-40 min sur un cœur ;
 lancer 4 tâches en parallèle par réveil). Liste : `python -m model.backtest.second_round --lister`.
