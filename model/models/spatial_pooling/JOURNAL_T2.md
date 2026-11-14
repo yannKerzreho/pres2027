@@ -141,6 +141,12 @@ Résultats : `model/backtest/results/*.json` (committés).
       (κ+ω, η ≡ 0) et `geo1` (ω seul, κ ≡ 1). V1 Macron|Le Pen `geo` phase 1 —
       EN COURS (relancé 2026-11-14T23:10Z, session 01JZeMw2 : le run de 22:37Z a été perdu, VM récupérée dès la fin du tour) ; puis phase 2 ;
       puis `geo1` ; puis V2 2022 et diagnostic 2027 des variantes gagnantes.
+      — FAIT 23:40Z (spec §8.9) : geo 56,2 % (erreur 0,9, un seul puits sans
+      phase 2) ; geo1 50,0 % (erreur 5,3) ; abst 64,0 % (8,7). κ nécessaire,
+      η nuisible sur cette paire.
+- [ ] geo sur les 3 autres V1 2022 (Zemmour, Mélenchon, Pécresse) — EN COURS
+      (début 2026-11-14T23:42Z, session 01JZeMw2) ; puis V2 2022 ×3 geo ;
+      puis diagnostic 2027 geo (les duels sondés restent-ils ajustés sans η ?).
 - [ ] abst : v1 2017 Macron|Le Pen, Fillon|Le Pen ; v2 2017 T1-30 (attendu : sans nœud T1), T1-1, T2-7
 - [ ] eta : mêmes tâches (comparaison)
 - [ ] Revue 2026-11-14, sans fit : corriger la base V2 (écart-type τ_T2 en plus

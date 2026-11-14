@@ -603,6 +603,20 @@ d'accord) ; (2) V1 (paire retirée : c'est là que η ne peut pas aider) ;
 sondés ? rappel : sur 2027, MAE paire retirée 6,3 pt géométrie seule, 3,2 avec
 κ+ω, 2,9 η seule, 2,4 les deux — mais géométrie FIGÉE, pas jointe).
 
+**Résultats V1 Macron–Le Pen retiré (2022 T1−1, observé 55,3 %)** :
+
+| variante | prédiction [IC90] | erreur | chaînes retenues / écart | R̂ cible | κ | ω |
+|---|---|---|---|---|---|---|
+| abst, phase 2 (κ, η, ω) | 64,0 [59,1 ; 69,1] | 8,7 | 4 / 1,4 pt | 1,03 | — | — |
+| **geo (κ, ω ; η ≡ 0)** | **56,2 [50,6 ; 59,0]** | **0,9** | **4 / 1,2 pt** | 1,09 | 0,53 | −1,03 |
+| geo1 (ω ; κ ≡ 1, η ≡ 0) | 50,0 [47,2 ; 52,2] | 5,3 | 3 / 0,16 pt | 1,00 | 1 | −4,79 |
+
+Sans η, les 4 chaînes tombent d'emblée dans le même puits ($\bar L_c$ à 6 nats
+près, sans phase 2) : la valence libre était bien ce qui laissait coexister
+les géométries. κ est nécessaire (κ ≈ 0,5 : au 2nd tour l'électeur agrège
+moins « par proximité » qu'au 1er), η ne l'est pas sur cette paire et y nuit.
+Une paire ne fait pas une règle : à confirmer sur les 3 autres V1, V2 et 2027.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

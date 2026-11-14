@@ -157,8 +157,9 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
     N = len(candidates)
     # `pi` est un déterministe (P, N) : son R-hat n'ajoute rien à celui des
     # paramètres et écraserait le pire cas. On le retire du diagnostic.
+    # `eta` ≡ 0 en variante sans valence (spec §8.9) : R-hat indéfini (NaN), exclu.
     diag = {k: v for k, v in numpyro_summary(samples, prob=0.9).items()
-            if k not in ("pi", "duel_s")}
+            if k not in ("pi", "duel_s") and not (k == "eta" and eta_scale == 0)}
     if has_t2:
         # `eta` d'un candidat sans duel suit son prior : R-hat valable, mais on
         # le distingue dans le diagnostic pour ne pas le confondre avec un
