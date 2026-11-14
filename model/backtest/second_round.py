@@ -175,7 +175,15 @@ def v2_resultat(election: int, nuts: dict, coupures=("T1-30", "T1-1", "T2-7")) -
         as_of = ref - pd.Timedelta(days=int(c.split("-")[1]))
         print(f"[V2 {election}] {c} ({as_of.date()})", flush=True)
         raw = polls_historiques(election, as_of)
-        fit, dt = _fit(raw, as_of, election, nuts)
+        n_t1 = int(raw.loc[raw.tour.eq("Premier tour"), "notice"].nunique())
+        try:
+            fit, dt = _fit(raw, as_of, election, nuts)
+        except (IndexError, ValueError) as exc:
+            # 2017 : la plupart des sondages T1 n'ont aucune date (cf. note
+            # données) -- une coupure peut n'avoir aucun nœud T1.
+            out.append({"election": election, "coupure": c, "as_of": str(as_of.date()),
+                        "erreur": f"{type(exc).__name__}: {exc}", "n_notices_t1": n_t1})
+            continue
         h = int((T2_DATES[election] - as_of).days)
         d = duel_draws(fit, a, b, h, scrutin=True)
         recents = _duels_moyens(raw, as_of - pd.Timedelta(days=7))
@@ -188,7 +196,7 @@ def v2_resultat(election: int, nuts: dict, coupures=("T1-30", "T1-1", "T2-7")) -
         zd = np.log(d / (1 - d))
         base = np.log(p0 / (1 - p0)) + rng.normal(0, zd.std(), 4000)
         out.append({"election": election, "coupure": c, "as_of": str(as_of.date()),
-                    "candidat": a, "resultat": round(y, 4),
+                    "candidat": a, "resultat": round(y, 4), "n_notices_t1": n_t1,
                     "modele": round(float(d.mean()), 4),
                     "modele_ic90": [round(float(x), 4) for x in np.percentile(d, [5, 95])],
                     "couvre_ic90": bool(np.percentile(d, 5) <= y <= np.percentile(d, 95)),
