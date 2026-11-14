@@ -23,8 +23,8 @@ lancer 4 tâches en parallèle par réveil). Liste : `python -m model.backtest.s
 Pour chaque ligne, les deux variantes `--variante abst` et `--variante eta`.
 Résultats : `model/backtest/results/*.json` (committés).
 
-- [ ] abst : v2 2022 T1-30, T1-1, T2-7
-- [ ] abst : v1 2022 Macron|Zemmour, Macron|Mélenchon, Macron|Le Pen, Macron|Pécresse
+- [ ] abst : v2 2022 T1-30, T1-1, T2-7 — EN COURS (début 2026-11-14T15:43Z, session cse_01JZeMvxqTvL5k3ZVMCjjMh9)
+- [ ] abst : v1 2022 Macron|Zemmour — EN COURS (même début, même session) ; puis Macron|Mélenchon, Macron|Le Pen, Macron|Pécresse
 - [ ] abst : v1 2017 Macron|Le Pen, Fillon|Le Pen ; v2 2017 T1-30 (attendu : sans nœud T1), T1-1, T2-7
 - [ ] eta : mêmes tâches (comparaison)
 - [ ] Revue 2026-11-14, sans fit : corriger la base V2 (écart-type τ_T2 en plus
