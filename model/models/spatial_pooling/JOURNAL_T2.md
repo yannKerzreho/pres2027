@@ -14,8 +14,8 @@ l'historique, ajouter en bas de « Historique ».
 - Modèle courant : géométrie T1 + κ + valence η agrégée + abstention par valeur
   inclusive (ω). Variante de comparaison : `--variante eta` (sans abstention).
 - Versions épinglées (requirements.txt) : jax 0.10.2 / numpyro 0.22.0.
-- Lot en attente de publication : `claude/pin-requirements` (204fe6c), à
-  vérifier par la routine ponctuelle « vérif CI versions épinglées ».
+- Lot en attente de publication : `claude/pin-requirements` (204fe6c), vérifié
+  (voir Faits établis) ; fusion/push = orchestrateur.
 
 ## File de tâches (prendre la première non cochée)
 
@@ -46,6 +46,13 @@ Résultats : `model/backtest/results/*.json` (committés).
 - Données 2017 : la plupart des sondages T1 sans date (note à la session données).
 - VM cloud : 4 cœurs, 15 Go ; fit rapide 75-89 s ; installer avec
   `python -m pip install --ignore-installed packaging -r requirements.txt`.
+- Réseau de la VM cloud : `fr.wikipedia.org` BLOQUÉ (proxy 403). Pas
+  d'ingestion live ni de `model.run` 2027 dans la routine ; le CSV 2027 est
+  hors dépôt (.gitignore). Travailler sur 2017/2022 (CSV versionnés). Le test
+  `sondages/tests/test_wiki.py::test_build_dataset_live_page_matches_schema_contract`
+  y échoue pour cette seule raison : ne pas le « corriger ».
+- Vérif versions épinglées (2026-11-14, VM cloud) : install OK, 152 tests passés,
+  1 échec réseau ci-dessus. Versions identiques au job quotidien vert du 13/11.
 - Colab gratuit : session `t2bt` perdue en cours de run (VM récupérée) le
   2026-11-14 — ne plus en dépendre.
 
