@@ -81,15 +81,15 @@ Résultats : `model/backtest/results/*.json` (committés).
       Juppé, Sarkozy, Bayrou, Valls...) ; puis coder, puis mesurer le nombre
       de champs distincts et la convergence sur 2022 T1−30. Les backtests
       ci-dessous ne valent rien avant cela (verdicts non transposables à 2027).
-      — CODÉ 2026-11-14 18:30Z (spec §8.3) : toutes les hypothèses T1, roster
+      — CODÉ 2026-11-14 18:10Z (spec §8.3) : toutes les hypothèses T1, roster
       `build_roster`, putatifs classés ; 2022 T1−30 : 66 champs / 222 nœuds /
       23 candidats (contre 4 / 108 / 12). Test ajouté.
 - [ ] Fit de contrôle abst v2 2022 T1−30 dans le nouveau cadre — EN COURS
-      (début 2026-11-14T18:30Z, session 01JZeMw2, 4 processus d'une chaîne).
+      (début 2026-11-14T18:10Z, session 01JZeMw2, 4 processus d'une chaîne).
       Critère : R-hat ≤ 1,2. Si oui, dérouler la file ci-dessous (nouveau cadre) ;
       sinon, diagnostiquer (sites, profondeur) avant toute autre tâche.
 - [ ] abst : v2 2022 T1-30, T1-1, T2-7 (NOUVEAU cadre). Ancien cadre :
-      T1−30 committé (non convergé, R-hat 35,8, sert de témoin) ; T1−1 perdu
+      T1−30 committé sous `second_round_abst_v2_2022_T1-30_ancien_cadre.json` (non convergé, R-hat 35,8, témoin) ; T1−1 perdu
       (VM récupérée vers 18:00Z), non relancé : sans objet.
 - [ ] abst : v1 2022 Macron|Zemmour, Macron|Mélenchon, Macron|Le Pen, Macron|Pécresse
 - [ ] abst : v1 2017 Macron|Le Pen, Fillon|Le Pen ; v2 2017 T1-30 (attendu : sans nœud T1), T1-1, T2-7
