@@ -397,7 +397,7 @@ def build_duel_arrays(df: pd.DataFrame, candidates: list[str], notice_col="notic
     libellé puis renormaliser fabriquerait le report qu'on cherche à mesurer.
     `a` < `b` dans l'ordre du roster, `y` = part de `a` parmi les deux."""
     idx = {c: i for i, c in enumerate(candidates)}
-    a, b, y, n, dates, pairs = [], [], [], [], [], []
+    a, b, y, n, dates, pairs, notices = [], [], [], [], [], [], []
     if len(df):
         d = df.assign(**{hyp_col: df[hyp_col].fillna("__unique__")})
         # PAS de déflation par le nombre d'hypothèses, contrairement au T1 : à
@@ -421,5 +421,7 @@ def build_duel_arrays(df: pd.DataFrame, candidates: list[str], notice_col="notic
             n.append(n_raw)
             dates.append(pd.Timestamp(g[date_col].iloc[0]).toordinal())
             pairs.append((g[candidat_col].iloc[0], g[candidat_col].iloc[1]))
+            notices.append(notice)
     return dict(a=np.array(a, dtype=int), b=np.array(b, dtype=int), y=np.array(y),
-                n=np.array(n), dates=np.array(dates, dtype=float), pairs=pairs)
+                n=np.array(n), dates=np.array(dates, dtype=float), pairs=pairs,
+                notices=notices)

@@ -51,6 +51,10 @@ class SpatialPoolingFit:
     tau_ou: float | None = None
     as_of: str | None = None
     duel_pairs: list | None = None           # paires effectivement observées
+    # Diagnostic : part prédite de chaque duel observé à sa date (S, D) et les
+    # duels eux-mêmes (sortie de `build_duel_arrays`). Aucun usage en production.
+    duel_s_draws: np.ndarray | None = None
+    duels: dict | None = None
 
 
 def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, tune: int = 600,
@@ -140,7 +144,8 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
     N = len(candidates)
     # `pi` est un déterministe (P, N) : son R-hat n'ajoute rien à celui des
     # paramètres et écraserait le pire cas. On le retire du diagnostic.
-    diag = {k: v for k, v in numpyro_summary(samples, prob=0.9).items() if k != "pi"}
+    diag = {k: v for k, v in numpyro_summary(samples, prob=0.9).items()
+            if k not in ("pi", "duel_s")}
     if has_t2:
         # `eta` d'un candidat sans duel suit son prior : R-hat valable, mais on
         # le distingue dans le diagnostic pour ne pas le confondre avec un
@@ -196,6 +201,9 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         sigma_w_draws=np.asarray(samples["sigma_w"]).reshape(-1),
         dynamic=np.asarray(part >= seuil_dynamique), tau_ou=tau_ou, as_of=as_of,
         duel_pairs=sorted(set(duels["pairs"])) if has_t2 else [],
+        duel_s_draws=(np.asarray(samples["duel_s"]).reshape(-1, len(duels["y"]))
+                      if has_t2 else None),
+        duels=duels if has_t2 else None,
     )
 
 def pi_draws_for_mask(fit: SpatialPoolingFit, mask: np.ndarray) -> np.ndarray:

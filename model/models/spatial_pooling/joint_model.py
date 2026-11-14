@@ -184,5 +184,8 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
             s = duel_shares(A_a, A_b, kappa, eta[duel_a], eta[duel_b], lse, omega)
         else:
             s = duel_shares(A_a, A_b, kappa, eta[duel_a], eta[duel_b])
+        # Part prédite par duel observé, à SA date : sert aux résidus (diagnostic
+        # 2027, résidus standardisés) ; n'entre dans aucun calcul d'inférence.
+        numpyro.deterministic("duel_s", s)
         var_d = s * (1.0 - s) / jnp.clip(duel_n, 1.0, None) + sigma_t2 ** 2
         numpyro.factor("ll_t2", jnp.sum(dist.Normal(s, jnp.sqrt(var_d + 1e-8)).log_prob(duel_y)))

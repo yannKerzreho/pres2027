@@ -32,6 +32,8 @@ l'historique, ajouter en bas de « Historique ».
       (c) comparaison avec ce qu'afficherait le site (duels sondés, P(élu) champ
       modal via `p_elu`) et avec la moyenne brute récente des sondages de chaque
       paire. Consigner dans la spec §8 « Diagnostic 2027 ».
+      — EN COURS (début 2026-11-14T16:25Z, session routine 01JZeMw2) : CSV fusionné
+      depuis main, script `python -m model.backtest.diagnostic_2027 --variante abst|eta`.
 - [ ] CRITÈRE DE PUBLICATION (à écrire dans la spec §8, règle permanente) : aucune
       proposition de `PUBLIER_T2 = True` sans LES DEUX : couverture historique
       2017/2022 ET diagnostic 2027 satisfaisant (résidus par duel petits devant
