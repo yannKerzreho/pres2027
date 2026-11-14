@@ -357,6 +357,33 @@ comptée alors que le sondage a servi à l'estimer). abst et eta s'accordent à
 ≤ 1 pt sur tous les duels sondés ; abst donne des IC site plus larges
 (P(Philippe bat Le Pen) 0,14 contre 0,09).
 
+### 8.2 Backtest 2022 : géométrie T1 non identifiée (2026-11-14)
+
+Premier backtest complet (abst, V2 2022 T1−30, 4 processus d'une chaîne
+fusionnés) : duel Macron 58,3 % [53,5 ; 63,3] pour un résultat de 58,6 %
+(couvert), **mais R-hat 35,8, ESS 2, rhat_t2 3,0**, profondeur d'arbre
+saturée (1023) dans les 4 chaînes. Ce n'est pas un défaut de la fusion : les
+chaînes sont dans des géométries différentes (Roussel/Jadot à 0,1 ou à 0,7,
+de part et d'autre de Macron ; κ = 0,57 / 0,59 / 1,37 / 1,71).
+
+Cause : `polls_historiques` ne garde qu'UNE hypothèse par notice, la plus
+proche du champ final, et seulement des candidats du scrutin. Résultat :
+100 notices sur 108 testent le même champ à T1−30 (140/144 à T1−1). Or les
+positions $\mu_i$ ne sont identifiées que par la **variation des champs**
+(qui perd quoi quand un candidat sort) : avec un champ unique, $\pi$ est
+ajusté par les seuls $w_i$ et les positions errent selon le prior et les
+ancres. Les duels ne suffisent pas à les fixer (κ, η, ω absorbent).
+En 2027, des dizaines de champs distincts sont testés et le fit converge
+(R-hat 1,04, §8.1) : **le backtest historique, tel qu'il est construit, teste
+un régime que la production ne rencontre pas.** Ses verdicts de convergence ne
+sont donc pas transposables, et ses chiffres de couverture reposent sur une
+géométrie non identifiée.
+
+Correctif proposé (à spécifier avant code, cf. journal) : garder TOUTES les
+hypothèses T1 des notices de la fenêtre (y compris candidats non qualifiés au
+final, p. ex. variantes LR/PS de l'automne 2021), comme le fait le roster
+2027 — ce qui retire aussi la fuite « champ final connu » (revue, point 8).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

@@ -1,0 +1,54 @@
+{
+ "variante": "abst",
+ "nuts": {
+  "draws": 400,
+  "tune": 600,
+  "chains": 4,
+  "mode": "4 processus d'une chaîne (graines 27..30), fusionnés"
+ },
+ "tau_t2_scrutin": 0.1,
+ "v1": [],
+ "v2": [
+  {
+   "election": 2022,
+   "coupure": "T1-30",
+   "as_of": "2022-03-11",
+   "candidat": "Emmanuel Macron",
+   "resultat": 0.5855,
+   "n_notices_t1": 108,
+   "modele": 0.5834,
+   "modele_ic90": [
+    0.5348,
+    0.6325
+   ],
+   "couvre_ic90": true,
+   "log_score": 2.556,
+   "sondages_7j": 0.5886,
+   "n_sondages_7j": 7,
+   "log_score_sondages": 2.556,
+   "couvre_ic90_sondages": true,
+   "rhat_max": 35.8053,
+   "ess_min": 2.0,
+   "divergences": 1,
+   "kappa": 1.0605,
+   "omega": -5.454,
+   "rhat_t2": 2.9982,
+   "sigma_t2": 0.0119,
+   "secondes": 0.4,
+   "eta": {
+    "Nathalie Arthaud": -0.008,
+    "Philippe Poutou": -0.015,
+    "Jean-Luc Mélenchon": 0.529,
+    "Fabien Roussel": 0.021,
+    "Yannick Jadot": -0.005,
+    "Anne Hidalgo": -0.021,
+    "Emmanuel Macron": -0.171,
+    "Jean Lassalle": 0.006,
+    "Valérie Pécresse": 0.051,
+    "Nicolas Dupont-Aignan": -0.001,
+    "Marine Le Pen": -0.003,
+    "Eric Zemmour": -0.487
+   }
+  }
+ ]
+}

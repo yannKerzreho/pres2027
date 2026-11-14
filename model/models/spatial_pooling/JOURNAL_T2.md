@@ -72,7 +72,19 @@ Résultats : `model/backtest/results/*.json` (committés).
       Recette d'une tâche : `for k in 0 1 2 3; do python -m model.backtest.second_round
       <tâche> --variante abst --chaine $k & done; wait; python -m
       model.backtest.second_round <tâche> --variante abst --fusionner`.
-- [ ] abst : v2 2022 T1-30, T1-1, T2-7 — EN COURS (début 2026-11-14T17:40Z, session 01JZeMw2, une coupure après l'autre, 4 chaînes par coupure)
+- [ ] **PRIORITAIRE** : géométrie T1 non identifiée dans le cadre historique
+      (spec §8.2 : 100/108 notices au même champ, R-hat 35,8 à 2022 T1−30).
+      Écrire dans la spec les maths du nouveau cadre : `polls_historiques`
+      garde TOUTES les hypothèses T1 de la fenêtre (candidats non qualifiés
+      inclus, roster par `build_roster` comme en 2027, ORDER_GROUPS_HISTORIQUES
+      à compléter : Bertrand, Barnier, Taubira, Montebourg, etc. ; 2017 :
+      Juppé, Sarkozy, Bayrou, Valls...) ; puis coder, puis mesurer le nombre
+      de champs distincts et la convergence sur 2022 T1−30. Les backtests
+      ci-dessous ne valent rien avant cela (verdicts non transposables à 2027).
+- [ ] abst : v2 2022 T1-30 (FAIT, non convergé, JSON committé), T1-1, T2-7 —
+      EN COURS (début 2026-11-14T17:24Z, session 01JZeMw2, file en arrière-plan :
+      T1-1 depuis 17:38Z, T2-7 ensuite ; fin attendue ~18:06Z). Résultats à
+      collecter et à lire comme « cadre non identifié ».
 - [ ] abst : v1 2022 Macron|Zemmour, Macron|Mélenchon, Macron|Le Pen, Macron|Pécresse
 - [ ] abst : v1 2017 Macron|Le Pen, Fillon|Le Pen ; v2 2017 T1-30 (attendu : sans nœud T1), T1-1, T2-7
 - [ ] eta : mêmes tâches (comparaison)
@@ -149,6 +161,11 @@ Résultats : `model/backtest/results/*.json` (committés).
   retiré. Tests : 144 passés (hors réseau). Mesure utile pour le découpage :
   un fit 2027 complet (4 chaînes séquentielles, 600+400, 92 duels) = 27-30 min
   avec 2 fits en parallèle sur la VM 4 cœurs.
+- 2026-11-14 17:07-17:50Z (routine) : backtests découpés en processus d'une
+  chaîne + fusion (mode parallèle JAX écarté : fuite mémoire) ; 1re tâche
+  abst v2 2022 T1−30 en 14 min sur 4 cœurs ; R-hat 35,8 ⇒ diagnostic :
+  géométrie T1 non identifiée dans le cadre historique (spec §8.2), tâche
+  prioritaire ajoutée. Tests : suites spatial_pooling + T2 + chaînes vertes (35) ; suite complète non relancée (fits en cours).
 
 ## Revue Opus 2026-11-14 (routine cloud) — intégration point par point
 
