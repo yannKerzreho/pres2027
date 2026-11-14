@@ -165,3 +165,32 @@ def test_valence_agregee_a_un_effet_independant_des_rayons():
         effets.append(float(duel_shares(A[0], A[1], 1.0, 0.5, 0.0))
                       - float(duel_shares(A[0], A[1], 1.0, 0.0, 0.0)))
     assert np.ptp(effets) < 1e-4 and effets[0] == pytest.approx(0.1225, abs=1e-3)
+
+
+def _duel_abst(w, omega=-3.0, kappa=0.8, a=0, b=2):
+    import jax
+    A = log_attractivite(MU, SG, jnp.asarray(w))
+    lse = jax.nn.logsumexp(A, axis=0)
+    return float(duel_shares(A[a], A[b], kappa, 0.0, 0.0, lse, omega))
+
+
+def test_abstention_invariante_par_translation_de_w():
+    """Le défaut central de l'option extérieure Codex : ici omega garde un sens."""
+    assert _duel_abst([5.0, 5.3, 5.1]) == pytest.approx(_duel_abst([0.0, 0.3, 0.1]), abs=1e-6)
+
+
+def test_abstention_retire_l_electorat_du_centre_elimine():
+    """Duel gauche/droite, centre éliminé : plus le centre est attractif, plus
+    son électorat s'abstient -- l'effet dépend de l'électorat, pas d'un candidat.
+    Sans abstention le centre éliminé n'a AUCUN effet ; avec, il en a un."""
+    from model.models.spatial_pooling.geometry import duel_expression
+    import jax
+    for wc in (-3.0, 3.0):
+        A = log_attractivite(MU, SG, jnp.asarray([0.0, wc, 0.0]))
+        rho = duel_expression(A[0], A[2], 0.8, jax.nn.logsumexp(A, axis=0), -3.0)
+        assert ((0 < rho) & (rho < 1)).all()
+    A_lo = log_attractivite(MU, SG, jnp.asarray([0.0, -3.0, 0.0]))
+    A_hi = log_attractivite(MU, SG, jnp.asarray([0.0, 3.0, 0.0]))
+    e_lo = float(jnp.sum(duel_expression(A_lo[0], A_lo[2], 0.8, jax.nn.logsumexp(A_lo, 0), -3.0) * __import__("model.models.spatial_pooling.geometry", fromlist=["W"]).W))
+    e_hi = float(jnp.sum(duel_expression(A_hi[0], A_hi[2], 0.8, jax.nn.logsumexp(A_hi, 0), -3.0) * __import__("model.models.spatial_pooling.geometry", fromlist=["W"]).W))
+    assert e_hi < e_lo

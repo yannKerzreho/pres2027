@@ -63,6 +63,9 @@ SEUIL_DYNAMIQUE = 0.05        # part moyenne au-dessus de laquelle `w` a un CHEM
 ETA_SCALE = 0.5
 KAPPA_LOG_SCALE = 0.5         # log kappa ~ N(0, 0,5) : centré sur « même agrégation qu'au T1 »
 SIGMA_T2_PRIOR = 0.02         # écart-type d'excès des duels (part), demi-normale
+# Abstention/blanc/nul au 2nd tour (spec §3.1, idée utilisateur 2026-11-14).
+# omega fixe le niveau de non-expression : -3,7 ~ 20 % sur la géométrie 2027.
+OMEGA_PRIOR = (-3.0, 1.5)
 
 def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
                              excess_var=None, tau_ou=None, sigma_w_prior=0.5,
@@ -70,7 +73,8 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
                              sigma_log_mu=None, sigma_log_scale=0.6, sigma_jitter=SIGMA_JITTER,
                              dynamic_mask=None, duel_a=None, duel_b=None, duel_y=None,
                              duel_n=None, duel_date_idx=None, eta_scale=ETA_SCALE,
-                             kappa_log_scale=KAPPA_LOG_SCALE, sigma_t2_prior=SIGMA_T2_PRIOR):
+                             kappa_log_scale=KAPPA_LOG_SCALE, sigma_t2_prior=SIGMA_T2_PRIOR,
+                             abstention=True, omega_prior=OMEGA_PRIOR):
     """Le modèle. Inférence JOINTE de la géométrie et du chemin de `w`.
 
     Trois paramètres par candidat, deux échelles globales, aucun bloc :
@@ -171,10 +175,14 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
         eta = numpyro.deterministic("eta", z_eta * eta_scale)
         sigma_t2 = numpyro.sample("sigma_t2", dist.HalfNormal(sigma_t2_prior))
         w_d = w_full[:, duel_date_idx].T                         # (D, N)
-        A_a = log_attractivite(mu[duel_a], sigma[duel_a],
-                               jnp.take_along_axis(w_d, duel_a[:, None], 1)[:, 0])
-        A_b = log_attractivite(mu[duel_b], sigma[duel_b],
-                               jnp.take_along_axis(w_d, duel_b[:, None], 1)[:, 0])
-        s = duel_shares(A_a, A_b, kappa, eta[duel_a], eta[duel_b])
+        A_all = log_attractivite(mu, sigma, w_d)                 # (D, N, B)
+        rows = jnp.arange(w_d.shape[0])
+        A_a, A_b = A_all[rows, duel_a], A_all[rows, duel_b]
+        if abstention:
+            omega = numpyro.sample("omega", dist.Normal(*omega_prior))
+            lse = jax.nn.logsumexp(A_all, axis=1)                # valeur inclusive (D, B)
+            s = duel_shares(A_a, A_b, kappa, eta[duel_a], eta[duel_b], lse, omega)
+        else:
+            s = duel_shares(A_a, A_b, kappa, eta[duel_a], eta[duel_b])
         var_d = s * (1.0 - s) / jnp.clip(duel_n, 1.0, None) + sigma_t2 ** 2
         numpyro.factor("ll_t2", jnp.sum(dist.Normal(s, jnp.sqrt(var_d + 1e-8)).log_prob(duel_y)))

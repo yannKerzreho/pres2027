@@ -125,6 +125,24 @@ identifiés.
 
 ## 3. Abstention, blancs et nuls
 
+> **Révision (2026-11-14, idée utilisateur) — ACTIVÉE par défaut.** La §3.2
+> ci-dessous concluait « pas en v1 ». Mesure faite (géométrie du 2026-11-13
+> figée, une paire retirée sur les 11 paires 2027) :
+>
+> | variante | paramètres T2 | MAE |
+> |---|---|---|
+> | géométrie seule | 0 | 6,3 pt |
+> | abstention (κ, ω), sans η | 2 globaux | 3,2 pt |
+> | valence η seule | κ + 1/candidat | 2,9 pt |
+> | abstention + η | κ, ω + 1/candidat | **2,4 pt** |
+>
+> Deux paramètres globaux récupèrent l'essentiel de l'écart, avec une
+> non-expression plausible (9 à 21 % des exprimés du T1). L'effet est **par
+> électorat**, pas par candidat : un centriste perd contre le RN parce que
+> l'électorat de gauche, loin des deux, s'abstient et ne lui reporte plus — ce
+> que η seul ne sait pas dire. Les deux sont conservés ; prior
+> $\omega\sim\mathcal N(-3;1{,}5)$. Backtest : `--variante abst|eta`.
+
 ### 3.1 Forme correcte d'une option extérieure
 
 Si l'on ajoute « ne pas exprimer » au choix du votant, son utilité doit être

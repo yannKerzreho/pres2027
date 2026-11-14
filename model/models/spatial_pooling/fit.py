@@ -43,6 +43,7 @@ class SpatialPoolingFit:
     # Second tour (spec_second_tour.md). `None` si le fit n'a vu aucun duel :
     # le modèle T1 est alors exactement celui d'avant.
     kappa_draws: np.ndarray | None = None    # (S,)
+    omega_draws: np.ndarray | None = None    # (S,) abstention/blanc (None = désactivée)
     eta_draws: np.ndarray | None = None      # (S, N)
     level_draws: np.ndarray | None = None    # (S, N) niveau m_i, centre du processus OU
     sigma_w_draws: np.ndarray | None = None  # (S,)
@@ -60,7 +61,7 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
                         min_poll_date=None, order_groups=None,
                         tau_ou: float | None = None,
                         couverture_min: float | None = COUVERTURE_MIN,
-                        second_tour: bool = True) -> SpatialPoolingFit:
+                        second_tour: bool = True, abstention: bool = True) -> SpatialPoolingFit:
     """Roster -> arrays -> NUTS, en une seule inférence jointe.
 
     `mu`, `sigma` et le chemin de `w` sont estimés ENSEMBLE. La chaîne en deux
@@ -129,7 +130,7 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
     if has_t2:
         kwargs.update(duel_a=jnp.asarray(duels["a"]), duel_b=jnp.asarray(duels["b"]),
                       duel_y=jnp.asarray(duels["y"]), duel_n=jnp.asarray(duels["n"]),
-                      duel_date_idx=jnp.asarray(duel_date_idx))
+                      duel_date_idx=jnp.asarray(duel_date_idx), abstention=abstention)
     t0 = time.time()
     samples, extra = run_numpyro_mcmc(spatial_pooling_model_ou, kwargs, draws=draws, tune=tune,
                                       chains=chains, seed=seed, target_accept=target_accept,
@@ -148,7 +149,8 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         # R-hat PROPRE au bloc T2, sur les seuls eta contraints par un duel :
         # le `rhat_max` global est celui du T1 et ne garde rien du T2.
         rhat_t2 = max([float(np.max(diag[k]["r_hat"])) for k in ("kappa", "sigma_t2")]
-                      + [float(np.max(np.asarray(diag["z_eta"]["r_hat"])[en_duel]))])
+                      + [float(np.max(np.asarray(diag["z_eta"]["r_hat"])[en_duel]))]
+                      + ([float(diag["omega"]["r_hat"])] if abstention else []))
     pires = sorted(((float(np.max(v["r_hat"])), k) for k, v in diag.items()), reverse=True)[:3]
     steps = np.asarray(extra["num_steps"]).ravel()
     diagnostics = {
@@ -176,6 +178,8 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
             "paires_duel": sorted({f"{x} / {y}" for x, y in duels["pairs"]}),
             "candidats_en_duel": [candidates[i] for i in en_duel],
             "kappa": round(float(np.mean(np.asarray(samples["kappa"]))), 4),
+            "omega": (round(float(np.mean(np.asarray(samples["omega"]))), 4)
+                      if abstention else None),
             "rhat_t2": round(rhat_t2, 4),
             "sigma_t2": round(float(np.mean(np.asarray(samples["sigma_t2"]))), 4),
         })
@@ -186,6 +190,7 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         w_draws=np.asarray(samples["w_now"]).reshape(-1, N),
         diagnostics=diagnostics,
         kappa_draws=np.asarray(samples["kappa"]).reshape(-1) if has_t2 else None,
+        omega_draws=(np.asarray(samples["omega"]).reshape(-1) if has_t2 and abstention else None),
         eta_draws=np.asarray(samples["eta"]).reshape(-1, N) if has_t2 else None,
         level_draws=np.asarray(samples["w_level"]).reshape(-1, N),
         sigma_w_draws=np.asarray(samples["sigma_w"]).reshape(-1),
@@ -276,8 +281,12 @@ def _duel_par_tirage(fit, w, ia: np.ndarray, ib: np.ndarray) -> np.ndarray:
     s_idx = np.arange(len(ia))
     A = np.asarray(log_attractivite(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
                                     jnp.asarray(w)))                     # (S, N, B)
+    extra = ()
+    if fit.omega_draws is not None:
+        from scipy.special import logsumexp
+        extra = (logsumexp(A, axis=1), fit.omega_draws)
     return np.asarray(duel_shares(A[s_idx, ia], A[s_idx, ib], fit.kappa_draws,
-                                  fit.eta_draws[s_idx, ia], fit.eta_draws[s_idx, ib]))
+                                  fit.eta_draws[s_idx, ia], fit.eta_draws[s_idx, ib], *extra))
 
 
 def duel_draws(fit: SpatialPoolingFit, a: str, b: str, horizon_days: float = 0.0,

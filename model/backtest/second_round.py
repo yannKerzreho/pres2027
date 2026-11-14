@@ -114,18 +114,21 @@ def _bradley_terry(train: pd.DataFrame, a: str, b: str, sd_eta: float = 0.5) -> 
     return float(1 / (1 + np.exp(-(e[ci[a]] - e[ci[b]]))))
 
 
+ABSTENTION = True   # surchargé par --variante
+
+
 def _fit(raw, as_of, election, nuts):
     t = time.time()
     fit = fit_spatial_pooling(raw, str(as_of.date()), min_poll_date="1900-01-01",
                               order_groups=ORDER_GROUPS_HISTORIQUES[election],
-                              couverture_min=None, **nuts)
+                              couverture_min=None, abstention=ABSTENTION, **nuts)
     return fit, round(time.time() - t, 1)
 
 
 def _diag(fit, dt):
     d = fit.diagnostics
     return {"rhat_max": d["rhat_max"], "ess_min": d["ess_min"], "divergences": d["n_divergences"],
-            "kappa": d.get("kappa"), "rhat_t2": d.get("rhat_t2"), "sigma_t2": d.get("sigma_t2"), "secondes": dt,
+            "kappa": d.get("kappa"), "omega": d.get("omega"), "rhat_t2": d.get("rhat_t2"), "sigma_t2": d.get("sigma_t2"), "secondes": dt,
             "eta": {c: round(float(x), 3) for c, x in zip(fit.candidates, fit.eta_draws.mean(0))}
             if fit.eta_draws is not None else None}
 
@@ -215,7 +218,11 @@ def main() -> None:
     ap.add_argument("--only", choices=["v1", "v2"], default=None)
     ap.add_argument("--election", type=int, choices=[2017, 2022], default=None)
     ap.add_argument("--out", type=Path, default=None)
+    ap.add_argument("--variante", choices=["abst", "eta"], default="abst",
+                    help="abst = abstention (valeur inclusive) + valence ; eta = valence seule")
     args = ap.parse_args()
+    global ABSTENTION
+    ABSTENTION = args.variante == "abst"
     nuts = dict(draws=60, tune=60, chains=1) if args.fast else dict(draws=400, tune=600, chains=4)
     rows = {"v1": [], "v2": []}
     for e in ([args.election] if args.election else [2017, 2022]):
@@ -224,8 +231,9 @@ def main() -> None:
         if args.only in (None, "v2"):
             rows["v2"] += v2_resultat(e, nuts)
     OUT_DIR.mkdir(exist_ok=True)
-    out = args.out or OUT_DIR / f"second_round_{'fast_' if args.fast else ''}{args.only or 'all'}_{args.election or 'both'}.json"
-    out.write_text(json.dumps({"nuts": nuts, "tau_t2_scrutin": TAU_T2_SCRUTIN, **rows},
+    out = args.out or OUT_DIR / (f"second_round_{args.variante}_{'fast_' if args.fast else ''}"
+                                 f"{args.only or 'all'}_{args.election or 'both'}.json")
+    out.write_text(json.dumps({"variante": args.variante, "nuts": nuts, "tau_t2_scrutin": TAU_T2_SCRUTIN, **rows},
                               ensure_ascii=False, indent=1) + "\n")
     for k, r in rows.items():
         if r:

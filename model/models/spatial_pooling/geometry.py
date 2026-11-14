@@ -175,7 +175,7 @@ def log_attractivite(mu, sigma, w) -> jnp.ndarray:
     return w[..., None] + D - jax.nn.logsumexp(D, axis=-1, b=W, keepdims=True)
 
 
-def duel_shares(A_a, A_b, kappa, eta_a, eta_b) -> jnp.ndarray:
+def duel_shares(A_a, A_b, kappa, eta_a, eta_b, lse=None, omega=None) -> jnp.ndarray:
     """Part de `a` parmi les exprimés du duel (a, b), spec §2.1 :
 
         g_ab = sum_b W_b · logistique( kappa·[A_a(V_b) - A_b(V_b)] )   (géométrie)
@@ -188,8 +188,29 @@ def duel_shares(A_a, A_b, kappa, eta_a, eta_b) -> jnp.ndarray:
     eta = 0,5 vaut ~12 pt autour de 50/50, quel que soit sigma.
 
     `A_a`, `A_b` : (...,B) ; `kappa`, `eta_a`, `eta_b` : diffusables sur `...`.
-    Invariant par translation commune de `w` et de `eta`. Pas d'option
-    extérieure (spec §3.2)."""
-    g = jnp.sum(jax.nn.sigmoid(jnp.asarray(kappa)[..., None] * (A_a - A_b)) * W, axis=-1)
+    Invariant par translation commune de `w` et de `eta`.
+
+    Abstention/blanc/nul (spec §3.1), si `lse` et `omega` sont donnés : un
+    « candidat » de non-expression d'utilité `omega + kappa·lse(v)`, où
+    `lse(v) = log sum_{j in roster} exp A_j(v)` est la valeur inclusive du
+    votant (son attachement à TOUTE l'offre). Le votant dont le favori est
+    finaliste exprime ; celui dont tout l'entourage est éliminé s'abstient
+    davantage. Parts parmi exprimés : g = ∫ rho·q / ∫ rho. Invariant par
+    translation de `w` (contrairement au `max` non posé de la version Codex)."""
+    k = jnp.asarray(kappa)[..., None]
+    q = jax.nn.sigmoid(k * (A_a - A_b))
+    if lse is None:
+        g = jnp.sum(q * W, axis=-1)
+    else:
+        rho = duel_expression(A_a, A_b, kappa, lse, omega)
+        g = jnp.sum(rho * q * W, axis=-1) / jnp.clip(jnp.sum(rho * W, axis=-1), 1e-12, None)
     g = jnp.clip(g, 1e-6, 1.0 - 1e-6)
     return jax.nn.sigmoid(jnp.log(g) - jnp.log1p(-g) + jnp.asarray(eta_a) - jnp.asarray(eta_b))
+
+
+def duel_expression(A_a, A_b, kappa, lse, omega) -> jnp.ndarray:
+    """rho(v) : probabilité d'exprimer un vote pour a ou b (...,B).
+    `1 - ∫rho` = non-expression parmi les exprimés du premier tour."""
+    k = jnp.asarray(kappa)[..., None]
+    ins = jnp.logaddexp(k * A_a, k * A_b)
+    return jax.nn.sigmoid(ins - (jnp.asarray(omega)[..., None] + k * lse))
