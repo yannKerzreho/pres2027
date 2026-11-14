@@ -49,6 +49,8 @@ non plus du fallback LLM (`extract_llm.py`) en ingestion primaire.
 from __future__ import annotations
 
 import argparse
+import json
+import os
 import re
 import unicodedata
 from itertools import groupby, product
@@ -82,8 +84,15 @@ def _unwrap_date_template(m: "re.Match") -> str:
 
 _VALUE_TEMPLATES = [
     (re.compile(r"\{\{\s*blanc\s*\|([^{}]*)\}\}", re.I), r"\1"),
-    (re.compile(r"\{\{\s*formatnum:([^{}]*)\}\}", re.I), r"\1"),
+    # `{{formatnum:1415}}` ET `{{Formatnum|964}}` : la forme à pipe était jetée,
+    # échantillon vide sur 4 sondages (dont 3 des 4 plus récents, nov. 2026).
+    (re.compile(r"\{\{\s*formatnum\s*[:|]([^{}]*)\}\}", re.I), r"\1"),
     (re.compile(r"\{\{\s*date\s*\|([^{}]*)\}\}", re.I), _unwrap_date_template),
+    # « 31 août - {{1er}} septembre » (Cluster17, sept. 2026) : sans ça le
+    # template était jeté par `strip_code`, la date devenait « 31 août -
+    # septembre » et `_parse_dates` retombait sur le seul 31 août.
+    (re.compile(r"\{\{\s*1er\s*\}\}", re.I), "1"),
+    (re.compile(r"\{\{\s*(?:er|e|ère|re)\s*\}\}", re.I), ""),  # exposants (1{{er}})
 ]
 _STYLE_TEMPLATES = [
     re.compile(r"\{\{\s*Infobox Parti politique fran[çc]ais/couleurs\s*\|[^{}]*\}\}", re.I),
@@ -229,10 +238,27 @@ def _desamorce(raw: str) -> tuple[str, str | None, list[str], set[str]]:
     links = code.filter_wikilinks()
     text = re.sub(r"\s+", " ", code.strip_code().strip())
     if len(links) > 1 and "/" in text:
-        linked_names = [str(l.text or l.title).strip() for l in links]
+        linked_names = [_link_name(l) for l in links]
     else:
-        linked_names = [str(links[0].text or links[0].title).strip()] if links else []
+        linked_names = [_link_name(links[0])] if links else []
     return text, url, linked_names, unknown
+
+
+def _link_name(link) -> str:
+    """Texte affiché d'un wikilien, SANS balisage : `[[Xavier Bertrand|<small>
+    Bertrand</small>]]` donnait le candidat « <small>Bertrand</small> », un nom
+    distinct de « Bertrand » pour tout consommateur (observé : « <small>Le
+    Maire</small> », « '''<small>Bouamrane</small>''' » dans le CSV)."""
+    raw = str(link.text or link.title)
+    return re.sub(r"\s+", " ", re.sub(r"<[^>]*>|'{2,}", "", mwph.parse(raw).strip_code())).strip()
+
+
+# Une cellule « Autres » peut lister PLUSIEURS petits candidats, chacun
+# « valeur<br>[[Nom]] », séparés par <hr> (13 cellules sur la page 2027 en
+# nov. 2026). Lue d'un bloc, elle ne donnait que le PREMIER couple : le reste
+# disparaissait, et l'hypothèse tombait sous SUM_LO (5 hypothèses rejetées)
+# ou, pire, restait dans la tolérance avec des candidats manquants.
+_HR = re.compile(r"<hr\s*/?>", re.I)
 
 
 def _parse_cell(raw: str) -> dict:
@@ -242,7 +268,15 @@ def _parse_cell(raw: str) -> dict:
         for m in re.finditer(r'(\w+)\s*=\s*"?([^"\s]+)"?', attrs_str):
             attrs[m.group(1)] = m.group(2)
     text, url, linked_names, unknown = _desamorce(content)
+    entries = []
+    segments = _HR.split(content)
+    if len(segments) > 1:
+        for seg in segments:
+            s_text, _, s_links, _ = _desamorce(seg)
+            if s_text:
+                entries.append({"text": s_text, "linked_names": s_links})
     return {"text": text, "url": url, "linked_names": linked_names, "unknown": unknown,
+            "entries": entries,
             "rowspan": int(attrs.get("rowspan", 1)), "colspan": int(attrs.get("colspan", 1))}
 
 
@@ -374,24 +408,6 @@ def _is_meta_label(label: str) -> bool:
     return label in ("sondeur", "date", "dates", "echantillon") or label.startswith("abstention")
 
 
-def _is_non_expression_label(label: str) -> bool:
-    """Colonne séparée de participation, jamais un candidat.
-
-    Les intentions des candidats sont publiées parmi les suffrages exprimés et
-    doivent continuer à sommer à 100 %. « Abstention, blanc ou nul » vit sur un
-    autre dénominateur (les inscrits) : on la conserve donc comme covariable
-    répétée sur les lignes du duel, pour une future vraisemblance Beta de
-    participation, sans la mélanger au simplexe des candidats.
-    """
-    folded = _strip_accents(label).lower()
-    return "abstention" in folded or ("blanc" in folded and "nul" in folded)
-
-
-def _percent_or_none(text: str) -> float | None:
-    m = re.search(r"(\d{1,3}(?:[.,]\d+)?)", text)
-    return float(m.group(1).replace(",", ".")) if m else None
-
-
 def extract_notices(grid: list[list[dict]], tour: str, hypothese_defaut: str | None,
                     warnings: list[str], year_hint: str | None = None) -> list[dict]:
     # 1. repère la ligne d'en-tête "Sondeur"
@@ -405,8 +421,6 @@ def extract_notices(grid: list[list[dict]], tour: str, hypothese_defaut: str | N
             break
         n_meta += 1
     n_meta = max(n_meta, 3)  # Sondeur/Date/Échantillon toujours présents
-    non_expression_cols = [i for i, c in enumerate(grid[header_idx][:n_meta])
-                           if _is_non_expression_label(c["text"])]
     names_row = grid[header_idx + 1]
     candidates = _header_names(names_row[n_meta:])
 
@@ -449,6 +463,12 @@ def extract_notices(grid: list[list[dict]], tour: str, hypothese_defaut: str | N
         m_ech = re.search(r"\d+", ech_cell["text"].replace(" ", ""))
         echantillon = int(m_ech.group(0)) if m_ech else None
         notice_label = f"{institut} {date_cell['text']} (WP)"
+        for meta_cell in (date_cell, ech_cell):
+            if meta_cell["unknown"]:
+                # Même logique que pour les cellules candidats : un template
+                # inconnu dans la DATE a déjà coûté un jour de terrain ({{1er}}).
+                warnings.append(f"template inconnu {meta_cell['unknown']} dans "
+                                f"les métadonnées de {notice_label}")
 
         multi = len(group) > 1
         for gi, row in enumerate(group):
@@ -457,10 +477,6 @@ def extract_notices(grid: list[list[dict]], tour: str, hypothese_defaut: str | N
                 hypothese = f"variante_{gi + 1}"
             elif tour == "Premier tour" and not multi:
                 hypothese = None
-
-            values = [_percent_or_none(row[i]["text"]) for i in non_expression_cols
-                      if i < len(row)]
-            non_expression = next((v for v in values if v is not None), None)
 
             # Cellule à liens multiples (« [[Bardella]] / [[Le Pen]] » — même
             # score valable pour plusieurs candidats, cf. `_desamorce`) : la
@@ -488,18 +504,57 @@ def extract_notices(grid: list[list[dict]], tour: str, hypothese_defaut: str | N
 
             for combo_hypothese, name_override in combos:
                 prev_cell, cand_names_used = None, set()
+
+                def _emit(candidat: str, pct: float) -> None:
+                    if _GENERIC_PLACEHOLDER.match(candidat):
+                        # En-tête générique ("Candidat RN"/"Candidat LR") ET
+                        # aucun wikilien dans la cellule pour CETTE ligne -> le
+                        # candidat n'était pas encore connu au moment du sondage,
+                        # Wikipedia elle-même ne le précise pas ici. On écarte
+                        # plutôt que de publier un faux nom de candidat.
+                        warnings.append(f"candidat indéterminé ({candidat!r}) dans {notice_label}")
+                        return
+                    if candidat in cand_names_used:
+                        return
+                    cand_names_used.add(candidat)
+                    records.append({
+                        "notice_id": None, "notice": notice_label, "notice_url": notice_url,
+                        "institut": institut, "commanditaire": None,
+                        "date_debut": date_debut, "date_fin": date_fin, "date_notice": date_fin,
+                        "echantillon": echantillon, "methode": None,
+                        "tour": tour, "hypothese": combo_hypothese,
+                        "candidat": candidat, "intention": pct,
+                    })
+
                 for ci, (cand, cell) in enumerate(zip(candidates, row[n_meta:])):
                     if cell is prev_cell:
                         continue
                     prev_cell = cell
                     if cell["unknown"]:
                         warnings.append(f"template inconnu {cell['unknown']} dans {notice_label}")
+                    if len(cell.get("entries", [])) > 1:
+                        # Cellule multi-candidats séparés par <hr> (cf. `_HR`) :
+                        # un enregistrement par couple valeur/nom. Un segment
+                        # sans nom lié n'est PAS attribué à l'en-tête (« Autres »
+                        # n'est pas un candidat) : on écarte et on le signale,
+                        # la somme de l'hypothèse tranchera.
+                        for ent in cell["entries"]:
+                            m_pct = re.search(r"(\d{1,3}(?:[.,]\d+)?)", ent["text"])
+                            if not m_pct:
+                                continue
+                            if not ent["linked_names"]:
+                                warnings.append(f"segment sans candidat ({ent['text']!r}) "
+                                                f"dans {notice_label}")
+                                continue
+                            _emit(ent["linked_names"][0], float(m_pct.group(1).replace(",", ".")))
+                        continue
                     txt = cell["text"]
                     if not txt or txt in ("—", "-"):
                         continue
-                    pct = _percent_or_none(txt)
-                    if pct is None:
+                    m_pct = re.search(r"(\d{1,3}(?:[.,]\d+)?)", txt)
+                    if not m_pct:
                         continue
+                    pct = float(m_pct.group(1).replace(",", "."))
                     candidat = cand
                     if ci in name_override:
                         candidat = name_override[ci]
@@ -527,26 +582,7 @@ def extract_notices(grid: list[list[dict]], tour: str, hypothese_defaut: str | N
                         else:
                             warnings.append(f"substitution non identifiée ({txt!r}) dans {notice_label}")
                             continue  # on ne devine pas -> on écarte plutôt qu'on mislabel
-                    if _GENERIC_PLACEHOLDER.match(candidat):
-                        # En-tête générique ("Candidat RN"/"Candidat LR") ET
-                        # aucun wikilien dans la cellule pour CETTE ligne -> le
-                        # candidat n'était pas encore connu au moment du sondage,
-                        # Wikipedia elle-même ne le précise pas ici. On écarte
-                        # plutôt que de publier un faux nom de candidat.
-                        warnings.append(f"candidat indéterminé ({candidat!r}) dans {notice_label}")
-                        continue
-                    if candidat in cand_names_used:
-                        continue
-                    cand_names_used.add(candidat)
-                    records.append({
-                        "notice_id": None, "notice": notice_label, "notice_url": notice_url,
-                        "institut": institut, "commanditaire": None,
-                        "date_debut": date_debut, "date_fin": date_fin, "date_notice": date_fin,
-                        "echantillon": echantillon, "methode": None,
-                        "tour": tour, "hypothese": combo_hypothese,
-                        "candidat": candidat, "intention": pct,
-                        "non_expression": non_expression,
-                    })
+                    _emit(candidat, pct)
     return records
 
 
@@ -641,6 +677,25 @@ def _section_year_hint(sections: list[dict], s: dict) -> tuple[str | None, bool,
     return _year_from_text(*raw_ancestors), bounded, unsafe
 
 
+def desambiguise_notices(df: pd.DataFrame) -> pd.DataFrame:
+    """Le libellé `notice` (« institut + texte de date ») sert d'IDENTIFIANT de
+    sondage en aval (agrégation par sondage, champ `polls` des snapshots,
+    détection du rejeu). Deux notices distinctes du même institut aux mêmes
+    dates le partagent (OpinionWay 13-14 octobre 2026 : un sondage à 3
+    hypothèses et un à champ unique, deux PDF) et étaient fusionnées en un seul
+    sondage. Seuls les libellés en collision reçoivent le n° de notice tiré de
+    l'URL — les autres restent inchangés, pour ne pas faire « disparaître » des
+    sondages déjà publiés."""
+    urls = df.groupby("notice")["notice_url"].nunique()
+    for label in urls[urls > 1].index:
+        mask = df["notice"] == label
+        for k, url in enumerate(df.loc[mask, "notice_url"].dropna().unique(), start=1):
+            m = re.search(r"/(\d+)-[^/]*$", url)
+            num = m.group(1) if m else str(k)
+            df.loc[mask & (df["notice_url"] == url), "notice"] = f"{label} n°{num}"
+    return df
+
+
 def build_dataset(page: str = DEFAULT_PAGE, pdf_date_fallback: bool = True
                   ) -> tuple[pd.DataFrame, dict]:
     """Renvoie (intentions, rapport). `intentions` respecte `schema.COLUMNS`."""
@@ -668,6 +723,8 @@ def build_dataset(page: str = DEFAULT_PAGE, pdf_date_fallback: bool = True
     if df.empty:
         return schema.empty(), {"n_tables": n_tables, "n_raw": 0, "n_kept": 0,
                                 "n_rejected_groups": 0, "warnings": warnings}
+
+    df = desambiguise_notices(df)
 
     # garde-fou somme ~100% PAR (notice, hypothese, tour) — tolérance resserrée
     g = df.groupby(["notice", "hypothese", "tour"], dropna=False)["intention"].sum()
@@ -697,6 +754,46 @@ def write_dataset(intentions: pd.DataFrame, out: Path = DEFAULT_OUT) -> Path:
     return out
 
 
+# --- Garde-fou : sondages publiés hier, absents aujourd'hui ------------------
+# `--min-sondages` ne voit qu'un effondrement TOTAL. L'incident du 2026-10-04
+# (en-tête Glucksmann fusionné) était PARTIEL : 8 sondages perdus, assez restant
+# pour passer le seuil, `gp-pooling` publié sur 4 sondages. Ce contrôle compare
+# aux notices que le DERNIER snapshot de chaque modèle déclare avoir consommées
+# (champ `polls`) — aucun état à tenir, le site publié est la référence.
+# Une disparition isolée est légitime (sondage corrigé ou retiré sur Wikipedia,
+# libellé de date rectifié) : simple avertissement. Au-delà de `max_frac`, c'est
+# le parsing qui a cassé : on refuse d'écrire.
+MAX_FRAC_DISPARUES = 0.2
+
+
+def notices_du_dernier_snapshot(snapshots_dir: Path) -> set[str]:
+    notices: set[str] = set()
+    for mdir in sorted(p for p in Path(snapshots_dir).iterdir() if p.is_dir()):
+        dates = sorted(p for p in mdir.glob("[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9].json"))
+        if not dates:
+            continue
+        try:
+            snap = json.loads(dates[-1].read_text())
+        except (OSError, ValueError):
+            continue
+        notices |= {p["notice"] for p in snap.get("polls", []) if p.get("notice")}
+    return notices
+
+
+def notices_disparues(intentions: pd.DataFrame, snapshots_dir: Path) -> tuple[set[str], int]:
+    """(notices publiées absentes de l'extraction du jour, nb de notices publiées)."""
+    ref = notices_du_dernier_snapshot(snapshots_dir)
+    presentes = set() if intentions.empty else set(intentions["notice"].unique())
+    return ref - presentes, len(ref)
+
+
+def _annotation(niveau: str, msg: str) -> None:
+    """Annotation visible dans le résumé du run GitHub Actions (et un simple
+    print en local) : un avertissement noyé dans 200 lignes de log n'est lu par
+    personne, le job restant vert."""
+    print(f"::{niveau}::{msg}" if os.environ.get("GITHUB_ACTIONS") else f"[{niveau}] {msg}")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--page", default=DEFAULT_PAGE)
@@ -705,13 +802,14 @@ def main():
                     help="échoue (code 1) SANS écrire si moins de N sondages sont "
                          "extraits — garde-fou du job quotidien contre une "
                          "dégradation silencieuse du parsing Wikipedia")
-    ap.add_argument("--sans-repli-pdf", action="store_true",
-                    help="ne télécharge pas les notices PDF pour compléter les dates ; "
-                         "utile aux réimports historiques où seule la table Wikipédia "
-                         "est recherchée")
+    ap.add_argument("--snapshots", default=None,
+                    help="dossier des snapshots publiés (ex. docs/data) : échoue SANS "
+                         "écrire si plus de --max-disparues des sondages qu'ils "
+                         "déclarent ont disparu de l'extraction")
+    ap.add_argument("--max-disparues", type=float, default=MAX_FRAC_DISPARUES)
     args = ap.parse_args()
 
-    intentions, report = build_dataset(args.page, pdf_date_fallback=not args.sans_repli_pdf)
+    intentions, report = build_dataset(args.page)
 
     # Vérifier AVANT d'écrire : la source est une page wiki éditable par
     # n'importe qui, et un changement de gabarit ou un renommage de section
@@ -724,6 +822,21 @@ def main():
             f"ABANDON : {n} sondages extraits, minimum attendu {args.min_sondages}. "
             f"Le fichier existant n'a PAS été écrasé. Vérifier la page « {args.page} » "
             f"(gabarit modifié ?) et {len(report['warnings'])} avertissement(s) de parsing.")
+
+    if args.snapshots and Path(args.snapshots).is_dir():
+        disparues, n_ref = notices_disparues(intentions, Path(args.snapshots))
+        if disparues:
+            liste = "; ".join(sorted(disparues))
+            if n_ref and len(disparues) / n_ref > args.max_disparues:
+                raise SystemExit(
+                    f"ABANDON : {len(disparues)}/{n_ref} sondages publiés ont disparu de "
+                    f"l'extraction (seuil {args.max_disparues:.0%}). Le fichier existant "
+                    f"n'a PAS été écrasé. Disparus : {liste}")
+            _annotation("warning", f"{len(disparues)} sondage(s) publié(s) absent(s) de "
+                                   f"l'extraction du jour : {liste}")
+    if report["warnings"]:
+        _annotation("notice", f"{len(report['warnings'])} avertissement(s) de parsing "
+                              f"Wikipedia (détail dans le log de l'étape)")
 
     out_path = Path(args.out) if args.out else DEFAULT_OUT
     out = write_dataset(intentions, out_path)

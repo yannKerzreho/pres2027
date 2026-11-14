@@ -199,9 +199,65 @@
     });
   }
 
+  /* Duels de 2nd tour — emplacement prêt, branché sur RIEN tant qu'aucun modèle
+   * publié n'exporte `seconds_tours` dans son snapshot (cf. `codex/t2-spatial`,
+   * model/core/base.py : la clé y est déjà prévue, et le contrat dit « liste »).
+   *
+   * Forme attendue d'un duel (celle de `second_round_from_fit`) :
+   *   {candidats:[a,b], intentions:{a:{moyenne, ic90:[lo,hi], p_gagne}, b:{…}},
+   *    n_sondages_directs?}
+   * `moyenne` est une part des EXPRIMÉS : a + b ≈ 1, d'où une barre unique
+   * partagée en deux, avec la moustache IC 90 % de `a` autour du point de
+   * partage. `pDuel` (optionnel, map « a|b » → probabilité) vient des
+   * `duels_probables` du même snapshot : sans lui, la colonne reste vide.
+   *
+   * Tolérant : un duel incomplet est ignoré plutôt que de casser la page — la
+   * page d'accueil ne doit jamais tomber à cause d'une rubrique en rodage.
+   */
+  function secondTour(host, duels, opts) {
+    opts = opts || {};
+    const pDuel = opts.pDuel || {};
+    const col = (nom) => (global.Couleurs ? global.Couleurs.couleur(nom) : "var(--fg)");
+    const ok = (duels || []).filter((d) => d && Array.isArray(d.candidats) &&
+      d.candidats.length === 2 && d.intentions &&
+      d.candidats.every((c) => d.intentions[c] && d.intentions[c].moyenne != null));
+    host.innerHTML = "";
+    host.className = "t2";
+    if (!ok.length) return 0;
+    ok.forEach((d) => {
+      const [a, b] = d.candidats, ia = d.intentions[a], ib = d.intentions[b];
+      const tot = ia.moyenne + ib.moyenne || 1;            // renormalise un arrondi
+      const sa = ia.moyenne / tot;
+      const mous = ia.ic90
+        ? `<div class="moustache" style="left:${100 * ia.ic90[0] / tot}%;
+             width:${100 * (ia.ic90[1] - ia.ic90[0]) / tot}%"></div>` : "";
+      const cle = [a, b].slice().sort().join("|");
+      const pd = pDuel[cle];
+      const pg = (x) => (x && x.p_gagne != null ? prob(x.p_gagne) : "–");
+      const r = document.createElement("div");
+      r.className = "t2-duel";
+      r.innerHTML = `
+        <div class="t2-noms"><span>${echappe(a)}</span><span>${echappe(b)}</span></div>
+        <div class="t2-track">
+          <div class="t2-a" style="width:${100 * sa}%;background:${col(a)}"></div>
+          <div class="t2-b" style="width:${100 * (1 - sa)}%;background:${col(b)}"></div>
+          <div class="t2-mid"></div>${mous}
+        </div>
+        <div class="t2-parts"><span>${pct(ia.moyenne)}</span><span>${pct(ib.moyenne)}</span></div>
+        <div class="t2-probs">
+          <span>victoire <b>${pg(ia)}</b></span>
+          <span class="t2-meta">${pd != null ? `duel ${prob(pd)}` : ""}${
+            d.n_sondages_directs != null ? ` · ${d.n_sondages_directs} sondage(s) du duel` : ""}</span>
+          <span>victoire <b>${pg(ib)}</b></span>
+        </div>`;
+      host.appendChild(r);
+    });
+    return ok.length;
+  }
+
   global.Site = {
     NS, el, nb, pct, prob, jours, echappe, getJSON,
-    barres, resumeDepuisTirages, croquis,
+    barres, secondTour, resumeDepuisTirages, croquis,
     montrerFiche, placerFiche, cacherFiche,
   };
 })(window);

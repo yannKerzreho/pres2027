@@ -13,7 +13,7 @@ Une nouvelle estimation est publiée chaque jour sur GitHub Pages.
 |------|------|
 | Récupération des données historiques (2017, 2022) | ✅ |
 | Ingestion live des sondages 2027 (Wikipedia + parsing PDF) | ✅ |
-| Modèle spatial (scénarios + 2nd tour) | 🟡 MVP — redistribution au 1er tour et duels de 2nd tour directement sondés ; pas de matrice générale de reports de voix |
+| Modèle live (opinion latente + projection au scrutin) | 🟡 MVP — 1er tour et duels ; le *vainqueur* du 2nd tour n'est pas modélisé |
 | CI, cron quotidien, GitHub Pages | ✅ |
 
 ## Installation
@@ -93,10 +93,7 @@ Spécification complète :
   faussait la loi d'horizon.
 
 Sortie (`docs/data/<modèle>/<date>.json`) : parts et IC 90 %, P(qualifié top 2),
-P(arrive 1er), duels de 2nd tour probables. Le modèle spatial ajuste un seul
-posterior sur les hypothèses de premier tour et les duels de second tour
-effectivement testés sur Wikipédia : ils partagent donc positions et puissances,
-au lieu d'être deux estimations indépendantes.
+P(arrive 1er), duels de 2nd tour probables.
 
 ## Les intervalles tiennent-ils leur promesse ?
 
@@ -214,10 +211,8 @@ qui porte aussi les notebooks d'exploration (non versionnés).
 - **Peu de sondages exploitables** : le roster exact n'en retient que 6 sur 22
   aujourd'hui. Ce n'est pas un défaut du modèle mais de la couverture des
   sondages, et le volume croîtra avec la campagne.
-- Il n'y a pas de modèle générique du **vainqueur** du 2nd tour par reports de
-  voix. Les seuls vainqueurs publiés sont ceux des duels directement sondés ;
-  les abstentions, blancs et nuls ne sont pas traités comme un candidat, car
-  le vainqueur est déterminé parmi les suffrages exprimés.
+- Le **vainqueur** du 2nd tour n'est pas modélisé : il faudrait une matrice de
+  reports de voix. On s'arrête aux duels.
 - Ce que le modèle produit, ce sont **des probabilités**, pas des prédictions.
 
 ## Sources & crédits

@@ -53,14 +53,6 @@
     voir la distribution complète.</p>
   <div id="rows"></div>
 
-  <h2>Duels de second tour mesurés</h2>
-  <p class="legend">Ces duels sont évalués par le même posterior spatial que le premier
-    tour, ajusté aussi sur les sondages qui testent directement le duel. Une option extérieure
-    uniforme (abstention/blanc/nul, ω fixé) retire les électeurs loin des deux finalistes ; le
-    gagnant reste déterminé parmi les suffrages exprimés. Sans sondage du duel, le modèle ne
-    tranche pas.</p>
-  <div id="seconds-tours"></div>
-
   <h2>Le modèle sur l'axe</h2>
   <p class="legend">Chaque courbe est le <em>noyau</em> d'un candidat&nbsp;: son sommet
     marque sa position estimée (μ), sa largeur son rayon d'action (σ), et
@@ -374,24 +366,6 @@ function rendPicker() {
       style="${on[i]?`background:${couleur(c)}`:""}">${echappe(c)}</button>`).join("");
 }
 
-function rendSecondsTours() {
-  const host = document.getElementById("seconds-tours");
-  const duels = D.seconds_tours || [];
-  if (!duels.length) {
-    host.innerHTML = '<p class="legend">Aucun duel de second tour exploitable à cette date.</p>';
-    return;
-  }
-  host.innerHTML = duels.map(d => {
-    const [a,b] = d.candidats, ia=d.intentions[a], ib=d.intentions[b];
-    return `<div class="duel"><div><b>${echappe(a)} vs ${echappe(b)}</b><br>`+
-      `${echappe(a)} : ${pct(ia.moyenne)} (IC 90 % ${pct(ia.ic90[0])}–${pct(ia.ic90[1])}) · `+
-      `P(gagner) ${prob(ia.p_gagne)}<br>`+
-      `${echappe(b)} : ${pct(ib.moyenne)} (IC 90 % ${pct(ib.ic90[0])}–${pct(ib.ic90[1])}) · `+
-      `P(gagner) ${prob(ib.p_gagne)}<br><span class="legend">${d.n_sondages_directs ?? d.n_sondages ?? 0} sondage(s) direct(s)</span>`+
-      `</div></div>`;
-  }).join("");
-}
-
 // Le chemin de l'artefact vient du manifeste (rubrique « scenarios ») plutôt que
 // d'être écrit en dur : c'est le seul lien entre le modèle et cette page, et il
 // doit rester déclaré côté Python (cf. ForecastModel.scenario_artifact).
@@ -401,7 +375,6 @@ getJSON("./data/models.json")
   .then(() => getJSON(ARTEFACT))
   .then(d => {
     D = d;
-    rendSecondsTours();
     // On part de la MÊME liste que l'onglet Suivi (RN = Le Pen), pour que les
     // deux pages soient lisibles ensemble. « Tout le monde » reste à un clic,
     // mais ce n'est pas une hypothèse de référence : elle fait concourir Le Pen

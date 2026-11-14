@@ -1,7 +1,12 @@
 name: Daily update
 on:
   schedule:
-    - cron: "0 7 * * *"
+    # Pas à l'heure pile : GitHub met en file les crons `0 * * * *` aux heures
+    # de pointe. Avec `0 7 * * *`, le run était CRÉÉ entre 11h et 17h UTC
+    # (sept.-nov. 2026, dérive croissante). Une minute décalée et un horaire
+    # matinal ne garantissent rien (le planificateur GitHub est « best
+    # effort ») mais évitent le créneau le plus chargé.
+    - cron: "37 4 * * *"
   workflow_dispatch:
 permissions:
   contents: write
@@ -17,7 +22,7 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45   # runs mesurés de 9 à 20 min (nov. 2026)
     environment: github-pages
     steps:
       - uses: actions/checkout@v4
@@ -29,8 +34,13 @@ jobs:
       # En dessous de ce seuil, on considère que le parsing s'est dégradé, on
       # n'écrase PAS le CSV et le job échoue bruyamment plutôt que de publier un
       # snapshot calculé sur presque rien.
+      #
+      # --snapshots : l'incident du 2026-10-04 était une perte PARTIELLE (8
+      # sondages), invisible à --min-sondages. On compare aux sondages que les
+      # derniers snapshots publiés déclarent : au-delà de 20 % disparus, même
+      # abandon ; en dessous, annotation ::warning:: sur le run.
       - name: Ingestion sondages (Wikipedia)
-        run: python -m sondages.wiki --min-sondages 15
+        run: python -m sondages.wiki --min-sondages 15 --snapshots docs/data
 
       # Rejoue aussi les dates PASSÉES dont le jeu de sondages a changé (défaut
       # quand `--as-of` est absent, cf. docstring de `model/run.py`) : un sondage
@@ -39,7 +49,9 @@ jobs:
       # bon marché rejouent (`ForecastModel.rejeu_historique`) : `gp-pooling` est
       # en forme close, 86 ms par date ; `spatial-pooling` (NUTS, ~180 s par date
       # sur ce runner) est exclu, rien ne relit ses snapshots datés. Le job reste
-      # donc à ~3 min quel que soit l'arriéré.
+      # donc borné quel que soit l'arriéré : l'étape modèles dure ~9 à 16 min
+      # (nov. 2026), presque tout en NUTS de `spatial-pooling` pour la seule
+      # date du jour.
       #
       # Tout modèle rattaché à une rubrique du site (cf. `ForecastModel.surface`)
       # — donc le suivi des intentions ET les scénarios, qui ont chacun besoin

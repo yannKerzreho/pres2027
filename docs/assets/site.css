@@ -84,6 +84,9 @@ h2::after { content:""; flex:1; height:1px; background:var(--line); }
 /* Sans cela, l'interlettrage du titre s'applique aussi à l'exposant et « 2nd »
    s'écrit « 2 ND ». */
 h2 sup, .entetes sup { letter-spacing:normal; }
+/* Le h2 est un flex à `gap` : un texte coupé par un <sup> y fait TROIS items
+   écartés de 10 px (« 2  nd  tour »). Un tel titre s'écrit donc
+   <h2><span>… 2<sup>nd</sup> tour</span></h2>. */
 h3 { font-size:0.95rem; font-weight:700; margin:28px 0 6px; }
 .legend { font-size:0.85rem; color:var(--muted); margin:0 0 16px; max-width:72ch; }
 .warn { background:var(--warn-bg); border-left:3px solid var(--warn-line); padding:10px 14px;
@@ -129,7 +132,9 @@ h3 { font-size:0.95rem; font-weight:700; margin:28px 0 6px; }
 .probs .p2 { font-weight:700; }
 .probs .p1 { color:var(--muted); }
 
-.duel { display:grid; grid-template-columns:1fr 74px; align-items:center; gap:14px; padding:8px 0;
+/* minmax(0,…) : sans lui la colonne vaut au moins la largeur min-content du
+   libellé (nowrap), et sur mobile un duel long poussait le % hors de l'écran. */
+.duel { display:grid; grid-template-columns:minmax(0,1fr) 74px; align-items:center; gap:14px; padding:8px 0;
   border-bottom:1px solid var(--line); }
 .duel:first-child { border-top:1px solid var(--line); }
 .dtrack { height:20px; background:var(--track); border-radius:3px; position:relative; }
@@ -137,8 +142,21 @@ h3 { font-size:0.95rem; font-weight:700; margin:28px 0 6px; }
 .dlabel { position:relative; padding-left:10px; font:600 0.85rem/20px var(--sans);
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .dp { text-align:right; font:700 0.92rem var(--mono); }
-.duel-t2 { grid-template-columns:1fr; font-size:0.88rem; line-height:1.65; }
-.t2-note { color:var(--muted); font:0.74rem var(--mono); }
+
+/* ---------- 2nd tour : une barre partagée par duel ---------- */
+.t2-duel { padding:12px 0 10px; border-bottom:1px solid var(--line); }
+.t2-duel:first-child { border-top:1px solid var(--line); }
+.t2-noms, .t2-parts, .t2-probs { display:flex; justify-content:space-between; gap:10px; }
+.t2-noms { font:600 0.88rem/1.3 var(--sans); margin-bottom:5px; }
+.t2-noms span:last-child { text-align:right; }
+.t2-track { position:relative; height:12px; display:flex; }
+.t2-a, .t2-b { height:100%; opacity:.85; }
+.t2-a { border-radius:3px 0 0 3px; } .t2-b { border-radius:0 3px 3px 0; }
+.t2-mid { position:absolute; left:50%; top:-2px; bottom:-2px; width:1px; background:var(--bg); }
+.t2-parts { font:700 0.86rem var(--mono); margin-top:4px; }
+.t2-probs { font:0.78rem var(--mono); color:var(--muted); margin-top:2px; }
+.t2-probs b { color:var(--fg); }
+.t2-meta { text-align:center; }
 
 /* ---------- sélecteur de liste (Scénarios) ---------- */
 .picker { display:flex; flex-wrap:wrap; gap:7px; margin:0 0 10px; }
@@ -214,5 +232,6 @@ code { background:var(--card); padding:1px 5px; border-radius:3px; font-size:0.8
   h1 { font-size:1.75rem; }
   .barres { --col-nom:104px; --col-prob:96px; }
   .rangee { gap:10px; }
+  .duel { grid-template-columns:minmax(0,1fr) 52px; gap:10px; }
   .band { max-height:120px; }
 }
