@@ -194,6 +194,7 @@ def v1_paire_retiree(election: int, nuts: dict, seule: tuple | None = None) -> l
         fit, dt = _fit(_sans_paire(raw, a, b), as_of, election, nuts)
         obs = float(cible.y.mean())
         mod = duel_draws(fit, a, b, 0, scrutin=False)
+        cible = _cible_par_chaine(mod, nuts.get("chains", 1))
         geo = _geometrie_seule(fit, a, b)
         bt = _bradley_terry(tous[~((tous.a == a) & (tous.b == b))], a, b)
         autres = tous[((tous.a.isin([a, b])) | (tous.b.isin([a, b]))) & ~((tous.a == a) & (tous.b == b))]
@@ -201,8 +202,22 @@ def v1_paire_retiree(election: int, nuts: dict, seule: tuple | None = None) -> l
                     "observe_30j": round(obs, 4), "modele": round(float(mod.mean()), 4),
                     "modele_ic90": [round(float(x), 4) for x in np.percentile(mod, [5, 95])],
                     "geometrie_seule": round(float(geo.mean()), 4), "bradley_terry": round(bt, 4),
-                    "autres_duels_des_deux": int(len(autres)), **_diag(fit, dt)})
+                    "autres_duels_des_deux": int(len(autres)), **cible, **_diag(fit, dt)})
     return out
+
+
+def _cible_par_chaine(d: np.ndarray, n_chaines: int) -> dict:
+    """Convergence DE LA QUANTITÉ PRÉDITE (spec §8.4) : R-hat et écart entre
+    moyennes de chaînes du duel cible. Les tirages sont rangés chaîne par chaîne
+    (`reshape(-1, ...)` de (chaînes, tirages, ...))."""
+    if n_chaines < 2 or len(d) % n_chaines:
+        return {}
+    from numpyro.diagnostics import split_gelman_rubin
+    x = np.log(d / (1 - d)).reshape(n_chaines, -1)
+    m = (1 / (1 + np.exp(-x))).mean(1)
+    return {"modele_par_chaine": [round(float(v), 4) for v in m],
+            "ecart_chaines_pt": round(100 * float(m.max() - m.min()), 2),
+            "rhat_cible": round(float(split_gelman_rubin(x[..., None])[0]), 3)}
 
 
 def _log_score(draws_logit: np.ndarray, y: float) -> float:
@@ -244,6 +259,8 @@ def v2_resultat(election: int, nuts: dict, coupures=("T1-30", "T1-1", "T2-7")) -
             continue
         h = int((T2_DATES[election] - as_of).days)
         d = duel_draws(fit, a, b, h, scrutin=True)
+        # Cible SANS l'aléa de scrutin (tiré indépendamment, il ne dit rien des chaînes).
+        cible = _cible_par_chaine(duel_draws(fit, a, b, h, scrutin=False), nuts.get("chains", 1))
         recents = _duels_moyens(raw, as_of - pd.Timedelta(days=7))
         recents = recents[(recents.a == a) & (recents.b == b)]
         if recents.empty:
@@ -263,7 +280,7 @@ def v2_resultat(election: int, nuts: dict, coupures=("T1-30", "T1-1", "T2-7")) -
                     "log_score_sondages": round(_log_score(base, y), 3),
                     "couvre_ic90_sondages": bool(np.percentile(1 / (1 + np.exp(-base)), 5) <= y
                                                  <= np.percentile(1 / (1 + np.exp(-base)), 95)),
-                    **_diag(fit, dt)})
+                    **cible, **_diag(fit, dt)})
     return out
 
 

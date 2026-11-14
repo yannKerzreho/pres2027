@@ -87,7 +87,7 @@ Résultats : `model/backtest/results/*.json` (committés).
 - [x] Fit de contrôle abst v2 2022 T1−30, nouveau cadre (spec §8.3) : R-hat
       15,3 (contre 35,8), ordre gauche-droite stable entre chaînes ; reste
       Lassalle bimodal (0,15 / 0,80), une chaîne à gauche comprimée, σ Zemmour.
-- [ ] **PRIORITAIRE** : même coupure en T1 SEUL (`second_tour=False`, à
+- [x] **PRIORITAIRE** : même coupure en T1 SEUL (`second_tour=False`, à
       ajouter en option `--sans-t2` à second_round) : si le T1 seul converge,
       c'est le joint qui crée les modes (repli « coupé » de la spec §8) ; sinon
       c'est la géométrie historique (pistes : ancre de Lassalle plus serrée ou
@@ -96,7 +96,12 @@ Résultats : `model/backtest/results/*.json` (committés).
       — EN COURS (début 2026-11-14T18:50Z, session 01JZeMw2) : option `--sans-t2`
       ajoutée (V2 seulement, sortie = diagnostics T1 + μ moyens),
       `--only v2 --election 2022 --coupure T1-30 --sans-t2`, 4 chaînes.
-- [ ] abst : v2 2022 T1-30, T1-1, T2-7 (NOUVEAU cadre). Ancien cadre :
+      — FAIT 18:58Z : T1 seul R-hat 10,5 ⇒ modes = géométrie T1 (permutations
+      de voisins), pas le joint. Duel cible stable entre chaînes (0,6 pt) ⇒
+      critère de convergence DU BACKTEST sur la quantité prédite (spec §8.4 :
+      R̂(logit q) ≤ 1,1 et écart de chaînes ≤ 1 pt ; garde de prod inchangée).
+      2022 T1−30 abst : CONCLUANT, couvert, log-score = moyenne brute (2,64).
+- [ ] abst : v2 2022 T1-30 (FAIT, §8.4), T1-1, T2-7 (NOUVEAU cadre) — T1-1 puis T2-7 EN COURS (début 2026-11-14T19:05Z, session 01JZeMw2, 4 chaînes chacun, à la suite). Ancien cadre :
       T1−30 committé sous `second_round_abst_v2_2022_T1-30_ancien_cadre.json` (non convergé, R-hat 35,8, témoin) ; T1−1 perdu
       (VM récupérée vers 18:00Z), non relancé : sans objet.
 - [ ] abst : v1 2022 Macron|Zemmour, Macron|Mélenchon, Macron|Le Pen, Macron|Pécresse

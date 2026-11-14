@@ -27,6 +27,14 @@
    "n_sondages_7j": 7,
    "log_score_sondages": 2.638,
    "couvre_ic90_sondages": true,
+   "modele_par_chaine": [
+    0.5834,
+    0.5896,
+    0.5875,
+    0.5875
+   ],
+   "ecart_chaines_pt": 0.61,
+   "rhat_cible": 1.015,
    "rhat_max": 15.2661,
    "ess_min": 2.0,
    "divergences": 0,
@@ -34,7 +42,7 @@
    "omega": -6.1095,
    "rhat_t2": 2.4147,
    "sigma_t2": 0.0124,
-   "secondes": 1.2,
+   "secondes": 1.1,
    "eta": {
     "Nathalie Arthaud": -0.004,
     "Philippe Poutou": -0.018,

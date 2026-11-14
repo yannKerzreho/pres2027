@@ -1,0 +1,64 @@
+{
+ "variante": "abst",
+ "nuts": {
+  "draws": 400,
+  "tune": 600,
+  "chains": 4,
+  "mode": "4 processus d'une chaîne (graines 27..30), fusionnés"
+ },
+ "tau_t2_scrutin": 0.1,
+ "v1": [],
+ "v2": [
+  {
+   "election": 2022,
+   "coupure": "T1-30",
+   "as_of": "2022-03-11",
+   "sans_t2": true,
+   "n_noeuds": 222,
+   "n_champs_distincts": 66,
+   "rhat_max": 10.4839,
+   "rhat_pires_sites": [
+    [
+     "mu",
+     10.484
+    ],
+    [
+     "z_sigma",
+     5.636
+    ],
+    [
+     "z_pos",
+     5.42
+    ]
+   ],
+   "ess_min": 2.0,
+   "divergences": 0,
+   "pas_leapfrog_median": 511,
+   "mu": {
+    "Nathalie Arthaud": 0.121,
+    "Philippe Poutou": 0.143,
+    "Jean-Luc Mélenchon": 0.13,
+    "Fabien Roussel": 0.119,
+    "Yannick Jadot": 0.108,
+    "Thouy": 0.192,
+    "Montebourg": 0.151,
+    "Taubira": 0.286,
+    "Anne Hidalgo": 0.257,
+    "Emmanuel Macron": 0.411,
+    "Lagarde": 0.434,
+    "Jean Lassalle": 0.144,
+    "Bertrand": 0.642,
+    "Valérie Pécresse": 0.669,
+    "Barnier": 0.666,
+    "Juvin": 0.712,
+    "Ciotti": 0.71,
+    "Nicolas Dupont-Aignan": 0.807,
+    "Poisson": 0.814,
+    "Asselineau": 0.826,
+    "Philippot": 0.841,
+    "Marine Le Pen": 0.833,
+    "Eric Zemmour": 0.851
+   }
+  }
+ ]
+}

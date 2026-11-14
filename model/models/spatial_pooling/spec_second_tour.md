@@ -432,6 +432,38 @@ la 4e : candidat transversal, bimodal), une chaîne qui comprime la gauche
 (Mélenchon 0,06 contre 0,20), et σ de Zemmour (0,06 à 0,20). Témoin ancien
 cadre : `second_round_abst_v2_2022_T1-30_ancien_cadre.json`.
 
+### 8.4 Convergence du backtest : juger la quantité prédite (2026-11-14)
+
+**Constat.** Même coupure (2022 T1−30, nouveau cadre) en **T1 seul**
+(`--sans-t2`) : R-hat 10,5, ESS 2. La multimodalité vient donc de la
+géométrie T1 du cadre historique (23 candidats, fenêtre de 180 j), pas du
+couplage avec les duels ; c'est le défaut déjà documenté du modèle T1 sur les
+grosses coupures 2022 (spec_spatial_pooling §8 : « ESS de 3 à 112 selon la
+graine »). Les modes sont des **permutations de voisins** (Mélenchon à gauche
+ou à droite de LO, Zemmour à 0,76 ou 0,94) qui expliquent les sondages
+presque aussi bien. Dans le joint : observables T1 $\pi_p$, écart
+inter-chaînes médian 0,16 pt (max 4,5) ; duels sondés $s_d$, médian 0,43 pt
+(max 3,0) ; **duel cible Macron–Le Pen par chaîne : 58,3 / 59,1 / 59,0 /
+59,0 %**, soit 0,8 pt d'écart pour un IC90 de 9,5 pt — alors que κ va de
+0,42 à 1,34.
+
+**Critère.** Pour un backtest, les paramètres de géométrie $(\mu,\sigma,\kappa)$
+sont des nuisances ; ce qui est validé est la quantité prédite
+$q = s_{ab}$ (V1 : à $h=0$ ; V2 : projetée au T2, **sans** l'aléa de scrutin,
+tiré indépendamment des chaînes). Avec $C$ chaînes de $D$ tirages,
+$\bar q_c = D^{-1}\sum_t q_{c,t}$ et le split-$\hat R$ calculé sur
+$\mathrm{logit}\, q$ :
+
+$$\text{convergé}_{\text{backtest}} \iff \hat R(\mathrm{logit}\,q) \le 1{,}1
+\ \text{et}\ \max_c \bar q_c - \min_c \bar q_c \le 1\ \text{pt}.$$
+
+1 pt ≈ un dixième de l'IC90 du duel : un écart de chaînes de cet ordre ne
+change ni la couverture ni le log-score de façon lisible. Champs JSON :
+`modele_par_chaine`, `ecart_chaines_pt`, `rhat_cible`. `rhat_max` reste
+rapporté. **La garde de PRODUCTION n'est pas changée** (`rhat_max` ≤ 1,2 sur
+2027, qui converge) : ce critère ne sert qu'à lire les backtests, et un
+backtest qui le viole est déclaré non concluant, pas réussi.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

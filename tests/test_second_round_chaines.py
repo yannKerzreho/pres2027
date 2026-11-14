@@ -50,3 +50,15 @@ def test_cadre_historique_garde_toutes_les_hypotheses():
         if toutes:
             assert {"Bertrand", "Taubira", "Montebourg"} <= set(cands)
     assert champs[True] >= 50 and champs[False] <= 5
+
+
+def test_cible_par_chaine_detecte_une_chaine_dans_un_autre_mode():
+    from model.backtest.second_round import _cible_par_chaine
+    rng = np.random.default_rng(0)
+    d = 1 / (1 + np.exp(-rng.normal(0.3, 0.1, 1600)))
+    ok = _cible_par_chaine(d, 4)
+    assert ok["rhat_cible"] < 1.05 and ok["ecart_chaines_pt"] < 1
+    d[:400] = 1 / (1 + np.exp(-rng.normal(0.6, 0.1, 400)))
+    ko = _cible_par_chaine(d, 4)
+    assert ko["rhat_cible"] > 1.1 and ko["ecart_chaines_pt"] > 5
+    assert _cible_par_chaine(d, 1) == {}
