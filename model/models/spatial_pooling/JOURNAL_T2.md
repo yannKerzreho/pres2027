@@ -84,10 +84,15 @@ Résultats : `model/backtest/results/*.json` (committés).
       — CODÉ 2026-11-14 18:10Z (spec §8.3) : toutes les hypothèses T1, roster
       `build_roster`, putatifs classés ; 2022 T1−30 : 66 champs / 222 nœuds /
       23 candidats (contre 4 / 108 / 12). Test ajouté.
-- [ ] Fit de contrôle abst v2 2022 T1−30 dans le nouveau cadre — EN COURS
-      (début 2026-11-14T18:10Z, session 01JZeMw2, 4 processus d'une chaîne).
-      Critère : R-hat ≤ 1,2. Si oui, dérouler la file ci-dessous (nouveau cadre) ;
-      sinon, diagnostiquer (sites, profondeur) avant toute autre tâche.
+- [x] Fit de contrôle abst v2 2022 T1−30, nouveau cadre (spec §8.3) : R-hat
+      15,3 (contre 35,8), ordre gauche-droite stable entre chaînes ; reste
+      Lassalle bimodal (0,15 / 0,80), une chaîne à gauche comprimée, σ Zemmour.
+- [ ] **PRIORITAIRE** : même coupure en T1 SEUL (`second_tour=False`, à
+      ajouter en option `--sans-t2` à second_round) : si le T1 seul converge,
+      c'est le joint qui crée les modes (repli « coupé » de la spec §8) ; sinon
+      c'est la géométrie historique (pistes : ancre de Lassalle plus serrée ou
+      groupe propre, `pos_scale` du backtest, init commune des chaînes à
+      l'interdit — masquerait les modes). Maths dans la spec avant tout code.
 - [ ] abst : v2 2022 T1-30, T1-1, T2-7 (NOUVEAU cadre). Ancien cadre :
       T1−30 committé sous `second_round_abst_v2_2022_T1-30_ancien_cadre.json` (non convergé, R-hat 35,8, témoin) ; T1−1 perdu
       (VM récupérée vers 18:00Z), non relancé : sans objet.
@@ -172,6 +177,11 @@ Résultats : `model/backtest/results/*.json` (committés).
   abst v2 2022 T1−30 en 14 min sur 4 cœurs ; R-hat 35,8 ⇒ diagnostic :
   géométrie T1 non identifiée dans le cadre historique (spec §8.2), tâche
   prioritaire ajoutée. Tests : suites spatial_pooling + T2 + chaînes vertes (35) ; suite complète non relancée (fits en cours).
+- 2026-11-14 18:07-18:40Z (routine + question utilisateur sur les hypothèses) :
+  VM récupérée vers 18:00Z (T1−1 ancien cadre perdu, non relancé). Cadre
+  historique à toutes les hypothèses T1 (spec §8.3) : 66 champs au lieu de 4 ;
+  contrôle 2022 T1−30 : R-hat 35,8 → 15,3, Lassalle bimodal. Tests : 147
+  passés (hors réseau).
 
 ## Revue Opus 2026-11-14 (routine cloud) — intégration point par point
 

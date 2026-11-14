@@ -422,6 +422,16 @@ souverain = Dupont-Aignan, Poisson, Asselineau, Philippot. 2017 (tous sous le
 seuil, pour la robustesse) : écolo = Jadot ; PS = Montebourg, Peillon,
 Hamon, Valls ; centre = Macron, Bayrou.
 
+**Fit de contrôle (2022 T1−30, abst, 4 chaînes, 20 min)** : duel Macron
+58,7 % [53,9 ; 63,4] (résultat 58,6 %, couvert ; log-score 2,64 contre 2,64
+pour la moyenne brute). Convergence **meilleure mais insuffisante** :
+R-hat 15,3 (contre 35,8), rhat_t2 2,4, profondeur 255-511 (contre 1023
+saturé). L'ordre gauche→droite est désormais le même dans les 4 chaînes ; le
+R-hat restant tient à : **Lassalle** (μ = 0,12-0,16 dans 3 chaînes, 0,80 dans
+la 4e : candidat transversal, bimodal), une chaîne qui comprime la gauche
+(Mélenchon 0,06 contre 0,20), et σ de Zemmour (0,06 à 0,20). Témoin ancien
+cadre : `second_round_abst_v2_2022_T1-30_ancien_cadre.json`.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
