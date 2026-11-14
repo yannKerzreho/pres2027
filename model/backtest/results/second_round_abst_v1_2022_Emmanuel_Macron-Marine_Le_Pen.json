@@ -1,0 +1,70 @@
+{
+ "variante": "abst",
+ "nuts": {
+  "draws": 400,
+  "tune": 600,
+  "chains": 4,
+  "mode": "4 processus d'une chaîne (graines 27..30), fusionnés"
+ },
+ "tau_t2_scrutin": 0.1,
+ "v1": [
+  {
+   "election": 2022,
+   "paire": [
+    "Emmanuel Macron",
+    "Marine Le Pen"
+   ],
+   "n_sondages_retires": 105,
+   "observe_30j": 0.5532,
+   "modele": 0.6256,
+   "modele_ic90": [
+    0.5626,
+    0.6985
+   ],
+   "geometrie_seule": 0.5998,
+   "bradley_terry": 0.6837,
+   "autres_duels_des_deux": 140,
+   "modele_par_chaine": [
+    0.5967,
+    0.6715,
+    0.5959,
+    0.6383
+   ],
+   "ecart_chaines_pt": 7.56,
+   "rhat_cible": 1.61,
+   "rhat_max": 35.7027,
+   "ess_min": 2.0,
+   "divergences": 0,
+   "kappa": 1.6294,
+   "omega": -5.7402,
+   "rhat_t2": 1.7499,
+   "sigma_t2": 0.0136,
+   "secondes": 0.9,
+   "eta": {
+    "Nathalie Arthaud": -0.01,
+    "Philippe Poutou": -0.01,
+    "Jean-Luc Mélenchon": 0.338,
+    "Fabien Roussel": 0.015,
+    "Yannick Jadot": 0.002,
+    "Thouy": -0.001,
+    "Montebourg": 0.003,
+    "Taubira": -0.014,
+    "Anne Hidalgo": -0.015,
+    "Emmanuel Macron": 0.065,
+    "Lagarde": 0.005,
+    "Jean Lassalle": 0.004,
+    "Bertrand": 0.001,
+    "Valérie Pécresse": 0.294,
+    "Barnier": 0.003,
+    "Juvin": -0.004,
+    "Ciotti": 0.009,
+    "Nicolas Dupont-Aignan": -0.01,
+    "Asselineau": 0.011,
+    "Philippot": -0.004,
+    "Marine Le Pen": -0.207,
+    "Eric Zemmour": -0.411
+   }
+  }
+ ],
+ "v2": []
+}

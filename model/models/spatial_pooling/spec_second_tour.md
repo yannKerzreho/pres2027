@@ -485,6 +485,26 @@ analytique depuis la largeur hors scrutin : IC90 [44,1 ; 60,5] et
 mesuré sur ces mêmes élections ; c'est un argument de cohérence, pas une
 validation. Chiffre l'arbitrage 1 du journal.
 
+### 8.6 V1 2022 (paire retirée, T1−1, abst, nouveau cadre) — non concluant
+
+| paire retirée (n) | observé 30 j | modèle [IC90] | géom. seule | BT | écart chaînes | R̂ cible |
+|---|---|---|---|---|---|---|
+| Macron–Zemmour (57) | 66,7 | 73,9 [67,4 ; 79,8] | 60,3 | 74,5 | 4,8 pt | 1,24 |
+| Macron–Mélenchon (24) | 61,5 | 62,5 [40,7 ; 83,2] | 78,2 | 56,4 | 9,3 pt | 1,05 |
+| Macron–Le Pen (105) | 55,3 | 62,6 [56,3 ; 69,8] | 60,0 | 68,4 | 7,6 pt | 1,61 |
+| Macron–Pécresse (58) | 65,6 | 55,2 [50,1 ; 60,2] | 57,1 | 42,8 | 4,8 pt | 1,26 |
+
+MAE : modèle 6,5 pt, géométrie seule 9,1, Bradley-Terry 12,2. **Aucune des
+quatre ne passe le critère §8.4** (écarts de chaînes 4,7 à 9,3 pt) : un duel
+NON observé est porté par la géométrie, et les modes de géométrie T1 du cadre
+historique (§8.4) s'y transmettent entièrement — à la différence des duels
+observés (V2, écart ≤ 0,6 pt). Le classement modèle < géométrie < BT est
+indicatif, pas établi. Conséquence produit : sur 2027 la géométrie converge
+(R-hat 1,04), mais ces chiffres disent que les duels **jamais sondés** de
+l'onglet Scénarios ont une incertitude de géométrie de l'ordre de 5 à 10 pt
+dès que le T1 laisse deux ordres plausibles. Prochaine étape : lever la
+multimodalité T1 du cadre historique (spec avant code).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

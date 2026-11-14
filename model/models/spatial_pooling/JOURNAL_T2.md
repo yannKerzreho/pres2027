@@ -104,7 +104,16 @@ Résultats : `model/backtest/results/*.json` (committés).
 - [x] abst : v2 2022 T1-30, T1-1, T2-7 (nouveau cadre) — FAIT (spec §8.5) : cible convergée ; modèle = moyenne des sondages ±0,4 pt ; non couvert à T1−1 et T2−7 avec τ = 0,10, couvert à τ = 0,19 (analytique, dans l'échantillon). Ancien cadre :
       T1−30 committé sous `second_round_abst_v2_2022_T1-30_ancien_cadre.json` (non convergé, R-hat 35,8, témoin) ; T1−1 perdu
       (VM récupérée vers 18:00Z), non relancé : sans objet.
-- [ ] abst : v1 2022 Macron|Zemmour — EN COURS (début 2026-11-14T19:55Z, session 01JZeMw2, 4 paires à la suite) —, Macron|Mélenchon, Macron|Le Pen, Macron|Pécresse
+- [x] abst : v1 2022 Macron|Zemmour, Mélenchon, Le Pen, Pécresse — FAIT (spec §8.6) : NON CONCLUANT, écarts de chaînes 4,7-9,3 pt (géométrie T1 multimodale transmise aux duels non observés) ; MAE modèle 6,5 / géom. 9,1 / BT 12,2 (indicatif).
+- [ ] **PRIORITAIRE** : lever la multimodalité de la géométrie T1 du cadre
+      historique 2022 (permutations Mélenchon/LO, Zemmour/souverainistes,
+      Lassalle). Pistes à chiffrer, maths dans la spec AVANT code : (a) fenêtre
+      plus courte (90 j au lieu de 180 : moins de candidats putatifs, moins de
+      chemin w) en comptant les champs restants ; (b) les coupures du backtest
+      T1 publié (J-300…J-150, R-hat ≤ 1,06, spec_spatial_pooling §8) : quelle
+      config différait ? (c) en dernier recours, ancre de Lassalle (groupe
+      propre). Ne pas « régler » sur le résultat 2022 : critère = écart de
+      chaînes ≤ 1 pt sur les V1 (§8.4), pas l'erreur.
 - [ ] abst : v1 2017 Macron|Le Pen, Fillon|Le Pen ; v2 2017 T1-30 (attendu : sans nœud T1), T1-1, T2-7
 - [ ] eta : mêmes tâches (comparaison)
 - [ ] Revue 2026-11-14, sans fit : corriger la base V2 (écart-type τ_T2 en plus
@@ -195,6 +204,7 @@ Résultats : `model/backtest/results/*.json` (committés).
 - 2026-11-14 18:43-19:55Z (« Continue » utilisateur) : T1 seul aussi
   multimodal ⇒ critère de convergence sur la quantité prédite (spec §8.4) ;
   V2 2022 abst complet (spec §8.5). Tests : 4 de chaînes/cadre verts.
+- 2026-11-14 19:48-21:25Z : V1 2022 abst (4 paires) non concluant (§8.6). Tests : 148 passés (hors réseau).
 
 ## Revue Opus 2026-11-14 (routine cloud) — intégration point par point
 
