@@ -11,7 +11,7 @@ import numpy as np
 import numpyro
 import numpyro.distributions as dist
 
-from .geometry import spatial_outside_share, spatial_shares
+from .geometry import duel_shares, log_attractivite, spatial_shares
 
 # --- Rayon d'action : prior d'ORIGINE, resserrement ANNULÉ (spec §12.13) --------
 # Un resserrement à 0,06 avait été introduit au motif qu'un `sigma` large
@@ -55,14 +55,22 @@ SIGMA_JITTER = 0.20
 MIN_GAP_ANCRES = 0.25         # écart minimal entre ancres voisines (identifiabilité)
 LEVEL_SCALE = 1.5             # échelle du niveau par candidat
 SEUIL_DYNAMIQUE = 0.05        # part moyenne au-dessus de laquelle `w` a un CHEMIN
+# --- Second tour (spec_second_tour.md §2.1) ---------------------------------------
+# Valence de 2nd tour par candidat, échelle FIXE (pas d'échelle échantillonnée :
+# avec ~8 candidats en duel, une échelle libre ferait un entonnoir, cf. le même
+# choix pour SIGMA_JITTER). Appliquée à l'agrégat (`duel_shares`) : 0,5 en logit
+# ~ 12 pt de duel autour de 50/50, indépendamment des rayons.
+ETA_SCALE = 0.5
+KAPPA_LOG_SCALE = 0.5         # log kappa ~ N(0, 0,5) : centré sur « même agrégation qu'au T1 »
+SIGMA_T2_PRIOR = 0.02         # écart-type d'excès des duels (part), demi-normale
 
 def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
                              excess_var=None, tau_ou=None, sigma_w_prior=0.5,
                              level_scale=1.5, pos_scale=0.4,
                              sigma_log_mu=None, sigma_log_scale=0.6, sigma_jitter=SIGMA_JITTER,
-                             dynamic_mask=None, is_second_round=None, outside_omega=0.0,
-                             non_expression=None, non_expression_mask=None,
-                             participation_concentration=30.0):
+                             dynamic_mask=None, duel_a=None, duel_b=None, duel_y=None,
+                             duel_n=None, duel_date_idx=None, eta_scale=ETA_SCALE,
+                             kappa_log_scale=KAPPA_LOG_SCALE, sigma_t2_prior=SIGMA_T2_PRIOR):
     """Le modèle. Inférence JOINTE de la géométrie et du chemin de `w`.
 
     Trois paramètres par candidat, deux échelles globales, aucun bloc :
@@ -146,26 +154,27 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
     w_full = w_full.at[idx].add(sigma_w * (z_w @ kl_basis))
     numpyro.deterministic("w_now", w_full[:, -1])           # dernière colonne = `as_of`
 
-    # Compatibilité des appels historiques : sans indicateur T2, le modèle est
-    # exactement celui d'avant (pas d'option extérieure).
-    if is_second_round is None:
-        pi = spatial_shares(mu, sigma, w_full[:, date_idx].T, tested_mask)
-    else:
-        pi = spatial_shares(mu, sigma, w_full[:, date_idx].T, tested_mask,
-                            outside_omega=outside_omega, outside_mask=is_second_round)
+    pi = spatial_shares(mu, sigma, w_full[:, date_idx].T, tested_mask)
     var = pi * (1.0 - pi) / jnp.clip(Np[:, None], 1.0, None)
     if excess_var is not None:
         var = var + excess_var[:, None]
     numpyro.deterministic("pi", pi)
     numpyro.factor("ll", jnp.sum(dist.Normal(pi, jnp.sqrt(var + 1e-8)).log_prob(Y) * tested_mask))
-    if non_expression is not None and outside_omega is not None:
-        p_out = spatial_outside_share(mu, sigma, w_full[:, date_idx].T, tested_mask,
-                                      outside_omega=outside_omega,
-                                      outside_mask=is_second_round)
-        alpha = jnp.clip(p_out * participation_concentration, 1e-4, None)
-        beta = jnp.clip((1.0 - p_out) * participation_concentration, 1e-4, None)
-        obs = jnp.asarray(non_expression)
-        keep = jnp.asarray(non_expression_mask)
-        numpyro.deterministic("p_non_expression", p_out)
-        numpyro.factor("ll_non_expression", jnp.sum(
-            dist.Beta(alpha, beta).log_prob(jnp.clip(obs, 1e-4, 1 - 1e-4)) * keep))
+
+    # --- Duels de second tour (spec_second_tour.md §2 et §4) ---------------------
+    # UNE observation par duel (la part du premier nommé) : les deux parts sont
+    # parfaitement anticorrélées, les mettre toutes deux dans la gaussienne
+    # compterait chaque duel deux fois. Bloc absent => modèle T1 inchangé.
+    if duel_y is not None:
+        kappa = numpyro.sample("kappa", dist.LogNormal(0.0, kappa_log_scale))
+        z_eta = numpyro.sample("z_eta", dist.Normal(0.0, 1.0).expand([N]))
+        eta = numpyro.deterministic("eta", z_eta * eta_scale)
+        sigma_t2 = numpyro.sample("sigma_t2", dist.HalfNormal(sigma_t2_prior))
+        w_d = w_full[:, duel_date_idx].T                         # (D, N)
+        A_a = log_attractivite(mu[duel_a], sigma[duel_a],
+                               jnp.take_along_axis(w_d, duel_a[:, None], 1)[:, 0])
+        A_b = log_attractivite(mu[duel_b], sigma[duel_b],
+                               jnp.take_along_axis(w_d, duel_b[:, None], 1)[:, 0])
+        s = duel_shares(A_a, A_b, kappa, eta[duel_a], eta[duel_b])
+        var_d = s * (1.0 - s) / jnp.clip(duel_n, 1.0, None) + sigma_t2 ** 2
+        numpyro.factor("ll_t2", jnp.sum(dist.Normal(s, jnp.sqrt(var_d + 1e-8)).log_prob(duel_y)))

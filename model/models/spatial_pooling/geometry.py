@@ -90,8 +90,7 @@ def ancres_ecartees(anchors: np.ndarray, min_gap: float = 0.25) -> np.ndarray:
     return 1.0 / (1.0 + np.exp(-out))
 
 
-def spatial_shares(mu, sigma, w, tested_mask, outside_omega=None,
-                   outside_mask=None) -> jnp.ndarray:
+def spatial_shares(mu, sigma, w, tested_mask) -> jnp.ndarray:
     """Coeur du modèle d'observation (spec §4) : softmax masqué sur la grille +
     agrégation par les poids démographiques W -> pi (P,N) ou (N,) selon la
     forme de tested_mask. `mu`/`sigma`/`w` : (N,) OU (S,N) pour S tirages
@@ -120,40 +119,8 @@ def spatial_shares(mu, sigma, w, tested_mask, outside_omega=None,
     A = A - jnp.max(A, axis=-2, keepdims=True)
     expA = jnp.exp(A)
     numerator = expA * tested_mask[..., :, None]
-    if outside_omega is None:
-        denom = jnp.clip(numerator.sum(axis=-2, keepdims=True), 1e-12, None)
-        return jnp.sum((numerator / denom) * W, axis=-1)
-
-    # Option extérieure uniforme (« ne pas exprimer de choix entre ces deux
-    # candidats »). Elle est active seulement pour les observations T2. Son
-    # attractivité ne dépend pas de v, contrairement aux noyaux candidats :
-    # elle retire donc davantage les zones où les deux finalistes sont peu
-    # attractifs et MODIFIE bien le rapport parmi exprimés après intégration.
-    #
-    # Les sondages publient les deux candidats parmi exprimés, pas la masse de
-    # l'option extérieure. On conditionne donc après l'intégrale, et non point
-    # par point : normaliser localement annulerait exactement son effet.
-    om = 0.0 if outside_mask is None else jnp.asarray(outside_mask)
-    outside = jnp.exp(outside_omega) * om[..., None, None]
-    denom = jnp.clip(numerator.sum(axis=-2, keepdims=True) + outside, 1e-12, None)
-    raw = jnp.sum((numerator / denom) * W, axis=-1)
-    return raw / jnp.clip(raw.sum(axis=-1, keepdims=True), 1e-12, None)
-
-
-def spatial_outside_share(mu, sigma, w, tested_mask, outside_omega=0.0,
-                          outside_mask=1.0) -> jnp.ndarray:
-    """Masse intégrée de l'option extérieure, avant conditionnement sur les
-    suffrages exprimés. Elle est la quantité à comparer aux sondages publiant
-    « abstention, blanc ou nul » ; ``spatial_shares`` rend, lui, les candidats
-    conditionnellement aux exprimés."""
-    D = -((V[None, :] - mu[..., None]) ** 2) / (2 * sigma[..., None] ** 2)
-    A = w[..., None] + D - jax.nn.logsumexp(D, axis=-1, b=W, keepdims=True)
-    A = A - jnp.max(A, axis=-2, keepdims=True)
-    numerator = jnp.exp(A) * tested_mask[..., :, None]
-    om = jnp.asarray(outside_mask)
-    outside = jnp.exp(outside_omega) * om[..., None, None]
-    denom = jnp.clip(numerator.sum(axis=-2, keepdims=True) + outside, 1e-12, None)
-    return jnp.sum((outside / denom).squeeze(axis=-2) * W, axis=-1)
+    denom = jnp.clip(numerator.sum(axis=-2, keepdims=True), 1e-12, None)
+    return jnp.sum((numerator / denom) * W, axis=-1)
 
 
 def ou_kl_basis(unique_dates, as_of, tau_ou, var_cible=0.99, k_max=15, center=False):
@@ -197,3 +164,32 @@ def ou_kl_basis(unique_dates, as_of, tau_ou, var_cible=0.99, k_max=15, center=Fa
     k = int(np.searchsorted(np.cumsum(val) / val.sum(), var_cible)) + 1
     k = max(3, min(k, k_max, len(t)))
     return (vec[:, :k] * np.sqrt(val[:k])).T, k
+
+
+
+# --- Second tour (spec_second_tour.md §2) ----------------------------------------
+def log_attractivite(mu, sigma, w) -> jnp.ndarray:
+    """`A_i(v) = w_i + log phi_i(v)`, noyau normalisé sur la grille (même
+    convention que `spatial_shares`). `mu`/`sigma`/`w` : (...,N) -> (...,N,B)."""
+    D = -((V - mu[..., None]) ** 2) / (2 * sigma[..., None] ** 2)
+    return w[..., None] + D - jax.nn.logsumexp(D, axis=-1, b=W, keepdims=True)
+
+
+def duel_shares(A_a, A_b, kappa, eta_a, eta_b) -> jnp.ndarray:
+    """Part de `a` parmi les exprimés du duel (a, b), spec §2.1 :
+
+        g_ab = sum_b W_b · logistique( kappa·[A_a(V_b) - A_b(V_b)] )   (géométrie)
+        s_ab = logistique( logit(g_ab) + eta_a - eta_b )                (valence)
+
+    La valence s'applique à l'AGRÉGAT, pas au votant : au niveau du votant, `q`
+    est une quasi-marche en v (pente kappa·(mu_a-mu_b)/sigma²) et eta ne fait
+    que déplacer le point de bascule -- son effet en points de duel dépendait
+    alors de sigma (×7 entre sigma 0,08 et 0,30), qui est mal identifié. Ici
+    eta = 0,5 vaut ~12 pt autour de 50/50, quel que soit sigma.
+
+    `A_a`, `A_b` : (...,B) ; `kappa`, `eta_a`, `eta_b` : diffusables sur `...`.
+    Invariant par translation commune de `w` et de `eta`. Pas d'option
+    extérieure (spec §3.2)."""
+    g = jnp.sum(jax.nn.sigmoid(jnp.asarray(kappa)[..., None] * (A_a - A_b)) * W, axis=-1)
+    g = jnp.clip(g, 1e-6, 1.0 - 1e-6)
+    return jax.nn.sigmoid(jnp.log(g) - jnp.log1p(-g) + jnp.asarray(eta_a) - jnp.asarray(eta_b))

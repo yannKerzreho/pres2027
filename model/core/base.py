@@ -157,6 +157,11 @@ class ForecastModel(ABC):
     # l'historique, et le texte a survécu des mois après être devenu faux.
     # `None` : aucun bandeau (le front masque la zone).
     avertissement: str | None = None
+    # Le runner lit les DEUX tours (`load_raw_polls(tour=None)`). Un modèle de
+    # premier tour ne voit que le premier tour : un duel à ~50 % pris pour une
+    # intention de T1 fausserait silencieusement son fit. Seul un modèle qui
+    # modélise explicitement les duels lève ce filtre.
+    consomme_second_tour: bool = False
 
     # --- phase HORS-LIGNE (optionnelle) ---
     def calibrate(self, history=None) -> None:
@@ -222,6 +227,8 @@ class ForecastModel(ABC):
         echantillon, methode, hypothese…). Le modèle décide de son propre nettoyage
         / agrégation. Seule l'agrégation d'affichage (front) est fixée par le contrat."""
         self.load_artifacts()
+        if not self.consomme_second_tour and "tour" in raw_polls:
+            raw_polls = raw_polls[raw_polls["tour"] != "Deuxième tour"]
         nc = self.nowcast(raw_polls, as_of)
         horizon = int((election_date - pd.Timestamp(as_of)).days)
         fc = self.forecast(nc, horizon)

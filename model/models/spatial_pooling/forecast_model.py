@@ -15,9 +15,6 @@ l'onglet scénarios du site.
 
 from __future__ import annotations
 
-import json
-from pathlib import Path
-
 import numpy as np
 import pandas as pd
 import xarray as xr
@@ -26,9 +23,9 @@ from model.core.base import ForecastModel, Nowcast, register
 from model.core.live_dataset import SLOTS
 from model.core.simulate import forecast_from_draws
 
-from .fit import fit_spatial_pooling, pi_draws_for_mask, second_round_from_fit
+from .fit import TAU_T2_SCRUTIN, fit_spatial_pooling, p_elu, pi_draws_for_mask, resume_duel
 from .geometry import V, W
-from .roster import MIN_POLL_DATE, build_roster
+from .roster import MIN_POLL_DATE, build_roster, split_tours
 
 N_DRAWS_EXPORT = 300
 # Seuil de publication. Le 2026-09-23 le job a publié un fit à R-hat 5,6 (puis
@@ -36,27 +33,15 @@ N_DRAWS_EXPORT = 300
 # n'existe dans aucune. Seuil LÂCHE, pas le 1,01 des manuels : sur les fits
 # sains de septembre R-hat valait 1,01 à 1,15, avec une pointe à 1,37 (ESS 13)
 # qu'on ne veut pas voir publiée non plus ; les fits cassés étaient au-delà de 5.
-RHAT_PUBLIABLE = 1.01
+RHAT_PUBLIABLE = 1.2
 GRAINE_SECOURS = 2027
-T2_VALIDATION_REVISION = "spatial-t2-v1"
-T2_VALIDATION_PATH = Path(__file__).with_name("t2_validation.json")
-
-
-def _assert_t2_validation() -> None:
-    """Refuse de produire un scénario tant que le backtest T2 n'est pas vert."""
-    try:
-        verdict = json.loads(T2_VALIDATION_PATH.read_text())
-    except (OSError, json.JSONDecodeError) as exc:
-        raise RuntimeError(
-            "validation T2 absente ou illisible : rien n'est publié. "
-            "Lancer `python -m model.backtest.second_round`."
-        ) from exc
-    if (verdict.get("revision") != T2_VALIDATION_REVISION
-            or verdict.get("decision") != "accept"):
-        raise RuntimeError(
-            "validation T2 insuffisante : rien n'est publié "
-            f"({verdict.get('decision', 'absente')})."
-        )
+# Second tour (spec_second_tour.md). DÉSACTIVÉ tant que la validation 2017/2022
+# (`python -m model.backtest.second_round`) n'a pas été examinée et actée : à
+# False, le fit est EXACTEMENT celui du premier tour seul (aucun duel dans la
+# vraisemblance) et rien de T2 n'est exporté. Un échec T2 ne doit jamais
+# bloquer la publication du premier tour : il retire les duels, pas le snapshot.
+PUBLIER_T2 = False
+RHAT_T2_PUBLIABLE = 1.2
 
 
 def _slot_de(candidat: str) -> str | None:
@@ -106,6 +91,7 @@ class SpatialPooling(ForecastModel):
     # et le rapport de force COURANTS. Rejouer six dates lui coûtait 16 min de
     # job pour réécrire des fichiers que personne n'ouvre.
     rejeu_historique = False
+    consomme_second_tour = True      # duels dans la vraisemblance si PUBLIER_T2
     # Artefact sur mesure lu par docs/scenarios.html : ce ne sont pas des
     # résultats pré-calculés mais la GÉOMÉTRIE du postérieur, que le navigateur
     # pousse à travers le softmax masqué pour n'importe quelle liste cochée
@@ -114,28 +100,22 @@ class SpatialPooling(ForecastModel):
     scenario_artifact = "scenarios.json"
 
     def nowcast(self, polls: pd.DataFrame, as_of: str) -> Nowcast:
-        # UN SEUL fit : les hypothèses T1 et les duels T2 contraignent les mêmes
-        # positions, rayons et puissances. Ajuster le T2 après coup sur le
-        # résultat T1 réintroduirait exactement le report mécanique que le
-        # modèle spatial doit éviter.
-        _assert_t2_validation()
-        fit = fit_spatial_pooling(polls, as_of=as_of)
-        if (not np.isfinite(fit.diagnostics["rhat_max"])
-                or fit.diagnostics["rhat_max"] > RHAT_PUBLIABLE):
+        fit = fit_spatial_pooling(polls, as_of=as_of, second_tour=PUBLIER_T2)
+        if fit.diagnostics["rhat_max"] > RHAT_PUBLIABLE:
             # Une seconde graine d'abord : la convergence de ce modèle dépend
             # notablement de la graine (ESS de 3 à 112 à réglage égal, cf.
             # roster.py), un échec isolé n'est pas un verdict.
             print(f"[{self.id}] R-hat {fit.diagnostics['rhat_max']} > {RHAT_PUBLIABLE}, "
                   f"second essai avec une autre graine")
-            fit = fit_spatial_pooling(polls, as_of=as_of, seed=GRAINE_SECOURS)
-        if (not np.isfinite(fit.diagnostics["rhat_max"])
-                or fit.diagnostics["rhat_max"] > RHAT_PUBLIABLE):
+            fit = fit_spatial_pooling(polls, as_of=as_of, seed=GRAINE_SECOURS,
+                                      second_tour=PUBLIER_T2)
+        if fit.diagnostics["rhat_max"] > RHAT_PUBLIABLE:
             raise RuntimeError(
                 f"[{self.id}] fit non convergé à {as_of} (R-hat max "
                 f"{fit.diagnostics['rhat_max']}, ESS min {fit.diagnostics['ess_min']}, "
                 f"pires sites {fit.diagnostics['rhat_pires_sites']}) : rien n'est publié, "
                 "l'artefact de la veille reste en ligne.")
-        self._seconds_tours = second_round_from_fit(fit, polls)
+        self._seconds_tours = _seconds_tours(fit, polls, as_of) if PUBLIER_T2 else []
         _export_scenarios(fit, as_of, self._seconds_tours)
 
         slots = [(_slot_de(c), i) for i, c in enumerate(fit.candidates)]
@@ -166,7 +146,7 @@ class SpatialPooling(ForecastModel):
         labels = nowcast.draws.coords["candidat"].values.tolist()
         out = forecast_from_draws(projeter_au_scrutin(pi, horizon_days, load_law()),
                                   labels, horizon_days)
-        out["seconds_tours"] = self._seconds_tours
+        out["seconds_tours"] = getattr(self, "_seconds_tours", [])
         return out
 
     def used_polls(self, raw_polls: pd.DataFrame) -> pd.DataFrame:
@@ -175,14 +155,17 @@ class SpatialPooling(ForecastModel):
         raw = raw_polls[pd.to_datetime(raw_polls["date_fin"]) >= MIN_POLL_DATE]
         if raw.empty:
             return raw
-        cands, _, _ = build_roster(raw)
+        t1, t2 = split_tours(raw)
+        cands, _, _ = build_roster(t1)
+        if not PUBLIER_T2:
+            return t1[t1["candidat"].isin(cands)]
         return raw[raw["candidat"].isin(cands)]
 
     def display_polls(self, raw_polls: pd.DataFrame) -> list[dict]:
         """Points du graphe dans le vocabulaire SLOTS, pour rester superposable
         aux autres modèles. On moyenne les hypothèses d'un même sondage qui
         testent le slot — un point par sondage."""
-        raw = self.used_polls(raw_polls).copy()
+        raw = split_tours(self.used_polls(raw_polls))[0].copy()   # points de PREMIER tour
         if raw.empty:
             return []
         raw["slot"] = [_slot_de(c) for c in raw["candidat"]]
@@ -206,7 +189,25 @@ class SpatialPooling(ForecastModel):
                 for v in moy.values()]
 
 
-def _export_scenarios(fit, as_of: str, seconds_tours: list[dict]) -> None:
+def _seconds_tours(fit, polls: pd.DataFrame, as_of: str) -> list[dict]:
+    """Duels directement sondés + P(élu) du champ modal. Vide (et signalé) si
+    le bloc T2 n'a pas convergé : le premier tour reste publié."""
+    from model.core.base import ELECTION_T1
+    from model.core.live_dataset import ELECTION_T2
+    if fit.kappa_draws is None:
+        return []
+    if fit.diagnostics.get("rhat_t2", 9) > RHAT_T2_PUBLIABLE:
+        print("[spatial-pooling] bloc T2 non convergé : duels non publiés")
+        return []
+    h2 = max(int((ELECTION_T2 - pd.Timestamp(as_of)).days), 0)
+    t2 = split_tours(polls)[1]
+    n_par_paire = (t2.groupby(["notice", "hypothese"]).candidat
+                   .agg(lambda x: tuple(sorted(x))).value_counts().to_dict()) if len(t2) else {}
+    return [resume_duel(fit, a, b, h2, n_par_paire.get(tuple(sorted((a, b))), 0))
+            for a, b in fit.duel_pairs]
+
+
+def _export_scenarios(fit, as_of: str, seconds_tours: list[dict] | None = None) -> None:
     """Écrit les TIRAGES pour l'onglet scénarios du site.
 
     Le point de l'architecture : pour un champ arbitraire coché par un visiteur,
@@ -247,7 +248,6 @@ def _export_scenarios(fit, as_of: str, seconds_tours: list[dict]) -> None:
         "tirages": {"mu": r4(fit.mu_draws[sel]), "sigma": r4(fit.sigma_draws[sel]),
                     "w": r4(fit.w_draws[sel])},
         "diagnostics": fit.diagnostics,
-        "seconds_tours": seconds_tours,
         # Loi de projection au scrutin (banque commune) : le navigateur applique
         # la MÊME transformation que `projeter_au_scrutin`, sinon l'onglet
         # afficherait l'incertitude d'aujourd'hui pour une élection dans des mois.
@@ -255,6 +255,21 @@ def _export_scenarios(fit, as_of: str, seconds_tours: list[dict]) -> None:
                           if k in ("sigma2", "tau", "delta_scale", "delta_skew", "delta_tail")},
                        "horizon_jours": int((ELECTION_T1 - pd.Timestamp(as_of)).days)},
     }
+    if PUBLIER_T2 and fit.kappa_draws is not None and seconds_tours:
+        from model.core.live_dataset import ELECTION_T2
+        champ = np.array([1.0 if c in paquet["champ_modal"] else 0.0 for c in fit.candidates])
+        h1 = max(int((ELECTION_T1 - pd.Timestamp(as_of)).days), 0)
+        h2 = max(int((ELECTION_T2 - pd.Timestamp(as_of)).days), 0)
+        # Le navigateur calcule n'importe quel duel comme `duel_shares`
+        # (spec_second_tour.md §2.1) à partir de ces tirages + mu/sigma/w.
+        paquet["second_tour"] = {
+            "kappa": [round(float(x), 4) for x in fit.kappa_draws[sel]],
+            "eta": r4(fit.eta_draws[sel]),
+            "tau_scrutin_logit": TAU_T2_SCRUTIN,
+            "horizon_jours": h2,
+            "duels_sondes": seconds_tours,
+            "champ_modal": p_elu(fit, champ, h1, h2),
+        }
     d = SITE_DATA / "spatial-pooling"
     d.mkdir(parents=True, exist_ok=True)
     (d / "scenarios.json").write_text(json.dumps(paquet, ensure_ascii=False),

@@ -18,16 +18,13 @@ from model.core.bank import Bank
 from model.core.inference import run_numpyro_mcmc
 from model.core.simulate import forecast_from_draws
 
-from .geometry import ancres_ecartees, ou_kl_basis, spatial_shares
+from .geometry import (ancres_ecartees, duel_shares, log_attractivite, ou_kl_basis,
+                       spatial_shares)
 from .joint_model import (LEVEL_SCALE, MIN_GAP_ANCRES, POS_SCALE, SEUIL_DYNAMIQUE,
                           SIGMA_JITTER, spatial_pooling_model_ou)
-from .roster import (COUVERTURE_MIN, MIN_POLL_DATE, build_poll_arrays, build_roster,
-                     candidats_retires, excess_var_for_nodes, position_anchors)
-
-# Option extérieure uniforme de référence : les puissances des candidats T2
-# sont exprimées relativement à elle. `None` désactive le mécanisme pour les
-# backtests de comparaison.
-OUTSIDE_OMEGA = 0.0
+from .roster import (COUVERTURE_MIN, MIN_POLL_DATE, build_duel_arrays, build_poll_arrays,
+                     build_roster, candidats_retires, excess_var_for_nodes, position_anchors,
+                     split_tours)
 
 # --- Fit + lecture AVEC incertitude (pas un point estimate) ----------------------
 @dataclass
@@ -43,7 +40,16 @@ class SpatialPoolingFit:
     sigma_draws: np.ndarray   # (S, N)
     w_draws: np.ndarray       # (S, N)
     diagnostics: dict
-    outside_omega: float | None = None
+    # Second tour (spec_second_tour.md). `None` si le fit n'a vu aucun duel :
+    # le modèle T1 est alors exactement celui d'avant.
+    kappa_draws: np.ndarray | None = None    # (S,)
+    eta_draws: np.ndarray | None = None      # (S, N)
+    level_draws: np.ndarray | None = None    # (S, N) niveau m_i, centre du processus OU
+    sigma_w_draws: np.ndarray | None = None  # (S,)
+    dynamic: np.ndarray | None = None        # (N,) bool, candidats à chemin OU
+    tau_ou: float | None = None
+    as_of: str | None = None
+    duel_pairs: list | None = None           # paires effectivement observées
 
 
 def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, tune: int = 600,
@@ -54,7 +60,7 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
                         min_poll_date=None, order_groups=None,
                         tau_ou: float | None = None,
                         couverture_min: float | None = COUVERTURE_MIN,
-                        outside_omega: float | None = OUTSIDE_OMEGA) -> SpatialPoolingFit:
+                        second_tour: bool = True) -> SpatialPoolingFit:
     """Roster -> arrays -> NUTS, en une seule inférence jointe.
 
     `mu`, `sigma` et le chemin de `w` sont estimés ENSEMBLE. La chaîne en deux
@@ -78,9 +84,22 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
     # backtest historique : la fenêtre de campagne et la table d'ordre sont
     # propres à 2027, et `tau_ou` doit pouvoir suivre la banque qu'on teste.
     plancher = MIN_POLL_DATE if min_poll_date is None else pd.Timestamp(min_poll_date)
-    raw = raw_polls[pd.to_datetime(raw_polls["date_fin"]) >= plancher].copy()
+    raw_all = raw_polls[pd.to_datetime(raw_polls["date_fin"]) >= plancher].copy()
+    # Roster, couverture et `part` restent définis par le PREMIER tour seul :
+    # un duel à ~50 % n'est pas une intention de premier tour.
+    raw, raw_t2 = split_tours(raw_all)
     candidates, _, _ = build_roster(raw, as_of=as_of, order_groups=order_groups)
     arrays = build_poll_arrays(raw, candidates, couverture_min=couverture_min)
+    duels = build_duel_arrays(raw_t2 if second_tour else raw_t2.iloc[0:0], candidates)
+    has_t2 = len(duels["y"]) > 0
+    if has_t2:
+        from .roster import TIME_BIN_DAYS
+        assert TIME_BIN_DAYS == 1.0, "l'union des dates suppose des pas d'un jour"
+        # Ligne du temps commune aux deux tours (TIME_BIN_DAYS = 1 jour).
+        unique_dates = np.union1d(arrays["unique_dates"], np.floor(duels["dates"]))
+        arrays["date_idx"] = np.searchsorted(unique_dates, np.floor(arrays["dates"]))
+        arrays["unique_dates"] = unique_dates
+        duel_date_idx = np.searchsorted(unique_dates, np.floor(duels["dates"]))
 
     anchors = ancres_ecartees(position_anchors(candidates, order_groups), min_gap)
 
@@ -106,10 +125,11 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         kl_basis=jnp.asarray(kl), pos_anchor=jnp.asarray(anchors),
         excess_var=jnp.asarray(excess_var), tau_ou=tau_ou, pos_scale=pos_scale,
         sigma_jitter=sigma_jitter, dynamic_mask=part >= seuil_dynamique,
-        is_second_round=jnp.asarray(arrays["is_second_round"]), outside_omega=outside_omega,
-        non_expression=jnp.asarray(arrays["non_expression"]),
-        non_expression_mask=jnp.asarray(arrays["non_expression_mask"]),
     )
+    if has_t2:
+        kwargs.update(duel_a=jnp.asarray(duels["a"]), duel_b=jnp.asarray(duels["b"]),
+                      duel_y=jnp.asarray(duels["y"]), duel_n=jnp.asarray(duels["n"]),
+                      duel_date_idx=jnp.asarray(duel_date_idx))
     t0 = time.time()
     samples, extra = run_numpyro_mcmc(spatial_pooling_model_ou, kwargs, draws=draws, tune=tune,
                                       chains=chains, seed=seed, target_accept=target_accept,
@@ -120,12 +140,20 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
     # `pi` est un déterministe (P, N) : son R-hat n'ajoute rien à celui des
     # paramètres et écraserait le pire cas. On le retire du diagnostic.
     diag = {k: v for k, v in numpyro_summary(samples, prob=0.9).items() if k != "pi"}
+    if has_t2:
+        # `eta` d'un candidat sans duel suit son prior : R-hat valable, mais on
+        # le distingue dans le diagnostic pour ne pas le confondre avec un
+        # paramètre contraint.
+        en_duel = sorted(set(duels["a"]) | set(duels["b"]))
+        # R-hat PROPRE au bloc T2, sur les seuls eta contraints par un duel :
+        # le `rhat_max` global est celui du T1 et ne garde rien du T2.
+        rhat_t2 = max([float(np.max(diag[k]["r_hat"])) for k in ("kappa", "sigma_t2")]
+                      + [float(np.max(np.asarray(diag["z_eta"]["r_hat"])[en_duel]))])
     pires = sorted(((float(np.max(v["r_hat"])), k) for k, v in diag.items()), reverse=True)[:3]
     steps = np.asarray(extra["num_steps"]).ravel()
     diagnostics = {
         "n_noeuds": int(arrays["tested_mask"].shape[0]),
         "n_candidats": N,
-        "n_non_expression_t2": int(np.sum(arrays["non_expression_mask"])),
         "candidats_retires": candidats_retires(raw, candidates, as_of),
         "n_champs_distincts": len({tuple(np.flatnonzero(r)) for r in tested}),
         "n_dynamiques": int((part >= seuil_dynamique).sum()),
@@ -141,15 +169,28 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         "pas_leapfrog_median": int(np.median(steps)),
         "sigma_w": round(float(np.mean(np.asarray(samples["sigma_w"]))), 4),
         "sigma_global": round(float(np.mean(np.asarray(samples["sigma_global"]))), 4),
-        "option_exterieure_t2": ("désactivée" if outside_omega is None else
-                                  f"uniforme, omega={outside_omega:g} (échelle de référence)"),
     }
+    if has_t2:
+        diagnostics.update({
+            "n_duels": int(len(duels["y"])),
+            "paires_duel": sorted({f"{x} / {y}" for x, y in duels["pairs"]}),
+            "candidats_en_duel": [candidates[i] for i in en_duel],
+            "kappa": round(float(np.mean(np.asarray(samples["kappa"]))), 4),
+            "rhat_t2": round(rhat_t2, 4),
+            "sigma_t2": round(float(np.mean(np.asarray(samples["sigma_t2"]))), 4),
+        })
     return SpatialPoolingFit(
         candidates=candidates, anchors=anchors, tested_mask=arrays["tested_mask"],
         mu_draws=np.asarray(samples["mu"]).reshape(-1, N),
         sigma_draws=np.asarray(samples["sigma"]).reshape(-1, N),
         w_draws=np.asarray(samples["w_now"]).reshape(-1, N),
-        diagnostics=diagnostics, outside_omega=outside_omega,
+        diagnostics=diagnostics,
+        kappa_draws=np.asarray(samples["kappa"]).reshape(-1) if has_t2 else None,
+        eta_draws=np.asarray(samples["eta"]).reshape(-1, N) if has_t2 else None,
+        level_draws=np.asarray(samples["w_level"]).reshape(-1, N),
+        sigma_w_draws=np.asarray(samples["sigma_w"]).reshape(-1),
+        dynamic=np.asarray(part >= seuil_dynamique), tau_ou=tau_ou, as_of=as_of,
+        duel_pairs=sorted(set(duels["pairs"])) if has_t2 else [],
     )
 
 def pi_draws_for_mask(fit: SpatialPoolingFit, mask: np.ndarray) -> np.ndarray:
@@ -167,63 +208,6 @@ def pi_draws_for_mask(fit: SpatialPoolingFit, mask: np.ndarray) -> np.ndarray:
     comparaison et ses limites connues)."""
     return np.asarray(spatial_shares(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
                                      jnp.asarray(fit.w_draws), jnp.asarray(mask)))
-
-
-def second_round_from_fit(fit: SpatialPoolingFit, raw_polls: pd.DataFrame) -> list[dict]:
-    """Duels T2 prédits par le *même posterior* que le premier tour.
-
-    Les positions ``mu``, rayons ``sigma`` et puissances ``w`` ont été ajustés
-    simultanément sur les hypothèses des deux tours. Pour un duel observé dans
-    Wikipédia, on ne ré-estime donc rien et on ne moyenne pas un modèle séparé :
-    chaque tirage est simplement évalué avec le masque des deux finalistes.
-
-    Les scores de duel sont des parts de suffrages exprimés. L'option
-    extérieure uniforme est présente dans la vraisemblance T2 et lors de cette
-    lecture : elle capte la sortie du duel (abstention/blanc/nul) sans devenir
-    un candidat élu, puis les deux parts sont reconditionnées sur les exprimés.
-    """
-    if raw_polls.empty or "tour" not in raw_polls:
-        return []
-    t2 = raw_polls[raw_polls["tour"] == "Deuxième tour"].copy()
-    if t2.empty:
-        return []
-    t2["hypothese"] = t2["hypothese"].fillna("__unique__")
-    index = {c: i for i, c in enumerate(fit.candidates)}
-    pairs: dict[tuple[str, str], set[str]] = {}
-    for (notice, _), group in t2.groupby(["notice", "hypothese"], sort=False):
-        listed = set(group["candidat"])
-        names = sorted(listed & set(index))
-        # Une hypothèse T2 doit être exactement un duel dans les données brutes.
-        # Ignorer un troisième libellé inconnu plutôt que renormaliser revient à
-        # fabriquer le report que le modèle cherche précisément à mesurer.
-        if len(listed) == 2 and len(names) == 2:
-            pairs.setdefault((names[0], names[1]), set()).add(str(notice))
-
-    out = []
-    for pair, notices in pairs.items():
-        mask = np.zeros(len(fit.candidates))
-        idx = [index[c] for c in pair]
-        mask[idx] = 1.0
-        # Même option uniforme que dans la vraisemblance T2. Les parts rendues
-        # restent conditionnées aux suffrages exprimés, comme les sondages.
-        draws = np.asarray(spatial_shares(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
-                                          jnp.asarray(fit.w_draws), jnp.asarray(mask),
-                                          outside_omega=fit.outside_omega, outside_mask=1.0))[:, idx]
-        p0 = float((draws[:, 0] > draws[:, 1]).mean())
-        out.append({
-            "candidats": list(pair),
-            "intentions": {
-                pair[0]: {"moyenne": round(float(draws[:, 0].mean()), 4),
-                          "ic90": [round(float(x), 4) for x in np.percentile(draws[:, 0], [5, 95])],
-                          "p_gagne": round(p0, 4)},
-                pair[1]: {"moyenne": round(float(draws[:, 1].mean()), 4),
-                          "ic90": [round(float(x), 4) for x in np.percentile(draws[:, 1], [5, 95])],
-                          "p_gagne": round(1.0 - p0, 4)},
-            },
-            "n_sondages_directs": len(notices),
-            "modele": "posterior spatial conjoint T1 + T2",
-        })
-    return sorted(out, key=lambda d: (-d["n_sondages_directs"], d["candidats"]))
 
 
 def summarize_pi(pi_draws: np.ndarray, labels: list[str]) -> dict:
@@ -260,7 +244,96 @@ def forecast_spatial_pooling(fit: SpatialPoolingFit, mask: np.ndarray, horizon_d
     pi = pi_draws_for_mask(fit, mask)[:, mask_bool]
     pi = projeter_au_scrutin(pi, horizon_days, load_law())
     return forecast_from_draws(pi, labels, horizon_days)
-# Échelle de l'option extérieure uniforme. Fixée à zéro : les w des candidats
-# deviennent relatifs à elle et le fit reste identifiable. Ce n'est pas un taux
-# observé d'abstention ; celui-ci exigera une série de participation séparée.
-OUTSIDE_OMEGA = 0.0
+
+
+# --- Second tour : lecture d'un duel et P(élu) (spec_second_tour.md §6-§7) -------
+# Erreur de scrutin des sondages de 2nd tour, en logit. RMS ~2,4 pt de part sur
+# 2002-2022 (2017 +3,8 et 2022 +2,8 mesurés sur les données du dépôt ; 2002,
+# 2007, 2012 de mémoire, À SOURCER), soit ~0,10 autour de 60/40. Centrée : un
+# terme directionnel anti-RN est un choix éditorial non tranché (spec §6).
+TAU_T2_SCRUTIN = 0.10
+
+
+def projeter_w(fit: SpatialPoolingFit, horizon_days: float, seed: int = 27) -> np.ndarray:
+    """`w` au jour du scrutin, en prolongeant le MÊME processus OU que le fit
+    (spec §6.1) : retour vers le niveau `m_i` et diffusion saturante. Les
+    candidats statiques gardent leur `w`. Approximation assumée : `m_i` est la
+    moyenne du chemin sur la fenêtre (base KL centrée), pris pour le centre OU."""
+    if horizon_days <= 0 or fit.level_draws is None:
+        return fit.w_draws
+    rng = np.random.default_rng(seed)
+    r = np.exp(-horizon_days / fit.tau_ou)
+    # sigma_w²(1-r²) si le centre OU était connu ; `m_i` n'en est qu'une
+    # estimation (moyenne du chemin sur la fenêtre), d'incertitude ~sigma_w² :
+    # on ajoute (1-r)²·sigma_w² plutôt que de sous-estimer la dérive de ~25 %.
+    sd = fit.sigma_w_draws[:, None] * np.sqrt(1.0 - r ** 2 + (1.0 - r) ** 2)
+    w = fit.level_draws + (fit.w_draws - fit.level_draws) * r + sd * rng.standard_normal(fit.w_draws.shape)
+    return np.where(fit.dynamic[None, :], w, fit.w_draws)
+
+
+def _duel_par_tirage(fit, w, ia: np.ndarray, ib: np.ndarray) -> np.ndarray:
+    """Part de `ia[s]` contre `ib[s]` au tirage s (indices par tirage)."""
+    s_idx = np.arange(len(ia))
+    A = np.asarray(log_attractivite(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
+                                    jnp.asarray(w)))                     # (S, N, B)
+    return np.asarray(duel_shares(A[s_idx, ia], A[s_idx, ib], fit.kappa_draws,
+                                  fit.eta_draws[s_idx, ia], fit.eta_draws[s_idx, ib]))
+
+
+def duel_draws(fit: SpatialPoolingFit, a: str, b: str, horizon_days: float = 0.0,
+               scrutin: bool = True, seed: int = 27) -> np.ndarray:
+    """(S,) part de `a` parmi les exprimés du duel a/b. `horizon_days` = jours
+    d'ici au second tour ; `scrutin` ajoute l'erreur de scrutin T2."""
+    if fit.kappa_draws is None:
+        raise ValueError("fit sans duel : le second tour n'est pas identifié")
+    i = {c: k for k, c in enumerate(fit.candidates)}
+    S = len(fit.mu_draws)
+    s = _duel_par_tirage(fit, projeter_w(fit, horizon_days, seed),
+                         np.full(S, i[a]), np.full(S, i[b]))
+    if scrutin:
+        rng = np.random.default_rng(seed + 1)
+        z = np.log(s / (1 - s)) + rng.normal(0.0, TAU_T2_SCRUTIN, S)
+        s = 1.0 / (1.0 + np.exp(-z))
+    return s
+
+
+def resume_duel(fit: SpatialPoolingFit, a: str, b: str, horizon_days: float,
+                n_sondages: int = 0) -> dict:
+    d = duel_draws(fit, a, b, horizon_days)
+    p = float((d > 0.5).mean())
+    q = lambda x: [round(float(v), 4) for v in np.percentile(x, [5, 95])]   # noqa: E731
+    return {"candidats": [a, b],
+            "intentions": {a: {"moyenne": round(float(d.mean()), 4), "ic90": q(d), "p_gagne": round(p, 4)},
+                           b: {"moyenne": round(float(1 - d.mean()), 4), "ic90": q(1 - d),
+                               "p_gagne": round(1 - p, 4)}},
+            "n_sondages_directs": int(n_sondages),
+            "modele": "spatial joint T1+T2 : géométrie + valence de 2nd tour",
+            "horizon_jours": int(horizon_days)}
+
+
+def p_elu(fit: SpatialPoolingFit, mask: np.ndarray, horizon_t1: int, horizon_t2: int,
+          seed: int = 27) -> dict:
+    """P(élu) pour le champ `mask` (spec §7) : tirage par tirage, T1 projeté au
+    scrutin -> deux premiers -> duel projeté au second tour -> vainqueur. Les
+    deux étapes partagent le tirage de (mu, sigma, w, kappa, eta)."""
+    from model.core.opinion import load_law
+    from model.core.projection import projeter_au_scrutin
+    if fit.kappa_draws is None:
+        raise ValueError("fit sans duel : le second tour n'est pas identifié")
+    m = mask.astype(bool)
+    cols = np.flatnonzero(m)
+    pi = projeter_au_scrutin(pi_draws_for_mask(fit, mask)[:, m], horizon_t1, load_law(), seed=seed)
+    top = np.argsort(-pi, axis=1)[:, :2]
+    ia, ib = cols[top[:, 0]], cols[top[:, 1]]
+    s = _duel_par_tirage(fit, projeter_w(fit, horizon_t2, seed + 2), ia, ib)
+    rng = np.random.default_rng(seed + 3)
+    s = 1.0 / (1.0 + np.exp(-(np.log(s / (1 - s)) + rng.normal(0.0, TAU_T2_SCRUTIN, len(s)))))
+    elu = np.where(s > 0.5, ia, ib)
+    S = len(elu)
+    paires: dict = {}
+    for x, y in zip(np.minimum(ia, ib), np.maximum(ia, ib)):
+        paires[(x, y)] = paires.get((x, y), 0) + 1
+    return {"p_elu": {fit.candidates[k]: round(float((elu == k).mean()), 4) for k in cols},
+            "duels_qualifies": [{"candidats": [fit.candidates[x], fit.candidates[y]],
+                                 "p": round(c / S, 4)}
+                                for (x, y), c in sorted(paires.items(), key=lambda t: -t[1])[:6]]}
