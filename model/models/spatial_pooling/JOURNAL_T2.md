@@ -139,7 +139,7 @@ Résultats : `model/backtest/results/*.json` (committés).
 - [ ] Variantes sans valence (spec §8.9, question utilisateur : « le T2 ne
       peut-il pas estimer μ, σ, ω ? κ η ω sont-ils nécessaires ? ») : `geo`
       (κ+ω, η ≡ 0) et `geo1` (ω seul, κ ≡ 1). V1 Macron|Le Pen `geo` phase 1 —
-      EN COURS (début 2026-11-14T22:37Z, session 01JZeMw2) ; puis phase 2 ;
+      EN COURS (relancé 2026-11-14T23:10Z, session 01JZeMw2 : le run de 22:37Z a été perdu, VM récupérée dès la fin du tour) ; puis phase 2 ;
       puis `geo1` ; puis V2 2022 et diagnostic 2027 des variantes gagnantes.
 - [ ] abst : v1 2017 Macron|Le Pen, Fillon|Le Pen ; v2 2017 T1-30 (attendu : sans nœud T1), T1-1, T2-7
 - [ ] eta : mêmes tâches (comparaison)
@@ -200,6 +200,10 @@ Résultats : `model/backtest/results/*.json` (committés).
   y échoue pour cette seule raison : ne pas le « corriger ».
 - Vérif versions épinglées (2026-11-14, VM cloud) : install OK, 152 tests passés,
   1 échec réseau ci-dessus. Versions identiques au job quotidien vert du 13/11.
+- VM cloud récupérée dès qu'un tour se termine (uptime 0 au réveil suivant,
+  3 fois le 14/11) : un fit lancé en arrière-plan ne survit PAS à la fin du
+  tour. Rester dans le tour jusqu'à la fin des fits (attente par boucles
+  `until`), et committer les JSON aussitôt produits.
 - Colab gratuit : session `t2bt` perdue en cours de run (VM récupérée) le
   2026-11-14 — ne plus en dépendre.
 
