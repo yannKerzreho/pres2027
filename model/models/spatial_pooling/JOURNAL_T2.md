@@ -93,6 +93,9 @@ Résultats : `model/backtest/results/*.json` (committés).
       c'est la géométrie historique (pistes : ancre de Lassalle plus serrée ou
       groupe propre, `pos_scale` du backtest, init commune des chaînes à
       l'interdit — masquerait les modes). Maths dans la spec avant tout code.
+      — EN COURS (début 2026-11-14T18:50Z, session 01JZeMw2) : option `--sans-t2`
+      ajoutée (V2 seulement, sortie = diagnostics T1 + μ moyens),
+      `--only v2 --election 2022 --coupure T1-30 --sans-t2`, 4 chaînes.
 - [ ] abst : v2 2022 T1-30, T1-1, T2-7 (NOUVEAU cadre). Ancien cadre :
       T1−30 committé sous `second_round_abst_v2_2022_T1-30_ancien_cadre.json` (non convergé, R-hat 35,8, témoin) ; T1−1 perdu
       (VM récupérée vers 18:00Z), non relancé : sans objet.

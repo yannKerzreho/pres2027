@@ -157,13 +157,15 @@ def _bradley_terry(train: pd.DataFrame, a: str, b: str, sd_eta: float = 0.5) -> 
 
 
 ABSTENTION = True   # surchargé par --variante
+SECOND_TOUR = True  # False = --sans-t2 : diagnostic de convergence du T1 seul
 
 
 def _fit(raw, as_of, election, nuts):
     t = time.time()
     fit = fit_spatial_pooling(raw, str(as_of.date()), min_poll_date="1900-01-01",
                               order_groups=ORDER_GROUPS_HISTORIQUES[election],
-                              couverture_min=None, abstention=ABSTENTION, **nuts)
+                              couverture_min=None, abstention=ABSTENTION,
+                              second_tour=SECOND_TOUR, **nuts)
     return fit, round(time.time() - t, 1)
 
 
@@ -229,6 +231,17 @@ def v2_resultat(election: int, nuts: dict, coupures=("T1-30", "T1-1", "T2-7")) -
             out.append({"election": election, "coupure": c, "as_of": str(as_of.date()),
                         "erreur": f"{type(exc).__name__}: {exc}", "n_notices_t1": n_t1})
             continue
+        if fit.kappa_draws is None:
+            # --sans-t2 : pas de duel, on ne garde que la convergence du T1.
+            d = fit.diagnostics
+            out.append({"election": election, "coupure": c, "as_of": str(as_of.date()),
+                        "sans_t2": True, "n_noeuds": d["n_noeuds"],
+                        "n_champs_distincts": d["n_champs_distincts"],
+                        "rhat_max": d["rhat_max"], "rhat_pires_sites": d["rhat_pires_sites"],
+                        "ess_min": d["ess_min"], "divergences": d["n_divergences"],
+                        "pas_leapfrog_median": d["pas_leapfrog_median"],
+                        "mu": {k: round(float(x), 3) for k, x in zip(fit.candidates, fit.mu_draws.mean(0))}})
+            continue
         h = int((T2_DATES[election] - as_of).days)
         d = duel_draws(fit, a, b, h, scrutin=True)
         recents = _duels_moyens(raw, as_of - pd.Timedelta(days=7))
@@ -270,9 +283,14 @@ def main() -> None:
                     help="ne lance QUE la chaîne k (0-3, graine 27+k) et sauve ses tirages")
     ap.add_argument("--fusionner", action="store_true",
                     help="assemble les 4 chaînes sauvées (aucun NUTS) et écrit le JSON final")
+    ap.add_argument("--sans-t2", action="store_true",
+                    help="V2 : T1 seul (aucun duel), pour diagnostiquer la convergence")
     args = ap.parse_args()
-    global ABSTENTION
+    global ABSTENTION, SECOND_TOUR
     ABSTENTION = args.variante == "abst"
+    SECOND_TOUR = not args.sans_t2
+    if args.sans_t2 and args.only != "v2":
+        ap.error("--sans-t2 n'a de sens qu'en V2 (V1 prédit un duel)")
     nuts = dict(draws=60, tune=60, chains=1) if args.fast else dict(draws=400, tune=600, chains=4)
     if args.lister:
         for e in (2017, 2022):
@@ -287,7 +305,8 @@ def main() -> None:
     out = args.out or OUT_DIR / (f"second_round_{args.variante}_{'fast_' if args.fast else ''}"
                                  f"{args.only or 'all'}_{args.election or 'both'}"
                                  + (f"_{args.paire.replace('|', '-').replace(' ', '_')}" if args.paire else "")
-                                 + (f"_{args.coupure}" if args.coupure else "") + ".json")
+                                 + (f"_{args.coupure}" if args.coupure else "")
+                                 + ("_sans_t2" if args.sans_t2 else "") + ".json")
     nuts_json = dict(nuts)
     if args.chaine is not None or args.fusionner:
         # Une tâche unitaire = UN fit : sinon les fichiers de chaîne se mélangeraient.
