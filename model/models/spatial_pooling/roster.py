@@ -130,11 +130,15 @@ ORDER_GROUPS: list[tuple[str, list[str]]] = [
 #   - Lassalle (2017 et 2022) : ruraliste inclassable, placé entre le centre et
 #     LR. Il pèse 1 à 3 %, donc l'enjeu est faible.
 ORDER_GROUPS_HISTORIQUES: dict[int, list[tuple[str, list[str]]]] = {
+    # Candidats putatifs inclus (spec_second_tour.md §8.3) : le backtest garde
+    # TOUTES les hypothèses T1, et la variation des champs est la seule source
+    # d'identification des positions. Noms bruts (non canonisés) pour eux.
     2017: [
         ("LO",         ["Nathalie Arthaud", "Philippe Poutou"]),
         ("LFI",        ["Jean-Luc Mélenchon"]),
-        ("PS",         ["Benoît Hamon"]),
-        ("centre",     ["Emmanuel Macron"]),
+        ("ecolo",      ["Yannick Jadot"]),
+        ("PS",         ["Arnaud Montebourg", "Vincent Peillon", "Benoît Hamon", "Manuel Valls"]),
+        ("centre",     ["Emmanuel Macron", "François Bayrou"]),
         ("Lassalle",   ["Jean Lassalle"]),
         ("LR",         ["François Fillon"]),
         ("souverain",  ["Nicolas Dupont-Aignan", "François Asselineau",
@@ -144,12 +148,12 @@ ORDER_GROUPS_HISTORIQUES: dict[int, list[tuple[str, list[str]]]] = {
     2022: [
         ("LO",         ["Nathalie Arthaud", "Philippe Poutou"]),
         ("LFI",        ["Jean-Luc Mélenchon"]),
-        ("coco_ecolo", ["Fabien Roussel", "Yannick Jadot"]),
-        ("PS",         ["Anne Hidalgo"]),
-        ("centre",     ["Emmanuel Macron"]),
+        ("coco_ecolo", ["Fabien Roussel", "Rousseau", "Yannick Jadot", "Thouy"]),
+        ("PS",         ["Montebourg", "Taubira", "Anne Hidalgo"]),
+        ("centre",     ["Emmanuel Macron", "Lagarde"]),
         ("Lassalle",   ["Jean Lassalle"]),
-        ("LR",         ["Valérie Pécresse"]),
-        ("souverain",  ["Nicolas Dupont-Aignan"]),
+        ("LR",         ["Bertrand", "Valérie Pécresse", "Barnier", "Juvin", "Ciotti"]),
+        ("souverain",  ["Nicolas Dupont-Aignan", "Poisson", "Asselineau", "Philippot"]),
         ("RN",         ["Marine Le Pen"]),
         ("Reconquete", ["Eric Zemmour"]),
     ],

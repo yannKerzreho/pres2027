@@ -384,6 +384,44 @@ hypothèses T1 des notices de la fenêtre (y compris candidats non qualifiés au
 final, p. ex. variantes LR/PS de l'automne 2021), comme le fait le roster
 2027 — ce qui retire aussi la fuite « champ final connu » (revue, point 8).
 
+### 8.3 Cadre historique corrigé : toutes les hypothèses T1 (2026-11-14)
+
+**Données.** Pour une coupure $t$ de l'élection $e$, l'ensemble des nœuds T1
+est $\mathcal P = \{(n, h)\}$ : TOUTES les hypothèses $h$ de toutes les
+notices $n$ terminées dans $[t - 180\,\text{j}, t]$, sans filtre sur les
+candidats du scrutin ni sélection d'une hypothèse. Les noms sont canonisés
+sur les candidats du scrutin quand la correspondance est unique
+(`_resolve_candidate`), sinon gardés bruts (« Bertrand », « Taubira »).
+
+**Roster** : exactement celui de 2027, `build_roster` (candidat retenu s'il
+figure dans ≥ `MIN_POLLS` = 5 notices). Chaque candidat retenu doit être
+classé dans `ORDER_GROUPS_HISTORIQUES[e]`, qui fixe l'ancre de position
+(rang gauche→droite, seule information de position a priori).
+
+**Vraisemblance** : inchangée. Pour un nœud $p$ de champ testé $M_p$ et de
+roster $R$, la restriction d'un multinomial au sous-ensemble $M_p \cap R$ est
+un multinomial : $y_{p,i} \leftarrow y_{p,i} / \sum_{j \in M_p\cap R} y_{p,j}$
+et $N_p \leftarrow N_p \cdot \sum_{j\in M_p\cap R} y_{p,j} / n_{hyp}(n)$,
+comparés à $\pi_{p}$ = softmax spatial masqué sur $M_p \cap R$ (déjà le cas
+en production). Les candidats sous le seuil sortent donc proprement du nœud.
+
+**Pourquoi** : $\mu_i$ n'est identifié que par la covariation de $\pi$ avec
+$M_p$ (qui récupère les voix quand $k$ sort). Champs distincts : 2022 T1−30
+passe de 4 (108 nœuds) à 66 (222 nœuds) ; T1−1 de 2 à 53. 2017 reste pauvre
+(10 et 24 nœuds datés, aucun candidat putatif ≥ 5 notices) : ses verdicts
+resteront fragiles quoi qu'on fasse.
+
+**Duels** : inchangés (paires de deux candidats du scrutin), pour garder la
+même liste de tâches V1/V2 ; garder aussi les duels putatifs
+(Bertrand–Macron…) est une extension notée dans le journal.
+
+**Classement ajouté (choix éditorial, gauche→droite dans chaque groupe)** —
+2022 : écolo += Thouy, Rousseau ; PS = Montebourg, Taubira, Hidalgo ;
+centre = Macron, Lagarde ; LR = Bertrand, Pécresse, Barnier, Juvin, Ciotti ;
+souverain = Dupont-Aignan, Poisson, Asselineau, Philippot. 2017 (tous sous le
+seuil, pour la robustesse) : écolo = Jadot ; PS = Montebourg, Peillon,
+Hamon, Valls ; centre = Macron, Bayrou.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

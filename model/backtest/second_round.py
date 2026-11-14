@@ -84,11 +84,14 @@ def _runner_fusion(paths: list[Path]):
     return run
 
 
-def polls_historiques(election: int, as_of: pd.Timestamp, history_days: int = 180) -> pd.DataFrame:
+def polls_historiques(election: int, as_of: pd.Timestamp, history_days: int = 180,
+                      toutes_hypotheses: bool = True) -> pd.DataFrame:
     """Sondages wiki ≤ as_of dans le vocabulaire des résultats officiels.
-    T1 : une hypothèse par notice (la plus proche du champ final), candidats du
-    scrutin. T2 : TOUTES les paires de deux candidats du scrutin (les duels
-    hypothétiques sont ceux qui renseignent les reports)."""
+    T1 : TOUTES les hypothèses de toutes les notices, candidats putatifs
+    compris (spec_second_tour.md §8.3) — comme le roster 2027, c'est la
+    variation des champs qui identifie les positions. T2 : TOUTES les paires
+    de deux candidats du scrutin (les duels hypothétiques sont ceux qui
+    renseignent les reports)."""
     raw = pd.read_csv(Path(PARSED_DIR) / POLL_FILES[election])
     res = load_results()
     res_e = res[res.election.eq(election)]
@@ -99,8 +102,11 @@ def polls_historiques(election: int, as_of: pd.Timestamp, history_days: int = 18
     raw["date_fin"] = dates.fillna(pd.to_datetime(raw.get("date_notice"), errors="coerce"))
     raw = raw[raw["date_fin"].notna() & raw["date_fin"].le(as_of)
               & raw["date_fin"].ge(as_of - pd.Timedelta(days=history_days))].copy()
-    t1 = _select_best_hypothesis(raw[raw.tour.eq("Premier tour") & raw.candidat.isin(names_t1)],
-                                 names_t1)
+    t1 = raw[raw.tour.eq("Premier tour")]
+    if not toutes_hypotheses:
+        # Ancien cadre : une hypothèse par notice, candidats du scrutin seuls.
+        # Géométrie NON identifiée (100/108 nœuds au même champ, spec §8.2).
+        t1 = _select_best_hypothesis(t1[t1.candidat.isin(names_t1)], names_t1)
     t2 = raw[raw.tour.eq("Deuxième tour")].copy()
     t2["_h"] = t2["hypothese"].fillna("__u__")
     ok = t2.groupby(["notice", "_h"])["candidat"].transform(

@@ -31,3 +31,22 @@ def test_fusion_refuse_une_chaine_manquante(tmp_path):
     import pytest
     with pytest.raises(FileNotFoundError):
         _runner_fusion([tmp_path / "absent.npz"])
+
+
+def test_cadre_historique_garde_toutes_les_hypotheses():
+    """Spec §8.3 : la variation des champs identifie les positions. L'ancien
+    cadre (une hypothèse par notice) ne laissait que 4 champs à 2022 T1−30."""
+    import pandas as pd
+    import model.backtest.second_round as sr
+    from model.models.spatial_pooling.roster import (ORDER_GROUPS_HISTORIQUES, build_poll_arrays,
+                                                     build_roster, split_tours)
+    as_of = sr.T1_DATES[2022] - pd.Timedelta(days=30)
+    champs = {}
+    for toutes in (True, False):
+        t1, _ = split_tours(sr.polls_historiques(2022, as_of, toutes_hypotheses=toutes))
+        cands, _, _ = build_roster(t1, order_groups=ORDER_GROUPS_HISTORIQUES[2022])
+        a = build_poll_arrays(t1, cands)
+        champs[toutes] = len({tuple(np.flatnonzero(r)) for r in a["tested_mask"]})
+        if toutes:
+            assert {"Bertrand", "Taubira", "Montebourg"} <= set(cands)
+    assert champs[True] >= 50 and champs[False] <= 5
