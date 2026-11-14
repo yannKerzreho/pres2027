@@ -571,6 +571,38 @@ est lue ; si l'une en sort vers plus dense encore, on itère. C'est une
 recherche du mode de plus grande masse, justifiée par les écarts mesurés
 (≫ Δ) ; elle ne garantit pas de trouver le mode global.
 
+**Phase 2, V1 Macron–Le Pen (abst)** : départ au dernier tirage de la chaîne
+la plus dense de la phase 1. Les 4 chaînes restent dans ce puits ($\bar L_c$ à
+7 nats près, toutes retenues), `rhat_max` 35,7 → 2,3, R̂ cible 1,03, écart
+1,4 pt (seuil 1 : de justesse non concluant). **Le mode dominant prédit
+64,0 % [59,1 ; 69,1] pour 55,3 % observé** : erreur 8,7 pt, hors IC. Bien
+échantillonné, le modèle à η libre prédit mal la paire retirée — motive §8.9.
+
+### 8.9 Expérience : le second tour sans valence η (question utilisateur, 2026-11-14)
+
+Question : le T2 peut-il servir à estimer μ, σ (et ω) plutôt qu'être absorbé
+par des paramètres propres ? Dans le modèle courant, le logit d'un duel vaut,
+à l'abstention près, $\kappa\,(\ell_a - \ell_b) + \eta_a - \eta_b$ avec
+$\ell_i = \log \int e^{A_i(v)} f(v)\,dv$ fonction de $(\mu,\sigma,w)$. Avec
+$\eta_i \sim \mathcal N(0, 0{,}5^2)$ libres, N valences pour ~N(N−1)/2 paires
+observées, η peut ajuster les duels **quelle que soit la géométrie** : le T2
+n'apporte alors presque rien sur (μ, σ) — et §8.7-8.8 montrent qu'il laisse
+coexister des géométries de densités différentes. Sans η, chaque duel est une
+contrainte directe sur (μ, σ, w) : le T2 devient une source d'identification
+de la géométrie.
+
+Variantes (backtest, `--variante`) :
+- `abst` (référence) : κ, η, ω ;
+- `geo` : κ, ω, **η ≡ 0** (`eta_scale = 0`) ;
+- `geo1` : **κ ≡ 1** (`kappa_log_scale` → 10⁻³), ω, η ≡ 0 : le duel est la
+  pure prolongation de la géométrie T1, plus l'abstention.
+
+Critères, dans l'ordre : (1) convergence (§8.4, §8.8 : chaînes retenues
+d'accord) ; (2) V1 (paire retirée : c'est là que η ne peut pas aider) ;
+(3) V2 et diagnostic 2027 (un modèle sans η ajuste-t-il encore les duels
+sondés ? rappel : sur 2027, MAE paire retirée 6,3 pt géométrie seule, 3,2 avec
+κ+ω, 2,9 η seule, 2,4 les deux — mais géométrie FIGÉE, pas jointe).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

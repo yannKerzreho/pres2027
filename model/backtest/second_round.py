@@ -197,6 +197,7 @@ def _bradley_terry(train: pd.DataFrame, a: str, b: str, sd_eta: float = 0.5) -> 
 
 
 ABSTENTION = True   # surchargé par --variante
+VARIANTE_KW: dict = {}   # geo / geo1 (spec §8.9)
 SECOND_TOUR = True  # False = --sans-t2 : diagnostic de convergence du T1 seul
 POS_SCALE_BT = None  # --pos-scale : EXPÉRIENCE de diagnostic (spec §8.7), pas un réglage
 
@@ -206,7 +207,7 @@ def _fit(raw, as_of, election, nuts):
     fit = fit_spatial_pooling(raw, str(as_of.date()), min_poll_date="1900-01-01",
                               order_groups=ORDER_GROUPS_HISTORIQUES[election],
                               couverture_min=None, abstention=ABSTENTION,
-                              second_tour=SECOND_TOUR,
+                              second_tour=SECOND_TOUR, **VARIANTE_KW,
                               **({"pos_scale": POS_SCALE_BT} if POS_SCALE_BT else {}), **nuts)
     return fit, round(time.time() - t, 1)
 
@@ -351,8 +352,9 @@ def main() -> None:
     ap.add_argument("--coupure", default=None, choices=["T1-30", "T1-1", "T2-7"],
                     help="V2 : une seule coupure")
     ap.add_argument("--lister", action="store_true", help="liste les tâches unitaires et sort")
-    ap.add_argument("--variante", choices=["abst", "eta"], default="abst",
-                    help="abst = abstention (valeur inclusive) + valence ; eta = valence seule")
+    ap.add_argument("--variante", choices=["abst", "eta", "geo", "geo1"], default="abst",
+                    help="abst = abstention + valence ; eta = valence seule ; geo = κ + abstention, "
+                         "sans valence ; geo1 = abstention seule, κ = 1 (spec §8.9)")
     ap.add_argument("--chaine", type=int, default=None,
                     help="ne lance QUE la chaîne k (0-3, graine 27+k) et sauve ses tirages")
     ap.add_argument("--fusionner", action="store_true",
@@ -367,7 +369,9 @@ def main() -> None:
     args = ap.parse_args()
     global ABSTENTION, SECOND_TOUR, POS_SCALE_BT
     POS_SCALE_BT = args.pos_scale
-    ABSTENTION = args.variante == "abst"
+    ABSTENTION = args.variante in ("abst", "geo", "geo1")
+    VARIANTE_KW.update({"geo": {"eta_scale": 0.0},
+                        "geo1": {"eta_scale": 0.0, "kappa_log_scale": 1e-3}}.get(args.variante, {}))
     SECOND_TOUR = not args.sans_t2
     if args.sans_t2 and args.only != "v2":
         ap.error("--sans-t2 n'a de sens qu'en V2 (V1 prédit un duel)")

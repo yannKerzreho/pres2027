@@ -67,7 +67,8 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
                         couverture_min: float | None = COUVERTURE_MIN,
                         second_tour: bool = True, abstention: bool = True,
                         chain_method: str = "sequential",
-                        mcmc_runner=None) -> SpatialPoolingFit:
+                        mcmc_runner=None, eta_scale: float | None = None,
+                        kappa_log_scale: float | None = None) -> SpatialPoolingFit:
     """Roster -> arrays -> NUTS, en une seule inférence jointe.
 
     `mu`, `sigma` et le chemin de `w` sont estimés ENSEMBLE. La chaîne en deux
@@ -137,6 +138,11 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         kwargs.update(duel_a=jnp.asarray(duels["a"]), duel_b=jnp.asarray(duels["b"]),
                       duel_y=jnp.asarray(duels["y"]), duel_n=jnp.asarray(duels["n"]),
                       duel_date_idx=jnp.asarray(duel_date_idx), abstention=abstention)
+        # Variantes de backtest (spec §8.9) : η ≡ 0 (`eta_scale=0`), κ ≡ 1.
+        if eta_scale is not None:
+            kwargs["eta_scale"] = eta_scale
+        if kappa_log_scale is not None:
+            kwargs["kappa_log_scale"] = kappa_log_scale
     t0 = time.time()
     # `mcmc_runner` : injectable (backtest découpé par chaîne, cf.
     # `model.backtest.second_round --chaine/--fusionner`), même signature que
@@ -161,7 +167,8 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         # R-hat PROPRE au bloc T2, sur les seuls eta contraints par un duel :
         # le `rhat_max` global est celui du T1 et ne garde rien du T2.
         rhat_t2 = max([float(np.max(diag[k]["r_hat"])) for k in ("kappa", "sigma_t2")]
-                      + [float(np.max(np.asarray(diag["z_eta"]["r_hat"])[en_duel]))]
+                      + ([float(np.max(np.asarray(diag["z_eta"]["r_hat"])[en_duel]))]
+                         if eta_scale != 0 else [])
                       + ([float(diag["omega"]["r_hat"])] if abstention else []))
     pires = sorted(((float(np.max(v["r_hat"])), k) for k, v in diag.items()), reverse=True)[:3]
     steps = np.asarray(extra["num_steps"]).ravel()

@@ -134,8 +134,13 @@ Résultats : `model/backtest/results/*.json` (committés).
       codée dans la fusion (`lp_par_chaine`, `chaines_retenues`, `concluant`),
       tous les JSON 2022 re-fusionnés : V2 concluant ×3, V1 non concluant ×4.
 - [ ] Phase 2 « relance au mode dominant » (`--init-depuis`, spec §8.8) :
-      V1 Macron|Le Pen — EN COURS (début 2026-11-14T22:25Z, session 01JZeMw2).
-      Si concluant : l'appliquer aux 3 autres V1, puis à 2017 et à la variante eta.
+      V1 Macron|Le Pen — FAIT 22:35Z : puits stable (4 chaînes retenues,
+      rhat_max 2,3, écart 1,4 pt) mais prédiction 64,0 % pour 55,3 observé.
+- [ ] Variantes sans valence (spec §8.9, question utilisateur : « le T2 ne
+      peut-il pas estimer μ, σ, ω ? κ η ω sont-ils nécessaires ? ») : `geo`
+      (κ+ω, η ≡ 0) et `geo1` (ω seul, κ ≡ 1). V1 Macron|Le Pen `geo` phase 1 —
+      EN COURS (début 2026-11-14T22:37Z, session 01JZeMw2) ; puis phase 2 ;
+      puis `geo1` ; puis V2 2022 et diagnostic 2027 des variantes gagnantes.
 - [ ] abst : v1 2017 Macron|Le Pen, Fillon|Le Pen ; v2 2017 T1-30 (attendu : sans nœud T1), T1-1, T2-7
 - [ ] eta : mêmes tâches (comparaison)
 - [ ] Revue 2026-11-14, sans fit : corriger la base V2 (écart-type τ_T2 en plus
