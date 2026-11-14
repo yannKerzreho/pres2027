@@ -56,10 +56,14 @@ CHAINES_DIR = OUT_DIR / "chaines"
 N_CHAINES = 4
 
 
-def _runner_chaine(path: Path, k: int):
-    """NUTS d'UNE chaîne (graine `seed + k`), tirages sauvés dans `path`."""
+def _runner_chaine(path: Path, k: int, init: dict | None = None):
+    """NUTS d'UNE chaîne (graine `seed + k`), tirages sauvés dans `path`.
+    `init` : valeurs des sites latents (départ commun, spec §8.8 phase 2)."""
     def run(model_fn, model_kwargs, **kw):
         kw = {**kw, "chains": 1, "seed": kw.get("seed", 27) + k}
+        if init is not None:
+            from numpyro.infer import init_to_value
+            kw["init_strategy"] = init_to_value(values=init)
         samples, extra = run_numpyro_mcmc(model_fn, model_kwargs, **kw)
         path.parent.mkdir(parents=True, exist_ok=True)
         np.savez_compressed(path, **{f"s__{n}": np.asarray(v) for n, v in samples.items()},
@@ -80,8 +84,44 @@ def _runner_fusion(paths: list[Path]):
         noms = zs[0].files
         samples = {n[3:]: np.concatenate([z[n] for z in zs], axis=0) for n in noms if n.startswith("s__")}
         extra = {n[3:]: np.concatenate([z[n] for z in zs], axis=0) for n in noms if n.startswith("e__")}
+        LP_CHAINES[:] = _log_densite_par_chaine(model_fn, model_kwargs, samples)
         return samples, extra
     return run
+
+
+def _init_mode_dominant(json_phase1: str) -> dict:
+    """Dernier tirage de la chaîne de plus grand L̄_c d'une phase 1 fusionnée."""
+    p = Path(json_phase1)
+    p = p if p.exists() else OUT_DIR / p
+    r = json.loads(p.read_text())
+    ligne = (r.get("v1") or r.get("v2"))[0]
+    best = int(np.argmax(ligne["lp_par_chaine"]))
+    z = np.load(CHAINES_DIR / f"{p.stem}_c{best}.npz")
+    return {n[3:]: np.asarray(z[n][0, -1]) for n in z.files if n.startswith("s__")}
+
+
+# Log-densité moyenne par chaîne de la dernière fusion (spec §8.8).
+LP_CHAINES: list[float] = []
+DELTA_LP = 10.0          # nats : seuil de rétention des chaînes (spec §8.8)
+N_TIRAGES_LP = 20        # tirages amincis par chaîne pour estimer L̄_c
+
+
+def _log_densite_par_chaine(model_fn, model_kwargs, samples) -> list[float]:
+    """L̄_c = moyenne de log p(θ, y) sur `N_TIRAGES_LP` tirages de chaque chaîne."""
+    import jax
+    import jax.numpy as jnp
+    from numpyro import handlers
+    from numpyro.infer.util import log_density
+    tr = handlers.trace(handlers.seed(model_fn, 0)).get_trace(**model_kwargs)
+    sites = [n for n, v in tr.items() if v["type"] == "sample" and not v["is_observed"]]
+    f = jax.jit(lambda prm: log_density(model_fn, (), model_kwargs, prm)[0])
+    C, D = samples[sites[0]].shape[:2]
+    out = []
+    for c in range(C):
+        idx = np.linspace(0, D - 1, min(N_TIRAGES_LP, D)).astype(int)
+        out.append(float(np.mean([float(f({n: jnp.asarray(samples[n][c, t]) for n in sites}))
+                                  for t in idx])))
+    return out
 
 
 def polls_historiques(election: int, as_of: pd.Timestamp, history_days: int = 180,
@@ -217,9 +257,24 @@ def _cible_par_chaine(d: np.ndarray, n_chaines: int) -> dict:
     from numpyro.diagnostics import split_gelman_rubin
     x = np.log(d / (1 - d)).reshape(n_chaines, -1)
     m = (1 / (1 + np.exp(-x))).mean(1)
-    return {"modele_par_chaine": [round(float(v), 4) for v in m],
-            "ecart_chaines_pt": round(100 * float(m.max() - m.min()), 2),
-            "rhat_cible": round(float(split_gelman_rubin(x[..., None])[0]), 3)}
+    out = {"modele_par_chaine": [round(float(v), 4) for v in m],
+           "ecart_chaines_pt": round(100 * float(m.max() - m.min()), 2),
+           "rhat_cible": round(float(split_gelman_rubin(x[..., None])[0]), 3)}
+    if len(LP_CHAINES) == n_chaines:
+        lp = np.array(LP_CHAINES)
+        keep = np.flatnonzero(lp >= lp.max() - DELTA_LP)
+        xs = x[keep]
+        dr = (1 / (1 + np.exp(-xs))).ravel()
+        out.update({"lp_par_chaine": [round(float(v), 1) for v in lp],
+                    "chaines_retenues": keep.tolist(),
+                    "modele_retenu": round(float(dr.mean()), 4),
+                    "modele_ic90_retenu": [round(float(v), 4) for v in np.percentile(dr, [5, 95])],
+                    "ecart_chaines_retenues_pt": round(100 * float(m[keep].max() - m[keep].min()), 2)})
+        if len(keep) >= 2:
+            out["rhat_cible_retenu"] = round(float(split_gelman_rubin(xs[..., None])[0]), 3)
+        out["concluant"] = bool(len(keep) >= 2 and out["rhat_cible_retenu"] <= 1.1
+                                and out["ecart_chaines_retenues_pt"] <= 1.0)
+    return out
 
 
 def _log_score(draws_logit: np.ndarray, y: float) -> float:
@@ -304,6 +359,9 @@ def main() -> None:
                     help="assemble les 4 chaînes sauvées (aucun NUTS) et écrit le JSON final")
     ap.add_argument("--sans-t2", action="store_true",
                     help="V2 : T1 seul (aucun duel), pour diagnostiquer la convergence")
+    ap.add_argument("--init-depuis", default=None,
+                    help="phase 2 (spec §8.8) : nom du JSON fusionné d'une phase 1 ; les chaînes "
+                         "partent du dernier tirage de sa chaîne la plus dense")
     ap.add_argument("--pos-scale", type=float, default=None,
                     help="diagnostic : liberté de position autour de l'ancre (défaut du modèle 0,4)")
     args = ap.parse_args()
@@ -329,7 +387,8 @@ def main() -> None:
                                  + (f"_{args.paire.replace('|', '-').replace(' ', '_')}" if args.paire else "")
                                  + (f"_{args.coupure}" if args.coupure else "")
                                  + ("_sans_t2" if args.sans_t2 else "")
-                                 + (f"_pos{args.pos_scale:g}" if args.pos_scale else "") + ".json")
+                                 + (f"_pos{args.pos_scale:g}" if args.pos_scale else "")
+                                 + ("_init" if args.init_depuis else "") + ".json")
     nuts_json = dict(nuts)
     if args.chaine is not None or args.fusionner:
         # Une tâche unitaire = UN fit : sinon les fichiers de chaîne se mélangeraient.
@@ -337,7 +396,9 @@ def main() -> None:
             ap.error("--chaine/--fusionner : une tâche unitaire (--only, --election, --paire ou --coupure)")
         base = CHAINES_DIR / out.stem
         if args.chaine is not None:
-            nuts["mcmc_runner"] = _runner_chaine(base.with_name(f"{out.stem}_c{args.chaine}.npz"), args.chaine)
+            init = _init_mode_dominant(args.init_depuis) if args.init_depuis else None
+            nuts["mcmc_runner"] = _runner_chaine(base.with_name(f"{out.stem}_c{args.chaine}.npz"),
+                                                 args.chaine, init)
             out = base.with_name(f"{out.stem}_c{args.chaine}.json")    # JSON 1 chaîne : brouillon
             nuts_json = {**nuts_json, "chains": 1, "chaine": args.chaine}
         else:

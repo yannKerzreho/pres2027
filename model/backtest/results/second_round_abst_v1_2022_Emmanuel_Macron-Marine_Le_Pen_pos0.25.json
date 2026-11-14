@@ -33,6 +33,25 @@
    ],
    "ecart_chaines_pt": 5.81,
    "rhat_cible": 1.391,
+   "lp_par_chaine": [
+    10314.4,
+    10212.7,
+    10321.1,
+    10313.9
+   ],
+   "chaines_retenues": [
+    0,
+    2,
+    3
+   ],
+   "modele_retenu": 0.5904,
+   "modele_ic90_retenu": [
+    0.5467,
+    0.6343
+   ],
+   "ecart_chaines_retenues_pt": 1.15,
+   "rhat_cible_retenu": 1.035,
+   "concluant": false,
    "rhat_max": 7.0789,
    "ess_min": 2.0,
    "divergences": 0,
@@ -40,7 +59,7 @@
    "omega": -5.2293,
    "rhat_t2": 1.6878,
    "sigma_t2": 0.0129,
-   "secondes": 0.9,
+   "secondes": 8.0,
    "eta": {
     "Nathalie Arthaud": -0.004,
     "Philippe Poutou": 0.008,

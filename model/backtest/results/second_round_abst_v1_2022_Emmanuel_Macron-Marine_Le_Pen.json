@@ -6,6 +6,7 @@
   "chains": 4,
   "mode": "4 processus d'une chaîne (graines 27..30), fusionnés"
  },
+ "pos_scale": null,
  "tau_t2_scrutin": 0.1,
  "v1": [
   {
@@ -32,6 +33,22 @@
    ],
    "ecart_chaines_pt": 7.56,
    "rhat_cible": 1.61,
+   "lp_par_chaine": [
+    10369.0,
+    10287.6,
+    10369.3,
+    10383.7
+   ],
+   "chaines_retenues": [
+    3
+   ],
+   "modele_retenu": 0.6383,
+   "modele_ic90_retenu": [
+    0.5913,
+    0.6959
+   ],
+   "ecart_chaines_retenues_pt": 0.0,
+   "concluant": false,
    "rhat_max": 35.7027,
    "ess_min": 2.0,
    "divergences": 0,
@@ -39,7 +56,7 @@
    "omega": -5.7402,
    "rhat_t2": 1.7499,
    "sigma_t2": 0.0136,
-   "secondes": 0.9,
+   "secondes": 8.2,
    "eta": {
     "Nathalie Arthaud": -0.01,
     "Philippe Poutou": -0.01,

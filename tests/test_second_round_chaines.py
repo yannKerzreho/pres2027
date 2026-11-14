@@ -62,3 +62,28 @@ def test_cible_par_chaine_detecte_une_chaine_dans_un_autre_mode():
     ko = _cible_par_chaine(d, 4)
     assert ko["rhat_cible"] > 1.1 and ko["ecart_chaines_pt"] > 5
     assert _cible_par_chaine(d, 1) == {}
+
+
+def test_selection_des_chaines_par_log_densite(monkeypatch):
+    import model.backtest.second_round as sr
+    rng = np.random.default_rng(1)
+    d = 1 / (1 + np.exp(-rng.normal(0.3, 0.1, 1600)))
+    d[400:800] = 1 / (1 + np.exp(-rng.normal(0.8, 0.1, 400)))     # chaîne 1 piégée
+    monkeypatch.setattr(sr, "LP_CHAINES", [100.0, 0.0, 99.0, 101.0])
+    r = sr._cible_par_chaine(d, 4)
+    assert r["chaines_retenues"] == [0, 2, 3]
+    assert r["ecart_chaines_pt"] > 5 and r["ecart_chaines_retenues_pt"] < 1
+    assert r["concluant"]
+    monkeypatch.setattr(sr, "LP_CHAINES", [100.0, 0.0, 0.0, 0.0])
+    assert not sr._cible_par_chaine(d, 4)["concluant"]          # une seule chaîne : non concluant
+
+
+def test_log_densite_par_chaine_classe_les_chaines():
+    import numpyro
+    import numpyro.distributions as dist
+    from model.backtest.second_round import _log_densite_par_chaine
+
+    def m():
+        numpyro.sample("x", dist.Normal(0.0, 1.0))
+    lp = _log_densite_par_chaine(m, {}, {"x": np.array([[0.0] * 5, [3.0] * 5])})
+    assert lp[0] - lp[1] > 4

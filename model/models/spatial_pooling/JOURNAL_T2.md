@@ -128,6 +128,14 @@ Résultats : `model/backtest/results/*.json` (committés).
       géométrie (hiérarchique à échelle apprise, ou retrait vers la
       prédiction géométrique) — maths dans la spec d'abord, mesurer l'écart de
       chaînes V1 Macron|Le Pen (référence 7,6 pt).
+      — RÉORIENTÉ 22:20Z (spec §8.8) : les modes ont des log-densités très
+      inégales (10-130 nats) ⇒ pièges d'échantillonneur, pas ambiguïté ; η
+      n'est pas à contraindre. Règle de sélection des chaînes (Δ = 10 nats)
+      codée dans la fusion (`lp_par_chaine`, `chaines_retenues`, `concluant`),
+      tous les JSON 2022 re-fusionnés : V2 concluant ×3, V1 non concluant ×4.
+- [ ] Phase 2 « relance au mode dominant » (`--init-depuis`, spec §8.8) :
+      V1 Macron|Le Pen — EN COURS (début 2026-11-14T22:25Z, session 01JZeMw2).
+      Si concluant : l'appliquer aux 3 autres V1, puis à 2017 et à la variante eta.
 - [ ] abst : v1 2017 Macron|Le Pen, Fillon|Le Pen ; v2 2017 T1-30 (attendu : sans nœud T1), T1-1, T2-7
 - [ ] eta : mêmes tâches (comparaison)
 - [ ] Revue 2026-11-14, sans fit : corriger la base V2 (écart-type τ_T2 en plus
@@ -221,7 +229,10 @@ Résultats : `model/backtest/results/*.json` (committés).
 - 2026-11-14 19:48-21:25Z : V1 2022 abst (4 paires) non concluant (§8.6).
 - 2026-11-14 21:27-21:50Z (réveils 19:07/20:07/21:07 reçus en retard, traités
   en un) : fenêtre, ancres, pos_scale 0,25 (§8.7) ; cause des modes V1 =
-  compensation géométrie/η. Tests : 148 passés (hors réseau).
+  compensation géométrie/η.
+- 2026-11-14 22:07-22:25Z (réveil) : log-densité par chaîne ⇒ modes inégaux
+  (spec §8.8), sélection Δ = 10 nats, re-fusion 2022, phase 2 lancée.
+  Tests : 6 chaînes/cadre verts. Tests : 148 passés (hors réseau).
 
 ## Revue Opus 2026-11-14 (routine cloud) — intégration point par point
 

@@ -526,6 +526,51 @@ arbitraire. Pistes (maths avant code) : η hiérarchique à échelle apprise
 (rétrécit les compensations), ou pénalité d'écart entre η et la prédiction
 géométrique ; à mesurer par l'écart de chaînes V1, pas par l'erreur.
 
+### 8.8 Modes de densité inégale : sélection des chaînes par log-densité (2026-11-14)
+
+**Mesure** (V1 Macron–Le Pen, 20 tirages par chaîne,
+$L(\theta) = \log p(\theta, y)$ recalculée par `log_density` sur les tirages
+sauvés) : avec `pos_scale` 0,4, $\bar L_c$ = 10 372 / 10 283 / 10 368 /
+10 388 ; avec 0,25 : 10 319 / 10 214 / 10 315 / 10 317. La chaîne minoritaire
+de §8.7 est **~100 nats** sous les autres ; à 0,4, la chaîne au duel décalé
+(63,8 %) est la plus dense, ~20 nats au-dessus de deux autres. Les modes ne
+sont donc pas équivalents : ce sont des pièges locaux de l'échantillonneur, pas
+une ambiguïté des données. La « réponse mélange » (4 chaînes poolées) pondère
+alors 1/4 un mode de masse ~$e^{-100}$ : faux.
+
+**Règle (backtests seulement).** Pour $C$ chaînes,
+$\bar L_c = D^{-1}\sum_t L(\theta_{c,t})$ sur des tirages amincis ;
+on retient $\mathcal C^* = \{c : \bar L_c \ge \max_{c'} \bar L_{c'} - \Delta\}$,
+$\Delta = 10$ nats. Justification : la masse d'un mode vaut
+$\approx e^{L_{\max}}\,(2\pi)^{d/2}|H|^{-1/2}$ ; à dimension égale et
+courbures comparables, un écart de 10 nats entre typical sets fait un rapport
+de masse ~$4{,}5\cdot10^{-5}$ — un rapport de volume de cet ordre exigerait
+des courbures très différentes, que rien n'indique ici (même modèle, mêmes
+sites). La quantité prédite et le critère §8.4 sont ensuite calculés sur
+$\mathcal C^*$ ; on rapporte $\bar L_c$, $|\mathcal C^*|$, et la cible
+poolée sans sélection, pour qu'un lecteur voie l'effet. Limites : (1) si
+toutes les chaînes tombent dans un mode sous-dominant, la règle ne le voit
+pas — d'où l'intérêt de plus de chaînes ; (2) $|\mathcal C^*| = 1$ ⇒ aucun
+contrôle de convergence possible : déclaré **non concluant**. En production,
+rien ne change (le fit 2027 a R-hat 1,04 : les chaînes y sont dans le même mode).
+
+**Application (re-fusion, sans NUTS).** Écarts de $\bar L_c$ entre chaînes de
+10 à 130 nats sur TOUS les fits historiques : V2 2022 reste concluant aux 3
+coupures après sélection (2-3 chaînes retenues, écart ≤ 0,3 pt) ; V1 : une
+seule chaîne retenue pour Macron–Mélenchon et Macron–Le Pen (non concluant
+par construction), 3 chaînes mais écart 4,8 pt pour Macron–Zemmour, 2 chaînes
+et 1,8 pt pour Macron–Pécresse ; avec `pos_scale` 0,25, Macron–Le Pen garde 3
+chaînes à 1,15 pt (presque concluant ; 59,0 % [54,7 ; 63,4] contre 55,3 observé).
+
+**Étape suivante : départ multiple puis relance au mode dominant.** Phase 1 =
+les 4 chaînes actuelles (exploration). Phase 2 : $\theta_0$ = dernier tirage
+de la chaîne de plus grand $\bar L_c$ ; 4 nouvelles chaînes
+`init_to_value(θ0)`, graines distinctes, warmup complet. Si elles restent
+dans le même puits (critère §8.4), le mode dominant est stable et la cible y
+est lue ; si l'une en sort vers plus dense encore, on itère. C'est une
+recherche du mode de plus grande masse, justifiée par les écarts mesurés
+(≫ Δ) ; elle ne garantit pas de trouver le mode global.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
