@@ -29,8 +29,13 @@ jobs:
       # En dessous de ce seuil, on considère que le parsing s'est dégradé, on
       # n'écrase PAS le CSV et le job échoue bruyamment plutôt que de publier un
       # snapshot calculé sur presque rien.
+      #
+      # --snapshots : l'incident du 2026-10-04 était une perte PARTIELLE (8
+      # sondages), invisible à --min-sondages. On compare aux sondages que les
+      # derniers snapshots publiés déclarent : au-delà de 20 % disparus, même
+      # abandon ; en dessous, annotation ::warning:: sur le run.
       - name: Ingestion sondages (Wikipedia)
-        run: python -m sondages.wiki --min-sondages 15
+        run: python -m sondages.wiki --min-sondages 15 --snapshots docs/data
 
       # Rejoue aussi les dates PASSÉES dont le jeu de sondages a changé (défaut
       # quand `--as-of` est absent, cf. docstring de `model/run.py`) : un sondage
