@@ -114,6 +114,14 @@ Résultats : `model/backtest/results/*.json` (committés).
       config différait ? (c) en dernier recours, ancre de Lassalle (groupe
       propre). Ne pas « régler » sur le résultat 2022 : critère = écart de
       chaînes ≤ 1 pt sur les V1 (§8.4), pas l'erreur.
+      Mesures 21:30Z : (a) fenêtre à T1−1 : 180 j = 45 champs/22 cand. ;
+      120 j = 17/17 ; 90 j = 14/17 ; 60 j = 5/15 — raccourcir coûte de
+      l'identification, piste peu prometteuse. Hypothèse « ancres trop
+      serrées en 2022 » RÉFUTÉE : écart logit min/médian 0,25/0,25 en 2027
+      (17 cand.) comme en 2022 (22). Expérience EN COURS (début
+      2026-11-14T21:35Z, session 01JZeMw2) : V1 Macron|Le Pen avec
+      `--pos-scale 0.25` (diagnostic : les modes sont-ils des permutations
+      permises par la liberté autour de l'ancre ?).
 - [ ] abst : v1 2017 Macron|Le Pen, Fillon|Le Pen ; v2 2017 T1-30 (attendu : sans nœud T1), T1-1, T2-7
 - [ ] eta : mêmes tâches (comparaison)
 - [ ] Revue 2026-11-14, sans fit : corriger la base V2 (écart-type τ_T2 en plus

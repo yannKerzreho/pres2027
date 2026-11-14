@@ -158,6 +158,7 @@ def _bradley_terry(train: pd.DataFrame, a: str, b: str, sd_eta: float = 0.5) -> 
 
 ABSTENTION = True   # surchargé par --variante
 SECOND_TOUR = True  # False = --sans-t2 : diagnostic de convergence du T1 seul
+POS_SCALE_BT = None  # --pos-scale : EXPÉRIENCE de diagnostic (spec §8.7), pas un réglage
 
 
 def _fit(raw, as_of, election, nuts):
@@ -165,7 +166,8 @@ def _fit(raw, as_of, election, nuts):
     fit = fit_spatial_pooling(raw, str(as_of.date()), min_poll_date="1900-01-01",
                               order_groups=ORDER_GROUPS_HISTORIQUES[election],
                               couverture_min=None, abstention=ABSTENTION,
-                              second_tour=SECOND_TOUR, **nuts)
+                              second_tour=SECOND_TOUR,
+                              **({"pos_scale": POS_SCALE_BT} if POS_SCALE_BT else {}), **nuts)
     return fit, round(time.time() - t, 1)
 
 
@@ -302,8 +304,11 @@ def main() -> None:
                     help="assemble les 4 chaînes sauvées (aucun NUTS) et écrit le JSON final")
     ap.add_argument("--sans-t2", action="store_true",
                     help="V2 : T1 seul (aucun duel), pour diagnostiquer la convergence")
+    ap.add_argument("--pos-scale", type=float, default=None,
+                    help="diagnostic : liberté de position autour de l'ancre (défaut du modèle 0,4)")
     args = ap.parse_args()
-    global ABSTENTION, SECOND_TOUR
+    global ABSTENTION, SECOND_TOUR, POS_SCALE_BT
+    POS_SCALE_BT = args.pos_scale
     ABSTENTION = args.variante == "abst"
     SECOND_TOUR = not args.sans_t2
     if args.sans_t2 and args.only != "v2":
@@ -323,7 +328,8 @@ def main() -> None:
                                  f"{args.only or 'all'}_{args.election or 'both'}"
                                  + (f"_{args.paire.replace('|', '-').replace(' ', '_')}" if args.paire else "")
                                  + (f"_{args.coupure}" if args.coupure else "")
-                                 + ("_sans_t2" if args.sans_t2 else "") + ".json")
+                                 + ("_sans_t2" if args.sans_t2 else "")
+                                 + (f"_pos{args.pos_scale:g}" if args.pos_scale else "") + ".json")
     nuts_json = dict(nuts)
     if args.chaine is not None or args.fusionner:
         # Une tâche unitaire = UN fit : sinon les fichiers de chaîne se mélangeraient.
@@ -345,7 +351,8 @@ def main() -> None:
         if args.only in (None, "v2"):
             rows["v2"] += v2_resultat(e, nuts, (args.coupure,) if args.coupure else ("T1-30", "T1-1", "T2-7"))
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps({"variante": args.variante, "nuts": nuts_json, "tau_t2_scrutin": TAU_T2_SCRUTIN, **rows},
+    out.write_text(json.dumps({"variante": args.variante, "nuts": nuts_json,
+                               "pos_scale": args.pos_scale, "tau_t2_scrutin": TAU_T2_SCRUTIN, **rows},
                               ensure_ascii=False, indent=1) + "\n")
     for k, r in rows.items():
         if r:
