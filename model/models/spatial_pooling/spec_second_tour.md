@@ -464,6 +464,27 @@ rapporté. **La garde de PRODUCTION n'est pas changée** (`rhat_max` ≤ 1,2 sur
 2027, qui converge) : ce critère ne sert qu'à lire les backtests, et un
 backtest qui le viole est déclaré non concluant, pas réussi.
 
+### 8.5 V2 2022, nouveau cadre, variante abst (2026-11-14)
+
+Résultat : Macron 58,55 % des exprimés du duel. Cible convergée aux trois
+coupures (§8.4) ; `rhat_max` (géométrie) 15,3 / 32,2 / 4,9, non pertinent.
+
+| coupure | modèle [IC90] | sondages 7 j (n) | couvre (mod. / brut) | log-score mod. / brut | écart chaînes | R̂ cible |
+|---|---|---|---|---|---|---|
+| T1−30 | 58,7 [53,9 ; 63,4] | 58,9 (7) | oui / oui | 2,64 / 2,64 | 0,6 pt | 1,015 |
+| T1−1 | 52,4 [47,3 ; 57,3] | 52,8 (13) | **non / non** | 0,58 / 0,78 | 0,4 pt | 1,003 |
+| T2−7 | 53,4 [48,8 ; 57,9] | 53,4 (15) | **non / non** | 0,97 / 0,92 | 0,2 pt | 1,003 |
+
+Lecture : (1) le modèle **suit la moyenne des sondages** à ±0,4 pt — il ne la
+bat pas, il ne la dégrade pas (log-scores équivalents) ; ce n'est pas le rôle
+du bloc T2 sur un duel abondamment sondé. (2) En fin de campagne, les sondages
+2022 sous-estimaient Macron de 5-6 pt et l'IC90 à $\tau_{T2} = 0{,}10$ ne
+couvre pas (z = 2,05 et 1,87). À $\tau_{T2} = 0{,}19$ (mesure §6), estimation
+analytique depuis la largeur hors scrutin : IC90 [44,1 ; 60,5] et
+[45,4 ; 61,3], z = 1,24 et 1,06 — couverts. **Dans l'échantillon** : τ a été
+mesuré sur ces mêmes élections ; c'est un argument de cohérence, pas une
+validation. Chiffre l'arbitrage 1 du journal.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

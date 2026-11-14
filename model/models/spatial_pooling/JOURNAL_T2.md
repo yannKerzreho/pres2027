@@ -101,10 +101,10 @@ Résultats : `model/backtest/results/*.json` (committés).
       critère de convergence DU BACKTEST sur la quantité prédite (spec §8.4 :
       R̂(logit q) ≤ 1,1 et écart de chaînes ≤ 1 pt ; garde de prod inchangée).
       2022 T1−30 abst : CONCLUANT, couvert, log-score = moyenne brute (2,64).
-- [ ] abst : v2 2022 T1-30 (FAIT, §8.4), T1-1, T2-7 (NOUVEAU cadre) — T1-1 puis T2-7 EN COURS (début 2026-11-14T19:05Z, session 01JZeMw2, 4 chaînes chacun, à la suite). Ancien cadre :
+- [x] abst : v2 2022 T1-30, T1-1, T2-7 (nouveau cadre) — FAIT (spec §8.5) : cible convergée ; modèle = moyenne des sondages ±0,4 pt ; non couvert à T1−1 et T2−7 avec τ = 0,10, couvert à τ = 0,19 (analytique, dans l'échantillon). Ancien cadre :
       T1−30 committé sous `second_round_abst_v2_2022_T1-30_ancien_cadre.json` (non convergé, R-hat 35,8, témoin) ; T1−1 perdu
       (VM récupérée vers 18:00Z), non relancé : sans objet.
-- [ ] abst : v1 2022 Macron|Zemmour, Macron|Mélenchon, Macron|Le Pen, Macron|Pécresse
+- [ ] abst : v1 2022 Macron|Zemmour — EN COURS (début 2026-11-14T19:55Z, session 01JZeMw2, 4 paires à la suite) —, Macron|Mélenchon, Macron|Le Pen, Macron|Pécresse
 - [ ] abst : v1 2017 Macron|Le Pen, Fillon|Le Pen ; v2 2017 T1-30 (attendu : sans nœud T1), T1-1, T2-7
 - [ ] eta : mêmes tâches (comparaison)
 - [ ] Revue 2026-11-14, sans fit : corriger la base V2 (écart-type τ_T2 en plus
@@ -132,7 +132,9 @@ Résultats : `model/backtest/results/*.json` (committés).
 ## Arbitrages ouverts (pour l'utilisateur — ne pas trancher seul)
 
 1. **Largeur τ_T2 de l'aléa de scrutin** (actuel 0,10 logit ; mesure
-   2017/2022 ⇒ 0,18-0,20). Effet sur 2027 (estimation analytique depuis
+   2017/2022 ⇒ 0,18-0,20). Backtest V2 2022 (spec §8.5) : à 0,10 le
+   résultat sort de l'IC90 à T1−1 et T2−7 (z ≈ 2), à 0,19 il y rentre.
+   Effet sur 2027 (estimation analytique depuis
    §8.1, abst) : P(Philippe bat Le Pen) 0,14 → ≈ 0,21 ; IC90 du duel
    ≈ ±7,6 → ±10 pt. Fidélité au passé = élargir ; ne change pas les centres.
 2. **Biais directionnel des sondages de T2 (anti-RN en 2017/2022, ordre
@@ -190,6 +192,9 @@ Résultats : `model/backtest/results/*.json` (committés).
   historique à toutes les hypothèses T1 (spec §8.3) : 66 champs au lieu de 4 ;
   contrôle 2022 T1−30 : R-hat 35,8 → 15,3, Lassalle bimodal. Tests : 147
   passés (hors réseau).
+- 2026-11-14 18:43-19:55Z (« Continue » utilisateur) : T1 seul aussi
+  multimodal ⇒ critère de convergence sur la quantité prédite (spec §8.4) ;
+  V2 2022 abst complet (spec §8.5). Tests : 4 de chaînes/cadre verts.
 
 ## Revue Opus 2026-11-14 (routine cloud) — intégration point par point
 
