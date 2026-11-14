@@ -505,6 +505,27 @@ l'onglet Scénarios ont une incertitude de géométrie de l'ordre de 5 à 10 pt
 dès que le T1 laisse deux ordres plausibles. Prochaine étape : lever la
 multimodalité T1 du cadre historique (spec avant code).
 
+### 8.7 Diagnostic des modes V1 (2026-11-14, Macron–Le Pen retiré)
+
+Expérience (pas un réglage) : `pos_scale` 0,4 → 0,25. Écart de chaînes
+7,6 → 5,8 pt, `rhat_max` 35,7 → 7,1 : la liberté autour de l'ancre contribue,
+sans être la cause principale. Hypothèse « ancres plus serrées en 2022 qu'en
+2027 » réfutée (écart logit 0,25 dans les deux). Fenêtre plus courte écartée :
+à T1−1, 120 j ne laisse que 17 champs, 90 j 14 (contre 45 à 180 j).
+
+Le mode minoritaire (1 chaîne sur 4) est cohérent : Roussel et Jadot à
+μ ≈ 0,25, contre Macron, avec σ large (0,12-0,14), au lieu de μ ≈ 0,05 et σ
+étroit (0,02-0,03) ; Macron décalé à gauche (0,25 contre 0,42). Les duels
+OBSERVÉS restent ajustés parce que **η compense** : η_Macron = +0,29 contre
+−0,24 dans les autres chaînes, η_Le Pen = −0,30 contre −0,04 à −0,09.
+Mécanisme : la vraisemblance des duels identifie seulement
+$\kappa(\ell_a-\ell_b)+\eta_a-\eta_b$ sur les paires observées ; η libre
+($\mathcal N(0, s_\eta^2)$ indépendant) absorbe toute différence de
+géométrie sur ces paires, et la paire retirée hérite d'une combinaison
+arbitraire. Pistes (maths avant code) : η hiérarchique à échelle apprise
+(rétrécit les compensations), ou pénalité d'écart entre η et la prédiction
+géométrique ; à mesurer par l'écart de chaînes V1, pas par l'erreur.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

@@ -122,6 +122,12 @@ Résultats : `model/backtest/results/*.json` (committés).
       2026-11-14T21:35Z, session 01JZeMw2) : V1 Macron|Le Pen avec
       `--pos-scale 0.25` (diagnostic : les modes sont-ils des permutations
       permises par la liberté autour de l'ancre ?).
+      — FAIT 21:47Z (spec §8.7) : écart 7,6 → 5,8 pt, pas suffisant. Mode
+      minoritaire = Roussel/Jadot recentrés à σ large, COMPENSÉ par η
+      (Macron +0,29 / Le Pen −0,30). Suite : η qui ne puisse pas absorber la
+      géométrie (hiérarchique à échelle apprise, ou retrait vers la
+      prédiction géométrique) — maths dans la spec d'abord, mesurer l'écart de
+      chaînes V1 Macron|Le Pen (référence 7,6 pt).
 - [ ] abst : v1 2017 Macron|Le Pen, Fillon|Le Pen ; v2 2017 T1-30 (attendu : sans nœud T1), T1-1, T2-7
 - [ ] eta : mêmes tâches (comparaison)
 - [ ] Revue 2026-11-14, sans fit : corriger la base V2 (écart-type τ_T2 en plus
@@ -212,7 +218,10 @@ Résultats : `model/backtest/results/*.json` (committés).
 - 2026-11-14 18:43-19:55Z (« Continue » utilisateur) : T1 seul aussi
   multimodal ⇒ critère de convergence sur la quantité prédite (spec §8.4) ;
   V2 2022 abst complet (spec §8.5). Tests : 4 de chaînes/cadre verts.
-- 2026-11-14 19:48-21:25Z : V1 2022 abst (4 paires) non concluant (§8.6). Tests : 148 passés (hors réseau).
+- 2026-11-14 19:48-21:25Z : V1 2022 abst (4 paires) non concluant (§8.6).
+- 2026-11-14 21:27-21:50Z (réveils 19:07/20:07/21:07 reçus en retard, traités
+  en un) : fenêtre, ancres, pos_scale 0,25 (§8.7) ; cause des modes V1 =
+  compensation géométrie/η. Tests : 148 passés (hors réseau).
 
 ## Revue Opus 2026-11-14 (routine cloud) — intégration point par point
 
