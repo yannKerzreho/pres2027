@@ -309,3 +309,74 @@ def test_build_dataset_live_page_matches_schema_contract():
     schema.validate(intentions)                            # ne lève pas
     assert report["n_kept"] > 500
     assert report["n_rejected_groups"] < report["n_kept"] * 0.05   # garde-fou : peu de rejets
+
+
+# --- Fiabilisation nov. 2026 : défauts trouvés sur la page 2027 live ---------
+# Colonne « Autres » listant PLUSIEURS petits candidats séparés par <hr>
+# (Cluster17 9-10 novembre 2026, variante 4) : seul le 1er couple était lu, la
+# somme tombait à 85 et l'hypothèse entière était rejetée. Inclut aussi un
+# lien dont le TEXTE est balisé (« [[Xavier Bertrand|<small>Bertrand</small>]] »,
+# YouGov 17-21 septembre 2026), qui donnait le candidat « <small>Bertrand</small> ».
+_AUTRES_HR = """
+{| class="wikitable"
+! rowspan=3 | Sondeur
+! rowspan=3 | Date
+! rowspan=3 | Échantillon
+! | a
+! | b
+|-
+! scope=col | [[Marine Le Pen|Le Pen]]
+! scope=col | Autres
+|- style="line-height:5px;"
+| {{Infobox Parti politique français/couleurs|RN}} |
+| |
+|-
+| rowspan="1" style="{{Sondeur|Cluster17}}" | [https://www.commission-des-sondages.fr/notices/files/notices/2026/septembre/10251-pres-cluster-17.pdf Cluster17]
+| rowspan="1" | 31 août - {{1er}} septembre
+| rowspan="1" | {{Formatnum|1711}}
+|90
+|1<br><small>'''[[François Asselineau|Asselineau]]'''</small><hr>8<br>'''[[Xavier Bertrand|<small>Bertrand</small>]]'''<hr>1<br><small>'''[[Dominique de Villepin|Villepin]]'''</small>
+|}
+"""
+
+
+def test_cellule_autres_multi_candidats_hr():
+    warnings = []
+    records = extract_notices(parse_wikitables(_AUTRES_HR)[0], "Premier tour", None, warnings)
+    assert {r["candidat"]: r["intention"] for r in records} == {
+        "Le Pen": 90.0, "Asselineau": 1.0, "Bertrand": 8.0, "Villepin": 1.0}
+    r = records[0]
+    # {{1er}} : la fin du terrain est le 1er septembre, pas le 31 août
+    assert (r["date_debut"], r["date_fin"]) == ("2026-08-31", "2026-09-01")
+    assert r["notice"] == "Cluster17 31 août - 1 septembre (WP)"
+    assert r["echantillon"] == 1711                     # {{Formatnum|…}} à pipe
+    assert not [w for w in warnings if "template inconnu" in w]
+
+
+def test_desambiguise_notices_meme_libelle_deux_pdf():
+    from sondages.wiki import desambiguise_notices
+    import pandas as pd
+    base = "https://www.commission-des-sondages.fr/notices/files/notices/2026/octobre/"
+    df = pd.DataFrame({
+        "notice": ["OW 13-14 octobre (WP)"] * 3 + ["Ifop 1-2 octobre (WP)"],
+        "notice_url": [base + "10318-presitrack.pdf", base + "10318-presitrack.pdf",
+                       base + "10320-autre.pdf", base + "10300-ifop.pdf"],
+    })
+    out = desambiguise_notices(df)
+    assert out["notice"].tolist() == ["OW 13-14 octobre (WP) n°10318"] * 2 + [
+        "OW 13-14 octobre (WP) n°10320", "Ifop 1-2 octobre (WP)"]   # l'autre libellé intact
+
+
+def test_notices_disparues_compare_au_dernier_snapshot(tmp_path):
+    import json
+    import pandas as pd
+    from sondages.wiki import notices_disparues
+    mdir = tmp_path / "gp-pooling"
+    mdir.mkdir()
+    (mdir / "2026-11-01.json").write_text(json.dumps({"polls": [{"notice": "ancien"}]}))
+    (mdir / "2026-11-02.json").write_text(json.dumps(
+        {"polls": [{"notice": "A"}, {"notice": "B"}, {"notice": "C"}]}))
+    (mdir / "index.json").write_text("[]")
+    df = pd.DataFrame({"notice": ["A", "B", "D"]})
+    disparues, n_ref = notices_disparues(df, tmp_path)
+    assert disparues == {"C"} and n_ref == 3            # seul le DERNIER snapshot compte
