@@ -49,8 +49,19 @@
   <div class="chips" id="legendB"></div>
   <svg id="chartB" viewBox="0 0 760 240" preserveAspectRatio="xMidYMid meet"></svg>
 
-  <h2>Duels de 2<sup>nd</sup> tour probables</h2>
+  <h2><span>Duels de 2<sup>nd</sup> tour probables</span></h2>
   <div id="duels"></div>
+
+  <!-- 2nd tour : rubrique masquée tant que le modèle du suivi ne publie pas
+       `seconds_tours` dans son snapshot (cf. Site.secondTour). Rien d'autre à
+       brancher le jour venu : elle apparaît d'elle-même. -->
+  <section id="t2" hidden>
+    <h2><span>Qui l'emporte au 2<sup>nd</sup> tour</span></h2>
+    <p class="legend">Pour chaque duel : parts des suffrages exprimés (trait = IC 90 %
+      du premier nommé), probabilité de victoire de chacun <b>si ce duel a lieu</b>, et
+      au centre la probabilité que ce duel ait lieu.</p>
+    <div id="secondTour"></div>
+  </section>
 </div>
 
 <picture>
@@ -97,7 +108,13 @@ function interpAt(pts, day){
 
 // --- graphe temporel générique : séries de lignes + points ---
 function timeChart(svg, series, {yMax=null, scatter=[], xMin=null, fmt=pct, joursInfo=null}={}) {
-  svg.innerHTML=""; const W=760,H=240,L=38,R=12,T=10,B=26;
+  // Largeur du repère = largeur affichée (bornée à 760) : avec un viewBox fixe
+  // de 760, un écran de téléphone réduisait tout d'un facteur ~2,3 et les
+  // graduations tombaient à 4 px. Le graphe est redessiné au redimensionnement.
+  const W=Math.round(Math.max(320,Math.min(760,svg.getBoundingClientRect().width||760)));
+  const H=240,L=38,R=12,T=10,B=26;
+  svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  svg.innerHTML="";
   // xMin : coupe les points antérieurs (ex. sondages hypothétiques 2022/2023 très
   // épars, qui écrasent sinon toute la période récente sur l'axe).
   if(xMin!=null){ const cut=jours(xMin);
@@ -119,7 +136,8 @@ function timeChart(svg, series, {yMax=null, scatter=[], xMin=null, fmt=pct, jour
     const tx=el("text",{x:4,y:y+3,class:"tick"});tx.textContent=Math.round(100*yv)+"%";svg.appendChild(tx);}
   svg.appendChild(el("line",{x1:L,y1:H-B,x2:W-R,y2:H-B,class:"axis"}));
   // ticks x (début / milieu / fin)
-  [x0,(x0+x1)/2,x1].forEach(v=>{const t=el("text",{x:X(v),y:H-8,class:"tick","text-anchor":"middle"});
+  // ancrage début / milieu / fin : centrée, la dernière date débordait du cadre.
+  [[x0,"start"],[(x0+x1)/2,"middle"],[x1,"end"]].forEach(([v,a])=>{const t=el("text",{x:X(v),y:H-8,class:"tick","text-anchor":a});
     t.textContent=new Date(v*8.64e7).toISOString().slice(0,7);svg.appendChild(t);});
   // bandes IC 90 % (remplissage opaque, derrière les lignes)
   series.forEach(s=>{
@@ -271,6 +289,13 @@ function renderDuels(latest){
       <div class="dp">${prob(d.probabilite)}</div>`;host.appendChild(e);});
 }
 
+function renderSecondTour(latest){
+  const pDuel={};
+  (latest.duels_probables||[]).forEach(d=>{pDuel[d.candidats.slice().sort().join("|")]=d.probabilite;});
+  const n=Site.secondTour(document.getElementById("secondTour"),latest.seconds_tours,{pDuel});
+  document.getElementById("t2").hidden=!n;
+}
+
 function peindre(snaps){
   DERNIER=snaps;
   const latest=snaps[snaps.length-1];
@@ -282,6 +307,7 @@ function peindre(snaps){
 
   const topSlots=renderNowcast(latest).slice(0,5);
   renderDuels(latest);
+  renderSecondTour(latest);
 
   // Jours qui apportent de l'information : les dates de fin de sondage. Le graphe
   // temporel n'y marque ses points que là (cf. timeChart) — la trajectoire étant
@@ -327,7 +353,8 @@ function peindre(snaps){
   document.getElementById("footer").innerHTML=`
     <p><b>Méthode.</b> ${desc}
     ${latest.drift_modele?(" Dérive : "+latest.drift_modele+"."):""}
-    Le vainqueur du 2<sup>nd</sup> tour n'est pas encore modélisé (reports de voix).
+    ${latest.seconds_tours?.length ? "" :
+      "Le vainqueur du 2<sup>nd</sup> tour n'est pas encore modélisé (reports de voix)."}
     <a href="./apropos.html">En savoir plus</a>.</p>
     <p><b>Sources.</b> Les sondages proviennent de
     <a href="https://fr.wikipedia.org/wiki/Liste_de_sondages_sur_l%27élection_présidentielle_française_de_2027">Wikipédia</a>
@@ -343,8 +370,18 @@ function peindre(snaps){
 async function loadModel(id){
   COURANT=id;
   const idx=await getJSON(`./data/${id}/index.json`);
-  const snaps=await Promise.all(idx.map(d=>getJSON(`./data/${id}/${d}.json`)));
-  snaps.sort((a,b)=>jours(a.as_of)-jours(b.as_of));
+  // Le dernier snapshot suffit dès qu'il publie sa trajectoire lissée (cf.
+  // peindre) : charger tout l'historique coûtait ~100 requêtes et 7,5 Mo, un de
+  // plus chaque jour, pour n'en lire qu'un. L'historique complet n'est rechargé
+  // que pour le repli « enchaîner les nowcast », sur un modèle sans trajectoire.
+  const dates=idx.slice().sort();   // AAAA-MM-JJ : l'ordre lexical est l'ordre chronologique
+  const latest=await getJSON(`./data/${id}/${dates[dates.length-1]}.json`);
+  let snaps=[latest];
+  if(!latest.trajectoire){
+    snaps=await Promise.all(dates.slice(0,-1).map(d=>getJSON(`./data/${id}/${d}.json`)));
+    snaps.push(latest);
+    snaps.sort((a,b)=>jours(a.as_of)-jours(b.as_of));
+  }
   peindre(snaps);
 }
 
@@ -374,6 +411,13 @@ async function loadModel(id){
     // Les couleurs sont résolues en JS : sans ce rappel, basculer le thème
     // système laisserait des courbes au marine illisible sur fond sombre.
     Couleurs.surChangementDeTheme(()=>{ if(DERNIER) peindre(DERNIER); });
+    // Le repère du graphe temporel suit la largeur affichée (cf. timeChart).
+    let largeur=innerWidth, minuteur=null;
+    addEventListener("resize",()=>{
+      if(innerWidth===largeur) return;   // le défilement mobile change la hauteur, pas la largeur
+      largeur=innerWidth; clearTimeout(minuteur);
+      minuteur=setTimeout(()=>{ if(DERNIER) peindre(DERNIER); },150);
+    });
   }catch(e){
     document.getElementById("forecast").innerHTML=
       `<p class="warn">Données indisponibles (<code>docs/data/…</code>). Lance le job / le backfill. (${e})</p>`;
