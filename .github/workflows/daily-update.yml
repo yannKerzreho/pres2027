@@ -8,10 +8,16 @@ on:
     # effort ») mais évitent le créneau le plus chargé.
     - cron: "37 4 * * *"
   workflow_dispatch:
+# Publication : Pages est en mode « deploy from branch » (main:/docs). Le push
+# de l'étape « Commit résultats » déclenche à lui seul `pages-build-deployment`
+# (vérifié : un build par commit du bot). Ce job ne déploie donc PAS lui-même :
+# jusqu'au 2026-11-14 il appelait aussi `deploy-pages`, et les deux
+# déploiements concurrents faisaient échouer l'un ou l'autre (« in progress
+# deployment ») environ un jour sur trois. Ne pas réintroduire l'un sans
+# basculer la source Pages sur « GitHub Actions » — et alors prévoir un
+# déploiement sur push, sinon un commit humain sur docs/ attend le cron.
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 # Deux exécutions simultanées (cron + lancement manuel) se marcheraient dessus :
 # elles écrivent le même snapshot du jour et poussent sur la même branche.
@@ -23,7 +29,6 @@ jobs:
   update:
     runs-on: ubuntu-latest
     timeout-minutes: 45   # runs mesurés de 9 à 20 min (nov. 2026)
-    environment: github-pages
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -63,7 +68,8 @@ jobs:
 
       # `!cancelled()` et pas le succès implicite : `model.run` échoue APRÈS
       # avoir laissé les autres modèles écrire (cf. `run` dans model/run.py).
-      # Le job reste rouge, mais le snapshot des modèles sains est publié.
+      # Le job reste rouge, mais le snapshot des modèles sains est publié (le push
+      # déclenche la publication Pages, cf. en-tête).
       - name: Commit résultats
         if: ${{ !cancelled() }}
         run: |
@@ -77,9 +83,3 @@ jobs:
           # jour pour une raison sans rapport avec le modèle.
           git pull --rebase origin "${GITHUB_REF_NAME}"
           git push origin "HEAD:${GITHUB_REF_NAME}"
-
-      - uses: actions/upload-pages-artifact@v3
-        if: ${{ !cancelled() }}
-        with: { path: docs }
-      - uses: actions/deploy-pages@v4
-        if: ${{ !cancelled() }}
