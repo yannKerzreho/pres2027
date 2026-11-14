@@ -153,7 +153,13 @@ tour (logit emboîté) :
 $$U_0(v)=\omega+\kappa\,\log\sum_{j\in R}e^{A_j(v)},\qquad
 \rho_{ab}(v)=\frac{e^{\kappa A_a+\eta_a}+e^{\kappa A_b+\eta_b}}{e^{\kappa A_a+\eta_a}+e^{\kappa A_b+\eta_b}+e^{U_0}}$$
 
-($R$ = roster). Invariante par translation de $w$ ; un votant dont le favori
+($R$ = roster). **Implémenté (révision §2.1)** : η n'entre PAS dans ρ,
+$\rho_{ab}(v)=\frac{e^{\kappa A_a}+e^{\kappa A_b}}{e^{\kappa A_a}+e^{\kappa A_b}+e^{U_0}}$,
+et η s'applique à l'agrégat $\int\rho\,q/\int\rho$ en logit (`geometry.py`).
+**Fragilité (revue 2026-11-14)** : $R$ = roster, pas le champ ; des alias
+exclusifs (groupe LR 2027) gonflent la valeur inclusive locale de ~log k.
+Sans effet en 2017/2022 (roster = champ réel) ; à corriger avant 2027 (§10).
+Invariante par translation de $w$ ; un votant dont le favori
 est finaliste exprime presque sûrement, un votant dont tout l'entourage est
 éliminé s'abstient davantage. Part exprimée :
 $s_{ab}=\int\rho\,q_{ab}\big/\int\rho$.
@@ -165,7 +171,7 @@ la température, et avec $\rho\le 1/2$ dès que le favori est finaliste
 (1/3 ≤ p_out ≤ 1/2). La Beta sur la non-expression publiée est alors
 structurellement incompatible avec des taux de 10-25 %.
 
-### 3.2 Pourquoi ne pas l'activer en v1
+### 3.2 Pourquoi ne pas l'activer en v1 — CADUC (cf. encadré : activée)
 
 - **Identification.** $\rho$ ne change $s_{ab}$ qu'en repondérant les
   électorats éloignés des deux finalistes. κ fait presque la même chose (il
@@ -226,7 +232,13 @@ résidu des duels Macron–Le Pen 2022 contre le temps.
    Erreur finale des sondages de 2nd tour (dernière semaine → résultat,
    part du premier nommé) : 2017 +3,8 pt (62,3 → 66,1, données du dépôt),
    2022 +2,8 pt (55,8 → 58,55). 2002/2007/2012 de mémoire, **à sourcer** :
-   ≈ +2, −0,7, −1,1. RMS ≈ 2,4 pt, soit $\tau_{T2}\approx0{,}10$ en logit autour
+   ≈ +2, −0,7, −1,1. **Mesure 2026-11-14 (CSV du dépôt, moyenne des duels
+   finaux sur 7 j, résultat − sondages)** : 2017 +3,9 / +3,3 / +3,3 / +4,4 / +4,8 pt
+   à T1−30 / T1−1 / T2−14 / T2−7 / T2−1 ; 2022 −0,3 / +5,8 / +5,7 / +5,2 / +3,1.
+   L'erreur ne décroît pas nettement avec l'horizon et dépasse 3 pt partout
+   sauf 2022 T1−30 : τ_T2 = 0,10 est **sous-dimensionné** (≈ 0,18-0,20 en
+   logit pour un RMS ≈ 4,3 pt), et toutes ces erreurs ont le même signe.
+   RMS de mémoire ≈ 2,4 pt, soit $\tau_{T2}\approx0{,}10$ en logit autour
    de 60/40. **Centrée sur 0** : les trois duels contre le FN/RN ont tous
    sous-estimé son adversaire, mais n = 3 ; un terme directionnel serait un
    choix éditorial, à trancher par l'utilisateur.
