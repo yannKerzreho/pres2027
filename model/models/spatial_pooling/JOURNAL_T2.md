@@ -52,8 +52,15 @@ lancer 4 tâches en parallèle par réveil). Liste : `python -m model.backtest.s
 Pour chaque ligne, les deux variantes `--variante abst` et `--variante eta`.
 Résultats : `model/backtest/results/*.json` (committés).
 
-- [ ] abst : v2 2022 T1-30, T1-1, T2-7 — EN COURS (début 2026-11-14T15:43Z, session cse_01JZeMvxqTvL5k3ZVMCjjMh9)
-- [ ] abst : v1 2022 Macron|Zemmour — EN COURS (même début, même session) ; puis Macron|Mélenchon, Macron|Le Pen, Macron|Pécresse
+- [ ] **PRIORITAIRE (bloque toute la file)** : une tâche complète (4 chaînes
+      séquentielles × 600+400) NE TIENT PAS dans un réveil : 4 tâches en
+      parallèle tuées à 55 min sans JSON (2026-11-14). Ajouter à
+      `second_round.py` `--chaine k` (1 chaîne, graine k, JSON des tirages
+      bruts) + `--fusionner` (concatène 4 chaînes, calcule R-hat/ESS, écrit le
+      JSON final) ; 1 réveil = 4 chaînes d'UNE tâche sur 4 cœurs (~12-20 min
+      estimé, à mesurer). Tester sur une coupure avant de dérouler la file.
+- [ ] abst : v2 2022 T1-30, T1-1, T2-7
+- [ ] abst : v1 2022 Macron|Zemmour, Macron|Mélenchon, Macron|Le Pen, Macron|Pécresse
 - [ ] abst : v1 2017 Macron|Le Pen, Fillon|Le Pen ; v2 2017 T1-30 (attendu : sans nœud T1), T1-1, T2-7
 - [ ] eta : mêmes tâches (comparaison)
 - [ ] Revue 2026-11-14, sans fit : corriger la base V2 (écart-type τ_T2 en plus
@@ -81,7 +88,8 @@ Résultats : `model/backtest/results/*.json` (committés).
 - Codex (d7b1575) : bug option extérieure, duel compté deux fois, gate bloquant —
   corrigés (cf. spec §9).
 - Données 2017 : la plupart des sondages T1 sans date (note à la session données).
-- VM cloud : 4 cœurs, 15 Go ; fit rapide 75-89 s ; installer avec
+- VM cloud : 4 cœurs, 15 Go ; fit rapide 75-89 s ; fit complet 4 chaînes
+  séquentielles > 55 min quand 4 tournent en parallèle ; installer avec
   `python -m pip install --ignore-installed packaging -r requirements.txt`.
 - Réseau de la VM cloud : `fr.wikipedia.org` BLOQUÉ (proxy 403). Pas
   d'ingestion live ni de `model.run` 2027 dans la routine ; le CSV 2027 est
@@ -97,6 +105,10 @@ Résultats : `model/backtest/results/*.json` (committés).
 
 - 2026-11-14 (session locale) : audit Codex, spec, implémentation, 2 relectures,
   abstention ajoutée sur idée utilisateur, épinglage, création de la routine.
+- 2026-11-14 (routine cloud, 1er réveil) : revue Opus (11 points, intégrés
+  ci-dessous) ; mesure sans fit de l'erreur des duels selon l'horizon (τ_T2
+  sous-dimensionné, spec §6) ; spec §3 corrigée. 4 backtests `abst` lancés,
+  tués à 55 min sans résultat ⇒ tâche prioritaire « une chaîne par cœur ».
 
 ## Revue Opus 2026-11-14 (routine cloud) — intégration point par point
 
