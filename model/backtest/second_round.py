@@ -27,7 +27,17 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import sys
 import time
+
+# Une chaîne par cœur, dans UN processus : un fit complet en séquentiel
+# (4 × 1000 itérations) dépasse un réveil de la routine. Les chaînes restent
+# indépendantes (une clé par chaîne). Doit précéder TOUT import de JAX : le
+# backend est initialisé dès l'import de `geometry` (constantes jnp).
+if __name__ == "__main__" and "--sequentiel" not in sys.argv and "--fast" not in sys.argv:
+    os.environ["XLA_FLAGS"] = (os.environ.get("XLA_FLAGS", "")
+                               + " --xla_force_host_platform_device_count=4").strip()
 from pathlib import Path
 
 import numpy as np
@@ -224,10 +234,14 @@ def main() -> None:
     ap.add_argument("--lister", action="store_true", help="liste les tâches unitaires et sort")
     ap.add_argument("--variante", choices=["abst", "eta"], default="abst",
                     help="abst = abstention (valeur inclusive) + valence ; eta = valence seule")
+    ap.add_argument("--sequentiel", action="store_true",
+                    help="chaînes l'une après l'autre (défaut : en parallèle, une par cœur)")
     args = ap.parse_args()
     global ABSTENTION
     ABSTENTION = args.variante == "abst"
     nuts = dict(draws=60, tune=60, chains=1) if args.fast else dict(draws=400, tune=600, chains=4)
+    if not args.fast and not args.sequentiel:
+        nuts["chain_method"] = "parallel"
     if args.lister:
         for e in (2017, 2022):
             tous = _duels_moyens(polls_historiques(e, T1_DATES[e] - pd.Timedelta(days=1)))

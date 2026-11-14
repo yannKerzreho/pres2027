@@ -56,14 +56,19 @@ lancer 4 tâches en parallèle par réveil). Liste : `python -m model.backtest.s
 Pour chaque ligne, les deux variantes `--variante abst` et `--variante eta`.
 Résultats : `model/backtest/results/*.json` (committés).
 
-- [ ] **PRIORITAIRE (bloque toute la file)** : une tâche complète (4 chaînes
+- [x] **PRIORITAIRE (bloque toute la file)** : une tâche complète (4 chaînes
       séquentielles × 600+400) NE TIENT PAS dans un réveil : 4 tâches en
       parallèle tuées à 55 min sans JSON (2026-11-14). Ajouter à
       `second_round.py` `--chaine k` (1 chaîne, graine k, JSON des tirages
       bruts) + `--fusionner` (concatène 4 chaînes, calcule R-hat/ESS, écrit le
       JSON final) ; 1 réveil = 4 chaînes d'UNE tâche sur 4 cœurs (~12-20 min
       estimé, à mesurer). Tester sur une coupure avant de dérouler la file.
-- [ ] abst : v2 2022 T1-30, T1-1, T2-7
+      — FAIT AUTREMENT (2026-11-14 17:10Z) : `second_round` lance désormais
+      les 4 chaînes EN PARALLÈLE dans un seul processus (`chain_method=
+      "parallel"`, 4 périphériques CPU via XLA_FLAGS, `--sequentiel` pour
+      l'ancien mode). Même calcul (chaînes indépendantes, une clé chacune),
+      sans fichier intermédiaire ni fusion à coder ; une tâche à la fois.
+- [ ] abst : v2 2022 T1-30, T1-1, T2-7 — EN COURS (début 2026-11-14T17:10Z, session 01JZeMw2, à la suite dans un seul processus de file)
 - [ ] abst : v1 2022 Macron|Zemmour, Macron|Mélenchon, Macron|Le Pen, Macron|Pécresse
 - [ ] abst : v1 2017 Macron|Le Pen, Fillon|Le Pen ; v2 2017 T1-30 (attendu : sans nœud T1), T1-1, T2-7
 - [ ] eta : mêmes tâches (comparaison)

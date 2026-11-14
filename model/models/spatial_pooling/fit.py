@@ -65,7 +65,8 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
                         min_poll_date=None, order_groups=None,
                         tau_ou: float | None = None,
                         couverture_min: float | None = COUVERTURE_MIN,
-                        second_tour: bool = True, abstention: bool = True) -> SpatialPoolingFit:
+                        second_tour: bool = True, abstention: bool = True,
+                        chain_method: str = "sequential") -> SpatialPoolingFit:
     """Roster -> arrays -> NUTS, en une seule inférence jointe.
 
     `mu`, `sigma` et le chemin de `w` sont estimés ENSEMBLE. La chaîne en deux
@@ -138,7 +139,8 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
     t0 = time.time()
     samples, extra = run_numpyro_mcmc(spatial_pooling_model_ou, kwargs, draws=draws, tune=tune,
                                       chains=chains, seed=seed, target_accept=target_accept,
-                                      extra_fields=("diverging", "num_steps"))
+                                      extra_fields=("diverging", "num_steps"),
+                                      chain_method=chain_method)
     elapsed = time.time() - t0
 
     N = len(candidates)
