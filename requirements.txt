@@ -1,7 +1,14 @@
+# VERSIONS ÉPINGLÉES (2026-11-14) sur celles que le job quotidien résolvait le
+# 2026-11-13 (run 43448889119, Python 3.11, vert). But : REPRODUCTIBILITÉ entre
+# la CI, la VM cloud de la routine de recherche et Colab -- PAS un correctif de
+# la bimodalité de spatial-pooling : un épinglage (jax 0.4.30 / numpyro 0.19) a
+# déjà été DÉMENTI sur la CI Linux (R-hat 1,71 puis 2,06, revert c6ea7e9) ; c'est
+# SIGMA_JITTER = 0,20 qui a levé le mode B. jax 0.10 exige Python >= 3.11 : le
+# .venv local en 3.9 reste sur ses anciennes versions.
 # Pipeline données
-pandas
-numpy
-requests
+pandas==3.1.1
+numpy==2.4.6
+requests==2.34.2
 
 # Modèle — un seul moteur d'inférence (NumPyro/JAX) pour tout le dépôt :
 # calibration du saut terminal (model/core/terminal_jump.py) comme modèles live,
@@ -9,24 +16,25 @@ requests
 # xarray : format des paramètres calibrés (model/core/bank.py) et des tirages de
 # nowcast (model/core/base.py:Nowcast) — accès par coordonnées nommées
 # (institut, bloc, candidat...) plutôt que par index entier.
-numpyro
-jax
-xarray
+numpyro==0.22.0
+jax==0.10.2
+jaxlib==0.10.2
+xarray==2026.9.0
 # scipy : Cholesky du postérieur GP (`cho_factor`/`cho_solve`) et optimisation
 # REML. Dépendance DIRECTE, pas transitive — elle doit être déclarée même si
 # jax/numpyro l'installent au passage.
-scipy
+scipy==1.17.1
 
 # Ingestion sondages (sondages/wiki.py, source primaire) + parsing PDF (spot-check)
-mwparserfromhell
-pdfplumber
+mwparserfromhell==0.7.2
+pdfplumber==0.11.10
 # Fallback d'extraction par LLM (sondages/extract_llm.py) — spot-check PDF
 # ponctuel uniquement, plus utilisé en ingestion primaire. Optionnel, activé
 # par SONDAGES_USE_LLM (cf. sondages/requirements-llm.txt).
 anthropic>=0.40
 
 # Tests
-pytest
+pytest==9.2.0
 
 # Retirés du dépôt (aucun import, sur AUCUNE branche) :
 #   dynamax    — ne servait qu'au filtre de Kalman du nowcast SSM, réimplémenté
