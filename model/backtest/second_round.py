@@ -133,7 +133,7 @@ def _diag(fit, dt):
             if fit.eta_draws is not None else None}
 
 
-def v1_paire_retiree(election: int, nuts: dict) -> list[dict]:
+def v1_paire_retiree(election: int, nuts: dict, seule: tuple | None = None) -> list[dict]:
     as_of = T1_DATES[election] - pd.Timedelta(days=1)
     raw = polls_historiques(election, as_of)
     duels = _duels_moyens(raw, as_of - pd.Timedelta(days=30))
@@ -141,7 +141,7 @@ def v1_paire_retiree(election: int, nuts: dict) -> list[dict]:
     paires = tous.groupby(["a", "b"]).size()
     out = []
     for (a, b), n in paires.items():
-        if n < MIN_SONDAGES_PAIRE:
+        if n < MIN_SONDAGES_PAIRE or (seule is not None and (a, b) != tuple(sorted(seule))):
             continue
         cible = duels[(duels.a == a) & (duels.b == b)]
         if cible.empty:
@@ -218,21 +218,36 @@ def main() -> None:
     ap.add_argument("--only", choices=["v1", "v2"], default=None)
     ap.add_argument("--election", type=int, choices=[2017, 2022], default=None)
     ap.add_argument("--out", type=Path, default=None)
+    ap.add_argument("--paire", default=None, help="V1 : une seule paire, « Nom A|Nom B »")
+    ap.add_argument("--coupure", default=None, choices=["T1-30", "T1-1", "T2-7"],
+                    help="V2 : une seule coupure")
+    ap.add_argument("--lister", action="store_true", help="liste les tâches unitaires et sort")
     ap.add_argument("--variante", choices=["abst", "eta"], default="abst",
                     help="abst = abstention (valeur inclusive) + valence ; eta = valence seule")
     args = ap.parse_args()
     global ABSTENTION
     ABSTENTION = args.variante == "abst"
     nuts = dict(draws=60, tune=60, chains=1) if args.fast else dict(draws=400, tune=600, chains=4)
+    if args.lister:
+        for e in (2017, 2022):
+            tous = _duels_moyens(polls_historiques(e, T1_DATES[e] - pd.Timedelta(days=1)))
+            for (a, b), n in tous.groupby(["a", "b"]).size().items():
+                if n >= MIN_SONDAGES_PAIRE:
+                    print(f"--only v1 --election {e} --paire '{a}|{b}'")
+            for c in ("T1-30", "T1-1", "T2-7"):
+                print(f"--only v2 --election {e} --coupure {c}")
+        return
     rows = {"v1": [], "v2": []}
     for e in ([args.election] if args.election else [2017, 2022]):
         if args.only in (None, "v1"):
-            rows["v1"] += v1_paire_retiree(e, nuts)
+            rows["v1"] += v1_paire_retiree(e, nuts, tuple(args.paire.split("|")) if args.paire else None)
         if args.only in (None, "v2"):
-            rows["v2"] += v2_resultat(e, nuts)
+            rows["v2"] += v2_resultat(e, nuts, (args.coupure,) if args.coupure else ("T1-30", "T1-1", "T2-7"))
     OUT_DIR.mkdir(exist_ok=True)
     out = args.out or OUT_DIR / (f"second_round_{args.variante}_{'fast_' if args.fast else ''}"
-                                 f"{args.only or 'all'}_{args.election or 'both'}.json")
+                                 f"{args.only or 'all'}_{args.election or 'both'}"
+                                 + (f"_{args.paire.replace('|', '-').replace(' ', '_')}" if args.paire else "")
+                                 + (f"_{args.coupure}" if args.coupure else "") + ".json")
     out.write_text(json.dumps({"variante": args.variante, "nuts": nuts, "tau_t2_scrutin": TAU_T2_SCRUTIN, **rows},
                               ensure_ascii=False, indent=1) + "\n")
     for k, r in rows.items():

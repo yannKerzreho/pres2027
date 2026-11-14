@@ -1,0 +1,122 @@
+{
+ "nuts": {
+  "draws": 60,
+  "tune": 60,
+  "chains": 1
+ },
+ "tau_t2_scrutin": 0.1,
+ "v1": [],
+ "v2": [
+  {
+   "election": 2022,
+   "coupure": "T1-30",
+   "as_of": "2022-03-11",
+   "candidat": "Emmanuel Macron",
+   "resultat": 0.5855,
+   "modele": 0.5795,
+   "modele_ic90": [
+    0.5321,
+    0.617
+   ],
+   "couvre_ic90": true,
+   "log_score": 2.672,
+   "sondages_7j": 0.5886,
+   "n_sondages_7j": 7,
+   "log_score_sondages": 2.776,
+   "rhat_max": 3.1007,
+   "ess_min": 3.0,
+   "divergences": 7,
+   "kappa": 0.7126,
+   "sigma_t2": 0.003,
+   "secondes": 32.9,
+   "eta": {
+    "Nathalie Arthaud": -0.202,
+    "Philippe Poutou": 0.21,
+    "Jean-Luc Mélenchon": 1.485,
+    "Fabien Roussel": -0.281,
+    "Yannick Jadot": -0.566,
+    "Anne Hidalgo": 0.18,
+    "Emmanuel Macron": -0.852,
+    "Jean Lassalle": 0.148,
+    "Valérie Pécresse": -0.699,
+    "Nicolas Dupont-Aignan": -0.032,
+    "Marine Le Pen": 0.793,
+    "Eric Zemmour": -0.201
+   }
+  },
+  {
+   "election": 2022,
+   "coupure": "T1-1",
+   "as_of": "2022-04-09",
+   "candidat": "Emmanuel Macron",
+   "resultat": 0.5855,
+   "modele": 0.545,
+   "modele_ic90": [
+    0.5053,
+    0.5814
+   ],
+   "couvre_ic90": false,
+   "log_score": 1.473,
+   "sondages_7j": 0.5277,
+   "n_sondages_7j": 13,
+   "log_score_sondages": 0.094,
+   "rhat_max": 1.2435,
+   "ess_min": 10.7,
+   "divergences": 0,
+   "kappa": 1.0394,
+   "sigma_t2": 0.0057,
+   "secondes": 37.2,
+   "eta": {
+    "Nathalie Arthaud": -0.065,
+    "Philippe Poutou": 0.044,
+    "Jean-Luc Mélenchon": 0.538,
+    "Fabien Roussel": 0.039,
+    "Yannick Jadot": -0.132,
+    "Anne Hidalgo": 0.11,
+    "Emmanuel Macron": -0.082,
+    "Jean Lassalle": 0.007,
+    "Valérie Pécresse": -0.632,
+    "Nicolas Dupont-Aignan": -0.089,
+    "Marine Le Pen": 0.022,
+    "Eric Zemmour": 0.145
+   }
+  },
+  {
+   "election": 2022,
+   "coupure": "T2-7",
+   "as_of": "2022-04-17",
+   "candidat": "Emmanuel Macron",
+   "resultat": 0.5855,
+   "modele": 0.5345,
+   "modele_ic90": [
+    0.4941,
+    0.5754
+   ],
+   "couvre_ic90": false,
+   "log_score": 0.699,
+   "sondages_7j": 0.534,
+   "n_sondages_7j": 15,
+   "log_score_sondages": 0.64,
+   "rhat_max": 2.4518,
+   "ess_min": 3.4,
+   "divergences": 0,
+   "kappa": 1.7729,
+   "sigma_t2": 0.0024,
+   "secondes": 37.4,
+   "eta": {
+    "Nathalie Arthaud": -0.131,
+    "Philippe Poutou": 0.136,
+    "Jean-Luc Mélenchon": -0.248,
+    "Fabien Roussel": 0.012,
+    "Yannick Jadot": -0.394,
+    "Anne Hidalgo": 0.318,
+    "Emmanuel Macron": 0.374,
+    "Jean Lassalle": 0.116,
+    "Valérie Pécresse": -0.481,
+    "Nicolas Dupont-Aignan": 0.002,
+    "Marine Le Pen": 0.212,
+    "Eric Zemmour": 0.138
+   }
+  }
+ ]
+}
