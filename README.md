@@ -26,7 +26,8 @@ python3 -m venv .venv
 ## Utilisation
 
 ```bash
-# 1. Ingestion des sondages -> data/parsed/intentions_2027_wiki.csv (non versionné)
+# 1. Ingestion des sondages -> data/parsed/intentions_2027_wiki.csv
+#    (versionné, réécrit chaque jour par le job quotidien ; inutile si le clone est à jour)
 .venv/bin/python -m sondages.wiki
 
 # 2. Estimation du jour -> docs/data/<modèle>/AAAA-MM-JJ.json
@@ -177,7 +178,8 @@ donc écrire l'export **et** la page qui le lit
 ```
 sondages/       Module autonome : Wikipedia / notices PDF -> intentions structurées
 pipeline/       Données de calibration historique (2017, 2022)
-data/           historical/ (versionné) ; parsed/ et raw/ (régénérables, ignorés)
+data/           historical/ et parsed/intentions_20{17,22,27}_wiki.csv (versionnés) ;
+                raw/ et autres sorties de parsing (régénérables, ignorées)
 model/          run.py, backfill.py (entrées) ; core/ (moteur) ; models/ (un dossier par modèle)
 model/core/     base (contrat + registre), movements (mouvements observés 2017/2022),
                 bank, inference, simulate, live_dataset, utils, registered ;

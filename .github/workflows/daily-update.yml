@@ -45,6 +45,7 @@ jobs:
       # derniers snapshots publiés déclarent : au-delà de 20 % disparus, même
       # abandon ; en dessous, annotation ::warning:: sur le run.
       - name: Ingestion sondages (Wikipedia)
+        id: ingestion
         run: python -m sondages.wiki --min-sondages 15 --snapshots docs/data
 
       # Rejoue aussi les dates PASSÉES dont le jeu de sondages a changé (défaut
@@ -76,8 +77,18 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add docs/data
+          # Le CSV 2027 est versionné (cf. .gitignore) mais n'est committé que si
+          # l'ingestion a RÉUSSI, donc passé --min-sondages et --snapshots : une
+          # extraction cassée n'écrase jamais la version du dépôt. (`sondages.wiki`
+          # n'écrit déjà rien quand un garde-fou mord ; ce test couvre en plus un
+          # échec APRÈS l'écriture.) Inchangé -> `git add` n'ajoute rien.
+          if [ "${{ steps.ingestion.outcome }}" = "success" ]; then
+            git add data/parsed/intentions_2027_wiki.csv
+          else
+            git checkout -- data/parsed/intentions_2027_wiki.csv 2>/dev/null || true
+          fi
           git diff --cached --quiet && echo "rien à committer" && exit 0
-          git commit -m "chore: maj quotidienne du modèle"
+          git commit -m "chore: maj quotidienne du modèle et des sondages"
           # Rebase avant push : un commit humain arrivé entre le checkout et
           # ici ferait échouer un push direct, et on perdrait le snapshot du
           # jour pour une raison sans rapport avec le modèle.
