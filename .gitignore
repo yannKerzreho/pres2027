@@ -43,3 +43,4 @@ historic/
 
 # Claude
 .claude
+model/backtest/results/chaines/

@@ -66,7 +66,8 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
                         tau_ou: float | None = None,
                         couverture_min: float | None = COUVERTURE_MIN,
                         second_tour: bool = True, abstention: bool = True,
-                        chain_method: str = "sequential") -> SpatialPoolingFit:
+                        chain_method: str = "sequential",
+                        mcmc_runner=None) -> SpatialPoolingFit:
     """Roster -> arrays -> NUTS, en une seule inférence jointe.
 
     `mu`, `sigma` et le chemin de `w` sont estimés ENSEMBLE. La chaîne en deux
@@ -137,7 +138,11 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
                       duel_y=jnp.asarray(duels["y"]), duel_n=jnp.asarray(duels["n"]),
                       duel_date_idx=jnp.asarray(duel_date_idx), abstention=abstention)
     t0 = time.time()
-    samples, extra = run_numpyro_mcmc(spatial_pooling_model_ou, kwargs, draws=draws, tune=tune,
+    # `mcmc_runner` : injectable (backtest découpé par chaîne, cf.
+    # `model.backtest.second_round --chaine/--fusionner`), même signature que
+    # `run_numpyro_mcmc`. La préparation est déterministe, donc une fusion
+    # rejouée sur les mêmes données retrouve exactement les mêmes sites.
+    samples, extra = (mcmc_runner or run_numpyro_mcmc)(spatial_pooling_model_ou, kwargs, draws=draws, tune=tune,
                                       chains=chains, seed=seed, target_accept=target_accept,
                                       extra_fields=("diverging", "num_steps"),
                                       chain_method=chain_method)

@@ -27,17 +27,7 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
-import sys
 import time
-
-# Une chaîne par cœur, dans UN processus : un fit complet en séquentiel
-# (4 × 1000 itérations) dépasse un réveil de la routine. Les chaînes restent
-# indépendantes (une clé par chaîne). Doit précéder TOUT import de JAX : le
-# backend est initialisé dès l'import de `geometry` (constantes jnp).
-if __name__ == "__main__" and "--sequentiel" not in sys.argv and "--fast" not in sys.argv:
-    os.environ["XLA_FLAGS"] = (os.environ.get("XLA_FLAGS", "")
-                               + " --xla_force_host_platform_device_count=4").strip()
 from pathlib import Path
 
 import numpy as np
@@ -46,6 +36,7 @@ from scipy.optimize import minimize
 
 from pipeline.historical import (PARSED_DIR, POLL_FILES, _resolve_candidate,
                                  _select_best_hypothesis, load_results)
+from model.core.inference import run_numpyro_mcmc
 from model.models.spatial_pooling.fit import (TAU_T2_SCRUTIN, duel_draws,
                                               fit_spatial_pooling)
 from model.models.spatial_pooling.geometry import duel_shares, log_attractivite
@@ -56,6 +47,41 @@ T2_DATES = {2017: pd.Timestamp("2017-05-07"), 2022: pd.Timestamp("2022-04-24")}
 FINALE = {2017: ("Emmanuel Macron", "Marine Le Pen"), 2022: ("Emmanuel Macron", "Marine Le Pen")}
 MIN_SONDAGES_PAIRE = 3
 OUT_DIR = Path(__file__).resolve().parent / "results"
+# Tirages bruts par chaîne (hors git) : un fit complet en 4 chaînes
+# séquentielles dépasse un réveil de la routine ; on lance 4 processus d'une
+# chaîne (un par cœur), puis on fusionne. `chain_method="parallel"` dans un seul
+# processus a été essayé : fuite mémoire JAX/CPU (~100 Mo/s, OOM à 15 Go en
+# 2 min), le séquentiel reste plat à 1,4 Go.
+CHAINES_DIR = OUT_DIR / "chaines"
+N_CHAINES = 4
+
+
+def _runner_chaine(path: Path, k: int):
+    """NUTS d'UNE chaîne (graine `seed + k`), tirages sauvés dans `path`."""
+    def run(model_fn, model_kwargs, **kw):
+        kw = {**kw, "chains": 1, "seed": kw.get("seed", 27) + k}
+        samples, extra = run_numpyro_mcmc(model_fn, model_kwargs, **kw)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        np.savez_compressed(path, **{f"s__{n}": np.asarray(v) for n, v in samples.items()},
+                            **{f"e__{n}": np.asarray(v).reshape(-1) for n, v in extra.items()})
+        return samples, extra
+    return run
+
+
+def _runner_fusion(paths: list[Path]):
+    """Aucun NUTS : concatène les chaînes sauvées (axe chaîne) ; R-hat/ESS sont
+    ensuite calculés par `fit_spatial_pooling` exactement comme en 4 chaînes."""
+    manquants = [str(p) for p in paths if not p.exists()]
+    if manquants:
+        raise FileNotFoundError(f"chaînes manquantes : {manquants}")
+
+    def run(model_fn, model_kwargs, **kw):
+        zs = [np.load(p) for p in paths]
+        noms = zs[0].files
+        samples = {n[3:]: np.concatenate([z[n] for z in zs], axis=0) for n in noms if n.startswith("s__")}
+        extra = {n[3:]: np.concatenate([z[n] for z in zs], axis=0) for n in noms if n.startswith("e__")}
+        return samples, extra
+    return run
 
 
 def polls_historiques(election: int, as_of: pd.Timestamp, history_days: int = 180) -> pd.DataFrame:
@@ -234,14 +260,14 @@ def main() -> None:
     ap.add_argument("--lister", action="store_true", help="liste les tâches unitaires et sort")
     ap.add_argument("--variante", choices=["abst", "eta"], default="abst",
                     help="abst = abstention (valeur inclusive) + valence ; eta = valence seule")
-    ap.add_argument("--sequentiel", action="store_true",
-                    help="chaînes l'une après l'autre (défaut : en parallèle, une par cœur)")
+    ap.add_argument("--chaine", type=int, default=None,
+                    help="ne lance QUE la chaîne k (0-3, graine 27+k) et sauve ses tirages")
+    ap.add_argument("--fusionner", action="store_true",
+                    help="assemble les 4 chaînes sauvées (aucun NUTS) et écrit le JSON final")
     args = ap.parse_args()
     global ABSTENTION
     ABSTENTION = args.variante == "abst"
     nuts = dict(draws=60, tune=60, chains=1) if args.fast else dict(draws=400, tune=600, chains=4)
-    if not args.fast and not args.sequentiel:
-        nuts["chain_method"] = "parallel"
     if args.lister:
         for e in (2017, 2022):
             tous = _duels_moyens(polls_historiques(e, T1_DATES[e] - pd.Timedelta(days=1)))
@@ -251,18 +277,33 @@ def main() -> None:
             for c in ("T1-30", "T1-1", "T2-7"):
                 print(f"--only v2 --election {e} --coupure {c}")
         return
+    OUT_DIR.mkdir(exist_ok=True)
+    out = args.out or OUT_DIR / (f"second_round_{args.variante}_{'fast_' if args.fast else ''}"
+                                 f"{args.only or 'all'}_{args.election or 'both'}"
+                                 + (f"_{args.paire.replace('|', '-').replace(' ', '_')}" if args.paire else "")
+                                 + (f"_{args.coupure}" if args.coupure else "") + ".json")
+    nuts_json = dict(nuts)
+    if args.chaine is not None or args.fusionner:
+        # Une tâche unitaire = UN fit : sinon les fichiers de chaîne se mélangeraient.
+        if args.fast or not args.election or not (args.paire or args.coupure) or not args.only:
+            ap.error("--chaine/--fusionner : une tâche unitaire (--only, --election, --paire ou --coupure)")
+        base = CHAINES_DIR / out.stem
+        if args.chaine is not None:
+            nuts["mcmc_runner"] = _runner_chaine(base.with_name(f"{out.stem}_c{args.chaine}.npz"), args.chaine)
+            out = base.with_name(f"{out.stem}_c{args.chaine}.json")    # JSON 1 chaîne : brouillon
+            nuts_json = {**nuts_json, "chains": 1, "chaine": args.chaine}
+        else:
+            nuts["mcmc_runner"] = _runner_fusion([base.with_name(f"{out.stem}_c{k}.npz")
+                                                  for k in range(N_CHAINES)])
+            nuts_json["mode"] = f"{N_CHAINES} processus d'une chaîne (graines 27..{26 + N_CHAINES}), fusionnés"
     rows = {"v1": [], "v2": []}
     for e in ([args.election] if args.election else [2017, 2022]):
         if args.only in (None, "v1"):
             rows["v1"] += v1_paire_retiree(e, nuts, tuple(args.paire.split("|")) if args.paire else None)
         if args.only in (None, "v2"):
             rows["v2"] += v2_resultat(e, nuts, (args.coupure,) if args.coupure else ("T1-30", "T1-1", "T2-7"))
-    OUT_DIR.mkdir(exist_ok=True)
-    out = args.out or OUT_DIR / (f"second_round_{args.variante}_{'fast_' if args.fast else ''}"
-                                 f"{args.only or 'all'}_{args.election or 'both'}"
-                                 + (f"_{args.paire.replace('|', '-').replace(' ', '_')}" if args.paire else "")
-                                 + (f"_{args.coupure}" if args.coupure else "") + ".json")
-    out.write_text(json.dumps({"variante": args.variante, "nuts": nuts, "tau_t2_scrutin": TAU_T2_SCRUTIN, **rows},
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps({"variante": args.variante, "nuts": nuts_json, "tau_t2_scrutin": TAU_T2_SCRUTIN, **rows},
                               ensure_ascii=False, indent=1) + "\n")
     for k, r in rows.items():
         if r:

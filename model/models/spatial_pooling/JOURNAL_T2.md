@@ -63,12 +63,16 @@ Résultats : `model/backtest/results/*.json` (committés).
       bruts) + `--fusionner` (concatène 4 chaînes, calcule R-hat/ESS, écrit le
       JSON final) ; 1 réveil = 4 chaînes d'UNE tâche sur 4 cœurs (~12-20 min
       estimé, à mesurer). Tester sur une coupure avant de dérouler la file.
-      — FAIT AUTREMENT (2026-11-14 17:10Z) : `second_round` lance désormais
-      les 4 chaînes EN PARALLÈLE dans un seul processus (`chain_method=
-      "parallel"`, 4 périphériques CPU via XLA_FLAGS, `--sequentiel` pour
-      l'ancien mode). Même calcul (chaînes indépendantes, une clé chacune),
-      sans fichier intermédiaire ni fusion à coder ; une tâche à la fois.
-- [ ] abst : v2 2022 T1-30, T1-1, T2-7 — EN COURS (début 2026-11-14T17:10Z, session 01JZeMw2, à la suite dans un seul processus de file)
+      — FAIT (2026-11-14 17:40Z) : `--chaine k` (graine 27+k, tirages dans
+      `results/chaines/`, hors git) puis `--fusionner` (aucun NUTS, R-hat/ESS
+      recalculés par `fit_spatial_pooling` via `mcmc_runner` injectable) ;
+      test `tests/test_second_round_chaines.py`. Essai écarté : 4 chaînes en
+      `chain_method="parallel"` dans un processus = fuite mémoire JAX/CPU
+      (+100 Mo/s, OOM 15 Go en 2 min ; séquentiel plat à 1,4 Go).
+      Recette d'une tâche : `for k in 0 1 2 3; do python -m model.backtest.second_round
+      <tâche> --variante abst --chaine $k & done; wait; python -m
+      model.backtest.second_round <tâche> --variante abst --fusionner`.
+- [ ] abst : v2 2022 T1-30, T1-1, T2-7 — EN COURS (début 2026-11-14T17:40Z, session 01JZeMw2, une coupure après l'autre, 4 chaînes par coupure)
 - [ ] abst : v1 2022 Macron|Zemmour, Macron|Mélenchon, Macron|Le Pen, Macron|Pécresse
 - [ ] abst : v1 2017 Macron|Le Pen, Fillon|Le Pen ; v2 2017 T1-30 (attendu : sans nœud T1), T1-1, T2-7
 - [ ] eta : mêmes tâches (comparaison)
