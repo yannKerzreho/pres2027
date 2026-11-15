@@ -138,6 +138,14 @@ def fetch_section_wikitext(page: str, section_index: str) -> str:
 # catégories que `parse_pdf._is_biased_subsample` côté PDF). Les inclure
 # corromprait le dataset avec des données dérivées faussement étiquetées
 # « sondage brut ».
+# Même logique au niveau d'une Boîte déroulante (sous-tableau d'une section) :
+# « Sondages comptant le vote blanc comme un vote exprimé » (section « Autres »
+# de la page 2027) republie des sondages du tableau principal avec « Vote blanc »
+# en option de réponse — autre dénominateur que le contrat (% des exprimés), et
+# même PDF que la ligne principale : le `scenario_id` (institut × date ×
+# hypothèse) des deux lignes coïncidait, et le site voyait une hypothèse à 200 %.
+_EXCLUDE_BOITE = re.compile(r"vote\s+blanc.*exprim", re.I)
+
 _EXCLUDE_SECTION = re.compile(
     r"rolling|synth[eè]se graphique|estimation|report.*voix|sous.?[ée]chantillon|"
     r"probabilit|sous-?électorat", re.I)
@@ -696,6 +704,17 @@ def desambiguise_notices(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def doublons_de_notice(df: pd.DataFrame) -> list[str]:
+    """Un même PDF de notice publié sous PLUSIEURS libellés dans un même tour :
+    presque toujours un sondage republié dans un tableau annexe de la page
+    (c'est ainsi qu'est apparue l'hypothèse à 200 %). Signalé, pas corrigé : on
+    ne sait pas à coup sûr laquelle des deux lignes est la mesure de référence."""
+    g = (df.dropna(subset=["notice_url"])
+           .groupby(["tour", "notice_url"])["notice"].unique())
+    return [f"même notice sous {len(v)} libellés ({tour}) : {', '.join(sorted(v))}"
+            for (tour, _), v in g.items() if len(v) > 1]
+
+
 def build_dataset(page: str = DEFAULT_PAGE, pdf_date_fallback: bool = True
                   ) -> tuple[pd.DataFrame, dict]:
     """Renvoie (intentions, rapport). `intentions` respecte `schema.COLUMNS`."""
@@ -712,6 +731,9 @@ def build_dataset(page: str = DEFAULT_PAGE, pdf_date_fallback: bool = True
         wt = fetch_section_wikitext(page, s["index"])
         section_year, bounded, unsafe = _section_year_hint(sections, s)
         for grid, boite_titre in parse_wikitables_with_titles(wt):
+            if boite_titre and _EXCLUDE_BOITE.search(boite_titre):
+                warnings.append(f"tableau écarté (hors contrat) : {boite_titre!r}")
+                continue
             n_tables += 1
             hyp_defaut = (boite_titre or s["line"]) if tour == "Deuxième tour" else None
             year_hint = _year_from_text(boite_titre) or section_year
@@ -725,6 +747,7 @@ def build_dataset(page: str = DEFAULT_PAGE, pdf_date_fallback: bool = True
                                 "n_rejected_groups": 0, "warnings": warnings}
 
     df = desambiguise_notices(df)
+    warnings.extend(doublons_de_notice(df))
 
     # garde-fou somme ~100% PAR (notice, hypothese, tour) — tolérance resserrée
     g = df.groupby(["notice", "hypothese", "tour"], dropna=False)["intention"].sum()

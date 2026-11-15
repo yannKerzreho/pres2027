@@ -380,3 +380,25 @@ def test_notices_disparues_compare_au_dernier_snapshot(tmp_path):
     df = pd.DataFrame({"notice": ["A", "B", "D"]})
     disparues, n_ref = notices_disparues(df, tmp_path)
     assert disparues == {"C"} and n_ref == 3            # seul le DERNIER snapshot compte
+
+
+def test_boite_vote_blanc_exprime_est_hors_contrat():
+    # Ifop 9-11 septembre 2026 republié avec « Vote blanc » en option : même PDF
+    # que la ligne du tableau principal -> hypothèse à 200 % côté site.
+    from sondages.wiki import _EXCLUDE_BOITE
+    assert _EXCLUDE_BOITE.search("Sondages comptant le [[vote blanc]] comme un vote exprimé")
+    assert not _EXCLUDE_BOITE.search("Sondages réalisés sur la période juillet-septembre 2026")
+    assert not _EXCLUDE_BOITE.search("Sondages impliquant Emmanuel Macron, qui ne peut plus se présenter")
+
+
+def test_doublons_de_notice_signale_un_pdf_sous_deux_libelles():
+    import pandas as pd
+    from sondages.wiki import doublons_de_notice
+    df = pd.DataFrame({
+        "tour": ["Premier tour"] * 3 + ["Deuxième tour"],
+        "notice": ["Ifop 9-11 septembre (WP)", "Ifop 9-11 septembre 2026 (WP)",
+                   "Elabe 1-2 octobre (WP)", "Ifop 9-11 septembre 2026 (WP)"],
+        "notice_url": ["u/10292.pdf", "u/10292.pdf", "u/10300.pdf", "u/10292.pdf"],
+    })
+    w = doublons_de_notice(df)
+    assert len(w) == 1 and "10292" not in w[0] and "Premier tour" in w[0]
