@@ -261,7 +261,7 @@ Résultats : `model/backtest/results/*.json` (committés).
       (3 tâches) pour un traitement égal à hier.
 - [ ] (revue, a/d) stacking des chaînes (log-vraisemblance par nœud sur les
       tirages sauvés) ou max local + Laplace par chaîne — maths dans la spec.
-- [ ] (revue, e) [comptage FAIT (spec §8.16) : 74/86 duels restants de Le Pen–Philippe viennent des mêmes notices ; 4 fits « notice entière » + 4 standard sur les mêmes données, abst, EN COURS (début 2026-11-15T18:15Z, session 01JZeMw2)] V1 en retirant la NOTICE entière (fuite même-répondants) :
+- [x] (revue, e) [FAIT 19:05Z (spec §8.16) : fuite comptée (74/86), mais retirer les notices entières ne dégrade pas l'erreur des centres ; seuls les IC s'élargissent ⇒ V1 non gonflée par la fuite] V1 en retirant la NOTICE entière (fuite même-répondants) :
       comptage sans fit, puis 4 fits.
 - [ ] (revue, 9) τ_T2 : a posteriori sur 2002-2022 (normale vs Student-t),
       données à sourcer (session données), effet sur P(Philippe bat Le Pen).
@@ -376,6 +376,8 @@ Résultats : `model/backtest/results/*.json` (committés).
 - 2026-11-14 21:27-21:50Z (réveils 19:07/20:07/21:07 reçus en retard, traités
   en un) : fenêtre, ancres, pos_scale 0,25 (§8.7) ; cause des modes V1 =
   compensation géométrie/η.
+- 2026-11-15 18:07-19:10Z (réveil) : fuite même-notice (§8.16) : comptée,
+  mesurée (8 fits), sans effet sur les centres.
 - 2026-11-15 17:07-17:25Z (réveil) : diagnostic 2027 des définitions de
   listes (D0/D1/D2), livrable complété.
 - 2026-11-15 16:27-16:55Z (réveil 16:07) : backtest de définition des listes

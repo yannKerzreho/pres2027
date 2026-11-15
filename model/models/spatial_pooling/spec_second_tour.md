@@ -899,6 +899,22 @@ de ces notices est gardé (sinon la géométrie elle-même change de jeu). Même
 On rapporte l'écart à la V1 standard (erreur, IC). Si l'erreur augmente
 nettement, les chiffres V1 de §8.13 sont à lire comme une borne optimiste.
 
+**Résultat (abst, données du 15/11, standard rejoué sur les mêmes données ;
+résultats du 13/11 conservés en `*_donnees-2026-11-13.json`)** :
+
+| paire retirée | sondé | standard (erreur) | notice entière (erreur) | duels restants au fit |
+|---|---|---|---|---|
+| Le Pen–Philippe | 55,4 | 54,8 (0,6) | 56,3 (0,9), IC [32 ; 79], non concluant | 2 |
+| Le Pen–Mélenchon | 68,5 | 65,6 (2,9) | 66,1 (2,4) | 8 |
+| Glucksmann–Le Pen | 43,4 | 41,7 (1,7) | 42,1 (1,3) | 37 |
+| Attal–Le Pen | 43,3 | 36,5 (6,8) | 37,8 (5,5), IC [17 ; 62] | 16 |
+
+**Pas d'optimisme mesurable sur les centres** : retirer les notices entières
+ne dégrade pas l'erreur (3 paires sur 4 un peu meilleures) ; seuls les IC
+s'élargissent, par perte de données. Les chiffres V1 de §8.13 ne sont donc
+pas gonflés par la fuite même-répondants ; les biais de 3-7 pt (Mélenchon,
+Attal) sont de la structure, pas de la fuite (cf. arbitrage 4).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
