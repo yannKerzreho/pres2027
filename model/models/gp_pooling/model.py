@@ -186,11 +186,17 @@ class GPPooling(ForecastModel):
                        "sigma2": law["sigma2"] * FACTEUR_DIFFUSION,
                        "tau": law["tau"] * FACTEUR_DIFFUSION}
 
+    def slots_modele(self) -> list[str]:
+        """Vocabulaire du modèle, dans l'ordre des colonnes. Surchargé par
+        `model/listes.py`, qui ajuste le MÊME modèle sur d'autres champs de
+        candidats ; ici, les slots du modèle de base."""
+        return list(SLOTS)
+
     def used_polls(self, raw_polls):
         return filter_scenarios_by_exact_slots(raw_polls, set(SLOTS))
 
     def nowcast(self, raw_polls, as_of) -> Nowcast:
-        slots = list(SLOTS)
+        slots = self.slots_modele()
         retenu = self.used_polls(raw_polls)
         if retenu.empty:
             raise ValueError(f"aucune hypothèse au roster exact à la date {as_of}")

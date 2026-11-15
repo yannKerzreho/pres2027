@@ -195,6 +195,18 @@ def run(model_id: str = "all", as_of: str | None = None, include_private: bool =
         except Exception:
             traceback.print_exc()
             echecs.append(mid)
+    # Courbes par liste de candidats (cf. `model/listes.py`) : avec le passage
+    # complet seulement, pas pour un `--model` isolé. ~3 s. Même règle qu'au
+    # dessus : un échec n'empêche rien d'autre, mais rend le job rouge.
+    if model_id == "all":
+        try:
+            from model.listes import produire
+            m = produire(raw, as_of)
+            print(f"[listes] {len(m['listes'])} liste(s) : "
+                  + " · ".join(f"{x['libelle']} ({x['n_recents']}/10)" for x in m["listes"]))
+        except Exception:
+            traceback.print_exc()
+            echecs.append("listes")
     if echecs:
         raise SystemExit(f"Échec de {len(echecs)} modèle(s) : {', '.join(echecs)} "
                          "(les autres ont écrit leurs snapshots).")
