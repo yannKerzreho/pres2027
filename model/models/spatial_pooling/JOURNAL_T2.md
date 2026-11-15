@@ -29,6 +29,23 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- [ ] **RELANCE 2026-11-15 21:30Z (session locale)** : le réveil de 21:07Z a
+      conclu « rien à faire » alors que des tâches SANS dépendance restent
+      ouvertes. Ordre à suivre, une par réveil, sans attendre les arbitrages :
+      (1) « Synthèse dans spec §8 » (plus bas) : tableau unique V1/V2 2017/2022/2027,
+      abst = défaut, chiffres déjà committés, 0 fit ;
+      (2) « P(élu) à aléa unique » : maths spec §7 puis code + test, puis relancer
+      `diagnostic_2027` ;
+      (3) « entre-deux-tours conditionné sur le résultat T1 » : maths puis V2 T2−7
+      2017/2022 ;
+      (4) « (revue, a/d) stacking des chaînes » ;
+      (5) synthèse tracker pour l'utilisateur (rôles spatial / gp-pooling).
+      Les arbitrages ouverts (τ_T2, biais anti-RN, lissage, τ_paire) attendent
+      l'utilisateur : coder chaque option DERRIÈRE un drapeau éteint par défaut
+      est permis (chiffrer l'effet 2027), la choisir ne l'est pas. Les tâches
+      2017 dépendant des dates et τ_T2 2002-2012 attendent la session données.
+      « Rien à faire » n'est légitime que si TOUT ce qui précède est coché ou bloqué.
+
 - [x] PRIORITAIRE dès que `data/parsed/intentions_2027_wiki.csv` est sur
       origin/main (sinon passer à la suite) — DIAGNOSTIC 2027 : fit joint T1+T2
       sur 2027 (variante abst), puis (a) résidus par duel sondé et par institut
@@ -265,14 +282,10 @@ Résultats : `model/backtest/results/*.json` (committés).
       comptage sans fit, puis 4 fits.
 - [ ] (revue, 9) τ_T2 : a posteriori sur 2002-2022 (normale vs Student-t),
       données à sourcer (session données), effet sur P(Philippe bat Le Pen).
-- [ ] Ensuite :
-      revue Opus (due 2026-11-15 ~15:00Z) sur §8.3-8.10 avant de changer le
-      défaut du modèle (eta_hier). Piste « abstention croissante avec la
-      distance » ÉCARTÉE 04:10Z (déjà dans la valeur inclusive ; limite
-      d'identification, spec §8.10). Rien d'autre d'actionnable sans fit
-      d'ici la revue.
-- [ ] abst : v1 2017 Macron|Le Pen, Fillon|Le Pen ; v2 2017 T1-30 (attendu : sans nœud T1), T1-1, T2-7
-- [ ] eta : mêmes tâches (comparaison)
+- [x] [PÉRIMÉ, nettoyé 2026-11-15 21:30Z par la session locale : revue Opus faite
+      08:20Z, `hier` jugée non préférée §8.15] Ensuite : revue Opus avant de changer le défaut.
+- [x] [FAIT : JSON abst v1/v2 2017 présents dans results/, intégrés §8.15] abst : v1 2017 Macron|Le Pen, Fillon|Le Pen ; v2 2017 T1-1, T2-7
+- [x] [ABANDONNÉ : eta n'est plus candidate au défaut (§8.15), pas de valeur ajoutée] eta : mêmes tâches (comparaison)
 - [x] [FAIT 20:12Z, spec §8.18 : base brut ± τ : 2/5 couverts à 0,10, 5/5 à 0,19 ; corr. intra-notice : sans objet après §8.16] Revue 2026-11-14, sans fit : corriger la base V2 (écart-type τ_T2 en plus
       de « largeur du modèle », rapporter les deux) ; post-fit : corrélation
       intra-notice des résidus (`duel_s` + `duels["notices"]` désormais dans le fit).
