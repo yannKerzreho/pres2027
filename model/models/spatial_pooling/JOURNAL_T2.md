@@ -210,6 +210,18 @@ Résultats : `model/backtest/results/*.json` (committés).
 - [ ] Décision τ_T2 (maths dans la spec §6 avant code) : la mesure du 14/11
       donne RMS ≈ 4,3 pt ⇒ τ ≈ 0,18-0,20 logit ; centrage sur 0 = choix
       éditorial, à faire trancher par l'utilisateur (ne pas coder de biais).
+- [ ] APRÈS le diagnostic 2027 (demande utilisateur 2026-11-15) — TRACKER PAR
+      CANDIDAT tiré du spatial : exporter la trajectoire w_i(t) du fit (chemin
+      OU, déjà calculé ; seuls les candidats « dynamiques » > 5 % en ont une),
+      présentée comme la PART de chaque candidat dans un champ de référence au
+      fil du temps, avec bande IC90 (w brut est relatif, illisible). Puis
+      BACKTEST DE SUIVI DE TENDANCE 2017/2022 : un fit par coupure (sondages
+      connus à la coupure seulement — un fit unique en fin de campagne lisse avec
+      le recul et ne vaut pas validation), ~10 coupures/élection, d'abord en fits
+      allégés (2 chaînes) puis complets sur les coupures informatives. Comparer
+      à gp-pooling sur les mêmes coupures (erreur, couverture, retard de
+      détection des montées : Mélenchon 2017, Zemmour 2021). Maths/choix de
+      présentation dans la spec avant le code. Ne touche PAS au site.
 - [ ] Synthèse dans spec §8 : V1 MAE modèle / géométrie seule / BT ; V2 couverture,
       log-score vs sondages ; R-hat, rhat_t2, κ, ω, η ; corrélation κ–η.
 - [ ] Puis pistes (choisir selon les résultats, maths dans la spec AVANT le code) :
