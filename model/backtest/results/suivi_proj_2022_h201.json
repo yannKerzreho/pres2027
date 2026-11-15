@@ -1,0 +1,94 @@
+{
+ "election": 2022,
+ "h": 201,
+ "coupure": "2021-09-21",
+ "listes": [
+  {
+   "cle": "anne hidalgo|asselineau|bertrand|emmanuel macron|fabien roussel|jean lassalle|jean luc melenchon|lagarde|marine le pen|nathalie arthaud|nicolas dupont aignan|philippe poutou|philippot|yannick jadot",
+   "id": "845e180b",
+   "candidats": [
+    "Anne Hidalgo",
+    "Asselineau",
+    "Bertrand",
+    "Emmanuel Macron",
+    "Fabien Roussel",
+    "Jean Lassalle",
+    "Jean-Luc Mélenchon",
+    "Lagarde",
+    "Marine Le Pen",
+    "Nathalie Arthaud",
+    "Nicolas Dupont-Aignan",
+    "Philippe Poutou",
+    "Philippot",
+    "Yannick Jadot"
+   ],
+   "n_recents": 4,
+   "n_total": 4
+  },
+  {
+   "cle": "anne hidalgo|asselineau|emmanuel macron|fabien roussel|jean lassalle|jean luc melenchon|lagarde|marine le pen|nathalie arthaud|nicolas dupont aignan|philippe poutou|philippot|valerie pecresse|yannick jadot",
+   "id": "844158b3",
+   "candidats": [
+    "Anne Hidalgo",
+    "Asselineau",
+    "Emmanuel Macron",
+    "Fabien Roussel",
+    "Jean Lassalle",
+    "Jean-Luc Mélenchon",
+    "Lagarde",
+    "Marine Le Pen",
+    "Nathalie Arthaud",
+    "Nicolas Dupont-Aignan",
+    "Philippe Poutou",
+    "Philippot",
+    "Valérie Pécresse",
+    "Yannick Jadot"
+   ],
+   "n_recents": 4,
+   "n_total": 4
+  },
+  {
+   "cle": "asselineau|bertrand|emmanuel macron|fabien roussel|jean lassalle|jean luc melenchon|lagarde|marine le pen|montebourg|nathalie arthaud|nicolas dupont aignan|philippe poutou|philippot|yannick jadot",
+   "id": "8cd9c0c0",
+   "candidats": [
+    "Asselineau",
+    "Bertrand",
+    "Emmanuel Macron",
+    "Fabien Roussel",
+    "Jean Lassalle",
+    "Jean-Luc Mélenchon",
+    "Lagarde",
+    "Marine Le Pen",
+    "Montebourg",
+    "Nathalie Arthaud",
+    "Nicolas Dupont-Aignan",
+    "Philippe Poutou",
+    "Philippot",
+    "Yannick Jadot"
+   ],
+   "n_recents": 3,
+   "n_total": 3
+  }
+ ],
+ "listes_ecartees": [],
+ "chaines_retenues": [
+  0,
+  1,
+  2,
+  3
+ ],
+ "lp_par_chaine": [
+  3912.801344604492,
+  3909.5266381835936,
+  3910.6285693359373,
+  3909.411671142578
+ ],
+ "diagnostics": {
+  "rhat_max": 1.0391,
+  "ess_min": 194.5,
+  "n_divergences": 0,
+  "n_noeuds": 100,
+  "n_champs_distincts": 55
+ },
+ "lignes": []
+}
