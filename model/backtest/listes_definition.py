@@ -43,6 +43,22 @@ class GPReduit(GPListe):
         return sub.reset_index(drop=True)
 
 
+class GPSlots(GPListe):
+    """D2 : l'unité est le SLOT gp-pooling quand le candidat en a un (Bardella et
+    Le Pen -> « RN »), le candidat lui-même sinon ; on regroupe les hypothèses
+    dont l'ensemble d'unités vaut celui de la liste (somme par slot en aval)."""
+
+    def __init__(self, unites: list[str]):
+        super().__init__(cle_champ(unites), unites)
+
+    def used_polls(self, raw_polls):
+        d = raw_polls.assign(_u=raw_polls["slot"].fillna(raw_polls["candidat"]).astype(str))
+        cles = d.groupby("scenario_id")["_u"].agg(lambda x: cle_champ(set(x)))
+        sub = d[d["scenario_id"].isin(set(cles[cles == self.cle].index))].copy()
+        sub["slot"] = sub["_u"].map(self.labels)
+        return sub.drop(columns="_u").reset_index(drop=True)
+
+
 def _prep(raw: pd.DataFrame, delta) -> pd.DataFrame:
     t1 = raw[raw.tour.eq("Premier tour")].copy()
     t1["date_fin"] = pd.to_datetime(t1["date_fin"]) + delta
@@ -147,10 +163,79 @@ def evaluer(election: int, h: int) -> list[dict]:
     return lignes
 
 
+def diagnostic_2027(as_of: str = "2026-11-13") -> dict:
+    """D0 / D1(5 %) / D2 sur les 3 listes de tête 2027 : sondages par courbe,
+    résidus aux sondages de la liste EXACTE (dans l'échantillon), régularité
+    (|Δ| jour à jour de la trajectoire sur 90 j) et stabilité au rejeu (nowcast
+    sans le dernier sondage). Unités comparées : celles communes aux trois."""
+    from model.core.live_dataset import load_raw_polls
+    from model.listes import champs
+    raw = load_raw_polls(as_of=as_of)
+    ch = champs(raw)
+    parts = raw.groupby("candidat").intention.mean() / 100
+    slot_de = raw.dropna(subset=["slot"]).drop_duplicates("candidat").set_index("candidat")["slot"].to_dict()
+    out = []
+    for L in classement(ch, as_of):
+        cand = list(L["candidats"])
+        petits = {x for x in cand if parts.get(x, 0) < 0.05}
+        defs = {"D0": (GPListe(L["cle"], cand), cand),
+                "D1_5": (GPReduit([x for x in cand if x not in petits], petits),
+                         [x for x in cand if x not in petits]),
+                "D2": (GPSlots(sorted({slot_de.get(x, x) for x in cand})), None)}
+        sids = set(ch.loc[ch.cle.eq(L["cle"]), "scenario_id"])
+        exact = raw[raw.scenario_id.isin(sids)]
+        for nom, (mdl, unites) in defs.items():
+            mdl.load_artifacts()
+            used = mdl.used_polls(raw)
+            nc = mdl.nowcast(raw, as_of)
+            tr = nc.trajectoire
+            mdl2 = type(mdl).__new__(type(mdl)); mdl2.__dict__ = dict(mdl.__dict__)
+            u = used.assign(_d=pd.to_datetime(used["date_fin"]))
+            dernier = u.sort_values(["_d", "notice"])["notice"].iloc[-1]   # dernier sondage DE la courbe
+            nc2 = mdl2.nowcast(raw[raw.notice != dernier], as_of)
+            # unités : candidat -> label du modèle
+            unite = (lambda x: x) if nom != "D2" else (lambda x: slot_de.get(x, x))
+            communs = [x for x in cand if x not in petits]
+            res, reg, rej = [], [], []
+            for x in communs:
+                lab = mdl.labels.get(unite(x))
+                if lab is None or lab not in tr["slots"]:
+                    continue
+                serie = pd.Series(tr["slots"][lab]["mean"], index=pd.to_datetime(tr["dates"]))
+                serie = serie[~serie.index.duplicated(keep="last")]
+                # sondages exacts, renormalisés sur les unités communes
+                e = exact[exact.candidat.isin(communs)]
+                tot = e.groupby("scenario_id").intention.transform("sum")
+                ex = e.assign(p=e.intention / tot)[e.candidat.eq(x)]
+                base_tr = sum(pd.Series(tr["slots"][mdl.labels[unite(y)]]["mean"],
+                                        index=pd.to_datetime(tr["dates"])).groupby(level=0).last()
+                              for y in communs if mdl.labels.get(unite(y)) in tr["slots"])
+                m = (serie / base_tr).reindex(pd.to_datetime(ex.date_fin), method="nearest")
+                res.extend(np.abs(ex.p.to_numpy() - m.to_numpy()) * 100)
+                d90 = serie[serie.index >= serie.index.max() - pd.Timedelta(days=90)]
+                reg.append(float(np.abs(np.diff(d90.to_numpy())).mean() * 100) if len(d90) > 1 else np.nan)
+                a1 = float(np.asarray(nc.draws.sel(candidat=lab)).mean())
+                a2 = float(np.asarray(nc2.draws.sel(candidat=lab)).mean())
+                rej.append(abs(a1 - a2) * 100)
+            out.append({"liste": L["id"], "definition": nom, "n_sondages": int(used["notice"].nunique()),
+                        "residu_moyen_pt": round(float(np.mean(res)), 3) if res else None,
+                        "variation_jour_pt": round(float(np.nanmean(reg)), 4) if reg else None,
+                        "rejeu_sans_dernier_pt": round(float(np.mean(rej)), 3) if rej else None})
+            print(out[-1], flush=True)
+    return {"as_of": as_of, "lignes": out}
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--election", type=int, choices=[2017, 2022], default=2022)
+    ap.add_argument("--diagnostic-2027", action="store_true")
     a = ap.parse_args()
+    if a.diagnostic_2027:
+        r = diagnostic_2027()
+        out = sr.OUT_DIR / "listes_definition_diag2027.json"
+        out.write_text(json.dumps(r, ensure_ascii=False, indent=1) + "\n")
+        print(f"-> {out}")
+        return
     lignes = [l for h in HS for l in evaluer(a.election, h)]
     out = sr.OUT_DIR / f"listes_definition_{a.election}.json"
     out.write_text(json.dumps(lignes, ensure_ascii=False, indent=1) + "\n")

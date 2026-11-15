@@ -73,9 +73,33 @@ change rien à la prévision du scrutin.
 5 à 7 couples seulement (dates manquantes) : D1 un peu meilleur (MAE 0,52-0,67
 contre 0,59-0,85), aucune conclusion possible.
 
-### D2 (slots gp-pooling)
-Non évalué : la table candidat → slot n'existe que pour 2027 ; à faire au
-diagnostic 2027 (régularité, stabilité au rejeu, résidus).
+### Diagnostic 2027 (3 listes de tête au 13/11, D0 / D1(5 %) / D2)
+
+| liste | déf. | sondages | résidu moyen (pt) | variation jour à jour (pt/j, 90 j) | rejeu sans le dernier sondage (pt) |
+|---|---|---|---|---|---|
+| 39fd3710 | D0 | 26 | 0,88 | 0,18 | 0,35 |
+| | D1(5 %) | 28 | 0,82 | 0,29 | 0,57 |
+| | D2 | 26 | 0,88 | 0,18 | 0,35 |
+| 1e7ab50b | D0 | 26 | 1,05 | 0,17 | 0,43 |
+| | D1(5 %) | 28 | 0,99 | 0,24 | 0,47 |
+| | D2 | 26 | 1,05 | 0,17 | 0,42 |
+| 26fa8eae | D0 | 23 | 0,83 | 0,16 | 0,42 |
+| | D1(5 %) | 27 | 0,80 | 0,22 | 0,58 |
+| | D2 | 23 | 0,83 | 0,16 | 0,41 |
+
+Résidus : dans l'échantillon, sur les sondages de la liste EXACTE, parts
+renormalisées sur les candidats communs. Rejeu : écart moyen du nowcast quand
+on retire le dernier sondage de la courbe.
+
+- **D2 = D0 aujourd'hui** : aucune des listes de tête ne contient deux
+  alternatives d'un même slot (Bardella n'est plus testé à côté de Le Pen) ;
+  le regroupement par slots n'ajoute aucun sondage. Il ne servirait qu'en
+  présence d'alternatives — à réévaluer si elles reviennent.
+- **D1(5 %) en 2027** : seulement +2 à +4 sondages par courbe (+8 à +17 %),
+  résidus −0,03 à −0,06 pt, mais une trajectoire **40 à 60 % plus agitée**
+  (0,22-0,29 contre 0,16-0,18 pt/jour) et **moins stable au rejeu**
+  (0,47-0,58 contre 0,35-0,43 pt) : les hypothèses ajoutées ne mesurent pas
+  la même chose et font sauter la courbe.
 
 ## Lecture
 
@@ -99,12 +123,16 @@ corriger avant tout passage. **Recommandation : garder D0 pour l'instant** ;
 D1(5 %) est le seul candidat recevable, à condition de gonfler l'incertitude
 des courbes regroupées (p. ex. un σ_p d'hétérogénéité propre aux hypothèses
 regroupées, recalibré sur ce backtest) puis de re-mesurer la couverture IC50.
-Une seule élection exploitable (2022) : à confirmer sur 2027 (diagnostic D2 et
-rejeu) avant décision.
+Le diagnostic 2027 le confirme : le gain de sondages y est faible (+8-17 %)
+et se paie en régularité et en stabilité ; D2 n'apporte rien tant qu'aucune
+alternative de slot n'est testée.
 
 RÉSULTAT POUR L'ORCHESTRATEUR : sur 2022 (apparié, 54 à 129 couples par
 seuil), regrouper les listes en retirant les candidats < s donne +40-80 % de
 sondages par courbe, −0,06 pt d'erreur à 30 j mais +0,01-0,05 pt à 7 j, et des
 IC50 trop étroits (0,42-0,48) ; seul s = 5 % passe le critère fixé d'avance ;
 recommandation : garder le champ exact (D0), D1(5 %) seulement après
-recalibrage de son incertitude ; prévision du scrutin inchangée.
+recalibrage de son incertitude ; prévision du scrutin inchangée. Sur 2027,
+D1(5 %) n'ajoute que +8-17 % de sondages et rend les courbes 40-60 % plus
+agitées et moins stables au rejeu ; D2 (slots) = D0 tant qu'aucune
+alternative de slot n'est testée.

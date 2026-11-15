@@ -1,0 +1,77 @@
+{
+ "as_of": "2026-11-13",
+ "lignes": [
+  {
+   "liste": "39fd3710",
+   "definition": "D0",
+   "n_sondages": 26,
+   "residu_moyen_pt": 0.883,
+   "variation_jour_pt": 0.1817,
+   "rejeu_sans_dernier_pt": 0.354
+  },
+  {
+   "liste": "39fd3710",
+   "definition": "D1_5",
+   "n_sondages": 28,
+   "residu_moyen_pt": 0.821,
+   "variation_jour_pt": 0.2885,
+   "rejeu_sans_dernier_pt": 0.567
+  },
+  {
+   "liste": "39fd3710",
+   "definition": "D2",
+   "n_sondages": 26,
+   "residu_moyen_pt": 0.883,
+   "variation_jour_pt": 0.1817,
+   "rejeu_sans_dernier_pt": 0.348
+  },
+  {
+   "liste": "1e7ab50b",
+   "definition": "D0",
+   "n_sondages": 26,
+   "residu_moyen_pt": 1.05,
+   "variation_jour_pt": 0.1715,
+   "rejeu_sans_dernier_pt": 0.425
+  },
+  {
+   "liste": "1e7ab50b",
+   "definition": "D1_5",
+   "n_sondages": 28,
+   "residu_moyen_pt": 0.992,
+   "variation_jour_pt": 0.2442,
+   "rejeu_sans_dernier_pt": 0.468
+  },
+  {
+   "liste": "1e7ab50b",
+   "definition": "D2",
+   "n_sondages": 26,
+   "residu_moyen_pt": 1.054,
+   "variation_jour_pt": 0.1668,
+   "rejeu_sans_dernier_pt": 0.424
+  },
+  {
+   "liste": "26fa8eae",
+   "definition": "D0",
+   "n_sondages": 23,
+   "residu_moyen_pt": 0.83,
+   "variation_jour_pt": 0.1571,
+   "rejeu_sans_dernier_pt": 0.415
+  },
+  {
+   "liste": "26fa8eae",
+   "definition": "D1_5",
+   "n_sondages": 27,
+   "residu_moyen_pt": 0.798,
+   "variation_jour_pt": 0.2173,
+   "rejeu_sans_dernier_pt": 0.581
+  },
+  {
+   "liste": "26fa8eae",
+   "definition": "D2",
+   "n_sondages": 23,
+   "residu_moyen_pt": 0.829,
+   "variation_jour_pt": 0.157,
+   "rejeu_sans_dernier_pt": 0.414
+  }
+ ]
+}

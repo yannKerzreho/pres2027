@@ -190,7 +190,8 @@ Résultats : `model/backtest/results/*.json` (committés).
 - [x] [FAIT 2026-11-15 16:50Z : `model/backtest/listes_definition.py`, livrable
       `model/backtest/results/listes_definition.md` ; 2022 apparié : D1 +40-80 %
       de sondages, −0,06 pt à 30 j, +0,01-0,05 pt à 7 j, IC50 trop étroits ;
-      seul s = 5 % passe ; reco : garder D0. RESTE : D2 et diagnostic 2027]
+      seul s = 5 % passe ; reco : garder D0. Diagnostic 2027 + D2 FAITS 17:20Z :
+      D1(5 %) +8-17 % de sondages, courbes 40-60 % plus agitées ; D2 = D0]
       EN PARALLÈLE des fits NUTS (gp-pooling est en forme close, ~0,1 s/date :
       ça tient sur un cœur pendant les fits) — DÉFINITION DES LISTES gp-pooling
       (demande utilisateur via l'orchestrateur, 2026-11-15) : « le coût en
@@ -375,6 +376,8 @@ Résultats : `model/backtest/results/*.json` (committés).
 - 2026-11-14 21:27-21:50Z (réveils 19:07/20:07/21:07 reçus en retard, traités
   en un) : fenêtre, ancres, pos_scale 0,25 (§8.7) ; cause des modes V1 =
   compensation géométrie/η.
+- 2026-11-15 17:07-17:25Z (réveil) : diagnostic 2027 des définitions de
+  listes (D0/D1/D2), livrable complété.
 - 2026-11-15 16:27-16:55Z (réveil 16:07) : backtest de définition des listes
   gp-pooling (demande orchestrateur), livrable listes_definition.md.
 - 2026-11-15 15:07-16:30Z (réveil) : suivi 2017 bloqué par les données ;
