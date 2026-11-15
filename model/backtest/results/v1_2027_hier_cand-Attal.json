@@ -1,0 +1,59 @@
+{
+ "tache": "candidat:Attal",
+ "variante": "hier",
+ "t_k": "2026-10-19",
+ "diagnostics": {
+  "rhat_max": 1.0172,
+  "rhat_t2": 1.0006,
+  "ess_min": 307.2,
+  "n_divergences": 0,
+  "kappa": 0.7865,
+  "omega": -4.1674,
+  "sigma_t2": 0.0131,
+  "n_duels": 65
+ },
+ "lignes": [
+  {
+   "paire": [
+    "Attal",
+    "Le Pen"
+   ],
+   "observe_30j": 0.4333,
+   "n_cible": 3,
+   "modele": 0.4005,
+   "modele_ic90": [
+    0.3567,
+    0.445
+   ],
+   "erreur_pt": 3.28,
+   "log_score": 1.961,
+   "lp_par_chaine": [
+    6115.8,
+    6115.5,
+    6115.1,
+    6113.5
+   ],
+   "lp_se": [
+    1.0,
+    1.22,
+    1.15,
+    0.98
+   ],
+   "chaines_retenues": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "modele_par_chaine": [
+    0.399,
+    0.4005,
+    0.4002,
+    0.4024
+   ],
+   "ecart_chaines_pt": 0.33,
+   "rhat_cible": 1.0,
+   "concluant": true
+  }
+ ]
+}
