@@ -1,0 +1,119 @@
+"""Backtest de suivi de tendance du spatial (spec_spatial_pooling §10, étape 1).
+
+    python -m model.backtest.suivi --lister --election 2022
+    python -m model.backtest.suivi --election 2022 --h 180 --chaine k
+    python -m model.backtest.suivi --election 2022 --h 180 --fusionner
+
+Un fit par coupure, sur les seuls sondages connus à la coupure ; listes =
+règle du site (`model.listes.classement`) ; cible = sondages de la liste
+exacte des 7 jours suivants (hors échantillon).
+"""
+from __future__ import annotations
+
+import argparse
+import json
+
+import numpy as np
+import pandas as pd
+
+from model.backtest import second_round as sr
+from model.listes import classement, cle_champ
+from model.models.spatial_pooling.fit import fit_spatial_pooling, pi_draws_for_mask
+from model.models.spatial_pooling.roster import ORDER_GROUPS_HISTORIQUES
+from model.core.live_dataset import _fold
+
+HORIZONS = list(range(159, 11, -21))     # 159, ..., 12 (180 : aucune cible)
+APRES = 14       # 7 j ne laissait que 0-2 sondages cibles par liste (spec §10, avant résultat)
+
+
+def _champs_t1(raw: pd.DataFrame) -> pd.DataFrame:
+    t1 = raw[raw.tour.eq("Premier tour")].copy()
+    t1["scenario_id"] = t1["notice"].astype(str) + "|" + t1["hypothese"].fillna("__u__").astype(str)
+    rows = []
+    for sid, sub in t1.groupby("scenario_id", sort=False):
+        noms = sorted(set(sub["candidat"].astype(str)), key=_fold)
+        rows.append({"scenario_id": sid, "notice": sub["notice"].iloc[0],
+                     "date_fin": pd.Timestamp(sub["date_fin"].max()),
+                     "cle": cle_champ(noms), "candidats": noms})
+    return pd.DataFrame(rows)
+
+
+def cibles(election: int, c: pd.Timestamp, cle: str) -> tuple[dict, int]:
+    """Moyenne par candidat des sondages de la liste exacte dans (c, c+7]."""
+    fut = sr.polls_historiques(election, c + pd.Timedelta(days=APRES), history_days=APRES)
+    fut = fut[fut.tour.eq("Premier tour") & fut.date_fin.gt(c)]
+    if fut.empty:
+        return {}, 0
+    ch = _champs_t1(fut)
+    sids = set(ch.loc[ch.cle.eq(cle), "scenario_id"])
+    fut = fut.assign(scenario_id=fut["notice"].astype(str) + "|" + fut["hypothese"].fillna("__u__").astype(str))
+    sel = fut[fut.scenario_id.isin(sids)]
+    return ({k: float(v) / 100 for k, v in sel.groupby("candidat").intention.mean().items()},
+            int(sel.scenario_id.nunique()))
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--election", type=int, choices=[2017, 2022], default=2022)
+    ap.add_argument("--h", type=int, default=None)
+    ap.add_argument("--lister", action="store_true")
+    ap.add_argument("--chaine", type=int, default=None)
+    ap.add_argument("--fusionner", action="store_true")
+    a = ap.parse_args()
+    if a.lister:
+        for h in HORIZONS:
+            print(f"--election {a.election} --h {h}")
+        return
+    c = sr.T1_DATES[a.election] - pd.Timedelta(days=a.h)
+    raw = sr.polls_historiques(a.election, c)
+    out = sr.OUT_DIR / f"suivi_{a.election}_h{a.h:03d}.json"
+    base = sr.CHAINES_DIR / out.stem
+    nuts = dict(draws=400, tune=600, chains=4)
+    if a.chaine is not None:
+        nuts["mcmc_runner"] = sr._runner_chaine(base.with_name(f"{out.stem}_c{a.chaine}.npz"), a.chaine)
+    elif a.fusionner:
+        nuts["mcmc_runner"] = sr._runner_fusion([base.with_name(f"{out.stem}_c{k}.npz")
+                                                 for k in range(sr.N_CHAINES)])
+    else:
+        ap.error("--chaine k ou --fusionner")
+    fit = fit_spatial_pooling(raw, str(c.date()), min_poll_date="1900-01-01",
+                              order_groups=ORDER_GROUPS_HISTORIQUES[a.election],
+                              couverture_min=None, second_tour=False, **nuts)
+    if a.chaine is not None:
+        return
+    listes = classement(_champs_t1(raw), c)
+    idx = {x: i for i, x in enumerate(fit.candidates)}
+    lignes, ecartees = [], []
+    rng = np.random.default_rng(3)
+    for L in listes:
+        if not all(x in idx for x in L["candidats"]):
+            ecartees.append({"candidats": L["candidats"],
+                             "hors_roster": [x for x in L["candidats"] if x not in idx]})
+            continue
+        mask = np.zeros(len(fit.candidates)); mask[[idx[x] for x in L["candidats"]]] = 1
+        pi = pi_draws_for_mask(fit, mask)
+        obs, n = cibles(a.election, c, L["cle"])
+        for x in L["candidats"]:
+            if x not in obs:
+                continue
+            d = pi[:, idx[x]]
+            # IC prédictif de la MOYENNE de n sondages (n ≈ 1000 répondants).
+            dp = d + rng.standard_normal(d.shape) * np.sqrt(d * (1 - d) / 1000 / max(n, 1))
+            lo, hi = np.percentile(dp, [5, 95])
+            lignes.append({"liste": L["id"], "candidat": x, "observe": round(obs[x], 4), "n_cible": n,
+                           "modele": round(float(d.mean()), 4), "ic90": [round(lo, 4), round(hi, 4)],
+                           "erreur_pt": round(100 * abs(float(d.mean()) - obs[x]), 2),
+                           "signe_pt": round(100 * (float(d.mean()) - obs[x]), 2),
+                           "couvre": bool(lo <= obs[x] <= hi)})
+    res = {"election": a.election, "h": a.h, "coupure": str(c.date()),
+           "listes": listes, "listes_ecartees": ecartees,
+           "chaines_retenues": list(sr.CHAINES_RETENUES), "lp_par_chaine": list(sr.LP_CHAINES),
+           "diagnostics": {k: fit.diagnostics.get(k) for k in
+                           ("rhat_max", "ess_min", "n_divergences", "n_noeuds", "n_champs_distincts")},
+           "lignes": lignes}
+    out.write_text(json.dumps(res, ensure_ascii=False, indent=1, default=str) + "\n")
+    print(f"-> {out}  ({len(lignes)} lignes, {len(ecartees)} listes écartées)")
+
+
+if __name__ == "__main__":
+    main()

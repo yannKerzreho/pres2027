@@ -366,3 +366,21 @@ juste mais **amorties d'environ un quart à moitié** sur les mouvements nets
 échantillon (coupures 2017/2022) reste à faire pour chiffrer le retard de
 détection. Résultat : `model/backtest/results/tracker_2027_2026-11-13.json`.
 
+**Protocole du backtest de suivi, étape 1 (spatial seul, 2022), fixé avant
+résultat.** Coupures $c_k = T1 - h$, $h \in \{180, 159, …, 12\}$ j (pas de
+21 j, 9 coupures). À chaque coupure : cadre historique à toutes les
+hypothèses (second_tour §8.3), fenêtre 180 j, fit T1 seul (comme la
+production), 4 processus d'une chaîne + fusion avec sélection par
+log-densité (second_tour §8.8/§8.11). Listes : `model.listes.classement`
+appliqué aux sondages ≤ $c_k$ (même règle que le site, `scenario_id` =
+notice × hypothèse) ; une liste dont un candidat est hors roster est écartée
+et comptée. Cible, par liste et candidat : moyenne des sondages de la liste
+EXACTE terminés dans $(c_k, c_k + 7\,j]$ ; métriques : erreur absolue
+moyenne (pt), couverture de l'IC90 prédictif (bruit binomial de la moyenne
+de $n$ sondages ajouté), et biais signé par candidat sur les coupures.
+Étape 2 : `gp-pooling` (GPListe) sur les mêmes listes et coupures ; étape 3 :
+retard de détection des montées (Zemmour automne 2021).
+*Amendement avant tout résultat (disponibilité des cibles, pas erreurs)* : la
+fenêtre cible passe à 14 j — à 7 j, 0 à 2 sondages par liste avant mars 2022 ;
+h = 180 retiré (aucun sondage cible) : 8 coupures, 13 listes avec cible.
+

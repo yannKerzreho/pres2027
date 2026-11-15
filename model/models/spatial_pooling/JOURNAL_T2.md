@@ -217,8 +217,9 @@ Résultats : `model/backtest/results/*.json` (committés).
       testés ; run 2027 FAIT 11:17Z (spec_spatial_pooling §10) : niveaux
       justes (≤ 0,4 pt), tendances amorties d'1/4 à 1/2 (Philippe −1,0 pt sur
       30 j). RESTE : backtest de suivi 2017/2022 par coupures + comparaison
-      gp-pooling sur les listes du site (règle de sélection à récupérer de la
-      session site)] APRÈS le diagnostic 2027 (demande utilisateur 2026-11-15) — TRACKER PAR
+      gp-pooling sur les listes du site : règle = `model.listes.classement`,
+      reprise telle quelle] Étape 1 (spatial, 2022, 8 coupures) `model/backtest/
+      suivi.py` EN COURS (début 2026-11-15T12:20Z, session 01JZeMw2). APRÈS le diagnostic 2027 (demande utilisateur 2026-11-15) — TRACKER PAR
       CANDIDAT tiré du spatial : exporter la trajectoire w_i(t) du fit (chemin
       OU, déjà calculé ; seuls les candidats « dynamiques » > 5 % en ont une),
       présentée comme la PART de chaque candidat dans un champ de référence au
