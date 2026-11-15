@@ -1,0 +1,65 @@
+{
+ "tache": "Le Pen|Philippe",
+ "variante": "abst",
+ "t_k": "2026-11-13",
+ "diagnostics": {
+  "rhat_max": 1.0216,
+  "rhat_t2": 1.0023,
+  "ess_min": 275.9,
+  "n_divergences": 0,
+  "kappa": 1.1223,
+  "omega": -3.0111,
+  "sigma_t2": 0.014,
+  "n_duels": 2
+ },
+ "lignes": [
+  {
+   "paire": [
+    "Le Pen",
+    "Philippe"
+   ],
+   "observe_30j": 0.5539,
+   "n_cible": 9,
+   "modele": 0.5632,
+   "modele_ic90": [
+    0.3264,
+    0.7938
+   ],
+   "erreur_pt": 0.94,
+   "log_score": 0.916,
+   "ic90_predictif": [
+    0.3234,
+    0.7922
+   ],
+   "couvre_predictif": true,
+   "log_score_predictif": 0.913,
+   "lp_par_chaine": [
+    7091.5,
+    7091.8,
+    7090.1,
+    7089.6
+   ],
+   "lp_se": [
+    0.96,
+    1.78,
+    1.19,
+    1.25
+   ],
+   "chaines_retenues": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "modele_par_chaine": [
+    0.576,
+    0.5673,
+    0.5553,
+    0.5543
+   ],
+   "ecart_chaines_pt": 2.17,
+   "rhat_cible": 1.0,
+   "concluant": false
+  }
+ ]
+}
