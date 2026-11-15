@@ -273,7 +273,7 @@ Résultats : `model/backtest/results/*.json` (committés).
       d'ici la revue.
 - [ ] abst : v1 2017 Macron|Le Pen, Fillon|Le Pen ; v2 2017 T1-30 (attendu : sans nœud T1), T1-1, T2-7
 - [ ] eta : mêmes tâches (comparaison)
-- [ ] Revue 2026-11-14, sans fit : corriger la base V2 (écart-type τ_T2 en plus
+- [x] [FAIT 20:12Z, spec §8.18 : base brut ± τ : 2/5 couverts à 0,10, 5/5 à 0,19 ; corr. intra-notice : sans objet après §8.16] Revue 2026-11-14, sans fit : corriger la base V2 (écart-type τ_T2 en plus
       de « largeur du modèle », rapporter les deux) ; post-fit : corrélation
       intra-notice des résidus (`duel_s` + `duels["notices"]` désormais dans le fit).
       Déjà mesuré sur 2027 (§8.1) : |corr(log κ, η_i)| ≤ 0,22, z̄² = 0,75 —
@@ -300,6 +300,7 @@ Résultats : `model/backtest/results/*.json` (committés).
 1. **Largeur τ_T2 de l'aléa de scrutin** (actuel 0,10 logit ; mesure
    2017/2022 ⇒ 0,18-0,20). Backtest V2 2022 (spec §8.5) : à 0,10 le
    résultat sort de l'IC90 à T1−1 et T2−7 (z ≈ 2), à 0,19 il y rentre.
+   Base « sondages bruts ± τ » (§8.18) : 2/5 couverts à 0,10, 5/5 à 0,19.
    Effet sur 2027 (estimation analytique depuis
    §8.1, abst) : P(Philippe bat Le Pen) 0,14 → ≈ 0,21 ; IC90 du duel
    ≈ ±7,6 → ±10 pt. Fidélité au passé = élargir ; ne change pas les centres.
@@ -376,6 +377,7 @@ Résultats : `model/backtest/results/*.json` (committés).
 - 2026-11-14 21:27-21:50Z (réveils 19:07/20:07/21:07 reçus en retard, traités
   en un) : fenêtre, ancres, pos_scale 0,25 (§8.7) ; cause des modes V1 =
   compensation géométrie/η.
+- 2026-11-15 20:08-20:15Z (réveil) : base V2 brut ± τ (§8.18).
 - 2026-11-15 19:07-19:20Z (réveil) : effets maison T2 mesurés (§8.17),
   aucun stable.
 - 2026-11-15 18:07-19:10Z (réveil) : fuite même-notice (§8.16) : comptée,

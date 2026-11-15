@@ -935,6 +935,24 @@ les effectifs sont grands, tout est à ±0,4 pt sauf Odoxa (n = 6). Le seul
 régulier est Elabe (+0,2 à +0,5 pt), trop petit pour justifier un paramètre.
 Décision : pas d'effets maison au T2 ; σ_T2 absorbe cette dispersion.
 
+### 8.18 Base V2 « sondages bruts ± τ_T2 » (revue 14/11, sans fit)
+
+Moyenne brute des duels finalistes des 7 derniers jours $\pm$ l'aléa de
+scrutin seul, $\mathcal N(\mathrm{logit}\,\bar y,\ \tau_{T2}^2)$, contre le
+résultat (5 coupures V2 : 2017 T1−1, T2−7 ; 2022 T1−30, T1−1, T2−7) :
+
+| τ_T2 | couverture IC90 | log-score Σ |
+|---|---|---|
+| 0,10 (actuel) | 2/5 | 6,32 |
+| 0,19 (mesure §6) | **5/5** | **8,78** |
+
+À 0,10 : 2017 T2−7 (61,7 % sondé, IC [57,7 ; 65,5], résultat 66,1), 2022 T1−1
+(52,8, [48,7 ; 56,8], 58,6) et T2−7 (53,4, [49,3 ; 57,5], 58,6) hors IC. À 0,19
+tous couverts. Le modèle reproduisant la moyenne des sondages à ±0,4 pt
+(§8.5), cette base dit l'essentiel : **c'est τ_T2 qui décide de la couverture
+du scrutin**. Dans l'échantillon (τ mesuré sur ces élections, 5 points) :
+argument de cohérence pour l'arbitrage 1, pas validation.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
