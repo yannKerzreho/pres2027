@@ -150,7 +150,7 @@ def test_run_produit_les_listes_et_isole_leur_echec(monkeypatch):
 
     vus = []
     monkeypatch.setattr(run, "_produit", lambda mid, *a: vus.append(mid))
-    monkeypatch.setattr(run, "load_raw_polls", lambda as_of=None: pd.DataFrame({"x": [1]}))
+    monkeypatch.setattr(run, "load_raw_polls", lambda as_of=None, **_: pd.DataFrame({"x": [1]}))
 
     def casse(raw, as_of):
         raise RuntimeError("boum")

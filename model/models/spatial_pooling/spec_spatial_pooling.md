@@ -345,3 +345,24 @@ Même grille et mêmes listes pour `gp-pooling`. Fits d'abord allégés
 sur l'inférence), `w_path_draws` (S, N, T) et `w_dates` dans le fit,
 `trajectoire(fit, mask)` → (dates, tirages (S, T, |M|)).
 
+**Premier run 2027 (sondages au 2026-11-13, T1 seul, 4 chaînes retenues,
+R-hat 1,027)** — champ le plus testé (Arthaud, Mélenchon, Roussel, Tondelier,
+Glucksmann, Philippe, Retailleau, Dupont-Aignan, Le Pen, Zemmour), comparé
+aux 26 sondages de ce champ exact (30/04 → 05/11), dans l'échantillon :
+
+| candidat | part au 13/11 [IC90] | résidu moyen | résidu 30 j | pente 90 j brut / tracker (pt/mois) |
+|---|---|---|---|---|
+| Le Pen | 35,4 [34,5 ; 36,3] | −0,4 | −0,1 | +0,9 / +0,5 |
+| Mélenchon | 18,1 [17,4 ; 18,9] | −0,1 | −0,4 | +0,5 / +0,9 |
+| Philippe | 16,1 [15,1 ; 17,1] | −0,4 | **−1,0** | −1,6 / −1,2 |
+| Glucksmann | 12,3 [11,5 ; 13,1] | 0,0 | +0,3 | +1,0 / +0,8 |
+| Retailleau | 7,0 [6,3 ; 7,8] | +0,1 | +0,1 | −0,2 / −0,2 |
+| Zemmour | 4,1 [3,7 ; 4,5] | +0,2 | −0,1 | +0,1 / 0,0 |
+
+Lecture : niveau bien représenté (|résidu| ≤ 0,4 pt), tendances de signe
+juste mais **amorties d'environ un quart à moitié** sur les mouvements nets
+(Le Pen, Philippe : le tracker suit avec retard ; Philippe est à −1,0 pt sur
+30 j) — le lissage OU attendu. Dans l'échantillon : le backtest hors
+échantillon (coupures 2017/2022) reste à faire pour chiffrer le retard de
+détection. Résultat : `model/backtest/results/tracker_2027_2026-11-13.json`.
+

@@ -214,8 +214,11 @@ Résultats : `model/backtest/results/*.json` (committés).
       `model/listes.py` ni le site (session site) : backtest dans
       `model/backtest/listes_definition.py`.
 - [ ] [spec_spatial_pooling §10 écrite ; `w_path` + `trajectoire()` codés et
-      testés ; `model/backtest/tracker.py` : run 2027 EN COURS (début
-      2026-11-15T11:20Z, session 01JZeMw2)] APRÈS le diagnostic 2027 (demande utilisateur 2026-11-15) — TRACKER PAR
+      testés ; run 2027 FAIT 11:17Z (spec_spatial_pooling §10) : niveaux
+      justes (≤ 0,4 pt), tendances amorties d'1/4 à 1/2 (Philippe −1,0 pt sur
+      30 j). RESTE : backtest de suivi 2017/2022 par coupures + comparaison
+      gp-pooling sur les listes du site (règle de sélection à récupérer de la
+      session site)] APRÈS le diagnostic 2027 (demande utilisateur 2026-11-15) — TRACKER PAR
       CANDIDAT tiré du spatial : exporter la trajectoire w_i(t) du fit (chemin
       OU, déjà calculé ; seuls les candidats « dynamiques » > 5 % en ont une),
       présentée comme la PART de chaque candidat dans un champ de référence au
@@ -354,6 +357,11 @@ Résultats : `model/backtest/results/*.json` (committés).
 - 2026-11-14 21:27-21:50Z (réveils 19:07/20:07/21:07 reçus en retard, traités
   en un) : fenêtre, ancres, pos_scale 0,25 (§8.7) ; cause des modes V1 =
   compensation géométrie/η.
+- 2026-11-15 11:08-11:25Z (réveil) : merge main ; tracker (spec
+  spatial_pooling §10, `w_path`, `trajectoire`, `tracker.py`), run 2027 ;
+  test de main `test_listes` adapté (mock de load_raw_polls sans `tour`,
+  interaction avec le chargement des deux tours de la branche). Tests : 165
+  passés (hors réseau).
 - 2026-11-15 10:38-10:58Z (réveil) : IC prédictif V1 (§8.14), re-fusion,
   arbitrage 4 (τ_paire) ouvert.
 - 2026-11-15 09:13-10:45Z (réveil) : module V1 2027 (§8.12) ; 12 fits ;
