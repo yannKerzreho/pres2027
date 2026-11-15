@@ -1,0 +1,65 @@
+{
+ "tache": "Attal|Le Pen",
+ "variante": "abst",
+ "t_k": "2026-10-19",
+ "diagnostics": {
+  "rhat_max": 1.0186,
+  "rhat_t2": 1.0058,
+  "ess_min": 298.1,
+  "n_divergences": 0,
+  "kappa": 0.8783,
+  "omega": -3.6061,
+  "sigma_t2": 0.0141,
+  "n_duels": 16
+ },
+ "lignes": [
+  {
+   "paire": [
+    "Attal",
+    "Le Pen"
+   ],
+   "observe_30j": 0.4333,
+   "n_cible": 3,
+   "modele": 0.3779,
+   "modele_ic90": [
+    0.1686,
+    0.6139
+   ],
+   "erreur_pt": 5.55,
+   "log_score": 0.862,
+   "ic90_predictif": [
+    0.1677,
+    0.6182
+   ],
+   "couvre_predictif": true,
+   "log_score_predictif": 0.858,
+   "lp_par_chaine": [
+    5947.9,
+    5946.4,
+    5948.0,
+    5945.8
+   ],
+   "lp_se": [
+    1.08,
+    0.95,
+    0.82,
+    0.78
+   ],
+   "chaines_retenues": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "modele_par_chaine": [
+    0.3824,
+    0.3757,
+    0.3774,
+    0.376
+   ],
+   "ecart_chaines_pt": 0.67,
+   "rhat_cible": 0.999,
+   "concluant": true
+  }
+ ]
+}
