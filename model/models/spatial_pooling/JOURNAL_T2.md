@@ -179,10 +179,11 @@ Résultats : `model/backtest/results/*.json` (committés).
       non couvert à τ 0,10 ; V1 centres bons (0,7 / 4,9 pt), IC très larges ;
       η ≈ 0 (l'échelle se rétracte).
 - [ ] (revue 15/11, b) [module `model/backtest/v1_2027.py`, spec §8.12 ; 4
-      grosses paires × abst/hier FAITES 10:11Z (§8.13) : tout concluant d'emblée,
-      hier MAE 2,26 / LS 7,02 contre abst 2,97 / 5,94 ; 4 petites paires +
-      candidats Attal/Bardella × 2 variantes EN COURS (début 2026-11-15T10:20Z,
-      session 01JZeMw2)] V1 2027 « une paire retirée » (8 paires à n ≥ 4) et
+      grosses paires × abst/hier FAITES 10:11Z ; complément FAIT 10:40Z
+      (§8.13) : 6 tâches exécutables, hier MAE 2,19 / LS 11,61 / 6 concluants
+      contre abst 3,05 / 7,95 / 5 ; 4 tâches Bardella INEXÉCUTABLES (t_k = 27/05,
+      7 notices, Le Pen hors roster) ; couverture 4/6 : ajouter σ_T2 et le bruit
+      de la cible à l'IC V1 (tâche ci-dessous)] V1 2027 « une paire retirée » (8 paires à n ≥ 4) et
       « un candidat retiré » (Attal, Bardella), variantes abst et hier, protocole
       §8.11 : ~20 fits, 4 par réveil ; d'abord ajouter le mode à
       `diagnostic_2027.py` (ou un module `v1_2027`) avec `--chaine/--fusionner`.
@@ -228,6 +229,8 @@ Résultats : `model/backtest/results/*.json` (committés).
       multi-listes (session site : listes les plus testées parmi les ~10
       derniers sondages, chacune ajustée sur tout son historique) — reprendre
       leur règle de sélection à chaque coupure.
+- [ ] IC V1 : y ajouter σ_T2 et le bruit d'échantillonnage de la cible
+      (moyenne de n sondages) avant de lire la couverture — 0 fit (re-fusion).
 - [ ] (revue, c) abst en phase 2 sur Zemmour, Mélenchon, Pécresse 2022
       (3 tâches) pour un traitement égal à hier.
 - [ ] (revue, a/d) stacking des chaînes (log-vraisemblance par nœud sur les
@@ -340,6 +343,9 @@ Résultats : `model/backtest/results/*.json` (committés).
 - 2026-11-14 21:27-21:50Z (réveils 19:07/20:07/21:07 reçus en retard, traités
   en un) : fenêtre, ancres, pos_scale 0,25 (§8.7) ; cause des modes V1 =
   compensation géométrie/η.
+- 2026-11-15 09:13-10:45Z (réveil) : module V1 2027 (§8.12) ; 12 fits ;
+  hier meilleur sur 2027 (§8.13) ; tâches Bardella inexécutables ; journal
+  nettoyé (tâches faites cochées), tracker utilisateur remonté en file.
 - 2026-11-15 ~08:15-08:45Z (demande utilisateur) : revue Opus ; règle de
   sélection corrigée (L sur tous les tirages, SE, aval restreint), s_η dans
   rhat_t2 ; re-fusion de tous les backtests ; « hier = référence » retirée ;

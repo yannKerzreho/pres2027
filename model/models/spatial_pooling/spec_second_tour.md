@@ -805,9 +805,33 @@ est identifiée, contrairement au cadre historique).
 | Attal–Le Pen | 43,3 | 36,6 [32,7 ; 40,5] | 39,3 [36,6 ; 42,0] |
 | MAE / log-score Σ | | 2,97 / 5,94 | **2,26 / 7,02** |
 
-Mélenchon et Attal hors IC dans les deux variantes : l'IC sans aléa de
-scrutin ni excès σ_T2 est trop étroit pour une paire retirée (à mesurer sur
-les 10 tâches : couverture). En attente des 6 autres tâches avant verdict.
+**Complément (6 tâches exécutables sur 10)** : Hollande–Le Pen retiré : abst
+42,2 [21,8 ; 64,3] (non concluant, 1,7 pt), hier 42,6 [38,2 ; 46,6] pour
+43,3 ; **candidat Attal retiré** (tous ses duels) : abst 38,1 [19,7 ; 59,7],
+hier 40,1 [35,7 ; 44,5] pour 43,3.
+
+| V1 2027 (6 tâches) | MAE | log-score Σ | concluants | couverture IC90 |
+|---|---|---|---|---|
+| abst | 3,05 pt | 7,95 | 5/6 | 4/6 |
+| **hier** | **2,19 pt** | **11,61** | **6/6** | 4/6 |
+
+**Amendement au protocole (données, pas résultat)** : les 4 tâches Bardella
+(Bardella–Philippe, –Mélenchon, Attal–Bardella, candidat Bardella) sont
+**inexécutables** : $t_k$ = 27 mai 2026, date à laquelle le jeu ne compte que
+7 notices depuis le 1er janvier ; Le Pen n'y figure que dans 4 (< MIN_POLLS =
+5), sort du roster, et le contrôle de couverture de production refuse le fit à
+juste titre. Exclues, pas contournées (lever le contrôle fabriquerait un report
+au prorata).
+
+**Lecture.** Selon le protocole §8.11, `hier` gagne le log-score total sur
+2027 (11,6 contre 8,0) et sur 2022 (−5,0 contre −5,5), sans perdre la MAE sur
+aucune élection (2027 : 2,19 / 3,05 ; 2022 : 5,0 / 7,0). Réserves
+restantes avant d'en faire le défaut : (1) traitement encore inégal en 2022
+(abst sans phase 2 sur 3 paires) et abst non lancé en 2017 ; (2) 6 tâches 2027
+dont 5 contiennent Le Pen ; (3) couverture 4/6 dans les deux variantes : l'IC
+d'un duel retiré n'inclut ni σ_T2 ni le bruit d'échantillonnage de la cible
+(moyenne de 3 à 8 sondages) — à ajouter avant de lire la couverture
+(Mélenchon–Le Pen et Attal–Le Pen sortent de l'IC dans les deux variantes).
 
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
