@@ -23,6 +23,7 @@ from model.models.spatial_pooling.roster import ORDER_GROUPS_HISTORIQUES
 from model.core.live_dataset import _fold
 
 HORIZONS = list(range(159, 11, -21))     # 159, ..., 12 (180 : aucune cible)
+H_PROJ = 7.0     # jours : milieu de la fenêtre cible
 APRES = 14       # 7 j ne laissait que 0-2 sondages cibles par liste (spec §10, avant résultat)
 
 
@@ -119,14 +120,17 @@ def main() -> None:
         return
     out = sr.OUT_DIR / f"suivi_{a.election}_h{a.h:03d}.json"
     base = sr.CHAINES_DIR / out.stem
+    stem = out.stem                    # nom des fichiers de chaînes (inchangé)
     nuts = dict(draws=400, tune=600, chains=4)
     if a.chaine is not None:
-        nuts["mcmc_runner"] = sr._runner_chaine(base.with_name(f"{out.stem}_c{a.chaine}.npz"), a.chaine)
+        nuts["mcmc_runner"] = sr._runner_chaine(base.with_name(f"{stem}_c{a.chaine}.npz"), a.chaine)
     elif a.fusionner:
-        nuts["mcmc_runner"] = sr._runner_fusion([base.with_name(f"{out.stem}_c{k}.npz")
+        nuts["mcmc_runner"] = sr._runner_fusion([base.with_name(f"{stem}_c{k}.npz")
                                                  for k in range(sr.N_CHAINES)])
     else:
         ap.error("--chaine k ou --fusionner")
+    if H_PROJ:
+        out = out.with_name(f"suivi_proj_{a.election}_h{a.h:03d}.json")
     fit = fit_spatial_pooling(raw, str(c.date()), min_poll_date="1900-01-01",
                               order_groups=ORDER_GROUPS_HISTORIQUES[a.election],
                               couverture_min=None, second_tour=False, **nuts)
@@ -142,7 +146,14 @@ def main() -> None:
                              "hors_roster": [x for x in L["candidats"] if x not in idx]})
             continue
         mask = np.zeros(len(fit.candidates)); mask[[idx[x] for x in L["candidats"]]] = 1
-        pi = pi_draws_for_mask(fit, mask)
+        # Cible étalée sur (c, c+14] : on prolonge le chemin OU de h = 7 j (même
+        # processus que la projection du modèle), sinon l'IC ignore toute dérive
+        # après la coupure (couverture 0,73 mesurée sans prolongement).
+        from model.models.spatial_pooling.fit import projeter_w
+        from model.models.spatial_pooling.geometry import spatial_shares
+        import jax.numpy as jnp
+        pi = np.asarray(spatial_shares(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
+                                       jnp.asarray(projeter_w(fit, H_PROJ)), jnp.asarray(mask)))
         obs, n = cibles(a.election, c, L["cle"])
         for x in L["candidats"]:
             if x not in obs:

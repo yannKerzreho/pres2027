@@ -412,3 +412,17 @@ au-delà de `as_of`, alors que la cible s'étale sur 14 jours — à corriger
 d'un tracker spatial. Étape 3 (retard de détection) à faire.
 Résultats : `model/backtest/results/suivi_2022_h*.json`, `suivi_gp_2022_h*.json`.
 
+**Correctif d'IC (avant re-mesure).** La cible couvrant $(c, c+14]$, le
+nowcast spatial est prolongé de $h = 7$ j par le MÊME processus OU que la
+projection du modèle (`projeter_w` : retour vers $m_i$, diffusion
+$\sigma_w^2(1-r^2) + (1-r)^2\sigma_w^2$, $r = e^{-h/\tau}$). gp-pooling,
+lui, est lu à $c$ (son postérieur intègre déjà l'incertitude latente) ; les
+deux restent comparés sur les mêmes cibles. Sorties `suivi_proj_2022_h*.json`
+(les résultats sans prolongement restent dans `suivi_2022_h*.json`).
+
+**Re-mesure avec prolongement (re-fusion, 171 couples)** : MAE spatial 0,77
+(sans prolongement 0,78 ; gp 0,62) ; couverture IC90 **0,82** (0,73 ; gp
+0,90) ; candidats ≥ 5 % : MAE 1,18 (gp 0,94), couverture 0,90 (gp 0,95). Le
+prolongement règle l'essentiel du défaut de couverture ; l'écart de précision
+avec gp-pooling sur les listes sondées demeure.
+

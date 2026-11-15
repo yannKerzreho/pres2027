@@ -223,8 +223,9 @@ Résultats : `model/backtest/results/*.json` (committés).
       de T1 2027 − T1 2022) : sur listes sondées, gp gagne (MAE 0,62 contre
       0,78 ; couverture 0,90 contre 0,73 ; p = 0,0001) ⇒ le spatial ne doit
       pas remplacer gp-pooling comme tracker d'une liste sondée (spec
-      spatial_pooling §10). RESTE : IC spatial à prolonger à h = 7 j
-      (`projeter_w`) puis re-mesure ; étape 3 (retard de détection) ; 2017. APRÈS le diagnostic 2027 (demande utilisateur 2026-11-15) — TRACKER PAR
+      spatial_pooling §10). IC prolongé à h = 7 j FAIT 13:40Z : couverture
+      0,73 → 0,82 (≥ 5 % : 0,90), MAE inchangée. RESTE : étape 3 (retard de
+      détection) ; 2017. APRÈS le diagnostic 2027 (demande utilisateur 2026-11-15) — TRACKER PAR
       CANDIDAT tiré du spatial : exporter la trajectoire w_i(t) du fit (chemin
       OU, déjà calculé ; seuls les candidats « dynamiques » > 5 % en ont une),
       présentée comme la PART de chaque candidat dans un champ de référence au
@@ -363,6 +364,8 @@ Résultats : `model/backtest/results/*.json` (committés).
 - 2026-11-14 21:27-21:50Z (réveils 19:07/20:07/21:07 reçus en retard, traités
   en un) : fenêtre, ancres, pos_scale 0,25 (§8.7) ; cause des modes V1 =
   compensation géométrie/η.
+- 2026-11-15 13:28-13:45Z (réveil 13:07) : IC du suivi spatial prolongé
+  (couverture 0,82) ; merge main.
 - 2026-11-15 12:07-13:30Z (réveil) : backtest de suivi 2022, étapes 1-2
   (spatial vs gp-pooling sur les listes du site) ; Wauquiez classé.
 - 2026-11-15 11:08-11:25Z (réveil) : merge main ; tracker (spec
