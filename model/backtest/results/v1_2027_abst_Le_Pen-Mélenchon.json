@@ -1,16 +1,16 @@
 {
  "tache": "Le Pen|Mélenchon",
  "variante": "abst",
- "t_k": "2026-11-12",
+ "t_k": "2026-11-13",
  "diagnostics": {
-  "rhat_max": 1.0353,
-  "rhat_t2": 1.0151,
-  "ess_min": 206.2,
+  "rhat_max": 1.0532,
+  "rhat_t2": 1.0095,
+  "ess_min": 155.4,
   "n_divergences": 0,
-  "kappa": 0.776,
-  "omega": -3.4801,
-  "sigma_t2": 0.0124,
-  "n_duels": 69
+  "kappa": 0.7698,
+  "omega": -3.4549,
+  "sigma_t2": 0.0127,
+  "n_duels": 71
  },
  "lignes": [
   {
@@ -19,31 +19,31 @@
     "Mélenchon"
    ],
    "observe_30j": 0.685,
-   "n_cible": 8,
-   "modele": 0.6573,
+   "n_cible": 9,
+   "modele": 0.6556,
    "modele_ic90": [
-    0.6347,
-    0.6777
+    0.6329,
+    0.6765
    ],
-   "erreur_pt": 2.77,
-   "log_score": 1.128,
+   "erreur_pt": 2.94,
+   "log_score": 0.919,
    "ic90_predictif": [
-    0.6337,
-    0.6794
+    0.63,
+    0.6787
    ],
    "couvre_predictif": false,
-   "log_score_predictif": 1.428,
+   "log_score_predictif": 1.259,
    "lp_par_chaine": [
-    7098.4,
-    7100.9,
-    7101.1,
-    7099.2
+    7273.8,
+    7272.9,
+    7272.7,
+    7273.0
    ],
    "lp_se": [
-    0.92,
-    1.04,
-    1.04,
-    0.74
+    0.76,
+    1.24,
+    1.39,
+    0.84
    ],
    "chaines_retenues": [
     0,
@@ -52,12 +52,12 @@
     3
    ],
    "modele_par_chaine": [
-    0.6585,
     0.6567,
-    0.6568,
-    0.6569
+    0.6554,
+    0.6558,
+    0.6545
    ],
-   "ecart_chaines_pt": 0.18,
+   "ecart_chaines_pt": 0.22,
    "rhat_cible": 1.001,
    "concluant": true
   }
