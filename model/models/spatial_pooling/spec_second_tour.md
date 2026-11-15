@@ -684,6 +684,14 @@ candidat sans aucun duel est une extrapolation géométrique. Piste de
 modélisation (à spécifier) : abstention croissante avec la distance au plus
 proche des deux finalistes, plutôt qu'un ω unique.
 
+**`hier` phase 2 (départ au plus dense, §8.8)** : Zemmour 69,2 [65,3 ; 73,2]
+pour 66,7, 4 chaînes, 0,18 pt, **concluant et couvert**, $s_\eta$ 0,35-0,38 ;
+Pécresse 52,6 [48,3 ; 57,0] pour 65,6, 3 chaînes, 0,75 pt, concluant,
+$s_\eta$ 0,12-0,14 (limite structurelle ci-dessus). La bimodalité de
+$s_\eta$ se règle donc par la relance au mode dominant, sans changer de prior.
+Bilan `hier` (versions concluantes) : Le Pen 4,1 pt, Zemmour 2,6, Pécresse
+13,0 ; Mélenchon 0,3 (phase 1, 1 chaîne, à relancer).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

@@ -160,8 +160,10 @@ Résultats : `model/backtest/results/*.json` (committés).
       duels de candidats sans aucun duel.
 - [ ] `hier` : traiter la bimodalité de s_η (phase 2 §8.8, ou prior
       informatif), puis V2 2022 ×3 et diagnostic 2027 en `hier`.
-      Phase 2 Zemmour puis Pécresse — EN COURS (début 2026-11-15T02:02Z,
-      session 01JZeMw2).
+      Phase 2 Zemmour puis Pécresse — FAIT 02:38Z : concluants tous deux
+      (Zemmour 69,2 couvert ; Pécresse 52,6, limite structurelle).
+      Phase 2 Mélenchon puis V2 2022 T1−1 `hier` — EN COURS (début
+      2026-11-15T02:42Z, session 01JZeMw2).
 - [ ] abst : v1 2017 Macron|Le Pen, Fillon|Le Pen ; v2 2017 T1-30 (attendu : sans nœud T1), T1-1, T2-7
 - [ ] eta : mêmes tâches (comparaison)
 - [ ] Revue 2026-11-14, sans fit : corriger la base V2 (écart-type τ_T2 en plus
