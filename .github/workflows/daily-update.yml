@@ -7,6 +7,13 @@ on:
     # matinal ne garantissent rien (le planificateur GitHub est « best
     # effort ») mais évitent le créneau le plus chargé.
     - cron: "37 4 * * *"
+    # Filet : second créneau, ~9 h 30 plus tard. Retard mesuré du planificateur
+    # sur 93 runs (sept.-nov. 2026) : 0,5 à 12 h, médiane 5,6 h ; et le run du
+    # 2026-11-14 n'a jamais été créé (schedule modifié sur main avant que le
+    # créneau du jour ne parte). Si le premier passage a déjà tout produit et
+    # qu'aucun sondage n'a bougé, le second s'arrête après l'ingestion
+    # (étape « Déjà à jour ? ») : ~1 min, pas de NUTS.
+    - cron: "11 14 * * *"
   workflow_dispatch:
 # Publication : Pages est en mode « deploy from branch » (main:/docs). Le push
 # de l'étape « Commit résultats » déclenche à lui seul `pages-build-deployment`
@@ -64,7 +71,29 @@ jobs:
       # d'une version fraîche chaque jour. Les variantes de diagnostic
       # (`surface=None`) sont des runs NUTS complets dont le site n'affiche
       # rien : `--all` seulement, jamais ici.
+      # Seulement sur un passage PLANIFIÉ : un lancement manuel recalcule
+      # toujours. « À jour » = le CSV ingéré est identique à celui du dépôt ET
+      # chaque modèle à index (docs/data/<id>/index.json) a déjà son snapshot du
+      # jour. Le point quotidien n'a pas à être recalculé deux fois.
+      - name: Déjà à jour ?
+        id: etat
+        if: ${{ github.event_name == 'schedule' }}
+        run: |
+          jour=$(date -u +%F)
+          if git diff --quiet -- data/parsed/intentions_2027_wiki.csv; then
+            for idx in docs/data/*/index.json; do
+              if [ ! -f "$(dirname "$idx")/$jour.json" ]; then
+                echo "manque $(dirname "$idx")/$jour.json"; exit 0
+              fi
+            done
+            echo "sondages inchangés et snapshots du $jour présents : rien à recalculer"
+            echo "a_jour=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "sondages modifiés depuis le dernier commit : recalcul"
+          fi
+
       - name: Modèles du site -> docs/data/
+        if: ${{ steps.etat.outputs.a_jour != 'true' }}
         run: python -m model.run
 
       # `!cancelled()` et pas le succès implicite : `model.run` échoue APRÈS

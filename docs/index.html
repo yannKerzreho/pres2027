@@ -45,7 +45,12 @@
 
   <h2>Intentions &amp; sondages</h2>
   <p class="legend">Points = sondages (part brute par institut) · ligne = estimation du modèle ·
-    bande = IC 90 % · <b>cliquer un point → la notice source</b>.</p>
+    bande = IC 90 % · <b>cliquer un point → la notice source</b>. Un sondage ne se compare
+    qu'à liste de candidats identique : chaque liste parmi les plus testées a sa propre courbe.</p>
+  <div class="listes" id="listes" hidden>
+    <div class="switch" id="listesSwitch"></div>
+    <p class="legend" id="listesNote"></p>
+  </div>
   <div class="chips" id="legendB"></div>
   <svg id="chartB" viewBox="0 0 760 240" preserveAspectRatio="xMidYMid meet"></svg>
 
@@ -76,7 +81,7 @@
 <script src="./assets/palette.js"></script>
 <script src="./assets/site.js"></script>
 <script>
-const {el, pct, prob, jours, getJSON, barres} = Site;
+const {el, pct, prob, jours, getJSON, barres, echappe} = Site;
 const couleur = (nom) => Couleurs.couleur(nom);
 
 // quelques sondages hypothétiques 2022/2023 très épars écrasent sinon tout
@@ -289,6 +294,116 @@ function renderDuels(latest){
       <div class="dp">${prob(d.probabilite)}</div>`;host.appendChild(e);});
 }
 
+// --- courbes par liste de candidats (data/gp-listes/, cf. model/listes.py) ---
+// Les sondages ne se comparent qu'à champ identique : chaque liste testée est
+// une courbe à part, ajustée sur TOUT son historique. `listes.json` dit quelles
+// listes sont les plus testées en ce moment ; la courbe d'une liste n'est
+// chargée qu'au clic (l'accueil reste à un seul snapshot). La liste de la
+// prévision n'a pas de fichier : c'est le snapshot du modèle, déjà chargé.
+let LISTES=null, LISTE=null;
+const COURBES={};
+
+const dateCourte=(d)=>new Date(d+"T12:00:00Z").toLocaleDateString("fr-FR",{day:"numeric",month:"short",year:"numeric"});
+
+function boutonsListes(){
+  const ls=(LISTES?.listes||[]).slice();
+  // La prévision affichée plus haut repose sur SA liste : on la propose
+  // toujours, même le jour où elle sort du classement.
+  if(!ls.some(x=>x.reference) && LISTES?.reference?.id)
+    ls.unshift({id:LISTES.reference.id, reference:true, fichier:null,
+                libelle:"liste de la prévision", hors_classement:true});
+  return ls;
+}
+
+function renderListes(){
+  const host=document.getElementById("listes");
+  const ls=boutonsListes();
+  if(COURANT!=="gp-pooling" || ls.length<2){ host.hidden=true; return; }
+  host.hidden=false;
+  if(!LISTE || !ls.some(x=>x.id===LISTE.id)) LISTE=ls.find(x=>x.reference)||ls[0];
+  const sw=document.getElementById("listesSwitch");
+  sw.innerHTML=`<span class="etiq">Liste testée</span>`;
+  ls.forEach(x=>{
+    const b=document.createElement("button");
+    b.type="button"; b.className=x.id===LISTE.id?"active":"";
+    b.textContent=x.libelle;
+    b.title=(x.candidats||[]).join(", ");
+    b.onclick=async()=>{
+      if(LISTE.id===x.id) return;
+      try{
+        if(x.fichier && !COURBES[x.id]) COURBES[x.id]=await getJSON(`./data/${x.fichier}`);
+        LISTE=x; dessineCourbe();
+      }catch(e){ document.getElementById("listesNote").textContent=`Courbe indisponible (${e}).`; }
+    };
+    sw.appendChild(b);
+  });
+  const n=LISTES.regle?.n_recents??10;
+  const etat=LISTE.hors_classement
+    ? `Cette liste n'est plus parmi les plus testées des ${n} derniers sondages.`
+    : `Testée dans <b>${LISTE.n_recents}</b> des ${n} derniers sondages`+
+      (LISTE.dans_le_classement_depuis?`, parmi les plus testées depuis le ${dateCourte(LISTE.dans_le_classement_depuis)}`:"")+
+      ` · courbe ajustée sur ses <b>${LISTE.n_total}</b> sondages.`;
+  // Mouvements groupés par jour : un sondage qui fait entrer une liste en fait
+  // souvent sortir une autre le même jour, et c'est cette paire qu'on lit.
+  const parJour={};
+  (LISTES.evenements||[]).forEach(e=>{(parJour[e.date]=parJour[e.date]||{entree:[],sortie:[]})[e.type].push(`« ${echappe(e.libelle)} »`);});
+  const evts=Object.keys(parJour).sort().slice(-2).reverse().map(d=>{
+    const j=parJour[d];
+    return `${dateCourte(d)} : `+[j.entree.length?`entrée de ${j.entree.join(", ")}`:"",
+      j.sortie.length?`sortie de ${j.sortie.join(", ")}`:""].filter(Boolean).join(" ; ");
+  });
+  document.getElementById("listesNote").innerHTML=etat+
+    (evts.length?`<br><span class="mouvements">Derniers mouvements du classement — ${evts.join(" · ")}</span>`:"");
+}
+
+// Chart B : intentions + sondages en points, pour la liste choisie.
+function dessineCourbe(){
+  const snaps=DERNIER, latest=snaps[snaps.length-1];
+  const autre=(COURANT==="gp-pooling" && LISTE?.fichier) ? COURBES[LISTE.id] : null;
+  const src=autre||latest;
+  // Ordre des courbes : par part au scrutin pour la prévision (comme les barres),
+  // par part actuelle pour une autre liste (elle n'a pas de prévision).
+  const ordre=autre
+    ? Object.keys(autre.nowcast).sort((a,b)=>autre.nowcast[b].mean-autre.nowcast[a].mean)
+    : Object.keys(latest.forecast_scrutin).sort((a,b)=>
+        latest.forecast_scrutin[b].part_moyenne-latest.forecast_scrutin[a].part_moyenne);
+  const topSlots=ordre.slice(0,5);
+  // Jours qui apportent de l'information : les dates de fin de sondage. Le graphe
+  // temporel n'y marque ses points que là (cf. timeChart) — la trajectoire étant
+  // échantillonnée tous les 7 jours, marquer chaque point de grille alignerait
+  // des repères sur des dates où rien n'a été mesuré.
+  const joursInfo=[...new Set((src.polls||[]).map(p=>p.date_fin)
+    .filter(Boolean).map(jours))].sort((a,b)=>a-b);
+
+  // Chart B : intentions + sondages en points.
+  //
+  // La TRAJECTOIRE LISSÉE du dernier snapshot, quand le modèle la publie : θ(t)
+  // conditionné à tous les sondages, donc l'axe des x est la date de l'OPINION.
+  // Enchaîner les nowcast des millésimes (le repli ci-dessous) donne un autre
+  // objet — la date de la CROYANCE — où un sondage saisi en retard fait un
+  // palier puis une marche à sa date d'arrivée, à côté de son propre point.
+  const traj=src.trajectoire;
+  const seriesB=topSlots.map(s=>{
+    const t=traj?.slots?.[s];
+    if(!t) return {label:s,color:couleur(s),
+      points:snaps.map(sn=>({x:sn.as_of,y:sn.nowcast[s]?.mean ?? null})),
+      band:snaps.map(sn=>({x:sn.as_of, lo:sn.nowcast[s]?.ic90?.[0] ?? null,
+                           hi:sn.nowcast[s]?.ic90?.[1] ?? null}))};
+    return {label:s,color:couleur(s),
+      points:traj.dates.map((d,i)=>({x:d,y:t.mean[i]})),
+      band:traj.dates.map((d,i)=>({x:d,lo:t.ic90_lo[i],hi:t.ic90_hi[i]}))};
+  });
+  // display_polls() peut différer d'un modèle à l'autre : on tente plusieurs noms
+  // de champ plausibles pour le libellé plutôt que de supposer "slot" figé.
+  const scatter=(src.polls||[])
+    .map(p=>({x:p.date_fin,y:p.part,label:p.slot??p.label??p.candidat??p.parti,
+              url:p.notice_url,institut:p.institut}))
+    .filter(p=>p.label && topSlots.includes(p.label) && p.y!=null && p.x);
+  chips(document.getElementById("legendB"),seriesB);
+  timeChart(document.getElementById("chartB"),seriesB,{scatter,xMin:CHART_START,joursInfo});
+  renderListes();
+}
+
 function renderSecondTour(latest){
   const pDuel={};
   (latest.duels_probables||[]).forEach(d=>{pDuel[d.candidats.slice().sort().join("|")]=d.probabilite;});
@@ -305,43 +420,11 @@ function peindre(snaps){
     `<b>${m.n_sondages}</b> sondages`,`Instituts : <b>${m.instituts.join(", ")}</b>`
   ].map(s=>`<span>${s}</span>`).join("");
 
-  const topSlots=renderNowcast(latest).slice(0,5);
+  renderNowcast(latest);
   renderDuels(latest);
   renderSecondTour(latest);
 
-  // Jours qui apportent de l'information : les dates de fin de sondage. Le graphe
-  // temporel n'y marque ses points que là (cf. timeChart) — la trajectoire étant
-  // échantillonnée tous les 7 jours, marquer chaque point de grille alignerait
-  // des repères sur des dates où rien n'a été mesuré.
-  const joursInfo=[...new Set((latest.polls||[]).map(p=>p.date_fin)
-    .filter(Boolean).map(jours))].sort((a,b)=>a-b);
-
-  // Chart B : intentions + sondages en points.
-  //
-  // La TRAJECTOIRE LISSÉE du dernier snapshot, quand le modèle la publie : θ(t)
-  // conditionné à tous les sondages, donc l'axe des x est la date de l'OPINION.
-  // Enchaîner les nowcast des millésimes (le repli ci-dessous) donne un autre
-  // objet — la date de la CROYANCE — où un sondage saisi en retard fait un
-  // palier puis une marche à sa date d'arrivée, à côté de son propre point.
-  const traj=latest.trajectoire;
-  const seriesB=topSlots.map(s=>{
-    const t=traj?.slots?.[s];
-    if(!t) return {label:s,color:couleur(s),
-      points:snaps.map(sn=>({x:sn.as_of,y:sn.nowcast[s]?.mean ?? null})),
-      band:snaps.map(sn=>({x:sn.as_of, lo:sn.nowcast[s]?.ic90?.[0] ?? null,
-                           hi:sn.nowcast[s]?.ic90?.[1] ?? null}))};
-    return {label:s,color:couleur(s),
-      points:traj.dates.map((d,i)=>({x:d,y:t.mean[i]})),
-      band:traj.dates.map((d,i)=>({x:d,lo:t.ic90_lo[i],hi:t.ic90_hi[i]}))};
-  });
-  // display_polls() peut différer d'un modèle à l'autre : on tente plusieurs noms
-  // de champ plausibles pour le libellé plutôt que de supposer "slot" figé.
-  const scatter=(latest.polls||[])
-    .map(p=>({x:p.date_fin,y:p.part,label:p.slot??p.label??p.candidat??p.parti,
-              url:p.notice_url,institut:p.institut}))
-    .filter(p=>p.label && topSlots.includes(p.label) && p.y!=null && p.x);
-  chips(document.getElementById("legendB"),seriesB);
-  timeChart(document.getElementById("chartB"),seriesB,{scatter,xMin:CHART_START,joursInfo});
+  dessineCourbe();
 
   // Avertissement et méthode : lus dans le MANIFESTE (models.json), pas dans le
   // snapshot — ils décrivent le modèle courant, pas la journée affichée.
@@ -408,6 +491,10 @@ async function loadModel(id){
     }
     await loadModel(MODELES[0].id);
     paint();
+    // Facultatif : sans `listes.json` (site antérieur, échec du job), la page
+    // reste celle d'avant, sans sélecteur.
+    getJSON("./data/gp-listes/listes.json")
+      .then(m=>{ LISTES=m; renderListes(); }).catch(()=>{});
     // Les couleurs sont résolues en JS : sans ce rappel, basculer le thème
     // système laisserait des courbes au marine illisible sur fond sombre.
     Couleurs.surChangementDeTheme(()=>{ if(DERNIER) peindre(DERNIER); });

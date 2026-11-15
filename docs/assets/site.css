@@ -143,6 +143,11 @@ h3 { font-size:0.95rem; font-weight:700; margin:28px 0 6px; }
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .dp { text-align:right; font:700 0.92rem var(--mono); }
 
+/* ---------- sélecteur de liste (graphe Intentions & sondages) ---------- */
+.listes { margin:0 0 10px; }
+.listes .legend { margin:8px 0 0; }
+.listes .mouvements { font-size:0.78rem; }
+
 /* ---------- 2nd tour : une barre partagée par duel ---------- */
 .t2-duel { padding:12px 0 10px; border-bottom:1px solid var(--line); }
 .t2-duel:first-child { border-top:1px solid var(--line); }
