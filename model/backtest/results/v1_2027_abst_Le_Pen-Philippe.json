@@ -1,16 +1,16 @@
 {
  "tache": "Le Pen|Philippe",
  "variante": "abst",
- "t_k": "2026-11-12",
+ "t_k": "2026-11-13",
  "diagnostics": {
-  "rhat_max": 1.0308,
-  "rhat_t2": 1.0138,
-  "ess_min": 205.9,
+  "rhat_max": 1.0276,
+  "rhat_t2": 1.0124,
+  "ess_min": 210.8,
   "n_divergences": 0,
-  "kappa": 0.7301,
-  "omega": -3.6363,
-  "sigma_t2": 0.0141,
-  "n_duels": 68
+  "kappa": 0.7067,
+  "omega": -3.6786,
+  "sigma_t2": 0.0144,
+  "n_duels": 70
  },
  "lignes": [
   {
@@ -18,32 +18,32 @@
     "Le Pen",
     "Philippe"
    ],
-   "observe_30j": 0.5544,
-   "n_cible": 8,
-   "modele": 0.55,
+   "observe_30j": 0.5539,
+   "n_cible": 9,
+   "modele": 0.5476,
    "modele_ic90": [
-    0.5268,
-    0.5736
+    0.5226,
+    0.5713
    ],
-   "erreur_pt": 0.44,
-   "log_score": 3.281,
+   "erreur_pt": 0.62,
+   "log_score": 3.214,
    "ic90_predictif": [
-    0.5244,
-    0.5765
+    0.5215,
+    0.5721
    ],
    "couvre_predictif": true,
-   "log_score_predictif": 3.179,
+   "log_score_predictif": 3.153,
    "lp_par_chaine": [
-    7090.9,
-    7092.6,
-    7093.3,
-    7091.1
+    7266.3,
+    7265.7,
+    7265.6,
+    7265.5
    ],
    "lp_se": [
     0.99,
-    0.9,
+    1.36,
     1.15,
-    0.53
+    0.73
    ],
    "chaines_retenues": [
     0,
@@ -52,13 +52,13 @@
     3
    ],
    "modele_par_chaine": [
-    0.551,
-    0.5497,
-    0.5491,
-    0.5502
+    0.5487,
+    0.5471,
+    0.5459,
+    0.5488
    ],
-   "ecart_chaines_pt": 0.19,
-   "rhat_cible": 1.0,
+   "ecart_chaines_pt": 0.3,
+   "rhat_cible": 1.002,
    "concluant": true
   }
  ]
