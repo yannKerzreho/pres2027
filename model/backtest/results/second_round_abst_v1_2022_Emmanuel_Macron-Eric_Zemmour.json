@@ -50,6 +50,13 @@
    "ecart_chaines_pt": 4.84,
    "rhat_cible": 1.248,
    "concluant": false,
+   "ic90_predictif": [
+    0.6663,
+    0.8045
+   ],
+   "couvre_predictif": true,
+   "log_score_predictif": 0.584,
+   "n_cible": 6,
    "rhat_max": 4.8819,
    "ess_min": 1.6,
    "divergences": 4,
@@ -57,7 +64,7 @@
    "omega": -6.4606,
    "rhat_t2": 2.0481,
    "sigma_t2": 0.0091,
-   "secondes": 10.6,
+   "secondes": 8.9,
    "eta": {
     "Nathalie Arthaud": 0.008,
     "Philippe Poutou": -0.005,

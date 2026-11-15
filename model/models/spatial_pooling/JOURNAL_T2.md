@@ -229,8 +229,10 @@ Résultats : `model/backtest/results/*.json` (committés).
       multi-listes (session site : listes les plus testées parmi les ~10
       derniers sondages, chacune ajustée sur tout son historique) — reprendre
       leur règle de sélection à chaque coupure.
-- [ ] IC V1 : y ajouter σ_T2 et le bruit d'échantillonnage de la cible
+- [x] IC V1 : y ajouter σ_T2 et le bruit d'échantillonnage de la cible
       (moyenne de n sondages) avant de lire la couverture — 0 fit (re-fusion).
+      FAIT 10:55Z (spec §8.14) : élargissement faible, couverture 2027 4/6 ;
+      ratés = biais de structure 3-4 pt ⇒ piste τ_paire (ci-dessous, arbitrage 4).
 - [ ] (revue, c) abst en phase 2 sur Zemmour, Mélenchon, Pécresse 2022
       (3 tâches) pour un traitement égal à hier.
 - [ ] (revue, a/d) stacking des chaînes (log-vraisemblance par nœud sur les
@@ -285,6 +287,13 @@ Résultats : `model/backtest/results/*.json` (committés).
 3. **Lissage des tendances récentes** (Mélenchon/Le Pen : modèle 33,3 contre
    31,5 en brut sur 30 j) : suivre plus vite (τ_OU T2 plus court ou chemin
    propre à η) = plus de bruit ; garder = retard de ~1-2 pt sur un mouvement réel.
+
+4. **Incertitude d'extrapolation des duels jamais sondés** (spec §8.14) : la
+   géométrie se trompe de 3-4 pt sur 2 des 6 paires retirées 2027 sans que l'IC
+   le prévoie. Ajouter $\nu_{ab} \sim \mathcal N(0, \tau_{paire}^2)$ (≈ 0,10-0,15
+   logit, calibré en leave-one-pair-out) aux duels sans sondage élargirait leur
+   IC90 d'environ ±4-6 pt ; ne touche pas les duels sondés. Choix de
+   présentation (honnêteté vs précision affichée) : à trancher.
 
 ## Faits établis (ne pas re-mesurer)
 
@@ -343,6 +352,8 @@ Résultats : `model/backtest/results/*.json` (committés).
 - 2026-11-14 21:27-21:50Z (réveils 19:07/20:07/21:07 reçus en retard, traités
   en un) : fenêtre, ancres, pos_scale 0,25 (§8.7) ; cause des modes V1 =
   compensation géométrie/η.
+- 2026-11-15 10:38-10:58Z (réveil) : IC prédictif V1 (§8.14), re-fusion,
+  arbitrage 4 (τ_paire) ouvert.
 - 2026-11-15 09:13-10:45Z (réveil) : module V1 2027 (§8.12) ; 12 fits ;
   hier meilleur sur 2027 (§8.13) ; tâches Bardella inexécutables ; journal
   nettoyé (tâches faites cochées), tracker utilisateur remonté en file.

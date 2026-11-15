@@ -39,9 +39,10 @@ def _duels(raw: pd.DataFrame) -> pd.DataFrame:
             continue
         g = g.sort_values("candidat")
         v = g.intention.to_numpy(float)
+        ne = pd.to_numeric(g["echantillon"], errors="coerce").iloc[0]
         rows.append((n, h, g.candidat.iloc[0], g.candidat.iloc[1], v[0] / v.sum(),
-                     pd.Timestamp(g.date_fin.iloc[0])))
-    return pd.DataFrame(rows, columns=["notice", "_h", "a", "b", "y", "date"])
+                     pd.Timestamp(g.date_fin.iloc[0]), float(ne) if pd.notna(ne) else 1000.0))
+    return pd.DataFrame(rows, columns=["notice", "_h", "a", "b", "y", "date", "n_ech"])
 
 
 def paires_cibles(tache: str, duels: pd.DataFrame) -> list[tuple[str, str]]:
@@ -64,7 +65,7 @@ def jeu_de_donnees(raw: pd.DataFrame, tache: str):
     garde = ~(t2 & np.array([k in retirer for k in cle]))
     train = raw[garde & (pd.to_datetime(raw["date_fin"]) <= t_k).to_numpy()]
     fen = duels[mask & duels.date.ge(t_k - pd.Timedelta(days=FENETRE))]
-    obs = {p: (float(g.y.mean()), int(len(g))) for p, g in fen.groupby(["a", "b"])}
+    obs = {p: (float(g.y.mean()), int(len(g)), float(g.n_ech.mean())) for p, g in fen.groupby(["a", "b"])}
     return train, t_k, obs
 
 
@@ -104,13 +105,17 @@ def main() -> None:
     fit = fit_spatial_pooling(train, as_of=str(t_k.date()), second_tour=True, abstention=True,
                               **VARIANTES[a.variante], **nuts)
     lignes = []
-    for (x, y), (yo, n) in obs.items():
+    for (x, y), (yo, n, n_ech) in obs.items():
         d = duel_draws(fit, x, y, 0, scrutin=False)
+        dp = sr.predictif_moyenne(d, n, n_ech, fit.diagnostics.get("sigma_t2", 0.0))
         lignes.append({"paire": [x, y], "observe_30j": round(yo, 4), "n_cible": n,
                        "modele": round(float(d.mean()), 4),
                        "modele_ic90": [round(float(v), 4) for v in np.percentile(d, [5, 95])],
                        "erreur_pt": round(100 * abs(float(d.mean()) - yo), 2),
                        "log_score": round(_log_score_logit(d, yo), 3),
+                       "ic90_predictif": [round(float(v), 4) for v in np.percentile(dp, [5, 95])],
+                       "couvre_predictif": bool(np.percentile(dp, 5) <= yo <= np.percentile(dp, 95)),
+                       "log_score_predictif": round(_log_score_logit(dp, yo), 3),
                        **sr._cible_par_chaine(d, 1 if a.chaine is not None else 4)})
     res = {"tache": a.tache, "variante": a.variante, "t_k": str(t_k.date()),
            "diagnostics": {k: fit.diagnostics.get(k) for k in

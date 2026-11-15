@@ -833,6 +833,33 @@ d'un duel retiré n'inclut ni σ_T2 ni le bruit d'échantillonnage de la cible
 (moyenne de 3 à 8 sondages) — à ajouter avant de lire la couverture
 (Mélenchon–Le Pen et Attal–Le Pen sortent de l'IC dans les deux variantes).
 
+### 8.14 IC prédictif d'un duel retiré (V1)
+
+La cible V1 est $\bar y = n^{-1}\sum_{d=1}^{n} y_d$, et la vraisemblance du
+modèle (§4) dit $y_d \mid s \sim \mathcal N\big(s,\ s(1-s)/N_d + \sigma_{T2}^2\big)$,
+indépendants. Donc, tirage par tirage,
+$\bar y^{(t)} = s^{(t)} + \varepsilon^{(t)}$,
+$\varepsilon^{(t)} \sim \mathcal N\big(0,\ [s^{(t)}(1-s^{(t)})/\bar N + \sigma_{T2}^2]/n\big)$,
+avec $\bar N$ = taille moyenne des sondages cibles (1000 à défaut) et
+$\sigma_{T2}$ = moyenne a posteriori. L'IC90 et le log-score « prédictifs »
+portent sur $\bar y^{(t)}$ ; ceux de §8.12-8.13 portaient sur $s$ seul (trop
+étroits par construction). Limite : l'indépendance entre sondages d'un même
+institut sous-estime encore la variance si des effets maison existent.
+
+**Résultat (re-fusion, 2026-11-15)** : l'élargissement est faible
+($\sigma_{T2}$ ≈ 1,3 pt, divisé par $\sqrt n$). Couverture prédictive V1 :
+2027 abst 4/6, hier 4/6 (LS 8,6 / 12,6) ; 2022 abst 2/4, geo 2/4, hier 3/4 ;
+2017 hier 2/2. Les deux ratés 2027 (Le Pen–Mélenchon 68,5 contre
+[63,6 ; 67,9] ; Attal–Le Pen 43,3 contre [36,0 ; 42,3]) sont des biais de 3-4 pt
+que le postérieur ne compte pas : l'**erreur de structure** de l'extrapolation
+géométrique à une paire non sondée. Piste chiffrable : un terme
+$\nu_{ab} \sim \mathcal N(0, \tau_{\text{paire}}^2)$ en logit ajouté à la
+prédiction d'une paire SANS duel sondé, $\tau_{\text{paire}}$ calibré en
+leave-one-pair-out sur les V1 2027 (6 résidus ; ~0,10-0,15 logit d'après les
+erreurs observées), à afficher dans l'onglet Scénarios pour les duels jamais
+sondés. Même logique que $\tau_{T2}$ (arbitrage 1) : à soumettre à
+l'utilisateur.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

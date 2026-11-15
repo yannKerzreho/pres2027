@@ -27,6 +27,12 @@
    ],
    "erreur_pt": 1.55,
    "log_score": 2.728,
+   "ic90_predictif": [
+    0.3857,
+    0.4456
+   ],
+   "couvre_predictif": true,
+   "log_score_predictif": 2.709,
    "lp_par_chaine": [
     7121.6,
     7120.6,

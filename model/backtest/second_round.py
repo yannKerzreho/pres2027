@@ -262,6 +262,12 @@ def v1_paire_retiree(election: int, nuts: dict, seule: tuple | None = None) -> l
         obs = float(cible.y.mean())
         mod = duel_draws(fit, a, b, 0, scrutin=False)
         cible = _cible_par_chaine(mod, nuts.get("chains", 1))
+        dp = predictif_moyenne(mod, len(cible_df := duels[(duels.a == a) & (duels.b == b)]), 1000.0,
+                               fit.diagnostics.get("sigma_t2", 0.0))
+        cible.update({"ic90_predictif": [round(float(v), 4) for v in np.percentile(dp, [5, 95])],
+                      "couvre_predictif": bool(np.percentile(dp, 5) <= obs <= np.percentile(dp, 95)),
+                      "log_score_predictif": round(_log_score(np.log(dp / (1 - dp)), obs), 3),
+                      "n_cible": int(len(cible_df))})
         geo = _geometrie_seule(fit, a, b)
         bt = _bradley_terry(tous[~((tous.a == a) & (tous.b == b))], a, b)
         autres = tous[((tous.a.isin([a, b])) | (tous.b.isin([a, b]))) & ~((tous.a == a) & (tous.b == b))]
@@ -295,6 +301,14 @@ def _cible_par_chaine(d: np.ndarray, n_chaines: int) -> dict:
     out["concluant"] = bool(n_chaines >= 2 and out["rhat_cible"] <= 1.1
                             and out["ecart_chaines_pt"] <= 1.0)
     return out
+
+
+def predictif_moyenne(d: np.ndarray, n: int, n_ech: float, sigma_t2: float,
+                      seed: int = 11) -> np.ndarray:
+    """Tirages prédictifs de la MOYENNE de n sondages d'un duel (spec §8.14)."""
+    rng = np.random.default_rng(seed)
+    sd = np.sqrt((d * (1 - d) / max(n_ech, 1.0) + sigma_t2 ** 2) / max(n, 1))
+    return np.clip(d + sd * rng.standard_normal(d.shape), 1e-4, 1 - 1e-4)
 
 
 def _log_score(draws_logit: np.ndarray, y: float) -> float:

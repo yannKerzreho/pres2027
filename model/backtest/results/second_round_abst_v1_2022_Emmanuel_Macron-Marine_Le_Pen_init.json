@@ -52,6 +52,13 @@
    "ecart_chaines_pt": 1.4,
    "rhat_cible": 1.029,
    "concluant": false,
+   "ic90_predictif": [
+    0.5897,
+    0.6915
+   ],
+   "couvre_predictif": false,
+   "log_score_predictif": -1.22,
+   "n_cible": 42,
    "rhat_max": 2.3069,
    "ess_min": 2.9,
    "divergences": 0,
