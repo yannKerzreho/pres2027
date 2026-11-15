@@ -144,9 +144,12 @@ Résultats : `model/backtest/results/*.json` (committés).
       — FAIT 23:40Z (spec §8.9) : geo 56,2 % (erreur 0,9, un seul puits sans
       phase 2) ; geo1 50,0 % (erreur 5,3) ; abst 64,0 % (8,7). κ nécessaire,
       η nuisible sur cette paire.
-- [ ] geo sur les 3 autres V1 2022 (Zemmour, Mélenchon, Pécresse) — EN COURS
-      (début 2026-11-14T23:42Z, session 01JZeMw2) ; puis V2 2022 ×3 geo ;
-      puis diagnostic 2027 geo (les duels sondés restent-ils ajustés sans η ?).
+- [x] geo sur les 3 autres V1 2022 — FAIT 00:29Z (spec §8.9) : convergé
+      (3/4 concluants) mais Zemmour 51,1 pour 66,7 et Pécresse 53,1 pour 65,6
+      (repoussoirs non représentables en 1D sans valence). MAE geo 7,3, abst 6,8.
+- [ ] Variante `hier` (échelle de valence apprise, spec §8.10) sur les 4 V1
+      2022 — EN COURS (début 2026-11-15T00:35Z, session 01JZeMw2), puis
+      la meilleure variante en V2 2022 ×3 et diagnostic 2027.
 - [ ] abst : v1 2017 Macron|Le Pen, Fillon|Le Pen ; v2 2017 T1-30 (attendu : sans nœud T1), T1-1, T2-7
 - [ ] eta : mêmes tâches (comparaison)
 - [ ] Revue 2026-11-14, sans fit : corriger la base V2 (écart-type τ_T2 en plus
@@ -245,6 +248,11 @@ Résultats : `model/backtest/results/*.json` (committés).
 - 2026-11-14 21:27-21:50Z (réveils 19:07/20:07/21:07 reçus en retard, traités
   en un) : fenêtre, ancres, pos_scale 0,25 (§8.7) ; cause des modes V1 =
   compensation géométrie/η.
+- 2026-11-14 22:35-2026-11-15 00:35Z (question utilisateur : « le T2 ne
+  peut-il pas estimer μ, σ, ω ? κ η ω nécessaires ? ») : phase 2 (mode
+  dominant stable, V1 Macron–Le Pen 64 %) ; variantes geo/geo1 (§8.9) :
+  η libre = ce qui laissait coexister les géométries ; geo converge mais rate
+  les repoussoirs ; κ nécessaire ; `hier` (§8.10) lancée.
 - 2026-11-14 22:07-22:25Z (réveil) : log-densité par chaîne ⇒ modes inégaux
   (spec §8.8), sélection Δ = 10 nats, re-fusion 2022, phase 2 lancée.
   Tests : 6 chaînes/cadre verts. Tests : 148 passés (hors réseau).

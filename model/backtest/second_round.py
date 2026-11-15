@@ -352,9 +352,10 @@ def main() -> None:
     ap.add_argument("--coupure", default=None, choices=["T1-30", "T1-1", "T2-7"],
                     help="V2 : une seule coupure")
     ap.add_argument("--lister", action="store_true", help="liste les tâches unitaires et sort")
-    ap.add_argument("--variante", choices=["abst", "eta", "geo", "geo1"], default="abst",
+    ap.add_argument("--variante", choices=["abst", "eta", "geo", "geo1", "hier"], default="abst",
                     help="abst = abstention + valence ; eta = valence seule ; geo = κ + abstention, "
-                         "sans valence ; geo1 = abstention seule, κ = 1 (spec §8.9)")
+                         "sans valence ; geo1 = abstention seule, κ = 1 (spec §8.9) ; hier = abst à échelle de "
+                         "valence apprise (§8.10)")
     ap.add_argument("--chaine", type=int, default=None,
                     help="ne lance QUE la chaîne k (0-3, graine 27+k) et sauve ses tirages")
     ap.add_argument("--fusionner", action="store_true",
@@ -369,9 +370,10 @@ def main() -> None:
     args = ap.parse_args()
     global ABSTENTION, SECOND_TOUR, POS_SCALE_BT
     POS_SCALE_BT = args.pos_scale
-    ABSTENTION = args.variante in ("abst", "geo", "geo1")
+    ABSTENTION = args.variante in ("abst", "geo", "geo1", "hier")
     VARIANTE_KW.update({"geo": {"eta_scale": 0.0},
-                        "geo1": {"eta_scale": 0.0, "kappa_log_scale": 1e-3}}.get(args.variante, {}))
+                        "geo1": {"eta_scale": 0.0, "kappa_log_scale": 1e-3},
+                        "hier": {"eta_hier": True}}.get(args.variante, {}))
     SECOND_TOUR = not args.sans_t2
     if args.sans_t2 and args.only != "v2":
         ap.error("--sans-t2 n'a de sens qu'en V2 (V1 prédit un duel)")

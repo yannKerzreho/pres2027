@@ -74,7 +74,7 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
                              dynamic_mask=None, duel_a=None, duel_b=None, duel_y=None,
                              duel_n=None, duel_date_idx=None, eta_scale=ETA_SCALE,
                              kappa_log_scale=KAPPA_LOG_SCALE, sigma_t2_prior=SIGMA_T2_PRIOR,
-                             abstention=True, omega_prior=OMEGA_PRIOR):
+                             abstention=True, omega_prior=OMEGA_PRIOR, eta_hier=False):
     """Le modèle. Inférence JOINTE de la géométrie et du chemin de `w`.
 
     Trois paramètres par candidat, deux échelles globales, aucun bloc :
@@ -172,7 +172,12 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
     if duel_y is not None:
         kappa = numpyro.sample("kappa", dist.LogNormal(0.0, kappa_log_scale))
         z_eta = numpyro.sample("z_eta", dist.Normal(0.0, 1.0).expand([N]))
-        eta = numpyro.deterministic("eta", z_eta * eta_scale)
+        if eta_hier:
+            # Échelle des valences APPRISE (spec_second_tour.md §8.10).
+            s_eta = numpyro.sample("s_eta", dist.HalfNormal(eta_scale))
+            eta = numpyro.deterministic("eta", z_eta * s_eta)
+        else:
+            eta = numpyro.deterministic("eta", z_eta * eta_scale)
         sigma_t2 = numpyro.sample("sigma_t2", dist.HalfNormal(sigma_t2_prior))
         w_d = w_full[:, duel_date_idx].T                         # (D, N)
         A_all = log_attractivite(mu, sigma, w_d)                 # (D, N, B)

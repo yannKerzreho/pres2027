@@ -617,6 +617,33 @@ les géométries. κ est nécessaire (κ ≈ 0,5 : au 2nd tour l'électeur agrè
 moins « par proximité » qu'au 1er), η ne l'est pas sur cette paire et y nuit.
 Une paire ne fait pas une règle : à confirmer sur les 3 autres V1, V2 et 2027.
 
+**geo sur les 4 V1 2022** (observé / prédiction [IC90] ; conclusif ?) :
+Mélenchon 61,5 / 61,6 [58,9 ; 63,8] oui ; Le Pen 55,3 / 56,2 [50,6 ; 59,0]
+presque (1,17 pt) ; **Zemmour 66,7 / 51,1 [49,2 ; 53,6] oui** ; **Pécresse
+65,6 / 53,1 [50,1 ; 56,8] oui**. MAE geo 7,3 pt contre abst 6,8 (abst non
+concluant ×4). Sans η la convergence est acquise, mais les duels contre un
+candidat « repoussoir » (Zemmour, Pécresse en 2022) sont prédits proches de
+50/50 alors que les sondages donnaient 2/3–1/3 : une géométrie à une dimension
+ne représente pas l'attractivité propre au second tour. η le représente, mais
+libre à échelle 0,5 il sur-corrige (Zemmour 74 %) et casse Le Pen (64 %).
+κ et ω varient fortement d'un fit à l'autre (κ 0,53–1,76 ; ω −1,0 à −7,5) :
+faiblement identifiés, ils absorbent ce qui reste.
+
+### 8.10 Valence à échelle apprise (variante `hier`)
+
+$$\eta_i = s_\eta\, z_i,\quad z_i \sim \mathcal N(0,1),\quad s_\eta \sim
+\mathrm{HalfNormal}(0{,}5),$$
+
+paramétrisation non centrée (pas d'entonnoir en $z$ ; l'entonnoir en $s_\eta$
+avec ~8 candidats en duel est le risque connu — d'où `ETA_SCALE` fixe à
+l'origine — et sera surveillé par l'écart de chaînes). Avec $s_\eta$ appris,
+les duels décident collectivement de l'ampleur des valences : si la géométrie
+explique déjà la plupart des duels, $s_\eta$ rétrécit et η ne peut plus
+compenser une géométrie arbitraire ; si un repoussoir l'exige, $s_\eta$ reste
+grand. Le prior a la même échelle que le 0,5 fixe actuel : on n'impose pas a
+priori des valences plus petites, on laisse les données le dire. Mesure : les
+4 V1 2022, critère §8.4/§8.8 puis erreur, à comparer à abst et geo.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
