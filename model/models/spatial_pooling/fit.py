@@ -173,8 +173,10 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         rhat_t2 = max([float(np.max(diag[k]["r_hat"])) for k in ("kappa", "sigma_t2")]
                       + ([float(np.max(np.asarray(diag["z_eta"]["r_hat"])[en_duel]))]
                          if eta_scale != 0 else [])
-                      + ([float(diag["omega"]["r_hat"])] if abstention else []))
-    pires = sorted(((float(np.max(v["r_hat"])), k) for k, v in diag.items()), reverse=True)[:3]
+                      + ([float(diag["omega"]["r_hat"])] if abstention else [])
+                      # revue 2026-11-15 : l'échelle apprise est le site fragile de `hier`
+                      + ([float(diag["s_eta"]["r_hat"])] if "s_eta" in diag else []))
+    pires = sorted(((float(np.nanmax(v["r_hat"])), k) for k, v in diag.items()), reverse=True)[:3]
     steps = np.asarray(extra["num_steps"]).ravel()
     diagnostics = {
         "n_noeuds": int(arrays["tested_mask"].shape[0]),
@@ -186,7 +188,7 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         "temps_secondes": round(elapsed, 1),
         "rhat_max": round(max(r for r, _ in pires), 4),
         "rhat_pires_sites": [(k, round(r, 3)) for r, k in pires],
-        "ess_min": round(min(float(np.min(v["n_eff"])) for v in diag.values()), 1),
+        "ess_min": round(min(float(np.nanmin(v["n_eff"])) for v in diag.values()), 1),
         "n_divergences": int(np.sum(extra["diverging"])),
         # Le temps vaut `(tirages + warmup) x pas x chaînes` : c'est la mesure
         # qui dit si un changement a amélioré le CONDITIONNEMENT ou seulement le

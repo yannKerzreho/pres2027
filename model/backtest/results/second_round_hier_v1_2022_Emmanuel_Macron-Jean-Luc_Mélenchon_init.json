@@ -25,6 +25,24 @@
    "geometrie_seule": 0.7543,
    "bradley_terry": 0.5643,
    "autres_duels_des_deux": 220,
+   "lp_par_chaine": [
+    10616.1,
+    10614.8,
+    10614.8,
+    10614.9
+   ],
+   "lp_se": [
+    1.33,
+    1.64,
+    1.29,
+    1.27
+   ],
+   "chaines_retenues": [
+    0,
+    1,
+    2,
+    3
+   ],
    "modele_par_chaine": [
     0.6052,
     0.6082,
@@ -33,25 +51,6 @@
    ],
    "ecart_chaines_pt": 1.33,
    "rhat_cible": 1.001,
-   "lp_par_chaine": [
-    10613.1,
-    10614.1,
-    10618.2,
-    10612.4
-   ],
-   "chaines_retenues": [
-    0,
-    1,
-    2,
-    3
-   ],
-   "modele_retenu": 0.6122,
-   "modele_ic90_retenu": [
-    0.4408,
-    0.7722
-   ],
-   "ecart_chaines_retenues_pt": 1.33,
-   "rhat_cible_retenu": 1.001,
    "concluant": false,
    "rhat_max": 1.0434,
    "ess_min": 68.0,
@@ -60,7 +59,7 @@
    "omega": -4.8352,
    "rhat_t2": 1.0206,
    "sigma_t2": 0.0097,
-   "secondes": 7.7,
+   "secondes": 10.7,
    "eta": {
     "Nathalie Arthaud": -0.019,
     "Philippe Poutou": 0.005,

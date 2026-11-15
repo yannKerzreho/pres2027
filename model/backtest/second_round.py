@@ -84,7 +84,17 @@ def _runner_fusion(paths: list[Path]):
         noms = zs[0].files
         samples = {n[3:]: np.concatenate([z[n] for z in zs], axis=0) for n in noms if n.startswith("s__")}
         extra = {n[3:]: np.concatenate([z[n] for z in zs], axis=0) for n in noms if n.startswith("e__")}
-        LP_CHAINES[:] = _log_densite_par_chaine(model_fn, model_kwargs, samples)
+        lp, se = _log_densite_par_chaine(model_fn, model_kwargs, samples)
+        keep = _chaines_retenues(lp, se)
+        LP_CHAINES[:] = lp
+        LP_SE[:] = se
+        CHAINES_RETENUES[:] = keep.tolist()
+        # Revue 2026-11-15, point 4 : TOUT l'aval (IC, couverture, log-score,
+        # géométrie seule, κ/ω/η, R-hat) ne voit que les chaînes retenues.
+        D = samples[next(iter(samples))].shape[1]
+        samples = {n: v[keep] for n, v in samples.items()}
+        extra = {n: v.reshape(len(zs), D, *v.shape[1:])[keep].reshape(-1, *v.shape[1:])
+                 for n, v in extra.items()}
         return samples, extra
     return run
 
@@ -100,14 +110,19 @@ def _init_mode_dominant(json_phase1: str) -> dict:
     return {n[3:]: np.asarray(z[n][0, -1]) for n in z.files if n.startswith("s__")}
 
 
-# Log-densité moyenne par chaîne de la dernière fusion (spec §8.8).
+# Log-densité moyenne par chaîne de la dernière fusion (spec §8.8, révisée
+# après la revue du 2026-11-15 : L̄ sur TOUS les tirages, seuil tenant compte
+# de l'erreur-type ; 20 tirages donnaient ~4 nats d'erreur sur un écart).
 LP_CHAINES: list[float] = []
-DELTA_LP = 10.0          # nats : seuil de rétention des chaînes (spec §8.8)
-N_TIRAGES_LP = 20        # tirages amincis par chaîne pour estimer L̄_c
+LP_SE: list[float] = []
+CHAINES_RETENUES: list[int] = []
+DELTA_LP = 10.0          # nats : seuil minimal de rétention des chaînes
+N_LOTS_SE = 10           # lots pour l'erreur-type de L̄ (moyennes par lots)
 
 
-def _log_densite_par_chaine(model_fn, model_kwargs, samples) -> list[float]:
-    """L̄_c = moyenne de log p(θ, y) sur `N_TIRAGES_LP` tirages de chaque chaîne."""
+def _log_densite_par_chaine(model_fn, model_kwargs, samples) -> tuple[list[float], list[float]]:
+    """(L̄_c, SE_c) : moyenne de log p(θ, y) sur tous les tirages de chaque chaîne,
+    erreur-type par moyennes de `N_LOTS_SE` lots (robuste à l'autocorrélation)."""
     import jax
     import jax.numpy as jnp
     from numpyro import handlers
@@ -116,12 +131,21 @@ def _log_densite_par_chaine(model_fn, model_kwargs, samples) -> list[float]:
     sites = [n for n, v in tr.items() if v["type"] == "sample" and not v["is_observed"]]
     f = jax.jit(lambda prm: log_density(model_fn, (), model_kwargs, prm)[0])
     C, D = samples[sites[0]].shape[:2]
-    out = []
+    moy, se = [], []
     for c in range(C):
-        idx = np.linspace(0, D - 1, min(N_TIRAGES_LP, D)).astype(int)
-        out.append(float(np.mean([float(f({n: jnp.asarray(samples[n][c, t]) for n in sites}))
-                                  for t in idx])))
-    return out
+        L = np.array([float(f({n: jnp.asarray(samples[n][c, t]) for n in sites})) for t in range(D)])
+        lots = np.array_split(L, N_LOTS_SE)
+        moy.append(float(L.mean()))
+        se.append(float(np.std([b.mean() for b in lots], ddof=1) / np.sqrt(len(lots))))
+    return moy, se
+
+
+def _chaines_retenues(lp, se) -> np.ndarray:
+    """Chaînes c avec L̄_c ≥ L̄_best − max(Δ, 4·SE de l'écart) (spec §8.8)."""
+    lp, se = np.asarray(lp, float), np.asarray(se, float)
+    b = int(np.argmax(lp))
+    seuil = np.maximum(DELTA_LP, 4.0 * np.sqrt(se ** 2 + se[b] ** 2))
+    return np.flatnonzero(lp >= lp[b] - seuil)
 
 
 def polls_historiques(election: int, as_of: pd.Timestamp, history_days: int = 180,
@@ -250,31 +274,26 @@ def v1_paire_retiree(election: int, nuts: dict, seule: tuple | None = None) -> l
 
 
 def _cible_par_chaine(d: np.ndarray, n_chaines: int) -> dict:
-    """Convergence DE LA QUANTITÉ PRÉDITE (spec §8.4) : R-hat et écart entre
-    moyennes de chaînes du duel cible. Les tirages sont rangés chaîne par chaîne
-    (`reshape(-1, ...)` de (chaînes, tirages, ...))."""
-    if n_chaines < 2 or len(d) % n_chaines:
-        return {}
+    """Convergence DE LA QUANTITÉ PRÉDITE (spec §8.4) sur les chaînes du fit (après
+    fusion : les seules chaînes retenues, §8.8). Tirages rangés chaîne par chaîne."""
+    if CHAINES_RETENUES:
+        n_chaines = len(CHAINES_RETENUES)
+    out = {}
+    if LP_CHAINES:
+        out.update({"lp_par_chaine": [round(float(v), 1) for v in LP_CHAINES],
+                    "lp_se": [round(float(v), 2) for v in LP_SE],
+                    "chaines_retenues": list(CHAINES_RETENUES)})
+    if n_chaines < 1 or len(d) % n_chaines:
+        return out
     from numpyro.diagnostics import split_gelman_rubin
     x = np.log(d / (1 - d)).reshape(n_chaines, -1)
     m = (1 / (1 + np.exp(-x))).mean(1)
-    out = {"modele_par_chaine": [round(float(v), 4) for v in m],
-           "ecart_chaines_pt": round(100 * float(m.max() - m.min()), 2),
-           "rhat_cible": round(float(split_gelman_rubin(x[..., None])[0]), 3)}
-    if len(LP_CHAINES) == n_chaines:
-        lp = np.array(LP_CHAINES)
-        keep = np.flatnonzero(lp >= lp.max() - DELTA_LP)
-        xs = x[keep]
-        dr = (1 / (1 + np.exp(-xs))).ravel()
-        out.update({"lp_par_chaine": [round(float(v), 1) for v in lp],
-                    "chaines_retenues": keep.tolist(),
-                    "modele_retenu": round(float(dr.mean()), 4),
-                    "modele_ic90_retenu": [round(float(v), 4) for v in np.percentile(dr, [5, 95])],
-                    "ecart_chaines_retenues_pt": round(100 * float(m[keep].max() - m[keep].min()), 2)})
-        if len(keep) >= 2:
-            out["rhat_cible_retenu"] = round(float(split_gelman_rubin(xs[..., None])[0]), 3)
-        out["concluant"] = bool(len(keep) >= 2 and out["rhat_cible_retenu"] <= 1.1
-                                and out["ecart_chaines_retenues_pt"] <= 1.0)
+    out.update({"modele_par_chaine": [round(float(v), 4) for v in m],
+                "ecart_chaines_pt": round(100 * float(m.max() - m.min()), 2)})
+    if n_chaines >= 2:
+        out["rhat_cible"] = round(float(split_gelman_rubin(x[..., None])[0]), 3)
+    out["concluant"] = bool(n_chaines >= 2 and out["rhat_cible"] <= 1.1
+                            and out["ecart_chaines_pt"] <= 1.0)
     return out
 
 

@@ -718,9 +718,8 @@ Règle (ii) : passe.
 
 **Bilan des variantes (2026-11-15)** : `hier` égale abst sur les duels sondés
 (V2 2022, 2027), converge mieux, et prédit mieux les duels non sondés
-(MAE V1 5,0 contre 6,8 non concluant). **Proposée comme variante de
-référence du bloc T2** — à confirmer sur 2017 et en revue Opus avant d'en
-changer le défaut ; aucun effet production tant que `PUBLIER_T2 = False`.
+(MAE V1 5,0 contre 6,8 non concluant). Proposée comme variante de
+référence — **proposition retirée le 2026-11-15 après revue (§8.11)**.
 
 **2017 en `hier`** (cadre pauvre : 17-24 notices T1 datées, 3 champs ;
 fits de 2 min, convergence facile) :
@@ -738,6 +737,43 @@ modèle = la moyenne des sondages, et l'erreur de scrutin de fin de campagne
 (Macron sous-estimé de 4-5 pt) sort de l'IC à $\tau_{T2} = 0{,}10$ (arbitrage
 1). V1 2017 : IC très larges (géométrie peu contrainte par 3 champs) ; les
 centres sont bons (0,7 et 4,9 pt).
+
+### 8.11 Révision après la revue Opus du 2026-11-15
+
+**Règle §8.8 corrigée (code + re-fusion de tous les JSON).** $\bar L_c$ est
+calculée sur TOUS les tirages (400 par chaîne, au lieu de 20) avec erreur-type
+par 10 lots ; seuil $\bar L_c \ge \bar L_{best} - \max(10,\ 4\sqrt{SE_c^2+SE_{best}^2})$.
+Les tirages des chaînes rejetées sont retirés AVANT tout calcul aval (IC,
+couverture, log-score, géométrie seule, κ/ω/η, R-hat) — avant, seule la cible
+l'était. `rhat_t2` inclut $s_\eta$ ; `nanmax`/`nanmin` pour η ≡ 0.
+**Limite reconnue** : $\bar L$ n'est pas la masse d'un mode (il manque
+l'entropie, ~4-23 nats d'écart mesuré par la revue) ; la règle n'exclut avec
+confiance que les pièges ≫ 10 nats. Remplacement prévu : stacking des chaînes.
+
+**Tableau V1 2022 re-fusionné** (meilleure version disponible par variante) :
+
+| variante | MAE | log-score Σ (logit gaussien) | concluants | protocole |
+|---|---|---|---|---|
+| abst | 7,0 pt | −5,5 | 0/4 | phase 2 sur 1 paire seulement |
+| geo | 7,3 pt | −82,9 | 3/4 | phase 1 |
+| hier | 5,0 pt | −5,0 | 3/4 | phase 2 sur 3 paires |
+
+**La proposition « `hier` = référence » (§8.10) est RETIRÉE en l'état** :
+log-scores à égalité avec abst, traitement inégal (abst sans phase 2 sur 3
+paires), 4 paires contenant toutes Macron (≈ un seul test), variantes conçues
+après avoir vu ces paires. Elle sera rejugée sur un protocole fixé d'avance
+(ci-dessous). V2 2022 T1−1 `hier` après re-fusion : 2 chaînes retenues,
+concluant, 52,3 % (abst 52,4) — la phrase « converge mieux » ne valait que
+pour 2027.
+
+**Protocole fixé d'avance pour comparer les variantes** (avant tout nouveau
+résultat) : mêmes tâches pour chaque variante ; phase 1 (4 chaînes
+dispersées) puis phase 2 si moins de 3 chaînes retenues ; métrique primaire =
+log-score en logit (gaussien, depuis les tirages retenus), secondaire = MAE ;
+une variante n'est préférée que si elle gagne le log-score total ET ne perd
+la MAE sur aucune élection. Jeu de test principal : **V1 2027**, une paire
+retirée (8 paires à n ≥ 4) et un candidat retiré (Attal, Bardella), sur le
+régime de production — 2017/2022 deviennent des contrôles.
 
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 

@@ -17,49 +17,47 @@
    ],
    "n_sondages_retires": 57,
    "observe_30j": 0.6667,
-   "modele": 0.5475,
+   "modele": 0.511,
    "modele_ic90": [
-    0.4937,
-    0.688
+    0.4924,
+    0.5359
    ],
-   "geometrie_seule": 0.4857,
+   "geometrie_seule": 0.4566,
    "bradley_terry": 0.7454,
    "autres_duels_des_deux": 188,
-   "modele_par_chaine": [
-    0.511,
-    0.5106,
-    0.6573,
-    0.5112
-   ],
-   "ecart_chaines_pt": 14.67,
-   "rhat_cible": 3.332,
    "lp_par_chaine": [
-    10511.6,
-    10504.8,
-    10460.5,
-    10509.4
+    10510.5,
+    10507.2,
+    10457.1,
+    10505.5
+   ],
+   "lp_se": [
+    0.98,
+    1.31,
+    1.28,
+    1.11
    ],
    "chaines_retenues": [
     0,
     1,
     3
    ],
-   "modele_retenu": 0.511,
-   "modele_ic90_retenu": [
-    0.4924,
-    0.5359
+   "modele_par_chaine": [
+    0.511,
+    0.5106,
+    0.5112
    ],
-   "ecart_chaines_retenues_pt": 0.06,
-   "rhat_cible_retenu": 1.001,
+   "ecart_chaines_pt": 0.06,
+   "rhat_cible": 1.001,
    "concluant": true,
-   "rhat_max": 5.4888,
-   "ess_min": 2.1,
+   "rhat_max": 1.022,
+   "ess_min": 165.4,
    "divergences": 0,
-   "kappa": 1.7584,
-   "omega": -7.4612,
-   "rhat_t2": 1.6254,
-   "sigma_t2": 0.01,
-   "secondes": 6.8,
+   "kappa": 1.5942,
+   "omega": -7.7774,
+   "rhat_t2": 1.0012,
+   "sigma_t2": 0.0094,
+   "secondes": 10.4,
    "eta": {
     "Nathalie Arthaud": 0.0,
     "Philippe Poutou": 0.0,

@@ -7,7 +7,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## État (mis à jour à chaque réveil)
 
-- Dernière revue Opus : 2026-11-14 (routine cloud, cf. « Revue 2026-11-14 »).
+- Dernière revue Opus : 2026-11-15 ~08:20Z (à la demande de l'utilisateur, cf. « Revue 2026-11-15 »).
 - OBJECTIF (utilisateur, via l'orchestrateur, 2026-11-14) : « un modèle qui est
   backé par le passé mais qui représente bien les sondages et tendances
   actuels ». 2017/2022 servent à CALIBRER et VALIDER ; le critère final est la
@@ -18,7 +18,8 @@ l'historique, ajouter en bas de « Historique ».
   sans accord explicite de l'utilisateur.
 - Modèle courant : géométrie T1 + κ + valence η agrégée + abstention par valeur
   inclusive (ω). Variantes de backtest : `eta`, `geo` (η ≡ 0), `geo1` (κ ≡ 1),
-  `hier` (échelle de η apprise) — `hier` proposée en référence (spec §8.10).
+  `hier` (échelle de η apprise) — proposition « référence » RETIRÉE après la
+  revue du 15/11 ; comparaison à refaire sur protocole fixé (spec §8.11).
 - Backtests : cadre historique à toutes les hypothèses T1 (§8.3) ; 4 processus
   d'une chaîne + fusion ; sélection des chaînes par log-densité (§8.8) ;
   phase 2 `--init-depuis` ; convergence jugée sur la quantité prédite (§8.4).
@@ -177,6 +178,18 @@ Résultats : `model/backtest/results/*.json` (committés).
       FAIT 03:53Z (spec §8.10) : 4 tâches convergées ; V2 = sondages, T2−7
       non couvert à τ 0,10 ; V1 centres bons (0,7 / 4,9 pt), IC très larges ;
       η ≈ 0 (l'échelle se rétracte).
+- [ ] (revue 15/11, b) V1 2027 « une paire retirée » (8 paires à n ≥ 4) et
+      « un candidat retiré » (Attal, Bardella), variantes abst et hier, protocole
+      §8.11 : ~20 fits, 4 par réveil ; d'abord ajouter le mode à
+      `diagnostic_2027.py` (ou un module `v1_2027`) avec `--chaine/--fusionner`.
+- [ ] (revue, c) abst en phase 2 sur Zemmour, Mélenchon, Pécresse 2022
+      (3 tâches) pour un traitement égal à hier.
+- [ ] (revue, a/d) stacking des chaînes (log-vraisemblance par nœud sur les
+      tirages sauvés) ou max local + Laplace par chaîne — maths dans la spec.
+- [ ] (revue, e) V1 en retirant la NOTICE entière (fuite même-répondants) :
+      comptage sans fit, puis 4 fits.
+- [ ] (revue, 9) τ_T2 : a posteriori sur 2002-2022 (normale vs Student-t),
+      données à sourcer (session données), effet sur P(Philippe bat Le Pen).
 - [ ] Ensuite :
       revue Opus (due 2026-11-15 ~15:00Z) sur §8.3-8.10 avant de changer le
       défaut du modèle (eta_hier). Piste « abstention croissante avec la
@@ -281,6 +294,10 @@ Résultats : `model/backtest/results/*.json` (committés).
 - 2026-11-14 21:27-21:50Z (réveils 19:07/20:07/21:07 reçus en retard, traités
   en un) : fenêtre, ancres, pos_scale 0,25 (§8.7) ; cause des modes V1 =
   compensation géométrie/η.
+- 2026-11-15 ~08:15-08:45Z (demande utilisateur) : revue Opus ; règle de
+  sélection corrigée (L sur tous les tirages, SE, aval restreint), s_η dans
+  rhat_t2 ; re-fusion de tous les backtests ; « hier = référence » retirée ;
+  protocole fixé (spec §8.11). Tests : 150 passés (hors réseau).
 - 2026-11-15 04:07-04:12Z (réveil) : piste d'abstention écartée par le
   calcul (§8.10), sans fit.
 - 2026-11-15 03:44-03:55Z (réveils 02:07/03:07 reçus en retard) : 2017 hier
@@ -297,6 +314,37 @@ Résultats : `model/backtest/results/*.json` (committés).
 - 2026-11-14 22:07-22:25Z (réveil) : log-densité par chaîne ⇒ modes inégaux
   (spec §8.8), sélection Δ = 10 nats, re-fusion 2022, phase 2 lancée.
   Tests : 6 chaînes/cadre verts. Tests : 148 passés (hors réseau).
+
+## Revue Opus 2026-11-15 — intégration point par point
+
+1. Règle Δ = 10 nats au niveau du bruit (20 tirages, SE ~4 nats sur un écart ;
+   faux rejet Pécresse phase 2) : ACCEPTÉ, VÉRIFIÉ (400 tirages : 10549,2 /
+   10547,4 / 10547,5 / 10547,2, SE 1,6-2,0) ; CORRIGÉ : L̄ sur tous les
+   tirages, seuil max(10, 4·SE), re-fusion de tous les JSON.
+2. « Masse ∝ e^L » faux à l'échelle de Δ (entropie 4-23 nats) : ACCEPTÉ ;
+   documenté (§8.11) ; la règle reste un garde-fou contre les pièges ≫ 10
+   nats ; stacking mis en file.
+3. Phase 2 ne teste pas l'existence d'autres modes : ACCEPTÉ — elle teste la
+   stabilité d'un puits, pas son unicité ; libellé corrigé, cartographie
+   (8 chaînes dispersées ou max local + Laplace) mise en file.
+4. Sélection appliquée à la cible seule : ACCEPTÉ, CORRIGÉ (les chaînes
+   rejetées sont retirées avant tout l'aval).
+5. `rhat_t2` sans s_η ; V2 T1−1 hier à 1 chaîne cité comme concluant ; NaN :
+   ACCEPTÉ, CORRIGÉ (s_η ajouté, nanmax/nanmin) ; après re-fusion V2 T1−1 hier
+   garde 2 chaînes (concluant) ; phrase « converge mieux » restreinte à 2027.
+6. « hier = référence » prématuré : ACCEPTÉ. Après re-fusion cohérente,
+   log-score Σ hier −5,0 / abst −5,5 / geo −82,9 (l'inversion relevée venait
+   en partie du mélange poolé/retenu), mais égalité de fait, traitement
+   inégal et jardin aux sentiers : proposition retirée, protocole fixé (§8.11).
+7. Le backtest historique ne teste pas le régime de production : ACCEPTÉ ;
+   V1 2027 (paire retirée, candidat retiré) devient le jeu de test principal.
+8. Fuite même-notice en V1 ; Le Pen–Pécresse annoncé mais non produit :
+   ACCEPTÉ (mis en file) ; Le Pen–Pécresse n'a que 1 sondage < MIN_SONDAGES_PAIRE
+   = 3, d'où son absence de `--lister` — spec §8 à corriger en ce sens.
+9. τ_T2 décide de la couverture et de P(élu) plus que la variante : ACCEPTÉ ;
+   reste un arbitrage utilisateur ; a posteriori 2002-2022 mis en file.
+Idées (a)-(e) : toutes en file, (a) partiellement faite (L sur tous les
+tirages), (b) prioritaire.
 
 ## Revue Opus 2026-11-14 (routine cloud) — intégration point par point
 
