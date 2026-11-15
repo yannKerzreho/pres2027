@@ -775,6 +775,22 @@ la MAE sur aucune élection. Jeu de test principal : **V1 2027**, une paire
 retirée (8 paires à n ≥ 4) et un candidat retiré (Attal, Bardella), sur le
 régime de production — 2017/2022 deviennent des contrôles.
 
+### 8.12 V1 2027 : duel retiré dans le régime de production (protocole)
+
+Tâches (fixées avant tout résultat) : (i) **paire retirée**, les 8 paires 2027
+à ≥ 4 duels sondés (Le Pen–Philippe, Le Pen–Mélenchon, Attal–Le Pen,
+Glucksmann–Le Pen, Bardella–Philippe, Bardella–Mélenchon, Attal–Bardella,
+Hollande–Le Pen) ; (ii) **candidat retiré** : tous les duels d'Attal, puis
+tous ceux de Bardella (le cas réel de l'onglet Scénarios : candidat sans duel
+propre, cf. Pécresse §8.10). Pour la tâche k de paires cibles $\mathcal P_k$ :
+$t_k$ = date du dernier duel sondé de $\mathcal P_k$ ; fit joint sur les
+sondages ≤ $t_k$ privés des duels de $\mathcal P_k$ (T1 inchangé) ; cible
+$y_{ab}$ = moyenne des duels de $(a,b)$ sur $[t_k - 30\,j, t_k]$ ; prédiction
+$s_{ab}$ au jour $t_k$, **sans** aléa de scrutin. Variantes : abst et hier ;
+même protocole (§8.11 : 4 chaînes, phase 2 si < 3 retenues ; log-score
+logit primaire, MAE secondaire). Limite connue : les autres duels des mêmes
+notices restent (fuite même-répondants, revue point 8).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

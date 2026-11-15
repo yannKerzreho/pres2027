@@ -83,3 +83,18 @@ def test_log_densite_par_chaine_classe_les_chaines():
         numpyro.sample("x", dist.Normal(0.0, 1.0))
     lp, se = _log_densite_par_chaine(m, {}, {"x": np.array([[0.0] * 20, [3.0] * 20])})
     assert lp[0] - lp[1] > 4 and se[0] == 0.0
+
+
+def test_v1_2027_retire_exactement_les_duels_cibles():
+    from model.core.live_dataset import load_raw_polls
+    from model.backtest.v1_2027 import _duels, jeu_de_donnees
+    raw = load_raw_polls(tour=None)
+    tous = _duels(raw)
+    train, t_k, obs = jeu_de_donnees(raw, "Le Pen|Philippe")
+    reste = _duels(train)
+    assert not ((reste.a == "Le Pen") & (reste.b == "Philippe")).any()
+    autres = tous[~((tous.a == "Le Pen") & (tous.b == "Philippe")) & (tous.date <= t_k)]
+    assert len(reste) == len(autres)
+    assert list(obs) == [("Le Pen", "Philippe")]
+    _, _, obs_c = jeu_de_donnees(raw, "candidat:Bardella")
+    assert all("Bardella" in p for p in obs_c)

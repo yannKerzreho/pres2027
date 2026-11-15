@@ -178,7 +178,9 @@ Résultats : `model/backtest/results/*.json` (committés).
       FAIT 03:53Z (spec §8.10) : 4 tâches convergées ; V2 = sondages, T2−7
       non couvert à τ 0,10 ; V1 centres bons (0,7 / 4,9 pt), IC très larges ;
       η ≈ 0 (l'échelle se rétracte).
-- [ ] (revue 15/11, b) V1 2027 « une paire retirée » (8 paires à n ≥ 4) et
+- [ ] (revue 15/11, b) [module `model/backtest/v1_2027.py` FAIT, spec §8.12 ;
+      file hier puis abst sur les 4 grosses paires EN COURS (début
+      2026-11-15T09:25Z, session 01JZeMw2)] V1 2027 « une paire retirée » (8 paires à n ≥ 4) et
       « un candidat retiré » (Attal, Bardella), variantes abst et hier, protocole
       §8.11 : ~20 fits, 4 par réveil ; d'abord ajouter le mode à
       `diagnostic_2027.py` (ou un module `v1_2027`) avec `--chaine/--fusionner`.
