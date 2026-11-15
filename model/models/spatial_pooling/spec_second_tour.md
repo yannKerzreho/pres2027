@@ -680,9 +680,20 @@ structurelle** : pour un candidat sans duel propre, le duel prédit vient de la
 géométrie et penche vers 50/50 pour les voisins du centre ; la valeur inclusive
 (ω) ne suffit pas à faire abstenir les électeurs éloignés des deux. Conséquence
 produit (onglet Scénarios, 2027) : afficher qu'un duel jamais sondé d'un
-candidat sans aucun duel est une extrapolation géométrique. Piste de
-modélisation (à spécifier) : abstention croissante avec la distance au plus
-proche des deux finalistes, plutôt qu'un ω unique.
+candidat sans aucun duel est une extrapolation géométrique. Piste
+« abstention croissante avec la distance aux deux finalistes » **écartée
+(2026-11-15)** : elle est déjà dans le modèle. L'option extérieure est
+$U_0 = \omega + \kappa\,\mathrm{lse}_R(v)$ (§3.1), donc
+$\rho_{ab}(v) \approx \sigma\big(\kappa(\max(A_a,A_b) - A_{\text{fav}}(v)) - \omega\big)$ :
+un électeur RN dans Macron–Pécresse s'abstient déjà d'autant plus que
+$A_{LP}(v) \gg A_P(v)$. Ce qui manque est ailleurs : parmi les électeurs
+qui EXPRIMENT, $q = \sigma(\kappa(A_P - A_M))$ envoie la droite radicale à
+Pécresse, géométriquement plus proche ; que ces électeurs la rejettent
+(« repoussoir » à droite) n'est écrit nulle part dans les sondages de T1 —
+c'est exactement l'information que portent ses propres duels, via η. C'est
+une limite d'**identification**, pas de forme fonctionnelle : sans duel du
+candidat, aucune forme de ρ ne la lève. Seule une seconde dimension (ou des
+duels) le pourrait (spec_spatial_pooling §9).
 
 **`hier` phase 2 (départ au plus dense, §8.8)** : Zemmour 69,2 [65,3 ; 73,2]
 pour 66,7, 4 chaînes, 0,18 pt, **concluant et couvert**, $s_\eta$ 0,35-0,38 ;

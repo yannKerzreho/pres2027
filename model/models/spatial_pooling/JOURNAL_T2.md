@@ -179,8 +179,10 @@ Résultats : `model/backtest/results/*.json` (committés).
       η ≈ 0 (l'échelle se rétracte).
 - [ ] Ensuite :
       revue Opus (due 2026-11-15 ~15:00Z) sur §8.3-8.10 avant de changer le
-      défaut du modèle (eta_hier) ; abstention croissante avec la distance
-      (piste Pécresse) à spécifier.
+      défaut du modèle (eta_hier). Piste « abstention croissante avec la
+      distance » ÉCARTÉE 04:10Z (déjà dans la valeur inclusive ; limite
+      d'identification, spec §8.10). Rien d'autre d'actionnable sans fit
+      d'ici la revue.
 - [ ] abst : v1 2017 Macron|Le Pen, Fillon|Le Pen ; v2 2017 T1-30 (attendu : sans nœud T1), T1-1, T2-7
 - [ ] eta : mêmes tâches (comparaison)
 - [ ] Revue 2026-11-14, sans fit : corriger la base V2 (écart-type τ_T2 en plus
@@ -279,6 +281,8 @@ Résultats : `model/backtest/results/*.json` (committés).
 - 2026-11-14 21:27-21:50Z (réveils 19:07/20:07/21:07 reçus en retard, traités
   en un) : fenêtre, ancres, pos_scale 0,25 (§8.7) ; cause des modes V1 =
   compensation géométrie/η.
+- 2026-11-15 04:07-04:12Z (réveil) : piste d'abstention écartée par le
+  calcul (§8.10), sans fit.
 - 2026-11-15 03:44-03:55Z (réveils 02:07/03:07 reçus en retard) : 2017 hier
   (4 tâches, §8.10).
 - 2026-11-15 02:00-03:45Z : hier phase 2 (Zemmour, Pécresse, Mélenchon),
