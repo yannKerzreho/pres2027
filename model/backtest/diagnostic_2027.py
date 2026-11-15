@@ -46,7 +46,8 @@ def diagnostic(variante: str = "abst", draws: int = 400, tune: int = 600, seed: 
     raw = load_raw_polls(tour=None)
     as_of = str(pd.to_datetime(raw["date_fin"]).max().date())
     fit = fit_spatial_pooling(raw, as_of=as_of, draws=draws, tune=tune, seed=seed,
-                              second_tour=True, abstention=(variante == "abst"))
+                              second_tour=True, abstention=(variante in ("abst", "hier")),
+                              eta_hier=(variante == "hier"))
     d = fit.duels
     S = fit.duel_s_draws                                            # (S, D)
     sigma_t2 = fit.diagnostics["sigma_t2"]
@@ -117,7 +118,7 @@ def diagnostic(variante: str = "abst", draws: int = 400, tune: int = 600, seed: 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--variante", default="abst", choices=["abst", "eta"])
+    ap.add_argument("--variante", default="abst", choices=["abst", "eta", "hier"])
     ap.add_argument("--draws", type=int, default=400)
     ap.add_argument("--tune", type=int, default=600)
     ap.add_argument("--seed", type=int, default=27)

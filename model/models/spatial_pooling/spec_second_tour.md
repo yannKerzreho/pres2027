@@ -692,6 +692,12 @@ $s_\eta$ se règle donc par la relance au mode dominant, sans changer de prior.
 Bilan `hier` (versions concluantes) : Le Pen 4,1 pt, Zemmour 2,6, Pécresse
 13,0 ; Mélenchon 0,3 (phase 1, 1 chaîne, à relancer).
 
+**Suite `hier`** : Mélenchon phase 2 : 61,2 [44,1 ; 77,2] pour 61,5, 4
+chaînes, 1,33 pt (presque concluant ; IC très large). **MAE V1 `hier` 5,0 pt**
+(Le Pen 4,1, Zemmour 2,6, Pécresse 13,0, Mélenchon 0,3), contre abst 6,8 non
+concluant. V2 2022 T1−1 `hier` : 52,3 % (abst 52,4) — sur un duel sondé, la
+variante ne change rien, comme attendu.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
