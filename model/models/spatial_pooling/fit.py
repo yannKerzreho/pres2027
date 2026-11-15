@@ -53,6 +53,8 @@ class SpatialPoolingFit:
     duel_pairs: list | None = None           # paires effectivement observées
     # Diagnostic : part prédite de chaque duel observé à sa date (S, D) et les
     # duels eux-mêmes (sortie de `build_duel_arrays`). Aucun usage en production.
+    w_path_draws: np.ndarray | None = None   # (S, N, T) chemin de w (tracker, spec_spatial_pooling §10)
+    w_dates: np.ndarray | None = None        # (T,) ordinaux des dates du chemin
     duel_s_draws: np.ndarray | None = None
     duels: dict | None = None
 
@@ -162,7 +164,7 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
     # paramètres et écraserait le pire cas. On le retire du diagnostic.
     # `eta` ≡ 0 en variante sans valence (spec §8.9) : R-hat indéfini (NaN), exclu.
     diag = {k: v for k, v in numpyro_summary(samples, prob=0.9).items()
-            if k not in ("pi", "duel_s") and not (k == "eta" and eta_scale == 0)}
+            if k not in ("pi", "duel_s", "w_path") and not (k == "eta" and eta_scale == 0)}
     if has_t2:
         # `eta` d'un candidat sans duel suit son prior : R-hat valable, mais on
         # le distingue dans le diagnostic pour ne pas le confondre avec un
@@ -221,6 +223,10 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         sigma_w_draws=np.asarray(samples["sigma_w"]).reshape(-1),
         dynamic=np.asarray(part >= seuil_dynamique), tau_ou=tau_ou, as_of=as_of,
         duel_pairs=sorted(set(duels["pairs"])) if has_t2 else [],
+        w_path_draws=(np.asarray(samples["w_path"]).reshape(-1, N, np.asarray(samples["w_path"]).shape[-1])
+                      if "w_path" in samples else None),
+        # La base OU a une colonne de plus que les dates de sondage : `as_of`.
+        w_dates=np.concatenate([np.asarray(arrays["unique_dates"], dtype=float), [as_of_num]]),
         duel_s_draws=(np.asarray(samples["duel_s"]).reshape(-1, len(duels["y"]))
                       if has_t2 else None),
         duels=duels if has_t2 else None,
@@ -241,6 +247,19 @@ def pi_draws_for_mask(fit: SpatialPoolingFit, mask: np.ndarray) -> np.ndarray:
     comparaison et ses limites connues)."""
     return np.asarray(spatial_shares(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
                                      jnp.asarray(fit.w_draws), jnp.asarray(mask)))
+
+
+def trajectoire(fit: SpatialPoolingFit, mask: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    """Tracker (spec_spatial_pooling §10) : parts du champ `mask` à chaque date du
+    chemin de `w`, tirage par tirage. Retourne (dates ordinales (T,), (S, T, |M|))."""
+    if fit.w_path_draws is None:
+        raise ValueError("fit sans chemin de w (w_path absent)")
+    m = jnp.asarray(mask)
+    mu, sg = jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws)
+    T = fit.w_path_draws.shape[-1]
+    parts = [np.asarray(spatial_shares(mu, sg, jnp.asarray(fit.w_path_draws[:, :, t]), m))
+             for t in range(T)]
+    return fit.w_dates, np.stack(parts, axis=1)[:, :, np.asarray(mask).astype(bool)]
 
 
 def summarize_pi(pi_draws: np.ndarray, labels: list[str]) -> dict:

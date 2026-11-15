@@ -213,7 +213,9 @@ Résultats : `model/backtest/results/*.json` (committés).
       « RÉSULTAT POUR L'ORCHESTRATEUR : … » en fin de réveil. Ne modifie PAS
       `model/listes.py` ni le site (session site) : backtest dans
       `model/backtest/listes_definition.py`.
-- [ ] APRÈS le diagnostic 2027 (demande utilisateur 2026-11-15) — TRACKER PAR
+- [ ] [spec_spatial_pooling §10 écrite ; `w_path` + `trajectoire()` codés et
+      testés ; `model/backtest/tracker.py` : run 2027 EN COURS (début
+      2026-11-15T11:20Z, session 01JZeMw2)] APRÈS le diagnostic 2027 (demande utilisateur 2026-11-15) — TRACKER PAR
       CANDIDAT tiré du spatial : exporter la trajectoire w_i(t) du fit (chemin
       OU, déjà calculé ; seuls les candidats « dynamiques » > 5 % en ont une),
       présentée comme la PART de chaque candidat dans un champ de référence au

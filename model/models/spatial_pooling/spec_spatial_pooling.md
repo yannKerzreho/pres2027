@@ -296,3 +296,52 @@ d'observation, pas le mécanisme spatial.
   géométrique — c'est le pari du modèle, pas une mesure.
 - **L'ordre et les ancres sont des choix éditoriaux.** Ils sont lâches et le
   postérieur peut les contredire, mais ils sont publiés avec le reste.
+
+## 10. Tracker par candidat (demande utilisateur, 2026-11-15)
+
+**Objet.** Le fit estime déjà un chemin $w_i(t)$ (§4) pour chaque candidat
+« dynamique » (> 5 % de part moyenne) sur la grille journalière des dates de
+sondage $t_1 < \dots < t_T$ (la dernière colonne étant `as_of`). $w$ brut est
+relatif (défini à une translation près, et sans unité lisible) : on publie la
+**part** qu'il implique dans un champ de référence $M$ fixé,
+
+$$\pi_i(t \mid M) = \sum_b W_b\,\frac{\mathbb 1_{i\in M}\,e^{A_i(v_b, t)}}
+{\sum_{j\in M} e^{A_j(v_b, t)}},\qquad A_i(v,t) = w_i(t) + \log\varphi_i(v),$$
+
+calculée tirage par tirage sur $(\mu^{(s)}, \sigma^{(s)}, w^{(s)}(t))$ — la
+même fonction `spatial_shares` que le nowcast, appliquée à chaque date. Résumé
+publié : moyenne et IC90 de $\pi_i(t\mid M)$ par date. Les candidats
+statiques ($w_i = m_i$) n'ont pas de chemin propre : leur part ne bouge que par
+la renormalisation sur les autres — à signaler, ou à ne pas tracer.
+
+**Champ de référence.** Pour comparer avec les `gp-pooling` multi-listes du
+site, $M$ = chacune des listes que le site affiche (règle de la session site :
+listes les plus testées parmi les ~10 derniers sondages), reprise telle quelle
+à chaque coupure du backtest. Le spatial a l'avantage de donner la trajectoire
+de N'IMPORTE QUELLE liste sans ré-inférence ; le comparateur, lui, ajuste
+chaque liste sur son seul historique.
+
+**Lissage hérité, à mesurer (pas à supposer).** Le chemin OU a
+$\tau \approx 262$ j FIXÉ (banque commune) et une base KL tronquée à 99 % de
+variance (3-4 composantes) : il est très lisse. Une montée rapide (Zemmour
+sept.–nov. 2021, Mélenchon mars–avril 2017) risque d'être suivie avec retard ;
+le diagnostic 2027 voit déjà un retard de ~1,5 pt sur Mélenchon–Le Pen en duel
+(second_tour §8.1). C'est précisément ce que le backtest doit chiffrer.
+
+**Backtest de suivi de tendance (2017, 2022).** Coupures $c_1..c_K$ (~10 par
+élection, toutes les 2-3 semaines sur les 6 derniers mois). À chaque coupure :
+fit sur les seuls sondages $\le c_k$ (un fit unique en fin de campagne
+lisserait avec le recul : ne vaut pas validation), puis
+- **erreur de nowcast** : $\hat\pi_i(c_k\mid M)$ contre la moyenne des
+  sondages de la liste $M$ dans $(c_k, c_k + 7\,j]$ (hors échantillon) ;
+- **couverture** de l'IC90 (avec le bruit d'échantillonnage de cette moyenne) ;
+- **retard de détection** : pour une montée identifiée sur les sondages bruts
+  (première date où la moyenne mobile 14 j dépasse de 3 pt sa valeur 30 j
+  avant), délai jusqu'à ce que $\hat\pi_i(c_k)$ dépasse le même seuil.
+Même grille et mêmes listes pour `gp-pooling`. Fits d'abord allégés
+(2 chaînes), puis complets sur les coupures informatives. Ne touche pas au site.
+
+**Implémentation** : déterministe `w_path` (N, T) dans le modèle (aucun effet
+sur l'inférence), `w_path_draws` (S, N, T) et `w_dates` dans le fit,
+`trajectoire(fit, mask)` → (dates, tirages (S, T, |M|)).
+

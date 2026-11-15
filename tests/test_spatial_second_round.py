@@ -194,3 +194,23 @@ def test_abstention_retire_l_electorat_du_centre_elimine():
     e_lo = float(jnp.sum(duel_expression(A_lo[0], A_lo[2], 0.8, jax.nn.logsumexp(A_lo, 0), -3.0) * __import__("model.models.spatial_pooling.geometry", fromlist=["W"]).W))
     e_hi = float(jnp.sum(duel_expression(A_hi[0], A_hi[2], 0.8, jax.nn.logsumexp(A_hi, 0), -3.0) * __import__("model.models.spatial_pooling.geometry", fromlist=["W"]).W))
     assert e_hi < e_lo
+
+
+def test_trajectoire_tracker_forme_et_coherence_avec_le_nowcast():
+    """spec_spatial_pooling §10 : la dernière date du chemin est `as_of` et y
+    redonne exactement le nowcast `pi_draws_for_mask`."""
+    import numpy as np
+    from model.models.spatial_pooling.fit import (SpatialPoolingFit, pi_draws_for_mask,
+                                                  trajectoire)
+    rng = np.random.default_rng(0)
+    S, N, T = 5, 4, 6
+    w_path = rng.normal(0, 0.5, (S, N, T))
+    fit = SpatialPoolingFit(candidates=list("abcd"), anchors=np.linspace(0.2, 0.8, N),
+                            tested_mask=np.ones((1, N)), mu_draws=rng.uniform(0.2, 0.8, (S, N)),
+                            sigma_draws=np.full((S, N), 0.15), w_draws=w_path[:, :, -1],
+                            diagnostics={}, w_path_draws=w_path, w_dates=np.arange(T, dtype=float))
+    mask = np.array([1.0, 1.0, 0.0, 1.0])
+    dates, pi = trajectoire(fit, mask)
+    assert pi.shape == (S, T, 3) and len(dates) == T
+    np.testing.assert_allclose(pi.sum(-1), 1.0, atol=1e-5)
+    np.testing.assert_allclose(pi[:, -1], pi_draws_for_mask(fit, mask)[:, mask.astype(bool)], atol=1e-6)

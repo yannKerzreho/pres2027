@@ -157,6 +157,7 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
     w_full = jnp.zeros((N, kl_basis.shape[1])) + m[:, None]
     w_full = w_full.at[idx].add(sigma_w * (z_w @ kl_basis))
     numpyro.deterministic("w_now", w_full[:, -1])           # dernière colonne = `as_of`
+    numpyro.deterministic("w_path", w_full)                 # tracker (spec_spatial_pooling §10)
 
     pi = spatial_shares(mu, sigma, w_full[:, date_idx].T, tested_mask)
     var = pi * (1.0 - pi) / jnp.clip(Np[:, None], 1.0, None)
