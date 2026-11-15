@@ -1,0 +1,86 @@
+{
+ "variante": "abst",
+ "nuts": {
+  "draws": 400,
+  "tune": 600,
+  "chains": 4,
+  "mode": "4 processus d'une chaîne (graines 27..30), fusionnés"
+ },
+ "pos_scale": null,
+ "tau_t2_scrutin": 0.1,
+ "v1": [
+  {
+   "election": 2017,
+   "paire": [
+    "François Fillon",
+    "Marine Le Pen"
+   ],
+   "n_sondages_retires": 34,
+   "observe_30j": 0.576,
+   "modele": 0.6135,
+   "modele_ic90": [
+    0.3779,
+    0.8203
+   ],
+   "geometrie_seule": 0.7337,
+   "bradley_terry": 0.5615,
+   "autres_duels_des_deux": 65,
+   "lp_par_chaine": [
+    803.3,
+    802.5,
+    803.1,
+    802.5
+   ],
+   "lp_se": [
+    0.89,
+    0.51,
+    0.64,
+    0.96
+   ],
+   "chaines_retenues": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "modele_par_chaine": [
+    0.6197,
+    0.6181,
+    0.6109,
+    0.6054
+   ],
+   "ecart_chaines_pt": 1.44,
+   "rhat_cible": 1.002,
+   "concluant": false,
+   "ic90_predictif": [
+    0.3719,
+    0.823
+   ],
+   "couvre_predictif": true,
+   "log_score_predictif": 0.894,
+   "n_cible": 5,
+   "rhat_max": 1.0256,
+   "ess_min": 126.5,
+   "divergences": 0,
+   "kappa": 1.0378,
+   "omega": -3.2879,
+   "rhat_t2": 1.0035,
+   "sigma_t2": 0.0142,
+   "secondes": 7.5,
+   "eta": {
+    "Nathalie Arthaud": -0.001,
+    "Philippe Poutou": -0.008,
+    "Jean-Luc Mélenchon": 0.01,
+    "Benoît Hamon": 0.017,
+    "Emmanuel Macron": -0.029,
+    "Jean Lassalle": -0.016,
+    "François Fillon": -0.021,
+    "Nicolas Dupont-Aignan": -0.001,
+    "François Asselineau": 0.015,
+    "Jacques Cheminade": 0.013,
+    "Marine Le Pen": 0.031
+   }
+  }
+ ],
+ "v2": []
+}
