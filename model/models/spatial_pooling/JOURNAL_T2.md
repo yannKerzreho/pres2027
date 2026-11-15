@@ -17,7 +17,11 @@ l'historique, ajouter en bas de « Historique ».
 - Production : `PUBLIER_T2 = False` (forecast_model.py). Ne PAS passer à True
   sans accord explicite de l'utilisateur.
 - Modèle courant : géométrie T1 + κ + valence η agrégée + abstention par valeur
-  inclusive (ω). Variante de comparaison : `--variante eta` (sans abstention).
+  inclusive (ω). Variantes de backtest : `eta`, `geo` (η ≡ 0), `geo1` (κ ≡ 1),
+  `hier` (échelle de η apprise) — `hier` proposée en référence (spec §8.10).
+- Backtests : cadre historique à toutes les hypothèses T1 (§8.3) ; 4 processus
+  d'une chaîne + fusion ; sélection des chaînes par log-densité (§8.8) ;
+  phase 2 `--init-depuis` ; convergence jugée sur la quantité prédite (§8.4).
 - Versions épinglées (requirements.txt) : jax 0.10.2 / numpyro 0.22.0.
 - Lot en attente de publication : `claude/pin-requirements` (204fe6c), vérifié
   (voir Faits établis) ; fusion/push = orchestrateur.
@@ -167,6 +171,12 @@ Résultats : `model/backtest/results/*.json` (committés).
 - [ ] Diagnostic 2027 `hier` (`python -m model.backtest.diagnostic_2027
       --variante hier`) — EN COURS (début 2026-11-15T03:20Z, session 01JZeMw2).
       Comparer à abst (§8.1) : critères (ii) et duels affichés.
+      — FAIT 03:45Z : règle (ii) passe, convergence meilleure (R-hat 1,0095),
+      duels affichés = abst à ≤ 0,5 pt. `hier` proposée en référence (§8.10).
+- [ ] 2017 en `hier` (V1 Macron|Le Pen, Fillon|Le Pen ; V2 T1−1, T2−7) puis
+      revue Opus (due 2026-11-15 ~15:00Z) sur §8.3-8.10 avant de changer le
+      défaut du modèle (eta_hier) ; abstention croissante avec la distance
+      (piste Pécresse) à spécifier.
 - [ ] abst : v1 2017 Macron|Le Pen, Fillon|Le Pen ; v2 2017 T1-30 (attendu : sans nœud T1), T1-1, T2-7
 - [ ] eta : mêmes tâches (comparaison)
 - [ ] Revue 2026-11-14, sans fit : corriger la base V2 (écart-type τ_T2 en plus
@@ -265,6 +275,8 @@ Résultats : `model/backtest/results/*.json` (committés).
 - 2026-11-14 21:27-21:50Z (réveils 19:07/20:07/21:07 reçus en retard, traités
   en un) : fenêtre, ancres, pos_scale 0,25 (§8.7) ; cause des modes V1 =
   compensation géométrie/η.
+- 2026-11-15 02:00-03:45Z : hier phase 2 (Zemmour, Pécresse, Mélenchon),
+  V2 T1−1 hier, diagnostic 2027 hier ⇒ hier proposée en référence.
 - 2026-11-15 01:52-02:00Z (réveils 00:07/01:07 reçus en retard) :
   vérification Pécresse (limite structurelle, §8.10).
 - 2026-11-14 22:35-2026-11-15 00:35Z (question utilisateur : « le T2 ne

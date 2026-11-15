@@ -698,6 +698,19 @@ chaînes, 1,33 pt (presque concluant ; IC très large). **MAE V1 `hier` 5,0 pt**
 concluant. V2 2022 T1−1 `hier` : 52,3 % (abst 52,4) — sur un duel sondé, la
 variante ne change rien, comme attendu.
 
+**Diagnostic 2027 `hier`** (sondages au 2026-11-12) : R-hat 1,0095 (abst
+1,040), ESS min 304 (202), rhat_t2 1,0005, 0 divergence ; résidus globaux
++0,03 ± 1,69 pt, $\overline{z^2}$ 0,78 ; duels affichés identiques à abst à
+≤ 0,5 pt (Philippe–Le Pen 45,2 % [37,8 ; 52,3], P(élu) Le Pen 0,85) ; mêmes
+limites (Mélenchon–Le Pen $\bar r_{30j}$ −1,35 ; Harris −0,9 / YouGov +0,8).
+Règle (ii) : passe.
+
+**Bilan des variantes (2026-11-15)** : `hier` égale abst sur les duels sondés
+(V2 2022, 2027), converge mieux, et prédit mieux les duels non sondés
+(MAE V1 5,0 contre 6,8 non concluant). **Proposée comme variante de
+référence du bloc T2** — à confirmer sur 2017 et en revue Opus avant d'en
+changer le défaut ; aucun effet production tant que `PUBLIER_T2 = False`.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
