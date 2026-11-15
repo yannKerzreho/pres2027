@@ -667,6 +667,23 @@ que ce soit. Lecture provisoire : l'échelle apprise est la meilleure des trois
 et garde la valence là où elle sert (Zemmour) ; le régime bimodal de $s_\eta$
 reste à traiter (prior plus informatif sur $s_\eta$, ou phase 2 §8.8).
 
+**Pécresse : vérification (2026-11-15).** Pas un artefact de cible : duels
+Macron–Pécresse par mois 51,5 (déc.) → 53,2 → 56,1 → 64,2 (mars) → 63,5
+(avr.) ; la moyenne 30 j (65,6) est celle de fin de campagne, et la prédiction
+est bien lue au `w` d'`as_of` (Pécresse ~10 % au T1). Cause : la paire
+retirée, **il ne reste que 2 duels de Pécresse** (contre Zemmour, contre Le
+Pen) ; sa valence est donc quasi libre et la prédiction vient de la géométrie,
+qui place une candidate de centre-droit au voisinage de Macron et lui donne
+les électeurs de droite radicale (≈ 30 % du T1) — d'où ~53/47. Les sondages
+disent que ces électeurs ne la suivent pas (abstention, ou Macron). **Limite
+structurelle** : pour un candidat sans duel propre, le duel prédit vient de la
+géométrie et penche vers 50/50 pour les voisins du centre ; la valeur inclusive
+(ω) ne suffit pas à faire abstenir les électeurs éloignés des deux. Conséquence
+produit (onglet Scénarios, 2027) : afficher qu'un duel jamais sondé d'un
+candidat sans aucun duel est une extrapolation géométrique. Piste de
+modélisation (à spécifier) : abstention croissante avec la distance au plus
+proche des deux finalistes, plutôt qu'un ω unique.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

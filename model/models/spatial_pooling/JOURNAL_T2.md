@@ -150,9 +150,14 @@ Résultats : `model/backtest/results/*.json` (committés).
 - [x] Variante `hier` (échelle de valence apprise, spec §8.10) sur les 4 V1
       2022 — FAIT 01:50Z : MAE 4,9 pt (abst 6,8, geo 7,3), couverts 3/4,
       concluants 2/4 ; s_η bimodal (0,16 / 0,35) sur Zemmour et Pécresse. Tests : 150 passés (hors réseau).
-- [ ] Pécresse ratée par toutes les variantes (~53 contre 65,6) : vérifier la
+- [x] Pécresse ratée par toutes les variantes (~53 contre 65,6) : vérifier la
       cible V1 (fenêtre 30 j pendant l'effondrement) et la lecture de `w` à
       `as_of` dans `v1_paire_retiree` AVANT toute conclusion de modélisation.
+      — FAIT 02:00Z (spec §8.10) : cible et lecture correctes ; cause = plus
+      que 2 duels de Pécresse une fois la paire retirée ⇒ extrapolation
+      géométrique vers 50/50 (limite structurelle). Pistes : abstention
+      croissante avec la distance (à spécifier) ; mention produit pour les
+      duels de candidats sans aucun duel.
 - [ ] `hier` : traiter la bimodalité de s_η (phase 2 §8.8, ou prior
       informatif), puis V2 2022 ×3 et diagnostic 2027 en `hier`.
 - [ ] abst : v1 2017 Macron|Le Pen, Fillon|Le Pen ; v2 2017 T1-30 (attendu : sans nœud T1), T1-1, T2-7
@@ -253,6 +258,8 @@ Résultats : `model/backtest/results/*.json` (committés).
 - 2026-11-14 21:27-21:50Z (réveils 19:07/20:07/21:07 reçus en retard, traités
   en un) : fenêtre, ancres, pos_scale 0,25 (§8.7) ; cause des modes V1 =
   compensation géométrie/η.
+- 2026-11-15 01:52-02:00Z (réveils 00:07/01:07 reçus en retard) :
+  vérification Pécresse (limite structurelle, §8.10).
 - 2026-11-14 22:35-2026-11-15 00:35Z (question utilisateur : « le T2 ne
   peut-il pas estimer μ, σ, ω ? κ η ω nécessaires ? ») : phase 2 (mode
   dominant stable, V1 Macron–Le Pen 64 %) ; variantes geo/geo1 (§8.9) :
