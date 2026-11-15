@@ -1,0 +1,103 @@
+{
+ "election": 2022,
+ "h": 180,
+ "coupure": "2021-10-12",
+ "listes": [
+  {
+   "cle": "anne hidalgo|asselineau|bertrand|emmanuel macron|eric zemmour|fabien roussel|jean lassalle|jean luc melenchon|lagarde|marine le pen|montebourg|nathalie arthaud|nicolas dupont aignan|philippe poutou|philippot|poisson|yannick jadot",
+   "id": "03a50424",
+   "candidats": [
+    "Anne Hidalgo",
+    "Asselineau",
+    "Bertrand",
+    "Emmanuel Macron",
+    "Eric Zemmour",
+    "Fabien Roussel",
+    "Jean Lassalle",
+    "Jean-Luc Mélenchon",
+    "Lagarde",
+    "Marine Le Pen",
+    "Montebourg",
+    "Nathalie Arthaud",
+    "Nicolas Dupont-Aignan",
+    "Philippe Poutou",
+    "Philippot",
+    "Poisson",
+    "Yannick Jadot"
+   ],
+   "n_recents": 4,
+   "n_total": 6
+  },
+  {
+   "cle": "anne hidalgo|asselineau|emmanuel macron|eric zemmour|fabien roussel|jean lassalle|jean luc melenchon|lagarde|marine le pen|montebourg|nathalie arthaud|nicolas dupont aignan|philippe poutou|philippot|poisson|valerie pecresse|yannick jadot",
+   "id": "1a8f299e",
+   "candidats": [
+    "Anne Hidalgo",
+    "Asselineau",
+    "Emmanuel Macron",
+    "Eric Zemmour",
+    "Fabien Roussel",
+    "Jean Lassalle",
+    "Jean-Luc Mélenchon",
+    "Lagarde",
+    "Marine Le Pen",
+    "Montebourg",
+    "Nathalie Arthaud",
+    "Nicolas Dupont-Aignan",
+    "Philippe Poutou",
+    "Philippot",
+    "Poisson",
+    "Valérie Pécresse",
+    "Yannick Jadot"
+   ],
+   "n_recents": 4,
+   "n_total": 6
+  },
+  {
+   "cle": "anne hidalgo|asselineau|barnier|emmanuel macron|eric zemmour|fabien roussel|jean lassalle|jean luc melenchon|lagarde|marine le pen|montebourg|nathalie arthaud|nicolas dupont aignan|philippe poutou|philippot|poisson|yannick jadot",
+   "id": "b5e3e3f2",
+   "candidats": [
+    "Anne Hidalgo",
+    "Asselineau",
+    "Barnier",
+    "Emmanuel Macron",
+    "Eric Zemmour",
+    "Fabien Roussel",
+    "Jean Lassalle",
+    "Jean-Luc Mélenchon",
+    "Lagarde",
+    "Marine Le Pen",
+    "Montebourg",
+    "Nathalie Arthaud",
+    "Nicolas Dupont-Aignan",
+    "Philippe Poutou",
+    "Philippot",
+    "Poisson",
+    "Yannick Jadot"
+   ],
+   "n_recents": 4,
+   "n_total": 4
+  }
+ ],
+ "listes_ecartees": [],
+ "chaines_retenues": [
+  0,
+  1,
+  2,
+  3
+ ],
+ "lp_par_chaine": [
+  5764.4780786132815,
+  5763.509608154297,
+  5765.731313476563,
+  5762.549180908203
+ ],
+ "diagnostics": {
+  "rhat_max": 1.0169,
+  "ess_min": 176.5,
+  "n_divergences": 0,
+  "n_noeuds": 138,
+  "n_champs_distincts": 73
+ },
+ "lignes": []
+}
