@@ -261,7 +261,7 @@ Résultats : `model/backtest/results/*.json` (committés).
       (3 tâches) pour un traitement égal à hier.
 - [ ] (revue, a/d) stacking des chaînes (log-vraisemblance par nœud sur les
       tirages sauvés) ou max local + Laplace par chaîne — maths dans la spec.
-- [ ] (revue, e) V1 en retirant la NOTICE entière (fuite même-répondants) :
+- [ ] (revue, e) [comptage FAIT (spec §8.16) : 74/86 duels restants de Le Pen–Philippe viennent des mêmes notices ; 4 fits « notice entière » + 4 standard sur les mêmes données, abst, EN COURS (début 2026-11-15T18:15Z, session 01JZeMw2)] V1 en retirant la NOTICE entière (fuite même-répondants) :
       comptage sans fit, puis 4 fits.
 - [ ] (revue, 9) τ_T2 : a posteriori sur 2002-2022 (normale vs Student-t),
       données à sourcer (session données), effet sur P(Philippe bat Le Pen).

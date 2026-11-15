@@ -884,6 +884,21 @@ Conséquence : on garde `abst`, et l'amélioration à rechercher n'est pas dans
 η mais dans l'incertitude d'extrapolation des paires non sondées
 (arbitrage 4, $\tau_{paire}$) et dans $\tau_{T2}$ (arbitrage 1).
 
+### 8.16 Fuite « même notice » en V1 2027 (revue 15/11, point 8)
+
+**Comptage (sans fit).** Quand on retire une paire, les AUTRES duels des
+mêmes notices restent : Le Pen–Philippe 74 duels restants sur 86 viennent des
+29 mêmes notices ; Le Pen–Mélenchon 66/89 ; Attal–Le Pen 55/84 ;
+Glucksmann–Le Pen 44/101 ; Hollande–Le Pen 19/96. Mêmes répondants, même
+effet maison : la V1 est probablement optimiste.
+
+**Mesure (protocole, avant résultat).** Variante « notice entière » : on
+retire TOUS les duels (T2) des notices qui contiennent un duel cible ; le T1
+de ces notices est gardé (sinon la géométrie elle-même change de jeu). Mêmes
+4 tâches que les grosses paires de §8.13, variante abst (le défaut, §8.15).
+On rapporte l'écart à la V1 standard (erreur, IC). Si l'erreur augmente
+nettement, les chiffres V1 de §8.13 sont à lire comme une borne optimiste.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

@@ -53,7 +53,7 @@ def paires_cibles(tache: str, duels: pd.DataFrame) -> list[tuple[str, str]]:
     return [tuple(sorted(tache.split("|")))]
 
 
-def jeu_de_donnees(raw: pd.DataFrame, tache: str):
+def jeu_de_donnees(raw: pd.DataFrame, tache: str, notice_entiere: bool = False):
     """(sondages d'apprentissage, t_k, cibles) — spec §8.12."""
     duels = _duels(raw)
     cibles = paires_cibles(tache, duels)
@@ -62,7 +62,12 @@ def jeu_de_donnees(raw: pd.DataFrame, tache: str):
     retirer = set(map(tuple, duels.loc[mask, ["notice", "_h"]].to_numpy()))
     cle = list(zip(raw["notice"], raw["hypothese"].fillna("__u__")))
     t2 = raw["tour"].ne("Premier tour").to_numpy()
-    garde = ~(t2 & np.array([k in retirer for k in cle]))
+    if notice_entiere:
+        # spec §8.16 : tous les duels des notices qui contiennent un duel cible.
+        notices = {n for n, _ in retirer}
+        garde = ~(t2 & raw["notice"].isin(notices).to_numpy())
+    else:
+        garde = ~(t2 & np.array([k in retirer for k in cle]))
     train = raw[garde & (pd.to_datetime(raw["date_fin"]) <= t_k).to_numpy()]
     fen = duels[mask & duels.date.ge(t_k - pd.Timedelta(days=FENETRE))]
     obs = {p: (float(g.y.mean()), int(len(g)), float(g.n_ech.mean())) for p, g in fen.groupby(["a", "b"])}
@@ -84,15 +89,17 @@ def main() -> None:
     ap.add_argument("--chaine", type=int, default=None)
     ap.add_argument("--fusionner", action="store_true")
     ap.add_argument("--init-depuis", default=None)
+    ap.add_argument("--notice-entiere", action="store_true", help="spec §8.16")
     a = ap.parse_args()
     if a.lister:
         for t in PAIRES + CANDIDATS:
             print(f'--tache "{t}"')
         return
     raw = load_raw_polls(tour=None)
-    train, t_k, obs = jeu_de_donnees(raw, a.tache)
+    train, t_k, obs = jeu_de_donnees(raw, a.tache, a.notice_entiere)
     nom = a.tache.replace("candidat:", "cand-").replace("|", "-").replace(" ", "_")
-    out = sr.OUT_DIR / (f"v1_2027_{a.variante}_{nom}" + ("_init" if a.init_depuis else "") + ".json")
+    out = sr.OUT_DIR / (f"v1_2027_{a.variante}_{nom}" + ("_init" if a.init_depuis else "")
+                        + ("_notice" if a.notice_entiere else "") + ".json")
     base = sr.CHAINES_DIR / out.stem
     nuts = dict(draws=400, tune=600, chains=4)
     if a.chaine is not None:
