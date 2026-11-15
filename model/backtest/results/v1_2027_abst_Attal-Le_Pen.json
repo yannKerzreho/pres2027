@@ -3,12 +3,12 @@
  "variante": "abst",
  "t_k": "2026-10-19",
  "diagnostics": {
-  "rhat_max": 1.0279,
-  "rhat_t2": 1.0112,
-  "ess_min": 224.6,
+  "rhat_max": 1.0297,
+  "rhat_t2": 1.0127,
+  "ess_min": 206.6,
   "n_divergences": 0,
-  "kappa": 0.8219,
-  "omega": -2.5,
+  "kappa": 0.8181,
+  "omega": -2.4634,
   "sigma_t2": 0.0123,
   "n_duels": 66
  },
@@ -20,30 +20,30 @@
    ],
    "observe_30j": 0.4333,
    "n_cible": 3,
-   "modele": 0.3662,
+   "modele": 0.365,
    "modele_ic90": [
-    0.3271,
-    0.4051
+    0.3256,
+    0.4034
    ],
-   "erreur_pt": 6.72,
-   "log_score": -0.973,
+   "erreur_pt": 6.83,
+   "log_score": -1.212,
    "ic90_predictif": [
-    0.3248,
-    0.4108
+    0.3223,
+    0.4074
    ],
    "couvre_predictif": false,
-   "log_score_predictif": -0.486,
+   "log_score_predictif": -0.657,
    "lp_par_chaine": [
-    6122.0,
-    6122.2,
-    6122.4,
-    6122.0
+    6084.0,
+    6082.3,
+    6082.7,
+    6082.1
    ],
    "lp_se": [
-    1.12,
-    1.18,
-    0.7,
-    1.17
+    0.69,
+    1.25,
+    0.67,
+    1.0
    ],
    "chaines_retenues": [
     0,
@@ -52,13 +52,13 @@
     3
    ],
    "modele_par_chaine": [
-    0.365,
-    0.3659,
-    0.366,
-    0.3678
+    0.3633,
+    0.3655,
+    0.3652,
+    0.3659
    ],
-   "ecart_chaines_pt": 0.28,
-   "rhat_cible": 1.0,
+   "ecart_chaines_pt": 0.26,
+   "rhat_cible": 0.999,
    "concluant": true
   }
  ]
