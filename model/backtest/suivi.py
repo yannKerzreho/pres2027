@@ -52,6 +52,48 @@ def cibles(election: int, c: pd.Timestamp, cle: str) -> tuple[dict, int]:
             int(sel.scenario_id.nunique()))
 
 
+def gp_listes(election: int, c: pd.Timestamp, listes: list[dict], raw: pd.DataFrame) -> list[dict]:
+    """Étape 2 : `gp-pooling` (GPListe, inchangé) sur les mêmes listes. Le modèle
+    compte les horizons depuis le T1 2027 ; on décale les dates de
+    Δ = T1_2027 − T1_e, ce qui redonne exactement les horizons au scrutin
+    historique (noyau OU stationnaire, σ_h fonction de l'horizon)."""
+    from model.core.base import ELECTION_T1
+    from model.listes import GPListe
+    delta = ELECTION_T1 - sr.T1_DATES[election]
+    t1 = raw[raw.tour.eq("Premier tour")].copy()
+    t1["date_fin"] = pd.to_datetime(t1["date_fin"]) + delta
+    t1["scenario_id"] = t1["notice"].astype(str) + "|" + t1["hypothese"].fillna("__u__").astype(str)
+    t1["bloc"] = "?"                      # simple clé de regroupement d aggregate_to_slots
+    for col in ("commanditaire", "methode"):
+        if col not in t1:
+            t1[col] = None
+    rng = np.random.default_rng(3)
+    lignes = []
+    for L in listes:
+        try:
+            mdl = GPListe(L["cle"], L["candidats"])
+            mdl.load_artifacts()
+            nc = mdl.nowcast(t1, str((c + delta).date()))
+        except Exception as exc:          # liste sans sondage exploitable : comptée
+            lignes.append({"liste": L["id"], "erreur": f"{type(exc).__name__}: {exc}"})
+            continue
+        obs, n = cibles(election, c, L["cle"])
+        lab = {x: mdl.labels[x] for x in L["candidats"]}
+        draws = nc.draws
+        for x in L["candidats"]:
+            if x not in obs:
+                continue
+            d = np.asarray(draws.sel(candidat=lab[x]))
+            dp = d + rng.standard_normal(d.shape) * np.sqrt(d * (1 - d) / 1000 / max(n, 1))
+            lo, hi = np.percentile(dp, [5, 95])
+            lignes.append({"liste": L["id"], "candidat": x, "observe": round(obs[x], 4), "n_cible": n,
+                           "modele": round(float(d.mean()), 4), "ic90": [round(lo, 4), round(hi, 4)],
+                           "erreur_pt": round(100 * abs(float(d.mean()) - obs[x]), 2),
+                           "signe_pt": round(100 * (float(d.mean()) - obs[x]), 2),
+                           "couvre": bool(lo <= obs[x] <= hi)})
+    return lignes
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--election", type=int, choices=[2017, 2022], default=2022)
@@ -59,6 +101,7 @@ def main() -> None:
     ap.add_argument("--lister", action="store_true")
     ap.add_argument("--chaine", type=int, default=None)
     ap.add_argument("--fusionner", action="store_true")
+    ap.add_argument("--gp", action="store_true", help="étape 2 : gp-pooling sur les mêmes listes")
     a = ap.parse_args()
     if a.lister:
         for h in HORIZONS:
@@ -66,6 +109,14 @@ def main() -> None:
         return
     c = sr.T1_DATES[a.election] - pd.Timedelta(days=a.h)
     raw = sr.polls_historiques(a.election, c)
+    if a.gp:
+        listes = classement(_champs_t1(raw), c)
+        res = {"election": a.election, "h": a.h, "coupure": str(c.date()), "modele": "gp-pooling",
+               "listes": listes, "lignes": gp_listes(a.election, c, listes, raw)}
+        out = sr.OUT_DIR / f"suivi_gp_{a.election}_h{a.h:03d}.json"
+        out.write_text(json.dumps(res, ensure_ascii=False, indent=1, default=str) + "\n")
+        print(f"-> {out}")
+        return
     out = sr.OUT_DIR / f"suivi_{a.election}_h{a.h:03d}.json"
     base = sr.CHAINES_DIR / out.stem
     nuts = dict(draws=400, tune=600, chains=4)

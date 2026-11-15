@@ -384,3 +384,31 @@ retard de détection des montées (Zemmour automne 2021).
 fenêtre cible passe à 14 j — à 7 j, 0 à 2 sondages par liste avant mars 2022 ;
 h = 180 retiré (aucun sondage cible) : 8 coupures, 13 listes avec cible.
 
+**Résultats étapes 1-2 (2022, 8 coupures de T1−159 à T1−12, listes du site,
+cible = sondages de la liste exacte des 14 jours suivants).** 171 couples
+(liste, candidat) appariés entre les deux modèles.
+
+| | MAE tous | MAE candidats ≥ 5 % | couverture IC90 |
+|---|---|---|---|
+| spatial (T1 seul) | 0,78 pt | 1,21 pt | **0,73** |
+| gp-pooling (GPListe) | **0,62 pt** | **0,94 pt** | 0,90 |
+
+Écart moyen spatial − gp = +0,16 pt par couple, Wilcoxon p = 0,0001 ; gp
+meilleur à 6 coupures sur 7 (spatial meilleur à T1−54 : 0,58 contre 0,92).
+Biais signés (candidats ≥ 5 %) de même sens pour les deux modèles
+(Le Pen −1,3 / −1,1 ; Zemmour +1,1 / +0,8 ; Macron −0,5 / −0,3) : la cible
+bouge après la coupure, et les deux suivent en retard — le spatial un peu
+plus. Convergence : R-hat ≤ 1,05 à 7 coupures (T1−12 : 2,5, 3 chaînes
+retenues).
+
+**Lecture.** Sur une liste DIRECTEMENT sondée, le modèle propre à la liste
+gagne : il ne s'ajuste qu'à elle, quand le spatial doit concilier 50 à 90
+champs par une géométrie commune et un chemin OU très lisse. L'intérêt du
+spatial reste les listes non sondées (il n'a pas de concurrent là) ; comme
+tracker d'une liste sondée, il ne devrait PAS remplacer gp-pooling. Son
+IC90 est trop étroit à 14 j (0,73) : le nowcast ne porte aucune dérive
+au-delà de `as_of`, alors que la cible s'étale sur 14 jours — à corriger
+(prolonger le chemin OU à h = 7 j, `projeter_w`) avant toute publication
+d'un tracker spatial. Étape 3 (retard de détection) à faire.
+Résultats : `model/backtest/results/suivi_2022_h*.json`, `suivi_gp_2022_h*.json`.
+
