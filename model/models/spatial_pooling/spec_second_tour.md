@@ -417,7 +417,8 @@ même liste de tâches V1/V2 ; garder aussi les duels putatifs
 
 **Classement ajouté (choix éditorial, gauche→droite dans chaque groupe)** —
 2022 : écolo += Thouy, Rousseau ; PS = Montebourg, Taubira, Hidalgo ;
-centre = Macron, Lagarde ; LR = Bertrand, Pécresse, Barnier, Juvin, Ciotti ;
+centre = Macron, Lagarde ; LR = Bertrand, Pécresse, Barnier, Juvin, Wauquiez
+(ajouté le 15/11 pour les coupures d'automne 2021), Ciotti ;
 souverain = Dupont-Aignan, Poisson, Asselineau, Philippot. 2017 (tous sous le
 seuil, pour la robustesse) : écolo = Jadot ; PS = Montebourg, Peillon,
 Hamon, Valls ; centre = Macron, Bayrou.

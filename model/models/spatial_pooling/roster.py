@@ -152,7 +152,7 @@ ORDER_GROUPS_HISTORIQUES: dict[int, list[tuple[str, list[str]]]] = {
         ("PS",         ["Montebourg", "Taubira", "Anne Hidalgo"]),
         ("centre",     ["Emmanuel Macron", "Lagarde"]),
         ("Lassalle",   ["Jean Lassalle"]),
-        ("LR",         ["Bertrand", "Valérie Pécresse", "Barnier", "Juvin", "Ciotti"]),
+        ("LR",         ["Bertrand", "Valérie Pécresse", "Barnier", "Juvin", "Wauquiez", "Ciotti"]),
         ("souverain",  ["Nicolas Dupont-Aignan", "Poisson", "Asselineau", "Philippot"]),
         ("RN",         ["Marine Le Pen"]),
         ("Reconquete", ["Eric Zemmour"]),
