@@ -1,0 +1,130 @@
+{
+ "liste_R": [
+  "Anne Hidalgo",
+  "Bertrand",
+  "Emmanuel Macron",
+  "Eric Zemmour",
+  "Fabien Roussel",
+  "Jean Lassalle",
+  "Jean-Luc Mélenchon",
+  "Marine Le Pen",
+  "Montebourg",
+  "Nathalie Arthaud",
+  "Nicolas Dupont-Aignan",
+  "Philippe Poutou",
+  "Yannick Jadot"
+ ],
+ "seuil_pt": 3.0,
+ "recul_j": 28,
+ "lignes": [
+  {
+   "h": 215,
+   "coupure": "2021-09-07",
+   "brut_14j": 0.0742,
+   "spatial": 0.0718,
+   "spatial_ic90": [
+    0.0607,
+    0.0838
+   ],
+   "absents_du_roster": [],
+   "gp": null,
+   "n_sondages_R": 0
+  },
+  {
+   "h": 208,
+   "coupure": "2021-09-14",
+   "brut_14j": 0.0783,
+   "spatial": 0.0789,
+   "spatial_ic90": [
+    0.0686,
+    0.0896
+   ],
+   "absents_du_roster": [],
+   "gp": null,
+   "n_sondages_R": 0
+  },
+  {
+   "h": 201,
+   "coupure": "2021-09-21",
+   "brut_14j": 0.0971,
+   "spatial": 0.0986,
+   "spatial_ic90": [
+    0.0886,
+    0.1094
+   ],
+   "absents_du_roster": [],
+   "gp": null,
+   "n_sondages_R": 0
+  },
+  {
+   "h": 194,
+   "coupure": "2021-09-28",
+   "brut_14j": 0.1108,
+   "spatial": 0.1215,
+   "spatial_ic90": [
+    0.1107,
+    0.1335
+   ],
+   "absents_du_roster": [],
+   "gp": null,
+   "n_sondages_R": 0
+  },
+  {
+   "h": 187,
+   "coupure": "2021-10-05",
+   "brut_14j": 0.1344,
+   "spatial": 0.1584,
+   "spatial_ic90": [
+    0.1452,
+    0.172
+   ],
+   "absents_du_roster": [],
+   "gp": null,
+   "n_sondages_R": 2
+  },
+  {
+   "h": 180,
+   "coupure": "2021-10-12",
+   "brut_14j": 0.1506,
+   "spatial": 0.1524,
+   "spatial_ic90": [
+    0.1445,
+    0.1607
+   ],
+   "absents_du_roster": [],
+   "gp": 0.1404,
+   "n_sondages_R": 3
+  },
+  {
+   "h": 173,
+   "coupure": "2021-10-19",
+   "brut_14j": 0.1581,
+   "spatial": 0.1668,
+   "spatial_ic90": [
+    0.1575,
+    0.1763
+   ],
+   "absents_du_roster": [],
+   "gp": 0.1585,
+   "n_sondages_R": 6
+  },
+  {
+   "h": 166,
+   "coupure": "2021-10-26",
+   "brut_14j": 0.1619,
+   "spatial": 0.1672,
+   "spatial_ic90": [
+    0.1572,
+    0.1773
+   ],
+   "absents_du_roster": [],
+   "gp": 0.1584,
+   "n_sondages_R": 6
+  }
+ ],
+ "detection": {
+  "brut_14j": "2021-10-05",
+  "spatial": "2021-10-05",
+  "gp": null
+ }
+}

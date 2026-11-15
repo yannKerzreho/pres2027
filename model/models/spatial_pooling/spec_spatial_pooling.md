@@ -442,3 +442,29 @@ coupure où l'estimation dépasse de 3 pt sa valeur de 28 j plus tôt ; même
 règle sur le brut ; retard = différence (résolution 7 j). On rapporte aussi
 l'écart estimation − brut à chaque coupure.
 
+**Résultat étape 3 (Zemmour 2021, liste R, coupures hebdomadaires).**
+
+| coupure | brut 14 j (tous sondages) | spatial [IC90] | gp-pooling (n sondages de R) |
+|---|---|---|---|
+| 07/09 | 7,4 | 7,2 [6,1 ; 8,4] | indisponible (0) |
+| 14/09 | 7,8 | 7,9 [6,9 ; 9,0] | indisponible (0) |
+| 21/09 | 9,7 | 9,9 [8,9 ; 10,9] | indisponible (0) |
+| 28/09 | 11,1 | 12,2 [11,1 ; 13,4] | indisponible (0) |
+| 05/10 | 13,4 | 15,8 [14,5 ; 17,2] | indisponible (2) |
+| 12/10 | 15,1 | 15,2 [14,5 ; 16,1] | 14,0 (3) |
+| 19/10 | 15,8 | 16,7 [15,8 ; 17,6] | 15,9 (6) |
+| 26/10 | 16,2 | 16,7 [15,7 ; 17,7] | 15,8 (6) |
+
+Détection (+3 pt en 28 j) : brut le 05/10, **spatial le 05/10 (retard nul à
+la résolution hebdomadaire)**, gp-pooling : jamais sur la fenêtre (série
+commencée le 12/10, après la montée). Le spatial suit la montée sans
+l'amortir — il la devance même la semaine du 28/09-05/10, la moyenne mobile
+brute étant elle-même en retard — parce qu'il voit Zemmour dans TOUTES les
+listes qui le testent, là où le modèle par liste attend que SA liste
+accumule des sondages. C'est l'usage où le spatial a un avantage net : un
+candidat nouveau, testé dans des champs dispersés. À rapprocher de
+l'amortissement mesuré sur 2027 (mouvements lents de ±1 pt/mois) : le
+lissage OU pèse sur les petites pentes, pas sur une montée de 9 pt en 6
+semaines portée par de nombreux sondages. Résultat :
+`model/backtest/results/detection_zemmour_2022.json`.
+
