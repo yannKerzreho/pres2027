@@ -29,6 +29,16 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- [ ] **ARBITRAGES TRANCHÉS (2026-11-15 ~21:45Z, voir section Arbitrages)** — à faire
+      AVANT la relance ci-dessous : (a) spec §6 : τ_T2 = 0,19, justification
+      (RMS 4,3 pt 2017/2022, couverture 5/5) ; `TAU_T2_SCRUTIN = 0.19` dans fit.py,
+      tests adaptés ; (b) spec : maths de τ_paire (bruit N(0, τ_paire²) en logit
+      sur les seuls duels sans aucun sondage, appliqué en prédiction, pas dans la
+      vraisemblance), calibrage leave-one-pair-out sur les résultats V1 2027
+      committés (0 fit), puis code + test ; (c) relancer `diagnostic_2027` et
+      consigner l'effet sur P(élu) et les IC des duels 2027. Biais anti-RN et
+      lissage : rien à coder (décision = statu quo), noter dans la spec.
+
 - [ ] **RELANCE 2026-11-15 21:30Z (session locale)** : le réveil de 21:07Z a
       conclu « rien à faire » alors que des tâches SANS dépendance restent
       ouvertes. Ordre à suivre, une par réveil, sans attendre les arbitrages :
@@ -309,6 +319,18 @@ Résultats : `model/backtest/results/*.json` (committés).
   - tableaux croisés T1×T2 des instituts (si la session données les fournit).
 
 ## Arbitrages ouverts (pour l'utilisateur — ne pas trancher seul)
+
+**TRANCHÉS par l'utilisateur le 2026-11-15 ~21:45Z** (« je valide tes points de
+vue », sur les propositions de la session locale) :
+1. τ_T2 → **0,19** (élargir ; centres inchangés).
+2. Biais anti-RN → **NON corrigé** (deux élections, estimation fragile).
+3. Lissage → **inchangé** (pas de τ_OU T2 plus court).
+4. τ_paire → **ADOPTÉ** pour les seuls duels jamais sondés, calibré en
+   leave-one-pair-out (≈ 0,10-0,15 logit).
+Ces décisions NE valent PAS accord de publication : `PUBLIER_T2` reste False
+(critère de publication §8 + accord explicite requis). Le texte ci-dessous est
+conservé pour l'historique.
+
 
 1. **Largeur τ_T2 de l'aléa de scrutin** (actuel 0,10 logit ; mesure
    2017/2022 ⇒ 0,18-0,20). Backtest V2 2022 (spec §8.5) : à 0,10 le
