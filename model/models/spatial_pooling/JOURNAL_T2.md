@@ -222,6 +222,10 @@ Résultats : `model/backtest/results/*.json` (committés).
       à gp-pooling sur les mêmes coupures (erreur, couverture, retard de
       détection des montées : Mélenchon 2017, Zemmour 2021). Maths/choix de
       présentation dans la spec avant le code. Ne touche PAS au site.
+      COMPARAISON : sur les MÊMES listes que celles affichées par les gp-pooling
+      multi-listes (session site : listes les plus testées parmi les ~10
+      derniers sondages, chacune ajustée sur tout son historique) — reprendre
+      leur règle de sélection à chaque coupure.
 - [ ] Synthèse dans spec §8 : V1 MAE modèle / géométrie seule / BT ; V2 couverture,
       log-score vs sondages ; R-hat, rhat_t2, κ, ω, η ; corrélation κ–η.
 - [ ] Puis pistes (choisir selon les résultats, maths dans la spec AVANT le code) :
