@@ -426,3 +426,19 @@ deux restent comparés sur les mêmes cibles. Sorties `suivi_proj_2022_h*.json`
 prolongement règle l'essentiel du défaut de couverture ; l'écart de précision
 avec gp-pooling sur les listes sondées demeure.
 
+**Étape 3, protocole (fixé avant résultat) : détection de la montée Zemmour
+2021.** Coupures hebdomadaires $c$ = 07/09 → 26/10/2021 ($h$ = 215 … 166),
+fit T1 seul comme aux étapes 1-2. Les listes du site n'incluent Zemmour qu'à
+partir de fin septembre, et chaque liste le contenant n'a que ≤ 8 sondages
+(dès le 13-29/09) : on fixe donc une liste de référence $R$ = la plus
+sondée contenant Zemmour sur sept.-nov. 2021 (Arthaud, Poutou, Mélenchon,
+Roussel, Jadot, Montebourg, Hidalgo, Macron, Lassalle, Bertrand,
+Dupont-Aignan, Le Pen, Zemmour). Signal brut : moyenne mobile 14 j de
+Zemmour sur TOUS les sondages qui le testent. Modèles : part de Zemmour
+dans $R$ au jour $c$ (spatial : n'importe quelle liste, sans prolongement ;
+gp-pooling : GPListe sur $R$, seulement si ≥ 3 sondages de $R$ avant $c$ —
+sinon « indisponible », ce qui EST un résultat). Détection : première
+coupure où l'estimation dépasse de 3 pt sa valeur de 28 j plus tôt ; même
+règle sur le brut ; retard = différence (résolution 7 j). On rapporte aussi
+l'écart estimation − brut à chaque coupure.
+

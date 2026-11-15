@@ -224,8 +224,9 @@ Résultats : `model/backtest/results/*.json` (committés).
       0,78 ; couverture 0,90 contre 0,73 ; p = 0,0001) ⇒ le spatial ne doit
       pas remplacer gp-pooling comme tracker d'une liste sondée (spec
       spatial_pooling §10). IC prolongé à h = 7 j FAIT 13:40Z : couverture
-      0,73 → 0,82 (≥ 5 % : 0,90), MAE inchangée. RESTE : étape 3 (retard de
-      détection) ; 2017. APRÈS le diagnostic 2027 (demande utilisateur 2026-11-15) — TRACKER PAR
+      0,73 → 0,82 (≥ 5 % : 0,90), MAE inchangée. Étape 3 (détection Zemmour
+      2021, spec spatial_pooling §10) : 8 fits hebdo h = 215…166 EN COURS
+      (début 2026-11-15T14:15Z, session 01JZeMw2). RESTE ensuite : 2017. APRÈS le diagnostic 2027 (demande utilisateur 2026-11-15) — TRACKER PAR
       CANDIDAT tiré du spatial : exporter la trajectoire w_i(t) du fit (chemin
       OU, déjà calculé ; seuls les candidats « dynamiques » > 5 % en ont une),
       présentée comme la PART de chaque candidat dans un champ de référence au
