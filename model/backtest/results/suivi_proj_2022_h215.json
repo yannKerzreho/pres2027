@@ -1,0 +1,116 @@
+{
+ "election": 2022,
+ "h": 215,
+ "coupure": "2021-09-07",
+ "listes": [
+  {
+   "cle": "anne hidalgo|asselineau|bertrand|emmanuel macron|fabien roussel|jean lassalle|jean luc melenchon|lagarde|marine le pen|nathalie arthaud|nicolas dupont aignan|philippe poutou|poisson|yannick jadot",
+   "id": "a02ea337",
+   "candidats": [
+    "Anne Hidalgo",
+    "Asselineau",
+    "Bertrand",
+    "Emmanuel Macron",
+    "Fabien Roussel",
+    "Jean Lassalle",
+    "Jean-Luc Mélenchon",
+    "Lagarde",
+    "Marine Le Pen",
+    "Nathalie Arthaud",
+    "Nicolas Dupont-Aignan",
+    "Philippe Poutou",
+    "Poisson",
+    "Yannick Jadot"
+   ],
+   "n_recents": 3,
+   "n_total": 11
+  },
+  {
+   "cle": "anne hidalgo|asselineau|emmanuel macron|fabien roussel|jean lassalle|jean luc melenchon|lagarde|marine le pen|nathalie arthaud|nicolas dupont aignan|philippe poutou|poisson|valerie pecresse|yannick jadot",
+   "id": "61cf26c5",
+   "candidats": [
+    "Anne Hidalgo",
+    "Asselineau",
+    "Emmanuel Macron",
+    "Fabien Roussel",
+    "Jean Lassalle",
+    "Jean-Luc Mélenchon",
+    "Lagarde",
+    "Marine Le Pen",
+    "Nathalie Arthaud",
+    "Nicolas Dupont-Aignan",
+    "Philippe Poutou",
+    "Poisson",
+    "Valérie Pécresse",
+    "Yannick Jadot"
+   ],
+   "n_recents": 3,
+   "n_total": 8
+  },
+  {
+   "cle": "anne hidalgo|asselineau|bertrand|emmanuel macron|fabien roussel|jean lassalle|jean luc melenchon|lagarde|marine le pen|nathalie arthaud|nicolas dupont aignan|philippe poutou|philippot|yannick jadot",
+   "id": "845e180b",
+   "candidats": [
+    "Anne Hidalgo",
+    "Asselineau",
+    "Bertrand",
+    "Emmanuel Macron",
+    "Fabien Roussel",
+    "Jean Lassalle",
+    "Jean-Luc Mélenchon",
+    "Lagarde",
+    "Marine Le Pen",
+    "Nathalie Arthaud",
+    "Nicolas Dupont-Aignan",
+    "Philippe Poutou",
+    "Philippot",
+    "Yannick Jadot"
+   ],
+   "n_recents": 3,
+   "n_total": 3
+  }
+ ],
+ "listes_ecartees": [
+  {
+   "candidats": [
+    "Anne Hidalgo",
+    "Asselineau",
+    "Bertrand",
+    "Emmanuel Macron",
+    "Fabien Roussel",
+    "Jean Lassalle",
+    "Jean-Luc Mélenchon",
+    "Lagarde",
+    "Marine Le Pen",
+    "Nathalie Arthaud",
+    "Nicolas Dupont-Aignan",
+    "Philippe Poutou",
+    "Philippot",
+    "Yannick Jadot"
+   ],
+   "hors_roster": [
+    "Philippot"
+   ]
+  }
+ ],
+ "chaines_retenues": [
+  0,
+  1,
+  2,
+  3
+ ],
+ "lp_par_chaine": [
+  3155.4173291015627,
+  3153.9651989746094,
+  3153.4631787109374,
+  3152.505590209961
+ ],
+ "diagnostics": {
+  "rhat_max": 1.0643,
+  "ess_min": 69.3,
+  "n_divergences": 0,
+  "n_noeuds": 86,
+  "n_champs_distincts": 50
+ },
+ "lignes": []
+}
