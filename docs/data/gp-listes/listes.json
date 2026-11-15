@@ -1,5 +1,5 @@
 {
- "as_of": "2026-11-13",
+ "as_of": "2026-11-15",
  "genere_le": "2026-11-15",
  "regle": {
   "n_recents": 10,
@@ -89,13 +89,13 @@
     "Zemmour"
    ],
    "n_recents": 5,
-   "n_total": 21,
+   "n_total": 22,
    "rang": 3,
    "reference": false,
    "libelle": "avec Attal",
    "dans_le_classement_depuis": "2026-09-03",
    "fichier": "gp-listes/26fa8eae.json",
-   "n_sondages_ajustes": 21
+   "n_sondages_ajustes": 22
   }
  ],
  "evenements": [
@@ -233,6 +233,24 @@
   {
    "date": "2026-07-08",
    "type": "sortie",
+   "id": "04966243",
+   "candidats": [
+    "Arthaud",
+    "Attal",
+    "Bardella",
+    "Dupont-Aignan",
+    "Glucksmann",
+    "Mélenchon",
+    "Retailleau",
+    "Roussel",
+    "Tondelier",
+    "Zemmour"
+   ],
+   "libelle": "avec Attal, Bardella, sans Le Pen, Philippe"
+  },
+  {
+   "date": "2026-07-08",
+   "type": "sortie",
    "id": "b4e5e5b9",
    "candidats": [
     "Arthaud",
@@ -248,24 +266,6 @@
     "Zemmour"
    ],
    "libelle": "avec Attal, Bardella, sans Le Pen"
-  },
-  {
-   "date": "2026-07-08",
-   "type": "sortie",
-   "id": "04966243",
-   "candidats": [
-    "Arthaud",
-    "Attal",
-    "Bardella",
-    "Dupont-Aignan",
-    "Glucksmann",
-    "Mélenchon",
-    "Retailleau",
-    "Roussel",
-    "Tondelier",
-    "Zemmour"
-   ],
-   "libelle": "avec Attal, Bardella, sans Le Pen, Philippe"
   },
   {
    "date": "2026-08-19",
