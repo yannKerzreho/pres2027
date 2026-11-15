@@ -1,0 +1,65 @@
+{
+ "tache": "Glucksmann|Le Pen",
+ "variante": "abst",
+ "t_k": "2026-11-13",
+ "diagnostics": {
+  "rhat_max": 1.0304,
+  "rhat_t2": 1.0105,
+  "ess_min": 209.9,
+  "n_divergences": 0,
+  "kappa": 0.7925,
+  "omega": -3.7164,
+  "sigma_t2": 0.0119,
+  "n_duels": 37
+ },
+ "lignes": [
+  {
+   "paire": [
+    "Glucksmann",
+    "Le Pen"
+   ],
+   "observe_30j": 0.4339,
+   "n_cible": 9,
+   "modele": 0.4206,
+   "modele_ic90": [
+    0.3866,
+    0.4537
+   ],
+   "erreur_pt": 1.33,
+   "log_score": 2.757,
+   "ic90_predictif": [
+    0.3855,
+    0.4545
+   ],
+   "couvre_predictif": true,
+   "log_score_predictif": 2.735,
+   "lp_par_chaine": [
+    7187.8,
+    7187.2,
+    7187.1,
+    7184.8
+   ],
+   "lp_se": [
+    1.1,
+    1.43,
+    1.15,
+    0.91
+   ],
+   "chaines_retenues": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "modele_par_chaine": [
+    0.4215,
+    0.4209,
+    0.4207,
+    0.4193
+   ],
+   "ecart_chaines_pt": 0.22,
+   "rhat_cible": 0.999,
+   "concluant": true
+  }
+ ]
+}
