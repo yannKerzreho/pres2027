@@ -110,7 +110,7 @@ Résultats : `model/backtest/results/*.json` (committés).
       T1−30 committé sous `second_round_abst_v2_2022_T1-30_ancien_cadre.json` (non convergé, R-hat 35,8, témoin) ; T1−1 perdu
       (VM récupérée vers 18:00Z), non relancé : sans objet.
 - [x] abst : v1 2022 Macron|Zemmour, Mélenchon, Le Pen, Pécresse — FAIT (spec §8.6) : NON CONCLUANT, écarts de chaînes 4,7-9,3 pt (géométrie T1 multimodale transmise aux duels non observés) ; MAE modèle 6,5 / géom. 9,1 / BT 12,2 (indicatif).
-- [ ] **PRIORITAIRE** : lever la multimodalité de la géométrie T1 du cadre
+- [x] **PRIORITAIRE** : lever la multimodalité de la géométrie T1 du cadre
       historique 2022 (permutations Mélenchon/LO, Zemmour/souverainistes,
       Lassalle). Pistes à chiffrer, maths dans la spec AVANT code : (a) fenêtre
       plus courte (90 j au lieu de 180 : moins de candidats putatifs, moins de
@@ -138,10 +138,10 @@ Résultats : `model/backtest/results/*.json` (committés).
       n'est pas à contraindre. Règle de sélection des chaînes (Δ = 10 nats)
       codée dans la fusion (`lp_par_chaine`, `chaines_retenues`, `concluant`),
       tous les JSON 2022 re-fusionnés : V2 concluant ×3, V1 non concluant ×4.
-- [ ] Phase 2 « relance au mode dominant » (`--init-depuis`, spec §8.8) :
+- [x] Phase 2 « relance au mode dominant » (`--init-depuis`, spec §8.8) :
       V1 Macron|Le Pen — FAIT 22:35Z : puits stable (4 chaînes retenues,
       rhat_max 2,3, écart 1,4 pt) mais prédiction 64,0 % pour 55,3 observé.
-- [ ] Variantes sans valence (spec §8.9, question utilisateur : « le T2 ne
+- [x] Variantes sans valence (spec §8.9, question utilisateur : « le T2 ne
       peut-il pas estimer μ, σ, ω ? κ η ω sont-ils nécessaires ? ») : `geo`
       (κ+ω, η ≡ 0) et `geo1` (ω seul, κ ≡ 1). V1 Macron|Le Pen `geo` phase 1 —
       EN COURS (relancé 2026-11-14T23:10Z, session 01JZeMw2 : le run de 22:37Z a été perdu, VM récupérée dès la fin du tour) ; puis phase 2 ;
@@ -163,13 +163,13 @@ Résultats : `model/backtest/results/*.json` (committés).
       géométrique vers 50/50 (limite structurelle). Pistes : abstention
       croissante avec la distance (à spécifier) ; mention produit pour les
       duels de candidats sans aucun duel.
-- [ ] `hier` : traiter la bimodalité de s_η (phase 2 §8.8, ou prior
+- [x] `hier` : traiter la bimodalité de s_η (phase 2 §8.8, ou prior
       informatif), puis V2 2022 ×3 et diagnostic 2027 en `hier`.
       Phase 2 Zemmour puis Pécresse — FAIT 02:38Z : concluants tous deux
       (Zemmour 69,2 couvert ; Pécresse 52,6, limite structurelle).
       Phase 2 Mélenchon puis V2 2022 T1−1 `hier` — FAIT 03:15Z : MAE V1
       hier 5,0 pt ; V2 inchangé (52,3 contre 52,4).
-- [ ] Diagnostic 2027 `hier` (`python -m model.backtest.diagnostic_2027
+- [x] Diagnostic 2027 `hier` (`python -m model.backtest.diagnostic_2027
       --variante hier`) — EN COURS (début 2026-11-15T03:20Z, session 01JZeMw2).
       Comparer à abst (§8.1) : critères (ii) et duels affichés.
       — FAIT 03:45Z : règle (ii) passe, convergence meilleure (R-hat 1,0095),
@@ -178,12 +178,30 @@ Résultats : `model/backtest/results/*.json` (committés).
       FAIT 03:53Z (spec §8.10) : 4 tâches convergées ; V2 = sondages, T2−7
       non couvert à τ 0,10 ; V1 centres bons (0,7 / 4,9 pt), IC très larges ;
       η ≈ 0 (l'échelle se rétracte).
-- [ ] (revue 15/11, b) [module `model/backtest/v1_2027.py` FAIT, spec §8.12 ;
-      file hier puis abst sur les 4 grosses paires EN COURS (début
-      2026-11-15T09:25Z, session 01JZeMw2)] V1 2027 « une paire retirée » (8 paires à n ≥ 4) et
+- [ ] (revue 15/11, b) [module `model/backtest/v1_2027.py`, spec §8.12 ; 4
+      grosses paires × abst/hier FAITES 10:11Z (§8.13) : tout concluant d'emblée,
+      hier MAE 2,26 / LS 7,02 contre abst 2,97 / 5,94 ; 4 petites paires +
+      candidats Attal/Bardella × 2 variantes EN COURS (début 2026-11-15T10:20Z,
+      session 01JZeMw2)] V1 2027 « une paire retirée » (8 paires à n ≥ 4) et
       « un candidat retiré » (Attal, Bardella), variantes abst et hier, protocole
       §8.11 : ~20 fits, 4 par réveil ; d'abord ajouter le mode à
       `diagnostic_2027.py` (ou un module `v1_2027`) avec `--chaine/--fusionner`.
+- [ ] APRÈS le diagnostic 2027 (demande utilisateur 2026-11-15) — TRACKER PAR
+      CANDIDAT tiré du spatial : exporter la trajectoire w_i(t) du fit (chemin
+      OU, déjà calculé ; seuls les candidats « dynamiques » > 5 % en ont une),
+      présentée comme la PART de chaque candidat dans un champ de référence au
+      fil du temps, avec bande IC90 (w brut est relatif, illisible). Puis
+      BACKTEST DE SUIVI DE TENDANCE 2017/2022 : un fit par coupure (sondages
+      connus à la coupure seulement — un fit unique en fin de campagne lisse avec
+      le recul et ne vaut pas validation), ~10 coupures/élection, d'abord en fits
+      allégés (2 chaînes) puis complets sur les coupures informatives. Comparer
+      à gp-pooling sur les mêmes coupures (erreur, couverture, retard de
+      détection des montées : Mélenchon 2017, Zemmour 2021). Maths/choix de
+      présentation dans la spec avant le code. Ne touche PAS au site.
+      COMPARAISON : sur les MÊMES listes que celles affichées par les gp-pooling
+      multi-listes (session site : listes les plus testées parmi les ~10
+      derniers sondages, chacune ajustée sur tout son historique) — reprendre
+      leur règle de sélection à chaque coupure.
 - [ ] (revue, c) abst en phase 2 sur Zemmour, Mélenchon, Pécresse 2022
       (3 tâches) pour un traitement égal à hier.
 - [ ] (revue, a/d) stacking des chaînes (log-vraisemblance par nœud sur les
@@ -210,22 +228,6 @@ Résultats : `model/backtest/results/*.json` (committés).
 - [ ] Décision τ_T2 (maths dans la spec §6 avant code) : la mesure du 14/11
       donne RMS ≈ 4,3 pt ⇒ τ ≈ 0,18-0,20 logit ; centrage sur 0 = choix
       éditorial, à faire trancher par l'utilisateur (ne pas coder de biais).
-- [ ] APRÈS le diagnostic 2027 (demande utilisateur 2026-11-15) — TRACKER PAR
-      CANDIDAT tiré du spatial : exporter la trajectoire w_i(t) du fit (chemin
-      OU, déjà calculé ; seuls les candidats « dynamiques » > 5 % en ont une),
-      présentée comme la PART de chaque candidat dans un champ de référence au
-      fil du temps, avec bande IC90 (w brut est relatif, illisible). Puis
-      BACKTEST DE SUIVI DE TENDANCE 2017/2022 : un fit par coupure (sondages
-      connus à la coupure seulement — un fit unique en fin de campagne lisse avec
-      le recul et ne vaut pas validation), ~10 coupures/élection, d'abord en fits
-      allégés (2 chaînes) puis complets sur les coupures informatives. Comparer
-      à gp-pooling sur les mêmes coupures (erreur, couverture, retard de
-      détection des montées : Mélenchon 2017, Zemmour 2021). Maths/choix de
-      présentation dans la spec avant le code. Ne touche PAS au site.
-      COMPARAISON : sur les MÊMES listes que celles affichées par les gp-pooling
-      multi-listes (session site : listes les plus testées parmi les ~10
-      derniers sondages, chacune ajustée sur tout son historique) — reprendre
-      leur règle de sélection à chaque coupure.
 - [ ] Synthèse dans spec §8 : V1 MAE modèle / géométrie seule / BT ; V2 couverture,
       log-score vs sondages ; R-hat, rhat_t2, κ, ω, η ; corrélation κ–η.
 - [ ] Puis pistes (choisir selon les résultats, maths dans la spec AVANT le code) :

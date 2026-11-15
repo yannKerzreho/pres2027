@@ -791,6 +791,24 @@ même protocole (§8.11 : 4 chaînes, phase 2 si < 3 retenues ; log-score
 logit primaire, MAE secondaire). Limite connue : les autres duels des mêmes
 notices restent (fuite même-répondants, revue point 8).
 
+### 8.13 V1 2027, premiers résultats (4 grosses paires, 2026-11-15)
+
+Fit à $t_k$, paire retirée, cible = moyenne 30 j (n = 8, 8, 8, 3) ; 4 chaînes
+retenues partout, écart ≤ 0,3 pt : **concluant d'emblée** (la géométrie 2027
+est identifiée, contrairement au cadre historique).
+
+| paire retirée | sondé | abst [IC90] | hier [IC90] |
+|---|---|---|---|
+| Le Pen–Philippe | 55,4 | 55,0 [52,7 ; 57,4] | 54,8 [52,9 ; 56,6] |
+| Le Pen–Mélenchon | 68,5 | 65,7 [63,5 ; 67,8] | 65,7 [63,8 ; 67,7] |
+| Glucksmann–Le Pen | 43,2 | 41,2 [37,7 ; 44,8] | 41,6 [38,7 ; 44,4] |
+| Attal–Le Pen | 43,3 | 36,6 [32,7 ; 40,5] | 39,3 [36,6 ; 42,0] |
+| MAE / log-score Σ | | 2,97 / 5,94 | **2,26 / 7,02** |
+
+Mélenchon et Attal hors IC dans les deux variantes : l'IC sans aléa de
+scrutin ni excès σ_T2 est trop étroit pour une paire retirée (à mesurer sur
+les 10 tâches : couverture). En attente des 6 autres tâches avant verdict.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
