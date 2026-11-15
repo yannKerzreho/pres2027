@@ -228,7 +228,9 @@ Résultats : `model/backtest/results/*.json` (committés).
       2021, spec spatial_pooling §10) FAIT 14:45Z : spatial détecte le
       05/10 comme le brut (retard nul), gp-pooling indisponible avant le 12/10
       (liste trop peu sondée) ⇒ avantage net du spatial pour un candidat
-      nouveau. RESTE : 2017 (Mélenchon mars-avril) ; synthèse tracker pour
+      nouveau. 2017 (Mélenchon mars-avril) BLOQUÉ PAR LES DONNÉES (15/11
+      15:10Z) : avant le 05/04/2017, 2-3 notices datées et roster vide, or la
+      montée est en mars — dépend de la session données (dates 2017). Reste : synthèse tracker pour
       l'utilisateur (rôle : spatial pour listes non sondées et candidats
       nouveaux, gp pour une liste sondée établie). APRÈS le diagnostic 2027 (demande utilisateur 2026-11-15) — TRACKER PAR
       CANDIDAT tiré du spatial : exporter la trajectoire w_i(t) du fit (chemin
@@ -250,7 +252,7 @@ Résultats : `model/backtest/results/*.json` (committés).
       (moyenne de n sondages) avant de lire la couverture — 0 fit (re-fusion).
       FAIT 10:55Z (spec §8.14) : élargissement faible, couverture 2027 4/6 ;
       ratés = biais de structure 3-4 pt ⇒ piste τ_paire (ci-dessous, arbitrage 4).
-- [ ] (revue, c) abst en phase 2 sur Zemmour, Mélenchon, Pécresse 2022
+- [ ] (revue, c) abst en phase 2 sur Zemmour, Mélenchon, Pécresse 2022 — EN COURS (début 2026-11-15T15:12Z, session 01JZeMw2)
       (3 tâches) pour un traitement égal à hier.
 - [ ] (revue, a/d) stacking des chaînes (log-vraisemblance par nœud sur les
       tirages sauvés) ou max local + Laplace par chaîne — maths dans la spec.
