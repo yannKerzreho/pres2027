@@ -173,7 +173,9 @@ Résultats : `model/backtest/results/*.json` (committés).
       Comparer à abst (§8.1) : critères (ii) et duels affichés.
       — FAIT 03:45Z : règle (ii) passe, convergence meilleure (R-hat 1,0095),
       duels affichés = abst à ≤ 0,5 pt. `hier` proposée en référence (§8.10).
-- [ ] 2017 en `hier` (V1 Macron|Le Pen, Fillon|Le Pen ; V2 T1−1, T2−7) puis
+- [ ] 2017 en `hier` (V1 Macron|Le Pen, Fillon|Le Pen ; V2 T1−1, T2−7) —
+      V2 T1−1 puis V1 Macron|Le Pen EN COURS (début 2026-11-15T03:46Z,
+      session 01JZeMw2) ; puis
       revue Opus (due 2026-11-15 ~15:00Z) sur §8.3-8.10 avant de changer le
       défaut du modèle (eta_hier) ; abstention croissante avec la distance
       (piste Pécresse) à spécifier.
