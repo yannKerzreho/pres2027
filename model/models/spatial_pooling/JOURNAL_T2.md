@@ -147,9 +147,14 @@ Résultats : `model/backtest/results/*.json` (committés).
 - [x] geo sur les 3 autres V1 2022 — FAIT 00:29Z (spec §8.9) : convergé
       (3/4 concluants) mais Zemmour 51,1 pour 66,7 et Pécresse 53,1 pour 65,6
       (repoussoirs non représentables en 1D sans valence). MAE geo 7,3, abst 6,8.
-- [ ] Variante `hier` (échelle de valence apprise, spec §8.10) sur les 4 V1
-      2022 — EN COURS (début 2026-11-15T00:35Z, session 01JZeMw2), puis
-      la meilleure variante en V2 2022 ×3 et diagnostic 2027.
+- [x] Variante `hier` (échelle de valence apprise, spec §8.10) sur les 4 V1
+      2022 — FAIT 01:50Z : MAE 4,9 pt (abst 6,8, geo 7,3), couverts 3/4,
+      concluants 2/4 ; s_η bimodal (0,16 / 0,35) sur Zemmour et Pécresse. Tests : 150 passés (hors réseau).
+- [ ] Pécresse ratée par toutes les variantes (~53 contre 65,6) : vérifier la
+      cible V1 (fenêtre 30 j pendant l'effondrement) et la lecture de `w` à
+      `as_of` dans `v1_paire_retiree` AVANT toute conclusion de modélisation.
+- [ ] `hier` : traiter la bimodalité de s_η (phase 2 §8.8, ou prior
+      informatif), puis V2 2022 ×3 et diagnostic 2027 en `hier`.
 - [ ] abst : v1 2017 Macron|Le Pen, Fillon|Le Pen ; v2 2017 T1-30 (attendu : sans nœud T1), T1-1, T2-7
 - [ ] eta : mêmes tâches (comparaison)
 - [ ] Revue 2026-11-14, sans fit : corriger la base V2 (écart-type τ_T2 en plus
@@ -252,7 +257,7 @@ Résultats : `model/backtest/results/*.json` (committés).
   peut-il pas estimer μ, σ, ω ? κ η ω nécessaires ? ») : phase 2 (mode
   dominant stable, V1 Macron–Le Pen 64 %) ; variantes geo/geo1 (§8.9) :
   η libre = ce qui laissait coexister les géométries ; geo converge mais rate
-  les repoussoirs ; κ nécessaire ; `hier` (§8.10) lancée.
+  les repoussoirs ; κ nécessaire ; `hier` (§8.10) : meilleure MAE V1 (4,9).
 - 2026-11-14 22:07-22:25Z (réveil) : log-densité par chaîne ⇒ modes inégaux
   (spec §8.8), sélection Δ = 10 nats, re-fusion 2022, phase 2 lancée.
   Tests : 6 chaînes/cadre verts. Tests : 148 passés (hors réseau).

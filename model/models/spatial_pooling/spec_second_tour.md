@@ -644,6 +644,29 @@ grand. Le prior a la même échelle que le 0,5 fixe actuel : on n'impose pas a
 priori des valences plus petites, on laisse les données le dire. Mesure : les
 4 V1 2022, critère §8.4/§8.8 puis erreur, à comparer à abst et geo.
 
+**Résultats `hier`, 4 V1 2022** (obs. / prédiction des chaînes retenues [IC90]) :
+Le Pen 55,3 / 59,4 [55,0 ; 63,4], 4 chaînes, 0,63 pt, **concluant** ;
+Zemmour 66,7 / 69,0 [65,6 ; 72,3], 1 chaîne retenue (non concluant) ;
+Mélenchon 61,5 / 61,2 [45,1 ; 76,2], 1 chaîne (non concluant) ;
+Pécresse 65,6 / 52,7 [48,6 ; 57,2], 2 chaînes, 0,18 pt, concluant.
+
+| variante | MAE V1 | couverts | concluants |
+|---|---|---|---|
+| abst (η, échelle 0,5 fixe) | 6,8 pt | 1/4 | 0/4 |
+| geo (η ≡ 0) | 7,3 pt | 2/4 | 3/4 |
+| **hier (échelle apprise)** | **4,9 pt** | **3/4** | 2/4 |
+
+$s_\eta$ par chaîne : Le Pen 0,41-0,42 (un seul régime) ; Zemmour 0,34 / 0,35
+/ 0,17 / 0,16 et Pécresse 0,41 / 0,43 / 0,17 / 0,22 : **deux régimes** de
+valence (forte / faible), c'est l'entonnoir prévu. Pécresse est ratée par
+TOUTES les variantes (52,7-55,2 contre 65,6) : défaut robuste, pas un effet de
+η — piste : la cible V1 est la moyenne des 30 derniers jours, pendant
+l'effondrement de Pécresse (duels ~52/48 à l'automne 2021), et la prédiction
+est-elle bien lue avec le `w` d'`as_of` ? À vérifier avant d'en conclure quoi
+que ce soit. Lecture provisoire : l'échelle apprise est la meilleure des trois
+et garde la valence là où elle sert (Zemmour) ; le régime bimodal de $s_\eta$
+reste à traiter (prior plus informatif sur $s_\eta$, ou phase 2 §8.8).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
