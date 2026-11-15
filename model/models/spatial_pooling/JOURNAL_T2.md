@@ -18,8 +18,8 @@ l'historique, ajouter en bas de « Historique ».
   sans accord explicite de l'utilisateur.
 - Modèle courant : géométrie T1 + κ + valence η agrégée + abstention par valeur
   inclusive (ω). Variantes de backtest : `eta`, `geo` (η ≡ 0), `geo1` (κ ≡ 1),
-  `hier` (échelle de η apprise) — proposition « référence » RETIRÉE après la
-  revue du 15/11 ; comparaison à refaire sur protocole fixé (spec §8.11).
+  `hier` (échelle de η apprise) — jugée sur le protocole fixé : NON préférée
+  (spec §8.15), `abst` reste le défaut.
 - Backtests : cadre historique à toutes les hypothèses T1 (§8.3) ; 4 processus
   d'une chaîne + fusion ; sélection des chaînes par log-densité (§8.8) ;
   phase 2 `--init-depuis` ; convergence jugée sur la quantité prédite (§8.4).
@@ -252,7 +252,7 @@ Résultats : `model/backtest/results/*.json` (committés).
       (moyenne de n sondages) avant de lire la couverture — 0 fit (re-fusion).
       FAIT 10:55Z (spec §8.14) : élargissement faible, couverture 2027 4/6 ;
       ratés = biais de structure 3-4 pt ⇒ piste τ_paire (ci-dessous, arbitrage 4).
-- [ ] (revue, c) abst en phase 2 sur Zemmour, Mélenchon, Pécresse 2022 — EN COURS (début 2026-11-15T15:12Z, session 01JZeMw2)
+- [x] (revue, c) abst en phase 2 sur Zemmour, Mélenchon, Pécresse 2022 — FAIT 16:17Z ; + abst 2017 ; VERDICT protocole §8.11 (spec §8.15) : hier gagne le log-score total (10,5 contre 7,7) mais perd la MAE 2017 ⇒ PAS préférée, abst reste le défaut
       (3 tâches) pour un traitement égal à hier.
 - [ ] (revue, a/d) stacking des chaînes (log-vraisemblance par nœud sur les
       tirages sauvés) ou max local + Laplace par chaîne — maths dans la spec.
@@ -371,6 +371,9 @@ Résultats : `model/backtest/results/*.json` (committés).
 - 2026-11-14 21:27-21:50Z (réveils 19:07/20:07/21:07 reçus en retard, traités
   en un) : fenêtre, ancres, pos_scale 0,25 (§8.7) ; cause des modes V1 =
   compensation géométrie/η.
+- 2026-11-15 15:07-16:30Z (réveil) : suivi 2017 bloqué par les données ;
+  abst phase 2 (2022) et abst 2017 ; verdict du protocole : abst reste le
+  défaut (spec §8.15).
 - 2026-11-15 14:07-14:50Z (réveil) : étape 3 du suivi (détection Zemmour
   2021) : spatial sans retard, gp indisponible.
 - 2026-11-15 13:28-13:45Z (réveil 13:07) : IC du suivi spatial prolongé

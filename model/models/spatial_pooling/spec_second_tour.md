@@ -861,6 +861,29 @@ erreurs observées), à afficher dans l'onglet Scénarios pour les duels jamais
 sondés. Même logique que $\tau_{T2}$ (arbitrage 1) : à soumettre à
 l'utilisateur.
 
+### 8.15 Verdict du protocole §8.11 : abst contre hier (2026-11-15)
+
+Traitement égal (phase 2 partout où < 3 chaînes retenues ou chaînes en
+désaccord ; abst lancé sur 2017), métriques prédictives (§8.14), V1 :
+
+| V1 | MAE abst / hier | log-score Σ abst / hier |
+|---|---|---|
+| 2017 (2 paires) | **2,05** / 2,81 | 1,89 / **2,39** |
+| 2022 (4 paires) | 6,34 / **4,97** | **−2,81** / −4,48 |
+| 2027 (6 tâches) | 3,05 / **2,19** | 8,62 / **12,63** |
+| total | — | 7,70 / **10,54** |
+
+Règle fixée d'avance : préférer une variante si elle gagne le log-score total
+ET ne perd la MAE sur aucune élection. `hier` gagne le log-score total mais
+perd la MAE sur 2017 ⇒ **`hier` n'est PAS préférée ; `abst` reste le
+défaut.** Les écarts sont petits devant le bruit (2 à 6 tâches par élection,
+toutes avec Le Pen ou Macron) : aucune des deux ne domine. Sur 2022, `hier`
+est trop confiante sur Pécresse (s_η rétréci à 0,13 ⇒ IC étroit, z ≈ 5) — ce
+qui lui coûte le log-score 2022. V2 (duels sondés) : identiques à ≤ 0,4 pt.
+Conséquence : on garde `abst`, et l'amélioration à rechercher n'est pas dans
+η mais dans l'incertitude d'extrapolation des paires non sondées
+(arbitrage 4, $\tau_{paire}$) et dans $\tau_{T2}$ (arbitrage 1).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
