@@ -278,7 +278,7 @@ Résultats : `model/backtest/results/*.json` (committés).
       intra-notice des résidus (`duel_s` + `duels["notices"]` désormais dans le fit).
       Déjà mesuré sur 2027 (§8.1) : |corr(log κ, η_i)| ≤ 0,22, z̄² = 0,75 —
       à refaire sur les fits 2017/2022.
-- [ ] Effets maison au T2 (Harris −0,9 / YouGov +0,9 pt sur 2027) : mesurer
+- [x] [FAIT 19:15Z, spec §8.17 : aucun effet stable (Harris +1,6 / −0,2 / −0,9 selon l'élection ; 2022 tout à ±0,4 pt) ⇒ pas de paramètre] Effets maison au T2 (Harris −0,9 / YouGov +0,9 pt sur 2027) : mesurer
       sur 2017/2022 avant toute modélisation ; maths dans la spec d'abord.
 - [ ] Décision τ_T2 (maths dans la spec §6 avant code) : la mesure du 14/11
       donne RMS ≈ 4,3 pt ⇒ τ ≈ 0,18-0,20 logit ; centrage sur 0 = choix
@@ -376,6 +376,8 @@ Résultats : `model/backtest/results/*.json` (committés).
 - 2026-11-14 21:27-21:50Z (réveils 19:07/20:07/21:07 reçus en retard, traités
   en un) : fenêtre, ancres, pos_scale 0,25 (§8.7) ; cause des modes V1 =
   compensation géométrie/η.
+- 2026-11-15 19:07-19:20Z (réveil) : effets maison T2 mesurés (§8.17),
+  aucun stable.
 - 2026-11-15 18:07-19:10Z (réveil) : fuite même-notice (§8.16) : comptée,
   mesurée (8 fits), sans effet sur les centres.
 - 2026-11-15 17:07-17:25Z (réveil) : diagnostic 2027 des définitions de

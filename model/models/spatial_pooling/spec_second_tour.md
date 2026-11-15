@@ -915,6 +915,26 @@ s'élargissent, par perte de données. Les chiffres V1 de §8.13 ne sont donc
 pas gonflés par la fuite même-répondants ; les biais de 3-7 pt (Mélenchon,
 Attal) sont de la structure, pas de la fuite (cf. arbitrage 4).
 
+### 8.17 Effets maison au second tour (2026-11-15, sans fit)
+
+Résidus des duels sondés contre la part prédite à leur date (re-fusion des
+fits V2, dans l'échantillon), par institut (n ≥ 5) :
+
+| institut | 2017 (T2−7) | 2022 (T1−1) | 2022 (T2−7) | 2027 (§8.1) |
+|---|---|---|---|---|
+| Harris Interactive | +1,56 (11) | −0,17 (90) | −0,16 (83) | −0,88 (25) |
+| Ifop | −0,76 (22) | +0,32 (16) | +0,05 (15) | +0,04 (14) |
+| Elabe | +0,21 (18) | +0,38 (37) | +0,31 (39) | +0,50 (18) |
+| OpinionWay | +0,41 (21) | −0,10 (54) | +0,05 (60) | −0,14 (14) |
+| Odoxa | −0,36 (7) | +1,35 (6) | +0,86 (6) | (4) |
+
+(points, entre parenthèses le nombre de duels.) Écart-type des résidus :
+1,4-1,6 pt. **Aucun effet maison stable** : amplitudes ≤ 1,6 pt, signes qui
+changent d'une élection à l'autre (Harris +1,6 / −0,2 / −0,9), et sur 2022, où
+les effectifs sont grands, tout est à ±0,4 pt sauf Odoxa (n = 6). Le seul
+régulier est Elabe (+0,2 à +0,5 pt), trop petit pour justifier un paramètre.
+Décision : pas d'effets maison au T2 ; σ_T2 absorbe cette dispersion.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
