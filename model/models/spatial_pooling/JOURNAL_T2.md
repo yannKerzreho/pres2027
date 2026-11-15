@@ -178,7 +178,7 @@ Résultats : `model/backtest/results/*.json` (committés).
       FAIT 03:53Z (spec §8.10) : 4 tâches convergées ; V2 = sondages, T2−7
       non couvert à τ 0,10 ; V1 centres bons (0,7 / 4,9 pt), IC très larges ;
       η ≈ 0 (l'échelle se rétracte).
-- [ ] (revue 15/11, b) [module `model/backtest/v1_2027.py`, spec §8.12 ; 4
+- [x] (revue 15/11, b) [module `model/backtest/v1_2027.py`, spec §8.12 ; 4
       grosses paires × abst/hier FAITES 10:11Z ; complément FAIT 10:40Z
       (§8.13) : 6 tâches exécutables, hier MAE 2,19 / LS 11,61 / 6 concluants
       contre abst 3,05 / 7,95 / 5 ; 4 tâches Bardella INEXÉCUTABLES (t_k = 27/05,
@@ -187,7 +187,11 @@ Résultats : `model/backtest/results/*.json` (committés).
       « un candidat retiré » (Attal, Bardella), variantes abst et hier, protocole
       §8.11 : ~20 fits, 4 par réveil ; d'abord ajouter le mode à
       `diagnostic_2027.py` (ou un module `v1_2027`) avec `--chaine/--fusionner`.
-- [ ] EN PARALLÈLE des fits NUTS (gp-pooling est en forme close, ~0,1 s/date :
+- [x] [FAIT 2026-11-15 16:50Z : `model/backtest/listes_definition.py`, livrable
+      `model/backtest/results/listes_definition.md` ; 2022 apparié : D1 +40-80 %
+      de sondages, −0,06 pt à 30 j, +0,01-0,05 pt à 7 j, IC50 trop étroits ;
+      seul s = 5 % passe ; reco : garder D0. RESTE : D2 et diagnostic 2027]
+      EN PARALLÈLE des fits NUTS (gp-pooling est en forme close, ~0,1 s/date :
       ça tient sur un cœur pendant les fits) — DÉFINITION DES LISTES gp-pooling
       (demande utilisateur via l'orchestrateur, 2026-11-15) : « le coût en
       précision d'un regroupement est-il compensé par plus de données ? ».
@@ -371,6 +375,8 @@ Résultats : `model/backtest/results/*.json` (committés).
 - 2026-11-14 21:27-21:50Z (réveils 19:07/20:07/21:07 reçus en retard, traités
   en un) : fenêtre, ancres, pos_scale 0,25 (§8.7) ; cause des modes V1 =
   compensation géométrie/η.
+- 2026-11-15 16:27-16:55Z (réveil 16:07) : backtest de définition des listes
+  gp-pooling (demande orchestrateur), livrable listes_definition.md.
 - 2026-11-15 15:07-16:30Z (réveil) : suivi 2017 bloqué par les données ;
   abst phase 2 (2022) et abst 2017 ; verdict du protocole : abst reste le
   défaut (spec §8.15).
