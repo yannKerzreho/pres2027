@@ -173,9 +173,11 @@ Résultats : `model/backtest/results/*.json` (committés).
       Comparer à abst (§8.1) : critères (ii) et duels affichés.
       — FAIT 03:45Z : règle (ii) passe, convergence meilleure (R-hat 1,0095),
       duels affichés = abst à ≤ 0,5 pt. `hier` proposée en référence (§8.10).
-- [ ] 2017 en `hier` (V1 Macron|Le Pen, Fillon|Le Pen ; V2 T1−1, T2−7) —
-      V2 T1−1 puis V1 Macron|Le Pen EN COURS (début 2026-11-15T03:46Z,
-      session 01JZeMw2) ; puis
+- [x] 2017 en `hier` (V1 Macron|Le Pen, Fillon|Le Pen ; V2 T1−1, T2−7) —
+      FAIT 03:53Z (spec §8.10) : 4 tâches convergées ; V2 = sondages, T2−7
+      non couvert à τ 0,10 ; V1 centres bons (0,7 / 4,9 pt), IC très larges ;
+      η ≈ 0 (l'échelle se rétracte).
+- [ ] Ensuite :
       revue Opus (due 2026-11-15 ~15:00Z) sur §8.3-8.10 avant de changer le
       défaut du modèle (eta_hier) ; abstention croissante avec la distance
       (piste Pécresse) à spécifier.
@@ -277,6 +279,8 @@ Résultats : `model/backtest/results/*.json` (committés).
 - 2026-11-14 21:27-21:50Z (réveils 19:07/20:07/21:07 reçus en retard, traités
   en un) : fenêtre, ancres, pos_scale 0,25 (§8.7) ; cause des modes V1 =
   compensation géométrie/η.
+- 2026-11-15 03:44-03:55Z (réveils 02:07/03:07 reçus en retard) : 2017 hier
+  (4 tâches, §8.10).
 - 2026-11-15 02:00-03:45Z : hier phase 2 (Zemmour, Pécresse, Mélenchon),
   V2 T1−1 hier, diagnostic 2027 hier ⇒ hier proposée en référence.
 - 2026-11-15 01:52-02:00Z (réveils 00:07/01:07 reçus en retard) :

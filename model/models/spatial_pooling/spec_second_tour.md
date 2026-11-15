@@ -711,6 +711,23 @@ Règle (ii) : passe.
 référence du bloc T2** — à confirmer sur 2017 et en revue Opus avant d'en
 changer le défaut ; aucun effet production tant que `PUBLIER_T2 = False`.
 
+**2017 en `hier`** (cadre pauvre : 17-24 notices T1 datées, 3 champs ;
+fits de 2 min, convergence facile) :
+
+| tâche | cible | modèle [IC90] | brut | couvert | concluant |
+|---|---|---|---|---|---|
+| V2 T1−1 | 66,1 (résultat) | 62,8 [58,2 ; 67,2] | 62,8 | oui | oui (0,3 pt) |
+| V2 T2−7 | 66,1 (résultat) | 61,3 [56,8 ; 65,6] | 61,7 | **non** | oui (0,2 pt) |
+| V1 Macron–Le Pen retiré | 61,8 (sondages 30 j) | 62,5 [46,1 ; 76,0] | — | oui | oui (0,8 pt) |
+| V1 Fillon–Le Pen retiré | 57,6 | 62,5 [44,4 ; 78,3] | — | oui | presque (1,4 pt) |
+
+Les η estimés valent ≈ 0 (|η| ≤ 0,05) : l'échelle apprise se rétracte quand
+les duels n'en ont pas besoin — le comportement voulu. V2 : comme en 2022, le
+modèle = la moyenne des sondages, et l'erreur de scrutin de fin de campagne
+(Macron sous-estimé de 4-5 pt) sort de l'IC à $\tau_{T2} = 0{,}10$ (arbitrage
+1). V1 2017 : IC très larges (géométrie peu contrainte par 3 champs) ; les
+centres sont bons (0,7 et 4,9 pt).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
