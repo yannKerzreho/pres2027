@@ -186,6 +186,32 @@ Résultats : `model/backtest/results/*.json` (committés).
       « un candidat retiré » (Attal, Bardella), variantes abst et hier, protocole
       §8.11 : ~20 fits, 4 par réveil ; d'abord ajouter le mode à
       `diagnostic_2027.py` (ou un module `v1_2027`) avec `--chaine/--fusionner`.
+- [ ] EN PARALLÈLE des fits NUTS (gp-pooling est en forme close, ~0,1 s/date :
+      ça tient sur un cœur pendant les fits) — DÉFINITION DES LISTES gp-pooling
+      (demande utilisateur via l'orchestrateur, 2026-11-15) : « le coût en
+      précision d'un regroupement est-il compensé par plus de données ? ».
+      Contexte : `model/listes.py` (main a3c9815), définition isolée dans
+      `cle_champ` ; aujourd'hui champ EXACT (81 champs 2027, listes de tête à
+      26/26/21 sondages). ATTENTION : un seuil sur la part MESURÉE dans chaque
+      sondage est faux (la même liste se scinde à 2,9/3,1 % — c'est ce qui avait
+      donné 106 champs et 15/15/14, chiffres invalides de la session locale).
+      Définitions à comparer, le modèle gp-pooling restant inchangé :
+        D0 champ exact (référence) ;
+        D1(s) champ exact SANS les « petits » candidats, petit = part moyenne
+          < s sur les sondages ANTÉRIEURS à la coupure (pas de fuite), s ∈
+          {1, 2, 3, 5} % ; leurs voix retirées et les parts renormalisées ;
+        D2 slots de gp-pooling (fusion d'alternatives type Bardella/Le Pen).
+      Backtest 2017/2022, coupures ~mensuelles + T1−30/T1−7 : pour les 3 listes
+      de tête à la coupure (règle de `model/listes.py`), erreur et couverture
+      IC50/80/90 (a) sur les sondages suivants de la liste à 7 et 30 jours,
+      (b) sur le résultat T1 (projection au scrutin du modèle) ; nombre de
+      sondages par courbe. Diagnostic 2027 : régularité (variation jour à jour),
+      stabilité au rejeu (ajout d'un sondage), résidus aux sondages. Livrable :
+      tableau chiffré par définition × horizon + recommandation, dans
+      `model/backtest/results/listes_definition.md`, et ligne
+      « RÉSULTAT POUR L'ORCHESTRATEUR : … » en fin de réveil. Ne modifie PAS
+      `model/listes.py` ni le site (session site) : backtest dans
+      `model/backtest/listes_definition.py`.
 - [ ] APRÈS le diagnostic 2027 (demande utilisateur 2026-11-15) — TRACKER PAR
       CANDIDAT tiré du spatial : exporter la trajectoire w_i(t) du fit (chemin
       OU, déjà calculé ; seuls les candidats « dynamiques » > 5 % en ont une),
