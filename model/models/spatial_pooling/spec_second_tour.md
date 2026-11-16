@@ -980,6 +980,35 @@ argument de cohérence pour l'arbitrage 1, pas validation.
   Student), terme de biais signé testé. L'arbitrage 1 reste ouvert, avec cette
   réserve écrite.
 
+### 8.20 Verdict abst contre hier refait (protocole fixé le 2026-11-16, avant résultat)
+
+Réponse au point §8.19 sur §8.15. Aucun nouveau modèle : on re-fusionne les
+chaînes déjà sauvées (sauf hier 2027 et abst Hollande–Le Pen, rejoués sur les
+données à jour, puisque les tirages abst du 13/11 avaient été remplacés par
+ceux du 15/11 : les deux variantes doivent voir le MÊME jeu).
+
+- **Tâches.** 2017 : Macron–Le Pen, Fillon–Le Pen ; 2022 : les 4 paires
+  (phase 2 `_init` quand elle existe, pour les deux variantes) ; 2027 :
+  Le Pen–Philippe, Le Pen–Mélenchon, Glucksmann–Le Pen, Attal–Le Pen. Écartées :
+  « candidat Attal » (même cible qu'Attal–Le Pen) ; Hollande–Le Pen, tirée des
+  mêmes notices que les autres cibles, n'entre qu'en **sensibilité**.
+- **Non concluantes écartées par paire** : une tâche sort pour LES DEUX
+  variantes si l'une des deux n'est pas concluante (§8.4 : R̂ de la cible
+  ≤ 1,1 et écart entre chaînes ≤ 1 pt).
+- **Log-score par KDE.** Densité prédictive de la cible (tirages
+  $\bar y^{(t)}$ de §8.14) estimée par noyau gaussien en logit, fenêtre de
+  Silverman $h = 0{,}9\,\min(\hat s, \mathrm{IQR}/1{,}34)\,T^{-1/5}$, puis
+  jacobien : $\mathrm{LS} = \log \hat f(\mathrm{logit}\,y) - \log y(1-y)$.
+  Robuste aux postérieurs bimodaux, contrairement à la gaussienne en logit.
+- **Écart apparié par tâche** $\Delta_j = \mathrm{LS}_j^{hier} - \mathrm{LS}_j^{abst}$
+  et $\delta_j = |e_j^{hier}| - |e_j^{abst}|$ (pt). IC90 bootstrap (10 000
+  rééchantillonnages des tâches, toutes élections confondues) de la moyenne.
+- **Règle.** `hier` devient le défaut si l'IC90 de $\bar\Delta$ est
+  entièrement > 0 ET si l'IC90 de $\bar\delta$ ne l'est pas (pas de perte
+  d'erreur établie) ; symétriquement pour abst. Sinon : **pas de différence
+  établie**, `abst` reste (aucune décision nouvelle). On rapporte aussi les
+  totaux par élection, sans règle dessus (2 à 4 tâches).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

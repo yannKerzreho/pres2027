@@ -123,6 +123,7 @@ def main() -> None:
                        "ic90_predictif": [round(float(v), 4) for v in np.percentile(dp, [5, 95])],
                        "couvre_predictif": bool(np.percentile(dp, 5) <= yo <= np.percentile(dp, 95)),
                        "log_score_predictif": round(_log_score_logit(dp, yo), 3),
+                       "tirages_predictifs": [round(float(v), 4) for v in dp],  # §8.20 (KDE)
                        **sr._cible_par_chaine(d, 1 if a.chaine is not None else 4)})
     res = {"tache": a.tache, "variante": a.variante, "t_k": str(t_k.date()),
            "diagnostics": {k: fit.diagnostics.get(k) for k in

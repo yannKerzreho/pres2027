@@ -267,6 +267,7 @@ def v1_paire_retiree(election: int, nuts: dict, seule: tuple | None = None) -> l
         cible.update({"ic90_predictif": [round(float(v), 4) for v in np.percentile(dp, [5, 95])],
                       "couvre_predictif": bool(np.percentile(dp, 5) <= obs <= np.percentile(dp, 95)),
                       "log_score_predictif": round(_log_score(np.log(dp / (1 - dp)), obs), 3),
+                      "tirages_predictifs": [round(float(v), 4) for v in dp],  # §8.20 (KDE)
                       "n_cible": int(len(cible_df))})
         geo = _geometrie_seule(fit, a, b)
         bt = _bradley_terry(tous[~((tous.a == a) & (tous.b == b))], a, b)
