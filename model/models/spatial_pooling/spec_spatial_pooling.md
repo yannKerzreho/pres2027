@@ -504,6 +504,38 @@ chaque série ; un « retard » n'est lu que s'il dépasse la résolution (7 j).
 Sortie : `results/detection_zemmour_2022_v2.json` (l'ancien fichier est
 conservé).
 
+**Résultat (2026-11-16, `detection_zemmour_2022_v2.json`).** En août 2021
+Zemmour n'est testé que par 1 sondage : il est **hors du roster spatial**
+(MIN_POLLS) jusqu'au 31/08 compris ; le brut existe dès le 24/08 (7,0 %).
+
+| coupure | brut 14 j | spatial R [IC90] | brut L_c | spatial L_c | gp L_c (n) |
+|---|---|---|---|---|---|
+| 24/08, 31/08 | 7,0 | hors roster | — | — | (1) |
+| 07/09 | 7,4 | 7,2 [6,1 ; 8,4] | 7,0 | 7,1 | (1) |
+| 14/09 | 7,8 | 7,9 | 8,5 | 7,6 | (2) |
+| 21/09 | 9,7 | 9,9 | 9,3 | 9,5 | (2) |
+| 28/09 | 11,1 | 12,2 | 11,8 | 11,7 | 10,5 (3) |
+| 05/10 | 13,4 | 15,8 [14,5 ; 17,2] | 14,7 | 15,3 | 12,6 (4) |
+| 12/10 | 15,1 | 15,2 | 15,4 | 14,7 | 14,2 (6) |
+| 19/10 | 15,8 | 16,7 | 14,7 | 16,1 | 14,2 (6) |
+| 26/10 | 16,2 | 16,7 | — | 16,2 | 14,1 (6) |
+
+Détections (+3 pt en 28 j) : **brut le 28/09** ; spatial R, spatial L_c et
+brut L_c le 05/10 ; gp L_c le 26/10 ; gp R jamais. Lecture :
+- Le retard du spatial sur le brut (une coupure, 7 j) vient **entièrement de
+  l'entrée au roster** : sans valeur au 31/08, la règle ne peut se prononcer
+  au 28/09 ; dès qu'il est dans le roster, le spatial suit (12,2 au 28/09,
+  au-dessus du brut). C'est un coût du seuil MIN_POLLS = 5, pas du lissage OU.
+- À base égale (liste L_c), brut et spatial détectent la même semaine ; le
+  spatial dépasse le brut au pic de la montée (05/10 : 15,3 contre 14,7 ;
+  R : 15,8 contre 13,4 tous champs).
+- gp-pooling sur la liste la mieux fournie détecte **3 semaines après** et
+  reste 1,5-2 pt sous le brut de la même liste en octobre : la liste n'a que
+  3-6 sondages et le prior OU tire vers l'ancien niveau. C'est l'avantage net
+  du spatial sur un candidat nouveau, cette fois à base égale.
+- Résolution : 7 j ; une seule montée, une élection ⇒ illustration, pas une
+  mesure de retard généralisable.
+
 **Tâche A de la revue du 16/11 : gp-pooling recalibré HORS échantillon.**
 REML sur les seuls blocs 2017 (4 blocs, 27 sondages — instable) : σ_h 0,119,
 σ² 0,054, τ 38 j, σ_p 0 (banque 2017+2022 : 0,126 / 0,116 / 262 j / 0,039) ;

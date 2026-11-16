@@ -300,9 +300,12 @@ Résultats : `model/backtest/results/*.json` (committés).
       Réserve : Macron–Pécresse (écartée car abst non concluante) où hier est
       sûre d'elle à tort (LS −22). `ETA_HIER_T2 = True` (sans effet, T2 non
       publié). À faire relire à la revue du 17/11.
-- [ ] [EN COURS (début 2026-11-16T12:10Z) : fits suivi h = 243/236/229/222] (revue 16/11, 4) détection Zemmour : coupures dès h = 243 (début août,
-      4 coupures × 4 chaînes = 16 fits) ; gp sur la liste avec Zemmour la mieux
-      fournie à chaque coupure (0 fit).
+- [x] (revue 16/11, 4) détection Zemmour refaite dès h = 243 (spec
+      spatial_pooling §10, 16/11) : brut détecte le 28/09, spatial le 05/10 —
+      retard dû à l'entrée au roster (Zemmour hors roster jusqu'au 31/08, 1
+      sondage en août), pas au lissage ; à base égale (liste L_c), brut et
+      spatial même semaine ; gp sur L_c 3 semaines plus tard (26/10).
+      Piste : abaisser MIN_POLLS pour un candidat nouveau ? (non chiffré).
 - [ ] (revue 16/11, 6 et C) placebo de la fuite même-notice : retirer autant
       de duels pris dans d'autres notices (4 tâches, 16 fits), comparer par
       log-score ; calibrer τ_paire sur les V1 dédoublonnées.
@@ -407,6 +410,9 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-16 12:08-12:30Z (routine) : détection Zemmour refaite dès h = 243
+  (16 fits) + séries à base égale L_c ; spatial = brut à base égale, gp en
+  retard de 3 semaines ; retard du spatial tous champs = entrée au roster.
 - 2026-11-16 11:10-12:00Z (routine) : verdict abst/hier refait (§8.20) —
   hier 2027 ×5 + abst Hollande rejoués sur les données à jour, 16 re-fusions à
   l'identique avec tirages prédictifs, log-score KDE, bootstrap : hier
