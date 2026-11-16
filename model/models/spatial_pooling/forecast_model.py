@@ -42,6 +42,10 @@ GRAINE_SECOURS = 2027
 # bloquer la publication du premier tour : il retire les duels, pas le snapshot.
 PUBLIER_T2 = False
 RHAT_T2_PUBLIABLE = 1.2
+# Variante du bloc T2 quand il est publié : valence à échelle apprise (« hier »),
+# verdict du protocole fixé d'avance, spec_second_tour §8.20. Sans effet tant que
+# PUBLIER_T2 est False (aucun duel dans la vraisemblance).
+ETA_HIER_T2 = True
 
 
 def _slot_de(candidat: str) -> str | None:
@@ -100,7 +104,8 @@ class SpatialPooling(ForecastModel):
     scenario_artifact = "scenarios.json"
 
     def nowcast(self, polls: pd.DataFrame, as_of: str) -> Nowcast:
-        fit = fit_spatial_pooling(polls, as_of=as_of, second_tour=PUBLIER_T2)
+        fit = fit_spatial_pooling(polls, as_of=as_of, second_tour=PUBLIER_T2,
+                                  eta_hier=ETA_HIER_T2)
         if fit.diagnostics["rhat_max"] > RHAT_PUBLIABLE:
             # Une seconde graine d'abord : la convergence de ce modèle dépend
             # notablement de la graine (ESS de 3 à 112 à réglage égal, cf.
@@ -108,7 +113,7 @@ class SpatialPooling(ForecastModel):
             print(f"[{self.id}] R-hat {fit.diagnostics['rhat_max']} > {RHAT_PUBLIABLE}, "
                   f"second essai avec une autre graine")
             fit = fit_spatial_pooling(polls, as_of=as_of, seed=GRAINE_SECOURS,
-                                      second_tour=PUBLIER_T2)
+                                      second_tour=PUBLIER_T2, eta_hier=ETA_HIER_T2)
         if fit.diagnostics["rhat_max"] > RHAT_PUBLIABLE:
             raise RuntimeError(
                 f"[{self.id}] fit non convergé à {as_of} (R-hat max "

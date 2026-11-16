@@ -1009,6 +1009,46 @@ ceux du 15/11 : les deux variantes doivent voir le MÊME jeu).
   établie**, `abst` reste (aucune décision nouvelle). On rapporte aussi les
   totaux par élection, sans règle dessus (2 à 4 tâches).
 
+**Résultat (2026-11-16, `model/backtest/verdict_abst_hier.py`,
+`results/verdict_abst_hier.json`).** Re-fusion à l'identique (chiffres des JSON
+inchangés au bit près ; hier 2027 et abst Hollande rejoués sur les données du
+15/11, copies du 13/11 en `*_donnees-2026-11-13.json`).
+
+| élection | tâche | concluante (abst / hier) | LS KDE abst / hier | erreur abst / hier (pt) |
+|---|---|---|---|---|
+| 2017 | Macron–Le Pen | oui / oui | 0,91 / 1,73 | 0,34 / 0,71 |
+| 2017 | Fillon–Le Pen | non / non | 0,89 / 1,30 | 3,75 / 4,90 |
+| 2022 | Macron–Zemmour | oui / oui | 1,54 / 2,30 | 4,67 / 2,57 |
+| 2022 | Macron–Mélenchon | oui / non | 1,07 / 1,50 | 0,45 / 0,28 |
+| 2022 | Macron–Pécresse | non / oui | −6,97 / **−22,10** | 11,54 / 12,98 |
+| 2022 | Macron–Le Pen | non / oui | −1,25 / 1,48 | 8,69 / 4,04 |
+| 2027 | Le Pen–Philippe | oui / oui | 3,15 / 3,22 | 0,62 / 0,96 |
+| 2027 | Le Pen–Mélenchon | oui / oui | 1,25 / 0,90 | 2,94 / 2,81 |
+| 2027 | Glucksmann–Le Pen | oui / oui | 2,59 / 2,93 | 1,70 / 1,22 |
+| 2027 | Attal–Le Pen | oui / oui | −0,53 / 0,98 | 6,83 / 4,12 |
+| sensib. | Hollande–Le Pen | non / oui | 0,95 / 2,68 | 1,15 / 0,93 |
+
+Sur les **6 tâches concluantes** : $\bar\Delta$ = +0,53, IC90 [+0,14 ; +0,94] ;
+$\bar\delta$ = −0,79 pt, IC90 [−1,62 ; −0,02]. **Selon la règle fixée
+d'avance, `hier` est préférée** (meilleur log-score établi, erreur pas pire —
+même plutôt meilleure). Robustesse : en retirant une tâche à la fois, la borne
+basse de l'IC90 de $\bar\Delta$ reste > 0 (de +0,008 sans Attal–Le Pen à
++0,36 sans Le Pen–Mélenchon) : le verdict tient, mais **de justesse**. Le
+log-score KDE et le gaussien concordent (pas de bimodalité qui inverse un
+classement).
+
+**Réserve importante.** La règle écarte Macron–Pécresse parce que les chaînes
+d'abst y sont en désaccord ; or hier y est concluante et **sûre d'elle à
+tort** (LS −22, hors IC, s_η rétréci, cf. §8.15). Avec les 10 tâches,
+$\bar\Delta$ = −0,84, IC90 [−3,9 ; +1,1] : rien d'établi. Le défaut de hier
+— rétrécir s_η et devenir trop confiante sur un candidat à valence
+atypique — est réel ; il n'apparaît qu'une fois sur 11 tâches.
+
+**Décision (règle) :** `hier` devient la variante du bloc T2 en production
+(`ETA_HIER_T2 = True`, forecast_model.py), **sans effet tant que
+`PUBLIER_T2 = False`**. À revoir par la prochaine revue Opus, avec la réserve
+Pécresse.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

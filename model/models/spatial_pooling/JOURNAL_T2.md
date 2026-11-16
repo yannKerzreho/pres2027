@@ -18,8 +18,9 @@ l'historique, ajouter en bas de « Historique ».
   sans accord explicite de l'utilisateur.
 - Modèle courant : géométrie T1 + κ + valence η agrégée + abstention par valeur
   inclusive (ω). Variantes de backtest : `eta`, `geo` (η ≡ 0), `geo1` (κ ≡ 1),
-  `hier` (échelle de η apprise) — jugée sur le protocole fixé : NON préférée
-  (spec §8.15), `abst` reste le défaut.
+  `hier` (échelle de η apprise) — verdict refait (spec §8.20, dédoublonné,
+  KDE) : **préférée** de justesse, devenue la variante T2 (`ETA_HIER_T2`) ;
+  réserve Pécresse (hier trop confiante, LS −22) à relire.
 - Backtests : cadre historique à toutes les hypothèses T1 (§8.3) ; 4 processus
   d'une chaîne + fusion ; sélection des chaînes par log-densité (§8.8) ;
   phase 2 `--init-depuis` ; convergence jugée sur la quantité prédite (§8.4).
@@ -292,9 +293,13 @@ Résultats : `model/backtest/results/*.json` (committés).
       unité (coupure, liste) avec bootstrap, les deux modèles lus à c + 7 avec
       σ_h²/n_inst + σ_p²/n dans le prédictif. Tranche : si MAE gp > 0,70 ou
       score d'intervalle gp > 4,32, « gp bat le spatial » tombe.
-- [ ] [EN COURS (début 2026-11-16T11:10Z, session 01JZeMw2) : hier ×5 + abst Hollande rejoués sur les données à jour (les tirages abst du 13/11 ont été écrasés), copies datées conservées] (revue 16/11, 5) verdict abst/hier à refaire sans fit : tâches
-      dédoublonnées (cand-Attal = Attal–Le Pen ; Hollande mêmes notices), non
-      concluantes écartées, log-score par KDE des tirages, IC bootstrap par tâche.
+- [x] (revue 16/11, 5) verdict abst/hier refait (spec §8.20, 2026-11-16) :
+      6 tâches concluantes dédoublonnées, LS KDE ; Δ LS hier − abst = +0,53,
+      IC90 [+0,14 ; +0,94], Δ erreur −0,79 pt [−1,62 ; −0,02] ⇒ **hier
+      préférée par la règle**, robuste au retrait d'une tâche (de justesse).
+      Réserve : Macron–Pécresse (écartée car abst non concluante) où hier est
+      sûre d'elle à tort (LS −22). `ETA_HIER_T2 = True` (sans effet, T2 non
+      publié). À faire relire à la revue du 17/11.
 - [ ] (revue 16/11, 4) détection Zemmour : coupures dès h = 243 (début août,
       4 coupures × 4 chaînes = 16 fits) ; gp sur la liste avec Zemmour la mieux
       fournie à chaque coupure (0 fit).
@@ -402,6 +407,10 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-16 11:10-12:00Z (routine) : verdict abst/hier refait (§8.20) —
+  hier 2027 ×5 + abst Hollande rejoués sur les données à jour, 16 re-fusions à
+  l'identique avec tirages prédictifs, log-score KDE, bootstrap : hier
+  préférée par la règle ; `ETA_HIER_T2 = True` (sans effet publié).
 - 2026-11-14 (session locale) : audit Codex, spec, implémentation, 2 relectures,
   abstention ajoutée sur idée utilisateur, épinglage, création de la routine.
 - 2026-11-14 (routine cloud, 1er réveil) : revue Opus (11 points, intégrés

@@ -1,0 +1,326 @@
+{
+ "taches": [
+  {
+   "election": 2017,
+   "tache": "Macron–Le Pen",
+   "abst": {
+    "erreur_pt": 0.34,
+    "ls_kde": 0.905,
+    "ls_gauss": 0.994,
+    "couvre": true,
+    "concluant": true
+   },
+   "hier": {
+    "erreur_pt": 0.71,
+    "ls_kde": 1.727,
+    "ls_gauss": 1.363,
+    "couvre": true,
+    "concluant": true
+   },
+   "concluant": true,
+   "delta_ls": 0.822,
+   "delta_erreur_pt": 0.37
+  },
+  {
+   "election": 2017,
+   "tache": "Fillon–Le Pen",
+   "abst": {
+    "erreur_pt": 3.75,
+    "ls_kde": 0.892,
+    "ls_gauss": 0.894,
+    "couvre": true,
+    "concluant": false
+   },
+   "hier": {
+    "erreur_pt": 4.9,
+    "ls_kde": 1.302,
+    "ls_gauss": 1.03,
+    "couvre": true,
+    "concluant": false
+   },
+   "concluant": false,
+   "delta_ls": 0.41,
+   "delta_erreur_pt": 1.15
+  },
+  {
+   "election": 2022,
+   "tache": "Macron–Zemmour",
+   "abst": {
+    "erreur_pt": 4.67,
+    "ls_kde": 1.536,
+    "ls_gauss": 1.402,
+    "couvre": true,
+    "concluant": true
+   },
+   "hier": {
+    "erreur_pt": 2.57,
+    "ls_kde": 2.298,
+    "ls_gauss": 2.195,
+    "couvre": true,
+    "concluant": true
+   },
+   "concluant": true,
+   "delta_ls": 0.762,
+   "delta_erreur_pt": -2.1
+  },
+  {
+   "election": 2022,
+   "tache": "Macron–Mélenchon",
+   "abst": {
+    "erreur_pt": 0.45,
+    "ls_kde": 1.072,
+    "ls_gauss": 1.083,
+    "couvre": true,
+    "concluant": true
+   },
+   "hier": {
+    "erreur_pt": 0.28,
+    "ls_kde": 1.503,
+    "ls_gauss": 1.295,
+    "couvre": true,
+    "concluant": false
+   },
+   "concluant": false,
+   "delta_ls": 0.431,
+   "delta_erreur_pt": -0.17
+  },
+  {
+   "election": 2022,
+   "tache": "Macron–Pécresse",
+   "abst": {
+    "erreur_pt": 11.54,
+    "ls_kde": -6.967,
+    "ls_gauss": -4.071,
+    "couvre": false,
+    "concluant": false
+   },
+   "hier": {
+    "erreur_pt": 12.98,
+    "ls_kde": -22.099,
+    "ls_gauss": -9.507,
+    "couvre": false,
+    "concluant": true
+   },
+   "concluant": false,
+   "delta_ls": -15.132,
+   "delta_erreur_pt": 1.44
+  },
+  {
+   "election": 2022,
+   "tache": "Macron–Le Pen",
+   "abst": {
+    "erreur_pt": 8.69,
+    "ls_kde": -1.25,
+    "ls_gauss": -1.22,
+    "couvre": false,
+    "concluant": false
+   },
+   "hier": {
+    "erreur_pt": 4.04,
+    "ls_kde": 1.481,
+    "ls_gauss": 1.537,
+    "couvre": true,
+    "concluant": true
+   },
+   "concluant": false,
+   "delta_ls": 2.731,
+   "delta_erreur_pt": -4.65
+  },
+  {
+   "election": 2027,
+   "tache": "Le Pen–Philippe",
+   "abst": {
+    "erreur_pt": 0.62,
+    "ls_kde": 3.145,
+    "ls_gauss": 3.153,
+    "couvre": true,
+    "concluant": true
+   },
+   "hier": {
+    "erreur_pt": 0.96,
+    "ls_kde": 3.224,
+    "ls_gauss": 3.174,
+    "couvre": true,
+    "concluant": true
+   },
+   "concluant": true,
+   "delta_ls": 0.079,
+   "delta_erreur_pt": 0.34
+  },
+  {
+   "election": 2027,
+   "tache": "Le Pen–Mélenchon",
+   "abst": {
+    "erreur_pt": 2.94,
+    "ls_kde": 1.255,
+    "ls_gauss": 1.259,
+    "couvre": false,
+    "concluant": true
+   },
+   "hier": {
+    "erreur_pt": 2.81,
+    "ls_kde": 0.9,
+    "ls_gauss": 1.038,
+    "couvre": false,
+    "concluant": true
+   },
+   "concluant": true,
+   "delta_ls": -0.355,
+   "delta_erreur_pt": -0.13
+  },
+  {
+   "election": 2027,
+   "tache": "Glucksmann–Le Pen",
+   "abst": {
+    "erreur_pt": 1.7,
+    "ls_kde": 2.59,
+    "ls_gauss": 2.57,
+    "couvre": true,
+    "concluant": true
+   },
+   "hier": {
+    "erreur_pt": 1.22,
+    "ls_kde": 2.932,
+    "ls_gauss": 2.859,
+    "couvre": true,
+    "concluant": true
+   },
+   "concluant": true,
+   "delta_ls": 0.342,
+   "delta_erreur_pt": -0.48
+  },
+  {
+   "election": 2027,
+   "tache": "Attal–Le Pen",
+   "abst": {
+    "erreur_pt": 6.83,
+    "ls_kde": -0.525,
+    "ls_gauss": -0.657,
+    "couvre": false,
+    "concluant": true
+   },
+   "hier": {
+    "erreur_pt": 4.12,
+    "ls_kde": 0.983,
+    "ls_gauss": 0.895,
+    "couvre": false,
+    "concluant": true
+   },
+   "concluant": true,
+   "delta_ls": 1.508,
+   "delta_erreur_pt": -2.71
+  }
+ ],
+ "principal": {
+  "n_taches": 6,
+  "ecartees_non_concluantes": [
+   "Fillon–Le Pen",
+   "Macron–Mélenchon",
+   "Macron–Pécresse",
+   "Macron–Le Pen"
+  ],
+  "delta_ls_moyen": 0.526,
+  "ic90_delta_ls": [
+   0.143,
+   0.941
+  ],
+  "delta_erreur_moyen_pt": -0.79,
+  "ic90_delta_erreur_pt": [
+   -1.622,
+   -0.021
+  ],
+  "par_election": {
+   "2017": {
+    "n": 1,
+    "ls_kde_abst": 0.91,
+    "ls_kde_hier": 1.73,
+    "mae_abst": 0.34,
+    "mae_hier": 0.71
+   },
+   "2022": {
+    "n": 1,
+    "ls_kde_abst": 1.54,
+    "ls_kde_hier": 2.3,
+    "mae_abst": 4.67,
+    "mae_hier": 2.57
+   },
+   "2027": {
+    "n": 4,
+    "ls_kde_abst": 6.46,
+    "ls_kde_hier": 8.04,
+    "mae_abst": 3.02,
+    "mae_hier": 2.28
+   }
+  },
+  "verdict": "hier préférée"
+ },
+ "sensibilite_hollande": {
+  "taches": [
+   {
+    "election": 2027,
+    "tache": "Hollande–Le Pen",
+    "abst": {
+     "erreur_pt": 1.15,
+     "ls_kde": 0.954,
+     "ls_gauss": 1.002,
+     "couvre": true,
+     "concluant": false
+    },
+    "hier": {
+     "erreur_pt": 0.93,
+     "ls_kde": 2.68,
+     "ls_gauss": 2.548,
+     "couvre": true,
+     "concluant": true
+    },
+    "concluant": false,
+    "delta_ls": 1.726,
+    "delta_erreur_pt": -0.22
+   }
+  ],
+  "resume": {
+   "n_taches": 6,
+   "ecartees_non_concluantes": [
+    "Fillon–Le Pen",
+    "Macron–Mélenchon",
+    "Macron–Pécresse",
+    "Macron–Le Pen",
+    "Hollande–Le Pen"
+   ],
+   "delta_ls_moyen": 0.526,
+   "ic90_delta_ls": [
+    0.143,
+    0.941
+   ],
+   "delta_erreur_moyen_pt": -0.79,
+   "ic90_delta_erreur_pt": [
+    -1.622,
+    -0.021
+   ],
+   "par_election": {
+    "2017": {
+     "n": 1,
+     "ls_kde_abst": 0.91,
+     "ls_kde_hier": 1.73,
+     "mae_abst": 0.34,
+     "mae_hier": 0.71
+    },
+    "2022": {
+     "n": 1,
+     "ls_kde_abst": 1.54,
+     "ls_kde_hier": 2.3,
+     "mae_abst": 4.67,
+     "mae_hier": 2.57
+    },
+    "2027": {
+     "n": 4,
+     "ls_kde_abst": 6.46,
+     "ls_kde_hier": 8.04,
+     "mae_abst": 3.02,
+     "mae_hier": 2.28
+    }
+   },
+   "verdict": "hier préférée"
+  }
+ }
+}
