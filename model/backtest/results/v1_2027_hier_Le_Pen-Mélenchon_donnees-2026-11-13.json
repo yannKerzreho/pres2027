@@ -1,0 +1,65 @@
+{
+ "tache": "Le Pen|Mélenchon",
+ "variante": "hier",
+ "t_k": "2026-11-12",
+ "diagnostics": {
+  "rhat_max": 1.0233,
+  "rhat_t2": 1.0025,
+  "ess_min": 263.6,
+  "n_divergences": 0,
+  "kappa": 0.753,
+  "omega": -4.2049,
+  "sigma_t2": 0.0125,
+  "n_duels": 69
+ },
+ "lignes": [
+  {
+   "paire": [
+    "Le Pen",
+    "Mélenchon"
+   ],
+   "observe_30j": 0.685,
+   "n_cible": 8,
+   "modele": 0.6573,
+   "modele_ic90": [
+    0.6382,
+    0.6766
+   ],
+   "erreur_pt": 2.77,
+   "log_score": 0.578,
+   "ic90_predictif": [
+    0.6362,
+    0.679
+   ],
+   "couvre_predictif": false,
+   "log_score_predictif": 1.154,
+   "lp_par_chaine": [
+    7099.3,
+    7096.4,
+    7098.6,
+    7095.8
+   ],
+   "lp_se": [
+    0.77,
+    1.22,
+    0.85,
+    0.83
+   ],
+   "chaines_retenues": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "modele_par_chaine": [
+    0.6575,
+    0.6564,
+    0.6578,
+    0.6576
+   ],
+   "ecart_chaines_pt": 0.13,
+   "rhat_cible": 1.0,
+   "concluant": true
+  }
+ ]
+}

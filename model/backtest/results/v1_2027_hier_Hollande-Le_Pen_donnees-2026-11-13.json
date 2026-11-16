@@ -1,0 +1,65 @@
+{
+ "tache": "Hollande|Le Pen",
+ "variante": "hier",
+ "t_k": "2026-10-19",
+ "diagnostics": {
+  "rhat_max": 1.0195,
+  "rhat_t2": 1.0014,
+  "ess_min": 286.8,
+  "n_divergences": 0,
+  "kappa": 0.7498,
+  "omega": -4.279,
+  "sigma_t2": 0.0122,
+  "n_duels": 76
+ },
+ "lignes": [
+  {
+   "paire": [
+    "Hollande",
+    "Le Pen"
+   ],
+   "observe_30j": 0.4333,
+   "n_cible": 3,
+   "modele": 0.4256,
+   "modele_ic90": [
+    0.3816,
+    0.4661
+   ],
+   "erreur_pt": 0.78,
+   "log_score": 2.637,
+   "ic90_predictif": [
+    0.3782,
+    0.47
+   ],
+   "couvre_predictif": true,
+   "log_score_predictif": 2.576,
+   "lp_par_chaine": [
+    6145.6,
+    6144.8,
+    6146.4,
+    6144.3
+   ],
+   "lp_se": [
+    0.79,
+    1.84,
+    1.25,
+    0.92
+   ],
+   "chaines_retenues": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "modele_par_chaine": [
+    0.4259,
+    0.4264,
+    0.4254,
+    0.4245
+   ],
+   "ecart_chaines_pt": 0.19,
+   "rhat_cible": 0.999,
+   "concluant": true
+  }
+ ]
+}

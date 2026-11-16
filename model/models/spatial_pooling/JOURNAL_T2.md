@@ -292,7 +292,7 @@ Résultats : `model/backtest/results/*.json` (committés).
       unité (coupure, liste) avec bootstrap, les deux modèles lus à c + 7 avec
       σ_h²/n_inst + σ_p²/n dans le prédictif. Tranche : si MAE gp > 0,70 ou
       score d'intervalle gp > 4,32, « gp bat le spatial » tombe.
-- [ ] (revue 16/11, 5) verdict abst/hier à refaire sans fit : tâches
+- [ ] [EN COURS (début 2026-11-16T11:10Z, session 01JZeMw2) : hier ×5 + abst Hollande rejoués sur les données à jour (les tirages abst du 13/11 ont été écrasés), copies datées conservées] (revue 16/11, 5) verdict abst/hier à refaire sans fit : tâches
       dédoublonnées (cand-Attal = Attal–Le Pen ; Hollande mêmes notices), non
       concluantes écartées, log-score par KDE des tirages, IC bootstrap par tâche.
 - [ ] (revue 16/11, 4) détection Zemmour : coupures dès h = 243 (début août,
