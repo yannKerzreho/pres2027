@@ -564,3 +564,30 @@ Réserve : le REML 2017 repose sur 27 sondages (τ = 38 j, σ_p = 0), il est
 lui-même fragile. Résultats : `suivi_gp_{bank_c7,r17f3_c7,r17f1_c7}_2022_h*.json`,
 paramètres : `bank_opinion_reml_2017_seul.json`.
 
+**Synthèse pour l'utilisateur (2026-11-16) : rôles du spatial et de
+gp-pooling dans le suivi du premier tour.** Tout ce qui suit est mesuré sur
+2022 (une seule campagne : indications, pas des lois) et 2027.
+
+| question | meilleur | chiffre | référence |
+|---|---|---|---|
+| niveau d'une liste bien sondée, à 7 j | **gp-pooling** | MAE 0,60 contre 0,77 pt (Δ [+0,07 ; +0,25]), hors échantillon | tâche A |
+| incertitude (score d'intervalle α = 0,1) | **spatial** | 4,3 contre 5,4-5,8 pt (Δ [−2,2 ; −0,8]) ; gp sur-couvre (0,95), le spatial sous-couvre un peu (0,82) | tâche A |
+| candidat nouveau, testé dans des champs dispersés | **spatial** | Zemmour 2021 : à base égale, spatial = brut (05/10), gp 3 semaines plus tard et 1,5-2 pt sous le brut | étape 3 refaite |
+| liste peu ou pas sondée (champ coché sur le site) | **spatial seul** | gp n'existe qu'avec ≥ 3 sondages de la liste exacte | — |
+| tendances lentes (±1 pt/mois, 2027) | gp (le spatial amortit) | spatial : pentes amorties d'1/4 à 1/2 (Philippe −1,0 pt sur 30 j) | run 2027 |
+| duels de second tour, P(élu) | **spatial seul** | gp ne modélise pas le T2 | spec_second_tour |
+
+**Limites connues du spatial** : seuil d'entrée au roster (5 sondages) qui
+retarde un candidat nouveau d'une semaine ou plus ; lissage OU (τ ≈ 262 j)
+qui amortit les petites pentes ; IC un peu étroits (0,82 pour 0,90).
+**Limites de gp-pooling** : une courbe par liste exacte, donc rien tant que
+la liste n'a pas 3 sondages, et retard quand un candidat monte dans des
+listes différentes ; IC trop larges une fois recalibré hors échantillon.
+
+**Recommandation** (à confirmer par l'idée B, combinaison évaluée en
+leave-one-coupure-out, en file) : afficher gp-pooling pour le **niveau** des
+listes bien sondées, le spatial pour les listes peu sondées, les candidats
+nouveaux, les **intervalles** et tout le second tour. Aucune modification du
+site n'est faite ici ; c'est un choix de présentation à trancher par
+l'utilisateur une fois B mesuré.
+

@@ -40,7 +40,7 @@ l'historique, ajouter en bas de « Historique ».
       consigner l'effet sur P(élu) et les IC des duels 2027. Biais anti-RN et
       lissage : rien à coder (décision = statu quo), noter dans la spec.
 
-- [ ] **RELANCE 2026-11-15 21:30Z (session locale)** : le réveil de 21:07Z a
+- [x] [(1)-(5) FAITS le 16/11] **RELANCE 2026-11-15 21:30Z (session locale)** : le réveil de 21:07Z a
       conclu « rien à faire » alors que des tâches SANS dépendance restent
       ouvertes. Ordre à suivre, une par réveil, sans attendre les arbitrages :
       (1) [FAIT 16/11, §8.24] « Synthèse dans spec §8 » (plus bas) : tableau unique V1/V2 2017/2022/2027,
@@ -50,7 +50,7 @@ l'historique, ajouter en bas de « Historique ».
       (3) [FAIT 16/11, spec §8.25 : nœud T1 déplace le duel de +0,3 / −0,9 pt, erreur inchangée (4,5 / 5,9 pt) ⇒ non retenu] « entre-deux-tours conditionné sur le résultat T1 » : maths puis V2 T2−7
       2017/2022 ;
       (4) [FAIT 16/11, §8.26 : aucun gain] « (revue, a/d) stacking des chaînes » ;
-      (5) synthèse tracker pour l'utilisateur (rôles spatial / gp-pooling).
+      (5) [FAIT 16/11, spec_spatial_pooling §10 « Synthèse pour l'utilisateur »] synthèse tracker pour l'utilisateur (rôles spatial / gp-pooling).
       Les arbitrages ouverts (τ_T2, biais anti-RN, lissage, τ_paire) attendent
       l'utilisateur : coder chaque option DERRIÈRE un drapeau éteint par défaut
       est permis (chiffrer l'effet 2027), la choisir ne l'est pas. Les tâches
@@ -419,6 +419,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-16 18:08Z (routine) : synthèse des rôles spatial / gp-pooling (spec_spatial_pooling §10) ; RELANCE du 15/11 entièrement traitée.
 - 2026-11-16 17:08-17:45Z (routine) : stacking des chaînes (§8.26), 18 re-fusions : aucun gain, sélection gardée.
 - 2026-11-16 16:08-16:50Z (routine) : entre-deux-tours conditionné sur le résultat T1 (§8.25, 12 fits) : non retenu.
 - 2026-11-16 15:20-15:40Z (routine) : P(élu) à aléa unique (§7.1), drapeau éteint ; diagnostic 2027 rejoué.
