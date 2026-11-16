@@ -30,7 +30,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] [(a) et (b) FAITS 2026-11-16 13:40Z : `TAU_T2_SCRUTIN = 0.19`, spec §6.2 ; τ_paire spec §6.3 + §8.22, `TAU_PAIRE = 0.08` (V1 2027, hier), code duel_draws/p_elu + test ; reste (c) diagnostic_2027, après le placebo] **ARBITRAGES TRANCHÉS (2026-11-15 ~21:45Z, voir section Arbitrages)** — à faire
+- [x] [(a), (b), (c) FAITS 2026-11-16 ; (c) : IC90 duels +2,5-3 pt de chaque côté, P(élu) Le Pen 84,8 → 80,3 %, spec §8.22 : `TAU_T2_SCRUTIN = 0.19`, spec §6.2 ; τ_paire spec §6.3 + §8.22, `TAU_PAIRE = 0.08` (V1 2027, hier), code duel_draws/p_elu + test ; reste (c) diagnostic_2027, après le placebo] **ARBITRAGES TRANCHÉS (2026-11-15 ~21:45Z, voir section Arbitrages)** — à faire
       AVANT la relance ci-dessous : (a) spec §6 : τ_T2 = 0,19, justification
       (RMS 4,3 pt 2017/2022, couverture 5/5) ; `TAU_T2_SCRUTIN = 0.19` dans fit.py,
       tests adaptés ; (b) spec : maths de τ_paire (bruit N(0, τ_paire²) en logit

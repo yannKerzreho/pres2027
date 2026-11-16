@@ -1124,6 +1124,14 @@ Sensibilité : avec les élections passées, hier demande 0,19, tiré par
 Macron–Pécresse 2022 (hier sûre d'elle à tort, §8.20) ; sans cette tâche, 0,08.
 Le choix 2027 (0,08) contre passé (0,19) est remonté à l'utilisateur.
 
+**Effet sur 2027 (diagnostic hier au 13/11, τ_T2 0,10 → 0,19, τ_paire 0,08 ;
+référence : diagnostic hier du 12/11, 92 → 95 duels)** : centres inchangés
+(≤ 0,5 pt), IC90 des duels affichés élargis d'environ 2,5-3 pt de chaque côté
+(Philippe–Le Pen : [37,8 ; 52,3] → [35,8 ; 54,7] pour Philippe) ; P(élu) sur
+le champ modal : Le Pen 84,8 → 80,3 %, Philippe 11,5 → 13,9 %, Glucksmann
+2,4 → 4,5 %. Convergence R̂ 1,014 (T2 1,011). Résultat :
+`results/diagnostic_2027_hier_2026-11-13_tau0.19_paire0.08.json`.
+
 ### 8.23 Effets maison au second tour par REML (revue 16/11, point 7 ; 0 fit)
 
 Réponse à §8.19 (§8.17 testait des résidus rétrécis, sous un modèle sans effet
