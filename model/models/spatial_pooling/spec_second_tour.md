@@ -1299,6 +1299,18 @@ stacking contre sélection ; erreur contre l'observé. Drapeau `--stacking`
 (fusion seulement, sortie `_stacking`) ; la sélection reste le défaut tant
 que le stacking ne fait pas mieux.
 
+**Résultat §8.26 (2026-11-16, 18 fusions 2022 rejouées, 0 NUTS ; fichiers
+`*_stacking.json`)** : erreur absolue moyenne de la cible, sélection
+**5,99 pt**, stacking **5,95 pt** ; Δ = −0,04 pt, IC90 bootstrap par tâche
+[−0,39 ; +0,28] ; stacking meilleur sur 8/18. Écarts de cible ≤ 2,2 pt (Zemmour
+geo, Pécresse abst), en général < 0,5 pt. Le stacking donne du poids à des
+chaînes que la sélection écartait (Macron–Le Pen abst : 0,24 à une chaîne à
+−100 nats) sans gain mesurable : les modes 2022 prédisent les observations à
+peu près aussi bien, c'est la cible retirée qu'ils ne départagent pas.
+**Décision : la sélection §8.8 reste le défaut** ; `--stacking` reste
+disponible. L'erreur 2022 (Pécresse, Zemmour, Le Pen : 7-12 pt) n'est pas un
+problème de mélange de chaînes.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

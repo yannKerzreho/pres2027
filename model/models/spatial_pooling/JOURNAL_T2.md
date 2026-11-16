@@ -49,7 +49,7 @@ l'historique, ajouter en bas de « Historique ».
       `diagnostic_2027` ;
       (3) [FAIT 16/11, spec §8.25 : nœud T1 déplace le duel de +0,3 / −0,9 pt, erreur inchangée (4,5 / 5,9 pt) ⇒ non retenu] « entre-deux-tours conditionné sur le résultat T1 » : maths puis V2 T2−7
       2017/2022 ;
-      (4) « (revue, a/d) stacking des chaînes » ;
+      (4) [FAIT 16/11, §8.26 : aucun gain] « (revue, a/d) stacking des chaînes » ;
       (5) synthèse tracker pour l'utilisateur (rôles spatial / gp-pooling).
       Les arbitrages ouverts (τ_T2, biais anti-RN, lissage, τ_paire) attendent
       l'utilisateur : coder chaque option DERRIÈRE un drapeau éteint par défaut
@@ -319,7 +319,7 @@ Résultats : `model/backtest/results/*.json` (committés).
 - [ ] (revue 16/11, B) combiner spatial et gp (stacking par unité, poids selon
       le nombre de sondages de la liste et l'horizon ; ou gp sur résidus du
       spatial), évaluation leave-one-coupure-out (0 fit).
-- [ ] (revue, a/d) stacking des chaînes (log-vraisemblance par nœud sur les
+- [x] [FAIT 16/11, spec §8.26 : 18 fusions 2022, Δ MAE −0,04 pt [−0,39 ; +0,28] ⇒ sélection gardée] (revue, a/d) stacking des chaînes (log-vraisemblance par nœud sur les
       tirages sauvés) ou max local + Laplace par chaîne — maths dans la spec.
 - [x] (revue, e) [FAIT 19:05Z (spec §8.16) : fuite comptée (74/86), mais retirer les notices entières ne dégrade pas l'erreur des centres ; seuls les IC s'élargissent ⇒ V1 non gonflée par la fuite] V1 en retirant la NOTICE entière (fuite même-répondants) :
       comptage sans fit, puis 4 fits.
@@ -419,6 +419,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-16 17:08-17:45Z (routine) : stacking des chaînes (§8.26), 18 re-fusions : aucun gain, sélection gardée.
 - 2026-11-16 16:08-16:50Z (routine) : entre-deux-tours conditionné sur le résultat T1 (§8.25, 12 fits) : non retenu.
 - 2026-11-16 15:20-15:40Z (routine) : P(élu) à aléa unique (§7.1), drapeau éteint ; diagnostic 2027 rejoué.
 - 2026-11-16 15:08Z (routine) : main fusionnée ; synthèse V1/V2 (spec §8.24, 0 fit).
