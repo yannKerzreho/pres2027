@@ -1049,6 +1049,25 @@ atypique — est réel ; il n'apparaît qu'une fois sur 11 tâches.
 `PUBLIER_T2 = False`**. À revoir par la prochaine revue Opus, avec la réserve
 Pécresse.
 
+### 8.21 Placebo de la fuite même-notice (revue 16/11, point 6 ; protocole fixé avant résultat)
+
+§8.16 confondait deux effets : retirer les duels des mêmes répondants (la
+fuite) et perdre K duels d'information sur le second tour. Placebo : deux bras
+de **même taille** $K = \min(K_{\text{notices}}, K_{\text{hors}})$, où
+$K_{\text{notices}}$ = duels non cibles des notices qui contiennent un duel
+cible, $K_{\text{hors}}$ = duels des autres notices (tous antérieurs à $t_k$) :
+- **notice partielle** : $K$ duels tirés au hasard dans les notices cibles ;
+- **placebo** : $K$ duels tirés hors de ces notices, appariés par paire
+  (même duel) autant que possible, le reste au hasard (graine 821).
+
+K et appariement (données du 15/11) : Le Pen–Philippe 12 (11 appariés),
+Le Pen–Mélenchon 23 (9), Glucksmann–Le Pen 44 (33 ; le bras notice = §8.16,
+réutilisé), Attal–Le Pen 29 (26). Variante abst, comme §8.16. Fuite
+**établie** si le bras notice est pire que le placebo en log-score KDE
+(§8.20) sur au moins 3 des 4 tâches ET en moyenne ; sinon non établie.
+Limite écrite d'avance : 4 tâches, K petit pour Philippe ⇒ puissance faible ;
+un « non établi » ne prouve pas l'absence de fuite.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

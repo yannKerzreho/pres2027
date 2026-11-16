@@ -306,7 +306,7 @@ Résultats : `model/backtest/results/*.json` (committés).
       sondage en août), pas au lissage ; à base égale (liste L_c), brut et
       spatial même semaine ; gp sur L_c 3 semaines plus tard (26/10).
       Piste : abaisser MIN_POLLS pour un candidat nouveau ? (non chiffré).
-- [ ] (revue 16/11, 6 et C) placebo de la fuite même-notice : retirer autant
+- [ ] [EN COURS (début 2026-11-16T13:20Z) : 7 tâches × 4 chaînes, spec §8.21] (revue 16/11, 6 et C) placebo de la fuite même-notice : retirer autant
       de duels pris dans d'autres notices (4 tâches, 16 fits), comparer par
       log-score ; calibrer τ_paire sur les V1 dédoublonnées.
 - [ ] (revue 16/11, 7) σ_maison par REML au niveau notice et par campagne,

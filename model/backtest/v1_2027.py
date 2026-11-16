@@ -27,6 +27,7 @@ PAIRES = ["Le Pen|Philippe", "Le Pen|Mélenchon", "Attal|Le Pen", "Glucksmann|Le
 CANDIDATS = ["candidat:Attal", "candidat:Bardella"]
 VARIANTES = {"abst": {}, "hier": {"eta_hier": True}}
 FENETRE = 30
+PLACEBO_INFO: dict = {}
 
 
 def _duels(raw: pd.DataFrame) -> pd.DataFrame:
@@ -53,7 +54,9 @@ def paires_cibles(tache: str, duels: pd.DataFrame) -> list[tuple[str, str]]:
     return [tuple(sorted(tache.split("|")))]
 
 
-def jeu_de_donnees(raw: pd.DataFrame, tache: str, notice_entiere: bool = False):
+def jeu_de_donnees(raw: pd.DataFrame, tache: str, notice_entiere: bool = False,
+                   placebo: bool = False, notice_partielle: bool = False,
+                   seed: int = 821):
     """(sondages d'apprentissage, t_k, cibles) — spec §8.12."""
     duels = _duels(raw)
     cibles = paires_cibles(tache, duels)
@@ -62,9 +65,37 @@ def jeu_de_donnees(raw: pd.DataFrame, tache: str, notice_entiere: bool = False):
     retirer = set(map(tuple, duels.loc[mask, ["notice", "_h"]].to_numpy()))
     cle = list(zip(raw["notice"], raw["hypothese"].fillna("__u__")))
     t2 = raw["tour"].ne("Premier tour").to_numpy()
-    if notice_entiere:
+    notices = {n for n, _ in retirer}
+    if placebo or notice_partielle:
+        # spec §8.21 : bras appariés de même taille K = min(duels en plus dans les
+        # notices cibles, duels hors de ces notices). « notice partielle » : K tirés
+        # dans les notices cibles ; « placebo » : K tirés HORS de ces notices,
+        # appariés par paire quand c'est possible.
+        rng = np.random.default_rng(seed)
+        en_plus = duels[duels.notice.isin(notices) & ~mask & duels.date.le(t_k)]
+        pool = duels[~duels.notice.isin(notices) & ~mask & duels.date.le(t_k)]
+        K = min(len(en_plus), len(pool))
+        if notice_partielle:
+            choisis = list(rng.choice(en_plus.index, K, replace=False))
+            apparies = 0
+        else:
+            choisis = []
+            for (a, b), g in en_plus.groupby(["a", "b"]):
+                cand = pool[(pool.a == a) & (pool.b == b)].index.difference(choisis)
+                k = min(len(g), len(cand), K - len(choisis))
+                if k > 0:
+                    choisis += list(rng.choice(cand, k, replace=False))
+            apparies = len(choisis)
+            libres = pool.index.difference(choisis)
+            if K > len(choisis):
+                choisis += list(rng.choice(libres, K - len(choisis), replace=False))
+        PLACEBO_INFO.update({"duels_en_plus_notices_cibles": int(len(en_plus)),
+                             "duels_hors_notices": int(len(pool)), "K": int(K),
+                             "apparies_par_paire": int(apparies)})
+        retirer = retirer | set(map(tuple, duels.loc[choisis, ["notice", "_h"]].to_numpy()))
+        garde = ~(t2 & np.array([k in retirer for k in cle]))
+    elif notice_entiere:
         # spec §8.16 : tous les duels des notices qui contiennent un duel cible.
-        notices = {n for n, _ in retirer}
         garde = ~(t2 & raw["notice"].isin(notices).to_numpy())
     else:
         garde = ~(t2 & np.array([k in retirer for k in cle]))
@@ -90,16 +121,21 @@ def main() -> None:
     ap.add_argument("--fusionner", action="store_true")
     ap.add_argument("--init-depuis", default=None)
     ap.add_argument("--notice-entiere", action="store_true", help="spec §8.16")
+    ap.add_argument("--placebo", action="store_true", help="spec §8.21")
+    ap.add_argument("--notice-partielle", action="store_true", help="spec §8.21")
     a = ap.parse_args()
     if a.lister:
         for t in PAIRES + CANDIDATS:
             print(f'--tache "{t}"')
         return
     raw = load_raw_polls(tour=None)
-    train, t_k, obs = jeu_de_donnees(raw, a.tache, a.notice_entiere)
+    train, t_k, obs = jeu_de_donnees(raw, a.tache, a.notice_entiere, a.placebo,
+                                     a.notice_partielle)
     nom = a.tache.replace("candidat:", "cand-").replace("|", "-").replace(" ", "_")
     out = sr.OUT_DIR / (f"v1_2027_{a.variante}_{nom}" + ("_init" if a.init_depuis else "")
-                        + ("_notice" if a.notice_entiere else "") + ".json")
+                        + ("_notice" if a.notice_entiere else "")
+                        + ("_placebo" if a.placebo else "")
+                        + ("_partielle" if a.notice_partielle else "") + ".json")
     base = sr.CHAINES_DIR / out.stem
     nuts = dict(draws=400, tune=600, chains=4)
     if a.chaine is not None:
@@ -125,7 +161,7 @@ def main() -> None:
                        "log_score_predictif": round(_log_score_logit(dp, yo), 3),
                        "tirages_predictifs": [round(float(v), 4) for v in dp],  # §8.20 (KDE)
                        **sr._cible_par_chaine(d, 1 if a.chaine is not None else 4)})
-    res = {"tache": a.tache, "variante": a.variante, "t_k": str(t_k.date()),
+    res = {"tache": a.tache, "variante": a.variante, "t_k": str(t_k.date()), "placebo": PLACEBO_INFO or None,
            "diagnostics": {k: fit.diagnostics.get(k) for k in
                            ("rhat_max", "rhat_t2", "ess_min", "n_divergences", "kappa", "omega",
                             "sigma_t2", "n_duels")},

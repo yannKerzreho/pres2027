@@ -98,3 +98,24 @@ def test_v1_2027_retire_exactement_les_duels_cibles():
     assert list(obs) == [("Le Pen", "Philippe")]
     _, _, obs_c = jeu_de_donnees(raw, "candidat:Bardella")
     assert all("Bardella" in p for p in obs_c)
+
+
+def test_placebo_et_notice_partielle_meme_taille():
+    """spec §8.21 : les deux bras retirent K duels, le placebo hors des notices cibles."""
+    import pandas as pd
+    from model.backtest import v1_2027 as v
+    rows = []
+    for i, (paire, notice) in enumerate([(("A", "B"), 1), (("A", "C"), 1), (("A", "C"), 2),
+                                         (("A", "C"), 3), (("B", "C"), 4)]):
+        for c, x in zip(paire, (55, 45)):
+            rows.append({"notice": notice, "hypothese": f"h{i}", "tour": "Second tour",
+                         "candidat": c, "intention": x, "echantillon": 1000,
+                         "date_fin": pd.Timestamp("2026-10-01")})
+    raw = pd.DataFrame(rows)
+    nb = lambda d: d[d.tour.ne("Premier tour")].groupby(["notice", "hypothese"]).ngroups
+    v.PLACEBO_INFO.clear()
+    p, _, _ = v.jeu_de_donnees(raw, "A|B", placebo=True)
+    assert v.PLACEBO_INFO["K"] == 1 and v.PLACEBO_INFO["apparies_par_paire"] == 1
+    assert nb(p) == 3 and 1 in set(p.notice)          # la notice cible garde son autre duel
+    q, _, _ = v.jeu_de_donnees(raw, "A|B", notice_partielle=True)
+    assert nb(q) == 3 and 1 not in set(q.notice)
