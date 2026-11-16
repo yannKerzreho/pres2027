@@ -119,3 +119,14 @@ def test_placebo_et_notice_partielle_meme_taille():
     assert nb(p) == 3 and 1 in set(p.notice)          # la notice cible garde son autre duel
     q, _, _ = v.jeu_de_donnees(raw, "A|B", notice_partielle=True)
     assert nb(q) == 3 and 1 not in set(q.notice)
+
+
+def test_noeud_resultat_t1_champ_exact():
+    """spec §8.25 : le résultat T1 ajouté comme un nœud du champ exact du scrutin."""
+    import pandas as pd
+    from model.backtest import second_round as sr
+    vide = pd.DataFrame(columns=["notice", "tour", "candidat", "intention", "date_fin"])
+    a = sr.avec_noeud_resultat(vide, 2022)
+    assert a.notice.nunique() == 1 and len(a) == 12
+    assert abs(a.intention.sum() - 100) < 1.0
+    assert (a.date_fin == sr.T1_DATES[2022]).all() and (a.echantillon == sr.N_NOEUD_RESULTAT).all()

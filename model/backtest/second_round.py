@@ -179,6 +179,23 @@ def polls_historiques(election: int, as_of: pd.Timestamp, history_days: int = 18
     return pd.concat([t1, t2], ignore_index=True)
 
 
+N_NOEUD_RESULTAT = 20000   # spec §8.25 : résultat T1 comme nœud quasi exact
+NOEUD_RESULTAT = False     # surchargé par --noeud-resultat
+
+
+def avec_noeud_resultat(raw: pd.DataFrame, election: int) -> pd.DataFrame:
+    """Ajoute le résultat officiel du T1 comme un « sondage » de N = 20 000 au
+    jour du T1, champ exact des candidats du scrutin (spec §8.25). N'a de sens
+    qu'après le T1 (coupures T2−k)."""
+    res = load_results()
+    r = res[res.election.eq(election) & res.tour.eq("Premier tour")]
+    lignes = pd.DataFrame({"notice": f"RESULTAT_T1_{election}", "institut": "Résultat officiel",
+                           "tour": "Premier tour", "hypothese": "resultat", "candidat": r.candidat.to_numpy(),
+                           "intention": r.resultat.to_numpy(float), "echantillon": N_NOEUD_RESULTAT,
+                           "date_fin": T1_DATES[election]})
+    return pd.concat([raw, lignes], ignore_index=True)
+
+
 def _duels_moyens(raw: pd.DataFrame, depuis: pd.Timestamp | None = None) -> pd.DataFrame:
     """Une ligne par duel sondé : paire triée, part du premier nom, date."""
     t2 = raw[raw.tour.eq("Deuxième tour")].copy()
@@ -329,6 +346,10 @@ def v2_resultat(election: int, nuts: dict, coupures=("T1-30", "T1-1", "T2-7")) -
         as_of = ref - pd.Timedelta(days=int(c.split("-")[1]))
         print(f"[V2 {election}] {c} ({as_of.date()})", flush=True)
         raw = polls_historiques(election, as_of)
+        if NOEUD_RESULTAT:
+            if as_of <= T1_DATES[election]:
+                raise ValueError("--noeud-resultat : coupure postérieure au T1 seulement")
+            raw = avec_noeud_resultat(raw, election)
         n_t1 = int(raw.loc[raw.tour.eq("Premier tour"), "notice"].nunique())
         try:
             fit, dt = _fit(raw, as_of, election, nuts)
@@ -399,10 +420,13 @@ def main() -> None:
     ap.add_argument("--init-depuis", default=None,
                     help="phase 2 (spec §8.8) : nom du JSON fusionné d'une phase 1 ; les chaînes "
                          "partent du dernier tirage de sa chaîne la plus dense")
+    ap.add_argument("--noeud-resultat", action="store_true",
+                    help="V2 après le T1 : résultat T1 comme nœud quasi exact (spec §8.25)")
     ap.add_argument("--pos-scale", type=float, default=None,
                     help="diagnostic : liberté de position autour de l'ancre (défaut du modèle 0,4)")
     args = ap.parse_args()
-    global ABSTENTION, SECOND_TOUR, POS_SCALE_BT
+    global ABSTENTION, SECOND_TOUR, POS_SCALE_BT, NOEUD_RESULTAT
+    NOEUD_RESULTAT = args.noeud_resultat
     POS_SCALE_BT = args.pos_scale
     ABSTENTION = args.variante in ("abst", "geo", "geo1", "hier")
     VARIANTE_KW.update({"geo": {"eta_scale": 0.0},
@@ -428,6 +452,7 @@ def main() -> None:
                                  + (f"_{args.coupure}" if args.coupure else "")
                                  + ("_sans_t2" if args.sans_t2 else "")
                                  + (f"_pos{args.pos_scale:g}" if args.pos_scale else "")
+                                 + ("_noeud" if args.noeud_resultat else "")
                                  + ("_init" if args.init_depuis else "") + ".json")
     nuts_json = dict(nuts)
     if args.chaine is not None or args.fusionner:

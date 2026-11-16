@@ -1240,6 +1240,25 @@ multimodaux ; la cible T2 converge (critère §8.4) ; hier converge mieux
 (R̂ 1,02 à 2022 T1−1). κ ≈ 1 en 2017 (0,99-1,07), 0,75-1,4 en 2022 ; ω de
 −3 (2017) à −6 (2022).
 
+### 8.25 Entre-deux-tours conditionné sur le résultat du T1 (protocole fixé avant résultat)
+
+Après le T1, le résultat officiel est une mesure quasi exacte des parts du
+champ du scrutin au jour du T1. On l'ajoute au jeu comme un nœud T1
+ordinaire : champ exact des candidats, parts officielles, $N = 20\,000$
+(écart-type binomial ≈ 0,3 pt, auquel s'ajoute la variance d'excès du modèle),
+daté du T1. Il contraint μ, σ et $w(T_1)$ ; le duel au T2 en hérite par
+la géométrie et l'OU. Écart assumé : le nœud mesure des bulletins, les autres
+nœuds des intentions (écart δ, `projection.py`) ; le modèle n'a pas de terme
+δ pour les nœuds, le résultat tire donc $w(T_1)$ vers les bulletins — c'est
+voulu (les reports de T2 se font depuis les bulletins réels).
+
+**Mesure.** V2 à T2−7 en 2017 et 2022, variante hier, avec et sans nœud
+(4 chaînes chacune ; la base hier 2017 T2−7 existe déjà) : erreur du duel
+final contre le résultat, log-score KDE (§8.20) des tirages au scrutin
+(τ_T2 = 0,19), convergence de la cible (§8.4). Lecture : le nœud est retenu
+s'il réduit l'erreur sur les deux élections sans dégrader la convergence ;
+avec 2 élections, c'est une indication, pas une preuve.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
