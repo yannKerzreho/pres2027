@@ -108,7 +108,7 @@ def test_placebo_et_notice_partielle_meme_taille():
     for i, (paire, notice) in enumerate([(("A", "B"), 1), (("A", "C"), 1), (("A", "C"), 2),
                                          (("A", "C"), 3), (("B", "C"), 4)]):
         for c, x in zip(paire, (55, 45)):
-            rows.append({"notice": notice, "hypothese": f"h{i}", "tour": "Second tour",
+            rows.append({"notice": notice, "hypothese": f"h{i}", "tour": "Deuxième tour",
                          "candidat": c, "intention": x, "echantillon": 1000,
                          "date_fin": pd.Timestamp("2026-10-01")})
     raw = pd.DataFrame(rows)
