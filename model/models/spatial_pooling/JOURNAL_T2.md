@@ -300,7 +300,7 @@ Résultats : `model/backtest/results/*.json` (committés).
       Réserve : Macron–Pécresse (écartée car abst non concluante) où hier est
       sûre d'elle à tort (LS −22). `ETA_HIER_T2 = True` (sans effet, T2 non
       publié). À faire relire à la revue du 17/11.
-- [ ] (revue 16/11, 4) détection Zemmour : coupures dès h = 243 (début août,
+- [ ] [EN COURS (début 2026-11-16T12:10Z) : fits suivi h = 243/236/229/222] (revue 16/11, 4) détection Zemmour : coupures dès h = 243 (début août,
       4 coupures × 4 chaînes = 16 fits) ; gp sur la liste avec Zemmour la mieux
       fournie à chaque coupure (0 fit).
 - [ ] (revue 16/11, 6 et C) placebo de la fuite même-notice : retirer autant
