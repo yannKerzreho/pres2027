@@ -1168,6 +1168,42 @@ orienter par candidat, p. ex. $v_{n,a}-v_{n,b}$). Effet attendu : IC plus larges
 pour les paires portées par peu d'instituts, V1 mieux calibrée ; σ_T2 devrait
 baisser. À tester en V1 sur 2022 (307 duels) avant tout passage.
 
+### 8.24 Synthèse V1/V2 (2026-11-16, chiffres committés, 0 fit)
+
+**V1 — paire retirée** (cible = moyenne des sondages de la paire sur 30 j ;
+tâches de §8.20 ; « géométrie seule » = κ = 1, η = 0 sur le même fit ; BT =
+Bradley-Terry sur les autres duels ; couverture IC90 prédictive §8.14).
+
+| élection | tâches (concluantes abst / hier) | MAE abst / hier (pt) | géométrie seule | BT | couverture abst / hier | LS KDE Σ abst / hier (concluantes des deux) |
+|---|---|---|---|---|---|---|
+| 2017 | 2 (1 / 1) | 2,05 / 2,81 | 10,3 | 4,3 | 2/2 / 2/2 | 0,91 / 1,73 (1) |
+| 2022 | 4 (2 / 3) | 6,34 / 4,97 | 8,0-9,3 | 12,2 | 2/4 / 3/4 | 1,54 / 2,30 (1) |
+| 2027 | 4 (4 / 4) | 3,02 / 2,28 | — | — | 2/4 / 2/4 | 6,46 / 8,04 (4) |
+
+Le bloc T2 (κ, η) divise l'erreur de la géométrie seule par 2 à 5 et bat
+Bradley-Terry partout ; l'erreur restante (Attal–Le Pen 4-7 pt, Mélenchon–Le
+Pen 3 pt, Pécresse 2022 12 pt) est de la structure (§8.14, §8.21), que τ_paire
+(§8.22) couvre en partie. Verdict de variante : hier (§8.20).
+
+**V2 — duel final contre le résultat** (Macron–Le Pen ; IC90 à τ_T2 = 0,10 tel
+que fitté ; à 0,19 : recalcul analytique en logit, sd² − 0,10² + 0,19², pas
+de nouveau fit) :
+
+| coupure | modèle (abst / hier) | moyenne sondages 7 j | résultat | couvert à 0,10 | couvert à 0,19 | R̂ global / T2 (abst) |
+|---|---|---|---|---|---|---|
+| 2017 T1−1 | 62,8 / 62,8 | 62,8 | 66,1 | oui | oui | 1,26 / 1,02 |
+| 2017 T2−7 | 61,3 / 61,3 | 61,7 | 66,1 | non | oui | 1,02 / 1,00 |
+| 2022 T1−30 | 58,9 / — | 58,9 | 58,6 | oui | oui | 16,3 / 2,21 |
+| 2022 T1−1 | 52,4 / 52,3 | 52,8 | 58,6 | non | oui | 8,49 / 1,57 |
+| 2022 T2−7 | 53,5 / — | 53,4 | 58,6 | non | oui | 4,31 / 1,59 |
+
+Le modèle reproduit la moyenne des sondages (±0,4 pt) ; la couverture du
+scrutin dépend de τ_T2 (2/5 → 5/5, mêmes réserves que §8.18-§8.19 : 2
+erreurs indépendantes, de même signe). R̂ global élevé en 2022 abst : nœuds T1
+multimodaux ; la cible T2 converge (critère §8.4) ; hier converge mieux
+(R̂ 1,02 à 2022 T1−1). κ ≈ 1 en 2017 (0,99-1,07), 0,75-1,4 en 2022 ; ω de
+−3 (2017) à −6 (2022).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

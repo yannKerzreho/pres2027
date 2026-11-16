@@ -43,7 +43,7 @@ l'historique, ajouter en bas de « Historique ».
 - [ ] **RELANCE 2026-11-15 21:30Z (session locale)** : le réveil de 21:07Z a
       conclu « rien à faire » alors que des tâches SANS dépendance restent
       ouvertes. Ordre à suivre, une par réveil, sans attendre les arbitrages :
-      (1) « Synthèse dans spec §8 » (plus bas) : tableau unique V1/V2 2017/2022/2027,
+      (1) [FAIT 16/11, §8.24] « Synthèse dans spec §8 » (plus bas) : tableau unique V1/V2 2017/2022/2027,
       abst = défaut, chiffres déjà committés, 0 fit ;
       (2) « P(élu) à aléa unique » : maths spec §7 puis code + test, puis relancer
       `diagnostic_2027` ;
@@ -336,10 +336,10 @@ Résultats : `model/backtest/results/*.json` (committés).
       à refaire sur les fits 2017/2022.
 - [x] [FAIT 19:15Z, spec §8.17 : aucun effet stable (Harris +1,6 / −0,2 / −0,9 selon l'élection ; 2022 tout à ±0,4 pt) ⇒ pas de paramètre] Effets maison au T2 (Harris −0,9 / YouGov +0,9 pt sur 2027) : mesurer
       sur 2017/2022 avant toute modélisation ; maths dans la spec d'abord.
-- [ ] Décision τ_T2 (maths dans la spec §6 avant code) : la mesure du 14/11
+- [x] [FAIT 16/11 : 0,19 appliqué, spec §6.2] Décision τ_T2 (maths dans la spec §6 avant code) : la mesure du 14/11
       donne RMS ≈ 4,3 pt ⇒ τ ≈ 0,18-0,20 logit ; centrage sur 0 = choix
       éditorial, à faire trancher par l'utilisateur (ne pas coder de biais).
-- [ ] Synthèse dans spec §8 : V1 MAE modèle / géométrie seule / BT ; V2 couverture,
+- [x] [FAIT 16/11, spec §8.24] Synthèse dans spec §8 : V1 MAE modèle / géométrie seule / BT ; V2 couverture,
       log-score vs sondages ; R-hat, rhat_t2, κ, ω, η ; corrélation κ–η.
 - [ ] Puis pistes (choisir selon les résultats, maths dans la spec AVANT le code) :
   - entre-deux-tours conditionné sur le résultat T1 (nœud quasi exact) ;
@@ -419,6 +419,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-16 15:08Z (routine) : main fusionnée ; synthèse V1/V2 (spec §8.24, 0 fit).
 - 2026-11-16 13:08-14:15Z (routine) : arbitrages appliqués (τ_T2 = 0,19,
   τ_paire = 0,08 calibré, §6, §8.22 ; valeur 0,08/0,19 remontée) ; placebo
   même-notice (28 fits) : fuite non établie (§8.21) ; effets maison T2 par REML
