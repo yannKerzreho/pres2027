@@ -316,7 +316,7 @@ Résultats : `model/backtest/results/*.json` (committés).
 - [x] [FAIT 16/11, spec §8.23 bis : LS meilleur 3/4 mais erreur moyenne 4,97 → 6,40 pt (Zemmour +7,8, non convergé) ⇒ NON RETENU ; σ_T2 1,3 → 0,2-0,3 pt, absorbé par maison/notice] (§8.23) effets maison + notice dans la vraisemblance des duels : maths
       complètes dans la spec, code derrière un drapeau, V1 2022 (4 paires,
       16 fits) contre le modèle actuel, log-score KDE.
-- [ ] (§8.23 bis, suite) effet NOTICE seul (marginalisé par blocs, 0 latent) en V1 2022, 16 fits.
+- [ ] [EN COURS (début 2026-11-16T22:35Z) : variante `hier_notice` codée] (§8.23 bis, suite) effet NOTICE seul (marginalisé par blocs, 0 latent) en V1 2022, 16 fits.
 - [ ] (revue 16/11, B) combiner spatial et gp (stacking par unité, poids selon
       le nombre de sondages de la liste et l'horizon ; ou gp sur résidus du
       spatial), évaluation leave-one-coupure-out (0 fit).

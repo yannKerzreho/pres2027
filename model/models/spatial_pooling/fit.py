@@ -71,7 +71,8 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
                         chain_method: str = "sequential",
                         mcmc_runner=None, eta_scale: float | None = None,
                         kappa_log_scale: float | None = None,
-                        eta_hier: bool = False, effets_maison: bool = False) -> SpatialPoolingFit:
+                        eta_hier: bool = False, effets_maison: bool = False,
+                        effet_notice_seul: bool = False) -> SpatialPoolingFit:
     """Roster -> arrays -> NUTS, en une seule inférence jointe.
 
     `mu`, `sigma` et le chemin de `w` sont estimés ENSEMBLE. La chaîne en deux
@@ -148,8 +149,10 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
             kwargs["kappa_log_scale"] = kappa_log_scale
         if eta_hier:
             kwargs["eta_hier"] = True
-        if effets_maison:
+        if effets_maison or effet_notice_seul:
             kwargs.update(arrays_effets_maison(raw_t2, duels))
+            if effet_notice_seul:
+                kwargs["n_maisons"] = 0
     t0 = time.time()
     # `mcmc_runner` : injectable (backtest découpé par chaîne, cf.
     # `model.backtest.second_round --chaine/--fusionner`), même signature que

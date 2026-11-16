@@ -379,10 +379,11 @@ def _cible_par_chaine(d: np.ndarray, n_chaines: int) -> dict:
 
 def var_effets_moyenne(fit, instituts) -> float:
     """Var. des effets maison/notice d'une moyenne de n duels d'une même paire
-    (§8.23 bis) : [2σ_h² Σ_h n_h² + 2σ_n² n] / n²."""
-    sh, sn = fit.diagnostics.get("sigma_maison_t2"), fit.diagnostics.get("sigma_notice_t2")
-    if sh is None or len(instituts) == 0:
+    (§8.23 bis) : [2σ_h² Σ_h n_h² + 2σ_n² n] / n² (σ_h = 0 : effet notice seul)."""
+    sn = fit.diagnostics.get("sigma_notice_t2")
+    if sn is None or len(instituts) == 0:
         return 0.0
+    sh = fit.diagnostics.get("sigma_maison_t2") or 0.0
     n = len(instituts)
     nh = pd.Series(list(instituts)).value_counts().to_numpy(float)
     return float((2 * sh ** 2 * (nh ** 2).sum() + 2 * sn ** 2 * n) / n ** 2)
@@ -475,7 +476,7 @@ def main() -> None:
     ap.add_argument("--coupure", default=None, choices=["T1-30", "T1-1", "T2-7"],
                     help="V2 : une seule coupure")
     ap.add_argument("--lister", action="store_true", help="liste les tâches unitaires et sort")
-    ap.add_argument("--variante", choices=["abst", "eta", "geo", "geo1", "hier", "hier_maison"], default="abst",
+    ap.add_argument("--variante", choices=["abst", "eta", "geo", "geo1", "hier", "hier_maison", "hier_notice"], default="abst",
                     help="abst = abstention + valence ; eta = valence seule ; geo = κ + abstention, "
                          "sans valence ; geo1 = abstention seule, κ = 1 (spec §8.9) ; hier = abst à échelle de "
                          "valence apprise (§8.10)")
@@ -500,11 +501,12 @@ def main() -> None:
     global STACKING
     STACKING = args.stacking
     POS_SCALE_BT = args.pos_scale
-    ABSTENTION = args.variante in ("abst", "geo", "geo1", "hier", "hier_maison")
+    ABSTENTION = args.variante in ("abst", "geo", "geo1", "hier", "hier_maison", "hier_notice")
     VARIANTE_KW.update({"geo": {"eta_scale": 0.0},
                         "geo1": {"eta_scale": 0.0, "kappa_log_scale": 1e-3},
                         "hier": {"eta_hier": True},
-                        "hier_maison": {"eta_hier": True, "effets_maison": True}}.get(args.variante, {}))
+                        "hier_maison": {"eta_hier": True, "effets_maison": True},
+                        "hier_notice": {"eta_hier": True, "effet_notice_seul": True}}.get(args.variante, {}))
     SECOND_TOUR = not args.sans_t2
     if args.sans_t2 and args.only != "v2":
         ap.error("--sans-t2 n'a de sens qu'en V2 (V1 prédit un duel)")

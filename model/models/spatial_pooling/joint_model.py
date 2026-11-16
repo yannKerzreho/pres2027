@@ -199,10 +199,12 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
             # Effets maison et notice par candidat (spec §8.23 bis, forme par blocs) :
             # maison explicite (non centrée, institut × candidat) ; notice
             # marginalisée bloc par bloc (les duels d'une même notice).
-            s_h = numpyro.sample("sigma_maison_t2", dist.HalfNormal(0.01))
             s_n = numpyro.sample("sigma_notice_t2", dist.HalfNormal(0.01))
-            z_h = numpyro.sample("z_maison_t2", dist.Normal(0.0, 1.0).expand([n_maisons, N]))
-            r = duel_y - s - s_h * (z_h[duel_maison, duel_a] - z_h[duel_maison, duel_b])
+            r = duel_y - s
+            if n_maisons:                         # 0 = effet notice seul (§8.23 bis, suite)
+                s_h = numpyro.sample("sigma_maison_t2", dist.HalfNormal(0.01))
+                z_h = numpyro.sample("z_maison_t2", dist.Normal(0.0, 1.0).expand([n_maisons, N]))
+                r = r - s_h * (z_h[duel_maison, duel_a] - z_h[duel_maison, duel_b])
             m = duel_blocs >= 0
             ix = jnp.where(m, duel_blocs, 0)
             R = jnp.where(m, r[ix], 0.0)
