@@ -1,0 +1,236 @@
+{
+ "election": 2022,
+ "h": 54,
+ "coupure": "2022-02-15",
+ "modele": "gp-pooling",
+ "listes": [
+  {
+   "cle": "anne hidalgo|emmanuel macron|eric zemmour|fabien roussel|jean lassalle|jean luc melenchon|marine le pen|nathalie arthaud|nicolas dupont aignan|philippe poutou|taubira|valerie pecresse|yannick jadot",
+   "id": "77de7d97",
+   "candidats": [
+    "Anne Hidalgo",
+    "Emmanuel Macron",
+    "Eric Zemmour",
+    "Fabien Roussel",
+    "Jean Lassalle",
+    "Jean-Luc Mélenchon",
+    "Marine Le Pen",
+    "Nathalie Arthaud",
+    "Nicolas Dupont-Aignan",
+    "Philippe Poutou",
+    "Taubira",
+    "Valérie Pécresse",
+    "Yannick Jadot"
+   ],
+   "n_recents": 3,
+   "n_total": 7
+  },
+  {
+   "cle": "anne hidalgo|asselineau|emmanuel macron|eric zemmour|fabien roussel|jean lassalle|jean luc melenchon|marine le pen|nathalie arthaud|nicolas dupont aignan|philippe poutou|philippot|taubira|valerie pecresse|yannick jadot",
+   "id": "9fd3575f",
+   "candidats": [
+    "Anne Hidalgo",
+    "Asselineau",
+    "Emmanuel Macron",
+    "Eric Zemmour",
+    "Fabien Roussel",
+    "Jean Lassalle",
+    "Jean-Luc Mélenchon",
+    "Marine Le Pen",
+    "Nathalie Arthaud",
+    "Nicolas Dupont-Aignan",
+    "Philippe Poutou",
+    "Philippot",
+    "Taubira",
+    "Valérie Pécresse",
+    "Yannick Jadot"
+   ],
+   "n_recents": 2,
+   "n_total": 5
+  }
+ ],
+ "lignes": [
+  {
+   "liste": "77de7d97",
+   "candidat": "Anne Hidalgo",
+   "observe": 0.025,
+   "n_cible": 6,
+   "modele": 0.0271,
+   "ic90": [
+    0.0183,
+    0.0375
+   ],
+   "erreur_pt": 0.21,
+   "signe_pt": 0.21,
+   "couvre": true
+  },
+  {
+   "liste": "77de7d97",
+   "candidat": "Emmanuel Macron",
+   "observe": 0.2492,
+   "n_cible": 6,
+   "modele": 0.234,
+   "ic90": [
+    0.1753,
+    0.2985
+   ],
+   "erreur_pt": 1.52,
+   "signe_pt": -1.52,
+   "couvre": true
+  },
+  {
+   "liste": "77de7d97",
+   "candidat": "Eric Zemmour",
+   "observe": 0.1333,
+   "n_cible": 6,
+   "modele": 0.1357,
+   "ic90": [
+    0.0983,
+    0.1799
+   ],
+   "erreur_pt": 0.23,
+   "signe_pt": 0.23,
+   "couvre": true
+  },
+  {
+   "liste": "77de7d97",
+   "candidat": "Fabien Roussel",
+   "observe": 0.0408,
+   "n_cible": 6,
+   "modele": 0.0346,
+   "ic90": [
+    0.0234,
+    0.0481
+   ],
+   "erreur_pt": 0.62,
+   "signe_pt": -0.62,
+   "couvre": true
+  },
+  {
+   "liste": "77de7d97",
+   "candidat": "Jean Lassalle",
+   "observe": 0.015,
+   "n_cible": 6,
+   "modele": 0.0101,
+   "ic90": [
+    0.0063,
+    0.0147
+   ],
+   "erreur_pt": 0.49,
+   "signe_pt": -0.49,
+   "couvre": false
+  },
+  {
+   "liste": "77de7d97",
+   "candidat": "Jean-Luc Mélenchon",
+   "observe": 0.105,
+   "n_cible": 6,
+   "modele": 0.0927,
+   "ic90": [
+    0.0652,
+    0.1253
+   ],
+   "erreur_pt": 1.23,
+   "signe_pt": -1.23,
+   "couvre": true
+  },
+  {
+   "liste": "77de7d97",
+   "candidat": "Marine Le Pen",
+   "observe": 0.1783,
+   "n_cible": 6,
+   "modele": 0.1648,
+   "ic90": [
+    0.1197,
+    0.2159
+   ],
+   "erreur_pt": 1.36,
+   "signe_pt": -1.36,
+   "couvre": true
+  },
+  {
+   "liste": "77de7d97",
+   "candidat": "Nathalie Arthaud",
+   "observe": 0.0092,
+   "n_cible": 6,
+   "modele": 0.0066,
+   "ic90": [
+    0.0039,
+    0.0098
+   ],
+   "erreur_pt": 0.26,
+   "signe_pt": -0.26,
+   "couvre": true
+  },
+  {
+   "liste": "77de7d97",
+   "candidat": "Nicolas Dupont-Aignan",
+   "observe": 0.0175,
+   "n_cible": 6,
+   "modele": 0.0139,
+   "ic90": [
+    0.0088,
+    0.02
+   ],
+   "erreur_pt": 0.36,
+   "signe_pt": -0.36,
+   "couvre": true
+  },
+  {
+   "liste": "77de7d97",
+   "candidat": "Philippe Poutou",
+   "observe": 0.0108,
+   "n_cible": 6,
+   "modele": 0.0107,
+   "ic90": [
+    0.0067,
+    0.0156
+   ],
+   "erreur_pt": 0.02,
+   "signe_pt": -0.02,
+   "couvre": true
+  },
+  {
+   "liste": "77de7d97",
+   "candidat": "Taubira",
+   "observe": 0.0217,
+   "n_cible": 6,
+   "modele": 0.0475,
+   "ic90": [
+    0.0328,
+    0.0656
+   ],
+   "erreur_pt": 2.59,
+   "signe_pt": 2.59,
+   "couvre": false
+  },
+  {
+   "liste": "77de7d97",
+   "candidat": "Valérie Pécresse",
+   "observe": 0.1417,
+   "n_cible": 6,
+   "modele": 0.1576,
+   "ic90": [
+    0.1129,
+    0.2073
+   ],
+   "erreur_pt": 1.6,
+   "signe_pt": 1.6,
+   "couvre": true
+  },
+  {
+   "liste": "77de7d97",
+   "candidat": "Yannick Jadot",
+   "observe": 0.055,
+   "n_cible": 6,
+   "modele": 0.0648,
+   "ic90": [
+    0.0444,
+    0.0885
+   ],
+   "erreur_pt": 0.98,
+   "signe_pt": 0.98,
+   "couvre": true
+  }
+ ]
+}

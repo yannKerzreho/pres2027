@@ -1,0 +1,619 @@
+{
+ "election": 2022,
+ "h": 138,
+ "coupure": "2021-11-23",
+ "modele": "gp-pooling",
+ "listes": [
+  {
+   "cle": "anne hidalgo|bertrand|emmanuel macron|eric zemmour|fabien roussel|jean lassalle|jean luc melenchon|marine le pen|montebourg|nathalie arthaud|nicolas dupont aignan|philippe poutou|yannick jadot",
+   "id": "49bdd7b6",
+   "candidats": [
+    "Anne Hidalgo",
+    "Bertrand",
+    "Emmanuel Macron",
+    "Eric Zemmour",
+    "Fabien Roussel",
+    "Jean Lassalle",
+    "Jean-Luc Mélenchon",
+    "Marine Le Pen",
+    "Montebourg",
+    "Nathalie Arthaud",
+    "Nicolas Dupont-Aignan",
+    "Philippe Poutou",
+    "Yannick Jadot"
+   ],
+   "n_recents": 2,
+   "n_total": 8
+  },
+  {
+   "cle": "anne hidalgo|emmanuel macron|eric zemmour|fabien roussel|jean lassalle|jean luc melenchon|marine le pen|montebourg|nathalie arthaud|nicolas dupont aignan|philippe poutou|valerie pecresse|yannick jadot",
+   "id": "736b4a54",
+   "candidats": [
+    "Anne Hidalgo",
+    "Emmanuel Macron",
+    "Eric Zemmour",
+    "Fabien Roussel",
+    "Jean Lassalle",
+    "Jean-Luc Mélenchon",
+    "Marine Le Pen",
+    "Montebourg",
+    "Nathalie Arthaud",
+    "Nicolas Dupont-Aignan",
+    "Philippe Poutou",
+    "Valérie Pécresse",
+    "Yannick Jadot"
+   ],
+   "n_recents": 2,
+   "n_total": 8
+  },
+  {
+   "cle": "anne hidalgo|barnier|emmanuel macron|eric zemmour|fabien roussel|jean lassalle|jean luc melenchon|marine le pen|montebourg|nathalie arthaud|nicolas dupont aignan|philippe poutou|yannick jadot",
+   "id": "e7ddb56f",
+   "candidats": [
+    "Anne Hidalgo",
+    "Barnier",
+    "Emmanuel Macron",
+    "Eric Zemmour",
+    "Fabien Roussel",
+    "Jean Lassalle",
+    "Jean-Luc Mélenchon",
+    "Marine Le Pen",
+    "Montebourg",
+    "Nathalie Arthaud",
+    "Nicolas Dupont-Aignan",
+    "Philippe Poutou",
+    "Yannick Jadot"
+   ],
+   "n_recents": 2,
+   "n_total": 7
+  }
+ ],
+ "lignes": [
+  {
+   "liste": "49bdd7b6",
+   "candidat": "Anne Hidalgo",
+   "observe": 0.06,
+   "n_cible": 1,
+   "modele": 0.0482,
+   "ic90": [
+    0.0276,
+    0.0737
+   ],
+   "erreur_pt": 1.18,
+   "signe_pt": -1.18,
+   "couvre": true
+  },
+  {
+   "liste": "49bdd7b6",
+   "candidat": "Bertrand",
+   "observe": 0.13,
+   "n_cible": 1,
+   "modele": 0.1238,
+   "ic90": [
+    0.0778,
+    0.1792
+   ],
+   "erreur_pt": 0.62,
+   "signe_pt": -0.62,
+   "couvre": true
+  },
+  {
+   "liste": "49bdd7b6",
+   "candidat": "Emmanuel Macron",
+   "observe": 0.25,
+   "n_cible": 1,
+   "modele": 0.2466,
+   "ic90": [
+    0.1682,
+    0.3357
+   ],
+   "erreur_pt": 0.34,
+   "signe_pt": -0.34,
+   "couvre": true
+  },
+  {
+   "liste": "49bdd7b6",
+   "candidat": "Eric Zemmour",
+   "observe": 0.14,
+   "n_cible": 1,
+   "modele": 0.1509,
+   "ic90": [
+    0.0976,
+    0.2142
+   ],
+   "erreur_pt": 1.09,
+   "signe_pt": 1.09,
+   "couvre": true
+  },
+  {
+   "liste": "49bdd7b6",
+   "candidat": "Fabien Roussel",
+   "observe": 0.02,
+   "n_cible": 1,
+   "modele": 0.0202,
+   "ic90": [
+    0.0098,
+    0.0327
+   ],
+   "erreur_pt": 0.02,
+   "signe_pt": 0.02,
+   "couvre": true
+  },
+  {
+   "liste": "49bdd7b6",
+   "candidat": "Jean Lassalle",
+   "observe": 0.005,
+   "n_cible": 1,
+   "modele": 0.0115,
+   "ic90": [
+    0.0047,
+    0.0198
+   ],
+   "erreur_pt": 0.65,
+   "signe_pt": 0.65,
+   "couvre": true
+  },
+  {
+   "liste": "49bdd7b6",
+   "candidat": "Jean-Luc Mélenchon",
+   "observe": 0.075,
+   "n_cible": 1,
+   "modele": 0.086,
+   "ic90": [
+    0.0519,
+    0.1273
+   ],
+   "erreur_pt": 1.1,
+   "signe_pt": 1.1,
+   "couvre": true
+  },
+  {
+   "liste": "49bdd7b6",
+   "candidat": "Marine Le Pen",
+   "observe": 0.19,
+   "n_cible": 1,
+   "modele": 0.1679,
+   "ic90": [
+    0.1092,
+    0.2376
+   ],
+   "erreur_pt": 2.21,
+   "signe_pt": -2.21,
+   "couvre": true
+  },
+  {
+   "liste": "49bdd7b6",
+   "candidat": "Montebourg",
+   "observe": 0.02,
+   "n_cible": 1,
+   "modele": 0.022,
+   "ic90": [
+    0.0107,
+    0.036
+   ],
+   "erreur_pt": 0.2,
+   "signe_pt": 0.2,
+   "couvre": true
+  },
+  {
+   "liste": "49bdd7b6",
+   "candidat": "Nathalie Arthaud",
+   "observe": 0.0,
+   "n_cible": 1,
+   "modele": 0.0088,
+   "ic90": [
+    0.0032,
+    0.0158
+   ],
+   "erreur_pt": 0.88,
+   "signe_pt": 0.88,
+   "couvre": false
+  },
+  {
+   "liste": "49bdd7b6",
+   "candidat": "Nicolas Dupont-Aignan",
+   "observe": 0.03,
+   "n_cible": 1,
+   "modele": 0.0284,
+   "ic90": [
+    0.015,
+    0.0452
+   ],
+   "erreur_pt": 0.16,
+   "signe_pt": -0.16,
+   "couvre": true
+  },
+  {
+   "liste": "49bdd7b6",
+   "candidat": "Philippe Poutou",
+   "observe": 0.01,
+   "n_cible": 1,
+   "modele": 0.0137,
+   "ic90": [
+    0.0058,
+    0.0232
+   ],
+   "erreur_pt": 0.37,
+   "signe_pt": 0.37,
+   "couvre": true
+  },
+  {
+   "liste": "49bdd7b6",
+   "candidat": "Yannick Jadot",
+   "observe": 0.07,
+   "n_cible": 1,
+   "modele": 0.0719,
+   "ic90": [
+    0.0419,
+    0.1096
+   ],
+   "erreur_pt": 0.19,
+   "signe_pt": 0.19,
+   "couvre": true
+  },
+  {
+   "liste": "736b4a54",
+   "candidat": "Anne Hidalgo",
+   "observe": 0.055,
+   "n_cible": 2,
+   "modele": 0.0536,
+   "ic90": [
+    0.0323,
+    0.0799
+   ],
+   "erreur_pt": 0.14,
+   "signe_pt": -0.14,
+   "couvre": true
+  },
+  {
+   "liste": "736b4a54",
+   "candidat": "Emmanuel Macron",
+   "observe": 0.25,
+   "n_cible": 2,
+   "modele": 0.2512,
+   "ic90": [
+    0.1724,
+    0.3394
+   ],
+   "erreur_pt": 0.12,
+   "signe_pt": 0.12,
+   "couvre": true
+  },
+  {
+   "liste": "736b4a54",
+   "candidat": "Eric Zemmour",
+   "observe": 0.14,
+   "n_cible": 2,
+   "modele": 0.1518,
+   "ic90": [
+    0.0992,
+    0.215
+   ],
+   "erreur_pt": 1.18,
+   "signe_pt": 1.18,
+   "couvre": true
+  },
+  {
+   "liste": "736b4a54",
+   "candidat": "Fabien Roussel",
+   "observe": 0.0225,
+   "n_cible": 2,
+   "modele": 0.0203,
+   "ic90": [
+    0.011,
+    0.0315
+   ],
+   "erreur_pt": 0.22,
+   "signe_pt": -0.22,
+   "couvre": true
+  },
+  {
+   "liste": "736b4a54",
+   "candidat": "Jean Lassalle",
+   "observe": 0.0025,
+   "n_cible": 2,
+   "modele": 0.0127,
+   "ic90": [
+    0.0064,
+    0.0208
+   ],
+   "erreur_pt": 1.02,
+   "signe_pt": 1.02,
+   "couvre": false
+  },
+  {
+   "liste": "736b4a54",
+   "candidat": "Jean-Luc Mélenchon",
+   "observe": 0.0875,
+   "n_cible": 2,
+   "modele": 0.0838,
+   "ic90": [
+    0.0521,
+    0.1236
+   ],
+   "erreur_pt": 0.37,
+   "signe_pt": -0.37,
+   "couvre": true
+  },
+  {
+   "liste": "736b4a54",
+   "candidat": "Marine Le Pen",
+   "observe": 0.1825,
+   "n_cible": 2,
+   "modele": 0.175,
+   "ic90": [
+    0.1144,
+    0.2468
+   ],
+   "erreur_pt": 0.75,
+   "signe_pt": -0.75,
+   "couvre": true
+  },
+  {
+   "liste": "736b4a54",
+   "candidat": "Montebourg",
+   "observe": 0.0175,
+   "n_cible": 2,
+   "modele": 0.0231,
+   "ic90": [
+    0.0127,
+    0.0361
+   ],
+   "erreur_pt": 0.56,
+   "signe_pt": 0.56,
+   "couvre": true
+  },
+  {
+   "liste": "736b4a54",
+   "candidat": "Nathalie Arthaud",
+   "observe": 0.005,
+   "n_cible": 2,
+   "modele": 0.0088,
+   "ic90": [
+    0.004,
+    0.0147
+   ],
+   "erreur_pt": 0.38,
+   "signe_pt": 0.38,
+   "couvre": true
+  },
+  {
+   "liste": "736b4a54",
+   "candidat": "Nicolas Dupont-Aignan",
+   "observe": 0.0325,
+   "n_cible": 2,
+   "modele": 0.0365,
+   "ic90": [
+    0.0212,
+    0.0555
+   ],
+   "erreur_pt": 0.4,
+   "signe_pt": 0.4,
+   "couvre": true
+  },
+  {
+   "liste": "736b4a54",
+   "candidat": "Philippe Poutou",
+   "observe": 0.0075,
+   "n_cible": 2,
+   "modele": 0.0174,
+   "ic90": [
+    0.0093,
+    0.0275
+   ],
+   "erreur_pt": 0.99,
+   "signe_pt": 0.99,
+   "couvre": false
+  },
+  {
+   "liste": "736b4a54",
+   "candidat": "Valérie Pécresse",
+   "observe": 0.135,
+   "n_cible": 2,
+   "modele": 0.0931,
+   "ic90": [
+    0.0572,
+    0.1367
+   ],
+   "erreur_pt": 4.19,
+   "signe_pt": -4.19,
+   "couvre": true
+  },
+  {
+   "liste": "736b4a54",
+   "candidat": "Yannick Jadot",
+   "observe": 0.0625,
+   "n_cible": 2,
+   "modele": 0.0726,
+   "ic90": [
+    0.044,
+    0.1088
+   ],
+   "erreur_pt": 1.01,
+   "signe_pt": 1.01,
+   "couvre": true
+  },
+  {
+   "liste": "e7ddb56f",
+   "candidat": "Anne Hidalgo",
+   "observe": 0.06,
+   "n_cible": 1,
+   "modele": 0.0539,
+   "ic90": [
+    0.0314,
+    0.0822
+   ],
+   "erreur_pt": 0.61,
+   "signe_pt": -0.61,
+   "couvre": true
+  },
+  {
+   "liste": "e7ddb56f",
+   "candidat": "Barnier",
+   "observe": 0.1,
+   "n_cible": 1,
+   "modele": 0.0957,
+   "ic90": [
+    0.0577,
+    0.1392
+   ],
+   "erreur_pt": 0.43,
+   "signe_pt": -0.43,
+   "couvre": true
+  },
+  {
+   "liste": "e7ddb56f",
+   "candidat": "Emmanuel Macron",
+   "observe": 0.25,
+   "n_cible": 1,
+   "modele": 0.2489,
+   "ic90": [
+    0.1701,
+    0.3398
+   ],
+   "erreur_pt": 0.11,
+   "signe_pt": -0.11,
+   "couvre": true
+  },
+  {
+   "liste": "e7ddb56f",
+   "candidat": "Eric Zemmour",
+   "observe": 0.15,
+   "n_cible": 1,
+   "modele": 0.1523,
+   "ic90": [
+    0.0978,
+    0.2153
+   ],
+   "erreur_pt": 0.23,
+   "signe_pt": 0.23,
+   "couvre": true
+  },
+  {
+   "liste": "e7ddb56f",
+   "candidat": "Fabien Roussel",
+   "observe": 0.025,
+   "n_cible": 1,
+   "modele": 0.0212,
+   "ic90": [
+    0.0106,
+    0.034
+   ],
+   "erreur_pt": 0.38,
+   "signe_pt": -0.38,
+   "couvre": true
+  },
+  {
+   "liste": "e7ddb56f",
+   "candidat": "Jean Lassalle",
+   "observe": 0.005,
+   "n_cible": 1,
+   "modele": 0.0094,
+   "ic90": [
+    0.0032,
+    0.017
+   ],
+   "erreur_pt": 0.44,
+   "signe_pt": 0.44,
+   "couvre": true
+  },
+  {
+   "liste": "e7ddb56f",
+   "candidat": "Jean-Luc Mélenchon",
+   "observe": 0.085,
+   "n_cible": 1,
+   "modele": 0.0869,
+   "ic90": [
+    0.0533,
+    0.1305
+   ],
+   "erreur_pt": 0.19,
+   "signe_pt": 0.19,
+   "couvre": true
+  },
+  {
+   "liste": "e7ddb56f",
+   "candidat": "Marine Le Pen",
+   "observe": 0.19,
+   "n_cible": 1,
+   "modele": 0.1771,
+   "ic90": [
+    0.1148,
+    0.2489
+   ],
+   "erreur_pt": 1.29,
+   "signe_pt": -1.29,
+   "couvre": true
+  },
+  {
+   "liste": "e7ddb56f",
+   "candidat": "Montebourg",
+   "observe": 0.02,
+   "n_cible": 1,
+   "modele": 0.0256,
+   "ic90": [
+    0.0134,
+    0.0411
+   ],
+   "erreur_pt": 0.56,
+   "signe_pt": 0.56,
+   "couvre": true
+  },
+  {
+   "liste": "e7ddb56f",
+   "candidat": "Nathalie Arthaud",
+   "observe": 0.005,
+   "n_cible": 1,
+   "modele": 0.0088,
+   "ic90": [
+    0.0029,
+    0.0158
+   ],
+   "erreur_pt": 0.38,
+   "signe_pt": 0.38,
+   "couvre": true
+  },
+  {
+   "liste": "e7ddb56f",
+   "candidat": "Nicolas Dupont-Aignan",
+   "observe": 0.035,
+   "n_cible": 1,
+   "modele": 0.0297,
+   "ic90": [
+    0.0156,
+    0.0471
+   ],
+   "erreur_pt": 0.53,
+   "signe_pt": -0.53,
+   "couvre": true
+  },
+  {
+   "liste": "e7ddb56f",
+   "candidat": "Philippe Poutou",
+   "observe": 0.01,
+   "n_cible": 1,
+   "modele": 0.0147,
+   "ic90": [
+    0.0065,
+    0.0248
+   ],
+   "erreur_pt": 0.47,
+   "signe_pt": 0.47,
+   "couvre": true
+  },
+  {
+   "liste": "e7ddb56f",
+   "candidat": "Yannick Jadot",
+   "observe": 0.065,
+   "n_cible": 1,
+   "modele": 0.0758,
+   "ic90": [
+    0.0448,
+    0.1141
+   ],
+   "erreur_pt": 1.08,
+   "signe_pt": 1.08,
+   "couvre": true
+  }
+ ]
+}

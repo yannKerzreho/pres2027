@@ -490,3 +490,31 @@ semaines portée par de nombreux sondages. Résultat :
   août. « Spatial devance le brut » compare une part dans R à une moyenne sur
   des champs plus larges. « gp indisponible » dépend du choix de R.
 
+**Tâche A de la revue du 16/11 : gp-pooling recalibré HORS échantillon.**
+REML sur les seuls blocs 2017 (4 blocs, 27 sondages — instable) : σ_h 0,119,
+σ² 0,054, τ 38 j, σ_p 0 (banque 2017+2022 : 0,126 / 0,116 / 262 j / 0,039) ;
+facteur de diffusion ×3 (comme en production) et ×1 en sensibilité ; gp lu à
+c + 7 j comme le spatial prolongé. 13 unités (coupure, liste), bootstrap par
+unité, Δ = spatial − gp :
+
+| gp | MAE spatial / gp | Δ MAE [IC90] | score d'intervalle α=0,1 spatial / gp | Δ IS [IC90] | couverture | largeur IC90 gp |
+|---|---|---|---|---|---|---|
+| banque (dans l'éch.), lu à c | 0,77 / 0,62 | [+0,06 ; +0,23] | 4,32 / 4,32 | [−0,65 ; +0,59] | 0,82 / 0,90 | 3,5 pt |
+| banque, c + 7 | 0,77 / 0,62 | [+0,05 ; +0,22] | 4,32 / 4,55 | [−0,89 ; +0,37] | 0,82 / 0,93 | 4,0 pt |
+| **REML 2017, ×3, c + 7** | 0,77 / **0,60** | [+0,07 ; +0,25] | **4,32** / 5,83 | **[−2,24 ; −0,77]** | 0,82 / 0,95 | 5,5 pt |
+| REML 2017, ×1, c + 7 | 0,77 / 0,61 | [+0,07 ; +0,23] | **4,32** / 5,41 | [−1,73 ; −0,43] | 0,82 / 0,94 | 5,1 pt |
+
+(Sans la coupure T1−12, R-hat 2,5 : mêmes conclusions.)
+
+**Lecture.** (1) **Les centres de gp-pooling sont meilleurs, et ce n'est pas
+un artefact de calibration** : la MAE reste ≈ 0,60 hors échantillon (seuil
+de rupture fixé : 0,70). (2) **Ses bons intervalles, eux, en étaient un** :
+recalibré sans 2022, gp sur-couvre (0,94-0,95) avec des IC de 5-5,5 pt, et le
+spatial devient nettement meilleur au score d'intervalle. (3) Le spatial a
+donc des IC plus fins mais encore un peu étroits (0,82 pour 0,90), gp des
+centres plus justes. C'est exactement le cas d'usage de l'idée B (combiner :
+centre de gp, incertitude informée par le spatial, ou stacking par unité).
+Réserve : le REML 2017 repose sur 27 sondages (τ = 38 j, σ_p = 0), il est
+lui-même fragile. Résultats : `suivi_gp_{bank_c7,r17f3_c7,r17f1_c7}_2022_h*.json`,
+paramètres : `bank_opinion_reml_2017_seul.json`.
+

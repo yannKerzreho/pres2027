@@ -286,7 +286,7 @@ Résultats : `model/backtest/results/*.json` (committés).
       ratés = biais de structure 3-4 pt ⇒ piste τ_paire (ci-dessous, arbitrage 4).
 - [x] (revue, c) abst en phase 2 sur Zemmour, Mélenchon, Pécresse 2022 — FAIT 16:17Z ; + abst 2017 ; VERDICT protocole §8.11 (spec §8.15) : hier gagne le log-score total (10,5 contre 7,7) mais perd la MAE 2017 ⇒ PAS préférée, abst reste le défaut
       (3 tâches) pour un traitement égal à hier.
-- [ ] (revue 16/11, A) **PRIORITAIRE, 0 fit** : recalibrer gp-pooling SANS 2022
+- [x] [FAIT 10:30Z, spec spatial_pooling §10 : hors échantillon, MAE gp 0,60 (centres meilleurs, robuste) mais score d'intervalle gp 5,4-5,8 contre 4,3 spatial (IC gp trop larges) ⇒ « gp meilleur » vaut pour les centres seulement ; listes : comparaison relative peu affectée ; σ_h/σ_p dans le prédictif : non fait] (revue 16/11, A) **PRIORITAIRE, 0 fit** : recalibrer gp-pooling SANS 2022
       (REML et FACTEUR_DIFFUSION sur 2017 seul), puis relancer `suivi --gp` et
       `listes_definition` ; rapporter score d'intervalle α = 0,1 / CRPS par
       unité (coupure, liste) avec bootstrap, les deux modèles lus à c + 7 avec
@@ -432,6 +432,9 @@ conservé pour l'historique.
 - 2026-11-14 21:27-21:50Z (réveils 19:07/20:07/21:07 reçus en retard, traités
   en un) : fenêtre, ancres, pos_scale 0,25 (§8.7) ; cause des modes V1 =
   compensation géométrie/η.
+- 2026-11-16 10:07-10:35Z (réveil) : tâche A (gp recalibré sur 2017 seul) :
+  centres gp meilleurs (robuste), intervalles spatial meilleurs hors
+  échantillon.
 - 2026-11-16 09:07-09:35Z (réveil) : revue Opus quotidienne, 9 points
   acceptés ; rétractations (gp contre spatial, décalage de dates, détection
   Zemmour, fuite, effets maison, τ 5/5, D1(5 %)) ; tâches A (prioritaire),

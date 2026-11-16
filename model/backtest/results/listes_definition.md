@@ -153,4 +153,9 @@ alternative de slot n'est testée.
 - **La recommandation « garder D0 » tient** (elle ne repose pas sur le
   classement des seuils : D1 n'apporte pas de gain établi, et son IC50 est
   trop étroit) ; le « D1(5 %) recevable » est retiré.
+- Calibration (complément du 16/11) : D0 et D1 partagent les MÊMES paramètres
+  gp, donc le biais dans l'échantillon pèse sur les deux ; la comparaison
+  RELATIVE D0/D1 en est moins affectée que la comparaison gp/spatial. Avec gp
+  recalibré sans 2022 (voir spec spatial_pooling §10), gp sur-couvre : les
+  chiffres absolus de couverture de ce document sont à relire à cette aune.
 

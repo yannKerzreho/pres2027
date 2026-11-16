@@ -53,6 +53,10 @@ def cibles(election: int, c: pd.Timestamp, cle: str) -> tuple[dict, int]:
             int(sel.scenario_id.nunique()))
 
 
+GP_PARAMS: dict | None = None   # revue 16/11 : paramètres gp hors échantillon (REML sans 2022)
+GP_DECALAGE_J = 0               # lecture de gp à c + décalage (date égale au spatial prolongé)
+
+
 def gp_listes(election: int, c: pd.Timestamp, listes: list[dict], raw: pd.DataFrame) -> list[dict]:
     """Étape 2 : `gp-pooling` (GPListe, inchangé) sur les mêmes listes. Le modèle
     compte les horizons depuis le T1 2027 ; on décale les dates de
@@ -74,7 +78,9 @@ def gp_listes(election: int, c: pd.Timestamp, listes: list[dict], raw: pd.DataFr
         try:
             mdl = GPListe(L["cle"], L["candidats"])
             mdl.load_artifacts()
-            nc = mdl.nowcast(t1, str((c + delta).date()))
+            if GP_PARAMS is not None:
+                mdl.params = {**mdl.params, **GP_PARAMS}
+            nc = mdl.nowcast(t1, str((c + delta + pd.Timedelta(days=GP_DECALAGE_J)).date()))
         except Exception as exc:          # liste sans sondage exploitable : comptée
             lignes.append({"liste": L["id"], "erreur": f"{type(exc).__name__}: {exc}"})
             continue
@@ -103,6 +109,10 @@ def main() -> None:
     ap.add_argument("--chaine", type=int, default=None)
     ap.add_argument("--fusionner", action="store_true")
     ap.add_argument("--gp", action="store_true", help="étape 2 : gp-pooling sur les mêmes listes")
+    ap.add_argument("--gp-params", default=None, help="JSON de paramètres gp (REML hors échantillon)")
+    ap.add_argument("--gp-facteur", type=float, default=3.0, help="facteur de diffusion appliqué à sigma2 et tau")
+    ap.add_argument("--gp-decalage", type=int, default=0, help="lecture de gp à c + N jours")
+    ap.add_argument("--suffixe", default="")
     a = ap.parse_args()
     if a.lister:
         for h in HORIZONS:
@@ -110,11 +120,17 @@ def main() -> None:
         return
     c = sr.T1_DATES[a.election] - pd.Timedelta(days=a.h)
     raw = sr.polls_historiques(a.election, c)
+    global GP_PARAMS, GP_DECALAGE_J
+    GP_DECALAGE_J = a.gp_decalage
+    if a.gp_params:
+        q = json.loads(open(a.gp_params).read())
+        GP_PARAMS = {"sigma_h": q["sigma_h"], "sigma_p": q["sigma_p"],
+                     "sigma2": q["sigma2"] * a.gp_facteur, "tau": q["tau"] * a.gp_facteur}
     if a.gp:
         listes = classement(_champs_t1(raw), c)
         res = {"election": a.election, "h": a.h, "coupure": str(c.date()), "modele": "gp-pooling",
                "listes": listes, "lignes": gp_listes(a.election, c, listes, raw)}
-        out = sr.OUT_DIR / f"suivi_gp_{a.election}_h{a.h:03d}.json"
+        out = sr.OUT_DIR / f"suivi_gp{a.suffixe}_{a.election}_h{a.h:03d}.json"
         out.write_text(json.dumps(res, ensure_ascii=False, indent=1, default=str) + "\n")
         print(f"-> {out}")
         return
