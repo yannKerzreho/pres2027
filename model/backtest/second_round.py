@@ -258,8 +258,9 @@ def _duels_moyens(raw: pd.DataFrame, depuis: pd.Timestamp | None = None) -> pd.D
     for (_, _), g in t2.groupby(["notice", t2["hypothese"].fillna("__u__")]):
         g = g.sort_values("candidat")
         v = g.intention.to_numpy(float)
-        rows.append((g.candidat.iloc[0], g.candidat.iloc[1], v[0] / v.sum(), g.date_fin.iloc[0]))
-    return pd.DataFrame(rows, columns=["a", "b", "y", "date"])
+        rows.append((g.candidat.iloc[0], g.candidat.iloc[1], v[0] / v.sum(), g.date_fin.iloc[0],
+                     g["institut"].iloc[0] if "institut" in g else "?"))
+    return pd.DataFrame(rows, columns=["a", "b", "y", "date", "institut"])
 
 
 def _sans_paire(raw: pd.DataFrame, a: str, b: str) -> pd.DataFrame:
@@ -310,6 +311,7 @@ def _diag(fit, dt):
     d = fit.diagnostics
     return {"rhat_max": d["rhat_max"], "ess_min": d["ess_min"], "divergences": d["n_divergences"],
             "kappa": d.get("kappa"), "omega": d.get("omega"), "rhat_t2": d.get("rhat_t2"), "sigma_t2": d.get("sigma_t2"), "secondes": dt,
+            "sigma_maison_t2": d.get("sigma_maison_t2"), "sigma_notice_t2": d.get("sigma_notice_t2"),
             "eta": {c: round(float(x), 3) for c, x in zip(fit.candidates, fit.eta_draws.mean(0))}
             if fit.eta_draws is not None else None}
 
@@ -332,8 +334,9 @@ def v1_paire_retiree(election: int, nuts: dict, seule: tuple | None = None) -> l
         obs = float(cible.y.mean())
         mod = duel_draws(fit, a, b, 0, scrutin=False)
         cible = _cible_par_chaine(mod, nuts.get("chains", 1))
-        dp = predictif_moyenne(mod, len(cible_df := duels[(duels.a == a) & (duels.b == b)]), 1000.0,
-                               fit.diagnostics.get("sigma_t2", 0.0))
+        cible_df = duels[(duels.a == a) & (duels.b == b)]
+        dp = predictif_moyenne(mod, len(cible_df), 1000.0, fit.diagnostics.get("sigma_t2", 0.0),
+                               var_effets=var_effets_moyenne(fit, cible_df.institut))
         cible.update({"ic90_predictif": [round(float(v), 4) for v in np.percentile(dp, [5, 95])],
                       "couvre_predictif": bool(np.percentile(dp, 5) <= obs <= np.percentile(dp, 95)),
                       "log_score_predictif": round(_log_score(np.log(dp / (1 - dp)), obs), 3),
@@ -374,11 +377,23 @@ def _cible_par_chaine(d: np.ndarray, n_chaines: int) -> dict:
     return out
 
 
+def var_effets_moyenne(fit, instituts) -> float:
+    """Var. des effets maison/notice d'une moyenne de n duels d'une même paire
+    (§8.23 bis) : [2σ_h² Σ_h n_h² + 2σ_n² n] / n²."""
+    sh, sn = fit.diagnostics.get("sigma_maison_t2"), fit.diagnostics.get("sigma_notice_t2")
+    if sh is None or len(instituts) == 0:
+        return 0.0
+    n = len(instituts)
+    nh = pd.Series(list(instituts)).value_counts().to_numpy(float)
+    return float((2 * sh ** 2 * (nh ** 2).sum() + 2 * sn ** 2 * n) / n ** 2)
+
+
 def predictif_moyenne(d: np.ndarray, n: int, n_ech: float, sigma_t2: float,
-                      seed: int = 11) -> np.ndarray:
-    """Tirages prédictifs de la MOYENNE de n sondages d'un duel (spec §8.14)."""
+                      seed: int = 11, var_effets: float = 0.0) -> np.ndarray:
+    """Tirages prédictifs de la MOYENNE de n sondages d'un duel (spec §8.14) ;
+    `var_effets` : variance des effets maison/notice de cette moyenne (§8.23 bis)."""
     rng = np.random.default_rng(seed)
-    sd = np.sqrt((d * (1 - d) / max(n_ech, 1.0) + sigma_t2 ** 2) / max(n, 1))
+    sd = np.sqrt((d * (1 - d) / max(n_ech, 1.0) + sigma_t2 ** 2) / max(n, 1) + var_effets)
     return np.clip(d + sd * rng.standard_normal(d.shape), 1e-4, 1 - 1e-4)
 
 
@@ -460,7 +475,7 @@ def main() -> None:
     ap.add_argument("--coupure", default=None, choices=["T1-30", "T1-1", "T2-7"],
                     help="V2 : une seule coupure")
     ap.add_argument("--lister", action="store_true", help="liste les tâches unitaires et sort")
-    ap.add_argument("--variante", choices=["abst", "eta", "geo", "geo1", "hier"], default="abst",
+    ap.add_argument("--variante", choices=["abst", "eta", "geo", "geo1", "hier", "hier_maison"], default="abst",
                     help="abst = abstention + valence ; eta = valence seule ; geo = κ + abstention, "
                          "sans valence ; geo1 = abstention seule, κ = 1 (spec §8.9) ; hier = abst à échelle de "
                          "valence apprise (§8.10)")
@@ -485,10 +500,11 @@ def main() -> None:
     global STACKING
     STACKING = args.stacking
     POS_SCALE_BT = args.pos_scale
-    ABSTENTION = args.variante in ("abst", "geo", "geo1", "hier")
+    ABSTENTION = args.variante in ("abst", "geo", "geo1", "hier", "hier_maison")
     VARIANTE_KW.update({"geo": {"eta_scale": 0.0},
                         "geo1": {"eta_scale": 0.0, "kappa_log_scale": 1e-3},
-                        "hier": {"eta_hier": True}}.get(args.variante, {}))
+                        "hier": {"eta_hier": True},
+                        "hier_maison": {"eta_hier": True, "effets_maison": True}}.get(args.variante, {}))
     SECOND_TOUR = not args.sans_t2
     if args.sans_t2 and args.only != "v2":
         ap.error("--sans-t2 n'a de sens qu'en V2 (V1 prédit un duel)")

@@ -246,7 +246,7 @@ Résultats : `model/backtest/results/*.json` (committés).
       « RÉSULTAT POUR L'ORCHESTRATEUR : … » en fin de réveil. Ne modifie PAS
       `model/listes.py` ni le site (session site) : backtest dans
       `model/backtest/listes_definition.py`.
-- [ ] [spec_spatial_pooling §10 écrite ; `w_path` + `trajectoire()` codés et
+- [x] [CLOS 16/11 : synthèse faite (spec_spatial_pooling §10) ; seul reste 2017, BLOQUÉ données] [spec_spatial_pooling §10 écrite ; `w_path` + `trajectoire()` codés et
       testés ; run 2027 FAIT 11:17Z (spec_spatial_pooling §10) : niveaux
       justes (≤ 0,4 pt), tendances amorties d'1/4 à 1/2 (Philippe −1,0 pt sur
       30 j). RESTE : backtest de suivi 2017/2022 par coupures + comparaison
@@ -313,7 +313,7 @@ Résultats : `model/backtest/results/*.json` (committés).
 - [x] (revue 16/11, 7) σ_maison par REML (spec §8.23, 16/11) : σ_h 0,5-1 pt
       par institut, établi en 2017/2022 (p ≤ 0,008), non établi en 2027
       (p ≈ 0,1) ; effet notice 0,8-1,1 pt. §8.17 retiré.
-- [ ] (§8.23) effets maison + notice dans la vraisemblance des duels : maths
+- [ ] [EN COURS (début 2026-11-16T18:40Z) : spec §8.23 bis, code (`effets_maison`, variante `hier_maison`) + test ; V1 2022 4 paires × 4 chaînes ; essai rapide : σ_h 0,9, σ_n 0,85, σ_T2 0,5 pt] (§8.23) effets maison + notice dans la vraisemblance des duels : maths
       complètes dans la spec, code derrière un drapeau, V1 2022 (4 paires,
       16 fits) contre le modèle actuel, log-score KDE.
 - [ ] (revue 16/11, B) combiner spatial et gp (stacking par unité, poids selon

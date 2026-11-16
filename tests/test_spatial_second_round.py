@@ -237,3 +237,15 @@ def test_p_elu_alea_unique_somme_a_un_et_correle_t1_t2():
     w2 = projeter_w(f, 14, 29, w0=w1)
     assert np.corrcoef(w1[:, 1], w2[:, 1])[0, 1] > 0.8          # prolongement conditionnel
     assert np.array_equal(projeter_w(f, 0, w0=w1), w1)
+
+
+def test_noyau_effets_maison_par_candidat():
+    """spec §8.23 bis : même institut, même candidat => covariance de signe cohérent."""
+    from model.models.spatial_pooling.fit import noyau_effets
+    a, b = np.array([0, 0, 1, 2]), np.array([1, 2, 2, 0])
+    K = noyau_effets(a, b, ["H", "H", "H", "G"])
+    assert np.allclose(np.diag(K)[:3], 2)
+    assert K[0, 1] == 1          # (0 vs 1) et (0 vs 2) partagent 0 en premier : +
+    assert K[0, 2] == -1         # (0 vs 1) et (1 vs 2) : 1 second puis premier : −
+    assert K[0, 3] == 0          # autre institut
+    assert np.all(np.linalg.eigvalsh(K) > -1e-9)

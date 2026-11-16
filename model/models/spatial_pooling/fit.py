@@ -71,7 +71,7 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
                         chain_method: str = "sequential",
                         mcmc_runner=None, eta_scale: float | None = None,
                         kappa_log_scale: float | None = None,
-                        eta_hier: bool = False) -> SpatialPoolingFit:
+                        eta_hier: bool = False, effets_maison: bool = False) -> SpatialPoolingFit:
     """Roster -> arrays -> NUTS, en une seule inférence jointe.
 
     `mu`, `sigma` et le chemin de `w` sont estimés ENSEMBLE. La chaîne en deux
@@ -148,6 +148,13 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
             kwargs["kappa_log_scale"] = kappa_log_scale
         if eta_hier:
             kwargs["eta_hier"] = True
+        if effets_maison:
+            inst = raw_t2.drop_duplicates("notice").set_index("notice")["institut"] \
+                if "institut" in raw_t2 else pd.Series(dtype=str)
+            g_h = [str(inst.get(nt, nt)) for nt in duels["notices"]]
+            kwargs["duel_K_h"] = jnp.asarray(noyau_effets(duels["a"], duels["b"], g_h))
+            kwargs["duel_K_n"] = jnp.asarray(noyau_effets(duels["a"], duels["b"],
+                                                          [str(x) for x in duels["notices"]]))
     t0 = time.time()
     # `mcmc_runner` : injectable (backtest découpé par chaîne, cf.
     # `model.backtest.second_round --chaine/--fusionner`), même signature que
@@ -177,7 +184,8 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
                          if eta_scale != 0 else [])
                       + ([float(diag["omega"]["r_hat"])] if abstention else [])
                       # revue 2026-11-15 : l'échelle apprise est le site fragile de `hier`
-                      + ([float(diag["s_eta"]["r_hat"])] if "s_eta" in diag else []))
+                      + ([float(diag["s_eta"]["r_hat"])] if "s_eta" in diag else [])
+                      + [float(diag[k]["r_hat"]) for k in ("sigma_maison_t2", "sigma_notice_t2") if k in diag])
     pires = sorted(((float(np.nanmax(v["r_hat"])), k) for k, v in diag.items()), reverse=True)[:3]
     steps = np.asarray(extra["num_steps"]).ravel()
     diagnostics = {
@@ -210,6 +218,9 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
             "rhat_t2": round(rhat_t2, 4),
             "sigma_t2": round(float(np.mean(np.asarray(samples["sigma_t2"]))), 4),
         })
+        for k in ("sigma_maison_t2", "sigma_notice_t2"):           # §8.23 bis
+            if k in samples:
+                diagnostics[k] = round(float(np.mean(np.asarray(samples[k]))), 4)
     return SpatialPoolingFit(
         candidates=candidates, anchors=anchors, tested_mask=arrays["tested_mask"],
         mu_draws=np.asarray(samples["mu"]).reshape(-1, N),
@@ -306,6 +317,16 @@ TAU_T2_SCRUTIN = 0.19
 # Incertitude d'extrapolation d'un duel JAMAIS sondé, en logit (spec §6.3,
 # arbitrage 4 ; calibrage §8.22 sur les V1 2027, variante hier).
 TAU_PAIRE = 0.08
+
+
+def noyau_effets(a, b, groupes) -> np.ndarray:
+    """K = Z Zᵀ des effets par (groupe, candidat) sur la part du premier nommé
+    (spec_second_tour §8.23 bis) : K_dd' = [g=g'](1[a=a'] − 1[a=b'] − 1[b=a'] + 1[b=b'])."""
+    a, b = np.asarray(a), np.asarray(b)
+    g = np.asarray(groupes)
+    meme = (g[:, None] == g[None, :]).astype(float)
+    eq = lambda x, y: (x[:, None] == y[None, :]).astype(float)   # noqa: E731
+    return meme * (eq(a, a) - eq(a, b) - eq(b, a) + eq(b, b))
 
 
 def paire_sondee(fit: SpatialPoolingFit, a: str, b: str) -> bool:

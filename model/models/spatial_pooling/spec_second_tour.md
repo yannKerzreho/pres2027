@@ -1204,6 +1204,38 @@ orienter par candidat, p. ex. $v_{n,a}-v_{n,b}$). Effet attendu : IC plus larges
 pour les paires portées par peu d'instituts, V1 mieux calibrée ; σ_T2 devrait
 baisser. À tester en V1 sur 2022 (307 duels) avant tout passage.
 
+### 8.23 bis Effets maison et notice dans la vraisemblance des duels (maths, 2026-11-16)
+
+Pour le duel $d$ (paire $a_d$/$b_d$, institut $h_d$, notice $n_d$), part
+observée $y_d$ du premier nommé :
+$$y_d = s_d + (u_{h_d,a_d} - u_{h_d,b_d}) + (v_{n_d,a_d} - v_{n_d,b_d}) + e_d,$$
+$u_{h,i}\sim\mathcal N(0,\sigma_h^2)$ (institut × candidat),
+$v_{n,i}\sim\mathcal N(0,\sigma_n^2)$ (notice × candidat),
+$e_d\sim\mathcal N(0,\ s_d(1-s_d)/N_d+\sigma_{T2}^2)$, tous indépendants.
+L'effet est par candidat : un institut qui surestime Le Pen la surestime
+dans tous ses duels, quel que soit le nom premier dans l'ordre. **Marginalisé
+analytiquement** (aucun paramètre latent ajouté, seulement σ_h et σ_n) :
+$$y \sim \mathcal N_D\big(s,\ \mathrm{diag}(s(1-s)/N + \sigma_{T2}^2) + \sigma_h^2 K_h + \sigma_n^2 K_n\big),$$
+$K = ZZ^\top$, $Z_{d,(g,i)} = \mathbb 1[g = g_d]\,(\mathbb 1[i = a_d] - \mathbb 1[i = b_d])$,
+soit $K_{dd'} = \mathbb 1[g_d = g_{d'}]\,(\mathbb 1[a_d{=}a_{d'}] - \mathbb 1[a_d{=}b_{d'}] - \mathbb 1[b_d{=}a_{d'}] + \mathbb 1[b_d{=}b_{d'}])$
+($g$ = institut pour $K_h$, notice pour $K_n$). Coût : une Cholesky D × D
+par pas (D ≤ 320). Priors : $\sigma_h, \sigma_n \sim$ HalfNormal(0,01)
+(1 pt ; REML §8.23 : ~0,5-0,8 pt par candidat). Le résultat officiel n'a ni
+institut ni notice.
+
+**Prédiction V1** (moyenne de $n$ sondages cibles d'instituts connus) :
+$\bar y = s + \bar\varepsilon$, $\mathrm{Var}(\bar\varepsilon) =
+n^{-2}\,\mathbf 1^\top[\mathrm{diag}(\cdot) + \sigma_h^2 K_h + \sigma_n^2 K_n]\mathbf 1$
+restreint aux duels cibles (même paire : $K_{dd'} = 2\cdot\mathbb 1[g_d = g_{d'}]$),
+soit $[\bar v + 2\sigma_h^2 \sum_h n_h^2/n + 2\sigma_n^2]/n$ … (une notice
+ne contient qu'un duel d'une paire donnée). Le scrutin : effets maison sans
+objet (le résultat n'a pas d'institut).
+
+**Mesure.** Variante `hier_maison` (= hier + ces effets), V1 2022 sur les 4
+paires (16 fits), contre hier : erreur, couverture, log-score KDE ; on
+rapporte σ_h, σ_n a posteriori. Retenu si le log-score KDE apparié est
+meilleur sur ≥ 3/4 paires sans perte d'erreur, sinon non retenu.
+
 ### 8.24 Synthèse V1/V2 (2026-11-16, chiffres committés, 0 fit)
 
 **V1 — paire retirée** (cible = moyenne des sondages de la paire sur 30 j ;
