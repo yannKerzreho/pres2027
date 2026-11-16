@@ -86,6 +86,19 @@ def _runner_fusion(paths: list[Path]):
         extra = {n[3:]: np.concatenate([z[n] for z in zs], axis=0) for n in noms if n.startswith("e__")}
         lp, se = _log_densite_par_chaine(model_fn, model_kwargs, samples)
         keep = _chaines_retenues(lp, se)
+        if STACKING:
+            w = poids_stacking(_lpd_loo_par_chaine(model_kwargs, samples))
+            POIDS_STACKING[:] = [round(float(x), 4) for x in w]
+            C, D = samples[next(iter(samples))].shape[:2]
+            k = np.round(w * C * D).astype(int)
+            idx = [(c, t) for c in range(C) for t in np.linspace(0, D - 1, k[c]).astype(int)] if k.sum() else []
+            ci, ti = np.array([i for i, _ in idx]), np.array([t for _, t in idx])
+            LP_CHAINES[:] = lp
+            LP_SE[:] = se
+            CHAINES_RETENUES[:] = []
+            samples = {n: v[ci, ti][None] for n, v in samples.items()}
+            extra = {n: v.reshape(C, D, *v.shape[1:])[ci, ti] for n, v in extra.items()}
+            return samples, extra
         LP_CHAINES[:] = lp
         LP_SE[:] = se
         CHAINES_RETENUES[:] = keep.tolist()
@@ -138,6 +151,46 @@ def _log_densite_par_chaine(model_fn, model_kwargs, samples) -> tuple[list[float
         moy.append(float(L.mean()))
         se.append(float(np.std([b.mean() for b in lots], ddof=1) / np.sqrt(len(lots))))
     return moy, se
+
+
+def _lpd_loo_par_chaine(model_kwargs, samples) -> np.ndarray:
+    """(C, n) log densité prédictive LOO (IS tronqué) de chaque observation —
+    nœud T1 ou duel — sous chaque chaîne (spec §8.26)."""
+    from scipy.special import logsumexp
+    from scipy.stats import norm
+    Y = np.asarray(model_kwargs["Y"]); Np = np.asarray(model_kwargs["Np"])
+    tm = np.asarray(model_kwargs["tested_mask"])
+    ev = model_kwargs.get("excess_var")
+    ev = 0.0 if ev is None else np.asarray(ev)[:, None]
+    pi = samples["pi"]                                          # (C, D, nœuds, N)
+    var = pi * (1 - pi) / np.clip(Np[None, None, :, None], 1, None) + ev
+    ll = (norm.logpdf(Y, pi, np.sqrt(var + 1e-8)) * tm).sum(-1)  # (C, D, nœuds)
+    if "duel_s" in samples and model_kwargs.get("duel_y") is not None:
+        s = samples["duel_s"]; y = np.asarray(model_kwargs["duel_y"])
+        n = np.asarray(model_kwargs["duel_n"]); st = samples["sigma_t2"][..., None]
+        vd = s * (1 - s) / np.clip(n, 1, None) + st ** 2
+        ll = np.concatenate([ll, norm.logpdf(y, s, np.sqrt(vd + 1e-8))], axis=-1)
+    C, D = ll.shape[:2]
+    lr = -ll                                                    # log r_s
+    lr_max = logsumexp(lr, axis=1, keepdims=True) - np.log(D) + 0.5 * np.log(D)
+    lr = np.minimum(lr, lr_max)
+    return logsumexp(lr + ll, axis=1) - logsumexp(lr, axis=1)   # (C, n)
+
+
+def poids_stacking(lpd: np.ndarray) -> np.ndarray:
+    """argmax_w Σ_i log Σ_c w_c exp(lpd_ci), w sur le simplexe (spec §8.26)."""
+    from scipy.optimize import minimize
+    from scipy.special import logsumexp, softmax
+    C = lpd.shape[0]
+    if C == 1:
+        return np.ones(1)
+    f = lambda a: -logsumexp(lpd + np.log(softmax(np.r_[0.0, a]))[:, None], axis=0).sum()
+    a = minimize(f, np.zeros(C - 1), method="L-BFGS-B").x
+    return softmax(np.r_[0.0, a])
+
+
+STACKING = False                 # --stacking (fusion seulement, spec §8.26)
+POIDS_STACKING: list = []
 
 
 def _chaines_retenues(lp, se) -> np.ndarray:
@@ -420,6 +473,8 @@ def main() -> None:
     ap.add_argument("--init-depuis", default=None,
                     help="phase 2 (spec §8.8) : nom du JSON fusionné d'une phase 1 ; les chaînes "
                          "partent du dernier tirage de sa chaîne la plus dense")
+    ap.add_argument("--stacking", action="store_true",
+                    help="fusion : mélange des chaînes par stacking au lieu de la sélection (spec §8.26)")
     ap.add_argument("--noeud-resultat", action="store_true",
                     help="V2 après le T1 : résultat T1 comme nœud quasi exact (spec §8.25)")
     ap.add_argument("--pos-scale", type=float, default=None,
@@ -427,6 +482,8 @@ def main() -> None:
     args = ap.parse_args()
     global ABSTENTION, SECOND_TOUR, POS_SCALE_BT, NOEUD_RESULTAT
     NOEUD_RESULTAT = args.noeud_resultat
+    global STACKING
+    STACKING = args.stacking
     POS_SCALE_BT = args.pos_scale
     ABSTENTION = args.variante in ("abst", "geo", "geo1", "hier")
     VARIANTE_KW.update({"geo": {"eta_scale": 0.0},
@@ -470,6 +527,8 @@ def main() -> None:
             nuts["mcmc_runner"] = _runner_fusion([base.with_name(f"{out.stem}_c{k}.npz")
                                                   for k in range(N_CHAINES)])
             nuts_json["mode"] = f"{N_CHAINES} processus d'une chaîne (graines 27..{26 + N_CHAINES}), fusionnés"
+            if args.stacking:
+                out = out.with_name(f"{out.stem}_stacking.json")      # chaînes : même nom
     rows = {"v1": [], "v2": []}
     for e in ([args.election] if args.election else [2017, 2022]):
         if args.only in (None, "v1"):
@@ -477,6 +536,8 @@ def main() -> None:
         if args.only in (None, "v2"):
             rows["v2"] += v2_resultat(e, nuts, (args.coupure,) if args.coupure else ("T1-30", "T1-1", "T2-7"))
     out.parent.mkdir(parents=True, exist_ok=True)
+    if STACKING:
+        nuts_json["poids_stacking"] = POIDS_STACKING
     out.write_text(json.dumps({"variante": args.variante, "nuts": nuts_json,
                                "pos_scale": args.pos_scale, "tau_t2_scrutin": TAU_T2_SCRUTIN, **rows},
                               ensure_ascii=False, indent=1) + "\n")

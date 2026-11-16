@@ -130,3 +130,15 @@ def test_noeud_resultat_t1_champ_exact():
     assert a.notice.nunique() == 1 and len(a) == 12
     assert abs(a.intention.sum() - 100) < 1.0
     assert (a.date_fin == sr.T1_DATES[2022]).all() and (a.echantillon == sr.N_NOEUD_RESULTAT).all()
+
+
+def test_poids_stacking_favorise_la_chaine_qui_predit_mieux():
+    import numpy as np
+    from model.backtest.second_round import poids_stacking
+    lpd = np.array([[-1.0] * 50, [-3.0] * 50])
+    w = poids_stacking(lpd)
+    assert w[0] > 0.99 and abs(w.sum() - 1) < 1e-9
+    # deux chaînes complémentaires (chacune meilleure sur la moitié) : mélange
+    lpd = np.array([[-1.0] * 25 + [-3.0] * 25, [-3.0] * 25 + [-1.0] * 25])
+    w = poids_stacking(lpd)
+    assert abs(w[0] - 0.5) < 0.05

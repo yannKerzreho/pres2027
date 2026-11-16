@@ -1275,6 +1275,30 @@ log-scores ne sont pas comparables : la base 2017 a été fittée à τ_T2 = 0,1
 élections » non rempli). Le drapeau reste pour l'entre-deux-tours 2027, où
 il donnera P(élu) sur la paire réelle sans changer la lecture des duels.
 
+### 8.26 Stacking des chaînes (revue, a/d ; maths avant code)
+
+Alternative à la sélection §8.8 (qui jette les chaînes de plus basse
+log-densité) quand les chaînes restent dans des modes différents (2022 :
+18 fusions sur 30 ont écarté au moins une chaîne). Stacking bayésien
+(Yao, Vehtari, Gelman 2022, « stacking for non-mixing Bayesian
+computations ») : chaque chaîne $c$ est un prédicteur ; poids
+$w \in \Delta^{C-1}$ maximisant la densité prédictive leave-one-out des
+observations :
+$$\hat w = \arg\max_w \sum_{i=1}^{n} \log \sum_c w_c\, \hat p_{c,-i},\qquad
+\hat p_{c,-i} = \frac{\sum_s r_s\, p(y_i\mid\theta_s^{c})}{\sum_s r_s},\;
+r_s = \min\!\big(1/p(y_i\mid\theta_s^{c}),\ \bar r\sqrt{S}\big)$$
+(LOO par échantillonnage d'importance tronqué, Ionides 2008 ; sans lissage de
+Pareto, faute d'arviz). Observations $i$ : chaque nœud T1 (somme sur ses
+candidats testés de $\log\mathcal N(Y\mid\pi, \pi(1-\pi)/N + v_{exc})$) et
+chaque duel ($\log\mathcal N(y\mid s, s(1-s)/n + \sigma_{T2}^2)$) — la même
+vraisemblance que `joint_model`, ventilée par observation. Le postérieur
+stacké est le mélange $\sum_c \hat w_c\, p_c(\theta)$ : on prend
+$\mathrm{round}(\hat w_c \cdot C D)$ tirages espacés de la chaîne $c$.
+Mesure : sur les 18 fusions concernées, cible (duel retiré ou final) par
+stacking contre sélection ; erreur contre l'observé. Drapeau `--stacking`
+(fusion seulement, sortie `_stacking`) ; la sélection reste le défaut tant
+que le stacking ne fait pas mieux.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
