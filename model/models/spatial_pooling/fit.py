@@ -312,21 +312,23 @@ def paire_sondee(fit: SpatialPoolingFit, a: str, b: str) -> bool:
     return any({a, b} == set(p) for p in (fit.duel_pairs or []))
 
 
-def projeter_w(fit: SpatialPoolingFit, horizon_days: float, seed: int = 27) -> np.ndarray:
+def projeter_w(fit: SpatialPoolingFit, horizon_days: float, seed: int = 27,
+               w0: np.ndarray | None = None) -> np.ndarray:
     """`w` au jour du scrutin, en prolongeant le MÊME processus OU que le fit
     (spec §6.1) : retour vers le niveau `m_i` et diffusion saturante. Les
     candidats statiques gardent leur `w`. Approximation assumée : `m_i` est la
     moyenne du chemin sur la fenêtre (base KL centrée), pris pour le centre OU."""
+    w0 = fit.w_draws if w0 is None else w0          # w0 : départ (§7.1, prolongement)
     if horizon_days <= 0 or fit.level_draws is None:
-        return fit.w_draws
+        return w0
     rng = np.random.default_rng(seed)
     r = np.exp(-horizon_days / fit.tau_ou)
     # sigma_w²(1-r²) si le centre OU était connu ; `m_i` n'en est qu'une
     # estimation (moyenne du chemin sur la fenêtre), d'incertitude ~sigma_w² :
     # on ajoute (1-r)²·sigma_w² plutôt que de sous-estimer la dérive de ~25 %.
     sd = fit.sigma_w_draws[:, None] * np.sqrt(1.0 - r ** 2 + (1.0 - r) ** 2)
-    w = fit.level_draws + (fit.w_draws - fit.level_draws) * r + sd * rng.standard_normal(fit.w_draws.shape)
-    return np.where(fit.dynamic[None, :], w, fit.w_draws)
+    w = fit.level_draws + (w0 - fit.level_draws) * r + sd * rng.standard_normal(w0.shape)
+    return np.where(fit.dynamic[None, :], w, w0)
 
 
 def _duel_par_tirage(fit, w, ia: np.ndarray, ib: np.ndarray) -> np.ndarray:
@@ -378,7 +380,7 @@ def resume_duel(fit: SpatialPoolingFit, a: str, b: str, horizon_days: float,
 
 
 def p_elu(fit: SpatialPoolingFit, mask: np.ndarray, horizon_t1: int, horizon_t2: int,
-          seed: int = 27) -> dict:
+          seed: int = 27, alea_unique: bool = False) -> dict:
     """P(élu) pour le champ `mask` (spec §7) : tirage par tirage, T1 projeté au
     scrutin -> deux premiers -> duel projeté au second tour -> vainqueur. Les
     deux étapes partagent le tirage de (mu, sigma, w, kappa, eta)."""
@@ -388,10 +390,23 @@ def p_elu(fit: SpatialPoolingFit, mask: np.ndarray, horizon_t1: int, horizon_t2:
         raise ValueError("fit sans duel : le second tour n'est pas identifié")
     m = mask.astype(bool)
     cols = np.flatnonzero(m)
-    pi = projeter_au_scrutin(pi_draws_for_mask(fit, mask)[:, m], horizon_t1, load_law(), seed=seed)
+    if alea_unique:
+        # §7.1 : un seul chemin w — T1 projeté par l'OU du modèle, + δ, puis
+        # prolongement conditionnel jusqu'au T2.
+        from model.core.projection import delta_draws
+        from .geometry import spatial_shares
+        w1 = projeter_w(fit, horizon_t1, seed)
+        p1 = np.asarray(spatial_shares(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
+                                       jnp.asarray(w1), jnp.asarray(mask.astype(float))))[:, m]
+        a = np.log(np.clip(p1, 1e-9, None)) + delta_draws(load_law(), p1.shape, seed + 1)
+        pi = np.exp(a - a.max(1, keepdims=True))
+        w2 = projeter_w(fit, max(horizon_t2 - horizon_t1, 0), seed + 2, w0=w1)
+    else:
+        pi = projeter_au_scrutin(pi_draws_for_mask(fit, mask)[:, m], horizon_t1, load_law(), seed=seed)
+        w2 = projeter_w(fit, horizon_t2, seed + 2)
     top = np.argsort(-pi, axis=1)[:, :2]
     ia, ib = cols[top[:, 0]], cols[top[:, 1]]
-    s = _duel_par_tirage(fit, projeter_w(fit, horizon_t2, seed + 2), ia, ib)
+    s = _duel_par_tirage(fit, w2, ia, ib)
     rng = np.random.default_rng(seed + 3)
     z = np.log(s / (1 - s)) + rng.normal(0.0, TAU_T2_SCRUTIN, len(s))
     sondees = {frozenset(p) for p in (fit.duel_pairs or [])}

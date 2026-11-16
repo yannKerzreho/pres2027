@@ -276,6 +276,25 @@ seul aléa — projeter $w$ au T1, en déduire π(T1) par `spatial_shares` + δ,
 prolonger $w$ du T1 au T2 conditionnellement. Dans l'entre-deux-tours, il faut
 conditionner sur la paire réelle et le résultat T1 (nœud quasi exact). Non fait.
 
+**7.1 Variante « aléa unique » (2026-11-16, drapeau `alea_unique`).** Pour
+chaque tirage $s$, horizons $h_1 = T_1 - t_0$, $h_2 = T_2 - t_0$ :
+1. $w^{(1)} = \mathrm{OU}(w(t_0), h_1)$ : `projeter_w` (§6.1), même processus
+   que le fit ;
+2. $\pi^{(1)} = \mathrm{softmax}\big(\log \mathrm{spatial\_shares}(\mu,\sigma,w^{(1)},S_1) + \delta\big)$,
+   δ = écart de traduction de la banque commune (`delta_draws`, sans la
+   diffusion de la banque : la dérive est déjà dans $w^{(1)}$) ;
+3. paire qualifiée = deux premiers de $\pi^{(1)}$ ;
+4. $w^{(2)} = \mathrm{OU}(w^{(1)}, h_2 - h_1)$, prolongement conditionnel :
+   $w^{(2)} = m + (w^{(1)}-m)r + \sigma_w\sqrt{1-r^2+(1-r)^2}\,\xi$,
+   $r = e^{-(h_2-h_1)/\tau}$ (même approximation que §6.1 pour $m$) ;
+5. duel au T2 sur $w^{(2)}$, puis τ_paire (§6.3) et τ_T2 (§6.2).
+Un candidat qui monte au T1 dans un tirage garde cette montée au T2 : la
+corrélation T1/T2 passe par $w$. Différence assumée avec la voie actuelle :
+la dérive T1 vient de l'OU du modèle ($\sigma_w$, τ ≈ 262 j) et non de la
+diffusion de la banque (calibrée sur les parts). Les erreurs de scrutin T1
+(δ) et T2 (τ_T2) restent indépendantes (aucune mesure de leur corrélation).
+Comparaison : P(élu) du champ modal 2027, deux voies, même fit.
+
 **Crête κ/η** : pour un candidat statique, $\kappa w_a$ et $\eta_a$ jouent des
 rôles voisins ; κ n'est tenu que par la forme en $v$ et le rétrécissement de η.
 À vérifier sur les traces (corrélation κ–η).

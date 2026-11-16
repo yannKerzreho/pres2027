@@ -226,3 +226,14 @@ def test_tau_paire_seulement_pour_un_duel_jamais_sonde():
     assert sonde == pytest.approx(F.TAU_T2_SCRUTIN ** 2, rel=0.1)
     assert jamais == pytest.approx(F.TAU_T2_SCRUTIN ** 2 + F.TAU_PAIRE ** 2, rel=0.1)
     assert F.paire_sondee(f, "D", "C") and not F.paire_sondee(f, "C", "G")
+
+
+def test_p_elu_alea_unique_somme_a_un_et_correle_t1_t2():
+    """spec §7.1 : un même chemin w pour T1 et T2."""
+    f = _fit(S=2000)
+    out = p_elu(f, np.ones(3), horizon_t1=100, horizon_t2=114, alea_unique=True)
+    assert sum(out["p_elu"].values()) == pytest.approx(1.0, abs=1e-6)
+    w1 = projeter_w(f, 100, 27)
+    w2 = projeter_w(f, 14, 29, w0=w1)
+    assert np.corrcoef(w1[:, 1], w2[:, 1])[0, 1] > 0.8          # prolongement conditionnel
+    assert np.array_equal(projeter_w(f, 0, w0=w1), w1)

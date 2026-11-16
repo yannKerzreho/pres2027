@@ -45,7 +45,7 @@ l'historique, ajouter en bas de « Historique ».
       ouvertes. Ordre à suivre, une par réveil, sans attendre les arbitrages :
       (1) [FAIT 16/11, §8.24] « Synthèse dans spec §8 » (plus bas) : tableau unique V1/V2 2017/2022/2027,
       abst = défaut, chiffres déjà committés, 0 fit ;
-      (2) « P(élu) à aléa unique » : maths spec §7 puis code + test, puis relancer
+      (2) [EN COURS (début 2026-11-16T15:25Z) : spec §7.1 + code (drapeau `alea_unique`) + test faits ; diagnostic_2027 hier lancé] « P(élu) à aléa unique » : maths spec §7 puis code + test, puis relancer
       `diagnostic_2027` ;
       (3) « entre-deux-tours conditionné sur le résultat T1 » : maths puis V2 T2−7
       2017/2022 ;
