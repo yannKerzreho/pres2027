@@ -1219,7 +1219,12 @@ $$y \sim \mathcal N_D\big(s,\ \mathrm{diag}(s(1-s)/N + \sigma_{T2}^2) + \sigma_h
 $K = ZZ^\top$, $Z_{d,(g,i)} = \mathbb 1[g = g_d]\,(\mathbb 1[i = a_d] - \mathbb 1[i = b_d])$,
 soit $K_{dd'} = \mathbb 1[g_d = g_{d'}]\,(\mathbb 1[a_d{=}a_{d'}] - \mathbb 1[a_d{=}b_{d'}] - \mathbb 1[b_d{=}a_{d'}] + \mathbb 1[b_d{=}b_{d'}])$
 ($g$ = institut pour $K_h$, notice pour $K_n$). Coût : une Cholesky D × D
-par pas (D ≤ 320). Priors : $\sigma_h, \sigma_n \sim$ HalfNormal(0,01)
+par pas (D ≤ 320). **Trop cher en pratique** (aucune chaîne en 2 h 15). Forme retenue,
+exactement équivalente : $u$ explicite et non centré ($z_{h,i}\sim\mathcal N(0,1)$,
+$u = \sigma_h z$, institut × candidat), et l'effet notice marginalisé **par
+bloc** de notice (une notice contient quelques duels ; $K_n$ est
+bloc-diagonal par notice), Cholesky de blocs ≤ k_max × k_max. Coût mesuré ≈
+celui de hier. Priors : $\sigma_h, \sigma_n \sim$ HalfNormal(0,01)
 (1 pt ; REML §8.23 : ~0,5-0,8 pt par candidat). Le résultat officiel n'a ni
 institut ni notice.
 

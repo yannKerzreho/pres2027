@@ -249,3 +249,25 @@ def test_noyau_effets_maison_par_candidat():
     assert K[0, 2] == -1         # (0 vs 1) et (1 vs 2) : 1 second puis premier : −
     assert K[0, 3] == 0          # autre institut
     assert np.all(np.linalg.eigvalsh(K) > -1e-9)
+
+
+def test_forme_par_blocs_egale_la_mvn_pleine_pour_l_effet_notice():
+    """§8.23 bis : la vraisemblance par blocs de notices = MVN pleine (σ_h = 0)."""
+    import pandas as pd
+    from scipy.stats import multivariate_normal
+    from model.models.spatial_pooling.fit import arrays_effets_maison, noyau_effets
+    duels = {"a": np.array([0, 0, 1, 0]), "b": np.array([1, 2, 2, 1]),
+             "notices": ["n1", "n1", "n1", "n2"]}
+    raw = pd.DataFrame({"notice": ["n1", "n2"], "institut": ["H", "G"]})
+    arr = arrays_effets_maison(raw, duels)
+    r = np.array([0.01, -0.02, 0.005, 0.03]); v = np.full(4, 2e-4); sn = 0.01
+    full = multivariate_normal(np.zeros(4), np.diag(v) + sn ** 2 * noyau_effets(duels["a"], duels["b"], duels["notices"])).logpdf(r)
+    blocs, Kb = np.asarray(arr["duel_blocs"]), np.asarray(arr["duel_K_blocs"])
+    tot = 0.0
+    for j in range(len(blocs)):
+        m = blocs[j] >= 0
+        R = np.where(m, r[np.where(m, blocs[j], 0)], 0.0); V = np.where(m, v[np.where(m, blocs[j], 0)], 1.0)
+        tot += multivariate_normal(np.zeros(len(R)), np.diag(V) + sn ** 2 * Kb[j]).logpdf(R)
+        tot -= multivariate_normal(np.zeros((~m).sum()), np.eye((~m).sum())).logpdf(np.zeros((~m).sum())) if (~m).any() else 0.0
+    assert abs(tot - full) < 1e-8
+    assert arr["n_maisons"] == 2

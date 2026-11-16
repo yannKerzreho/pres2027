@@ -72,7 +72,8 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
                              level_scale=1.5, pos_scale=0.4,
                              sigma_log_mu=None, sigma_log_scale=0.6, sigma_jitter=SIGMA_JITTER,
                              dynamic_mask=None, duel_a=None, duel_b=None, duel_y=None,
-                             duel_n=None, duel_date_idx=None, duel_K_h=None, duel_K_n=None, eta_scale=ETA_SCALE,
+                             duel_n=None, duel_date_idx=None, duel_maison=None, n_maisons=None,
+                             duel_blocs=None, duel_K_blocs=None, eta_scale=ETA_SCALE,
                              kappa_log_scale=KAPPA_LOG_SCALE, sigma_t2_prior=SIGMA_T2_PRIOR,
                              abstention=True, omega_prior=OMEGA_PRIOR, eta_hier=False):
     """Le modèle. Inférence JOINTE de la géométrie et du chemin de `w`.
@@ -194,11 +195,20 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
         # 2027, résidus standardisés) ; n'entre dans aucun calcul d'inférence.
         numpyro.deterministic("duel_s", s)
         var_d = s * (1.0 - s) / jnp.clip(duel_n, 1.0, None) + sigma_t2 ** 2
-        if duel_K_h is not None:
-            # Effets maison et notice par candidat, marginalisés (spec §8.23 bis).
+        if duel_maison is not None:
+            # Effets maison et notice par candidat (spec §8.23 bis, forme par blocs) :
+            # maison explicite (non centrée, institut × candidat) ; notice
+            # marginalisée bloc par bloc (les duels d'une même notice).
             s_h = numpyro.sample("sigma_maison_t2", dist.HalfNormal(0.01))
             s_n = numpyro.sample("sigma_notice_t2", dist.HalfNormal(0.01))
-            cov = jnp.diag(var_d + 1e-8) + s_h ** 2 * duel_K_h + s_n ** 2 * duel_K_n
-            numpyro.factor("ll_t2", dist.MultivariateNormal(s, covariance_matrix=cov).log_prob(duel_y))
+            z_h = numpyro.sample("z_maison_t2", dist.Normal(0.0, 1.0).expand([n_maisons, N]))
+            r = duel_y - s - s_h * (z_h[duel_maison, duel_a] - z_h[duel_maison, duel_b])
+            m = duel_blocs >= 0
+            ix = jnp.where(m, duel_blocs, 0)
+            R = jnp.where(m, r[ix], 0.0)
+            V = jnp.where(m, var_d[ix] + 1e-8, 1.0)
+            cov = jax.vmap(jnp.diag)(V) + s_n ** 2 * duel_K_blocs
+            numpyro.factor("ll_t2", jnp.sum(dist.MultivariateNormal(
+                jnp.zeros(R.shape[1]), covariance_matrix=cov).log_prob(R)))
         else:
             numpyro.factor("ll_t2", jnp.sum(dist.Normal(s, jnp.sqrt(var_d + 1e-8)).log_prob(duel_y)))

@@ -149,12 +149,7 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         if eta_hier:
             kwargs["eta_hier"] = True
         if effets_maison:
-            inst = raw_t2.drop_duplicates("notice").set_index("notice")["institut"] \
-                if "institut" in raw_t2 else pd.Series(dtype=str)
-            g_h = [str(inst.get(nt, nt)) for nt in duels["notices"]]
-            kwargs["duel_K_h"] = jnp.asarray(noyau_effets(duels["a"], duels["b"], g_h))
-            kwargs["duel_K_n"] = jnp.asarray(noyau_effets(duels["a"], duels["b"],
-                                                          [str(x) for x in duels["notices"]]))
+            kwargs.update(arrays_effets_maison(raw_t2, duels))
     t0 = time.time()
     # `mcmc_runner` : injectable (backtest découpé par chaîne, cf.
     # `model.backtest.second_round --chaine/--fusionner`), même signature que
@@ -327,6 +322,28 @@ def noyau_effets(a, b, groupes) -> np.ndarray:
     meme = (g[:, None] == g[None, :]).astype(float)
     eq = lambda x, y: (x[:, None] == y[None, :]).astype(float)   # noqa: E731
     return meme * (eq(a, a) - eq(a, b) - eq(b, a) + eq(b, b))
+
+
+def arrays_effets_maison(raw_t2: pd.DataFrame, duels: dict) -> dict:
+    """Entrées de la forme par blocs de §8.23 bis : indice d'institut par duel,
+    blocs de duels par notice (complétés par −1) et noyau K_n de chaque bloc."""
+    inst = (raw_t2.drop_duplicates("notice").set_index("notice")["institut"]
+            if "institut" in raw_t2 else pd.Series(dtype=str))
+    noms = [str(inst.get(nt, nt)) for nt in duels["notices"]]
+    codes = {h: k for k, h in enumerate(sorted(set(noms)))}
+    notices = [str(x) for x in duels["notices"]]
+    groupes: dict = {}
+    for d, nt in enumerate(notices):
+        groupes.setdefault(nt, []).append(d)
+    kmax = max(len(g) for g in groupes.values())
+    blocs = np.full((len(groupes), kmax), -1, dtype=int)
+    Kb = np.zeros((len(groupes), kmax, kmax))
+    a, b = np.asarray(duels["a"]), np.asarray(duels["b"])
+    for j, g in enumerate(groupes.values()):
+        blocs[j, :len(g)] = g
+        Kb[j, :len(g), :len(g)] = noyau_effets(a[g], b[g], ["x"] * len(g))
+    return {"duel_maison": jnp.asarray(np.array([codes[h] for h in noms])), "n_maisons": len(codes),
+            "duel_blocs": jnp.asarray(blocs), "duel_K_blocs": jnp.asarray(Kb)}
 
 
 def paire_sondee(fit: SpatialPoolingFit, a: str, b: str) -> bool:

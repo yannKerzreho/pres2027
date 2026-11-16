@@ -313,7 +313,7 @@ Résultats : `model/backtest/results/*.json` (committés).
 - [x] (revue 16/11, 7) σ_maison par REML (spec §8.23, 16/11) : σ_h 0,5-1 pt
       par institut, établi en 2017/2022 (p ≤ 0,008), non établi en 2027
       (p ≈ 0,1) ; effet notice 0,8-1,1 pt. §8.17 retiré.
-- [ ] [ARRÊTÉ 2026-11-16 20:35Z : la vraisemblance MVN pleine (Cholesky 300 × 300 à chaque pas) n'avait fini AUCUNE chaîne en 2 h 15 (V1 Macron–Le Pen) ⇒ reformuler : effets maison institut × candidat explicites (non centrés, ~80 paramètres), effet notice marginalisé par blocs (une notice = quelques duels, Cholesky par bloc). Essai rapide MVN : σ_h 0,9, σ_n 0,85, σ_T2 0,5 pt] (§8.23) effets maison + notice dans la vraisemblance des duels : maths
+- [ ] [EN COURS (début 2026-11-16T20:50Z) : forme par blocs codée + test (égale la MVN pleine), coût ≈ hier ; V1 2022 relancée] [ARRÊTÉ 2026-11-16 20:35Z : la vraisemblance MVN pleine (Cholesky 300 × 300 à chaque pas) n'avait fini AUCUNE chaîne en 2 h 15 (V1 Macron–Le Pen) ⇒ reformuler : effets maison institut × candidat explicites (non centrés, ~80 paramètres), effet notice marginalisé par blocs (une notice = quelques duels, Cholesky par bloc). Essai rapide MVN : σ_h 0,9, σ_n 0,85, σ_T2 0,5 pt] (§8.23) effets maison + notice dans la vraisemblance des duels : maths
       complètes dans la spec, code derrière un drapeau, V1 2022 (4 paires,
       16 fits) contre le modèle actuel, log-score KDE.
 - [ ] (revue 16/11, B) combiner spatial et gp (stacking par unité, poids selon
