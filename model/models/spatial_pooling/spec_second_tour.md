@@ -1104,6 +1104,42 @@ Sensibilité : avec les élections passées, hier demande 0,19, tiré par
 Macron–Pécresse 2022 (hier sûre d'elle à tort, §8.20) ; sans cette tâche, 0,08.
 Le choix 2027 (0,08) contre passé (0,19) est remonté à l'utilisateur.
 
+### 8.23 Effets maison au second tour par REML (revue 16/11, point 7 ; 0 fit)
+
+Réponse à §8.19 (§8.17 testait des résidus rétrécis, sous un modèle sans effet
+maison). Modèle mixte par campagne, sans le modèle spatial :
+$y_d = \beta_{c(d)} + u_{h(d)} + v_{n(d)} + e_d$, $y_d$ = part (pt) du candidat de
+référence (Macron en 2017/2022, le candidat RN en 2027 ; duels sans lui
+écartés), $\beta_c$ effet fixe par cellule (paire × fenêtre de $F$ jours :
+absorbe paire et tendance), $u_h\sim\mathcal N(0,\sigma_h^2)$ institut,
+$v_n\sim\mathcal N(0,\sigma_n^2)$ notice (duels d'un même sondage),
+$e_d\sim\mathcal N(0, b_d+\sigma^2)$, $b_d$ binomial. REML ; test du rapport
+de vraisemblance $\sigma_h = 0$ (mélange ½χ²₀ + ½χ²₁). Code :
+`model/backtest/maison_t2.py`, résultat `results/maison_t2_reml.json`.
+
+| campagne | duels | σ_h (pt), F = 7 / 14 / 30 j | σ_n (pt, F = 14) | σ (pt, F = 14) | p (σ_h = 0), F = 7 / 14 / 30 |
+|---|---|---|---|---|---|
+| 2017 | 77 | 0,96 / 1,02 / 0,96 | 0,81 | 0,47 | 0,002 / 0,0001 / 0,001 |
+| 2022 | 307 | 0,46 / 0,50 / 0,51 | 1,13 | 0,53 | 0,001 / 0,003 / 0,008 |
+| 2027 | 113 | 0,89 / 0,71 / 0,50 | 0,82 | 0,43 | 0,29 / 0,10 / 0,10 |
+
+**Lecture.** Il y a des effets maison au second tour : **0,5 à 1 pt par
+institut, établis en 2017 et 2022** (p ≤ 0,008 à toutes les fenêtres), de même
+ordre en 2027 mais non établis (113 duels, p ≈ 0,1). S'y ajoute un **effet
+notice** de 0,8-1,1 pt : les duels d'un même sondage bougent ensemble. Le
+modèle actuel traite chaque duel comme indépendant avec $\sigma_{T2}$
+≈ 1,3 pt : il **surcompte l'information** des notices à plusieurs duels et ne
+voit pas qu'une moyenne dominée par un institut hérite de son biais. La
+décision de §8.17 (« pas d'effets maison au T2 ») est **retirée**.
+
+**Conséquence (à spécifier avant de coder).** Dans la vraisemblance des duels :
+$\operatorname{logit} y_d = \operatorname{logit} s_{ab}(t_d) + (u_{h,a}-u_{h,b})
++ v_{n(d)} + \varepsilon_d$, $u_{h,i}\sim\mathcal N(0,\sigma_h^2)$ par institut
+et candidat (comme au T1), $v_n$ commun aux duels d'une notice (signe : à
+orienter par candidat, p. ex. $v_{n,a}-v_{n,b}$). Effet attendu : IC plus larges
+pour les paires portées par peu d'instituts, V1 mieux calibrée ; σ_T2 devrait
+baisser. À tester en V1 sur 2022 (307 duels) avant tout passage.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

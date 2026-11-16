@@ -309,8 +309,12 @@ Résultats : `model/backtest/results/*.json` (committés).
 - [ ] [EN COURS (début 2026-11-16T13:20Z) : 7 tâches × 4 chaînes, spec §8.21] (revue 16/11, 6 et C) placebo de la fuite même-notice : retirer autant
       de duels pris dans d'autres notices (4 tâches, 16 fits), comparer par
       log-score ; calibrer τ_paire sur les V1 dédoublonnées.
-- [ ] (revue 16/11, 7) σ_maison par REML au niveau notice et par campagne,
-      test du rapport de vraisemblance contre σ_T2 seul (0 fit).
+- [x] (revue 16/11, 7) σ_maison par REML (spec §8.23, 16/11) : σ_h 0,5-1 pt
+      par institut, établi en 2017/2022 (p ≤ 0,008), non établi en 2027
+      (p ≈ 0,1) ; effet notice 0,8-1,1 pt. §8.17 retiré.
+- [ ] (§8.23) effets maison + notice dans la vraisemblance des duels : maths
+      complètes dans la spec, code derrière un drapeau, V1 2022 (4 paires,
+      16 fits) contre le modèle actuel, log-score KDE.
 - [ ] (revue 16/11, B) combiner spatial et gp (stacking par unité, poids selon
       le nombre de sondages de la liste et l'horizon ; ou gp sur résidus du
       spatial), évaluation leave-one-coupure-out (0 fit).
