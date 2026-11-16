@@ -1,0 +1,87 @@
+{
+ "variante": "hier",
+ "nuts": {
+  "draws": 400,
+  "tune": 600,
+  "chains": 4,
+  "mode": "4 processus d'une chaîne (graines 27..30), fusionnés"
+ },
+ "pos_scale": null,
+ "tau_t2_scrutin": 0.19,
+ "v1": [],
+ "v2": [
+  {
+   "election": 2022,
+   "coupure": "T2-7",
+   "as_of": "2022-04-17",
+   "candidat": "Emmanuel Macron",
+   "resultat": 0.5855,
+   "n_notices_t1": 138,
+   "modele": 0.527,
+   "modele_ic90": [
+    0.4468,
+    0.6102
+   ],
+   "couvre_ic90": true,
+   "log_score": 1.404,
+   "sondages_7j": 0.534,
+   "n_sondages_7j": 15,
+   "log_score_sondages": 1.542,
+   "couvre_ic90_sondages": true,
+   "lp_par_chaine": [
+    9249.8,
+    9160.1,
+    9234.0,
+    9252.0
+   ],
+   "lp_se": [
+    1.14,
+    2.41,
+    1.7,
+    1.3
+   ],
+   "chaines_retenues": [
+    0,
+    3
+   ],
+   "modele_par_chaine": [
+    0.5295,
+    0.5292
+   ],
+   "ecart_chaines_pt": 0.03,
+   "rhat_cible": 1.003,
+   "concluant": true,
+   "rhat_max": 5.1018,
+   "ess_min": 1.0,
+   "divergences": 1,
+   "kappa": 1.0326,
+   "omega": -5.5547,
+   "rhat_t2": 1.9573,
+   "sigma_t2": 0.0085,
+   "secondes": 9.2,
+   "eta": {
+    "Nathalie Arthaud": -0.017,
+    "Philippe Poutou": -0.017,
+    "Jean-Luc Mélenchon": -0.156,
+    "Fabien Roussel": -0.0,
+    "Yannick Jadot": 0.014,
+    "Thouy": 0.018,
+    "Montebourg": -0.019,
+    "Taubira": 0.002,
+    "Anne Hidalgo": -0.007,
+    "Emmanuel Macron": 0.099,
+    "Jean Lassalle": -0.002,
+    "Bertrand": 0.017,
+    "Valérie Pécresse": 0.197,
+    "Barnier": 0.007,
+    "Juvin": -0.018,
+    "Ciotti": 0.007,
+    "Nicolas Dupont-Aignan": 0.007,
+    "Asselineau": -0.005,
+    "Philippot": 0.002,
+    "Marine Le Pen": 0.018,
+    "Eric Zemmour": -0.135
+   }
+  }
+ ]
+}
