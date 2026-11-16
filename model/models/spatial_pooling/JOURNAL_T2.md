@@ -306,9 +306,10 @@ Résultats : `model/backtest/results/*.json` (committés).
       sondage en août), pas au lissage ; à base égale (liste L_c), brut et
       spatial même semaine ; gp sur L_c 3 semaines plus tard (26/10).
       Piste : abaisser MIN_POLLS pour un candidat nouveau ? (non chiffré).
-- [ ] [EN COURS (début 2026-11-16T13:20Z) : 7 tâches × 4 chaînes, spec §8.21] (revue 16/11, 6 et C) placebo de la fuite même-notice : retirer autant
-      de duels pris dans d'autres notices (4 tâches, 16 fits), comparer par
-      log-score ; calibrer τ_paire sur les V1 dédoublonnées.
+- [x] (revue 16/11, 6 et C) placebo même-notice (spec §8.21, 16/11) : bras
+      notice pire que le placebo sur 0/4 tâches ⇒ fuite non établie (cohérent
+      avec l'effet notice §8.23 : duels d'une notice redondants). τ_paire
+      calibré : 0,08 (V1 2027, hier ; §8.22).
 - [x] (revue 16/11, 7) σ_maison par REML (spec §8.23, 16/11) : σ_h 0,5-1 pt
       par institut, établi en 2017/2022 (p ≤ 0,008), non établi en 2027
       (p ≈ 0,1) ; effet notice 0,8-1,1 pt. §8.17 retiré.
@@ -418,6 +419,10 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-16 13:08-14:15Z (routine) : arbitrages appliqués (τ_T2 = 0,19,
+  τ_paire = 0,08 calibré, §6, §8.22 ; valeur 0,08/0,19 remontée) ; placebo
+  même-notice (28 fits) : fuite non établie (§8.21) ; effets maison T2 par REML
+  (§8.23) : 0,5-1 pt établis en 2017/2022, §8.17 retiré.
 - 2026-11-16 12:08-12:30Z (routine) : détection Zemmour refaite dès h = 243
   (16 fits) + séries à base égale L_c ; spatial = brut à base égale, gp en
   retard de 3 semaines ; retard du spatial tous champs = entrée au roster.

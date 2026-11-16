@@ -1083,6 +1083,26 @@ réutilisé), Attal–Le Pen 29 (26). Variante abst, comme §8.16. Fuite
 Limite écrite d'avance : 4 tâches, K petit pour Philippe ⇒ puissance faible ;
 un « non établi » ne prouve pas l'absence de fuite.
 
+**Résultat §8.21 (2026-11-16, abst, données du 15/11 ; LS = log-score KDE
+§8.20 de la cible prédictive)** :
+
+| paire retirée | K | standard : erreur / LS | notice (K) : erreur / LS | placebo (K) : erreur / LS |
+|---|---|---|---|---|
+| Le Pen–Philippe | 12 | 0,62 / 3,15 | 0,55 / 3,15 | 0,14 / 3,12 |
+| Le Pen–Mélenchon | 23 | 2,94 / 1,25 | 4,01 / 0,74 | 3,94 / −0,22 |
+| Glucksmann–Le Pen | 44 | 1,70 / 2,59 | 1,33 / 2,78 | 1,17 / 1,02 (non concluant) |
+| Attal–Le Pen | 29 | 6,83 / −0,53 | 3,50 / 1,02 | 6,72 / −0,40 |
+
+Le bras « notice » est pire que le placebo sur **0 tâche sur 4** (égal sur
+Philippe, meilleur sur les trois autres) ⇒ **fuite même-notice non établie**,
+avec la limite de puissance écrite d'avance. Le sens de l'écart est
+cohérent avec l'effet notice de §8.23 (σ_n ≈ 0,8-1,1 pt) : les autres duels
+d'une même notice sont en partie redondants, donc en retirer K coûte moins
+d'information qu'en retirer K pris dans d'autres sondages. La V1 standard
+n'est donc pas mesurablement optimiste par fuite. Le biais Attal–Le Pen reste
+de la structure (le bras notice le réduit en élargissant l'IC, pas en
+déplaçant le centre vers la cible de façon systématique).
+
 ### 8.22 Calibrage de τ_paire (arbitrage 4, 0 fit)
 
 Pour chaque tâche V1 concluante, densité prédictive de la cible avec
