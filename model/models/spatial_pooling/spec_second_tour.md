@@ -1241,6 +1241,26 @@ paires (16 fits), contre hier : erreur, couverture, log-score KDE ; on
 rapporte σ_h, σ_n a posteriori. Retenu si le log-score KDE apparié est
 meilleur sur ≥ 3/4 paires sans perte d'erreur, sinon non retenu.
 
+**Résultat §8.23 bis (2026-11-16, V1 2022, hier contre hier_maison ; même
+traitement : phase 2 là où hier en avait une)** :
+
+| paire retirée | observé | erreur hier / maison (pt) | LS KDE hier / maison | couvert | concluant | σ_h, σ_n, σ_T2 (pt, maison) |
+|---|---|---|---|---|---|---|
+| Macron–Le Pen | 55,3 | 4,04 / **2,28** | 1,48 / **2,34** | oui / oui | oui / oui (R̂ T2 4,0) | 0,93 / 0,69 / 0,30 |
+| Macron–Zemmour | 66,7 | **2,57** / 10,41 | **2,30** / −5,02 | oui / non | oui / **non** | 0,58 / 0,41 / 0,28 |
+| Macron–Mélenchon | 61,5 | 0,28 / 0,03 | 1,50 / 1,76 | oui / oui | non / non | 0,77 / 0,47 / 0,20 |
+| Macron–Pécresse | 65,6 | 12,98 / 12,88 | −22,1 / −10,4 | non / non | oui / oui | 0,76 / 0,23 / 0,17 |
+
+Log-score meilleur sur 3/4, mais **erreur moyenne pire** (4,97 → 6,40 pt, tirée
+par Zemmour : +7,8 pt, sûr de lui à tort, non convergé même en phase 2) ⇒
+**non retenu** selon la règle. Les effets sont bien identifiés (σ_h 0,6-0,9 pt,
+σ_n 0,2-0,7 pt, cohérents avec le REML §8.23) et σ_T2 s'effondre (1,3 → 0,2-0,3
+pt) : la dispersion des duels est presque entièrement de l'effet maison et
+notice. Mais avec ~200 paramètres de plus, le bloc T2 converge moins bien
+(R̂ T2 jusqu'à 4) et une extrapolation (Zemmour) déraille. Piste : n'effets
+maison que par institut (pas par candidat), ou seulement l'effet notice, qui
+ne coûte aucun paramètre latent.
+
 ### 8.24 Synthèse V1/V2 (2026-11-16, chiffres committés, 0 fit)
 
 **V1 — paire retirée** (cible = moyenne des sondages de la paire sur 30 j ;
