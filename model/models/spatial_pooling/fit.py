@@ -299,11 +299,17 @@ def forecast_spatial_pooling(fit: SpatialPoolingFit, mask: np.ndarray, horizon_d
 
 
 # --- Second tour : lecture d'un duel et P(élu) (spec_second_tour.md §6-§7) -------
-# Erreur de scrutin des sondages de 2nd tour, en logit. RMS ~2,4 pt de part sur
-# 2002-2022 (2017 +3,8 et 2022 +2,8 mesurés sur les données du dépôt ; 2002,
-# 2007, 2012 de mémoire, À SOURCER), soit ~0,10 autour de 60/40. Centrée : un
-# terme directionnel anti-RN est un choix éditorial non tranché (spec §6).
-TAU_T2_SCRUTIN = 0.10
+# Erreur de scrutin des sondages de 2nd tour, en logit (spec_second_tour §6).
+# 0,19 : décision de l'utilisateur du 2026-11-15 (arbitrage 1 ; RMS ≈ 4,3 pt
+# mesuré 2017/2022). Centrée : pas de terme anti-RN (arbitrage 2).
+TAU_T2_SCRUTIN = 0.19
+# Incertitude d'extrapolation d'un duel JAMAIS sondé, en logit (spec §6.3,
+# arbitrage 4 ; calibrage §8.22 sur les V1 2027, variante hier).
+TAU_PAIRE = 0.08
+
+
+def paire_sondee(fit: SpatialPoolingFit, a: str, b: str) -> bool:
+    return any({a, b} == set(p) for p in (fit.duel_pairs or []))
 
 
 def projeter_w(fit: SpatialPoolingFit, horizon_days: float, seed: int = 27) -> np.ndarray:
@@ -347,8 +353,12 @@ def duel_draws(fit: SpatialPoolingFit, a: str, b: str, horizon_days: float = 0.0
     s = _duel_par_tirage(fit, projeter_w(fit, horizon_days, seed),
                          np.full(S, i[a]), np.full(S, i[b]))
     if scrutin:
+        # Prédiction (pas la cible d'un backtest) : + extrapolation si la paire
+        # n'a jamais été sondée (§6.3), puis erreur de scrutin (§6.2).
         rng = np.random.default_rng(seed + 1)
         z = np.log(s / (1 - s)) + rng.normal(0.0, TAU_T2_SCRUTIN, S)
+        if not paire_sondee(fit, a, b):
+            z = z + np.random.default_rng(seed + 4).normal(0.0, TAU_PAIRE, S)
         s = 1.0 / (1.0 + np.exp(-z))
     return s
 
@@ -383,7 +393,12 @@ def p_elu(fit: SpatialPoolingFit, mask: np.ndarray, horizon_t1: int, horizon_t2:
     ia, ib = cols[top[:, 0]], cols[top[:, 1]]
     s = _duel_par_tirage(fit, projeter_w(fit, horizon_t2, seed + 2), ia, ib)
     rng = np.random.default_rng(seed + 3)
-    s = 1.0 / (1.0 + np.exp(-(np.log(s / (1 - s)) + rng.normal(0.0, TAU_T2_SCRUTIN, len(s)))))
+    z = np.log(s / (1 - s)) + rng.normal(0.0, TAU_T2_SCRUTIN, len(s))
+    sondees = {frozenset(p) for p in (fit.duel_pairs or [])}
+    jamais = np.array([frozenset((fit.candidates[x], fit.candidates[y])) not in sondees
+                       for x, y in zip(ia, ib)])
+    z = z + jamais * np.random.default_rng(seed + 4).normal(0.0, TAU_PAIRE, len(s))
+    s = 1.0 / (1.0 + np.exp(-z))
     elu = np.where(s > 0.5, ia, ib)
     S = len(elu)
     paires: dict = {}

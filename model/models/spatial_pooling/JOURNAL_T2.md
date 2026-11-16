@@ -30,7 +30,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] **ARBITRAGES TRANCHÉS (2026-11-15 ~21:45Z, voir section Arbitrages)** — à faire
+- [ ] [(a) et (b) FAITS 2026-11-16 13:40Z : `TAU_T2_SCRUTIN = 0.19`, spec §6.2 ; τ_paire spec §6.3 + §8.22, `TAU_PAIRE = 0.08` (V1 2027, hier), code duel_draws/p_elu + test ; reste (c) diagnostic_2027, après le placebo] **ARBITRAGES TRANCHÉS (2026-11-15 ~21:45Z, voir section Arbitrages)** — à faire
       AVANT la relance ci-dessous : (a) spec §6 : τ_T2 = 0,19, justification
       (RMS 4,3 pt 2017/2022, couverture 5/5) ; `TAU_T2_SCRUTIN = 0.19` dans fit.py,
       tests adaptés ; (b) spec : maths de τ_paire (bruit N(0, τ_paire²) en logit
@@ -353,6 +353,10 @@ vue », sur les propositions de la session locale) :
 1. τ_T2 → **0,19** (élargir ; centres inchangés).
 2. Biais anti-RN → **NON corrigé** (deux élections, estimation fragile).
 3. Lissage → **inchangé** (pas de τ_OU T2 plus court).
+- ARBITRAGE À TRANCHER (2026-11-16, valeur de τ_paire, spec §8.22) : la
+  règle « calibré sur les V1 2027 » donne **0,08** (appliqué) ; avec 2017-2022,
+  la variante hier demande **0,19**, tiré par Macron–Pécresse 2022 où hier est
+  sûre d'elle à tort. Fidélité 2027 (0,08) ou garde-fou issu du passé (0,19) ?
 4. τ_paire → **ADOPTÉ** pour les seuls duels jamais sondés, calibré en
    leave-one-pair-out (≈ 0,10-0,15 logit).
 Ces décisions NE valent PAS accord de publication : `PUBLIER_T2` reste False

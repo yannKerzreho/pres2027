@@ -214,3 +214,15 @@ def test_trajectoire_tracker_forme_et_coherence_avec_le_nowcast():
     assert pi.shape == (S, T, 3) and len(dates) == T
     np.testing.assert_allclose(pi.sum(-1), 1.0, atol=1e-5)
     np.testing.assert_allclose(pi[:, -1], pi_draws_for_mask(fit, mask)[:, mask.astype(bool)], atol=1e-6)
+
+
+def test_tau_paire_seulement_pour_un_duel_jamais_sonde():
+    """spec §6.3 : ν ~ N(0, τ_paire²) en logit pour une paire sans aucun duel sondé."""
+    from model.models.spatial_pooling import fit as F
+    f = _fit(S=4000)
+    lg = lambda x: np.log(x / (1 - x))
+    sonde = lg(duel_draws(f, "C", "D", 0, scrutin=True)).var() - lg(duel_draws(f, "C", "D", 0, scrutin=False)).var()
+    jamais = lg(duel_draws(f, "G", "C", 0, scrutin=True)).var() - lg(duel_draws(f, "G", "C", 0, scrutin=False)).var()
+    assert sonde == pytest.approx(F.TAU_T2_SCRUTIN ** 2, rel=0.1)
+    assert jamais == pytest.approx(F.TAU_T2_SCRUTIN ** 2 + F.TAU_PAIRE ** 2, rel=0.1)
+    assert F.paire_sondee(f, "D", "C") and not F.paire_sondee(f, "C", "G")

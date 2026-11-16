@@ -243,6 +243,21 @@ résidu des duels Macron–Le Pen 2022 contre le temps.
    sous-estimé son adversaire, mais n = 3 ; un terme directionnel serait un
    choix éditorial, à trancher par l'utilisateur.
 
+   **Décision de l'utilisateur (2026-11-15 ~21:45Z, arbitrage 1)** :
+   $\tau_{T2} = 0{,}19$ (RMS ≈ 4,3 pt mesuré 2017/2022 ; couverture 5/5 de la
+   base §8.18). Réserve écrite (§8.19) : 2 erreurs indépendantes, IC90 de τ
+   [0,12 ; 0,92] ; un postérieur sur τ à partir de 1995-2012 reste à faire.
+   Biais anti-RN : **non corrigé** (arbitrage 2) ; lissage inchangé (arbitrage 3).
+3. **Incertitude d'extrapolation des duels jamais sondés** (arbitrage 4,
+   adopté) : pour une paire $(a,b)$ sans AUCUN duel sondé dans le jeu,
+   $\operatorname{logit}s_{ab} \leftarrow \operatorname{logit}s_{ab} + \nu$,
+   $\nu\sim\mathcal N(0,\tau_{paire}^2)$, tiré une fois par tirage, en
+   prédiction seulement (pas dans la vraisemblance), avant l'erreur de
+   scrutin. Les paires sondées n'en reçoivent pas. Dans $P(\text{élu})$, le
+   terme s'applique au tirage dont la paire qualifiée n'a jamais été sondée.
+   **Calibrage** (§8.22) : log-score KDE des V1 2027 dédoublonnées (§8.20)
+   avec $\nu$ ajouté, maximisé sur une grille de 0,01, variante hier (défaut).
+
 ## 7. $P(\text{élu})$
 
 Pour un champ de premier tour $S_1$ (champ modal, ou champ coché sur le site)
@@ -1067,6 +1082,27 @@ réutilisé), Attal–Le Pen 29 (26). Variante abst, comme §8.16. Fuite
 (§8.20) sur au moins 3 des 4 tâches ET en moyenne ; sinon non établie.
 Limite écrite d'avance : 4 tâches, K petit pour Philippe ⇒ puissance faible ;
 un « non établi » ne prouve pas l'absence de fuite.
+
+### 8.22 Calibrage de τ_paire (arbitrage 4, 0 fit)
+
+Pour chaque tâche V1 concluante, densité prédictive de la cible avec
+$\nu\sim\mathcal N(0,\tau^2)$ ajouté en logit (KDE de Silverman, variance
+du noyau $h^2+\tau^2$), log-score sommé sur une grille τ ∈ [0 ; 0,40].
+Leave-one-pair-out : τ choisi sans la tâche j, évalué sur j.
+
+| variante | tâches | τ* (toutes) | LS(0) → LS(τ*) | τ choisi sans j | gain hors échantillon Σ |
+|---|---|---|---|---|---|
+| hier | 2027 (4) | **0,08** | 8,04 → 9,03 | 0,10 / 0,00 / 0,09 / 0,06 | −0,59 |
+| abst | 2027 (4) | 0,11 | 6,47 → 7,63 | 0,15 / 0,11 / 0,14 / 0,06 | +0,17 |
+| hier | 2017-2027 (8) | 0,19 | −8,55 → 12,16 | 0,19-0,21 (0,08 sans Pécresse) | +17,1 |
+| abst | 2017-2027 (7) | 0,11 | 9,98 → 11,23 | 0,11-0,14 (0,06) | +0,35 |
+
+**Valeur retenue (règle de la spec : V1 2027, variante par défaut) :
+τ_paire = 0,08.** Hors échantillon, elle n'améliore pas le log-score 2027
+(−0,59 : 4 tâches, la tâche Mélenchon préfère 0) ; elle sert de garde-fou.
+Sensibilité : avec les élections passées, hier demande 0,19, tiré par
+Macron–Pécresse 2022 (hier sûre d'elle à tort, §8.20) ; sans cette tâche, 0,08.
+Le choix 2027 (0,08) contre passé (0,19) est remonté à l'utilisateur.
 
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
