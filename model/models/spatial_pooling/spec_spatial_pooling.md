@@ -490,6 +490,20 @@ semaines portée par de nombreux sondages. Résultat :
   août. « Spatial devance le brut » compare une part dans R à une moyenne sur
   des champs plus larges. « gp indisponible » dépend du choix de R.
 
+**Étape 3 refaite (revue 16/11, point 4 ; protocole fixé avant résultat).**
+Coupures hebdomadaires dès $h$ = 243 (10/08/2021) jusqu'à 166 : une détection
+est possible dès le 07/09, avant la montée. Même seuil (+3 pt en 28 j). Séries :
+(i) brut 14 j sur tous les sondages qui testent Zemmour ; (ii) spatial, part
+dans $R$ ; (iii) gp-pooling sur $R$ ; et, pour comparer à base égale,
+$L_c$ = liste contenant Zemmour la mieux fournie (notices distinctes) à la
+coupure $c$ : (iv) brut 14 j sur la liste EXACTE $L_c$, (v) spatial dans
+$L_c$, (vi) gp-pooling sur $L_c$ (si ≥ 3 sondages). $L_c$ peut changer d'une
+coupure à l'autre : la règle de détection appliquée aux séries $L_c$ compare
+alors deux listes, ce qu'on signale. Résultat attendu : date de détection de
+chaque série ; un « retard » n'est lu que s'il dépasse la résolution (7 j).
+Sortie : `results/detection_zemmour_2022_v2.json` (l'ancien fichier est
+conservé).
+
 **Tâche A de la revue du 16/11 : gp-pooling recalibré HORS échantillon.**
 REML sur les seuls blocs 2017 (4 blocs, 27 sondages — instable) : σ_h 0,119,
 σ² 0,054, τ 38 j, σ_p 0 (banque 2017+2022 : 0,126 / 0,116 / 262 j / 0,039) ;
