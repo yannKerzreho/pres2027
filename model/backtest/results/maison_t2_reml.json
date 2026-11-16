@@ -1,0 +1,71 @@
+{
+ "2017": {
+  "avec_maison": {
+   "n_duels": 117,
+   "n_cellules": 24,
+   "n_notices": 90,
+   "n_instituts": 8,
+   "reml_nll": 103.45969409863804,
+   "sigma_notice_pt": 0.774,
+   "sigma_pt": 0.52,
+   "sigma_maison_pt": 0.886
+  },
+  "sans_maison": {
+   "n_duels": 117,
+   "n_cellules": 24,
+   "n_notices": 90,
+   "n_instituts": 8,
+   "reml_nll": 110.75554064033301,
+   "sigma_notice_pt": 1.145,
+   "sigma_pt": 0.642
+  },
+  "lr": 14.592,
+  "p_valeur": 0.0001
+ },
+ "2022": {
+  "avec_maison": {
+   "n_duels": 315,
+   "n_cellules": 73,
+   "n_notices": 164,
+   "n_instituts": 10,
+   "reml_nll": 274.9956906549904,
+   "sigma_notice_pt": 1.131,
+   "sigma_pt": 0.528,
+   "sigma_maison_pt": 0.497
+  },
+  "sans_maison": {
+   "n_duels": 315,
+   "n_cellules": 73,
+   "n_notices": 164,
+   "n_instituts": 10,
+   "reml_nll": 278.8458193751122,
+   "sigma_notice_pt": 1.231,
+   "sigma_pt": 0.537
+  },
+  "lr": 7.7,
+  "p_valeur": 0.0028
+ },
+ "2027": {
+  "avec_maison": {
+   "n_duels": 115,
+   "n_cellules": 71,
+   "n_notices": 34,
+   "n_instituts": 7,
+   "reml_nll": 57.30291070892319,
+   "sigma_notice_pt": 0.0,
+   "sigma_pt": 1.192,
+   "sigma_maison_pt": 0.0
+  },
+  "sans_maison": {
+   "n_duels": 115,
+   "n_cellules": 71,
+   "n_notices": 34,
+   "n_instituts": 7,
+   "reml_nll": 57.30291070892319,
+   "sigma_notice_pt": 0.0,
+   "sigma_pt": 1.192
+  },
+  "lr": 0.0,
+  "p_valeur": 0.5
+ }
+}
