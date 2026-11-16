@@ -47,7 +47,7 @@ l'historique, ajouter en bas de « Historique ».
       abst = défaut, chiffres déjà committés, 0 fit ;
       (2) [FAIT 16/11, spec §7.1 : écarts ≤ 2 pt de P(élu) (Le Pen 80,3 → 78,9), drapeau éteint par défaut — dérive T1 de l'OU non calibrée sur les parts] « P(élu) à aléa unique » : maths spec §7 puis code + test, puis relancer
       `diagnostic_2027` ;
-      (3) [EN COURS (début 2026-11-16T16:20Z) : spec §8.25, `--noeud-resultat` ; 12 fits V2 T2−7 hier] « entre-deux-tours conditionné sur le résultat T1 » : maths puis V2 T2−7
+      (3) [FAIT 16/11, spec §8.25 : nœud T1 déplace le duel de +0,3 / −0,9 pt, erreur inchangée (4,5 / 5,9 pt) ⇒ non retenu] « entre-deux-tours conditionné sur le résultat T1 » : maths puis V2 T2−7
       2017/2022 ;
       (4) « (revue, a/d) stacking des chaînes » ;
       (5) synthèse tracker pour l'utilisateur (rôles spatial / gp-pooling).
@@ -419,6 +419,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-16 16:08-16:50Z (routine) : entre-deux-tours conditionné sur le résultat T1 (§8.25, 12 fits) : non retenu.
 - 2026-11-16 15:20-15:40Z (routine) : P(élu) à aléa unique (§7.1), drapeau éteint ; diagnostic 2027 rejoué.
 - 2026-11-16 15:08Z (routine) : main fusionnée ; synthèse V1/V2 (spec §8.24, 0 fit).
 - 2026-11-16 13:08-14:15Z (routine) : arbitrages appliqués (τ_T2 = 0,19,

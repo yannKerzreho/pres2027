@@ -1259,6 +1259,22 @@ final contre le résultat, log-score KDE (§8.20) des tirages au scrutin
 s'il réduit l'erreur sur les deux élections sans dégrader la convergence ;
 avec 2 élections, c'est une indication, pas une preuve.
 
+**Résultat §8.25 (2026-11-16, hier, T2−7)** :
+
+| élection | sans nœud | avec nœud T1 | moyenne sondages 7 j | résultat | convergence (sans / avec) |
+|---|---|---|---|---|---|
+| 2017 | 61,3 | 61,6 | 61,7 | 66,1 | concluante / concluante (R̂ 1,06 / 1,02) |
+| 2022 | 53,6 | 52,7 | 53,4 | 58,6 | **non concluante** (1 chaîne retenue) / concluante (2 chaînes, R̂ global 5,1) |
+
+Le nœud déplace le duel final de **+0,3 pt (2017) et −0,9 pt (2022)**, sans
+réduire l'erreur (4,5 et 5,9 pt restent) : à T2−7, le duel est porté par les
+sondages de second tour, et l'écart au résultat est entre ces sondages et
+l'urne (§8.18), pas dans la géométrie que le T1 réel corrigerait. (Les
+log-scores ne sont pas comparables : la base 2017 a été fittée à τ_T2 = 0,10.)
+**Décision : nœud non retenu** (critère « réduit l'erreur sur les deux
+élections » non rempli). Le drapeau reste pour l'entre-deux-tours 2027, où
+il donnera P(élu) sur la paire réelle sans changer la lecture des duels.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
