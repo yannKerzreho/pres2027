@@ -27,7 +27,7 @@ presque tous sans date (la plupart des coupures n'ont aucune donnée).
 Listes : les 3 de tête à la coupure, par la règle du site
 (`model.listes.classement`, champ exact). Dates décalées de
 T1 2027 − T1 historique (le modèle compte les horizons depuis le T1 2027 ;
-noyau OU stationnaire, $\sigma_h$ fonction de l'horizon ⇒ horizons exacts).
+noyau OU stationnaire ⇒ horizons exacts ; **σ_h est l'effet institut** — correction du 16/11).
 
 **Cibles et métriques**, toujours sur la **même base** pour que D0 et D1(s)
 soient comparables : parts renormalisées sur $L'$ (pour D0, ses tirages sur
@@ -136,3 +136,21 @@ recalibrage de son incertitude ; prévision du scrutin inchangée. Sur 2027,
 D1(5 %) n'ajoute que +8-17 % de sondages et rend les courbes 40-60 % plus
 agitées et moins stables au rejeu ; D2 (slots) = D0 tant qu'aucune
 alternative de slot n'est testée.
+
+## Révision après la revue Opus du 2026-11-16
+
+- « Seul D1(5 %) passe » est **dans le bruit** : 8 à 11 unités (coupure,
+  liste), fenêtres de 30 j qui se chevauchent ; bootstrap par unité de la
+  couverture IC90 de D1(5 %) à 30 j : [0,76 ; 0,96] — la fenêtre [0,85 ; 0,95]
+  ne sépare pas les seuils. Les seuils n'ont pas les mêmes effectifs (93 contre
+  54 couples) : non comparables entre eux. **Seul le déficit d'IC50 de D1 est
+  net** ([−0,18 ; −0,04]).
+- Les paramètres de gp-pooling ont été calés sur 2017/2022 (REML et
+  `FACTEUR_DIFFUSION`) : le backtest est dans l'échantillon. À refaire avec un
+  gp recalibré sans 2022.
+- Diagnostic 2027 : « dernier sondage » retiré n'est pas le même pour D0 et D1,
+  et la variation jour à jour n'est pas une règle de score.
+- **La recommandation « garder D0 » tient** (elle ne repose pas sur le
+  classement des seuils : D1 n'apporte pas de gain établi, et son IC50 est
+  trop étroit) ; le « D1(5 %) recevable » est retiré.
+

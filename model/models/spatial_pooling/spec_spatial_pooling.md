@@ -468,3 +468,25 @@ lissage OU pèse sur les petites pentes, pas sur une montée de 9 pt en 6
 semaines portée par de nombreux sondages. Résultat :
 `model/backtest/results/detection_zemmour_2022.json`.
 
+**Révision après la revue Opus du 2026-11-16 (rétractations).**
+- *« gp-pooling bat le spatial »* : seul l'écart de **MAE** tient (bootstrap
+  par unité (coupure, liste) : +0,06 à +0,22 pt, signe 11/13). La
+  **couverture** ne départage rien : score d'intervalle α = 0,1 identique
+  (4,32 pt pour les deux) ; gp couvre mieux parce que son IC est plus large
+  (3,53 contre 2,84 pt). Le Wilcoxon sur 171 couples supposait
+  l'indépendance : il n'y a que 13 unités.
+- *« Le décalage de dates rend gp-pooling exactement valide sur 2022 »* :
+  FAUX. Les horizons sont exacts, mais les paramètres de gp-pooling
+  (`bank_opinion.json`, REML sur 2017/2022) et `FACTEUR_DIFFUSION = 3` ont été
+  calés sur ces mêmes élections ⇒ avantage dans l'échantillon pour gp, que le
+  spatial n'a pas. Et σ_h est l'**effet institut**, pas une fonction de
+  l'horizon (erreur de lecture corrigée).
+- *Lecture à des dates différentes* : gp lu à c, spatial prolongé à c + 7 ; et
+  aucun des deux IC ne porte σ_h ni σ_p des 1-2 sondages cibles. Comparaison
+  à refaire à date égale avec ces termes.
+- *« Détection Zemmour sans retard »* : NON ÉTABLI. La série commençait le
+  07/09 avec un recul de 28 j : le 05/10 était la **première date où une
+  détection était possible**, pour toutes les séries. La montée commence fin
+  août. « Spatial devance le brut » compare une part dans R à une moyenne sur
+  des champs plus larges. « gp indisponible » dépend du choix de R.
+

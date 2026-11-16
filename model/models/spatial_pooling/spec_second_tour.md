@@ -953,6 +953,33 @@ tous couverts. Le modèle reproduisant la moyenne des sondages à ±0,4 pt
 du scrutin**. Dans l'échantillon (τ mesuré sur ces élections, 5 points) :
 argument de cohérence pour l'arbitrage 1, pas validation.
 
+### 8.19 Révision après la revue Opus du 2026-11-16
+
+- **§8.15 (abst contre hier)** : la tâche « candidat Attal » ne contient qu'une
+  paire (Attal–Le Pen), même cible que la tâche paire, et Hollande–Le Pen vient
+  des mêmes 3 notices : 2027 ≈ **4 cibles indépendantes, pas 6** ; les deux
+  tâches Attal portent 4,7 des 5,2 pt d'écart de MAE. Le veto 2017 vient de
+  Fillon–Le Pen, **non concluant** (IC [37 ; 82]). Le log-score gaussien en
+  logit est faux sur les postérieurs bimodaux. ⇒ Verdict §8.15 à refaire :
+  tâches dédoublonnées, non concluantes écartées, log-score par KDE des
+  tirages, écart par tâche avec IC bootstrap. Le défaut `abst` reste en place
+  d'ici là (inchangé = aucune décision nouvelle).
+- **§8.16 (fuite même-notice)** : NON ÉTABLI. Pour Le Pen–Philippe il ne reste
+  que 2 duels : le test confond la fuite et la perte du second tour ; deux
+  fits sur quatre sont non concluants. Il faut un **placebo** (retirer autant
+  de duels pris dans d'autres notices).
+- **§8.17 (effets maison)** : la mauvaise hypothèse était testée. Un effet
+  maison propre à CHAQUE campagne suffit à biaiser (Harris 2027 : −0,88 pt sur
+  ~8 notices, z ≈ −1,7) ; les résidus dans l'échantillon sous un modèle sans
+  effet maison sont rétrécis. À faire : σ_maison par REML au niveau notice et
+  par campagne, test du rapport de vraisemblance contre σ_T2 seul.
+- **§8.18 (τ_T2, 5/5)** : ne prouve rien. Les 5 points font 2 erreurs
+  indépendantes (2022 : un seul résultat), toutes de même signe ; tout
+  τ ≥ 0,143 donne 5/5 ; IC90 de τ avec 2 d.d.l. : [0,12 ; 0,92]. À faire :
+  erreurs 1995-2012 (session données), postérieur sur τ (prédictif de
+  Student), terme de biais signé testé. L'arbitrage 1 reste ouvert, avec cette
+  réserve écrite.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

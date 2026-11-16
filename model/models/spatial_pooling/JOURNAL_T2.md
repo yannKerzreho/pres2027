@@ -7,7 +7,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## État (mis à jour à chaque réveil)
 
-- Dernière revue Opus : 2026-11-15 ~08:20Z (à la demande de l'utilisateur, cf. « Revue 2026-11-15 »).
+- Dernière revue Opus : 2026-11-16 ~09:20Z (routine, cf. « Revue 2026-11-16 »).
 - OBJECTIF (utilisateur, via l'orchestrateur, 2026-11-14) : « un modèle qui est
   backé par le passé mais qui représente bien les sondages et tendances
   actuels ». 2017/2022 servent à CALIBRER et VALIDER ; le critère final est la
@@ -286,6 +286,26 @@ Résultats : `model/backtest/results/*.json` (committés).
       ratés = biais de structure 3-4 pt ⇒ piste τ_paire (ci-dessous, arbitrage 4).
 - [x] (revue, c) abst en phase 2 sur Zemmour, Mélenchon, Pécresse 2022 — FAIT 16:17Z ; + abst 2017 ; VERDICT protocole §8.11 (spec §8.15) : hier gagne le log-score total (10,5 contre 7,7) mais perd la MAE 2017 ⇒ PAS préférée, abst reste le défaut
       (3 tâches) pour un traitement égal à hier.
+- [ ] (revue 16/11, A) **PRIORITAIRE, 0 fit** : recalibrer gp-pooling SANS 2022
+      (REML et FACTEUR_DIFFUSION sur 2017 seul), puis relancer `suivi --gp` et
+      `listes_definition` ; rapporter score d'intervalle α = 0,1 / CRPS par
+      unité (coupure, liste) avec bootstrap, les deux modèles lus à c + 7 avec
+      σ_h²/n_inst + σ_p²/n dans le prédictif. Tranche : si MAE gp > 0,70 ou
+      score d'intervalle gp > 4,32, « gp bat le spatial » tombe.
+- [ ] (revue 16/11, 5) verdict abst/hier à refaire sans fit : tâches
+      dédoublonnées (cand-Attal = Attal–Le Pen ; Hollande mêmes notices), non
+      concluantes écartées, log-score par KDE des tirages, IC bootstrap par tâche.
+- [ ] (revue 16/11, 4) détection Zemmour : coupures dès h = 243 (début août,
+      4 coupures × 4 chaînes = 16 fits) ; gp sur la liste avec Zemmour la mieux
+      fournie à chaque coupure (0 fit).
+- [ ] (revue 16/11, 6 et C) placebo de la fuite même-notice : retirer autant
+      de duels pris dans d'autres notices (4 tâches, 16 fits), comparer par
+      log-score ; calibrer τ_paire sur les V1 dédoublonnées.
+- [ ] (revue 16/11, 7) σ_maison par REML au niveau notice et par campagne,
+      test du rapport de vraisemblance contre σ_T2 seul (0 fit).
+- [ ] (revue 16/11, B) combiner spatial et gp (stacking par unité, poids selon
+      le nombre de sondages de la liste et l'horizon ; ou gp sur résidus du
+      spatial), évaluation leave-one-coupure-out (0 fit).
 - [ ] (revue, a/d) stacking des chaînes (log-vraisemblance par nœud sur les
       tirages sauvés) ou max local + Laplace par chaîne — maths dans la spec.
 - [x] (revue, e) [FAIT 19:05Z (spec §8.16) : fuite comptée (74/86), mais retirer les notices entières ne dégrade pas l'erreur des centres ; seuls les IC s'élargissent ⇒ V1 non gonflée par la fuite] V1 en retirant la NOTICE entière (fuite même-répondants) :
@@ -412,6 +432,10 @@ conservé pour l'historique.
 - 2026-11-14 21:27-21:50Z (réveils 19:07/20:07/21:07 reçus en retard, traités
   en un) : fenêtre, ancres, pos_scale 0,25 (§8.7) ; cause des modes V1 =
   compensation géométrie/η.
+- 2026-11-16 09:07-09:35Z (réveil) : revue Opus quotidienne, 9 points
+  acceptés ; rétractations (gp contre spatial, décalage de dates, détection
+  Zemmour, fuite, effets maison, τ 5/5, D1(5 %)) ; tâches A (prioritaire),
+  4, 5, 6/C, 7, B en file.
 - 2026-11-15 20:08-20:15Z (réveil) : base V2 brut ± τ (§8.18).
 - 2026-11-15 19:07-19:20Z (réveil) : effets maison T2 mesurés (§8.17),
   aucun stable.
@@ -460,6 +484,31 @@ conservé pour l'historique.
 - 2026-11-14 22:07-22:25Z (réveil) : log-densité par chaîne ⇒ modes inégaux
   (spec §8.8), sélection Δ = 10 nats, re-fusion 2022, phase 2 lancée.
   Tests : 6 chaînes/cadre verts. Tests : 148 passés (hors réseau).
+
+## Revue Opus 2026-11-16 — intégration point par point
+
+1. gp contre spatial, couverture : ACCEPTÉ, VÉRIFIÉ en partie (13 unités, pas
+   171 couples) ; seul l'écart de MAE tient ; score d'intervalle à égalité
+   (4,32). Rétractation écrite (spec spatial_pooling §10).
+2. Décalage de dates « exactement valide » : ACCEPTÉ, VÉRIFIÉ (bank_opinion.json
+   par REML sur blocs historiques ; FACTEUR_DIFFUSION = 3 calé sur 2017/2022 ;
+   σ_h = effet institut, `gp_math.py` : `base = Kou + sigma_h**2 * same`).
+   Rétractation écrite ; tâche A prioritaire.
+3. Lecture à dates différentes et IC sans σ_h/σ_p : ACCEPTÉ ; dans la tâche A.
+4. Détection « sans retard » imposée par le protocole (première date possible
+   = 05/10) : ACCEPTÉ ; conclusion retirée ; tâche (4) avec coupures dès août.
+5. Verdict §8.15 doublonné et veto non concluant : ACCEPTÉ ; à refaire (0 fit) ;
+   le défaut abst reste en place, sans nouvelle décision.
+6. Fuite même-notice non établie : ACCEPTÉ ; placebo en file.
+7. Effets maison : ACCEPTÉ (mauvaise hypothèse testée) ; REML par campagne en
+   file ; la « décision pas de paramètre » est suspendue.
+8. τ_T2 5/5 non probant (2 erreurs indépendantes, même signe, IC90 de τ
+   [0,12 ; 0,92]) : ACCEPTÉ ; réserve écrite (spec §8.19) ; données 1995-2012
+   nécessaires ; l'arbitrage 1 reste à l'utilisateur.
+9. Listes « seul D1(5 %) passe » dans le bruit : ACCEPTÉ ; retiré ; la
+   recommandation « garder D0 » tient pour une autre raison (pas de gain
+   établi, IC50 trop étroit).
+Idées A, B, C : toutes en file, A prioritaire (0 fit).
 
 ## Revue Opus 2026-11-15 — intégration point par point
 
