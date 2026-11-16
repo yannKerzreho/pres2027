@@ -313,7 +313,7 @@ Résultats : `model/backtest/results/*.json` (committés).
 - [x] (revue 16/11, 7) σ_maison par REML (spec §8.23, 16/11) : σ_h 0,5-1 pt
       par institut, établi en 2017/2022 (p ≤ 0,008), non établi en 2027
       (p ≈ 0,1) ; effet notice 0,8-1,1 pt. §8.17 retiré.
-- [ ] [EN COURS (début 2026-11-16T18:40Z) : spec §8.23 bis, code (`effets_maison`, variante `hier_maison`) + test ; V1 2022 4 paires × 4 chaînes ; essai rapide : σ_h 0,9, σ_n 0,85, σ_T2 0,5 pt] (§8.23) effets maison + notice dans la vraisemblance des duels : maths
+- [ ] [ARRÊTÉ 2026-11-16 20:35Z : la vraisemblance MVN pleine (Cholesky 300 × 300 à chaque pas) n'avait fini AUCUNE chaîne en 2 h 15 (V1 Macron–Le Pen) ⇒ reformuler : effets maison institut × candidat explicites (non centrés, ~80 paramètres), effet notice marginalisé par blocs (une notice = quelques duels, Cholesky par bloc). Essai rapide MVN : σ_h 0,9, σ_n 0,85, σ_T2 0,5 pt] (§8.23) effets maison + notice dans la vraisemblance des duels : maths
       complètes dans la spec, code derrière un drapeau, V1 2022 (4 paires,
       16 fits) contre le modèle actuel, log-score KDE.
 - [ ] (revue 16/11, B) combiner spatial et gp (stacking par unité, poids selon
@@ -419,6 +419,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-16 18:10-20:35Z (routine) : synthèse des rôles spatial/gp ; effets maison T2 marginalisés (§8.23 bis) codés, mais V1 2022 arrêtée (aucune chaîne en 2 h 15 : MVN pleine trop chère) ⇒ reformulation par blocs.
 - 2026-11-16 18:08Z (routine) : synthèse des rôles spatial / gp-pooling (spec_spatial_pooling §10) ; RELANCE du 15/11 entièrement traitée.
 - 2026-11-16 17:08-17:45Z (routine) : stacking des chaînes (§8.26), 18 re-fusions : aucun gain, sélection gardée.
 - 2026-11-16 16:08-16:50Z (routine) : entre-deux-tours conditionné sur le résultat T1 (§8.25, 12 fits) : non retenu.
