@@ -45,7 +45,7 @@ l'historique, ajouter en bas de « Historique ».
       ouvertes. Ordre à suivre, une par réveil, sans attendre les arbitrages :
       (1) [FAIT 16/11, §8.24] « Synthèse dans spec §8 » (plus bas) : tableau unique V1/V2 2017/2022/2027,
       abst = défaut, chiffres déjà committés, 0 fit ;
-      (2) [EN COURS (début 2026-11-16T15:25Z) : spec §7.1 + code (drapeau `alea_unique`) + test faits ; diagnostic_2027 hier lancé] « P(élu) à aléa unique » : maths spec §7 puis code + test, puis relancer
+      (2) [FAIT 16/11, spec §7.1 : écarts ≤ 2 pt de P(élu) (Le Pen 80,3 → 78,9), drapeau éteint par défaut — dérive T1 de l'OU non calibrée sur les parts] « P(élu) à aléa unique » : maths spec §7 puis code + test, puis relancer
       `diagnostic_2027` ;
       (3) « entre-deux-tours conditionné sur le résultat T1 » : maths puis V2 T2−7
       2017/2022 ;
@@ -419,6 +419,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-16 15:20-15:40Z (routine) : P(élu) à aléa unique (§7.1), drapeau éteint ; diagnostic 2027 rejoué.
 - 2026-11-16 15:08Z (routine) : main fusionnée ; synthèse V1/V2 (spec §8.24, 0 fit).
 - 2026-11-16 13:08-14:15Z (routine) : arbitrages appliqués (τ_T2 = 0,19,
   τ_paire = 0,08 calibré, §6, §8.22 ; valeur 0,08/0,19 remontée) ; placebo

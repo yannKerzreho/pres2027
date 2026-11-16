@@ -295,6 +295,23 @@ diffusion de la banque (calibrée sur les parts). Les erreurs de scrutin T1
 (δ) et T2 (τ_T2) restent indépendantes (aucune mesure de leur corrélation).
 Comparaison : P(élu) du champ modal 2027, deux voies, même fit.
 
+**Résultat (2026-11-16, hier, données du 13/11, même fit,
+`diagnostic_2027_hier_2026-11-13_alea_unique.json`)** :
+
+| voie | Le Pen | Philippe | Glucksmann | Retailleau | Mélenchon | paires qualifiées (3 premières) |
+|---|---|---|---|---|---|---|
+| actuelle (deux aléas) | 80,3 | 13,9 | 4,5 | 1,1 | 0,2 | Mél.–LP 39 %, Phi.–LP 29 %, Glu.–LP 16 % |
+| aléa unique (§7.1) | 78,9 | 14,0 | 3,8 | 3,3 | 0,0 | Mél.–LP 36 %, Phi.–LP 34 %, Glu.–LP 16 % |
+
+Écarts ≤ 2 pt de P(élu), sauf Retailleau (×3, sur des petits nombres) : la
+corrélation T1/T2 passe désormais par $w$, mais l'essentiel de l'écart vient
+du changement de loi de dérive T1 (OU du modèle au lieu de la banque
+calibrée). Aucune validation possible (P(élu) ne se backteste que sur 2
+élections). **Décision : drapeau éteint par défaut** — la loi de dérive T1
+de la banque est calibrée, celle de l'OU du modèle ne l'est pas sur des parts ;
+la voie §7.1 reste disponible, à reconsidérer si l'OU est calibré sur les
+parts (backtest de suivi, spec spatial_pooling §10).
+
 **Crête κ/η** : pour un candidat statique, $\kappa w_a$ et $\eta_a$ jouent des
 rôles voisins ; κ n'est tenu que par la forme en $v$ et le rétrécissement de η.
 À vérifier sur les traces (corrélation κ–η).
