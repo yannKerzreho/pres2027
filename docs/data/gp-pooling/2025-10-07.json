@@ -1,0 +1,831 @@
+{
+  "model": "gp-pooling",
+  "as_of": "2025-10-07",
+  "meta": {
+    "genere_le": "2026-11-17",
+    "as_of": "2025-10-07",
+    "scrutin_t1": "2027-04-18",
+    "n_sondages": 1,
+    "n_sondages_disponibles": 29,
+    "horizon_prevision_jours": 558,
+    "instituts": [
+      "Harris Interactive"
+    ]
+  },
+  "nowcast": {
+    "Arthaud (LO)": {
+      "mean": 0.0103,
+      "ic90": [
+        0.0061,
+        0.0159
+      ]
+    },
+    "Mélenchon (LFI)": {
+      "mean": 0.1398,
+      "ic90": [
+        0.1079,
+        0.1764
+      ]
+    },
+    "Roussel (PCF)": {
+      "mean": 0.0304,
+      "ic90": [
+        0.0212,
+        0.042
+      ]
+    },
+    "Glucksmann (PP)": {
+      "mean": 0.1202,
+      "ic90": [
+        0.0928,
+        0.1517
+      ]
+    },
+    "Tondelier (EELV)": {
+      "mean": 0.0301,
+      "ic90": [
+        0.0213,
+        0.0412
+      ]
+    },
+    "Philippe (Horizons)": {
+      "mean": 0.1598,
+      "ic90": [
+        0.1256,
+        0.1994
+      ]
+    },
+    "Retailleau (LR)": {
+      "mean": 0.0999,
+      "ic90": [
+        0.0758,
+        0.1278
+      ]
+    },
+    "Dupont-Aignan": {
+      "mean": 0.0104,
+      "ic90": [
+        0.0061,
+        0.0161
+      ]
+    },
+    "RN": {
+      "mean": 0.3386,
+      "ic90": [
+        0.2793,
+        0.4001
+      ]
+    },
+    "Zemmour (Reconquête)": {
+      "mean": 0.0604,
+      "ic90": [
+        0.0448,
+        0.0787
+      ]
+    }
+  },
+  "forecast_scrutin": {
+    "Arthaud (LO)": {
+      "part_moyenne": 0.0118,
+      "ic90": [
+        0.002,
+        0.0331
+      ],
+      "p_qualifie_top2": 0.0005,
+      "p_arrive_premier": 0.0,
+      "quantiles": [
+        0.002,
+        0.0045,
+        0.0081,
+        0.0146,
+        0.0331
+      ],
+      "densite": {
+        "x0": 0.0008,
+        "dx": 0.002953,
+        "y": [
+          83,
+          100,
+          76,
+          50,
+          35,
+          28,
+          14,
+          13,
+          12,
+          9,
+          5,
+          3,
+          3,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0
+        ]
+      }
+    },
+    "Mélenchon (LFI)": {
+      "part_moyenne": 0.1407,
+      "ic90": [
+        0.0317,
+        0.3375
+      ],
+      "p_qualifie_top2": 0.3165,
+      "p_arrive_premier": 0.1145,
+      "quantiles": [
+        0.0317,
+        0.0676,
+        0.1135,
+        0.1864,
+        0.3375
+      ],
+      "densite": {
+        "x0": 0.0155,
+        "dx": 0.021708,
+        "y": [
+          48,
+          88,
+          100,
+          77,
+          75,
+          63,
+          44,
+          43,
+          33,
+          29,
+          23,
+          18,
+          16,
+          12,
+          10,
+          6,
+          6,
+          5,
+          4,
+          1,
+          4,
+          2,
+          2,
+          1
+        ]
+      }
+    },
+    "Roussel (PCF)": {
+      "part_moyenne": 0.0333,
+      "ic90": [
+        0.0065,
+        0.0882
+      ],
+      "p_qualifie_top2": 0.0085,
+      "p_arrive_premier": 0.0013,
+      "quantiles": [
+        0.0065,
+        0.0141,
+        0.0249,
+        0.0425,
+        0.0882
+      ],
+      "densite": {
+        "x0": 0.0029,
+        "dx": 0.007018,
+        "y": [
+          60,
+          100,
+          75,
+          65,
+          45,
+          35,
+          28,
+          19,
+          14,
+          11,
+          9,
+          7,
+          5,
+          5,
+          3,
+          1,
+          2,
+          2,
+          1,
+          1,
+          1,
+          0,
+          1,
+          0
+        ]
+      }
+    },
+    "Glucksmann (PP)": {
+      "part_moyenne": 0.1229,
+      "ic90": [
+        0.0266,
+        0.3061
+      ],
+      "p_qualifie_top2": 0.2405,
+      "p_arrive_premier": 0.085,
+      "quantiles": [
+        0.0266,
+        0.0589,
+        0.0978,
+        0.1617,
+        0.3061
+      ],
+      "densite": {
+        "x0": 0.0137,
+        "dx": 0.019062,
+        "y": [
+          61,
+          99,
+          100,
+          99,
+          79,
+          68,
+          53,
+          45,
+          35,
+          33,
+          24,
+          18,
+          15,
+          12,
+          10,
+          8,
+          7,
+          6,
+          4,
+          3,
+          4,
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    "Tondelier (EELV)": {
+      "part_moyenne": 0.0334,
+      "ic90": [
+        0.0062,
+        0.0895
+      ],
+      "p_qualifie_top2": 0.0105,
+      "p_arrive_premier": 0.0018,
+      "quantiles": [
+        0.0062,
+        0.0142,
+        0.0243,
+        0.0427,
+        0.0895
+      ],
+      "densite": {
+        "x0": 0.0028,
+        "dx": 0.007515,
+        "y": [
+          65,
+          100,
+          81,
+          56,
+          44,
+          34,
+          23,
+          16,
+          13,
+          9,
+          7,
+          5,
+          3,
+          3,
+          3,
+          3,
+          1,
+          1,
+          2,
+          1,
+          1,
+          1,
+          0,
+          1
+        ]
+      }
+    },
+    "Philippe (Horizons)": {
+      "part_moyenne": 0.1633,
+      "ic90": [
+        0.0371,
+        0.3931
+      ],
+      "p_qualifie_top2": 0.3897,
+      "p_arrive_premier": 0.157,
+      "quantiles": [
+        0.0371,
+        0.0809,
+        0.1361,
+        0.2157,
+        0.3931
+      ],
+      "densite": {
+        "x0": 0.0151,
+        "dx": 0.024992,
+        "y": [
+          49,
+          100,
+          97,
+          99,
+          88,
+          81,
+          64,
+          51,
+          41,
+          39,
+          26,
+          22,
+          15,
+          15,
+          12,
+          10,
+          7,
+          6,
+          5,
+          4,
+          3,
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    "Retailleau (LR)": {
+      "part_moyenne": 0.1062,
+      "ic90": [
+        0.0224,
+        0.2633
+      ],
+      "p_qualifie_top2": 0.1875,
+      "p_arrive_premier": 0.0612,
+      "quantiles": [
+        0.0224,
+        0.0493,
+        0.0833,
+        0.1403,
+        0.2633
+      ],
+      "densite": {
+        "x0": 0.0105,
+        "dx": 0.017869,
+        "y": [
+          55,
+          96,
+          100,
+          83,
+          70,
+          55,
+          45,
+          37,
+          29,
+          24,
+          15,
+          17,
+          12,
+          11,
+          6,
+          6,
+          7,
+          3,
+          3,
+          2,
+          2,
+          2,
+          1,
+          1
+        ]
+      }
+    },
+    "Dupont-Aignan": {
+      "part_moyenne": 0.0114,
+      "ic90": [
+        0.002,
+        0.0325
+      ],
+      "p_qualifie_top2": 0.0,
+      "p_arrive_premier": 0.0,
+      "quantiles": [
+        0.002,
+        0.0045,
+        0.0079,
+        0.0142,
+        0.0325
+      ],
+      "densite": {
+        "x0": 0.0008,
+        "dx": 0.002929,
+        "y": [
+          78,
+          100,
+          76,
+          49,
+          35,
+          24,
+          17,
+          11,
+          9,
+          7,
+          5,
+          4,
+          3,
+          3,
+          2,
+          1,
+          1,
+          1,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0
+        ]
+      }
+    },
+    "RN": {
+      "part_moyenne": 0.3124,
+      "ic90": [
+        0.0905,
+        0.6147
+      ],
+      "p_qualifie_top2": 0.7863,
+      "p_arrive_premier": 0.564,
+      "quantiles": [
+        0.0905,
+        0.1875,
+        0.2891,
+        0.415,
+        0.6147
+      ],
+      "densite": {
+        "x0": 0.0474,
+        "dx": 0.029607,
+        "y": [
+          34,
+          57,
+          69,
+          92,
+          86,
+          98,
+          100,
+          86,
+          86,
+          81,
+          72,
+          72,
+          57,
+          55,
+          47,
+          35,
+          28,
+          32,
+          27,
+          15,
+          14,
+          14,
+          8,
+          10
+        ]
+      }
+    },
+    "Zemmour (Reconquête)": {
+      "part_moyenne": 0.0647,
+      "ic90": [
+        0.0122,
+        0.1761
+      ],
+      "p_qualifie_top2": 0.06,
+      "p_arrive_premier": 0.0152,
+      "quantiles": [
+        0.0122,
+        0.0275,
+        0.0484,
+        0.0818,
+        0.1761
+      ],
+      "densite": {
+        "x0": 0.0055,
+        "dx": 0.012328,
+        "y": [
+          61,
+          100,
+          88,
+          79,
+          57,
+          40,
+          30,
+          24,
+          20,
+          14,
+          11,
+          10,
+          10,
+          7,
+          6,
+          4,
+          4,
+          2,
+          2,
+          2,
+          1,
+          2,
+          1,
+          1
+        ]
+      }
+    }
+  },
+  "duels_probables": [
+    {
+      "candidats": [
+        "Philippe (Horizons)",
+        "RN"
+      ],
+      "probabilite": 0.271
+    },
+    {
+      "candidats": [
+        "Mélenchon (LFI)",
+        "RN"
+      ],
+      "probabilite": 0.2087
+    },
+    {
+      "candidats": [
+        "Glucksmann (PP)",
+        "RN"
+      ],
+      "probabilite": 0.1502
+    },
+    {
+      "candidats": [
+        "Retailleau (LR)",
+        "RN"
+      ],
+      "probabilite": 0.1113
+    },
+    {
+      "candidats": [
+        "Mélenchon (LFI)",
+        "Philippe (Horizons)"
+      ],
+      "probabilite": 0.0432
+    },
+    {
+      "candidats": [
+        "Glucksmann (PP)",
+        "Philippe (Horizons)"
+      ],
+      "probabilite": 0.0355
+    },
+    {
+      "candidats": [
+        "RN",
+        "Zemmour (Reconquête)"
+      ],
+      "probabilite": 0.0328
+    },
+    {
+      "candidats": [
+        "Philippe (Horizons)",
+        "Retailleau (LR)"
+      ],
+      "probabilite": 0.0302
+    }
+  ],
+  "drift_modele": "l'opinion a encore 558 jours pour bouger d'ici au vote, et le résultat des urnes s'écarte toujours un peu des intentions déclarées",
+  "diagnostics": {
+    "noyau": "Ornstein-Uhlenbeck",
+    "tau_j": 785.0,
+    "sigma": 0.5893,
+    "sigma_h": 0.1258,
+    "sigma_p": 0.0389,
+    "n_sondages": 1,
+    "instituts": [
+      "Harris Interactive"
+    ],
+    "age_sondage_le_plus_recent_j": 0.0,
+    "sd_latente_par_slot": {
+      "Arthaud (LO)": 0.2861,
+      "Mélenchon (LFI)": 0.1557,
+      "Roussel (PCF)": 0.2012,
+      "Glucksmann (PP)": 0.158,
+      "Tondelier (EELV)": 0.2012,
+      "Philippe (Horizons)": 0.1539,
+      "Retailleau (LR)": 0.1613,
+      "Dupont-Aignan": 0.2861,
+      "RN": 0.1471,
+      "Zemmour (Reconquête)": 0.1736
+    }
+  },
+  "trajectoire": {
+    "dates": [
+      "2025-10-07"
+    ],
+    "slots": {
+      "Arthaud (LO)": {
+        "mean": [
+          0.0103
+        ],
+        "ic90_lo": [
+          0.006
+        ],
+        "ic90_hi": [
+          0.0163
+        ]
+      },
+      "Mélenchon (LFI)": {
+        "mean": [
+          0.1398
+        ],
+        "ic90_lo": [
+          0.1082
+        ],
+        "ic90_hi": [
+          0.1749
+        ]
+      },
+      "Roussel (PCF)": {
+        "mean": [
+          0.0304
+        ],
+        "ic90_lo": [
+          0.0212
+        ],
+        "ic90_hi": [
+          0.0416
+        ]
+      },
+      "Glucksmann (PP)": {
+        "mean": [
+          0.1196
+        ],
+        "ic90_lo": [
+          0.0915
+        ],
+        "ic90_hi": [
+          0.1505
+        ]
+      },
+      "Tondelier (EELV)": {
+        "mean": [
+          0.0304
+        ],
+        "ic90_lo": [
+          0.0209
+        ],
+        "ic90_hi": [
+          0.042
+        ]
+      },
+      "Philippe (Horizons)": {
+        "mean": [
+          0.1591
+        ],
+        "ic90_lo": [
+          0.1243
+        ],
+        "ic90_hi": [
+          0.1984
+        ]
+      },
+      "Retailleau (LR)": {
+        "mean": [
+          0.1004
+        ],
+        "ic90_lo": [
+          0.076
+        ],
+        "ic90_hi": [
+          0.1291
+        ]
+      },
+      "Dupont-Aignan": {
+        "mean": [
+          0.0103
+        ],
+        "ic90_lo": [
+          0.0061
+        ],
+        "ic90_hi": [
+          0.0159
+        ]
+      },
+      "RN": {
+        "mean": [
+          0.3395
+        ],
+        "ic90_lo": [
+          0.2819
+        ],
+        "ic90_hi": [
+          0.3988
+        ]
+      },
+      "Zemmour (Reconquête)": {
+        "mean": [
+          0.0602
+        ],
+        "ic90_lo": [
+          0.0443
+        ],
+        "ic90_hi": [
+          0.0788
+        ]
+      }
+    }
+  },
+  "polls": [
+    {
+      "date_fin": "2025-10-07",
+      "institut": "Harris Interactive",
+      "slot": "Arthaud (LO)",
+      "part": 0.01,
+      "notice": "Harris Interactive 7 octobre (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2025/octobre/9995-pres-toluna-harris-interactive-rtl-8-octobre.pdf"
+    },
+    {
+      "date_fin": "2025-10-07",
+      "institut": "Harris Interactive",
+      "slot": "Dupont-Aignan",
+      "part": 0.01,
+      "notice": "Harris Interactive 7 octobre (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2025/octobre/9995-pres-toluna-harris-interactive-rtl-8-octobre.pdf"
+    },
+    {
+      "date_fin": "2025-10-07",
+      "institut": "Harris Interactive",
+      "slot": "Glucksmann (PP)",
+      "part": 0.12,
+      "notice": "Harris Interactive 7 octobre (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2025/octobre/9995-pres-toluna-harris-interactive-rtl-8-octobre.pdf"
+    },
+    {
+      "date_fin": "2025-10-07",
+      "institut": "Harris Interactive",
+      "slot": "Mélenchon (LFI)",
+      "part": 0.14,
+      "notice": "Harris Interactive 7 octobre (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2025/octobre/9995-pres-toluna-harris-interactive-rtl-8-octobre.pdf"
+    },
+    {
+      "date_fin": "2025-10-07",
+      "institut": "Harris Interactive",
+      "slot": "Philippe (Horizons)",
+      "part": 0.16,
+      "notice": "Harris Interactive 7 octobre (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2025/octobre/9995-pres-toluna-harris-interactive-rtl-8-octobre.pdf"
+    },
+    {
+      "date_fin": "2025-10-07",
+      "institut": "Harris Interactive",
+      "slot": "RN",
+      "part": 0.34,
+      "notice": "Harris Interactive 7 octobre (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2025/octobre/9995-pres-toluna-harris-interactive-rtl-8-octobre.pdf"
+    },
+    {
+      "date_fin": "2025-10-07",
+      "institut": "Harris Interactive",
+      "slot": "Retailleau (LR)",
+      "part": 0.1,
+      "notice": "Harris Interactive 7 octobre (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2025/octobre/9995-pres-toluna-harris-interactive-rtl-8-octobre.pdf"
+    },
+    {
+      "date_fin": "2025-10-07",
+      "institut": "Harris Interactive",
+      "slot": "Roussel (PCF)",
+      "part": 0.03,
+      "notice": "Harris Interactive 7 octobre (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2025/octobre/9995-pres-toluna-harris-interactive-rtl-8-octobre.pdf"
+    },
+    {
+      "date_fin": "2025-10-07",
+      "institut": "Harris Interactive",
+      "slot": "Tondelier (EELV)",
+      "part": 0.03,
+      "notice": "Harris Interactive 7 octobre (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2025/octobre/9995-pres-toluna-harris-interactive-rtl-8-octobre.pdf"
+    },
+    {
+      "date_fin": "2025-10-07",
+      "institut": "Harris Interactive",
+      "slot": "Zemmour (Reconquête)",
+      "part": 0.06,
+      "notice": "Harris Interactive 7 octobre (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2025/octobre/9995-pres-toluna-harris-interactive-rtl-8-octobre.pdf"
+    }
+  ]
+}
