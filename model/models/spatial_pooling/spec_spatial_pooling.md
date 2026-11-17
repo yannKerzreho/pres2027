@@ -564,6 +564,44 @@ Réserve : le REML 2017 repose sur 27 sondages (τ = 38 j, σ_p = 0), il est
 lui-même fragile. Résultats : `suivi_gp_{bank_c7,r17f3_c7,r17f1_c7}_2022_h*.json`,
 paramètres : `bank_opinion_reml_2017_seul.json`.
 
+**Idée B : combiner spatial et gp-pooling (protocole fixé avant résultat,
+2026-11-17, 0 fit).** Données : les 13 unités (coupure, liste) de la tâche A,
+spatial prolongé à c + 7 (`suivi_proj_2022_h*.json`) et gp recalibré hors
+échantillon (REML 2017, ×3, c + 7 : `suivi_gp_r17f3_c7_2022_h*.json`), appariés
+par (coupure, liste, candidat). Chaque prédictive est résumée par une normale
+$\mathcal N(m, s^2)$, $s$ = largeur IC90 / 3,29 (les tirages ne sont pas
+sauvés). Combinaisons :
+- **C1 « centre gp, largeur spatial »** : $\mathcal N(m_{gp}, s_{sp}^2)$ ;
+- **C2 mélange linéaire** $w\,\mathcal N_{gp} + (1-w)\,\mathcal N_{sp}$, $w$
+  choisi en **leave-one-coupure-out** (grille 0-1 par 0,05, log-score de la
+  cible sous le mélange), appliqué à la coupure retirée ;
+- **C3 moyenne pondérée des centres** $w\,m_{gp} + (1-w)\,m_{sp}$ avec
+  $s = \max(s_{sp}, s_{gp})$ ? Non : $s$ ajusté en leave-one-coupure-out
+  par un facteur $k$ sur $s_{sp}$ (grille 0,8-2), $w$ comme C2.
+Métriques : MAE (pt), score d'intervalle α = 0,1 (pt), couverture IC90 ;
+Δ contre gp seul et contre spatial seul, IC90 bootstrap par unité. Une
+combinaison est **recommandée** si elle bat les deux modèles seuls au score
+d'intervalle avec un IC90 de Δ entièrement < 0, sans MAE pire que gp de plus
+de 0,05 pt. Recommandation seulement : aucune modification du site.
+
+**Résultat B (2026-11-17, 171 couples, 13 unités ; `combinaison_spatial_gp_2022.json`)** :
+
+| méthode | MAE (pt) | score d'intervalle α = 0,1 (pt) | couverture IC90 |
+|---|---|---|---|
+| gp seul | 0,60 | 5,83 | 0,94 |
+| spatial seul | 0,77 | 4,30 | 0,82 |
+| **C1 centre gp, largeur spatial** | **0,60** | **3,84** | 0,87 |
+| C2 mélange (w_gp 0,30-0,45 hors coupure) | 0,67 | 4,68 | 0,95 |
+| C3 centres pondérés (w_gp 0,65-0,90, k 1,1-1,4) | 0,62 | 4,36 | 0,91 |
+
+Δ score d'intervalle de C1 : contre gp −1,98 [−2,52 ; −1,42], contre spatial
+−0,44 [−1,00 ; +0,14]. **Aucune combinaison ne passe la règle fixée** (IC90
+de Δ entièrement < 0 contre les DEUX modèles) : C1 bat nettement gp et prend
+ses centres, mais son avantage sur le spatial seul reste dans le bruit (13
+unités, une campagne). C1 est la meilleure candidate : à revoir sur 2017
+quand les dates 2017 seront disponibles (session données). Recommandation
+inchangée (synthèse ci-dessous) ; aucune modification du site.
+
 **Synthèse pour l'utilisateur (2026-11-16) : rôles du spatial et de
 gp-pooling dans le suivi du premier tour.** Tout ce qui suit est mesuré sur
 2022 (une seule campagne : indications, pas des lois) et 2027.
