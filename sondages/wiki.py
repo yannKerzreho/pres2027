@@ -205,6 +205,9 @@ def _top_level_split(s: str):
     return None, s
 
 
+_FILE_NS = re.compile(r"\s*:?\s*(fichier|file|image)\s*:", re.I)
+
+
 def _desamorce(raw: str) -> tuple[str, str | None, list[str], set[str]]:
     """Désamorce les templates connus ; renvoie (texte, URL externe, noms des
     wikiliens internes DANS L'ORDRE, noms des templates INCONNUS restants).
@@ -241,6 +244,16 @@ def _desamorce(raw: str) -> tuple[str, str | None, list[str], set[str]]:
             code.remove(ref)
         except ValueError:
             pass
+    # Photos d'en-tête `[[Fichier:...|alt=...|50x50px]]` (ajoutées sur la page
+    # 2027 le 2026-11-17) : un lien de fichier n'est jamais un candidat. Laissé
+    # en place, il passait pour le PREMIER wikilien de la cellule -> nom de
+    # candidat « alt=Nathalie Arthaud|50x50px » ou « 50x50px », tous les
+    # sondages 2026 du 1er tour rejetés par le garde-fou de somme.
+    for fl in code.filter_wikilinks(matches=lambda l: _FILE_NS.match(str(l.title))):
+        try:
+            code.remove(fl)
+        except ValueError:
+            pass
     ext = code.filter_external_links()
     url = str(ext[0].url) if ext else None
     links = code.filter_wikilinks()
@@ -269,15 +282,49 @@ def _link_name(link) -> str:
 _HR = re.compile(r"<hr\s*/?>", re.I)
 
 
+# Depuis le 2026-11-17, la cellule « Autres » de la page 2027 range ses petits
+# candidats dans une boîte déroulante INLINE :
+#   {{Boîte déroulante|titre=|contenu={{Nowrap|[[Natacha Polony|Polony]] 1,5}}<br/>{{Nowrap|[[Teddy Riner|Riner]] 4,5}} }}
+# Un couple « nom valeur » par {{Nowrap}}, séparés par <br> (et non <hr>). Non
+# dépliée, la cellule ne donnait qu'un candidat sur deux -> hypothèse sous
+# SUM_LO, rejetée. Le <br> n'est un séparateur QU'À L'INTÉRIEUR de cette boîte :
+# ailleurs il sépare la valeur du nom d'un même couple (« 3<br>[[Villepin]] »).
+_BR = re.compile(r"<br\s*/?>", re.I)
+_BOITE_INLINE_NAME = re.compile(r"^\s*bo[îi]te\s*d[ée]roulante\s*$", re.I)
+_NOWRAP_NAME = re.compile(r"^\s*nowrap\s*$", re.I)
+
+
+def _deplie_boite_inline(content: str) -> tuple[str, list[str]]:
+    """Remplace chaque {{Boîte déroulante|contenu=...}} par son contenu (et
+    {{Nowrap|x}} par x) ; renvoie (contenu déplié, segments à lire un par un —
+    vide s'il n'y avait pas de boîte)."""
+    code = mwph.parse(content)
+    boites = [t for t in code.filter_templates(recursive=False)
+              if _BOITE_INLINE_NAME.match(str(t.name)) and t.has("contenu")]
+    if not boites:
+        return content, []
+    segments: list[str] = []
+    for t in boites:
+        inner = mwph.parse(str(t.get("contenu").value))
+        for nw in inner.filter_templates(recursive=False):
+            if _NOWRAP_NAME.match(str(nw.name)) and nw.has("1"):
+                inner.replace(nw, str(nw.get("1").value))
+        inner_s = str(inner).strip()
+        segments.extend(s for s in _BR.split(inner_s) if s.strip())
+        code.replace(t, inner_s)
+    return str(code), segments
+
+
 def _parse_cell(raw: str) -> dict:
     attrs_str, content = _top_level_split(raw)
     attrs = {}
     if attrs_str is not None and "=" in attrs_str:
         for m in re.finditer(r'(\w+)\s*=\s*"?([^"\s]+)"?', attrs_str):
             attrs[m.group(1)] = m.group(2)
+    content, boite_segments = _deplie_boite_inline(content)
     text, url, linked_names, unknown = _desamorce(content)
     entries = []
-    segments = _HR.split(content)
+    segments = boite_segments or _HR.split(content)
     if len(segments) > 1:
         for seg in segments:
             s_text, _, s_links, _ = _desamorce(seg)
@@ -298,6 +345,12 @@ def _split_row_cells(line_block: str) -> list[str]:
                 continue
             sep = "!!" if marker == "!" else "||"
             cells.extend(line[1:].split(sep))
+        elif cells and line and line[:1] not in ("|", "!") and line[:2] != "{|":
+            # Ligne de CONTINUATION (sans marqueur de cellule) : en MediaWiki
+            # elle appartient à la cellule en cours. Ignorée, elle tronquait
+            # un modèle multi-lignes (`{{Boîte déroulante|contenu=` suivi des
+            # candidats à la ligne, page 2027 depuis le 2026-11-17).
+            cells[-1] += "\n" + line
     return cells
 
 
@@ -430,9 +483,17 @@ def extract_notices(grid: list[list[dict]], tour: str, hypothese_defaut: str | N
         n_meta += 1
     n_meta = max(n_meta, 3)  # Sondeur/Date/Échantillon toujours présents
     names_row = grid[header_idx + 1]
+    data_start = header_idx + 2
+    # Mise en page 2027 depuis le 2026-11-17 : les noms (photo + lien) sont
+    # dans la ligne « Sondeur » elle-même, la ligne suivante n'est que la
+    # bande de couleurs des partis. On le reconnaît à une ligne suivante sans
+    # aucun nom alors que la ligne d'en-tête en porte.
+    if (not any(_header_names(names_row[n_meta:]))
+            and any(_header_names(grid[header_idx][n_meta:]))):
+        names_row = grid[header_idx]
+        data_start = header_idx + 1
     candidates = _header_names(names_row[n_meta:])
 
-    data_start = header_idx + 2
     if data_start < len(grid):
         # ligne de couleurs (pure style) -> ignorée. Un test "toutes les
         # cellules vides" est fragile si une colonne d'en-tête (ex. "Autres")
