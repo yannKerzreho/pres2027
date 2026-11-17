@@ -1478,6 +1478,27 @@ signe est le même partout, mais aucune preuve forte n'est possible à ce
 niveau. Le défaut de hier (excès de confiance sur un candidat atypique,
 Pécresse) reste le point de vigilance.
 
+### 8.30 hier_maison avec cible recentrée par les effets maison (revue 17/11, point 3 ; 0 fit)
+
+La cible V1 (moyenne de sondages d'instituts connus) est recentrée tirage par
+tirage par $\bar u = n^{-1}\sum_d (u_{h_d,a} - u_{h_d,b})$, $u = \sigma_h z$ a
+posteriori ; seuls les instituts absents du fit gardent une variance maison
+(`recentre_maisons`, `var_effets_moyenne`). Re-fusion des 4 tâches 2022 :
+
+| paire | hier : erreur / CRPS / LS | maison recentré : erreur / CRPS / LS | concluant (hier / maison) |
+|---|---|---|---|
+| Macron–Le Pen | 4,04 / 2,73 / 1,48 | **2,14 / 1,25 / 2,45** | oui / oui (R̂ T2 4,0) |
+| Macron–Zemmour (phase 2) | **2,57 / 1,54 / 2,30** | 10,17 / 8,65 / −3,47 | oui / non |
+| Macron–Mélenchon | 0,28 / 2,15 / 1,50 | 0,14 / 1,72 / 1,76 | non / non |
+| Macron–Pécresse | **12,98 / 11,46** / −5 | 13,90 / 12,30 / −5 | oui / oui |
+
+Le recentrage déplace la cible de ≤ 1 pt (les effets des instituts de la
+cible sont petits). Sur les tâches concluantes des deux côtés : 1 gain (Le
+Pen), 1 perte (Pécresse) ; Zemmour (non convergé côté maison) déraille.
+**Conclusion : aucun gain établi, et la convergence du bloc T2 se dégrade
+(R̂ T2 jusqu'à 4).** Les effets maison ne sont pas adoptés dans la vraisemblance ;
+ils restent une source de variance connue (REML §8.23), non modélisée.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

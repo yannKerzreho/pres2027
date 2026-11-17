@@ -328,7 +328,7 @@ Résultats : `model/backtest/results/*.json` (committés).
 - [x] [FAIT 17/11, spec §8.29 : hier préférée, CRPS p = 0,04, LS plafonné p = 0,008, même signe 3/3 élections] (revue 17/11, 1/B) verdict abst/hier sur les 10 tâches : CRPS ou LS
       plafonné (−5) sur `tirages_predictifs`, inversion des signes par grappe
       d'élection, croisé avec τ_paire par variante (0 fit).
-- [ ] (revue 17/11, 3/A) hier_maison : recentrer la cible V1 avec les z_maison
+- [x] [FAIT 17/11, spec §8.30 : recentrage ≤ 1 pt ; 1 gain / 1 perte sur les concluantes, Zemmour déraille ⇒ non adopté] (revue 17/11, 3/A) hier_maison : recentrer la cible V1 avec les z_maison
       a posteriori des instituts de la cible, re-scorer les 4 tâches 2022 avec
       la règle d'exclusion de §8.20 (0 fit).
 - [ ] (revue 17/11, 2/C) V1 « X contre Y » : Mélenchon–Philippe (2 sondages),
@@ -442,6 +442,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-17 12:08Z (routine) : hier_maison recentré par les effets maison a posteriori (§8.30, 0 fit) : aucun gain établi.
 - 2026-11-17 11:08Z (routine) : verdict robuste abst/hier (§8.29, 0 fit) : hier préférée ; ETA_HIER_T2 = True, τ_paire = 0,08.
 - 2026-11-17 10:07-10:30Z (routine) : revue Opus quotidienne (10 points intégrés) ; verdict hier retiré, abst rétabli, τ_paire 0,11.
 - 2026-11-17 02:08-02:45Z (routine) : tri des pistes ; valeur inclusive sur le champ (§8.27, 16 fits) : sans effet. File : ne reste que des tâches bloquées par les données.

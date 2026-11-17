@@ -335,8 +335,9 @@ def v1_paire_retiree(election: int, nuts: dict, seule: tuple | None = None) -> l
         mod = duel_draws(fit, a, b, 0, scrutin=False)
         cible = _cible_par_chaine(mod, nuts.get("chains", 1))
         cible_df = duels[(duels.a == a) & (duels.b == b)]
-        dp = predictif_moyenne(mod, len(cible_df), 1000.0, fit.diagnostics.get("sigma_t2", 0.0),
-                               var_effets=var_effets_moyenne(fit, cible_df.institut))
+        mod_cible, inst_inconnus = recentre_maisons(fit, mod, a, b, cible_df.institut)
+        dp = predictif_moyenne(mod_cible, len(cible_df), 1000.0, fit.diagnostics.get("sigma_t2", 0.0),
+                               var_effets=var_effets_moyenne(fit, cible_df.institut, inst_inconnus))
         cible.update({"ic90_predictif": [round(float(v), 4) for v in np.percentile(dp, [5, 95])],
                       "couvre_predictif": bool(np.percentile(dp, 5) <= obs <= np.percentile(dp, 95)),
                       "log_score_predictif": round(_log_score(np.log(dp / (1 - dp)), obs), 3),
@@ -347,6 +348,7 @@ def v1_paire_retiree(election: int, nuts: dict, seule: tuple | None = None) -> l
         autres = tous[((tous.a.isin([a, b])) | (tous.b.isin([a, b]))) & ~((tous.a == a) & (tous.b == b))]
         out.append({"election": election, "paire": [a, b], "n_sondages_retires": int(n),
                     "observe_30j": round(obs, 4), "modele": round(float(mod.mean()), 4),
+                    "modele_recentre_maisons": round(float(mod_cible.mean()), 4),
                     "modele_ic90": [round(float(x), 4) for x in np.percentile(mod, [5, 95])],
                     "geometrie_seule": round(float(geo.mean()), 4), "bradley_terry": round(bt, 4),
                     "autres_duels_des_deux": int(len(autres)), **cible, **_diag(fit, dt)})
@@ -377,15 +379,37 @@ def _cible_par_chaine(d: np.ndarray, n_chaines: int) -> dict:
     return out
 
 
-def var_effets_moyenne(fit, instituts) -> float:
+def recentre_maisons(fit, d: np.ndarray, a: str, b: str, instituts):
+    """§8.28 / revue 17/11 point 3 : la cible est une moyenne de sondages
+    d'instituts connus ; on la recentre tirage par tirage par leurs effets
+    maison a posteriori, u_{h,a} − u_{h,b}. Instituts absents du fit : effet
+    non appris, laissé en variance. Renvoie (tirages, liste des inconnus)."""
+    if fit.maison_draws is None or not fit.maisons or len(instituts) == 0:
+        return d, list(instituts)
+    ci = {c: k for k, c in enumerate(fit.candidates)}
+    hi = {h: k for k, h in enumerate(fit.maisons)}
+    U = fit.maison_draws                                        # (S, H, N)
+    dec, inconnus = np.zeros(len(d)), []
+    for h in instituts:
+        if str(h) in hi:
+            dec += U[:, hi[str(h)], ci[a]] - U[:, hi[str(h)], ci[b]]
+        else:
+            inconnus.append(h)
+    return np.clip(d + dec / len(instituts), 1e-4, 1 - 1e-4), inconnus
+
+
+def var_effets_moyenne(fit, instituts, inconnus=None) -> float:
     """Var. des effets maison/notice d'une moyenne de n duels d'une même paire
-    (§8.23 bis) : [2σ_h² Σ_h n_h² + 2σ_n² n] / n² (σ_h = 0 : effet notice seul)."""
+    (§8.23 bis) : [2σ_h² Σ_h n_h² + 2σ_n² n] / n² (σ_h = 0 : effet notice seul).
+    `inconnus` : si donné, seuls ces instituts portent une variance maison (les
+    autres ont été recentrés par `recentre_maisons`)."""
     sn = fit.diagnostics.get("sigma_notice_t2")
     if sn is None or len(instituts) == 0:
         return 0.0
     sh = fit.diagnostics.get("sigma_maison_t2") or 0.0
     n = len(instituts)
-    nh = pd.Series(list(instituts)).value_counts().to_numpy(float)
+    base = list(instituts) if inconnus is None or fit.maison_draws is None else list(inconnus)
+    nh = pd.Series(base).value_counts().to_numpy(float) if base else np.zeros(0)
     return float((2 * sh ** 2 * (nh ** 2).sum() + 2 * sn ** 2 * n) / n ** 2)
 
 

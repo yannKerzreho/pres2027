@@ -52,6 +52,8 @@ class SpatialPoolingFit:
     as_of: str | None = None
     duel_pairs: list | None = None           # paires effectivement observées
     masque_lse: np.ndarray | None = None     # (N,) champ de la valeur inclusive (§8.27)
+    maison_draws: np.ndarray | None = None   # (S, H, N) effet maison u = σ_h·z (§8.23 bis)
+    maisons: list | None = None              # noms d'instituts, ordre des H
     # Diagnostic : part prédite de chaque duel observé à sa date (S, D) et les
     # duels eux-mêmes (sortie de `build_duel_arrays`). Aucun usage en production.
     w_path_draws: np.ndarray | None = None   # (S, N, T) chemin de w (tracker, spec_spatial_pooling §10)
@@ -152,6 +154,7 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         if eta_hier:
             kwargs["eta_hier"] = True
         masque_lse = None
+        noms_maisons = None
         if lse_champ and abstention:
             # §8.27 : valeur inclusive sur le champ modal du T1 (pas tout le roster).
             from collections import Counter
@@ -162,6 +165,7 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
             kwargs["masque_lse"] = jnp.asarray(masque_lse)
         if effets_maison or effet_notice_seul:
             kwargs.update(arrays_effets_maison(raw_t2, duels))
+            noms_maisons = kwargs.pop("_noms_maisons")
             if effet_notice_seul:
                 kwargs["n_maisons"] = 0
     t0 = time.time()
@@ -244,6 +248,10 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         dynamic=np.asarray(part >= seuil_dynamique), tau_ou=tau_ou, as_of=as_of,
         duel_pairs=sorted(set(duels["pairs"])) if has_t2 else [],
         masque_lse=masque_lse if has_t2 else None,
+        maison_draws=(np.asarray(samples["z_maison_t2"]).reshape(-1, *np.asarray(samples["z_maison_t2"]).shape[-2:])
+                      * np.asarray(samples["sigma_maison_t2"]).reshape(-1, 1, 1)
+                      if "z_maison_t2" in samples else None),
+        maisons=noms_maisons if (has_t2 and (effets_maison or effet_notice_seul)) else None,
         w_path_draws=(np.asarray(samples["w_path"]).reshape(-1, N, np.asarray(samples["w_path"]).shape[-1])
                       if "w_path" in samples else None),
         # La base OU a une colonne de plus que les dates de sondage : `as_of`.
@@ -359,6 +367,7 @@ def arrays_effets_maison(raw_t2: pd.DataFrame, duels: dict) -> dict:
         blocs[j, :len(g)] = g
         Kb[j, :len(g), :len(g)] = noyau_effets(a[g], b[g], ["x"] * len(g))
     return {"duel_maison": jnp.asarray(np.array([codes[h] for h in noms])), "n_maisons": len(codes),
+            "_noms_maisons": sorted(codes),
             "duel_blocs": jnp.asarray(blocs), "duel_K_blocs": jnp.asarray(Kb)}
 
 
