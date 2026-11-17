@@ -123,6 +123,7 @@ def main() -> None:
     ap.add_argument("--notice-entiere", action="store_true", help="spec §8.16")
     ap.add_argument("--placebo", action="store_true", help="spec §8.21")
     ap.add_argument("--notice-partielle", action="store_true", help="spec §8.21")
+    ap.add_argument("--graine", type=int, default=821, help="tirage du sous-échantillon (§8.21)")
     a = ap.parse_args()
     if a.lister:
         for t in PAIRES + CANDIDATS:
@@ -130,12 +131,13 @@ def main() -> None:
         return
     raw = load_raw_polls(tour=None)
     train, t_k, obs = jeu_de_donnees(raw, a.tache, a.notice_entiere, a.placebo,
-                                     a.notice_partielle)
+                                     a.notice_partielle, seed=a.graine)
     nom = a.tache.replace("candidat:", "cand-").replace("|", "-").replace(" ", "_")
     out = sr.OUT_DIR / (f"v1_2027_{a.variante}_{nom}" + ("_init" if a.init_depuis else "")
                         + ("_notice" if a.notice_entiere else "")
                         + ("_placebo" if a.placebo else "")
-                        + ("_partielle" if a.notice_partielle else "") + ".json")
+                        + ("_partielle" if a.notice_partielle else "")
+                        + (f"_g{a.graine}" if a.graine != 821 else "") + ".json")
     base = sr.CHAINES_DIR / out.stem
     nuts = dict(draws=400, tune=600, chains=4)
     if a.chaine is not None:

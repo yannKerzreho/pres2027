@@ -333,7 +333,7 @@ Résultats : `model/backtest/results/*.json` (committés).
       la règle d'exclusion de §8.20 (0 fit).
 - [x] [FAIT 17/11, spec §8.31 : hier 36,2 contre 36,5 (erreur 0,3 pt), τ_paire ne fait que coûter] (revue 17/11, 2/C) V1 « X contre Y » : Mélenchon–Philippe (2 sondages),
       abst, 4 chaînes (~15 min) — seul type de paire qui reçoit ν en production.
-- [ ] (revue 17/11, 6) variance de graine du sous-échantillon : bras notice
+- [ ] [EN COURS (début 2026-11-17T14:10Z) : graines 822, 823] (revue 17/11, 6) variance de graine du sous-échantillon : bras notice
       partielle Attal–Le Pen avec 2 graines de plus (8 fits).
 - [ ] (revue 17/11, C) sensibilité de P(élu) sur le champ modal : décalage
       anti-RN 0/−1/−2/−3 pt × τ_paire 0,11/0,19 (éclaire l'arbitrage 2, ne le
