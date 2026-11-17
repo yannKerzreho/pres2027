@@ -335,7 +335,7 @@ Résultats : `model/backtest/results/*.json` (committés).
       abst, 4 chaînes (~15 min) — seul type de paire qui reçoit ν en production.
 - [x] [FAIT 17/11, spec §8.32 : erreurs 3,5 / 4,0 / 6,4 pt selon la graine, sd ≈ 1,6 pt ; gain Attal non robuste] (revue 17/11, 6) variance de graine du sous-échantillon : bras notice
       partielle Attal–Le Pen avec 2 graines de plus (8 fits).
-- [ ] (revue 17/11, C) sensibilité de P(élu) sur le champ modal : décalage
+- [ ] [EN COURS (début 2026-11-17T15:15Z) : diagnostic_2027 hier, 1 fit] (revue 17/11, C) sensibilité de P(élu) sur le champ modal : décalage
       anti-RN 0/−1/−2/−3 pt × τ_paire 0,11/0,19 (éclaire l'arbitrage 2, ne le
       tranche pas ; 0-1 fit).
 - [ ] (revue, 9) τ_T2 : a posteriori sur 2002-2022 (normale vs Student-t),

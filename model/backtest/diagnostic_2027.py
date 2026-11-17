@@ -107,12 +107,14 @@ def diagnostic(variante: str = "abst", draws: int = 400, tune: int = 600, seed: 
     h1 = max(int((ELECTION_T1 - t_now).days), 0)
     pe = p_elu(fit, mask, h1, h2)
     pe_u = p_elu(fit, mask, h1, h2, alea_unique=True)        # spec §7.1
+    sens = {f"rn{d:+.0f}_tau{tp}": p_elu(fit, mask, h1, h2, tau_paire=tp, decalage_rn_pt=d)["p_elu"]
+            for d in (0.0, 1.0, 2.0, 3.0) for tp in (0.08, 0.11, 0.19)}   # §8.33
 
     return {"as_of": as_of, "variante": variante, "draws": draws, "tune": tune, "seed": seed,
             "diagnostics": fit.diagnostics, "corr_logkappa_eta": corr_k_eta,
             "global": _stats(df), "par_paire": par_paire, "par_institut": par_institut,
             "par_candidat": par_candidat, "p_elu_champ_modal": pe,
-            "p_elu_champ_modal_alea_unique": pe_u,
+            "p_elu_champ_modal_alea_unique": pe_u, "sensibilite_p_elu": sens,
             "champ_modal": [fit.candidates[i] for i in modal],
             "residus": [{k: (str(v.date()) if k == "date" else (round(float(v), 4) if isinstance(v, (float, np.floating)) else v))
                          for k, v in r.items()} for r in df.drop(columns=["a"]).to_dict("records")]}

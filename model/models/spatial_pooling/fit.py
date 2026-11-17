@@ -444,7 +444,8 @@ def resume_duel(fit: SpatialPoolingFit, a: str, b: str, horizon_days: float,
 
 
 def p_elu(fit: SpatialPoolingFit, mask: np.ndarray, horizon_t1: int, horizon_t2: int,
-          seed: int = 27, alea_unique: bool = False) -> dict:
+          seed: int = 27, alea_unique: bool = False, tau_paire: float | None = None,
+          decalage_rn_pt: float = 0.0, rn: tuple = ("Le Pen", "Bardella")) -> dict:
     """P(élu) pour le champ `mask` (spec §7) : tirage par tirage, T1 projeté au
     scrutin -> deux premiers -> duel projeté au second tour -> vainqueur. Les
     deux étapes partagent le tirage de (mu, sigma, w, kappa, eta)."""
@@ -476,7 +477,15 @@ def p_elu(fit: SpatialPoolingFit, mask: np.ndarray, horizon_t1: int, horizon_t2:
     sondees = {frozenset(p) for p in (fit.duel_pairs or [])}
     jamais = np.array([frozenset((fit.candidates[x], fit.candidates[y])) not in sondees
                        for x, y in zip(ia, ib)])
-    z = z + jamais * np.random.default_rng(seed + 4).normal(0.0, TAU_PAIRE, len(s))
+    tp = TAU_PAIRE if tau_paire is None else tau_paire
+    z = z + jamais * np.random.default_rng(seed + 4).normal(0.0, tp, len(s))
+    if decalage_rn_pt:
+        # Sensibilité (§8.33), PAS un réglage : erreur de sondage anti-RN de
+        # `decalage_rn_pt` points de duel (≈ pt / 24,75 en logit autour de 45 %),
+        # signée du point de vue du candidat RN.
+        est_rn_a = np.array([fit.candidates[x] in rn for x in ia])
+        est_rn_b = np.array([fit.candidates[x] in rn for x in ib])
+        z = z + (decalage_rn_pt / 24.75) * (est_rn_a.astype(float) - est_rn_b.astype(float))
     s = 1.0 / (1.0 + np.exp(-z))
     elu = np.where(s > 0.5, ia, ib)
     S = len(elu)
