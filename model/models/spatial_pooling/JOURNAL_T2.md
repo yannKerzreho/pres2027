@@ -445,6 +445,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-17 16:20Z (routine) : main fusionnée (maj quotidienne : 92 notices, dernier terrain 13/11) ; tests verts hors test réseau. File : seule reste τ_T2 2002-2012 (bloquée données).
 - 2026-11-17 15:08-16:20Z (routine) : sensibilité de P(élu) (§8.33, 2 fits) : τ_paire sans effet ; anti-RN −3 pt ⇒ Le Pen −5,6 pt de P(élu).
 - 2026-11-17 14:08-14:25Z (routine) : variance de graine du sous-échantillon (§8.32, 8 fits) : ≈ 1,6 pt.
 - 2026-11-17 13:08-13:25Z (routine) : V1 Mélenchon–Philippe (§8.31, 8 fits) : erreur 0,3 pt.
