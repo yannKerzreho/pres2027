@@ -1399,6 +1399,13 @@ niveau moyen. **Mesure** : V1 2027 sur les 4 tâches dédoublonnées (§8.20),
 `hier_champ` contre hier, log-score KDE ; retenu si meilleur sur ≥ 3/4 sans
 perte d'erreur moyenne.
 
+**Résultat §8.27 (2026-11-17, V1 2027, hier contre hier_champ)** : centres
+identiques à ≤ 0,2 pt sur les 4 tâches (erreur moyenne 2,28 / 2,29 pt ;
+log-score KDE Σ 8,04 / 8,02 ; meilleur sur 1/4) ⇒ **non retenu, sans objet**.
+Raison : ω ≈ −4,2 à −4,6, l'abstention différentielle est faible et la valeur
+inclusive pèse peu ; des alias quasi superposés n'ajoutent qu'au plus log k à
+lse, absorbé par ω.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
