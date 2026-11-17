@@ -18,9 +18,10 @@ l'historique, ajouter en bas de « Historique ».
   sans accord explicite de l'utilisateur.
 - Modèle courant : géométrie T1 + κ + valence η agrégée + abstention par valeur
   inclusive (ω). Variantes de backtest : `eta`, `geo` (η ≡ 0), `geo1` (κ ≡ 1),
-  `hier` (échelle de η apprise) — verdict §8.20 RETIRÉ (revue 17/11, §8.28 :
-  test exact p = 0,0625, non établi) ⇒ `abst` reste le défaut (`ETA_HIER_T2 =
-  False`) ; τ_paire = 0,11 (calibrage abst).
+  `hier` (échelle de η apprise) — verdict §8.20 retiré (revue 17/11) puis
+  REFAIT selon le protocole robuste §8.29 (10 tâches, CRPS + LS plafonné,
+  inversion des signes) : **hier préférée** (p = 0,04 / 0,008, même signe sur
+  les 3 élections ; grappes p = 1/8) ⇒ `ETA_HIER_T2 = True`, τ_paire = 0,08.
 - Backtests : cadre historique à toutes les hypothèses T1 (§8.3) ; 4 processus
   d'une chaîne + fusion ; sélection des chaînes par log-densité (§8.8) ;
   phase 2 `--init-depuis` ; convergence jugée sur la quantité prédite (§8.4).
@@ -324,7 +325,7 @@ Résultats : `model/backtest/results/*.json` (committés).
       tirages sauvés) ou max local + Laplace par chaîne — maths dans la spec.
 - [x] (revue, e) [FAIT 19:05Z (spec §8.16) : fuite comptée (74/86), mais retirer les notices entières ne dégrade pas l'erreur des centres ; seuls les IC s'élargissent ⇒ V1 non gonflée par la fuite] V1 en retirant la NOTICE entière (fuite même-répondants) :
       comptage sans fit, puis 4 fits.
-- [ ] (revue 17/11, 1/B) verdict abst/hier sur les 10 tâches : CRPS ou LS
+- [x] [FAIT 17/11, spec §8.29 : hier préférée, CRPS p = 0,04, LS plafonné p = 0,008, même signe 3/3 élections] (revue 17/11, 1/B) verdict abst/hier sur les 10 tâches : CRPS ou LS
       plafonné (−5) sur `tirages_predictifs`, inversion des signes par grappe
       d'élection, croisé avec τ_paire par variante (0 fit).
 - [ ] (revue 17/11, 3/A) hier_maison : recentrer la cible V1 avec les z_maison
@@ -377,11 +378,11 @@ vue », sur les propositions de la session locale) :
 1. τ_T2 → **0,19** (élargir ; centres inchangés).
 2. Biais anti-RN → **NON corrigé** (deux élections, estimation fragile).
 3. Lissage → **inchangé** (pas de τ_OU T2 plus court).
-- ARBITRAGE À TRANCHER (mis à jour 2026-11-17, τ_paire, spec §8.22/§8.28) :
-  avec abst (défaut rétabli), le calibrage V1 2027 donne **0,11** (appliqué,
-  dans la fourchette 0,10-0,15 validée) ; avec 2017-2022 et hier, **0,19**
-  (Pécresse). La courbe est plate et les 4 tâches 2027 sont toutes « RN contre
-  X » : les données ne tranchent pas. 0,11 (2027) ou 0,19 (garde-fou passé) ?
+- ARBITRAGE À TRANCHER (mis à jour 2026-11-17 11:20Z, τ_paire, spec §8.22/§8.29) :
+  variante hier (défaut, §8.29) ⇒ calibrage V1 2027 **0,08** (appliqué, SOUS la
+  fourchette 0,10-0,15 validée) ; abst donnerait 0,11 ; avec 2017-2022, hier
+  demande **0,19** (Pécresse). Courbe plate, 4 tâches toutes « RN contre X » :
+  les données ne tranchent pas. 0,08, 0,10-0,15 ou 0,19 ?
 - À PRÉSENTER À L'UTILISATEUR (revue 17/11, point 9) : « gp pour le niveau,
   spatial pour les IC » est un choix de présentation du site.
 4. τ_paire → **ADOPTÉ** pour les seuls duels jamais sondés, calibré en
@@ -441,6 +442,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-17 11:08Z (routine) : verdict robuste abst/hier (§8.29, 0 fit) : hier préférée ; ETA_HIER_T2 = True, τ_paire = 0,08.
 - 2026-11-17 10:07-10:30Z (routine) : revue Opus quotidienne (10 points intégrés) ; verdict hier retiré, abst rétabli, τ_paire 0,11.
 - 2026-11-17 02:08-02:45Z (routine) : tri des pistes ; valeur inclusive sur le champ (§8.27, 16 fits) : sans effet. File : ne reste que des tâches bloquées par les données.
 - 2026-11-17 01:10Z (routine) : idée B (combinaison spatial/gp, 0 fit) : C1 meilleure, non établie.

@@ -124,3 +124,49 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+
+# --- §8.29 : verdict robuste sur les 10 tâches -----------------------------------
+
+def crps_tirages(t: np.ndarray, y: float) -> float:
+    """CRPS empirique (pt) : E|X − y| − ½ E|X − X'| (forme triée, O(T log T))."""
+    x = np.sort(np.asarray(t, float))
+    n = len(x)
+    e1 = np.abs(x - y).mean()
+    e2 = 2.0 * np.sum(x * (2 * np.arange(1, n + 1) - n - 1)) / n ** 2
+    return float(100 * (e1 - 0.5 * e2))
+
+
+def inversion_signes(d: np.ndarray) -> float:
+    """p unilatéral exact (moyenne > 0) par inversion des signes."""
+    import itertools
+    d = np.asarray(d, float)
+    m = d.mean()
+    tot = [np.mean(np.array(s) * np.abs(d)) >= m - 1e-12 for s in itertools.product([1, -1], repeat=len(d))]
+    return float(np.mean(tot))
+
+
+def verdict_robuste() -> dict:
+    rows = []
+    for e, nom, f in TACHES:
+        r = {"election": e, "tache": nom}
+        for v in ("abst", "hier"):
+            li = _ligne(f[v] if isinstance(f, dict) else f.format(v=v))
+            t = np.asarray(li["tirages_predictifs"]); y = li["observe_30j"]
+            r[v] = {"crps": round(crps_tirages(t, y), 3), "ls_plafonne": round(max(log_score_kde(t, y), -5.0), 3),
+                    "concluant": bool(li.get("concluant", False))}
+        r["d_crps"] = round(r["abst"]["crps"] - r["hier"]["crps"], 3)          # > 0 : hier meilleur
+        r["d_ls"] = round(r["hier"]["ls_plafonne"] - r["abst"]["ls_plafonne"], 3)
+        rows.append(r)
+    out = {"taches": rows}
+    for k in ("d_crps", "d_ls"):
+        d = np.array([r[k] for r in rows])
+        par_e = {e: float(np.mean([r[k] for r in rows if r["election"] == e])) for e in (2017, 2022, 2027)}
+        out[k] = {"moyenne": round(float(d.mean()), 3), "hier_meilleur": int((d > 0).sum()),
+                  "p_taches": round(inversion_signes(d), 4),
+                  "par_election": {e: round(v, 3) for e, v in par_e.items()},
+                  "p_grappes": round(inversion_signes(np.array(list(par_e.values()))), 4)}
+    ok = all(out[k]["p_taches"] <= 0.10 and all(v > 0 for v in out[k]["par_election"].values())
+             for k in ("d_crps", "d_ls"))
+    out["verdict"] = "hier préférée" if ok else "pas de différence établie : abst reste le défaut"
+    return out

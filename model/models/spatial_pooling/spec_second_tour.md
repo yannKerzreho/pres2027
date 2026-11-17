@@ -1415,7 +1415,7 @@ lse, absorbé par ω.
   concluantes dépend de la variante (Δ̄ = −1,16 sur les 8 tâches où hier
   converge, +0,51 sur les 7 où abst converge). ⇒ **pas de différence établie ;
   `abst` redevient le défaut** (`ETA_HIER_T2 = False`). À refaire : 10 tâches,
-  CRPS ou log-score plafonné, inversion des signes par grappe d'élection.
+  CRPS ou log-score plafonné, inversion des signes par grappe d'élection. **[Fait §8.29 : hier préférée.]**
 - **§8.22 (τ_paire)** : la valeur suit la variante par défaut — **0,11 avec
   abst** (gain hors échantillon +0,17), dans la fourchette 0,10-0,15 validée par
   l'utilisateur ; 0,08 n'était valable que pour hier. La courbe est plate
@@ -1447,6 +1447,36 @@ lse, absorbé par ω.
   la base 2022 n'était pas concluante.
 - **§8.26** : LOO par IS tronqué sans diagnostic de Pareto k, sur observations
   à latents locaux : poids peu fiables ; décision inchangée (sans conséquence).
+
+### 8.29 Verdict abst/hier robuste (revue 17/11, point 1 ; protocole fixé avant résultat)
+
+Les **10 tâches** de §8.20, concluantes ou non (le critère de convergence est
+rapporté, pas filtré, puisqu'il dépend de la variante). Scores par tâche :
+(i) CRPS des tirages prédictifs, $\mathrm{CRPS} = \mathbb E|X-y| - \tfrac12\mathbb E|X-X'|$
+(pt ; plus petit = meilleur, borné, insensible aux queues) ; (ii) log-score
+KDE plafonné à −5. Écart apparié Δ_j (hier − abst, signe tel que > 0 = hier
+meilleur). Inférence : test exact d'**inversion des signes** (a) sur les 10
+tâches, (b) sur les 3 grappes d'élection (moyennes par élection, 2³ = 8
+configurations, p minimal 1/8). Règle : hier préférée si le CRPS ET le LS
+plafonné donnent p ≤ 0,10 en (a) ET le même signe sur les 3 élections ; sinon
+« pas de différence établie », abst reste. τ_paire croisé : on rapporte le
+τ* (V1 2027) de chaque variante.
+
+**Résultat §8.29 (2026-11-17, `verdict_abst_hier_robuste.json`)** :
+
+| | Δ moyen (> 0 = hier meilleur) | hier meilleur | p (10 tâches) | par élection 2017 / 2022 / 2027 | p (3 grappes) |
+|---|---|---|---|---|---|
+| CRPS (pt) | +0,97 | 8/10 | **0,042** | +1,15 / +1,22 / +0,65 | 0,125 (minimum possible) |
+| LS KDE plafonné (−5) | +0,67 | 8/10 | **0,008** | +0,62 / +0,98 / +0,39 | 0,125 |
+
+Seul revers net : Macron–Pécresse en CRPS (−1,77 pt ; en LS les deux sont au
+plafond). **Selon la règle fixée d'avance, hier est préférée** ; elle redevient
+la variante T2 (`ETA_HIER_T2 = True`) et τ_paire suit son calibrage (0,08).
+Réserves : les tâches d'une même élection sont corrélées (mêmes données) ; au
+niveau des grappes, p = 1/8 est le minimum atteignable avec 3 élections — le
+signe est le même partout, mais aucune preuve forte n'est possible à ce
+niveau. Le défaut de hier (excès de confiance sur un candidat atypique,
+Pécresse) reste le point de vigilance.
 
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 

@@ -25,3 +25,11 @@ def test_kde_bimodale_bat_la_gaussienne_au_mode():
 
 def test_bootstrap_constant():
     assert bootstrap(np.full(5, 0.3)) == [0.3, 0.3]
+
+
+def test_crps_et_inversion_des_signes():
+    from model.backtest.verdict_abst_hier import crps_tirages, inversion_signes
+    x = np.random.default_rng(0).normal(0.5, 0.01, 20000)
+    assert abs(crps_tirages(x, 0.5) - 100 * 0.01 * 0.2337) < 0.01
+    assert inversion_signes(np.array([1.0, 1.0, 1.0])) == 0.125
+    assert inversion_signes(np.array([1.0, -1.0])) == 0.75

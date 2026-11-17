@@ -1,0 +1,187 @@
+{
+ "taches": [
+  {
+   "election": 2017,
+   "tache": "Macron–Le Pen",
+   "abst": {
+    "crps": 3.468,
+    "ls_plafonne": 0.905,
+    "concluant": true
+   },
+   "hier": {
+    "crps": 1.767,
+    "ls_plafonne": 1.727,
+    "concluant": true
+   },
+   "d_crps": 1.701,
+   "d_ls": 0.822
+  },
+  {
+   "election": 2017,
+   "tache": "Fillon–Le Pen",
+   "abst": {
+    "crps": 3.972,
+    "ls_plafonne": 0.892,
+    "concluant": false
+   },
+   "hier": {
+    "crps": 3.371,
+    "ls_plafonne": 1.302,
+    "concluant": false
+   },
+   "d_crps": 0.601,
+   "d_ls": 0.41
+  },
+  {
+   "election": 2022,
+   "tache": "Macron–Zemmour",
+   "abst": {
+    "crps": 3.053,
+    "ls_plafonne": 1.536,
+    "concluant": true
+   },
+   "hier": {
+    "crps": 1.535,
+    "ls_plafonne": 2.298,
+    "concluant": true
+   },
+   "d_crps": 1.518,
+   "d_ls": 0.762
+  },
+  {
+   "election": 2022,
+   "tache": "Macron–Mélenchon",
+   "abst": {
+    "crps": 3.038,
+    "ls_plafonne": 1.072,
+    "concluant": true
+   },
+   "hier": {
+    "crps": 2.149,
+    "ls_plafonne": 1.503,
+    "concluant": false
+   },
+   "d_crps": 0.889,
+   "d_ls": 0.431
+  },
+  {
+   "election": 2022,
+   "tache": "Macron–Pécresse",
+   "abst": {
+    "crps": 9.686,
+    "ls_plafonne": -5.0,
+    "concluant": false
+   },
+   "hier": {
+    "crps": 11.457,
+    "ls_plafonne": -5.0,
+    "concluant": true
+   },
+   "d_crps": -1.771,
+   "d_ls": 0.0
+  },
+  {
+   "election": 2022,
+   "tache": "Macron–Le Pen",
+   "abst": {
+    "crps": 6.957,
+    "ls_plafonne": -1.25,
+    "concluant": false
+   },
+   "hier": {
+    "crps": 2.732,
+    "ls_plafonne": 1.481,
+    "concluant": true
+   },
+   "d_crps": 4.225,
+   "d_ls": 2.731
+  },
+  {
+   "election": 2027,
+   "tache": "Le Pen–Philippe",
+   "abst": {
+    "crps": 0.459,
+    "ls_plafonne": 3.145,
+    "concluant": true
+   },
+   "hier": {
+    "crps": 0.573,
+    "ls_plafonne": 3.224,
+    "concluant": true
+   },
+   "d_crps": -0.114,
+   "d_ls": 0.079
+  },
+  {
+   "election": 2027,
+   "tache": "Le Pen–Mélenchon",
+   "abst": {
+    "crps": 2.135,
+    "ls_plafonne": 1.255,
+    "concluant": true
+   },
+   "hier": {
+    "crps": 2.097,
+    "ls_plafonne": 0.9,
+    "concluant": true
+   },
+   "d_crps": 0.038,
+   "d_ls": -0.355
+  },
+  {
+   "election": 2027,
+   "tache": "Glucksmann–Le Pen",
+   "abst": {
+    "crps": 1.001,
+    "ls_plafonne": 2.59,
+    "concluant": true
+   },
+   "hier": {
+    "crps": 0.714,
+    "ls_plafonne": 2.932,
+    "concluant": true
+   },
+   "d_crps": 0.287,
+   "d_ls": 0.342
+  },
+  {
+   "election": 2027,
+   "tache": "Attal–Le Pen",
+   "abst": {
+    "crps": 5.388,
+    "ls_plafonne": -0.525,
+    "concluant": true
+   },
+   "hier": {
+    "crps": 3.018,
+    "ls_plafonne": 0.983,
+    "concluant": true
+   },
+   "d_crps": 2.37,
+   "d_ls": 1.508
+  }
+ ],
+ "d_crps": {
+  "moyenne": 0.974,
+  "hier_meilleur": 8,
+  "p_taches": 0.042,
+  "par_election": {
+   "2017": 1.151,
+   "2022": 1.215,
+   "2027": 0.645
+  },
+  "p_grappes": 0.125
+ },
+ "d_ls": {
+  "moyenne": 0.673,
+  "hier_meilleur": 8,
+  "p_taches": 0.0078,
+  "par_election": {
+   "2017": 0.616,
+   "2022": 0.981,
+   "2027": 0.394
+  },
+  "p_grappes": 0.125
+ },
+ "verdict": "hier préférée"
+}
