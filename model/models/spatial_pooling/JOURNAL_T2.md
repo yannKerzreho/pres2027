@@ -342,7 +342,12 @@ Résultats : `model/backtest/results/*.json` (committés).
       éditorial, à faire trancher par l'utilisateur (ne pas coder de biais).
 - [x] [FAIT 16/11, spec §8.24] Synthèse dans spec §8 : V1 MAE modèle / géométrie seule / BT ; V2 couverture,
       log-score vs sondages ; R-hat, rhat_t2, κ, ω, η ; corrélation κ–η.
-- [ ] Puis pistes (choisir selon les résultats, maths dans la spec AVANT le code) :
+- [ ] [TRI 17/11 02:15Z : entre-deux-tours FAIT §8.25 ; aléa unique FAIT §7.1 ;
+      effet notice FAIT §8.23 bis ; κ = 1 SANS OBJET (corr(log κ, η) ≤ 0,17 en 2027,
+      pas de crête) ; η partagé Le Pen/Bardella NON MESURABLE (les V1 Bardella sont
+      inexécutables, §8.13) ; τ_T2 leave-one-election-out et tableaux croisés :
+      BLOQUÉS données ; valeur inclusive sur le champ EN COURS (début
+      2026-11-17T02:20Z, §8.27, 16 fits V1 2027)] Puis pistes (choisir selon les résultats, maths dans la spec AVANT le code) :
   - entre-deux-tours conditionné sur le résultat T1 (nœud quasi exact) ;
   - P(élu) à aléa unique (w projeté au T1 -> π(T1) -> prolongé au T2) ;
   - η hiérarchique partagé Le Pen/Bardella (bloc), V1 sur paires sans autre duel ;

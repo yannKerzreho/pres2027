@@ -271,3 +271,15 @@ def test_forme_par_blocs_egale_la_mvn_pleine_pour_l_effet_notice():
         tot -= multivariate_normal(np.zeros((~m).sum()), np.eye((~m).sum())).logpdf(np.zeros((~m).sum())) if (~m).any() else 0.0
     assert abs(tot - full) < 1e-8
     assert arr["n_maisons"] == 2
+
+
+def test_valeur_inclusive_sur_le_champ():
+    """§8.27 : masque plein = roster ; retirer un candidat du champ change le duel."""
+    from model.models.spatial_pooling.fit import duel_draws
+    f = _fit()
+    f.omega_draws = np.full(len(f.mu_draws), -3.0)
+    a = duel_draws(f, "C", "D", 0, scrutin=False)
+    f.masque_lse = np.ones(3)
+    assert np.allclose(duel_draws(f, "C", "D", 0, scrutin=False), a)
+    f.masque_lse = np.array([1e-30, 1.0, 1.0])
+    assert not np.allclose(duel_draws(f, "C", "D", 0, scrutin=False), a)

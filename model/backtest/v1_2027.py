@@ -25,7 +25,7 @@ from model.models.spatial_pooling.roster import split_tours
 PAIRES = ["Le Pen|Philippe", "Le Pen|Mélenchon", "Attal|Le Pen", "Glucksmann|Le Pen",
           "Bardella|Philippe", "Bardella|Mélenchon", "Attal|Bardella", "Hollande|Le Pen"]
 CANDIDATS = ["candidat:Attal", "candidat:Bardella"]
-VARIANTES = {"abst": {}, "hier": {"eta_hier": True}}
+VARIANTES = {"abst": {}, "hier": {"eta_hier": True}, "hier_champ": {"eta_hier": True, "lse_champ": True}}
 FENETRE = 30
 PLACEBO_INFO: dict = {}
 

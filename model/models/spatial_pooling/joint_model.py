@@ -75,7 +75,8 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
                              duel_n=None, duel_date_idx=None, duel_maison=None, n_maisons=None,
                              duel_blocs=None, duel_K_blocs=None, eta_scale=ETA_SCALE,
                              kappa_log_scale=KAPPA_LOG_SCALE, sigma_t2_prior=SIGMA_T2_PRIOR,
-                             abstention=True, omega_prior=OMEGA_PRIOR, eta_hier=False):
+                             abstention=True, omega_prior=OMEGA_PRIOR, eta_hier=False,
+                             masque_lse=None):
     """Le modèle. Inférence JOINTE de la géométrie et du chemin de `w`.
 
     Trois paramètres par candidat, deux échelles globales, aucun bloc :
@@ -187,7 +188,9 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
         A_a, A_b = A_all[rows, duel_a], A_all[rows, duel_b]
         if abstention:
             omega = numpyro.sample("omega", dist.Normal(*omega_prior))
-            lse = jax.nn.logsumexp(A_all, axis=1)                # valeur inclusive (D, B)
+            # valeur inclusive (D, B) ; `masque_lse` : sur le CHAMP seulement (§8.27)
+            lse = jax.nn.logsumexp(A_all if masque_lse is None
+                                   else A_all + jnp.log(masque_lse)[None, :, None], axis=1)
             s = duel_shares(A_a, A_b, kappa, eta[duel_a], eta[duel_b], lse, omega)
         else:
             s = duel_shares(A_a, A_b, kappa, eta[duel_a], eta[duel_b])

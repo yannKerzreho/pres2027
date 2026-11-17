@@ -1384,6 +1384,21 @@ peu près aussi bien, c'est la cible retirée qu'ils ne départagent pas.
 disponible. L'erreur 2022 (Pécresse, Zemmour, Le Pen : 7-12 pt) n'est pas un
 problème de mélange de chaînes.
 
+### 8.27 Valeur inclusive sur le champ (piste « alias LR 2027 » ; maths avant code)
+
+L'abstention (§3.1) compare l'utilité de non-expression $\omega + \kappa\,
+\mathrm{lse}(v)$ à celle des finalistes, avec $\mathrm{lse}(v) = \log\sum_{j\in R}
+e^{A_j(v)}$ sur **tout le roster** $R$. En 2027, $R$ contient des alternatives
+qui ne seront pas candidates ensemble (Retailleau / Wauquiez / Bertrand,
+Le Pen / Bardella, Attal / Philippe…) : la valeur inclusive d'un électeur de
+droite est gonflée par des « candidats » qui ne coexistent pas. Variante :
+$\mathrm{lse}_M(v) = \log\sum_{j\in M} e^{A_j(v)}$, $M$ = champ modal du T1
+(le champ le plus sondé) ∪ candidats en duel, dans la vraisemblance ET en
+prédiction (`masque_lse`). Ne change rien sans abstention ; ω absorbe le
+niveau moyen. **Mesure** : V1 2027 sur les 4 tâches dédoublonnées (§8.20),
+`hier_champ` contre hier, log-score KDE ; retenu si meilleur sur ≥ 3/4 sans
+perte d'erreur moyenne.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

@@ -51,6 +51,7 @@ class SpatialPoolingFit:
     tau_ou: float | None = None
     as_of: str | None = None
     duel_pairs: list | None = None           # paires effectivement observées
+    masque_lse: np.ndarray | None = None     # (N,) champ de la valeur inclusive (§8.27)
     # Diagnostic : part prédite de chaque duel observé à sa date (S, D) et les
     # duels eux-mêmes (sortie de `build_duel_arrays`). Aucun usage en production.
     w_path_draws: np.ndarray | None = None   # (S, N, T) chemin de w (tracker, spec_spatial_pooling §10)
@@ -72,7 +73,8 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
                         mcmc_runner=None, eta_scale: float | None = None,
                         kappa_log_scale: float | None = None,
                         eta_hier: bool = False, effets_maison: bool = False,
-                        effet_notice_seul: bool = False) -> SpatialPoolingFit:
+                        effet_notice_seul: bool = False,
+                        lse_champ: bool = False) -> SpatialPoolingFit:
     """Roster -> arrays -> NUTS, en une seule inférence jointe.
 
     `mu`, `sigma` et le chemin de `w` sont estimés ENSEMBLE. La chaîne en deux
@@ -149,6 +151,15 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
             kwargs["kappa_log_scale"] = kappa_log_scale
         if eta_hier:
             kwargs["eta_hier"] = True
+        masque_lse = None
+        if lse_champ and abstention:
+            # §8.27 : valeur inclusive sur le champ modal du T1 (pas tout le roster).
+            from collections import Counter
+            tm = np.asarray(arrays["tested_mask"]) > 0
+            modal = Counter(tuple(np.flatnonzero(r)) for r in tm).most_common(1)[0][0]
+            masque_lse = np.full(len(candidates), 1e-30); masque_lse[list(modal)] = 1.0
+            masque_lse[sorted(set(duels["a"]) | set(duels["b"]))] = 1.0   # les finalistes
+            kwargs["masque_lse"] = jnp.asarray(masque_lse)
         if effets_maison or effet_notice_seul:
             kwargs.update(arrays_effets_maison(raw_t2, duels))
             if effet_notice_seul:
@@ -232,6 +243,7 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         sigma_w_draws=np.asarray(samples["sigma_w"]).reshape(-1),
         dynamic=np.asarray(part >= seuil_dynamique), tau_ou=tau_ou, as_of=as_of,
         duel_pairs=sorted(set(duels["pairs"])) if has_t2 else [],
+        masque_lse=masque_lse if has_t2 else None,
         w_path_draws=(np.asarray(samples["w_path"]).reshape(-1, N, np.asarray(samples["w_path"]).shape[-1])
                       if "w_path" in samples else None),
         # La base OU a une colonne de plus que les dates de sondage : `as_of`.
@@ -380,7 +392,8 @@ def _duel_par_tirage(fit, w, ia: np.ndarray, ib: np.ndarray) -> np.ndarray:
     extra = ()
     if fit.omega_draws is not None:
         from scipy.special import logsumexp
-        extra = (logsumexp(A, axis=1), fit.omega_draws)
+        Am = A if fit.masque_lse is None else A + np.log(fit.masque_lse)[None, :, None]
+        extra = (logsumexp(Am, axis=1), fit.omega_draws)
     return np.asarray(duel_shares(A[s_idx, ia], A[s_idx, ib], fit.kappa_draws,
                                   fit.eta_draws[s_idx, ia], fit.eta_draws[s_idx, ib], *extra))
 
