@@ -316,7 +316,7 @@ Résultats : `model/backtest/results/*.json` (committés).
 - [x] [FAIT 16/11, spec §8.23 bis : LS meilleur 3/4 mais erreur moyenne 4,97 → 6,40 pt (Zemmour +7,8, non convergé) ⇒ NON RETENU ; σ_T2 1,3 → 0,2-0,3 pt, absorbé par maison/notice] (§8.23) effets maison + notice dans la vraisemblance des duels : maths
       complètes dans la spec, code derrière un drapeau, V1 2022 (4 paires,
       16 fits) contre le modèle actuel, log-score KDE.
-- [ ] [EN COURS (début 2026-11-16T22:35Z) : variante `hier_notice` codée] (§8.23 bis, suite) effet NOTICE seul (marginalisé par blocs, 0 latent) en V1 2022, 16 fits.
+- [x] [FAIT 17/11, spec §8.23 bis : LS meilleur 2/4, erreur 4,97 → 5,35 pt ⇒ non retenu ; aucun changement de modèle] (§8.23 bis, suite) effet NOTICE seul (marginalisé par blocs, 0 latent) en V1 2022, 16 fits.
 - [ ] (revue 16/11, B) combiner spatial et gp (stacking par unité, poids selon
       le nombre de sondages de la liste et l'horizon ; ou gp sur résidus du
       spatial), évaluation leave-one-coupure-out (0 fit).
@@ -420,6 +420,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-16 22:30 → 17/11 01:10Z (routine ; VM redémarrée en route, reprise) : effet notice seul en V1 2022 (20 fits) : non retenu.
 - 2026-11-16 20:39-22:30Z (routine) : effets maison/notice sous forme par blocs, V1 2022 (20 fits) : non retenus (Zemmour déraille) ; piste effet notice seul.
 - 2026-11-16 18:10-20:35Z (routine) : synthèse des rôles spatial/gp ; effets maison T2 marginalisés (§8.23 bis) codés, mais V1 2022 arrêtée (aucune chaîne en 2 h 15 : MVN pleine trop chère) ⇒ reformulation par blocs.
 - 2026-11-16 18:08Z (routine) : synthèse des rôles spatial / gp-pooling (spec_spatial_pooling §10) ; RELANCE du 15/11 entièrement traitée.

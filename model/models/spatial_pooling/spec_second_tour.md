@@ -1261,6 +1261,22 @@ notice. Mais avec ~200 paramètres de plus, le bloc T2 converge moins bien
 maison que par institut (pas par candidat), ou seulement l'effet notice, qui
 ne coûte aucun paramètre latent.
 
+**Effet notice seul (variante `hier_notice`, 2026-11-17, même traitement : phase
+2 pour Zemmour)** :
+
+| paire retirée | erreur hier / notice (pt) | LS KDE hier / notice | σ_n, σ_T2 (pt) |
+|---|---|---|---|
+| Macron–Le Pen | 4,04 / 4,00 | 1,48 / **1,67** | 0,84 / 0,49 |
+| Macron–Zemmour | **2,57** / 4,30 | **2,30** / 1,74 | 0,50 / 0,42 |
+| Macron–Mélenchon | **0,28** / 0,62 | **1,50** / 1,37 | 0,67 / 0,29 |
+| Macron–Pécresse | 12,98 / **12,47** | −22,1 / **−17,5** | 0,59 / 0,21 |
+
+Log-score meilleur sur 2/4, erreur moyenne 4,97 → 5,35 pt ⇒ **non retenu**.
+Bilan §8.23 : les effets maison/notice existent (REML, et σ_T2 divisé par 3-5
+quand on les modélise), mais les intégrer au modèle n'améliore pas la
+prédiction des paires retirées en 2022 ; ils déplacent l'information sans
+corriger l'erreur de structure. Pas de changement de modèle.
+
 ### 8.24 Synthèse V1/V2 (2026-11-16, chiffres committés, 0 fit)
 
 **V1 — paire retirée** (cible = moyenne des sondages de la paire sur 30 j ;
