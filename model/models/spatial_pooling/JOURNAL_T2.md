@@ -31,6 +31,30 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- [ ] **NOUVELLES PISTES (utilisateur, 2026-11-17 ~19:30Z)** — dans cet ordre, maths
+      dans la spec AVANT tout code, rien réglé sur les résultats qu'on valide :
+  - [ ] (B) **Positions a priori externes pour la géométrie historique 2017/2022**
+        (multimodalité §8.2-8.7) : prior centré par candidat sur une source
+        indépendante (famille politique / placements d'experts type CHES ou
+        équivalent sourçable hors réseau ; à défaut l'ordre ORDER_GROUPS déjà
+        codé transformé en positions) + fenêtre historique 90 j si elle retire
+        des putatifs sans nœud utile. Critère : écart de chaînes V1 2022
+        ≤ 1 pt et MAE V1 2017/2022/2027 non dégradée (protocole §8.29).
+        Lien mémoire : « matrice de reports à la main » différée — ne pas la coder ici.
+  - [ ] (C) **σ_w par candidat** (hiérarchique, au lieu d'un σ_w commun) pour
+        les tendances T1 amorties (spec_spatial_pooling §10) : rejouer
+        `model/backtest/suivi.py` 2022 (8 coupures) ; adopter seulement si MAE
+        et couverture battent le σ_w commun. Sinon consigner « rôles
+        spatial/gp assumés ».
+  - [ ] (A) **Tableaux de reports T1→T2 des instituts** — BLOQUÉ DONNÉES
+        (demandés à la session pipeline-donnees le 17/11) : dès leur arrivée sur
+        main, (1) validation sans fit : reports prédits par le modèle (tirages
+        par électorat T1) contre reports mesurés, MAE par électorat ; (2) puis
+        comme observations (multinomiale par électorat, maths d'abord).
+  - [ ] (D) Espace 2D (axe système/anti-système) — SEULEMENT si (A)(1) montre
+        une erreur systématique par électorat que l'axe unique n'absorbe pas.
+  - Toujours BLOQUÉ DONNÉES (même demande) : τ_T2 2002-2012, dates 2017.
+
 - [x] [(a), (b), (c) FAITS 2026-11-16 ; (c) : IC90 duels +2,5-3 pt de chaque côté, P(élu) Le Pen 84,8 → 80,3 %, spec §8.22 : `TAU_T2_SCRUTIN = 0.19`, spec §6.2 ; τ_paire spec §6.3 + §8.22, `TAU_PAIRE = 0.08` (V1 2027, hier), code duel_draws/p_elu + test ; reste (c) diagnostic_2027, après le placebo] **ARBITRAGES TRANCHÉS (2026-11-15 ~21:45Z, voir section Arbitrages)** — à faire
       AVANT la relance ci-dessous : (a) spec §6 : τ_T2 = 0,19, justification
       (RMS 4,3 pt 2017/2022, couverture 5/5) ; `TAU_T2_SCRUTIN = 0.19` dans fit.py,
