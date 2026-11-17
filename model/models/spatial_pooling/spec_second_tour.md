@@ -1512,6 +1512,27 @@ tâche, cible de 2 sondages : cela ne calibre pas τ_paire, mais n'indique
 aucune sous-estimation de l'incertitude pour ce type de paire ; pas de
 changement (arbitrage τ_paire toujours ouvert, ce point y est ajouté).
 
+### 8.32 Variance de graine du sous-échantillon (revue 17/11, point 6 ; 8 fits)
+
+Attal–Le Pen, abst, bras « notice partielle » (K = 29) avec trois graines :
+
+| graine | centre | erreur (pt) | IC90 prédictif | CRPS | LS KDE |
+|---|---|---|---|---|---|
+| 821 | 39,8 | 3,50 | [20,9 ; 62,9] | 3,63 | 1,02 |
+| 822 | 39,3 | 4,00 | [20,4 ; 60,8] | 3,63 | 1,03 |
+| 823 | 36,9 | 6,41 | [31,9 ; 41,9] | 4,73 | 0,45 |
+| (standard) | 36,5 | 6,83 | [32,2 ; 40,7] | 5,39 | −0,53 |
+| (placebo, 821) | 36,6 | 6,72 | [32,1 ; 40,8] | 5,24 | −0,40 |
+
+Le tirage des 29 duels retirés change le **régime** du postérieur : deux
+graines sur trois donnent un IC très large (le duel cible perd son ancrage),
+la troisième retombe sur le standard. Écart-type du centre entre graines
+≈ 1,6 pt, du même ordre que les effets testés en §8.21/§8.23 bis/§8.27.
+⇒ La conclusion de §8.21 (« fuite non établie ») tient, mais l'amélioration
+apparente d'Attal dans le bras notice (6,8 → 3,5 pt) n'est **pas robuste** :
+elle tient à l'élargissement de l'IC sur certaines graines. Tout écart V1
+< 2 pt sur une seule tâche est à lire dans ce bruit.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
