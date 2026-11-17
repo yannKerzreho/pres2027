@@ -575,6 +575,30 @@ C1 : choisie a posteriori parmi 3, sur 13 unités corrélées (IC trop étroit),
 couverture 0,87 ; « gp pour le niveau, spatial pour les IC » reste un choix de
 présentation pour l'utilisateur.
 
+**Pistes de l'utilisateur du 2026-11-17 (B, C).**
+
+*(B) Positions a priori externes, 2017/2022.* Source cardinale indépendante
+visée : CHES (lrgen 0-10 par parti). **Inaccessible** : `www.chesdata.eu` hors
+des domaines réseau autorisés de l'environnement (DNS refusé). Repli prévu
+(ORDER_GROUPS transformé en positions) mesuré sans fit : avec 25 candidats et
+l'écart minimal d'identifiabilité de 0,25 logit, ancres « par famille » et
+« par rang » diffèrent de ≤ 0,011 (2022) — la contrainte d'écart impose déjà un
+espacement quasi uniforme ; le repli n'apporte rien. Fenêtre de 90 j : déjà
+écartée (§8.7 de spec_second_tour : 14 champs contre 45). ⇒ **(B) bloquée par
+la source** : il faut des positions cardinales (CHES ou équivalent fourni dans
+le dépôt).
+
+*(C) σ_w par candidat (maths avant code).* Au lieu d'un σ_w commun :
+$\sigma_{w,i} = \sigma_w\, e^{s_\sigma z_i}$, $z_i\sim\mathcal N(0,1)$,
+$s_\sigma\sim$ HalfNormal(0,5), pour les candidats dynamiques ; le chemin
+devient $w_i(t) = m_i + \sigma_{w,i}\cdot(\text{OU KL})_i$ et la projection
+(`projeter_w`) utilise $\sigma_{w,i}$. Hypothèse : un σ_w commun amortit les
+candidats qui bougent vraiment (Zemmour 2021, Philippe 2027) au profit des
+stables. **Mesure** : `suivi.py --sigma-w-candidat`, 2022, les 8 coupures de
+l'étape 1 (h = 159 … 12), mêmes listes et cibles ; adopté seulement si MAE ET
+couverture IC90 (et score d'intervalle α = 0,1) battent le σ_w commun, IC90
+bootstrap par unité (coupure, liste). Sinon : « rôles spatial / gp assumés ».
+
 **Idée B : combiner spatial et gp-pooling (protocole fixé avant résultat,
 2026-11-17, 0 fit).** Données : les 13 unités (coupure, liste) de la tâche A,
 spatial prolongé à c + 7 (`suivi_proj_2022_h*.json`) et gp recalibré hors

@@ -76,7 +76,7 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
                              duel_blocs=None, duel_K_blocs=None, eta_scale=ETA_SCALE,
                              kappa_log_scale=KAPPA_LOG_SCALE, sigma_t2_prior=SIGMA_T2_PRIOR,
                              abstention=True, omega_prior=OMEGA_PRIOR, eta_hier=False,
-                             masque_lse=None):
+                             masque_lse=None, sigma_w_par_candidat=False):
     """Le modèle. Inférence JOINTE de la géométrie et du chemin de `w`.
 
     Trois paramètres par candidat, deux échelles globales, aucun bloc :
@@ -157,7 +157,16 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
     idx = np.flatnonzero(dyn)
     z_w = numpyro.sample("z_w", dist.Normal(0.0, 1.0).expand([len(idx), kl_basis.shape[0]]))
     w_full = jnp.zeros((N, kl_basis.shape[1])) + m[:, None]
-    w_full = w_full.at[idx].add(sigma_w * (z_w @ kl_basis))
+    if sigma_w_par_candidat:
+        # σ_w hiérarchique par candidat (spec_spatial_pooling §10, piste C) :
+        # σ_w,i = σ_w · exp(s_σ z_i), z_i ~ N(0,1), s_σ ~ HalfNormal(0,5).
+        s_sig = numpyro.sample("s_sigma_w", dist.HalfNormal(0.5))
+        z_sig = numpyro.sample("z_sigma_w", dist.Normal(0.0, 1.0).expand([len(idx)]))
+        sw_i = sigma_w * jnp.exp(s_sig * z_sig)
+        numpyro.deterministic("sigma_w_i", jnp.full(N, sigma_w).at[idx].set(sw_i))
+        w_full = w_full.at[idx].add(sw_i[:, None] * (z_w @ kl_basis))
+    else:
+        w_full = w_full.at[idx].add(sigma_w * (z_w @ kl_basis))
     numpyro.deterministic("w_now", w_full[:, -1])           # dernière colonne = `as_of`
     numpyro.deterministic("w_path", w_full)                 # tracker (spec_spatial_pooling §10)
 

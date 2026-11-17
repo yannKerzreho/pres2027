@@ -76,7 +76,8 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
                         kappa_log_scale: float | None = None,
                         eta_hier: bool = False, effets_maison: bool = False,
                         effet_notice_seul: bool = False,
-                        lse_champ: bool = False) -> SpatialPoolingFit:
+                        lse_champ: bool = False,
+                        sigma_w_par_candidat: bool = False) -> SpatialPoolingFit:
     """Roster -> arrays -> NUTS, en une seule inférence jointe.
 
     `mu`, `sigma` et le chemin de `w` sont estimés ENSEMBLE. La chaîne en deux
@@ -142,6 +143,8 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         excess_var=jnp.asarray(excess_var), tau_ou=tau_ou, pos_scale=pos_scale,
         sigma_jitter=sigma_jitter, dynamic_mask=part >= seuil_dynamique,
     )
+    if sigma_w_par_candidat:
+        kwargs["sigma_w_par_candidat"] = True
     if has_t2:
         kwargs.update(duel_a=jnp.asarray(duels["a"]), duel_b=jnp.asarray(duels["b"]),
                       duel_y=jnp.asarray(duels["y"]), duel_n=jnp.asarray(duels["n"]),
@@ -244,7 +247,9 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         omega_draws=(np.asarray(samples["omega"]).reshape(-1) if has_t2 and abstention else None),
         eta_draws=np.asarray(samples["eta"]).reshape(-1, N) if has_t2 else None,
         level_draws=np.asarray(samples["w_level"]).reshape(-1, N),
-        sigma_w_draws=np.asarray(samples["sigma_w"]).reshape(-1),
+        # (S,) commun, ou (S, N) par candidat (piste C) : `projeter_w` diffuse les deux.
+        sigma_w_draws=(np.asarray(samples["sigma_w_i"]).reshape(-1, N) if "sigma_w_i" in samples
+                       else np.asarray(samples["sigma_w"]).reshape(-1)),
         dynamic=np.asarray(part >= seuil_dynamique), tau_ou=tau_ou, as_of=as_of,
         duel_pairs=sorted(set(duels["pairs"])) if has_t2 else [],
         masque_lse=masque_lse if has_t2 else None,
@@ -389,7 +394,8 @@ def projeter_w(fit: SpatialPoolingFit, horizon_days: float, seed: int = 27,
     # sigma_w²(1-r²) si le centre OU était connu ; `m_i` n'en est qu'une
     # estimation (moyenne du chemin sur la fenêtre), d'incertitude ~sigma_w² :
     # on ajoute (1-r)²·sigma_w² plutôt que de sous-estimer la dérive de ~25 %.
-    sd = fit.sigma_w_draws[:, None] * np.sqrt(1.0 - r ** 2 + (1.0 - r) ** 2)
+    swd = fit.sigma_w_draws if fit.sigma_w_draws.ndim == 2 else fit.sigma_w_draws[:, None]
+    sd = swd * np.sqrt(1.0 - r ** 2 + (1.0 - r) ** 2)
     w = fit.level_draws + (w0 - fit.level_draws) * r + sd * rng.standard_normal(w0.shape)
     return np.where(fit.dynamic[None, :], w, w0)
 

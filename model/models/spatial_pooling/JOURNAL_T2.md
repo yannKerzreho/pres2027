@@ -33,7 +33,7 @@ l'historique, ajouter en bas de « Historique ».
 
 - [ ] **NOUVELLES PISTES (utilisateur, 2026-11-17 ~19:30Z)** — dans cet ordre, maths
       dans la spec AVANT tout code, rien réglé sur les résultats qu'on valide :
-  - [ ] (B) **Positions a priori externes pour la géométrie historique 2017/2022**
+  - [ ] [BLOQUÉ 17/11 22:55Z : CHES inaccessible (chesdata.eu hors domaines autorisés) ; repli ORDER_GROUPS sans effet (ancres ≤ 0,011 d'écart, contrainte d'écart minimal) — spec_spatial_pooling §10] (B) **Positions a priori externes pour la géométrie historique 2017/2022**
         (multimodalité §8.2-8.7) : prior centré par candidat sur une source
         indépendante (famille politique / placements d'experts type CHES ou
         équivalent sourçable hors réseau ; à défaut l'ordre ORDER_GROUPS déjà
@@ -41,7 +41,7 @@ l'historique, ajouter en bas de « Historique ».
         des putatifs sans nœud utile. Critère : écart de chaînes V1 2022
         ≤ 1 pt et MAE V1 2017/2022/2027 non dégradée (protocole §8.29).
         Lien mémoire : « matrice de reports à la main » différée — ne pas la coder ici.
-  - [ ] (C) **σ_w par candidat** (hiérarchique, au lieu d'un σ_w commun) pour
+  - [ ] [EN COURS (début 2026-11-17T23:00Z) : 8 coupures × 4 chaînes] (C) **σ_w par candidat** (hiérarchique, au lieu d'un σ_w commun) pour
         les tendances T1 amorties (spec_spatial_pooling §10) : rejouer
         `model/backtest/suivi.py` 2022 (8 coupures) ; adopter seulement si MAE
         et couverture battent le σ_w commun. Sinon consigner « rôles

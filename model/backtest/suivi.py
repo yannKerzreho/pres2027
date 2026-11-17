@@ -113,6 +113,7 @@ def main() -> None:
     ap.add_argument("--gp-facteur", type=float, default=3.0, help="facteur de diffusion appliqué à sigma2 et tau")
     ap.add_argument("--gp-decalage", type=int, default=0, help="lecture de gp à c + N jours")
     ap.add_argument("--suffixe", default="")
+    ap.add_argument("--sigma-w-candidat", action="store_true", help="piste C : σ_w par candidat")
     a = ap.parse_args()
     if a.lister:
         for h in HORIZONS:
@@ -134,7 +135,8 @@ def main() -> None:
         out.write_text(json.dumps(res, ensure_ascii=False, indent=1, default=str) + "\n")
         print(f"-> {out}")
         return
-    out = sr.OUT_DIR / f"suivi_{a.election}_h{a.h:03d}.json"
+    swc = "_swc" if a.sigma_w_candidat else ""
+    out = sr.OUT_DIR / f"suivi{swc}_{a.election}_h{a.h:03d}.json"
     base = sr.CHAINES_DIR / out.stem
     stem = out.stem                    # nom des fichiers de chaînes (inchangé)
     nuts = dict(draws=400, tune=600, chains=4)
@@ -146,10 +148,11 @@ def main() -> None:
     else:
         ap.error("--chaine k ou --fusionner")
     if H_PROJ:
-        out = out.with_name(f"suivi_proj_{a.election}_h{a.h:03d}.json")
+        out = out.with_name(f"suivi_proj{swc}_{a.election}_h{a.h:03d}.json")
     fit = fit_spatial_pooling(raw, str(c.date()), min_poll_date="1900-01-01",
                               order_groups=ORDER_GROUPS_HISTORIQUES[a.election],
-                              couverture_min=None, second_tour=False, **nuts)
+                              couverture_min=None, second_tour=False,
+                              sigma_w_par_candidat=a.sigma_w_candidat, **nuts)
     if a.chaine is not None:
         return
     listes = classement(_champs_t1(raw), c)

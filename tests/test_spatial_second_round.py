@@ -283,3 +283,11 @@ def test_valeur_inclusive_sur_le_champ():
     assert np.allclose(duel_draws(f, "C", "D", 0, scrutin=False), a)
     f.masque_lse = np.array([1e-30, 1.0, 1.0])
     assert not np.allclose(duel_draws(f, "C", "D", 0, scrutin=False), a)
+
+
+def test_projection_avec_sigma_w_par_candidat():
+    """Piste C : sigma_w_draws (S, N) diffuse par candidat."""
+    f = _fit()
+    f.sigma_w_draws = np.tile([0.3, 0.6, 0.3], (len(f.mu_draws), 1))
+    w = projeter_w(f, 150)
+    assert w[:, 1].std() > w[:, 0].std()
