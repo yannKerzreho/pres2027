@@ -1499,6 +1499,19 @@ Pen), 1 perte (Pécresse) ; Zemmour (non convergé côté maison) déraille.
 (R̂ T2 jusqu'à 4).** Les effets maison ne sont pas adoptés dans la vraisemblance ;
 ils restent une source de variance connue (REML §8.23), non modélisée.
 
+### 8.31 V1 d'une paire « X contre Y » : Mélenchon–Philippe (revue 17/11, point 2 ; 8 fits)
+
+Seule paire sans le RN avec une cible (2 sondages, moyenne 36,5 % pour
+Mélenchon, t_k = 15/10) ; on retire ses duels et on la prédit depuis les 88
+autres (tous « RN contre X »). hier : **36,2 %, erreur 0,30 pt**, IC90
+prédictif [33,6 ; 38,8], CRPS 0,40, concluant ; abst : 35,6 %, erreur 0,87 pt,
+CRPS 0,55. Log-score KDE selon τ_paire (hier) : 3,16 / 2,77 / 2,57 / 2,14
+pour τ = 0 / 0,08 / 0,11 / 0,19. **L'extrapolation « X contre Y » est juste ici
+et τ_paire ne fait que coûter** (−0,4 nat à 0,08, −1,0 à 0,19). Une seule
+tâche, cible de 2 sondages : cela ne calibre pas τ_paire, mais n'indique
+aucune sous-estimation de l'incertitude pour ce type de paire ; pas de
+changement (arbitrage τ_paire toujours ouvert, ce point y est ajouté).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

@@ -331,7 +331,7 @@ Résultats : `model/backtest/results/*.json` (committés).
 - [x] [FAIT 17/11, spec §8.30 : recentrage ≤ 1 pt ; 1 gain / 1 perte sur les concluantes, Zemmour déraille ⇒ non adopté] (revue 17/11, 3/A) hier_maison : recentrer la cible V1 avec les z_maison
       a posteriori des instituts de la cible, re-scorer les 4 tâches 2022 avec
       la règle d'exclusion de §8.20 (0 fit).
-- [ ] [EN COURS (début 2026-11-17T13:10Z) : hier et abst, 8 fits] (revue 17/11, 2/C) V1 « X contre Y » : Mélenchon–Philippe (2 sondages),
+- [x] [FAIT 17/11, spec §8.31 : hier 36,2 contre 36,5 (erreur 0,3 pt), τ_paire ne fait que coûter] (revue 17/11, 2/C) V1 « X contre Y » : Mélenchon–Philippe (2 sondages),
       abst, 4 chaînes (~15 min) — seul type de paire qui reçoit ν en production.
 - [ ] (revue 17/11, 6) variance de graine du sous-échantillon : bras notice
       partielle Attal–Le Pen avec 2 graines de plus (8 fits).
@@ -382,7 +382,9 @@ vue », sur les propositions de la session locale) :
   variante hier (défaut, §8.29) ⇒ calibrage V1 2027 **0,08** (appliqué, SOUS la
   fourchette 0,10-0,15 validée) ; abst donnerait 0,11 ; avec 2017-2022, hier
   demande **0,19** (Pécresse). Courbe plate, 4 tâches toutes « RN contre X » :
-  les données ne tranchent pas. 0,08, 0,10-0,15 ou 0,19 ?
+  les données ne tranchent pas. 0,08, 0,10-0,15 ou 0,19 ? (Ajout 17/11 §8.31 :
+  la seule paire « X contre Y » testable, Mélenchon–Philippe, est prédite à
+  0,3 pt près ; τ_paire n'y fait que coûter.)
 - À PRÉSENTER À L'UTILISATEUR (revue 17/11, point 9) : « gp pour le niveau,
   spatial pour les IC » est un choix de présentation du site.
 4. τ_paire → **ADOPTÉ** pour les seuls duels jamais sondés, calibré en
@@ -442,6 +444,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-17 13:08-13:25Z (routine) : V1 Mélenchon–Philippe (§8.31, 8 fits) : erreur 0,3 pt.
 - 2026-11-17 12:08Z (routine) : hier_maison recentré par les effets maison a posteriori (§8.30, 0 fit) : aucun gain établi.
 - 2026-11-17 11:08Z (routine) : verdict robuste abst/hier (§8.29, 0 fit) : hier préférée ; ETA_HIER_T2 = True, τ_paire = 0,08.
 - 2026-11-17 10:07-10:30Z (routine) : revue Opus quotidienne (10 points intégrés) ; verdict hier retiré, abst rétabli, τ_paire 0,11.
