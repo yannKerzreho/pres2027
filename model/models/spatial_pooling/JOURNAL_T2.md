@@ -331,7 +331,7 @@ Résultats : `model/backtest/results/*.json` (committés).
 - [x] [FAIT 17/11, spec §8.30 : recentrage ≤ 1 pt ; 1 gain / 1 perte sur les concluantes, Zemmour déraille ⇒ non adopté] (revue 17/11, 3/A) hier_maison : recentrer la cible V1 avec les z_maison
       a posteriori des instituts de la cible, re-scorer les 4 tâches 2022 avec
       la règle d'exclusion de §8.20 (0 fit).
-- [ ] (revue 17/11, 2/C) V1 « X contre Y » : Mélenchon–Philippe (2 sondages),
+- [ ] [EN COURS (début 2026-11-17T13:10Z) : hier et abst, 8 fits] (revue 17/11, 2/C) V1 « X contre Y » : Mélenchon–Philippe (2 sondages),
       abst, 4 chaînes (~15 min) — seul type de paire qui reçoit ν en production.
 - [ ] (revue 17/11, 6) variance de graine du sous-échantillon : bras notice
       partielle Attal–Le Pen avec 2 graines de plus (8 fits).
