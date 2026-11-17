@@ -436,3 +436,148 @@ def test_mise_en_page_2026_11_17_photos_boite_deroulante():
     got = {r["candidat"]: r["intention"] for r in recs}
     assert got == {"Arthaud": 60.0, "Le Pen": 34.0, "Polony": 1.5, "Riner": 4.5}
     assert not [w for w in warnings if "inconnu" in w]
+
+
+# --- 17 nov. 2026 : page 2027 restructurée, dates 2017 -----------------------
+def test_dates_2017_mois_et_annee_dans_la_legende():
+    from sondages.wiki import legende_mois
+    assert legende_mois("{|\n|+ {{date|Mars 2017}}\n|-\n|}") == ("2017", 3)
+    assert legende_mois("{|\n|+ Sondages divers\n|}") is None
+    h = ("2017", 3)
+    assert _parse_dates("du 15 au 17", month_hint=h) == ("2017-03-15", "2017-03-17")
+    assert _parse_dates("le 20", month_hint=h) == ("2017-03-20", "2017-03-20")
+    assert _parse_dates("du 28 au 2", month_hint=h) == ("2017-02-28", "2017-03-02")
+    assert _parse_dates("du au 2", month_hint=h) == (None, "2017-03-02")
+    assert _parse_dates("du 3 au 5", month_hint=("2017", 1)) == ("2017-01-03", "2017-01-05")
+    assert _parse_dates("du 30 au 2", month_hint=("2017", 1)) == ("2016-12-30", "2017-01-02")
+    assert _parse_dates("27 fév. - 3 mars", "2017") == ("2017-02-27", "2017-03-03")
+    assert _parse_dates("28 déc. - 3 janv.", "2017") == ("2016-12-28", "2017-01-03")
+    assert _parse_dates("14 et 15 décembre 2015") == ("2015-12-14", "2015-12-15")
+    assert _parse_dates("au 5 mars 2017") == (None, "2017-03-05")
+    # sans légende, une cellule sans mois reste sans date (jamais devinée)
+    assert _parse_dates("du 15 au 17", "2017") == (None, None)
+
+
+def test_complete_dates_ne_touche_que_les_dates_vides():
+    import pandas as pd
+    from sondages.complete_dates import complete_dates
+    cols = ["notice", "notice_url", "date_debut", "date_fin", "date_notice", "intention"]
+    ancien = pd.DataFrame([
+        ["BVA du 15 au 17 (WP)", "u1", None, None, None, 20.0],
+        ["Ifop 2-3 mars (WP)", "u2", "2017-03-02", "2017-03-03", "2017-03-03", 30.0],
+        ["Elabe du 1 au 2 (WP)", "u3", None, None, None, 10.0],   # ambigu dans le nouveau
+    ], columns=cols)
+    nouveau = pd.DataFrame([
+        ["BVA du 15 au 17 (WP) n°2", "u1", "2017-03-15", "2017-03-17", "2017-03-17", 21.0],
+        ["Ifop 2-3 mars (WP)", "u2", "2017-03-01", "2017-03-09", "2017-03-09", 30.0],
+        ["Elabe du 1 au 2 (WP) n°1", "u3", "2017-02-01", "2017-02-02", None, 10.0],
+        ["Elabe du 1 au 2 (WP) n°2", "u3", "2017-03-01", "2017-03-02", None, 10.0],
+    ], columns=cols)
+    out, _ = complete_dates(ancien, nouveau)
+    assert out.loc[0, ["date_debut", "date_fin", "date_notice"]].tolist() == ["2017-03-15", "2017-03-17", "2017-03-17"]
+    assert out.loc[0, "intention"] == 20.0                     # valeur d'origine conservée
+    assert out.loc[1, "date_fin"] == "2017-03-03"              # date existante jamais écrasée
+    assert pd.isna(out.loc[2, "date_fin"])                     # ambigu -> reste vide
+
+
+# Pages 2002-2012 : pas de colonne Échantillon, pas de lien de notice,
+# {{date-|…}}, sous-sections chronologiques sous le duel.
+_ANCIEN_T2 = """{| class="wikitable"
+|- bgcolor=lightgray
+! rowspan="3" | Sondeur
+! rowspan="3" | Date
+! [[Fichier:Sarkozy.jpg|100x150px]]
+! [[Fichier:Royal.jpg|100x140px]]
+|-
+! [[Nicolas Sarkozy]]
+! [[Ségolène Royal]]
+|-
+| {{Infobox Parti politique français/couleurs|UMP}} |
+| {{Infobox Parti politique français/couleurs|PS}} |
+|-
+| style="{{Sondeur|Sofres}}" |Sofres
+| {{date-|4 mai 2007}}
+| {{Infobox Parti politique français/couleurs|UMP}} | {{blanc|'''54,5 %'''}}
+| 45,5 %
+|}"""
+
+
+def test_page_ancienne_sans_echantillon_ni_lien():
+    recs = extract_notices(parse_wikitables(_ANCIEN_T2)[0], "Deuxième tour", "Sarkozy — Royal", [],
+                           url_repli="https://fr.wikipedia.org/wiki/X")
+    assert [(r["candidat"], r["intention"]) for r in recs] == [("Nicolas Sarkozy", 54.5), ("Ségolène Royal", 45.5)]
+    assert recs[0]["echantillon"] is None and recs[0]["date_fin"] == "2007-05-04"
+    assert recs[0]["notice_url"] == "https://fr.wikipedia.org/wiki/X"
+
+
+def test_hypothese_remonte_les_sous_sections_chronologiques():
+    from sondages.wiki import _titre_hypothese
+    secs = [{"number": "2", "line": "Second tour"},
+            {"number": "2.1", "line": "François Hollande - Nicolas Sarkozy"},
+            {"number": "2.1.2", "line": "2011"},
+            {"number": "2.2.1", "line": "Hypothèse Attal – Le Pen"}]
+    assert _titre_hypothese(secs, secs[2]) == "François Hollande - Nicolas Sarkozy"
+    assert _titre_hypothese(secs, secs[3]) == "Hypothèse Attal – Le Pen"
+
+
+def test_annee_d_url_ignore_les_identifiants_de_fiche():
+    t = _ANCIEN_T2.replace("|Sofres\n", "|[http://www.bva.fr/data/sondage/sondage_fiche/1977/x.pdf BVA]\n").replace(
+        "{{date-|4 mai 2007}}", "5-7 avr.")
+    recs = extract_notices(parse_wikitables(t)[0], "Premier tour", None, [], year_hint="2017")
+    assert recs[0]["date_fin"] == "2017-04-07"
+
+
+_REPORTS = """{| class="wikitable"
+! rowspan="4" | Sondeur
+! rowspan="4" | Date
+| rowspan="27" style="background-color:#CECECE;" |
+! colspan=3 | [[Jean-Luc Mélenchon]]<br />(1{{er}} tour : 19,58 %)
+|- style="line-height:5px;"
+| colspan=3 {{Infobox Parti politique français/couleurs|FI}} |
+|-
+! style="width:70px;" | [[Emmanuel Macron|Macron]] || style="width:70px;" | Aucun || style="width:70px;" | [[Marine Le Pen|Le Pen]]
+|- style="line-height:5px;"
+| {{Infobox Parti politique français/couleurs|EM}} | || {{Infobox Parti politique français/couleurs|DIV}} | || {{Infobox Parti politique français/couleurs|FN}} |
+|-
+| style="{{Sondeur|Ipsos}}" | {{nobr|[http://ipsos.fr/x.pdf Ipsos]}}
+| {{nobr|30 avr. - 1{{er}} mai}}
+| {{Infobox Parti politique français/couleurs|EM}} | 48 % || 38 % || 14 %
+|}"""
+
+
+def test_reports_de_voix():
+    from sondages.reports import extract_reports
+    recs = extract_reports(parse_wikitables(_REPORTS)[0], "2017", [])
+    assert [(r["electorat_t1"], r["candidat_t2"], r["part"]) for r in recs] == [
+        ("Jean-Luc Mélenchon", "Macron", 48.0), ("Jean-Luc Mélenchon", "Aucun", 38.0),
+        ("Jean-Luc Mélenchon", "Le Pen", 14.0)]
+    assert recs[0]["hypothese"] == "Macron – Le Pen"
+    assert (recs[0]["date_debut"], recs[0]["date_fin"]) == ("2017-04-30", "2017-05-01")
+    assert recs[0]["source"] == "http://ipsos.fr/x.pdf" and recs[0]["rolling"] is False
+
+
+def test_ajoute_notices_absentes_sans_doublon():
+    import pandas as pd
+    from sondages.complete_dates import ajoute_notices_absentes
+    cols = ["notice", "notice_url", "institut", "date_fin", "tour", "intention"]
+    ancien = pd.DataFrame([["Ifop 2-4 mars (WP)", "u1", "Ifop", "2017-03-04", "Premier tour", 20.0]], columns=cols)
+    nouveau = pd.DataFrame([
+        ["Ifop du 2 au 4 (WP)", "u1", "Ifop", "2017-03-04", "Premier tour", 20.0],    # même URL
+        ["Ifop du 1 au 4 (WP)", "u9", "Ifop", "2017-03-04", "Premier tour", 21.0],    # même institut+date
+        ["BVA 5-7 avr. (WP)", "u2", "BVA", "2017-04-07", "Premier tour", 1.0],         # nouveau
+    ], columns=cols)
+    out, notes = ajoute_notices_absentes(ancien, nouveau)
+    assert out["notice"].tolist() == ["Ifop 2-4 mars (WP)", "BVA 5-7 avr. (WP)"]
+
+
+def test_corrige_dates_apres_scrutin():
+    import pandas as pd
+    from sondages.complete_dates import corrige_dates_apres_scrutin
+    cols = ["notice", "notice_url", "date_debut", "date_fin", "date_notice"]
+    ancien = pd.DataFrame([["Harris 28-31 décembre (WP)", "u", "2022-12-28", "2022-12-31", "2022-12-31"],
+                           ["Ifop 2-3 mars (WP)", "v", "2022-03-02", "2022-03-03", "2022-03-03"]], columns=cols)
+    nouveau = pd.DataFrame([["Harris 28-31 décembre (WP)", "u", "2021-12-28", "2021-12-31", "2021-12-31"],
+                            ["Ifop 2-3 mars (WP)", "v", "2022-03-01", "2022-03-09", "2022-03-09"]], columns=cols)
+    out, _ = corrige_dates_apres_scrutin(ancien, nouveau, "2022")
+    assert out.loc[0, ["date_debut", "date_fin", "date_notice"]].tolist() == ["2021-12-28", "2021-12-31", "2021-12-31"]
+    assert out.loc[1, "date_fin"] == "2022-03-03"     # date plausible jamais touchée
