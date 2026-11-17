@@ -335,7 +335,7 @@ Résultats : `model/backtest/results/*.json` (committés).
       abst, 4 chaînes (~15 min) — seul type de paire qui reçoit ν en production.
 - [x] [FAIT 17/11, spec §8.32 : erreurs 3,5 / 4,0 / 6,4 pt selon la graine, sd ≈ 1,6 pt ; gain Attal non robuste] (revue 17/11, 6) variance de graine du sous-échantillon : bras notice
       partielle Attal–Le Pen avec 2 graines de plus (8 fits).
-- [ ] [EN COURS (début 2026-11-17T15:15Z) : diagnostic_2027 hier, 1 fit] (revue 17/11, C) sensibilité de P(élu) sur le champ modal : décalage
+- [x] [FAIT 17/11, spec §8.33 : τ_paire sans effet sur P(élu) ; d = −3 pt ⇒ Le Pen 80,3 → 74,7 %] (revue 17/11, C) sensibilité de P(élu) sur le champ modal : décalage
       anti-RN 0/−1/−2/−3 pt × τ_paire 0,11/0,19 (éclaire l'arbitrage 2, ne le
       tranche pas ; 0-1 fit).
 - [ ] (revue, 9) τ_T2 : a posteriori sur 2002-2022 (normale vs Student-t),
@@ -382,7 +382,8 @@ vue », sur les propositions de la session locale) :
   variante hier (défaut, §8.29) ⇒ calibrage V1 2027 **0,08** (appliqué, SOUS la
   fourchette 0,10-0,15 validée) ; abst donnerait 0,11 ; avec 2017-2022, hier
   demande **0,19** (Pécresse). Courbe plate, 4 tâches toutes « RN contre X » :
-  les données ne tranchent pas. 0,08, 0,10-0,15 ou 0,19 ? (Ajout 17/11 §8.31 :
+  les données ne tranchent pas. 0,08, 0,10-0,15 ou 0,19 ? (Ajout 17/11 §8.33 : τ_paire ne change pas P(élu), seulement les duels
+  jamais sondés de l'onglet Scénarios ; enjeu faible.) (Ajout 17/11 §8.31 :
   la seule paire « X contre Y » testable, Mélenchon–Philippe, est prédite à
   0,3 pt près ; τ_paire n'y fait que coûter.)
 - À PRÉSENTER À L'UTILISATEUR (revue 17/11, point 9) : « gp pour le niveau,
@@ -444,6 +445,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-17 15:08-16:20Z (routine) : sensibilité de P(élu) (§8.33, 2 fits) : τ_paire sans effet ; anti-RN −3 pt ⇒ Le Pen −5,6 pt de P(élu).
 - 2026-11-17 14:08-14:25Z (routine) : variance de graine du sous-échantillon (§8.32, 8 fits) : ≈ 1,6 pt.
 - 2026-11-17 13:08-13:25Z (routine) : V1 Mélenchon–Philippe (§8.31, 8 fits) : erreur 0,3 pt.
 - 2026-11-17 12:08Z (routine) : hier_maison recentré par les effets maison a posteriori (§8.30, 0 fit) : aucun gain établi.

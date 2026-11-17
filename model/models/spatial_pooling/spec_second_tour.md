@@ -1533,6 +1533,26 @@ apparente d'Attal dans le bras notice (6,8 → 3,5 pt) n'est **pas robuste** :
 elle tient à l'élargissement de l'IC sur certaines graines. Tout écart V1
 < 2 pt sur une seule tâche est à lire dans ce bruit.
 
+### 8.33 Sensibilité de P(élu) : erreur anti-RN × τ_paire (revue 17/11, idée C ; 1 fit)
+
+P(élu) du champ modal 2027 (hier, données du 13/11, τ_T2 = 0,19), duel final
+décalé de d points en défaveur (d < 0) ou en faveur (d > 0) du candidat RN
+(sensibilité, **pas un réglage** : l'arbitrage 2 « biais anti-RN non corrigé »
+reste en vigueur) :
+
+| d (pt, RN) | −3 | −2 | −1 | 0 | +1 | +2 | +3 |
+|---|---|---|---|---|---|---|---|
+| Le Pen | 74,7 | 76,7 | 79,0 | 80,3 | 82,6 | 84,1 | 85,5 |
+| Philippe | 17,9 | 16,5 | 15,0 | 13,9 | 12,1 | 11,1 | 10,0 |
+| Glucksmann | 6,0 | 5,4 | 4,8 | 4,5 | 4,1 | 3,6 | 3,5 |
+
+**τ_paire (0,08 ou 0,19) ne change P(élu) d'aucune décimale** : les paires
+qualifiées probables (Le Pen contre X) sont toutes sondées ; τ_paire ne touche
+que l'affichage de duels jamais sondés (onglet Scénarios). L'arbitrage
+τ_paire est donc d'enjeu faible pour P(élu). L'erreur anti-RN des scrutins
+passés (−3 à −6 pt en 2017/2022, §6) déplacerait P(élu Le Pen) de ~80 à ~75 %
+ou moins : c'est l'arbitrage 2 qui pèse, pas τ_paire.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
