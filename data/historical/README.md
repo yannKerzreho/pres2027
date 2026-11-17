@@ -78,3 +78,7 @@ Dans `data/parsed/` :
   (`python -m sondages.complete_dates`, lignes existantes inchangées hors
   dates) et sondages absents ajoutés en fin de fichier (`--ajoute-absentes`).
 
+- `intentions_2022_wiki.csv` : deux sondages de fin décembre 2021 étaient datés
+  2022-12-31 (horizon négatif en calibration), corrigés en 2021-12-31
+  (`python -m sondages.complete_dates --corrige-apres-scrutin`) ; OpinionWay
+  « 28 février - mars 2022 » daté 28 février - 1er mars.
