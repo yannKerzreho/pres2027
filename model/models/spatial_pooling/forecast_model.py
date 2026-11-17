@@ -42,10 +42,10 @@ GRAINE_SECOURS = 2027
 # bloquer la publication du premier tour : il retire les duels, pas le snapshot.
 PUBLIER_T2 = False
 RHAT_T2_PUBLIABLE = 1.2
-# Variante du bloc T2 quand il est publié : valence à échelle apprise (« hier »),
-# verdict du protocole fixé d'avance, spec_second_tour §8.20. Sans effet tant que
-# PUBLIER_T2 est False (aucun duel dans la vraisemblance).
-ETA_HIER_T2 = True
+# Variante du bloc T2 quand il est publié. `abst` (False) : le verdict « hier »
+# de §8.20 est retiré après la revue du 2026-11-17 (non établi avec un test
+# exact sur 6 tâches corrélées : p = 0,0625, t90 [−0,01 ; +1,06]).
+ETA_HIER_T2 = False
 
 
 def _slot_de(candidat: str) -> str | None:

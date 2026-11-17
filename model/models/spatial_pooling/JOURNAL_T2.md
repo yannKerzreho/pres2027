@@ -7,7 +7,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## État (mis à jour à chaque réveil)
 
-- Dernière revue Opus : 2026-11-16 ~09:20Z (routine, cf. « Revue 2026-11-16 »).
+- Dernière revue Opus : 2026-11-17 ~10:20Z (routine, cf. « Revue Opus 2026-11-17 »).
 - OBJECTIF (utilisateur, via l'orchestrateur, 2026-11-14) : « un modèle qui est
   backé par le passé mais qui représente bien les sondages et tendances
   actuels ». 2017/2022 servent à CALIBRER et VALIDER ; le critère final est la
@@ -18,9 +18,9 @@ l'historique, ajouter en bas de « Historique ».
   sans accord explicite de l'utilisateur.
 - Modèle courant : géométrie T1 + κ + valence η agrégée + abstention par valeur
   inclusive (ω). Variantes de backtest : `eta`, `geo` (η ≡ 0), `geo1` (κ ≡ 1),
-  `hier` (échelle de η apprise) — verdict refait (spec §8.20, dédoublonné,
-  KDE) : **préférée** de justesse, devenue la variante T2 (`ETA_HIER_T2`) ;
-  réserve Pécresse (hier trop confiante, LS −22) à relire.
+  `hier` (échelle de η apprise) — verdict §8.20 RETIRÉ (revue 17/11, §8.28 :
+  test exact p = 0,0625, non établi) ⇒ `abst` reste le défaut (`ETA_HIER_T2 =
+  False`) ; τ_paire = 0,11 (calibrage abst).
 - Backtests : cadre historique à toutes les hypothèses T1 (§8.3) ; 4 processus
   d'une chaîne + fusion ; sélection des chaînes par log-densité (§8.8) ;
   phase 2 `--init-depuis` ; convergence jugée sur la quantité prédite (§8.4).
@@ -324,6 +324,19 @@ Résultats : `model/backtest/results/*.json` (committés).
       tirages sauvés) ou max local + Laplace par chaîne — maths dans la spec.
 - [x] (revue, e) [FAIT 19:05Z (spec §8.16) : fuite comptée (74/86), mais retirer les notices entières ne dégrade pas l'erreur des centres ; seuls les IC s'élargissent ⇒ V1 non gonflée par la fuite] V1 en retirant la NOTICE entière (fuite même-répondants) :
       comptage sans fit, puis 4 fits.
+- [ ] (revue 17/11, 1/B) verdict abst/hier sur les 10 tâches : CRPS ou LS
+      plafonné (−5) sur `tirages_predictifs`, inversion des signes par grappe
+      d'élection, croisé avec τ_paire par variante (0 fit).
+- [ ] (revue 17/11, 3/A) hier_maison : recentrer la cible V1 avec les z_maison
+      a posteriori des instituts de la cible, re-scorer les 4 tâches 2022 avec
+      la règle d'exclusion de §8.20 (0 fit).
+- [ ] (revue 17/11, 2/C) V1 « X contre Y » : Mélenchon–Philippe (2 sondages),
+      abst, 4 chaînes (~15 min) — seul type de paire qui reçoit ν en production.
+- [ ] (revue 17/11, 6) variance de graine du sous-échantillon : bras notice
+      partielle Attal–Le Pen avec 2 graines de plus (8 fits).
+- [ ] (revue 17/11, C) sensibilité de P(élu) sur le champ modal : décalage
+      anti-RN 0/−1/−2/−3 pt × τ_paire 0,11/0,19 (éclaire l'arbitrage 2, ne le
+      tranche pas ; 0-1 fit).
 - [ ] (revue, 9) τ_T2 : a posteriori sur 2002-2022 (normale vs Student-t),
       données à sourcer (session données), effet sur P(Philippe bat Le Pen).
 - [x] [PÉRIMÉ, nettoyé 2026-11-15 21:30Z par la session locale : revue Opus faite
@@ -364,10 +377,13 @@ vue », sur les propositions de la session locale) :
 1. τ_T2 → **0,19** (élargir ; centres inchangés).
 2. Biais anti-RN → **NON corrigé** (deux élections, estimation fragile).
 3. Lissage → **inchangé** (pas de τ_OU T2 plus court).
-- ARBITRAGE À TRANCHER (2026-11-16, valeur de τ_paire, spec §8.22) : la
-  règle « calibré sur les V1 2027 » donne **0,08** (appliqué) ; avec 2017-2022,
-  la variante hier demande **0,19**, tiré par Macron–Pécresse 2022 où hier est
-  sûre d'elle à tort. Fidélité 2027 (0,08) ou garde-fou issu du passé (0,19) ?
+- ARBITRAGE À TRANCHER (mis à jour 2026-11-17, τ_paire, spec §8.22/§8.28) :
+  avec abst (défaut rétabli), le calibrage V1 2027 donne **0,11** (appliqué,
+  dans la fourchette 0,10-0,15 validée) ; avec 2017-2022 et hier, **0,19**
+  (Pécresse). La courbe est plate et les 4 tâches 2027 sont toutes « RN contre
+  X » : les données ne tranchent pas. 0,11 (2027) ou 0,19 (garde-fou passé) ?
+- À PRÉSENTER À L'UTILISATEUR (revue 17/11, point 9) : « gp pour le niveau,
+  spatial pour les IC » est un choix de présentation du site.
 4. τ_paire → **ADOPTÉ** pour les seuls duels jamais sondés, calibré en
    leave-one-pair-out (≈ 0,10-0,15 logit).
 Ces décisions NE valent PAS accord de publication : `PUBLIER_T2` reste False
@@ -425,6 +441,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-17 10:07-10:30Z (routine) : revue Opus quotidienne (10 points intégrés) ; verdict hier retiré, abst rétabli, τ_paire 0,11.
 - 2026-11-17 02:08-02:45Z (routine) : tri des pistes ; valeur inclusive sur le champ (§8.27, 16 fits) : sans effet. File : ne reste que des tâches bloquées par les données.
 - 2026-11-17 01:10Z (routine) : idée B (combinaison spatial/gp, 0 fit) : C1 meilleure, non établie.
 - 2026-11-16 22:30 → 17/11 01:10Z (routine ; VM redémarrée en route, reprise) : effet notice seul en V1 2022 (20 fits) : non retenu.
@@ -531,6 +548,29 @@ conservé pour l'historique.
 - 2026-11-14 22:07-22:25Z (réveil) : log-densité par chaîne ⇒ modes inégaux
   (spec §8.8), sélection Δ = 10 nats, re-fusion 2022, phase 2 lancée.
   Tests : 6 chaînes/cadre verts. Tests : 148 passés (hors réseau).
+
+## Revue Opus 2026-11-17 — intégration point par point
+
+1. §8.20 hier préférée : **INTÉGRÉ, verdict retiré** (vérifié : t90 [−0,01 ;
+   +1,06], inversion des signes p = 0,0625) ; abst rétabli ; refaire sur 10
+   tâches (file).
+2. τ_paire : **INTÉGRÉ** — 0,11 (calibrage abst, gain hors éch. +0,17) au lieu
+   de 0,08 ; non-représentativité (« RN contre X ») notée, V1 Mélenchon–Philippe
+   en file ; arbitrage mis à jour.
+3. §8.23 bis : **INTÉGRÉ** — « non évaluable », pas « non retenu » ; recentrage
+   par z_maison en file (0 fit).
+4. REML : **INTÉGRÉ** (réserves 2017 K_n = I, Harris 2022, cellules seules 2027
+   écrites §8.28).
+5. Détection Zemmour : **INTÉGRÉ, rétractation** (dates de première détection
+   possibles imposées ; seul l'écart de niveau tient), spec spatial_pooling §10.
+6. Placebo : **INTÉGRÉ** (raisonnement corrigé ; variance de graine en file).
+7. §8.27 : **INTÉGRÉ** (masque contaminé par les alias ; non refait, effet
+   attendu nul).
+8. §8.24/§8.25 : **INTÉGRÉ** (couverture dans l'échantillon ; usage non testé).
+9. Combinaison C1 : **INTÉGRÉ** (choix a posteriori, IC optimiste ; choix de
+   présentation remonté).
+10. Stacking / §7.1 : **INTÉGRÉ** (poids LOO peu fiables, décision inchangée).
+Idées A, B, C : en file.
 
 ## Revue Opus 2026-11-16 — intégration point par point
 

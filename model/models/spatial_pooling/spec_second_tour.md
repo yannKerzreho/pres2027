@@ -1098,7 +1098,7 @@ atypique — est réel ; il n'apparaît qu'une fois sur 11 tâches.
 **Décision (règle) :** `hier` devient la variante du bloc T2 en production
 (`ETA_HIER_T2 = True`, forecast_model.py), **sans effet tant que
 `PUBLIER_T2 = False`**. À revoir par la prochaine revue Opus, avec la réserve
-Pécresse.
+Pécresse. **[RETIRÉ le 2026-11-17, §8.28 : non établi ; abst rétabli.]**
 
 ### 8.21 Placebo de la fuite même-notice (revue 16/11, point 6 ; protocole fixé avant résultat)
 
@@ -1405,6 +1405,48 @@ log-score KDE Σ 8,04 / 8,02 ; meilleur sur 1/4) ⇒ **non retenu, sans objet**.
 Raison : ω ≈ −4,2 à −4,6, l'abstention différentielle est faible et la valeur
 inclusive pèse peu ; des alias quasi superposés n'ajoutent qu'au plus log k à
 lse, absorbé par ω.
+
+### 8.28 Révision après la revue Opus du 2026-11-17
+
+- **§8.20 (hier préférée) : RETIRÉ.** Le bootstrap percentile sur 6 tâches est
+  trop étroit : t de Student IC90 [−0,01 ; +1,06], test exact d'inversion des
+  signes p = 0,0625 (unilatéral) ; 4 des 6 tâches sont du même jeu 2027 (Le Pen
+  partout), soit 3 grappes par élection (p = 1/8). L'exclusion des non-
+  concluantes dépend de la variante (Δ̄ = −1,16 sur les 8 tâches où hier
+  converge, +0,51 sur les 7 où abst converge). ⇒ **pas de différence établie ;
+  `abst` redevient le défaut** (`ETA_HIER_T2 = False`). À refaire : 10 tâches,
+  CRPS ou log-score plafonné, inversion des signes par grappe d'élection.
+- **§8.22 (τ_paire)** : la valeur suit la variante par défaut — **0,11 avec
+  abst** (gain hors échantillon +0,17), dans la fourchette 0,10-0,15 validée par
+  l'utilisateur ; 0,08 n'était valable que pour hier. La courbe est plate
+  (0,19 ne coûte que ~1 nat sur 4 tâches) et les 4 tâches sont toutes
+  « RN contre X », alors que les paires jamais sondées sont « X contre Y » :
+  calibrage non représentatif de l'usage (à tester : V1 Mélenchon–Philippe).
+- **§8.23 bis (« non retenu ») : reformulé en « non évaluable »** : la cible V1
+  n'était pas recentrée par les effets maison appris pour les instituts de la
+  cible (seule une variance était ajoutée) ; la décision était tirée par
+  Zemmour, non concluant dans les deux exécutions maison (contraire à la règle
+  §8.20) ; Macron–Le Pen « concluant » avait R̂ T2 4,0. Sur les tâches
+  concluantes des deux côtés (Le Pen, Pécresse), maison fait mieux 2/2. À
+  refaire sans fit : recentrage par les z_maison a posteriori.
+- **§8.23 (REML)** : 2017 a une notice par duel (K_n = I) : σ_n et σ non
+  séparables, seul σ_n² + σ² ≈ (0,93 pt)² est identifié. 2022 : sans Harris
+  (112/307 duels), σ_h = 0,16 pt, p = 0,42 — l'effet maison 2022 est « Harris
+  diffère », pas un σ_h général. 2027 : 44/113 duels seuls dans leur cellule
+  (sans contribution).
+- **§8.21 (placebo)** : conclusion maintenue, raisonnement corrigé — l'effet
+  notice EST le mécanisme d'une fuite ; l'argument est sa taille (biais
+  ~σ_n/√n ≈ 0,3 pt contre des erreurs de 3-7 pt). Le bras notice d'Attal
+  (6,8 → 3,5 pt avec une seule graine) montre que le tirage du sous-échantillon
+  bouge la cible plus que les effets testés : variance de graine à mesurer.
+- **§8.27** : le masque remettait tous les candidats en duel (Attal, Bardella,
+  Hollande, Ruffin : précisément les alias visés) ⇒ test non concluant sur
+  l'hypothèse ; non refait (ω ≈ −4,4, effet attendu nul).
+- **§8.24 / §8.25** : « 5/5 couverts à 0,19 » est dans l'échantillon (0,19 = RMS
+  de ces erreurs) ; §8.25 ne teste pas l'usage visé (P(élu) entre les tours) et
+  la base 2022 n'était pas concluante.
+- **§8.26** : LOO par IS tronqué sans diagnostic de Pareto k, sur observations
+  à latents locaux : poids peu fiables ; décision inchangée (sans conséquence).
 
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 

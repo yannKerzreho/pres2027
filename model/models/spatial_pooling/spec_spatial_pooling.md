@@ -564,6 +564,17 @@ Réserve : le REML 2017 repose sur 27 sondages (τ = 38 j, σ_p = 0), il est
 lui-même fragile. Résultats : `suivi_gp_{bank_c7,r17f3_c7,r17f1_c7}_2022_h*.json`,
 paramètres : `bank_opinion_reml_2017_seul.json`.
 
+**Révision après la revue Opus du 2026-11-17.** (1) Détection Zemmour
+refaite : brut L_c et spatial L_c n'ont de valeur qu'à partir du 07/09, donc le
+05/10 était la première détection possible pour les deux — « à base égale
+spatial = brut » est imposé par les données ; de même gp L_c n'existe qu'à
+partir du 28/09, donc « gp 3 semaines plus tard » est aussi imposé. Seul
+l'**écart de niveau** tient (05/10 : gp 12,6 contre brut L_c 14,7). Avec un recul
+de 21 j, spatial L_c et brut L_c détectent tous deux le 28/09. (2) Combinaison
+C1 : choisie a posteriori parmi 3, sur 13 unités corrélées (IC trop étroit),
+couverture 0,87 ; « gp pour le niveau, spatial pour les IC » reste un choix de
+présentation pour l'utilisateur.
+
 **Idée B : combiner spatial et gp-pooling (protocole fixé avant résultat,
 2026-11-17, 0 fit).** Données : les 13 unités (coupure, liste) de la tâche A,
 spatial prolongé à c + 7 (`suivi_proj_2022_h*.json`) et gp recalibré hors
