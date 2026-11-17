@@ -1,6 +1,6 @@
 {
- "as_of": "2026-11-16",
- "genere_le": "2026-11-16",
+ "as_of": "2026-11-17",
+ "genere_le": "2026-11-17",
  "regle": {
   "n_recents": 10,
   "n_max": 3,
@@ -40,7 +40,7 @@
     "Tondelier",
     "Zemmour"
    ],
-   "n_recents": 6,
+   "n_recents": 5,
    "n_total": 26,
    "rang": 1,
    "reference": true,
@@ -63,7 +63,7 @@
     "Tondelier",
     "Zemmour"
    ],
-   "n_recents": 5,
+   "n_recents": 4,
    "n_total": 26,
    "rang": 2,
    "reference": false,
@@ -88,7 +88,7 @@
     "Tondelier",
     "Zemmour"
    ],
-   "n_recents": 5,
+   "n_recents": 4,
    "n_total": 23,
    "rang": 3,
    "reference": false,
@@ -197,24 +197,6 @@
   {
    "date": "2026-07-08",
    "type": "entree",
-   "id": "1e7ab50b",
-   "candidats": [
-    "Arthaud",
-    "Attal",
-    "Dupont-Aignan",
-    "Glucksmann",
-    "Le Pen",
-    "Mélenchon",
-    "Retailleau",
-    "Roussel",
-    "Tondelier",
-    "Zemmour"
-   ],
-   "libelle": "avec Attal, sans Philippe"
-  },
-  {
-   "date": "2026-07-08",
-   "type": "entree",
    "id": "39fd3710",
    "candidats": [
     "Arthaud",
@@ -232,21 +214,21 @@
   },
   {
    "date": "2026-07-08",
-   "type": "sortie",
-   "id": "04966243",
+   "type": "entree",
+   "id": "1e7ab50b",
    "candidats": [
     "Arthaud",
     "Attal",
-    "Bardella",
     "Dupont-Aignan",
     "Glucksmann",
+    "Le Pen",
     "Mélenchon",
     "Retailleau",
     "Roussel",
     "Tondelier",
     "Zemmour"
    ],
-   "libelle": "avec Attal, Bardella, sans Le Pen, Philippe"
+   "libelle": "avec Attal, sans Philippe"
   },
   {
    "date": "2026-07-08",
@@ -266,6 +248,24 @@
     "Zemmour"
    ],
    "libelle": "avec Attal, Bardella, sans Le Pen"
+  },
+  {
+   "date": "2026-07-08",
+   "type": "sortie",
+   "id": "04966243",
+   "candidats": [
+    "Arthaud",
+    "Attal",
+    "Bardella",
+    "Dupont-Aignan",
+    "Glucksmann",
+    "Mélenchon",
+    "Retailleau",
+    "Roussel",
+    "Tondelier",
+    "Zemmour"
+   ],
+   "libelle": "avec Attal, Bardella, sans Le Pen, Philippe"
   },
   {
    "date": "2026-08-19",
@@ -383,42 +383,24 @@
   {
    "date": "2026-09-03",
    "type": "sortie",
-   "id": "1e7ab50b",
+   "id": "39fd3710",
    "candidats": [
     "Arthaud",
-    "Attal",
     "Dupont-Aignan",
     "Glucksmann",
     "Le Pen",
     "Mélenchon",
+    "Philippe",
     "Retailleau",
     "Roussel",
     "Tondelier",
     "Zemmour"
    ],
-   "libelle": "avec Attal, sans Philippe"
+   "libelle": "liste de la prévision"
   },
   {
    "date": "2026-09-03",
    "type": "sortie",
-   "id": "39fd3710",
-   "candidats": [
-    "Arthaud",
-    "Dupont-Aignan",
-    "Glucksmann",
-    "Le Pen",
-    "Mélenchon",
-    "Philippe",
-    "Retailleau",
-    "Roussel",
-    "Tondelier",
-    "Zemmour"
-   ],
-   "libelle": "liste de la prévision"
-  },
-  {
-   "date": "2026-09-09",
-   "type": "entree",
    "id": "1e7ab50b",
    "candidats": [
     "Arthaud",
@@ -451,6 +433,24 @@
     "Zemmour"
    ],
    "libelle": "liste de la prévision"
+  },
+  {
+   "date": "2026-09-09",
+   "type": "entree",
+   "id": "1e7ab50b",
+   "candidats": [
+    "Arthaud",
+    "Attal",
+    "Dupont-Aignan",
+    "Glucksmann",
+    "Le Pen",
+    "Mélenchon",
+    "Retailleau",
+    "Roussel",
+    "Tondelier",
+    "Zemmour"
+   ],
+   "libelle": "avec Attal, sans Philippe"
   },
   {
    "date": "2026-09-09",
