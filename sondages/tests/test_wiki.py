@@ -402,3 +402,37 @@ def test_doublons_de_notice_signale_un_pdf_sous_deux_libelles():
     })
     w = doublons_de_notice(df)
     assert len(w) == 1 and "10292" not in w[0] and "Premier tour" in w[0]
+
+
+# Mise en page de la page 2027 au 2026-11-17 (extrait réduit, réel) : photo
+# `[[Fichier:...]]` en tête de chaque colonne, noms DANS la ligne « Sondeur »,
+# bande de couleurs ensuite, et « Autres » en boîte déroulante multi-lignes.
+_WT_2026_11_17 = """{| class="wikitable"
+! rowspan=2 | Sondeur
+! rowspan=2 | Date
+! rowspan=2 | Échantillon
+! [[Fichier:Arthaud.jpg|alt=Nathalie Arthaud|50x50px]]<br>[[Nathalie Arthaud|Arthaud]]<br><small>([[Lutte ouvrière|LO]])</small>
+! [[Fichier:Le Pen.jpg|50x50px]]<br>[[Marine Le Pen|Le Pen]]<br><small>([[Rassemblement national|RN]])</small>
+! Autres
+|- style="line-height:5px;"
+| {{Infobox Parti politique français/couleurs|LO}} |
+| {{Infobox Parti politique français/couleurs|RN}} |
+| {{Infobox Parti politique français/couleurs|DIV}} |
+|-
+| [https://www.commission-des-sondages.fr/notices/files/notices/2026/novembre/10375-pres-iv-elabe-14-novembre.pdf Elabe]
+| 12-13 novembre
+| 1500
+|60
+|34
+| {{Boîte déroulante|titre=|align=center|contenu=
+{{Nowrap|[[Natacha Polony|Polony]] 1,5}}<br/>{{Nowrap|[[Teddy Riner|Riner]] 4,5}} }}
+|}"""
+
+
+def test_mise_en_page_2026_11_17_photos_boite_deroulante():
+    grid = parse_wikitables(_WT_2026_11_17)[0]
+    warnings = []
+    recs = extract_notices(grid, "Premier tour", None, warnings, "2026")
+    got = {r["candidat"]: r["intention"] for r in recs}
+    assert got == {"Arthaud": 60.0, "Le Pen": 34.0, "Polony": 1.5, "Riner": 4.5}
+    assert not [w for w in warnings if "inconnu" in w]
