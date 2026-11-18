@@ -338,9 +338,10 @@ def forecast_spatial_pooling(fit: SpatialPoolingFit, mask: np.ndarray, horizon_d
 # mesuré 2017/2022). Centrée : pas de terme anti-RN (arbitrage 2).
 TAU_T2_SCRUTIN = 0.19
 # Incertitude d'extrapolation d'un duel JAMAIS sondé, en logit (spec §6.3,
-# arbitrage 4 ; calibrage §8.22 sur les V1 2027 de la variante par défaut,
-# hier depuis §8.29 : 0,08 — sous la fourchette 0,10-0,15 validée, remonté).
-TAU_PAIRE = 0.08
+# arbitrage 4). 0,10 : borne basse de la fourchette 0,10-0,15 validée par
+# l'utilisateur (le calibrage hier donnait 0,08, hors fourchette : revue du
+# 18/11, §8.34) ; en attente de sa décision.
+TAU_PAIRE = 0.10
 
 
 def noyau_effets(a, b, groupes) -> np.ndarray:

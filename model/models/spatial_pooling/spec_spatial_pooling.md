@@ -607,6 +607,14 @@ gain, plutôt une légère perte d'intervalle ⇒ non adopté.** Les tendances
 amorties ne viennent pas d'un σ_w trop commun. Conclusion consignée : **rôles
 spatial / gp-pooling assumés** (synthèse ci-dessous).
 
+**Révision (revue du 18/11) de (B).** Le diagnostic « bloquée par la source »
+est faux : le blocage vient de l'**écart minimal d'ancres**. En 2022, 22 écarts
+sur 24 sont au plancher de 0,25 logit (2017 : 5/15) ; des positions cardinales
+quelconques — CHES compris — y seraient écrasées pareillement. Le « repli »
+mesuré était le statu quo (les ancres sont déjà les rangs ORDER_GROUPS). Piste
+réelle : écart minimal seulement À L'INTÉRIEUR d'une famille (ou retrait des
+putatifs avant placement des ancres), puis 4 V1 2022.
+
 **Idée B : combiner spatial et gp-pooling (protocole fixé avant résultat,
 2026-11-17, 0 fit).** Données : les 13 unités (coupure, liste) de la tâche A,
 spatial prolongé à c + 7 (`suivi_proj_2022_h*.json`) et gp recalibré hors

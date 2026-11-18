@@ -7,7 +7,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## État (mis à jour à chaque réveil)
 
-- Dernière revue Opus : 2026-11-17 ~10:20Z (routine, cf. « Revue Opus 2026-11-17 »).
+- Dernière revue Opus : 2026-11-18 ~11:20Z (routine, cf. « Revue Opus 2026-11-18 »).
 - OBJECTIF (utilisateur, via l'orchestrateur, 2026-11-14) : « un modèle qui est
   backé par le passé mais qui représente bien les sondages et tendances
   actuels ». 2017/2022 servent à CALIBRER et VALIDER ; le critère final est la
@@ -33,7 +33,7 @@ l'historique, ajouter en bas de « Historique ».
 
 - [ ] **NOUVELLES PISTES (utilisateur, 2026-11-17 ~19:30Z)** — dans cet ordre, maths
       dans la spec AVANT tout code, rien réglé sur les résultats qu'on valide :
-  - [ ] [BLOQUÉ 17/11 22:55Z : CHES inaccessible (chesdata.eu hors domaines autorisés) ; repli ORDER_GROUPS sans effet (ancres ≤ 0,011 d'écart, contrainte d'écart minimal) — spec_spatial_pooling §10] (B) **Positions a priori externes pour la géométrie historique 2017/2022**
+  - [ ] [RÉVISÉ 18/11 (revue) : le blocage vient de l'écart minimal d'ancres (2022 : 22/24 écarts au plancher), pas de la source ; À FAIRE : écart minimal seulement dans une famille, puis 4 V1 2022] [ancien : BLOQUÉ 17/11 22:55Z : CHES inaccessible (chesdata.eu hors domaines autorisés) ; repli ORDER_GROUPS sans effet (ancres ≤ 0,011 d'écart, contrainte d'écart minimal) — spec_spatial_pooling §10] (B) **Positions a priori externes pour la géométrie historique 2017/2022**
         (multimodalité §8.2-8.7) : prior centré par candidat sur une source
         indépendante (famille politique / placements d'experts type CHES ou
         équivalent sourçable hors réseau ; à défaut l'ordre ORDER_GROUPS déjà
@@ -363,6 +363,13 @@ Résultats : `model/backtest/results/*.json` (committés).
       anti-RN 0/−1/−2/−3 pt × τ_paire 0,11/0,19 (éclaire l'arbitrage 2, ne le
       tranche pas ; 0-1 fit).
 - [x] [FAIT 18/11 01:40Z] diagnostic 2027 hier rejoué sur le jeu à 118 notices : duels affichés inchangés à ≤ 0,2 pt, P(élu) Le Pen 80,3 → 80,8 %, Philippe 13,9 → 13,6 % ; R̂ 1,017 ; résultats 2027 antérieurs toujours valables (`diagnostic_2027_hier_2026-11-13_118notices.json`).
+- [ ] (revue 18/11, idée 2) facteur d'élargissement λ des IC V1 appris hors
+      élection (2 élections → la 3e), cible RMS z ≈ 1 (actuel 1,9) ; 0 fit.
+- [ ] (revue 18/11, 5) `p_elu(tau_t2=…)` ; sensibilité cohérente d = −3,5 pt
+      avec τ résiduel ≈ 0,10 (1 fit).
+- [ ] (revue 18/11, idée 1) test prospectif 2027 : figer les prédictions abst
+      et hier de toutes les paires (2 fits), puis scorer chaque nouveau duel
+      publié (CRPS, z) sans fit.
 - [ ] (revue, 9) τ_T2 : a posteriori sur 2002-2022 (normale vs Student-t),
       données à sourcer (session données), effet sur P(Philippe bat Le Pen).
 - [x] [PÉRIMÉ, nettoyé 2026-11-15 21:30Z par la session locale : revue Opus faite
@@ -403,7 +410,12 @@ vue », sur les propositions de la session locale) :
 1. τ_T2 → **0,19** (élargir ; centres inchangés).
 2. Biais anti-RN → **NON corrigé** (deux élections, estimation fragile).
 3. Lissage → **inchangé** (pas de τ_OU T2 plus court).
-- ARBITRAGE À TRANCHER (mis à jour 2026-11-17 11:20Z, τ_paire, spec §8.22/§8.29) :
+- ARBITRAGE À TRANCHER (18/11, §8.34) : variante T2 — hier (meilleure en moyenne
+  sur 10 tâches, mais le verdict ne tient qu'au plafond du log-score ; sûre
+  d'elle à tort sur Pécresse 2022) ou abst (plus prudente) ? hier en place, sans
+  effet publié.
+- ARBITRAGE À TRANCHER (mis à jour 2026-11-18 : τ_paire mis à **0,10**, borne basse
+  de la fourchette validée ; ancien texte du 17/11 11:20Z ci-après, spec §8.22/§8.29) :
   variante hier (défaut, §8.29) ⇒ calibrage V1 2027 **0,08** (appliqué, SOUS la
   fourchette 0,10-0,15 validée) ; abst donnerait 0,11 ; avec 2017-2022, hier
   demande **0,19** (Pécresse). Courbe plate, 4 tâches toutes « RN contre X » :
@@ -470,6 +482,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-18 11:08-11:30Z (routine) : revue Opus (8 points intégrés) ; τ_paire 0,10 ; verdict hier requalifié « préférence faible », arbitrage remonté ; (B) réouverte.
 - 2026-11-18 00:30Z (routine) : main fusionnée — nouveau parseur wiki 2027 : 92 → 118 notices (dernier terrain toujours 13/11). Les résultats 2027 (V1, diagnostic) datent du jeu à 92 notices ; à rejouer si un écart matériel est suspecté. Pas de tableaux de reports encore (A bloquée).
 - 2026-11-17 22:48 → 18/11 00:30Z (routine) : pistes utilisateur — (B) bloquée (CHES hors domaines réseau ; repli ORDER_GROUPS sans effet) ; (C) σ_w par candidat (32 fits) : non adopté.
 - 2026-11-17 16:20Z (routine) : main fusionnée (maj quotidienne : 92 notices, dernier terrain 13/11) ; tests verts hors test réseau. File : seule reste τ_T2 2002-2012 (bloquée données).
@@ -585,6 +598,22 @@ conservé pour l'historique.
 - 2026-11-14 22:07-22:25Z (réveil) : log-densité par chaîne ⇒ modes inégaux
   (spec §8.8), sélection Δ = 10 nats, re-fusion 2022, phase 2 lancée.
   Tests : 6 chaînes/cadre verts. Tests : 148 passés (hors réseau).
+
+## Revue Opus 2026-11-18 — intégration point par point
+
+1. §8.29 fragile (plafond) : **INTÉGRÉ** (vérifié : −5/−8/−10/aucun → p 0,008 /
+   0,053 / 0,22 / 0,50) ; requalifié « préférence faible », arbitrage remonté.
+2. (B) mal diagnostiquée : **INTÉGRÉ** (vérifié : 22/24 écarts au plancher en
+   2022) ; tâche réouverte (écart minimal intra-famille).
+3. IC V1 trop étroits : **INTÉGRÉ** (RMS z 1,86 / 1,95, couverture 6/10, 7/10) ;
+   λ en file.
+4. τ_paire hors fourchette validée : **INTÉGRÉ**, mis à 0,10.
+5. §8.33 double compte + bruit MC : **INTÉGRÉ** ; rejeu cohérent en file.
+6. §8.30 tableau mélangé, « concluant » ignorant R̂ T2 : **INTÉGRÉ** (texte).
+7. §8.31/§8.32 : **INTÉGRÉ** (texte).
+8. 118 notices / (C) : **INTÉGRÉ** (« duels inchangés » mécanique ; (C) non
+   adopté maintenu).
+Idées 1 (test prospectif 2027) et 2 (λ hors élection) : en file.
 
 ## Revue Opus 2026-11-17 — intégration point par point
 

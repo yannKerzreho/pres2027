@@ -44,7 +44,9 @@ PUBLIER_T2 = False
 RHAT_T2_PUBLIABLE = 1.2
 # Variante du bloc T2 quand il est publié : `hier`, verdict du protocole robuste
 # §8.29 (10 tâches, CRPS et log-score plafonné, inversion des signes : p = 0,04
-# et 0,008, même signe sur les 3 élections). Sans effet tant que PUBLIER_T2 est False.
+# et 0,008, même signe sur les 3 élections) — PRÉFÉRENCE FAIBLE (revue du 18/11,
+# §8.34 : tient au plafond −5 du log-score) ; arbitrage remonté à l'utilisateur.
+# Sans effet tant que PUBLIER_T2 est False.
 ETA_HIER_T2 = True
 
 

@@ -1553,6 +1553,37 @@ que l'affichage de duels jamais sondés (onglet Scénarios). L'arbitrage
 passés (−3 à −6 pt en 2017/2022, §6) déplacerait P(élu Le Pen) de ~80 à ~75 %
 ou moins : c'est l'arbitrage 2 qui pèse, pas τ_paire.
 
+### 8.34 Révision après la revue Opus du 2026-11-18
+
+- **§8.29 requalifié en « préférence faible »** (recalculé) : Δ LS hier − abst
+  selon le plafond : −5 → +0,67 (p = 0,008) ; −8 → +0,57 (p = 0,053) ; −10 →
+  +0,37 (p = 0,22) ; sans plafond → −0,84 (p = 0,50, Pécresse −15 nats). En CRPS,
+  sans Macron–Le Pen 2022 p = 0,084, sans elle ni Attal p = 0,17. Le critère
+  « même signe sur les 3 élections » est plus faible que l'inversion des signes
+  par grappe demandée, et a été écrit après lecture des scores par tâche. Le
+  verdict ne tient qu'au plafond : **arbitrage remonté à l'utilisateur** (hier
+  meilleure en moyenne mais sûre d'elle à tort sur un candidat atypique ;
+  abst plus prudente). `ETA_HIER_T2` inchangé en attendant (sans effet publié).
+- **Calibration V1 des deux variantes : IC trop étroits.** Erreur standardisée
+  en logit, RMS 1,86 (abst) / 1,95 (hier), couverture IC90 6/10 et 7/10 (au lieu
+  de 9/10). À traiter par un facteur d'élargissement appris hors élection (file).
+- **τ_paire = 0,10** (borne basse de la fourchette validée par l'utilisateur ;
+  0,08 était hors fourchette, appliqué sans son accord). Sans effet sur P(élu)
+  (§8.33).
+- **§8.33 : double compte.** τ_T2 = 0,19 est le RMS NON centré des erreurs
+  passées et contient déjà le biais anti-RN moyen (~3,5 pt) ; d = −3 avec τ =
+  0,19 compte ce biais deux fois. Le scénario cohérent est d = −3,5 avec un τ
+  résiduel ≈ 0,10 (file, 1 fit). De plus, l'erreur Monte-Carlo de P(élu) est
+  ≈ 1 pt (1600 tirages) : 80,3 → 80,8 % (118 notices) est du bruit.
+- **§8.30** : le tableau mélange changement de modèle et recentrage ; le
+  recentrage seul déplace la cible de 0,14 à 1,0 pt (Pécresse : 52,7 → 51,7,
+  mauvais sens). « Concluant » ignore le R̂ du bloc T2 (4,0 sur Macron–Le Pen).
+- **§8.31** ne prouve rien sur τ_paire (une tâche bien prédite : la variance la
+  plus faible gagne mécaniquement). **§8.32** : la variance de graine (1,6 pt)
+  couvre le gain d'Attal, principal contributeur 2027 au verdict hier.
+- **118 notices** : les 95 duels sont les mêmes ; « duels inchangés » est
+  mécanique.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
