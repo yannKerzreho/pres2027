@@ -31,6 +31,40 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- [ ] **PRIORITÉ (orchestrateur, au nom de l'utilisateur, 2026-11-18 ~23:05Z)** —
+      LES DONNÉES SONT SUR MAIN depuis 844495b (déjà fusionnée ici via ab2178c) ;
+      (A) et τ_T2 2002-2012 sont DÉBLOQUÉS. Roster (fb69009) et palette
+      (9b95194) sur main ⇒ fits 2027 débloqués. Ordre :
+  - [ ] (A)(1) **Validation sans fit des tableaux de reports** :
+        `data/parsed/reports_t2_2017.csv`, `reports_t2_2022.csv` (colonnes
+        notice, institut, dates, hypothese « X – Y », electorat_t1 = nom complet
+        du candidat T1, candidat_t2 ∈ {X, Y, Aucun}, part en %, base_electorat
+        souvent vide, rolling ; parseur `sondages/reports.py`). Reports prédits
+        par le modèle (tirages par électorat T1, fits existants ou refits Colab
+        si les tirages ne sont pas sauvés) contre reports mesurés : MAE par
+        électorat et par candidat_t2 (y compris « Aucun » ↔ abstention ω),
+        z par cellule. Maths dans la spec (§ nouveau) AVANT le code. Si erreur
+        systématique par électorat que l'axe unique n'absorbe pas ⇒ ouvrir (D).
+  - [ ] (A)(2) **Reports comme observations** (multinomiale par électorat, ou
+        Dirichlet-multinomiale avec n effectif si base_electorat manque ; maths
+        d'abord : vraisemblance, dépendance avec les duels de la même notice,
+        poids). Backtest V1/V2 2017 et 2022 selon le protocole §8.29
+        (10 tâches, CRPS + LS plafonné) ; adopter seulement si non dégradé.
+  - [ ] **Revue Opus dédiée à (A)** dès (A)(2) fini (sous-agent model opus :
+        spec + code + résultats de (A)) ; intégrer ou réfuter point par point.
+  - [ ] **τ_T2 calibré sur 2002-2022** (5 élections ; tâche « revue, 9 »
+        ci-dessous) : `data/historical/results_{2002,2007,2012}.csv`,
+        `data/parsed/intentions_{2002,2007,2012}_wiki.csv` (tour = « Second tour »).
+        Erreur de scrutin sondages finaux → résultat ; normale vs Student-t ;
+        sensibilité à 2002 (duel atypique) ; effet sur P(élu) 2027 et
+        P(Philippe bat Le Pen). Dates 2017 corrigées aussi sur main.
+  - [ ] **Crédibilité face aux duels 2027** : test prospectif (tâche gelée
+        ci-dessous) à scorer à chaque réveil ; diagnostic 2027 sur le roster
+        à 19 (Riner, Polony) si le roster a changé depuis le gel.
+  - Tout choix éditorial ⇒ ligne « ARBITRAGE À TRANCHER : … » dans la section
+    Arbitrages ET en fin de réponse du réveil (la session locale la relaie à
+    l'orchestrateur). Chaque lot finit par « PRÊT À PUBLIER : … ».
+
 - [ ] **NOUVELLES PISTES (utilisateur, 2026-11-17 ~19:30Z)** — dans cet ordre, maths
       dans la spec AVANT tout code, rien réglé sur les résultats qu'on valide :
   - [x] [FAIT 18/11 13:50Z, spec_spatial_pooling §10 : ancres par famille ⇒ MAE V1 2022 4,66 → 6,75 pt, multimodalité non levée ⇒ non adopté ; CHES non prioritaire] [RÉVISÉ 18/11 (revue) : le blocage vient de l'écart minimal d'ancres (2022 : 22/24 écarts au plancher), pas de la source ; À FAIRE : écart minimal seulement dans une famille, puis 4 V1 2022] [ancien : BLOQUÉ 17/11 22:55Z : CHES inaccessible (chesdata.eu hors domaines autorisés) ; repli ORDER_GROUPS sans effet (ancres ≤ 0,011 d'écart, contrainte d'écart minimal) — spec_spatial_pooling §10] (B) **Positions a priori externes pour la géométrie historique 2017/2022**
@@ -46,14 +80,14 @@ l'historique, ajouter en bas de « Historique ».
         `model/backtest/suivi.py` 2022 (8 coupures) ; adopter seulement si MAE
         et couverture battent le σ_w commun. Sinon consigner « rôles
         spatial/gp assumés ».
-  - [ ] (A) **Tableaux de reports T1→T2 des instituts** — BLOQUÉ DONNÉES
+  - [ ] [DÉBLOQUÉ 18/11 23:05Z : données sur main (844495b), voir bloc PRIORITÉ en tête] (A) **Tableaux de reports T1→T2 des instituts** — ex-BLOQUÉ DONNÉES
         (demandés à la session pipeline-donnees le 17/11) : dès leur arrivée sur
         main, (1) validation sans fit : reports prédits par le modèle (tirages
         par électorat T1) contre reports mesurés, MAE par électorat ; (2) puis
         comme observations (multinomiale par électorat, maths d'abord).
   - [ ] (D) Espace 2D (axe système/anti-système) — SEULEMENT si (A)(1) montre
         une erreur systématique par électorat que l'axe unique n'absorbe pas.
-  - Toujours BLOQUÉ DONNÉES (même demande) : τ_T2 2002-2012, dates 2017.
+  - DÉBLOQUÉ 18/11 (844495b) : τ_T2 2002-2012, dates 2017.
 
 - [x] [(a), (b), (c) FAITS 2026-11-16 ; (c) : IC90 duels +2,5-3 pt de chaque côté, P(élu) Le Pen 84,8 → 80,3 %, spec §8.22 : `TAU_T2_SCRUTIN = 0.19`, spec §6.2 ; τ_paire spec §6.3 + §8.22, `TAU_PAIRE = 0.08` (V1 2027, hier), code duel_draws/p_elu + test ; reste (c) diagnostic_2027, après le placebo] **ARBITRAGES TRANCHÉS (2026-11-15 ~21:45Z, voir section Arbitrages)** — à faire
       AVANT la relance ci-dessous : (a) spec §6 : τ_T2 = 0,19, justification
