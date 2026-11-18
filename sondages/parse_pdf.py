@@ -33,10 +33,13 @@ import pdfplumber
 # --- Détection de l'institut -------------------------------------------------
 INSTITUT_PATTERNS = [
     ("Ifop", ("ifop",)),
+    # AVANT "Harris Interactive" : LH2 (ex-Louis Harris France, 2002-2012) est
+    # un institut distinct de Harris Interactive.
+    ("LH2", ("lh2", "louis harris")),
     ("Opinion Way", ("opinionway", "opinion way", "opinion-way")),
     ("Harris Interactive", ("harris", "toluna")),
     ("Elabe", ("elabe",)),
-    ("Ipsos", ("ipsos",)),
+    ("Ipsos", ("ipsos", "ispos")),  # « Ispos » : coquille de la page 2012
     ("Odoxa", ("odoxa",)),
     ("BVA", ("bva",)),
     ("Cluster17", ("cluster",)),
