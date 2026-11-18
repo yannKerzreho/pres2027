@@ -33,7 +33,7 @@ l'historique, ajouter en bas de « Historique ».
 
 - [ ] **NOUVELLES PISTES (utilisateur, 2026-11-17 ~19:30Z)** — dans cet ordre, maths
       dans la spec AVANT tout code, rien réglé sur les résultats qu'on valide :
-  - [ ] [EN COURS (début 2026-11-18T12:15Z) : `ancres_par_famille` codé + test ; V1 2022 hier × 4 paires] [RÉVISÉ 18/11 (revue) : le blocage vient de l'écart minimal d'ancres (2022 : 22/24 écarts au plancher), pas de la source ; À FAIRE : écart minimal seulement dans une famille, puis 4 V1 2022] [ancien : BLOQUÉ 17/11 22:55Z : CHES inaccessible (chesdata.eu hors domaines autorisés) ; repli ORDER_GROUPS sans effet (ancres ≤ 0,011 d'écart, contrainte d'écart minimal) — spec_spatial_pooling §10] (B) **Positions a priori externes pour la géométrie historique 2017/2022**
+  - [x] [FAIT 18/11 13:50Z, spec_spatial_pooling §10 : ancres par famille ⇒ MAE V1 2022 4,66 → 6,75 pt, multimodalité non levée ⇒ non adopté ; CHES non prioritaire] [RÉVISÉ 18/11 (revue) : le blocage vient de l'écart minimal d'ancres (2022 : 22/24 écarts au plancher), pas de la source ; À FAIRE : écart minimal seulement dans une famille, puis 4 V1 2022] [ancien : BLOQUÉ 17/11 22:55Z : CHES inaccessible (chesdata.eu hors domaines autorisés) ; repli ORDER_GROUPS sans effet (ancres ≤ 0,011 d'écart, contrainte d'écart minimal) — spec_spatial_pooling §10] (B) **Positions a priori externes pour la géométrie historique 2017/2022**
         (multimodalité §8.2-8.7) : prior centré par candidat sur une source
         indépendante (famille politique / placements d'experts type CHES ou
         équivalent sourçable hors réseau ; à défaut l'ordre ORDER_GROUPS déjà
@@ -482,6 +482,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-18 12:08-13:50Z (routine) : piste B révisée (ancres par famille, 16 fits) : non adoptée.
 - 2026-11-18 11:08-11:30Z (routine) : revue Opus (8 points intégrés) ; τ_paire 0,10 ; verdict hier requalifié « préférence faible », arbitrage remonté ; (B) réouverte.
 - 2026-11-18 00:30Z (routine) : main fusionnée — nouveau parseur wiki 2027 : 92 → 118 notices (dernier terrain toujours 13/11). Les résultats 2027 (V1, diagnostic) datent du jeu à 92 notices ; à rejouer si un écart matériel est suspecté. Pas de tableaux de reports encore (A bloquée).
 - 2026-11-17 22:48 → 18/11 00:30Z (routine) : pistes utilisateur — (B) bloquée (CHES hors domaines réseau ; repli ORDER_GROUPS sans effet) ; (C) σ_w par candidat (32 fits) : non adopté.

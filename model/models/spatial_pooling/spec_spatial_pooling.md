@@ -625,6 +625,24 @@ Les familles portent ainsi une distance propre (2022 : familles espacées de
 paires (phase 1, comparée à la phase 1 de hier) ; critère fixé par
 l'utilisateur : écart de chaînes ≤ 1 pt et MAE non dégradée (protocole §8.29).
 
+**Résultat (B) révisée (18/11, V1 2022 hier, phase 1 contre phase 1,
+`second_round_hier_v1_2022_*_famille.json`)** :
+
+| paire retirée | erreur rang / famille (pt) | écart de chaînes rang / famille (pt) | chaînes retenues rang / famille |
+|---|---|---|---|
+| Macron–Le Pen | 4,04 / 4,07 | 0,63 / 0,0 | 4 / **1** |
+| Macron–Zemmour | 2,37 / **6,85** | 0,0 / 0,59 | 1 / 4 |
+| Macron–Mélenchon | 0,32 / 0,29 | 0,0 / **4,33** | 1 / 4 |
+| Macron–Pécresse | 11,92 / **15,77** | 2,93 / 0,0 | 3 / **1** |
+
+MAE 4,66 → 6,75 pt ; la multimodalité n'est pas levée (deux paires à une
+chaîne retenue, une à 4,3 pt d'écart). **Critère de l'utilisateur non rempli
+⇒ non adopté.** Des distances entre familles plus grandes n'identifient pas
+mieux la géométrie : les modes viennent de la compensation η/géométrie
+(§8.7 de spec_second_tour), pas de l'écrasement des ancres. Une source
+cardinale externe (CHES) aurait le même canal d'action ; elle n'est donc pas
+prioritaire même si elle devenait accessible.
+
 **Idée B : combiner spatial et gp-pooling (protocole fixé avant résultat,
 2026-11-17, 0 fit).** Données : les 13 unités (coupure, liste) de la tâche A,
 spatial prolongé à c + 7 (`suivi_proj_2022_h*.json`) et gp recalibré hors
