@@ -362,6 +362,7 @@ Résultats : `model/backtest/results/*.json` (committés).
 - [x] [FAIT 17/11, spec §8.33 : τ_paire sans effet sur P(élu) ; d = −3 pt ⇒ Le Pen 80,3 → 74,7 %] (revue 17/11, C) sensibilité de P(élu) sur le champ modal : décalage
       anti-RN 0/−1/−2/−3 pt × τ_paire 0,11/0,19 (éclaire l'arbitrage 2, ne le
       tranche pas ; 0-1 fit).
+- [ ] [EN COURS (début 2026-11-18T01:10Z)] diagnostic 2027 hier rejoué sur le jeu à 118 notices (26 notices T1 de plus, duels inchangés : 115).
 - [ ] (revue, 9) τ_T2 : a posteriori sur 2002-2022 (normale vs Student-t),
       données à sourcer (session données), effet sur P(Philippe bat Le Pen).
 - [x] [PÉRIMÉ, nettoyé 2026-11-15 21:30Z par la session locale : revue Opus faite
