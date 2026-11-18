@@ -93,6 +93,30 @@ def position_anchors(candidates: list[str], order_groups=None) -> np.ndarray:
     return (place + 1.0) / (len(candidates) + 1.0)
 
 
+class CandidatsNonClasses(ValueError):
+    """Refus de `build_roster` : des candidats éligibles n'ont pas de place sur
+    l'axe. Le refus reste (le placement est un choix éditorial) ; l'exception
+    porte en plus `alerte`, que `model.run` transforme en annotation ::error::
+    et en issue GitHub listant les noms à classer."""
+
+    def __init__(self, noms: list[str]):
+        self.noms = list(noms)
+        super().__init__(
+            f"candidats éligibles absents de ORDER_GROUPS : {self.noms}. "
+            "Les classer dans model.py (cf. spec §12) — les ignorer creuserait un "
+            "trou de normalisation dans la vraisemblance.")
+        self.alerte = (
+            "spatial-pooling-order-groups",
+            "spatial-pooling : candidats à classer dans ORDER_GROUPS",
+            "spatial-pooling ne publie plus (son dernier snapshot reste affiché) : "
+            f"{len(self.noms)} candidat(s) ont franchi le seuil de {MIN_POLLS} sondages "
+            "sans place sur l'axe gauche-droite :\n\n"
+            + "\n".join(f"- {n}" for n in self.noms)
+            + "\n\nÀ placer dans `ORDER_GROUPS` (model/models/spatial_pooling/roster.py), "
+              "et leur couleur dans docs/assets/palette.js. Choix éditorial : le modèle ne "
+              "les place pas lui-même.")
+
+
 ORDER_GROUPS: list[tuple[str, list[str]]] = [
     ("LO",         ["Arthaud", "Poutou"]),
     ("LFI",        ["Mélenchon", "Ruffin"]),
@@ -212,11 +236,7 @@ def build_roster(raw: pd.DataFrame, as_of=None, order_groups=None
 
     unclassified = eligible - {m for _, members in order_groups for m in members}
     if unclassified:
-        raise ValueError(
-            f"candidats éligibles absents de ORDER_GROUPS : {sorted(unclassified)}. "
-            "Les classer dans model.py (cf. spec §12) — les ignorer creuserait un "
-            "trou de normalisation dans la vraisemblance."
-        )
+        raise CandidatsNonClasses(sorted(unclassified))
 
     candidates, slot_of, slot_names = [], [], []
     for gname, members in order_groups:

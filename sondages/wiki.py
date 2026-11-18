@@ -986,6 +986,30 @@ def notices_disparues(intentions: pd.DataFrame, snapshots_dir: Path) -> tuple[se
     return ref - presentes, len(ref)
 
 
+_INSTITUT_INCONNU = re.compile(r"institut non reconnu '(.*)' -> notice écartée")
+# lignes de RAPPEL insérées dans les tableaux, pas des sondeurs
+_PAS_UN_SONDEUR = re.compile(r"^\s*(r[ée]sultats?|moyenne|rappel|$)", re.I)
+
+
+def sondeurs_inconnus(warnings: list[str]) -> list[str]:
+    """Libellés de la colonne Sondeur que `detect_institut` ne reconnaît pas,
+    hors lignes de rappel (« Résultats officiels »). Leurs sondages sont écartés :
+    c'est la bonne dégradation (on ne sait pas distinguer un nouvel institut
+    d'une ligne parasite), mais elle doit se voir."""
+    noms = {m.group(1) for w in warnings if (m := _INSTITUT_INCONNU.search(w))}
+    return sorted(n for n in noms if not _PAS_UN_SONDEUR.match(n))
+
+
+def _abandon(msg: str) -> None:
+    """Garde-fou d'ingestion : rien n'est écrit, l'étape échoue, alerte + issue.
+    Le workflow fait tourner les modèles sur le CSV de la veille."""
+    from pipeline.alertes import signale
+    signale("ingestion", "ingestion Wikipédia abandonnée",
+            msg + "\n\nLes modèles ont tourné sur le CSV précédent (sondages de la veille). "
+                  "Cause probable : mise en page de la page Wikipédia modifiée.")
+    raise SystemExit(msg)
+
+
 def _annotation(niveau: str, msg: str) -> None:
     """Annotation visible dans le résumé du run GitHub Actions (et un simple
     print en local) : un avertissement noyé dans 200 lignes de log n'est lu par
@@ -1019,7 +1043,7 @@ def main():
     # calculé sur presque rien — une régression invisible, en ligne.
     n = 0 if intentions.empty else int(intentions["notice"].nunique())
     if args.min_sondages and n < args.min_sondages:
-        raise SystemExit(
+        _abandon(
             f"ABANDON : {n} sondages extraits, minimum attendu {args.min_sondages}. "
             f"Le fichier existant n'a PAS été écrasé. Vérifier la page « {args.page} » "
             f"(gabarit modifié ?) et {len(report['warnings'])} avertissement(s) de parsing.")
@@ -1029,12 +1053,21 @@ def main():
         if disparues:
             liste = "; ".join(sorted(disparues))
             if n_ref and len(disparues) / n_ref > args.max_disparues:
-                raise SystemExit(
+                _abandon(
                     f"ABANDON : {len(disparues)}/{n_ref} sondages publiés ont disparu de "
                     f"l'extraction (seuil {args.max_disparues:.0%}). Le fichier existant "
                     f"n'a PAS été écrasé. Disparus : {liste}")
             _annotation("warning", f"{len(disparues)} sondage(s) publié(s) absent(s) de "
                                    f"l'extraction du jour : {liste}")
+    inconnus = sondeurs_inconnus(report["warnings"])
+    if inconnus:
+        from pipeline.alertes import signale
+        signale("sondeurs-inconnus", "ingestion : sondeurs non reconnus",
+                "Sondages ÉCARTÉS de l'extraction faute d'institut reconnu (les modèles "
+                "tournent sans eux) :\n\n" + "\n".join(f"- {x}" for x in inconnus)
+                + "\n\nSi c'est un institut, l'ajouter à `INSTITUT_PATTERNS` "
+                  "(sondages/parse_pdf.py) ; les modèles savent déjà traiter un institut "
+                  "sans historique (repli sur la moyenne des instituts).", niveau="warning")
     if report["warnings"]:
         _annotation("notice", f"{len(report['warnings'])} avertissement(s) de parsing "
                               f"Wikipedia (détail dans le log de l'étape)")
