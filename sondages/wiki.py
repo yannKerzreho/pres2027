@@ -87,12 +87,14 @@ _VALUE_TEMPLATES = [
     # `{{formatnum:1415}}` ET `{{Formatnum|964}}` : la forme à pipe était jetée,
     # échantillon vide sur 4 sondages (dont 3 des 4 plus récents, nov. 2026).
     (re.compile(r"\{\{\s*formatnum\s*[:|]([^{}]*)\}\}", re.I), r"\1"),
-    (re.compile(r"\{\{\s*date\s*\|([^{}]*)\}\}", re.I), _unwrap_date_template),
+    (re.compile(r"\{\{\s*date-?\s*\|([^{}]*)\}\}", re.I), _unwrap_date_template),  # {{date-|…}} : 2002-2012
     # « 31 août - {{1er}} septembre » (Cluster17, sept. 2026) : sans ça le
     # template était jeté par `strip_code`, la date devenait « 31 août -
     # septembre » et `_parse_dates` retombait sur le seul 31 août.
     (re.compile(r"\{\{\s*1er\s*\}\}", re.I), "1"),
     (re.compile(r"\{\{\s*(?:er|e|ère|re)\s*\}\}", re.I), ""),  # exposants (1{{er}})
+    # « {{nobr|30 avr. - 1{{er}} mai}} » (2017) : APRÈS les exposants imbriqués
+    (re.compile(r"\{\{\s*(?:nobr|nowrap)\s*\|([^{}]*)\}\}", re.I), r"\1"),
 ]
 _STYLE_TEMPLATES = [
     re.compile(r"\{\{\s*Infobox Parti politique fran[çc]ais/couleurs\s*\|[^{}]*\}\}", re.I),
@@ -107,6 +109,7 @@ _MONTHS.update({"fevrier": 2, "aout": 8, "decembre": 12})  # variantes sans acce
 _MONTHS.update({  # abréviations courantes ("avr.", "janv.")
     "janv": 1, "fevr": 2, "févr": 2, "avr": 4, "juil": 7,
     "sept": 9, "oct": 10, "nov": 11, "dec": 12, "déc": 12,
+    "fév": 2, "fev": 2,  # « 27 fév. - 3 mars » (2017)
 })
 
 
@@ -237,6 +240,7 @@ def _desamorce(raw: str) -> tuple[str, str | None, list[str], set[str]]:
         raw = pat.sub(repl, raw)
     for pat in _STYLE_TEMPLATES:
         raw = pat.sub("", raw)
+    raw = re.sub(r"<br\s*/?>", " ", raw, flags=re.I)  # « [[Jack Lang|Jack<br>Lang]] » -> « JackLang » sinon
     code = mwph.parse(raw)
     unknown = {str(t.name).strip() for t in code.filter_templates()}
     for ref in code.filter_tags(matches=lambda t: t.tag == "ref"):
@@ -343,8 +347,9 @@ def _split_row_cells(line_block: str) -> list[str]:
             marker = marker or line[0]
             if line[0] != marker:
                 continue
-            sep = "!!" if marker == "!" else "||"
-            cells.extend(line[1:].split(sep))
+            # en-tête : `!!` OU `||` (les deux valides, cf. « Reports de voix »)
+            sep = r"!!|\|\|" if marker == "!" else r"\|\|"
+            cells.extend(re.split(sep, line[1:]))
         elif cells and line and line[:1] not in ("|", "!") and line[:2] != "{|":
             # Ligne de CONTINUATION (sans marqueur de cellule) : en MediaWiki
             # elle appartient à la cellule en cours. Ignorée, elle tronquait
@@ -398,6 +403,12 @@ _BOITE_TITRE = re.compile(r"\{\{\s*Bo[îi]te\s*d[ée]roulante\s*/\s*d[ée]but\s*
 
 def parse_wikitables_with_titles(section_wikitext: str) -> list[tuple[list[list[dict]], str | None]]:
     """Renvoie [(grille, titre de la Boîte déroulante englobante ou None), ...]."""
+    return [(g, t) for g, t, _ in parse_wikitables_avec_legende(section_wikitext)]
+
+
+def parse_wikitables_avec_legende(section_wikitext: str
+                                  ) -> list[tuple[list[list[dict]], str | None, tuple[str, int] | None]]:
+    """Comme `parse_wikitables_with_titles`, + (année, mois) de la légende."""
     titres = [(m.start(), m.group(1).strip()) for m in _BOITE_TITRE.finditer(section_wikitext)]
     out = []
     for m in re.finditer(r"\{\|.*?\n\|\}", section_wikitext, re.S):
@@ -410,12 +421,13 @@ def parse_wikitables_with_titles(section_wikitext: str) -> list[tuple[list[list[
                 titre = t
             else:
                 break
-        out.append((grid, titre))
+        out.append((grid, titre, legende_mois(m.group(0))))
     return out
 
 
 # --- Reconstruction des enregistrements structurés ---------------------------
-def _parse_dates(raw: str, year_hint: str | None = None) -> tuple[str | None, str | None]:
+def _parse_dates(raw: str, year_hint: str | None = None,
+                 month_hint: tuple[str, int] | None = None) -> tuple[str | None, str | None]:
     """« 22-24 juin 2026 », « 9 - 10 juillet 2026 », « 7-8 juillet » (année
     souvent ABSENTE du texte -> `year_hint`, tiré de l'URL de la notice qui
     contient toujours .../AAAA/mois/...), « 29 juin-2 juillet 2021 » (à cheval
@@ -431,8 +443,10 @@ def _parse_dates(raw: str, year_hint: str | None = None) -> tuple[str | None, st
         an = an or year_hint
         m1, m2 = _MONTHS.get(mois1.lower()), _MONTHS.get(mois2.lower())
         if m1 and m2 and an:
-            return f"{an}-{m1:02d}-{int(d1):02d}", f"{an}-{m2:02d}-{int(d2):02d}"
-    m = re.match(r"(\d{1,2})\s*(?:[-–]|au)\s*(\d{1,2})\s+([A-Za-zà-ÿ]+)\.?(?:\s+(\d{4}))?", raw)
+            a1 = str(int(an) - 1) if m1 > m2 else an  # « 28 déc. - 3 janv. 2017 »
+            return f"{a1}-{m1:02d}-{int(d1):02d}", f"{an}-{m2:02d}-{int(d2):02d}"
+    # « 14 et 15 décembre 2015 » (pages 2017 : sondages 2013-2015)
+    m = re.match(r"(\d{1,2})\s*(?:[-–]|au|et)\s*(\d{1,2})\s+([A-Za-zà-ÿ]+)\.?(?:\s+(\d{4}))?", raw)
     if m:
         d1, d2, mois, an = m.groups()
         an = an or year_hint
@@ -447,7 +461,57 @@ def _parse_dates(raw: str, year_hint: str | None = None) -> tuple[str | None, st
         if mnum and an:
             iso = f"{an}-{mnum:02d}-{int(d):02d}"
             return iso, iso
+    # « au 5 mars 2017 » : fin de terrain seule (début inconnu, jamais deviné).
+    m = re.match(r"(?:du\s+)?au\s+(\d{1,2})\s+([A-Za-zà-ÿ]+)\.?(?:\s+(\d{4}))?$", raw)
+    if m:
+        d, mois, an = m.groups()
+        an = an or year_hint
+        mnum = _MONTHS.get(mois.lower())
+        if mnum and an:
+            return None, f"{an}-{mnum:02d}-{int(d):02d}"
+    if month_hint:
+        return _parse_jours(raw, *month_hint)
     return None, None
+
+
+def _mois_precedent(an: str, mois: int) -> tuple[str, int]:
+    return (an, mois - 1) if mois > 1 else (str(int(an) - 1), 12)
+
+
+def _parse_jours(raw: str, an: str, mois: int) -> tuple[str | None, str | None]:
+    """Cellule SANS mois (« du 15 au 17 », « le 20 », « du au 2 ») : le mois
+    et l'année viennent de la légende du tableau (`|+ {{date|Mars 2017}}`,
+    page 2017). La légende est le mois de FIN de terrain : « du 28 au 2 »
+    commence le mois précédent."""
+    m = re.match(r"(?:du\s+)?(\d{1,2})\s*(?:[-–]|au)\s*(\d{1,2})$", raw)
+    if m:
+        d1, d2 = int(m.group(1)), int(m.group(2))
+        a1, m1 = _mois_precedent(an, mois) if d1 > d2 else (an, mois)
+        return f"{a1}-{m1:02d}-{d1:02d}", f"{an}-{mois:02d}-{d2:02d}"
+    m = re.match(r"(?:le\s+)?(\d{1,2})$", raw)
+    if m:
+        iso = f"{an}-{mois:02d}-{int(m.group(1)):02d}"
+        return iso, iso
+    m = re.match(r"(?:du\s+)?au\s+(\d{1,2})$", raw)  # « du au 2 » : début absent du wiki
+    if m:
+        return None, f"{an}-{mois:02d}-{int(m.group(1)):02d}"
+    return None, None
+
+
+_LEGENDE = re.compile(r"^\|\+(.*)$", re.M)
+
+
+def legende_mois(table_text: str) -> tuple[str, int] | None:
+    """(année, mois) si la légende du tableau est exactement « Mois AAAA »."""
+    m = _LEGENDE.search(table_text)
+    if not m:
+        return None
+    txt = _parse_cell(m.group(1))["text"].strip()
+    m = re.fullmatch(r"([A-Za-zÀ-ÿ]+)\.?\s+(\d{4})", txt)
+    if not m:
+        return None
+    mois = _MONTHS.get(m.group(1).lower())
+    return (m.group(2), mois) if mois else None
 
 
 _SUBST_NAME = re.compile(r"([A-ZÀ-Ÿ][A-Za-zÀ-ÿ'’\-]+(?:\s+[A-Za-zÀ-ÿ'’\-]+)*)\s*\(([A-ZÉ]{2,6})\)")
@@ -466,11 +530,14 @@ def _header_names(names_row: list[dict]) -> list[str]:
 # on le détecte par le LIBELLÉ plutôt qu'une position codée en dur.
 def _is_meta_label(label: str) -> bool:
     label = _strip_accents(label).strip().lower()
-    return label in ("sondeur", "date", "dates", "echantillon") or label.startswith("abstention")
+    return (label in ("sondeur", "date", "dates") or "chantillon" in label
+            or label.startswith("abstention"))
 
 
 def extract_notices(grid: list[list[dict]], tour: str, hypothese_defaut: str | None,
-                    warnings: list[str], year_hint: str | None = None) -> list[dict]:
+                    warnings: list[str], year_hint: str | None = None,
+                    month_hint: tuple[str, int] | None = None,
+                    url_repli: str | None = None) -> list[dict]:
     # 1. repère la ligne d'en-tête "Sondeur"
     header_idx = next((i for i, row in enumerate(grid)
                        if _strip_accents(row[0]["text"]).strip().lower() == "sondeur"), None)
@@ -481,7 +548,10 @@ def extract_notices(grid: list[list[dict]], tour: str, hypothese_defaut: str | N
         if not _is_meta_label(c["text"]):
             break
         n_meta += 1
-    n_meta = max(n_meta, 3)  # Sondeur/Date/Échantillon toujours présents
+    # Sondeur/Date toujours présents ; Échantillon absent des pages 2002-2012
+    # (la colonne candidat suivante était alors lue comme échantillon).
+    has_ech = any("chantillon" in _strip_accents(c["text"]).lower() for c in grid[header_idx][:n_meta])
+    n_meta = max(n_meta, 3 if has_ech else 2)
     names_row = grid[header_idx + 1]
     data_start = header_idx + 2
     # Mise en page 2027 depuis le 2026-11-17 : les noms (photo + lien) sont
@@ -508,7 +578,8 @@ def extract_notices(grid: list[list[dict]], tour: str, hypothese_defaut: str | N
     records = []
     for _, group_iter in groupby(data_rows, key=lambda r: id(r[0])):
         group = list(group_iter)
-        sondeur_cell, date_cell, ech_cell = group[0][0], group[0][1], group[0][2]
+        sondeur_cell, date_cell = group[0][0], group[0][1]
+        ech_cell = group[0][2] if has_ech else {"text": "", "unknown": set()}
         if "rolling" in sondeur_cell["text"].lower():
             # moyenne glissante republiée dans le même tableau que les
             # sondages bruts (annotée « (rolling) ») -> pas une observation
@@ -522,16 +593,25 @@ def extract_notices(grid: list[list[dict]], tour: str, hypothese_defaut: str | N
             # pas un sondage. On écarte plutôt que d'inventer un institut.
             warnings.append(f"institut non reconnu {sondeur_cell['text']!r} -> notice écartée")
             continue
-        notice_url = sondeur_cell["url"]
+        notice_url = sondeur_cell["url"] or url_repli
         # Repli année : URL de la notice (le plus précis, propre à CE sondage)
         # -> contexte de section/page (fourni par l'appelant). Le texte de
         # cellule wiki omet souvent l'année (donnée par le contexte).
-        m_year = re.search(r"/(\d{4})/", notice_url or "")
-        notice_year_hint = m_year.group(1) if m_year else year_hint
-        date_debut, date_fin = _parse_dates(date_cell["text"], notice_year_hint)
+        # La légende « Mois AAAA » du tableau (2017) passe AVANT l'URL : une
+        # notice de décembre 2016 peut être publiée sous /2017/.
+        # « /AAAA/mois/ » seulement : « bva.fr/…/sondage_fiche/1977/… » est un
+        # identifiant de fiche, pas une année (BVA 5-7 avr. 2017 daté de 1977).
+        m_year = re.search(r"/((?:19|20)\d{2})/(?:[01]?\d|[a-zéû]+)/", notice_url or "")
+        notice_year_hint = (month_hint[0] if month_hint
+                            else m_year.group(1) if m_year else year_hint)
+        date_debut, date_fin = _parse_dates(date_cell["text"], notice_year_hint, month_hint)
         m_ech = re.search(r"\d+", ech_cell["text"].replace(" ", ""))
         echantillon = int(m_ech.group(0)) if m_ech else None
         notice_label = f"{institut} {date_cell['text']} (WP)"
+        if notice_url == url_repli and date_fin and date_fin[:4] not in date_cell["text"]:
+            # pas d'URL propre pour départager deux « Ifop 18 novembre » d'années
+            # différentes (2002-2012) : l'année entre dans le libellé.
+            notice_label = f"{institut} {date_cell['text']} {date_fin[:4]} (WP)"
         for meta_cell in (date_cell, ech_cell):
             if meta_cell["unknown"]:
                 # Même logique que pour les cellules candidats : un template
@@ -746,6 +826,24 @@ def _section_year_hint(sections: list[dict], s: dict) -> tuple[str | None, bool,
     return _year_from_text(*raw_ancestors), bounded, unsafe
 
 
+_TITRE_PERIODE = re.compile(r"^\s*(?:(?:ann[ée]es?\s+)?\d{4}(?:\s*-\s*\d{4})?|[A-Za-zÀ-ÿ]+\s+\d{4})\s*$", re.I)
+
+
+def _titre_hypothese(sections: list[dict], s: dict) -> str:
+    """Titre de section servant d'hypothèse de 2nd tour, en remontant les
+    sous-sections purement chronologiques (« 2012 », « 2011 » sous « François
+    Hollande - Nicolas Sarkozy », pages 2002-2012) : sinon un même duel est
+    coupé en deux hypothèses « 2012 » et « 2011 »."""
+    num = s["number"]
+    while _TITRE_PERIODE.match(s["line"]) and "." in num:
+        num = num.rsplit(".", 1)[0]
+        parent = next((o for o in sections if o["number"] == num), None)
+        if parent is None:
+            break
+        s = parent
+    return s["line"]
+
+
 def desambiguise_notices(df: pd.DataFrame) -> pd.DataFrame:
     """Le libellé `notice` (« institut + texte de date ») sert d'IDENTIFIANT de
     sondage en aval (agrégation par sondage, champ `polls` des snapshots,
@@ -776,9 +874,16 @@ def doublons_de_notice(df: pd.DataFrame) -> list[str]:
             for (tour, _), v in g.items() if len(v) > 1]
 
 
-def build_dataset(page: str = DEFAULT_PAGE, pdf_date_fallback: bool = True
-                  ) -> tuple[pd.DataFrame, dict]:
-    """Renvoie (intentions, rapport). `intentions` respecte `schema.COLUMNS`."""
+def build_dataset(page: str = DEFAULT_PAGE, pdf_date_fallback: bool = True,
+                  url_page_repli: bool = False) -> tuple[pd.DataFrame, dict]:
+    """Renvoie (intentions, rapport). `intentions` respecte `schema.COLUMNS`.
+
+    `url_page_repli` : pages 2002-2012, où le sondeur n'est pas lié à une
+    notice -> `notice_url` = l'URL de la page Wikipedia elle-même (seule
+    source vérifiable). Jamais pour 2027 : une notice sans lien y reste une
+    anomalie que `schema.validate` doit faire remonter."""
+    url_repli = ("https://fr.wikipedia.org/wiki/" + page.replace(" ", "_")
+                 if url_page_repli else None)
     sections = fetch_sections(page)
     page_year = _year_from_text(page)  # sûr en repli SEULEMENT pour le 2e tour
                                         # (toujours dans l'année de l'élection ;
@@ -791,24 +896,34 @@ def build_dataset(page: str = DEFAULT_PAGE, pdf_date_fallback: bool = True
     for s, tour in leaf_sections(sections):
         wt = fetch_section_wikitext(page, s["index"])
         section_year, bounded, unsafe = _section_year_hint(sections, s)
-        for grid, boite_titre in parse_wikitables_with_titles(wt):
+        for grid, boite_titre, legende in parse_wikitables_avec_legende(wt):
             if boite_titre and _EXCLUDE_BOITE.search(boite_titre):
                 warnings.append(f"tableau écarté (hors contrat) : {boite_titre!r}")
                 continue
             n_tables += 1
-            hyp_defaut = (boite_titre or s["line"]) if tour == "Deuxième tour" else None
+            hyp_defaut = (boite_titre or _titre_hypothese(sections, s)) if tour == "Deuxième tour" else None
             year_hint = _year_from_text(boite_titre) or section_year
             if year_hint is None and not unsafe and (tour == "Deuxième tour" or bounded):
                 year_hint = page_year
-            all_records.extend(extract_notices(grid, tour, hyp_defaut, warnings, year_hint))
+            all_records.extend(extract_notices(grid, tour, hyp_defaut, warnings, year_hint,
+                                               legende, url_repli))
 
     df = pd.DataFrame(all_records)
     if df.empty:
         return schema.empty(), {"n_tables": n_tables, "n_raw": 0, "n_kept": 0,
                                 "n_rejected_groups": 0, "warnings": warnings}
 
+    if page_year:
+        # Toutes les présidentielles ont lieu en avril-mai : un sondage daté
+        # après fin mai de l'année de la page vient d'un repli d'année erroné
+        # (ex. 2012 : « LH2 7 mai » d'une section 2011 sans année) -> sans date.
+        apres = df["date_fin"].notna() & (df["date_fin"] > f"{page_year}-05-31")
+        for n in sorted(df.loc[apres, "notice"].unique()):
+            warnings.append(f"date postérieure au scrutin, retirée : {n}")
+        df.loc[apres, ["date_debut", "date_fin", "date_notice"]] = None
+
     df = desambiguise_notices(df)
-    warnings.extend(doublons_de_notice(df))
+    warnings.extend(doublons_de_notice(df[df["notice_url"] != url_repli] if url_repli else df))
 
     # garde-fou somme ~100% PAR (notice, hypothese, tour) — tolérance resserrée
     g = df.groupby(["notice", "hypothese", "tour"], dropna=False)["intention"].sum()
@@ -891,9 +1006,11 @@ def main():
                          "écrire si plus de --max-disparues des sondages qu'ils "
                          "déclarent ont disparu de l'extraction")
     ap.add_argument("--max-disparues", type=float, default=MAX_FRAC_DISPARUES)
+    ap.add_argument("--url-page-repli", action="store_true",
+                    help="pages 2002-2012 : notice_url = URL de la page quand le sondeur n'est pas lié")
     args = ap.parse_args()
 
-    intentions, report = build_dataset(args.page)
+    intentions, report = build_dataset(args.page, url_page_repli=args.url_page_repli)
 
     # Vérifier AVANT d'écrire : la source est une page wiki éditable par
     # n'importe qui, et un changement de gabarit ou un renommage de section

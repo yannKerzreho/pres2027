@@ -23,6 +23,10 @@ data/parsed/*.csv
 !data/parsed/intentions_2017_wiki.csv
 !data/parsed/intentions_2022_wiki.csv
 !data/parsed/intentions_2027_wiki.csv
+!data/parsed/intentions_2002_wiki.csv
+!data/parsed/intentions_2007_wiki.csv
+!data/parsed/intentions_2012_wiki.csv
+!data/parsed/reports_t2_*.csv
 # NB : tests/fixtures/pdf/ EST versionné (petites notices de référence pour les tests)
 
 # Sorties de modèle / traces d'inférence

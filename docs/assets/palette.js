@@ -36,6 +36,8 @@
     RN:   "Rassemblement national",
     REC:  "Reconquête",
     DVD:  "Divers droite",
+    // Candidature hors parti : on ne lui prête pas d'étiquette qu'elle n'a pas.
+    SE:   "Sans étiquette",
   };
 
   // Ordre volontairement gauche → droite : lu de haut en bas, le tableau donne
@@ -53,11 +55,21 @@
     "Villepin":       { parti: "DVD",  couleur: "#96805C" },
     "Attal":          { parti: "RE",   couleur: "#DFA300" },  // jaune Renaissance, assombri
     "Lecornu":        { parti: "RE",   couleur: "#B0821A" },
+    // Riner (2026-11) : créneau central, entre Attal et Philippe dans le roster
+    // spatial (fb69009). Chartreuse : la teinte entre le jaune Renaissance et
+    // le sarcelle Horizons, sans parti à imiter. ΔE Lab ≥ 34 avec tout le
+    // catalogue en clair (Lecornu), ≥ 23 en sombre (Attal).
+    "Riner":          { parti: "SE",   couleur: "#A3B53A" },
     "Philippe":       { parti: "HOR",  couleur: "#0E97A8" },
     "Retailleau":     { parti: "LR",   couleur: "#2C61C6" },  // bleu LR de référence
     "Wauquiez":       { parti: "LR",   couleur: "#5E8AD9" },
     "Lisnard":        { parti: "LR",   couleur: "#7FA3E0" },
     "Darmanin":       { parti: "LR",   couleur: "#4374C9" },
+    // Polony (2026-11) : souverainiste, entre LR et le RN (fb69009). Le bloc
+    // bleu LR / DLF / RN est déjà saturé de voisins ; le seul bleu encore libre
+    // est cet outremer vif : ΔE Lab ≥ 55 en clair (Retailleau), ≥ 23 en sombre
+    // (Le Pen) — un bleu-gris aurait été confondu avec Bardella (ΔE 8).
+    "Polony":         { parti: "SE",   couleur: "#2D1ED6" },
     "Dupont-Aignan":  { parti: "DLF",  couleur: "#8089C2" },
     // Bleu acier DÉSATURÉ, pas un bleu RN plus clair : Bardella et Retailleau
     // peuvent figurer ensemble dans un scénario, et deux bleus saturés voisins
