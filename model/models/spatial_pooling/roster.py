@@ -100,8 +100,14 @@ ORDER_GROUPS: list[tuple[str, list[str]]] = [
     ("PS",         ["Glucksmann", "Hollande", "Faure"]),
     ("Villepin",   ["Villepin"]),
     ("Attal",      ["Attal", "Lecornu"]),
+    # Riner, Polony : apparus le 2026-11-18 (5 notices chacun). Groupes PROPRES,
+    # placement éditorial validé par l'utilisateur le 2026-11-18 (voir la note
+    # « Affectations » plus bas) : un groupe à soi = seul l'ordre est imposé, la
+    # position dans le créneau est laissée aux sondages.
+    ("Riner",      ["Riner"]),
     ("Philippe",   ["Philippe"]),
     ("LR",         ["Retailleau", "Wauquiez", "Lisnard", "Darmanin"]),
+    ("Polony",     ["Polony"]),
     # Ordre INTERNE gauche->droite : Dupont-Aignan < Bardella < Le Pen. Il était
     # arbitraire tant que les membres d'un groupe partageaient une position (il
     # n'entrait dans aucun calcul) ; il devient une hypothèse ACTIVE dès qu'on
@@ -163,6 +169,10 @@ ORDER_GROUPS_HISTORIQUES: dict[int, list[tuple[str, list[str]]]] = {
 #     mais qui capte aujourd'hui un électorat de gauche/centre-gauche). C'est
 #     le plus proche du seuil (4 sondages, testé le 2026-07-10 à 3,8 %) : à
 #     trancher en priorité.
+#   - Riner (2026-11-18, 3,7 %) : groupe PROPRE entre Attal et Philippe --
+#     positions publiques peu connues, créneau central par défaut.
+#   - Polony (2026-11-18, 1,3 %) : groupe PROPRE entre LR et MLP -- place des
+#     souverainistes dans le cadre historique (2017 : « souverain » entre LR et FN).
 #   - Darmanin, Lisnard -> LR ; Lecornu -> Attal (macronie) ; Knafo -> Zemmour
 #     (Reconquête).
 
