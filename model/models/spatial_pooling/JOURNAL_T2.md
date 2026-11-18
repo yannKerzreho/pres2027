@@ -365,7 +365,7 @@ Résultats : `model/backtest/results/*.json` (committés).
 - [x] [FAIT 18/11 01:40Z] diagnostic 2027 hier rejoué sur le jeu à 118 notices : duels affichés inchangés à ≤ 0,2 pt, P(élu) Le Pen 80,3 → 80,8 %, Philippe 13,9 → 13,6 % ; R̂ 1,017 ; résultats 2027 antérieurs toujours valables (`diagnostic_2027_hier_2026-11-13_118notices.json`).
 - [x] [FAIT 18/11, spec §8.35 : λ hors élection 1,3-2,2, couverture 6→8 (abst), 7→9 (hier) ; τ additif équivalent ≈ 0,17-0,19] (revue 18/11, idée 2) facteur d'élargissement λ des IC V1 appris hors
       élection (2 élections → la 3e), cible RMS z ≈ 1 (actuel 1,9) ; 0 fit.
-- [ ] (revue 18/11, 5) `p_elu(tau_t2=…)` ; sensibilité cohérente d = −3,5 pt
+- [ ] [EN COURS (début 2026-11-18T14:10Z) : 1 fit] (revue 18/11, 5) `p_elu(tau_t2=…)` ; sensibilité cohérente d = −3,5 pt
       avec τ résiduel ≈ 0,10 (1 fit).
 - [ ] (revue 18/11, idée 1) test prospectif 2027 : figer les prédictions abst
       et hier de toutes les paires (2 fits), puis scorer chaque nouveau duel

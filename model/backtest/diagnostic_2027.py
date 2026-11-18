@@ -109,6 +109,9 @@ def diagnostic(variante: str = "abst", draws: int = 400, tune: int = 600, seed: 
     pe_u = p_elu(fit, mask, h1, h2, alea_unique=True)        # spec §7.1
     sens = {f"rn{d:+.0f}_tau{tp}": p_elu(fit, mask, h1, h2, tau_paire=tp, decalage_rn_pt=d)["p_elu"]
             for d in (-3.0, -2.0, -1.0, 0.0, 1.0, 2.0, 3.0) for tp in (0.08, 0.19)}   # §8.33
+    # §8.36 : scénario cohérent — biais anti-RN moyen retiré de τ_T2 (RMS non centré).
+    sens.update({f"coherent_rn{d:+.1f}_tauT2{t2}": p_elu(fit, mask, h1, h2, decalage_rn_pt=d, tau_t2=t2)["p_elu"]
+                 for d, t2 in ((0.0, 0.19), (0.0, 0.10), (-3.5, 0.10))})
 
     return {"as_of": as_of, "variante": variante, "draws": draws, "tune": tune, "seed": seed,
             "diagnostics": fit.diagnostics, "corr_logkappa_eta": corr_k_eta,

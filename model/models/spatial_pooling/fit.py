@@ -457,7 +457,8 @@ def resume_duel(fit: SpatialPoolingFit, a: str, b: str, horizon_days: float,
 
 def p_elu(fit: SpatialPoolingFit, mask: np.ndarray, horizon_t1: int, horizon_t2: int,
           seed: int = 27, alea_unique: bool = False, tau_paire: float | None = None,
-          decalage_rn_pt: float = 0.0, rn: tuple = ("Le Pen", "Bardella")) -> dict:
+          decalage_rn_pt: float = 0.0, rn: tuple = ("Le Pen", "Bardella"),
+          tau_t2: float | None = None) -> dict:
     """P(élu) pour le champ `mask` (spec §7) : tirage par tirage, T1 projeté au
     scrutin -> deux premiers -> duel projeté au second tour -> vainqueur. Les
     deux étapes partagent le tirage de (mu, sigma, w, kappa, eta)."""
@@ -485,7 +486,8 @@ def p_elu(fit: SpatialPoolingFit, mask: np.ndarray, horizon_t1: int, horizon_t2:
     ia, ib = cols[top[:, 0]], cols[top[:, 1]]
     s = _duel_par_tirage(fit, w2, ia, ib)
     rng = np.random.default_rng(seed + 3)
-    z = np.log(s / (1 - s)) + rng.normal(0.0, TAU_T2_SCRUTIN, len(s))
+    # `tau_t2` : sensibilité (§8.36) — τ résiduel quand le biais moyen est retiré.
+    z = np.log(s / (1 - s)) + rng.normal(0.0, TAU_T2_SCRUTIN if tau_t2 is None else tau_t2, len(s))
     sondees = {frozenset(p) for p in (fit.duel_pairs or [])}
     jamais = np.array([frozenset((fit.candidates[x], fit.candidates[y])) not in sondees
                        for x, y in zip(ia, ib)])
