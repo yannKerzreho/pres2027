@@ -1603,6 +1603,25 @@ valeur haute de l'arbitrage τ_paire, pas 0,08-0,10. Réserve : 10 tâches dont
 Pécresse pèse lourd ; le calibrage de τ_paire sur les seules V1 2027 (§8.22)
 donnait 0,08-0,11. Éclaire l'arbitrage τ_paire (remonté), ne le tranche pas.
 
+### 8.36 Sensibilité de P(élu) sans double compte (revue 18/11, point 5 ; 1 fit)
+
+τ_T2 = 0,19 est le RMS NON centré des erreurs 2017/2022 (biais moyen anti-RN
+≈ 3,5 pt inclus). Deux lectures cohérentes : (i) erreur centrée de largeur
+0,19 (réglage actuel) ; (ii) biais −3,5 pt (en défaveur du RN) + résidu
+τ ≈ 0,10. Données du 17/11 (Riner et Polony placés par main), hier, champ
+modal inchangé, R̂ 1,015 :
+
+| scénario | Le Pen | Philippe | Glucksmann | Retailleau |
+|---|---|---|---|---|
+| (i) centré, τ_T2 0,19 (actuel) | 82,1 | 13,4 | 3,6 | 0,7 |
+| centré, τ_T2 0,10 (pour mémoire) | 85,7 | 10,9 | 2,8 | 0,6 |
+| **(ii) biais −3,5 pt + τ 0,10** | **76,0** | **18,7** | 4,3 | 1,0 |
+
+Erreur Monte-Carlo ≈ 1 pt. Le choix entre (i) et (ii) — corriger ou non le
+biais anti-RN observé deux fois — est l'arbitrage 2, déjà tranché « non
+corrigé » par l'utilisateur : (i) reste en place ; (ii) chiffre ce que ce choix
+engage (≈ 6 pt de P(élu) pour Le Pen).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

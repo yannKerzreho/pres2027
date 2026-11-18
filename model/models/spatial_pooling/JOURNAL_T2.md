@@ -365,7 +365,7 @@ Résultats : `model/backtest/results/*.json` (committés).
 - [x] [FAIT 18/11 01:40Z] diagnostic 2027 hier rejoué sur le jeu à 118 notices : duels affichés inchangés à ≤ 0,2 pt, P(élu) Le Pen 80,3 → 80,8 %, Philippe 13,9 → 13,6 % ; R̂ 1,017 ; résultats 2027 antérieurs toujours valables (`diagnostic_2027_hier_2026-11-13_118notices.json`).
 - [x] [FAIT 18/11, spec §8.35 : λ hors élection 1,3-2,2, couverture 6→8 (abst), 7→9 (hier) ; τ additif équivalent ≈ 0,17-0,19] (revue 18/11, idée 2) facteur d'élargissement λ des IC V1 appris hors
       élection (2 élections → la 3e), cible RMS z ≈ 1 (actuel 1,9) ; 0 fit.
-- [ ] [EN COURS (début 2026-11-18T19:15Z) : débloqué par main (fb69009 : Riner entre Attal et Philippe, Polony entre LR et MLP)] [ancien : BLOQUÉ 18/11 14:15Z : le jeu 2027 du 18/11 contient Polony (5 notices, 1,3 %) et Riner (5 notices, 3,7 %), absents de ORDER_GROUPS ⇒ build_roster refuse le fit ; leur placement gauche-droite est un choix éditorial (à l'utilisateur / à main). Code `p_elu(tau_t2)` prêt] (revue 18/11, 5) `p_elu(tau_t2=…)` ; sensibilité cohérente d = −3,5 pt
+- [x] [FAIT 18/11 19:40Z, spec §8.36 : scénario cohérent (biais −3,5 pt + τ 0,10) ⇒ P(élu) Le Pen 82,1 → 76,0 %, Philippe 13,4 → 18,7 %] (revue 18/11, 5) `p_elu(tau_t2=…)` ; sensibilité cohérente d = −3,5 pt
       avec τ résiduel ≈ 0,10 (1 fit).
 - [ ] (revue 18/11, idée 1) test prospectif 2027 : figer les prédictions abst
       et hier de toutes les paires (2 fits), puis scorer chaque nouveau duel
@@ -490,6 +490,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-18 19:08-19:40Z (routine) : main fusionnée (Riner, Polony placés) ; sensibilité P(élu) cohérente (§8.36, 1 fit).
 - 2026-11-18 14:08Z (routine) : sensibilité P(élu) cohérente bloquée — Polony/Riner absents de ORDER_GROUPS (fit refusé) ; alerte remontée.
 - 2026-11-18 13:50Z (routine) : main fusionnée ; élargissement λ hors élection (§8.35, 0 fit) : τ équivalent 0,17-0,19.
 - 2026-11-18 12:08-13:50Z (routine) : piste B révisée (ancres par famille, 16 fits) : non adoptée.
