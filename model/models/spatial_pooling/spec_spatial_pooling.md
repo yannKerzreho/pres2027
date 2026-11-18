@@ -599,6 +599,14 @@ l'étape 1 (h = 159 … 12), mêmes listes et cibles ; adopté seulement si MAE 
 couverture IC90 (et score d'intervalle α = 0,1) battent le σ_w commun, IC90
 bootstrap par unité (coupure, liste). Sinon : « rôles spatial / gp assumés ».
 
+**Résultat (C), 2026-11-18** (`suivi_proj_swc_2022_h*.json`, 171 couples,
+13 unités, Δ = par candidat − commun, IC90 bootstrap par unité) : MAE 0,778
+contre 0,768 pt (Δ +0,010 [−0,003 ; +0,022]) ; score d'intervalle 4,49 contre
+4,32 (Δ +0,17 [−0,02 ; +0,38]) ; couverture IC90 0,830 contre 0,825. **Aucun
+gain, plutôt une légère perte d'intervalle ⇒ non adopté.** Les tendances
+amorties ne viennent pas d'un σ_w trop commun. Conclusion consignée : **rôles
+spatial / gp-pooling assumés** (synthèse ci-dessous).
+
 **Idée B : combiner spatial et gp-pooling (protocole fixé avant résultat,
 2026-11-17, 0 fit).** Données : les 13 unités (coupure, liste) de la tâche A,
 spatial prolongé à c + 7 (`suivi_proj_2022_h*.json`) et gp recalibré hors

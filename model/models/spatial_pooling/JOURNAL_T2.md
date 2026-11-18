@@ -41,7 +41,7 @@ l'historique, ajouter en bas de « Historique ».
         des putatifs sans nœud utile. Critère : écart de chaînes V1 2022
         ≤ 1 pt et MAE V1 2017/2022/2027 non dégradée (protocole §8.29).
         Lien mémoire : « matrice de reports à la main » différée — ne pas la coder ici.
-  - [ ] [EN COURS (début 2026-11-17T23:00Z) : 8 coupures × 4 chaînes] (C) **σ_w par candidat** (hiérarchique, au lieu d'un σ_w commun) pour
+  - [x] [FAIT 18/11, spec_spatial_pooling §10 : MAE +0,01, score d'intervalle +0,17 pt, couverture +0,005 ⇒ non adopté, rôles spatial/gp assumés] (C) **σ_w par candidat** (hiérarchique, au lieu d'un σ_w commun) pour
         les tendances T1 amorties (spec_spatial_pooling §10) : rejouer
         `model/backtest/suivi.py` 2022 (8 coupures) ; adopter seulement si MAE
         et couverture battent le σ_w commun. Sinon consigner « rôles
@@ -469,6 +469,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-17 22:48 → 18/11 00:30Z (routine) : pistes utilisateur — (B) bloquée (CHES hors domaines réseau ; repli ORDER_GROUPS sans effet) ; (C) σ_w par candidat (32 fits) : non adopté.
 - 2026-11-17 16:20Z (routine) : main fusionnée (maj quotidienne : 92 notices, dernier terrain 13/11) ; tests verts hors test réseau. File : seule reste τ_T2 2002-2012 (bloquée données).
 - 2026-11-17 15:08-16:20Z (routine) : sensibilité de P(élu) (§8.33, 2 fits) : τ_paire sans effet ; anti-RN −3 pt ⇒ Le Pen −5,6 pt de P(élu).
 - 2026-11-17 14:08-14:25Z (routine) : variance de graine du sous-échantillon (§8.32, 8 fits) : ≈ 1,6 pt.
