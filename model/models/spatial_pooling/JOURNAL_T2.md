@@ -367,7 +367,7 @@ Résultats : `model/backtest/results/*.json` (committés).
       élection (2 élections → la 3e), cible RMS z ≈ 1 (actuel 1,9) ; 0 fit.
 - [x] [FAIT 18/11 19:40Z, spec §8.36 : scénario cohérent (biais −3,5 pt + τ 0,10) ⇒ P(élu) Le Pen 82,1 → 76,0 %, Philippe 13,4 → 18,7 %] (revue 18/11, 5) `p_elu(tau_t2=…)` ; sensibilité cohérente d = −3,5 pt
       avec τ résiduel ≈ 0,10 (1 fit).
-- [ ] [EN COURS (début 2026-11-18T20:15Z) : gel abst + hier, 2 fits ; puis `--scorer` à chaque réveil où de nouveaux duels arrivent] (revue 18/11, idée 1) test prospectif 2027 : figer les prédictions abst
+- [ ] [GEL FAIT 18/11 20:40Z : prédictions abst et hier au 17/11 (78 paires, R̂ 1,015) dans results/prospectif/ ; À CHAQUE RÉVEIL où main apporte des duels datés après le 17/11 : `python -m model.backtest.prospectif_2027 --scorer`, committer scores.json ; lecture après ≥ 20 duels (§8.37)] (revue 18/11, idée 1) test prospectif 2027 : figer les prédictions abst
       et hier de toutes les paires (2 fits), puis scorer chaque nouveau duel
       publié (CRPS, z) sans fit.
 - [ ] (revue, 9) τ_T2 : a posteriori sur 2002-2022 (normale vs Student-t),
@@ -490,6 +490,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-18 20:08-20:40Z (routine) : test prospectif 2027 (§8.37) : gel des prédictions abst et hier au 17/11 (2 fits).
 - 2026-11-18 19:08-19:40Z (routine) : main fusionnée (Riner, Polony placés) ; sensibilité P(élu) cohérente (§8.36, 1 fit).
 - 2026-11-18 14:08Z (routine) : sensibilité P(élu) cohérente bloquée — Polony/Riner absents de ORDER_GROUPS (fit refusé) ; alerte remontée.
 - 2026-11-18 13:50Z (routine) : main fusionnée ; élargissement λ hors élection (§8.35, 0 fit) : τ équivalent 0,17-0,19.
