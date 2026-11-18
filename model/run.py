@@ -207,6 +207,14 @@ def run(model_id: str = "all", as_of: str | None = None, include_private: bool =
         except Exception:
             traceback.print_exc()
             echecs.append("listes")
+        # Dates du dernier sondage par candidat : le site s'en sert pour masquer
+        # les candidats plus testés (affichage seulement, cf. le module).
+        try:
+            from model.derniers_sondages import produire as produire_dates
+            produire_dates(raw, as_of)
+        except Exception:
+            traceback.print_exc()
+            echecs.append("derniers-sondages")
     if echecs:
         raise SystemExit(f"Échec de {len(echecs)} modèle(s) : {', '.join(echecs)} "
                          "(les autres ont écrit leurs snapshots).")

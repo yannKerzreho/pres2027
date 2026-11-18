@@ -1,0 +1,230 @@
+{
+ "as_of": "2026-11-18",
+ "genere_le": "2026-11-19",
+ "noms": {
+  "Arthaud": {
+   "dernier": "2026-11-17",
+   "n_sondages": 83
+  },
+  "Arthaud (LO)": {
+   "dernier": "2026-11-17",
+   "n_sondages": 83
+  },
+  "Asselineau": {
+   "dernier": "2026-11-10",
+   "n_sondages": 1
+  },
+  "Attal": {
+   "dernier": "2026-11-17",
+   "n_sondages": 70
+  },
+  "Autres": {
+   "dernier": "2026-09-04",
+   "n_sondages": 1
+  },
+  "Bardella": {
+   "dernier": "2026-06-24",
+   "n_sondages": 28
+  },
+  "Barnier": {
+   "dernier": "2024-09-12",
+   "n_sondages": 1
+  },
+  "Bayrou": {
+   "dernier": "2025-09-25",
+   "n_sondages": 3
+  },
+  "Bertrand": {
+   "dernier": "2026-09-21",
+   "n_sondages": 4
+  },
+  "Borne": {
+   "dernier": "2023-09-04",
+   "n_sondages": 1
+  },
+  "Bouamrane": {
+   "dernier": "2026-11-12",
+   "n_sondages": 4
+  },
+  "Braun-Pivet": {
+   "dernier": "2023-09-04",
+   "n_sondages": 1
+  },
+  "Castex": {
+   "dernier": "2023-09-04",
+   "n_sondages": 1
+  },
+  "Cazeneuve": {
+   "dernier": "2023-09-04",
+   "n_sondages": 2
+  },
+  "Darmanin": {
+   "dernier": "2026-03-27",
+   "n_sondages": 9
+  },
+  "Delga": {
+   "dernier": "2023-04-07",
+   "n_sondages": 1
+  },
+  "Dupont-Aignan": {
+   "dernier": "2026-11-17",
+   "n_sondages": 79
+  },
+  "Faure": {
+   "dernier": "2026-09-29",
+   "n_sondages": 24
+  },
+  "Glucksmann": {
+   "dernier": "2026-11-17",
+   "n_sondages": 67
+  },
+  "Glucksmann (PP)": {
+   "dernier": "2026-11-17",
+   "n_sondages": 67
+  },
+  "Guedj": {
+   "dernier": "2026-09-29",
+   "n_sondages": 1
+  },
+  "Hidalgo": {
+   "dernier": "2023-10-20",
+   "n_sondages": 6
+  },
+  "Hollande": {
+   "dernier": "2026-10-22",
+   "n_sondages": 24
+  },
+  "Jadot": {
+   "dernier": "2023-10-20",
+   "n_sondages": 8
+  },
+  "Knafo": {
+   "dernier": "2026-03-27",
+   "n_sondages": 3
+  },
+  "Lagarde": {
+   "dernier": "2026-11-10",
+   "n_sondages": 1
+  },
+  "Lassalle": {
+   "dernier": "2024-12-09",
+   "n_sondages": 13
+  },
+  "Le Maire": {
+   "dernier": "2026-09-21",
+   "n_sondages": 7
+  },
+  "Le Pen": {
+   "dernier": "2026-11-17",
+   "n_sondages": 79
+  },
+  "Lecornu": {
+   "dernier": "2026-03-27",
+   "n_sondages": 2
+  },
+  "Lisnard": {
+   "dernier": "2026-11-17",
+   "n_sondages": 25
+  },
+  "Macron": {
+   "dernier": "2023-10-20",
+   "n_sondages": 6
+  },
+  "Maurel": {
+   "dernier": "2026-09-29",
+   "n_sondages": 1
+  },
+  "Mélenchon": {
+   "dernier": "2026-11-17",
+   "n_sondages": 86
+  },
+  "Mélenchon (LFI)": {
+   "dernier": "2026-11-17",
+   "n_sondages": 86
+  },
+  "Philippe": {
+   "dernier": "2026-11-17",
+   "n_sondages": 80
+  },
+  "Philippe (Horizons)": {
+   "dernier": "2026-11-17",
+   "n_sondages": 80
+  },
+  "Polony": {
+   "dernier": "2026-11-16",
+   "n_sondages": 5
+  },
+  "Poutou": {
+   "dernier": "2025-04-24",
+   "n_sondages": 23
+  },
+  "Pécresse": {
+   "dernier": "2023-10-20",
+   "n_sondages": 6
+  },
+  "RN": {
+   "dernier": "2026-11-17",
+   "n_sondages": 79
+  },
+  "Retailleau": {
+   "dernier": "2026-11-17",
+   "n_sondages": 67
+  },
+  "Retailleau (LR)": {
+   "dernier": "2026-11-17",
+   "n_sondages": 67
+  },
+  "Riner": {
+   "dernier": "2026-11-17",
+   "n_sondages": 5
+  },
+  "Rousseau": {
+   "dernier": "2024-09-12",
+   "n_sondages": 2
+  },
+  "Roussel": {
+   "dernier": "2026-11-17",
+   "n_sondages": 84
+  },
+  "Roussel (PCF)": {
+   "dernier": "2026-11-17",
+   "n_sondages": 84
+  },
+  "Royal": {
+   "dernier": "2026-09-29",
+   "n_sondages": 2
+  },
+  "Ruffin": {
+   "dernier": "2026-11-16",
+   "n_sondages": 18
+  },
+  "Tondelier": {
+   "dernier": "2026-11-17",
+   "n_sondages": 73
+  },
+  "Tondelier (EELV)": {
+   "dernier": "2026-11-17",
+   "n_sondages": 73
+  },
+  "Villepin": {
+   "dernier": "2026-11-17",
+   "n_sondages": 23
+  },
+  "Villiers": {
+   "dernier": "2025-10-31",
+   "n_sondages": 1
+  },
+  "Wauquiez": {
+   "dernier": "2025-10-31",
+   "n_sondages": 18
+  },
+  "Zemmour": {
+   "dernier": "2026-11-17",
+   "n_sondages": 85
+  },
+  "Zemmour (Reconquête)": {
+   "dernier": "2026-11-17",
+   "n_sondages": 85
+  }
+ }
+}

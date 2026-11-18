@@ -155,6 +155,8 @@ def test_run_produit_les_listes_et_isole_leur_echec(monkeypatch):
     def casse(raw, as_of):
         raise RuntimeError("boum")
     monkeypatch.setattr(model.listes, "produire", casse)
+    import model.derniers_sondages
+    monkeypatch.setattr(model.derniers_sondages, "produire", lambda raw, as_of: None)
     with pytest.raises(SystemExit, match="listes"):
         run.run("all", as_of="2026-11-13")
     assert vus                                   # les modèles sont passés avant

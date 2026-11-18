@@ -240,3 +240,11 @@ code { background:var(--card); padding:1px 5px; border-radius:3px; font-size:0.8
   .duel { grid-template-columns:minmax(0,1fr) 52px; gap:10px; }
   .band { max-height:120px; }
 }
+
+/* Lien « Afficher les candidats non testés depuis 90 j (N) » : discret, sous
+ * le contenu qu'il complète (cf. Site.lienMasques). */
+.masques { margin:-4px 0 14px; font-size:0.78rem; }
+.lien-masques { appearance:none; border:0; background:none; padding:0; font:inherit;
+  color:var(--muted); cursor:pointer; text-decoration:underline dotted; }
+.lien-masques:hover { color:var(--fg); }
+.presets + .masques { margin-top:-16px; margin-bottom:22px; }

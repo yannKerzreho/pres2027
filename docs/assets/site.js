@@ -255,9 +255,45 @@
     return ok.length;
   }
 
+  // --- candidats qui ne sont plus testés : masqués à l'AFFICHAGE seulement ----
+  // Les modèles et leurs snapshots n'en savent rien : un candidat masqué reste
+  // dans le calcul, le site cesse seulement de le montrer par défaut. Le seuil
+  // est compté depuis la date du snapshot affiché, pas depuis aujourd'hui : un
+  // site qu'on ne régénère plus ne masque pas tout le monde.
+  const JOURS_SANS_SONDAGE = 90;
+  let derniers = {};
+  // Sans le fichier (site antérieur, job en échec), on ne masque personne.
+  async function chargeDerniersSondages() {
+    try { derniers = (await getJSON("./data/derniers-sondages.json")).noms || {}; }
+    catch (e) { derniers = {}; }
+    return derniers;
+  }
+  const dernierSondage = (nom) => derniers[nom]?.dernier ?? null;
+  // Nom inconnu du fichier : affiché (on ne cache jamais faute d'information).
+  function nonTeste(nom, asOf) {
+    const d = dernierSondage(nom);
+    return !!(d && asOf && jours(asOf) - jours(d) > JOURS_SANS_SONDAGE);
+  }
+  // Lien discret « Afficher les candidats non testés depuis 90 j (N) ». `masques`
+  // : noms concernés sur la page ; `affiches` : état courant ; `bascule` : rappel.
+  function lienMasques(host, masques, affiches, bascule) {
+    if (!host) return;
+    host.hidden = !masques.length;
+    if (!masques.length) { host.innerHTML = ""; return; }
+    const date = (d) => new Date(d + "T12:00:00Z")
+      .toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" });
+    host.innerHTML = `<button type="button" class="lien-masques" aria-pressed="${affiches}">${
+      affiches ? "Masquer" : "Afficher"} les candidats non testés depuis ${JOURS_SANS_SONDAGE}&nbsp;j (${
+      masques.length})</button>`;
+    const b = host.querySelector("button");
+    b.title = masques.map((n) => `${n} : dernier sondage le ${date(dernierSondage(n))}`).join("\n");
+    b.onclick = bascule;
+  }
+
   global.Site = {
     NS, el, nb, pct, prob, jours, echappe, getJSON,
     barres, secondTour, resumeDepuisTirages, croquis,
     montrerFiche, placerFiche, cacherFiche,
+    JOURS_SANS_SONDAGE, chargeDerniersSondages, dernierSondage, nonTeste, lienMasques,
   };
 })(window);
