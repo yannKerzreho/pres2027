@@ -363,7 +363,7 @@ Résultats : `model/backtest/results/*.json` (committés).
       anti-RN 0/−1/−2/−3 pt × τ_paire 0,11/0,19 (éclaire l'arbitrage 2, ne le
       tranche pas ; 0-1 fit).
 - [x] [FAIT 18/11 01:40Z] diagnostic 2027 hier rejoué sur le jeu à 118 notices : duels affichés inchangés à ≤ 0,2 pt, P(élu) Le Pen 80,3 → 80,8 %, Philippe 13,9 → 13,6 % ; R̂ 1,017 ; résultats 2027 antérieurs toujours valables (`diagnostic_2027_hier_2026-11-13_118notices.json`).
-- [ ] (revue 18/11, idée 2) facteur d'élargissement λ des IC V1 appris hors
+- [x] [FAIT 18/11, spec §8.35 : λ hors élection 1,3-2,2, couverture 6→8 (abst), 7→9 (hier) ; τ additif équivalent ≈ 0,17-0,19] (revue 18/11, idée 2) facteur d'élargissement λ des IC V1 appris hors
       élection (2 élections → la 3e), cible RMS z ≈ 1 (actuel 1,9) ; 0 fit.
 - [ ] (revue 18/11, 5) `p_elu(tau_t2=…)` ; sensibilité cohérente d = −3,5 pt
       avec τ résiduel ≈ 0,10 (1 fit).
@@ -414,6 +414,8 @@ vue », sur les propositions de la session locale) :
   sur 10 tâches, mais le verdict ne tient qu'au plafond du log-score ; sûre
   d'elle à tort sur Pécresse 2022) ou abst (plus prudente) ? hier en place, sans
   effet publié.
+- (Ajout 18/11 §8.35 : hors élection, les IC V1 demandent un élargissement
+  équivalent à τ ≈ 0,17-0,19 sur les 10 tâches 2017-2027.)
 - ARBITRAGE À TRANCHER (mis à jour 2026-11-18 : τ_paire mis à **0,10**, borne basse
   de la fourchette validée ; ancien texte du 17/11 11:20Z ci-après, spec §8.22/§8.29) :
   variante hier (défaut, §8.29) ⇒ calibrage V1 2027 **0,08** (appliqué, SOUS la
@@ -482,6 +484,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-18 13:50Z (routine) : main fusionnée ; élargissement λ hors élection (§8.35, 0 fit) : τ équivalent 0,17-0,19.
 - 2026-11-18 12:08-13:50Z (routine) : piste B révisée (ancres par famille, 16 fits) : non adoptée.
 - 2026-11-18 11:08-11:30Z (routine) : revue Opus (8 points intégrés) ; τ_paire 0,10 ; verdict hier requalifié « préférence faible », arbitrage remonté ; (B) réouverte.
 - 2026-11-18 00:30Z (routine) : main fusionnée — nouveau parseur wiki 2027 : 92 → 118 notices (dernier terrain toujours 13/11). Les résultats 2027 (V1, diagnostic) datent du jeu à 92 notices ; à rejouer si un écart matériel est suspecté. Pas de tableaux de reports encore (A bloquée).

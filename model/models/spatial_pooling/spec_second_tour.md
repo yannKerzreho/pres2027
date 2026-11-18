@@ -1584,6 +1584,25 @@ ou moins : c'est l'arbitrage 2 qui pèse, pas τ_paire.
 - **118 notices** : les 95 duels sont les mêmes ; « duels inchangés » est
   mécanique.
 
+### 8.35 Élargissement des IC V1 appris hors élection (revue 18/11, idée 2 ; 0 fit)
+
+Erreur standardisée en logit $z_j = (\mathrm{logit}\,y_j - \bar z_j)/s_j$ sur
+les 10 tâches V1 ; facteur $\lambda$ = RMS des $z$ appris sur deux élections,
+appliqué à l'écart-type prédictif de la troisième (leave-one-election-out).
+
+| variante | λ appris (sans 2017 / 2022 / 2027) | couverture IC90 brute → λ | LS gaussien Σ brut → λ |
+|---|---|---|---|
+| abst | 2,07 / 1,40 / 1,96 | 6/10 → **8/10** | 5,41 → **9,80** |
+| hier | 2,18 / 1,31 / 2,17 | 7/10 → **9/10** | 5,88 → **9,99** |
+
+Hors élection, les IC V1 doivent être **élargis d'un facteur ≈ 1,3-2,2**
+(couverture rétablie, log-score +4 nats). En terme additif, un bruit
+d'extrapolation $\mathcal N(0,\tau^2)$ ramenant RMS z à 1 vaut **τ ≈ 0,17
+(hier) - 0,19 (abst)** (écart-type prédictif médian 0,11-0,13 logit), soit la
+valeur haute de l'arbitrage τ_paire, pas 0,08-0,10. Réserve : 10 tâches dont
+Pécresse pèse lourd ; le calibrage de τ_paire sur les seules V1 2027 (§8.22)
+donnait 0,08-0,11. Éclaire l'arbitrage τ_paire (remonté), ne le tranche pas.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
