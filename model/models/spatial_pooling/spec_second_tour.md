@@ -1622,6 +1622,21 @@ biais anti-RN observé deux fois — est l'arbitrage 2, déjà tranché « non
 corrigé » par l'utilisateur : (i) reste en place ; (ii) chiffre ce que ce choix
 engage (≈ 6 pt de P(élu) pour Le Pen).
 
+### 8.37 Test prospectif 2027 (revue 18/11, idée 1 ; protocole fixé avant résultat)
+
+Seul critère sans risque de protocole à la carte : prédire des sondages qui
+n'existent pas encore. À la date de gel $t_0$ (dernier terrain du jeu), un fit
+par variante (abst, hier) ; pour toutes les paires du champ modal ∪ candidats
+en duel, 400 tirages de $s_{ab}$ à $h$ = 0, 14, 30 j (sans aléa de scrutin),
+figés dans `results/prospectif/prediction_<variante>_<t0>.json` — aucune
+retouche ensuite. Chaque duel publié après $t_0$ est scoré sans fit contre
+l'horizon figé le plus proche, prédictif d'UN sondage
+($+\mathcal N(0, s(1-s)/N + \sigma_{T2}^2)$) : erreur, CRPS, z, couverture
+IC90, en séparant paires déjà sondées au gel et paires nouvelles.
+Lecture prévue : après ≥ 20 duels nouveaux, comparaison abst/hier en CRPS
+(inversion des signes appariée) et calibration (RMS z, couverture). Code :
+`model/backtest/prospectif_2027.py` (`--figer`, `--scorer`).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
