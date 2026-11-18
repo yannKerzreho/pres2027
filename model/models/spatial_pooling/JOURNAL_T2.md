@@ -469,6 +469,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-18 00:30Z (routine) : main fusionnée — nouveau parseur wiki 2027 : 92 → 118 notices (dernier terrain toujours 13/11). Les résultats 2027 (V1, diagnostic) datent du jeu à 92 notices ; à rejouer si un écart matériel est suspecté. Pas de tableaux de reports encore (A bloquée).
 - 2026-11-17 22:48 → 18/11 00:30Z (routine) : pistes utilisateur — (B) bloquée (CHES hors domaines réseau ; repli ORDER_GROUPS sans effet) ; (C) σ_w par candidat (32 fits) : non adopté.
 - 2026-11-17 16:20Z (routine) : main fusionnée (maj quotidienne : 92 notices, dernier terrain 13/11) ; tests verts hors test réseau. File : seule reste τ_T2 2002-2012 (bloquée données).
 - 2026-11-17 15:08-16:20Z (routine) : sensibilité de P(élu) (§8.33, 2 fits) : τ_paire sans effet ; anti-RN −3 pt ⇒ Le Pen −5,6 pt de P(élu).
