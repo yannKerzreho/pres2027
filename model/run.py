@@ -192,9 +192,10 @@ def run(model_id: str = "all", as_of: str | None = None, include_private: bool =
     for mid, mdl in models.items():
         try:
             _produit(mid, mdl, raw, as_of, rejeu, max_rejeu)
-        except Exception:
+        except Exception as e:
             traceback.print_exc()
             echecs.append(mid)
+            _alerte_echec(mid, e)
     # Courbes par liste de candidats (cf. `model/listes.py`) : avec le passage
     # complet seulement, pas pour un `--model` isolé. ~3 s. Même règle qu'au
     # dessus : un échec n'empêche rien d'autre, mais rend le job rouge.
@@ -204,20 +205,74 @@ def run(model_id: str = "all", as_of: str | None = None, include_private: bool =
             m = produire(raw, as_of)
             print(f"[listes] {len(m['listes'])} liste(s) : "
                   + " · ".join(f"{x['libelle']} ({x['n_recents']}/10)" for x in m["listes"]))
-        except Exception:
+        except Exception as e:
             traceback.print_exc()
             echecs.append("listes")
+            _alerte_echec("listes", e)
         # Dates du dernier sondage par candidat : le site s'en sert pour masquer
         # les candidats plus testés (affichage seulement, cf. le module).
         try:
             from model.derniers_sondages import produire as produire_dates
             produire_dates(raw, as_of)
-        except Exception:
+        except Exception as e:
             traceback.print_exc()
             echecs.append("derniers-sondages")
+            _alerte_echec("derniers-sondages", e)
+        _alerte_palette(raw)
     if echecs:
         raise SystemExit(f"Échec de {len(echecs)} modèle(s) : {', '.join(echecs)} "
                          "(les autres ont écrit leurs snapshots).")
+
+
+def _alerte_echec(mid: str, e: Exception) -> None:
+    """Annotation ::error:: + issue. Une exception qui porte `alerte` (ex.
+    `CandidatsNonClasses`) dit elle-même quoi décider ; sinon, la fin de la
+    trace suffit à ouvrir l'enquête."""
+    from pipeline.alertes import signale
+    if getattr(e, "alerte", None):
+        signale(*e.alerte)
+        return
+    trace = "".join(traceback.format_exception(e)[-6:])
+    signale(f"modele-{mid}", f"{mid} : échec du modèle",
+            f"`{mid}` n'a pas publié (son dernier snapshot reste affiché), les autres "
+            f"modèles si.\n\n```\n{trace}```")
+
+
+PALETTE = Path(__file__).resolve().parent.parent / "docs" / "assets" / "palette.js"
+
+
+def candidats_hors_palette(raw: pd.DataFrame, palette: Path = PALETTE,
+                           min_sondages: int = 5) -> list[str]:
+    """Candidats testés dans au moins `min_sondages` sondages et sans entrée dans
+    `CANDIDATS` de la palette : le site les affiche en gris neutre (dégradation
+    voulue, cf. palette.js), on le signale pour qu'une couleur soit choisie."""
+    import re
+    from model.models.spatial_pooling.roster import MIN_POLL_DATE, NON_CANDIDATS
+    raw = raw[pd.to_datetime(raw["date_fin"]) >= MIN_POLL_DATE]  # ce que le site affiche
+    try:
+        txt = palette.read_text(encoding="utf-8")
+    except OSError:
+        return []
+    bloc = txt[txt.find("const CANDIDATS"):]
+    bloc = bloc[:bloc.find("};")]
+    connus = set(re.findall(r'^\s*"([^"]+)"\s*:', bloc, re.M))
+    n = raw.groupby("candidat")["notice"].nunique()
+    return sorted(c for c in n[n >= min_sondages].index if c not in connus and c not in NON_CANDIDATS)
+
+
+def _alerte_palette(raw: pd.DataFrame) -> None:
+    # simple vérification d'affichage : son propre échec ne doit rien bloquer
+    try:
+        manquants = candidats_hors_palette(raw)
+    except Exception as e:
+        print(f"[palette] vérification impossible : {e!r}")
+        return
+    if manquants:
+        from pipeline.alertes import signale
+        signale("palette", "palette : candidats sans couleur",
+                "Affichés en gris neutre sur le site faute d'entrée dans `CANDIDATS` "
+                "(docs/assets/palette.js) :\n\n" + "\n".join(f"- {c}" for c in manquants),
+                niveau="warning")
 
 
 def _produit(mid, mdl, raw, as_of, rejeu, max_rejeu) -> None:
