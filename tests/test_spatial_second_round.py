@@ -291,3 +291,12 @@ def test_projection_avec_sigma_w_par_candidat():
     f.sigma_w_draws = np.tile([0.3, 0.6, 0.3], (len(f.mu_draws), 1))
     w = projeter_w(f, 150)
     assert w[:, 1].std() > w[:, 0].std()
+
+
+def test_ancres_par_famille_ecart_intra_famille():
+    """Piste B révisée : écart minimal seulement entre membres d'une famille."""
+    from model.models.spatial_pooling.geometry import ancres_par_famille
+    og = [("G", ["a"]), ("C", ["b", "c", "d"]), ("D", ["e"])]
+    x = np.log((a := ancres_par_famille(["a", "b", "c", "d", "e"], og, 0.25, etendue=4.0)) / (1 - a))
+    assert np.allclose(np.diff(x[1:4]), 0.25) and abs(x[2]) < 1e-9
+    assert np.isclose(x[0], -2.0) and np.isclose(x[4], 2.0)

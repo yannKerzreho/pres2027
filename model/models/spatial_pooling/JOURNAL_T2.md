@@ -33,7 +33,7 @@ l'historique, ajouter en bas de « Historique ».
 
 - [ ] **NOUVELLES PISTES (utilisateur, 2026-11-17 ~19:30Z)** — dans cet ordre, maths
       dans la spec AVANT tout code, rien réglé sur les résultats qu'on valide :
-  - [ ] [RÉVISÉ 18/11 (revue) : le blocage vient de l'écart minimal d'ancres (2022 : 22/24 écarts au plancher), pas de la source ; À FAIRE : écart minimal seulement dans une famille, puis 4 V1 2022] [ancien : BLOQUÉ 17/11 22:55Z : CHES inaccessible (chesdata.eu hors domaines autorisés) ; repli ORDER_GROUPS sans effet (ancres ≤ 0,011 d'écart, contrainte d'écart minimal) — spec_spatial_pooling §10] (B) **Positions a priori externes pour la géométrie historique 2017/2022**
+  - [ ] [EN COURS (début 2026-11-18T12:15Z) : `ancres_par_famille` codé + test ; V1 2022 hier × 4 paires] [RÉVISÉ 18/11 (revue) : le blocage vient de l'écart minimal d'ancres (2022 : 22/24 écarts au plancher), pas de la source ; À FAIRE : écart minimal seulement dans une famille, puis 4 V1 2022] [ancien : BLOQUÉ 17/11 22:55Z : CHES inaccessible (chesdata.eu hors domaines autorisés) ; repli ORDER_GROUPS sans effet (ancres ≤ 0,011 d'écart, contrainte d'écart minimal) — spec_spatial_pooling §10] (B) **Positions a priori externes pour la géométrie historique 2017/2022**
         (multimodalité §8.2-8.7) : prior centré par candidat sur une source
         indépendante (famille politique / placements d'experts type CHES ou
         équivalent sourçable hors réseau ; à défaut l'ordre ORDER_GROUPS déjà

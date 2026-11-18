@@ -615,6 +615,16 @@ mesuré était le statu quo (les ancres sont déjà les rangs ORDER_GROUPS). Pis
 réelle : écart minimal seulement À L'INTÉRIEUR d'une famille (ou retrait des
 putatifs avant placement des ancres), puis 4 V1 2022.
 
+**(B) révisée, maths (18/11).** Ancres cardinales par famille : les F familles
+d'ORDER_GROUPS ont des centres équidistants en logit sur l'étendue actuelle,
+$c_f = -E/2 + E\,f/(F-1)$ ; le membre $k$ d'une famille de taille $m_f$ est à
+$c_f + g\,(k - (m_f-1)/2)$, $g = 0{,}25$ : l'écart minimal ne vaut plus
+qu'entre alias d'une même famille (`ancres_par_famille`, `--ancres-famille`).
+Les familles portent ainsi une distance propre (2022 : familles espacées de
+≈ 0,72 logit au lieu de 0,25 entre tout couple). Mesure : V1 2022 hier, 4
+paires (phase 1, comparée à la phase 1 de hier) ; critère fixé par
+l'utilisateur : écart de chaînes ≤ 1 pt et MAE non dégradée (protocole §8.29).
+
 **Idée B : combiner spatial et gp-pooling (protocole fixé avant résultat,
 2026-11-17, 0 fit).** Données : les 13 unités (coupure, liste) de la tâche A,
 spatial prolongé à c + 7 (`suivi_proj_2022_h*.json`) et gp recalibré hors

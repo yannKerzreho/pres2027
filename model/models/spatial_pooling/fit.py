@@ -77,7 +77,8 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
                         eta_hier: bool = False, effets_maison: bool = False,
                         effet_notice_seul: bool = False,
                         lse_champ: bool = False,
-                        sigma_w_par_candidat: bool = False) -> SpatialPoolingFit:
+                        sigma_w_par_candidat: bool = False,
+                        ancres_famille: bool = False) -> SpatialPoolingFit:
     """Roster -> arrays -> NUTS, en une seule inférence jointe.
 
     `mu`, `sigma` et le chemin de `w` sont estimés ENSEMBLE. La chaîne en deux
@@ -118,7 +119,11 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         arrays["unique_dates"] = unique_dates
         duel_date_idx = np.searchsorted(unique_dates, np.floor(duels["dates"]))
 
-    anchors = ancres_ecartees(position_anchors(candidates, order_groups), min_gap)
+    if ancres_famille:
+        from .geometry import ancres_par_famille
+        anchors = ancres_par_famille(candidates, order_groups, min_gap)
+    else:
+        anchors = ancres_ecartees(position_anchors(candidates, order_groups), min_gap)
 
     if excess_bank is None:
         from model.models.spatial_pooling.calibration import BANK_EXCESS_PATH

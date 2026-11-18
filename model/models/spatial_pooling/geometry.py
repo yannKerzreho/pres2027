@@ -90,6 +90,30 @@ def ancres_ecartees(anchors: np.ndarray, min_gap: float = 0.25) -> np.ndarray:
     return 1.0 / (1.0 + np.exp(-out))
 
 
+def ancres_par_famille(candidates, order_groups, min_gap: float = 0.25,
+                       etendue: float | None = None) -> np.ndarray:
+    """Ancres CARDINALES par famille (spec_spatial_pooling §10, piste B révisée).
+
+    Les familles d'`order_groups` sont des centres équidistants en logit sur
+    l'étendue `etendue` (par défaut celle des ancres par rang, pour ne pas
+    changer l'échelle de l'axe) ; l'écart minimal `min_gap` ne s'applique
+    qu'ENTRE MEMBRES d'une même famille (alias), centrés sur leur famille.
+    Deux familles voisines peuvent donc être plus proches ou plus loin que
+    deux alias, ce que l'écart minimal global interdisait (22/24 écarts au
+    plancher en 2022)."""
+    fam = {c: (f, [m for m in ms if m in candidates].index(c))
+           for f, (_, ms) in enumerate(order_groups) for c in ms if c in candidates}
+    familles = sorted({f for f, _ in fam.values()})
+    if etendue is None:
+        from .roster import position_anchors
+        r = ancres_ecartees(position_anchors(list(candidates), order_groups), min_gap)
+        x = np.log(r / (1 - r)); etendue = float(x.max() - x.min())
+    centres = {f: -etendue / 2 + etendue * k / max(len(familles) - 1, 1) for k, f in enumerate(familles)}
+    taille = {f: sum(1 for g, _ in fam.values() if g == f) for f in familles}
+    x = np.array([centres[fam[c][0]] + min_gap * (fam[c][1] - (taille[fam[c][0]] - 1) / 2) for c in candidates])
+    return 1.0 / (1.0 + np.exp(-x))
+
+
 def spatial_shares(mu, sigma, w, tested_mask) -> jnp.ndarray:
     """Coeur du modèle d'observation (spec §4) : softmax masqué sur la grille +
     agrégation par les poids démographiques W -> pi (P,N) ou (N,) selon la

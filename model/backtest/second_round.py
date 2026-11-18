@@ -513,6 +513,8 @@ def main() -> None:
     ap.add_argument("--init-depuis", default=None,
                     help="phase 2 (spec §8.8) : nom du JSON fusionné d'une phase 1 ; les chaînes "
                          "partent du dernier tirage de sa chaîne la plus dense")
+    ap.add_argument("--ancres-famille", action="store_true",
+                    help="ancres cardinales par famille, écart minimal intra-famille (piste B)")
     ap.add_argument("--stacking", action="store_true",
                     help="fusion : mélange des chaînes par stacking au lieu de la sélection (spec §8.26)")
     ap.add_argument("--noeud-resultat", action="store_true",
@@ -524,6 +526,8 @@ def main() -> None:
     NOEUD_RESULTAT = args.noeud_resultat
     global STACKING
     STACKING = args.stacking
+    if args.ancres_famille:
+        VARIANTE_KW["ancres_famille"] = True
     POS_SCALE_BT = args.pos_scale
     ABSTENTION = args.variante in ("abst", "geo", "geo1", "hier", "hier_maison", "hier_notice")
     VARIANTE_KW.update({"geo": {"eta_scale": 0.0},
@@ -552,6 +556,7 @@ def main() -> None:
                                  + ("_sans_t2" if args.sans_t2 else "")
                                  + (f"_pos{args.pos_scale:g}" if args.pos_scale else "")
                                  + ("_noeud" if args.noeud_resultat else "")
+                                 + ("_famille" if args.ancres_famille else "")
                                  + ("_init" if args.init_depuis else "") + ".json")
     nuts_json = dict(nuts)
     if args.chaine is not None or args.fusionner:
