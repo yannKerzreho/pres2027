@@ -62,7 +62,7 @@ def test_un_modele_en_echec_n_empeche_pas_les_autres(monkeypatch, tmp_path):
             raise RuntimeError("boum")
         ecrits.append(mid)
 
-    monkeypatch.setattr(run, "load_raw_polls", lambda as_of=None: _sondages({"S": ["A", "B"]}))
+    monkeypatch.setattr(run, "load_raw_polls", lambda as_of=None, **_: _sondages({"S": ["A", "B"]}))
     monkeypatch.setattr(run, "_selection", lambda m, p: {"spatial-pooling": _Refuse(),
                                                          "autre": _Refuse(), "gp-pooling": _Ok()})
     monkeypatch.setattr(run, "_produit", produit)

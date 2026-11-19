@@ -524,6 +524,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-19 00:08Z (routine) : main fusionnée (bruit de scénarios par candidat) ; test_alertes_prod adapté (mock acceptant `tour=`, comme test_listes) ; aucun duel postérieur au 17/11 (score prospectif vide).
 - 2026-11-18 20:08-20:40Z (routine) : test prospectif 2027 (§8.37) : gel des prédictions abst et hier au 17/11 (2 fits).
 - 2026-11-18 19:08-19:40Z (routine) : main fusionnée (Riner, Polony placés) ; sensibilité P(élu) cohérente (§8.36, 1 fit).
 - 2026-11-18 14:08Z (routine) : sensibilité P(élu) cohérente bloquée — Polony/Riner absents de ORDER_GROUPS (fit refusé) ; alerte remontée.
