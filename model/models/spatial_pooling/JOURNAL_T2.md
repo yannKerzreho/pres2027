@@ -83,7 +83,7 @@ l'historique, ajouter en bas de « Historique ».
   lire l'étape 1 : si elle passe, conclusion « outil d'entre-deux-tours seulement »,
   comparée à la 2D en coût et en stabilité.
 
-- [ ] [EN COURS (début 2026-11-19 22:14Z) : §8.48 mesure faite (duels Mélenchon jusqu'à 1,1 pt, Macron–Le Pen 0,5 à T1−30 ⇒ sensible) ; garde-fou `sigma_min` / `quadrature_fragile` ajouté aux diagnostics ; refit témoin 1D T2−7 2022 avec B = 100 lancé (4 chaînes, `r2_temoin_hier_B100`)] **(NOUVEAU 19/11, constat de §8.46.4) Précision de la quadrature 1D aux petits σ** : GL B = 25 donne jusqu'à 1,6 pt d'erreur sur π dans les fits 2022 (σ min 0,018) ; sans effet en 2027 (σ min 0,051). Tâche : garde-fou (alerte si σ_min < 0,035, ou B adaptatif) et mesure de l'effet sur les backtests 2022 publiés (V1/V2) ; priorité moyenne, pas de changement de production sans chiffrage.
+- [x] [FAIT 19/11 23:20Z, §8.48 : refit B = 100 ⇒ σ_Mélenchon 0,020 → 0,031 (artefact partiel), Macron–Le Pen 53,5 → 53,6, reports 1D toujours saturés, T1 inchangé ⇒ aucune conclusion ne change ; règle : backtests historiques à B = 100 si `quadrature_fragile` ; production non touchée] [ex-EN COURS (début 2026-11-19 22:14Z) : §8.48 mesure faite (duels Mélenchon jusqu'à 1,1 pt, Macron–Le Pen 0,5 à T1−30 ⇒ sensible) ; garde-fou `sigma_min` / `quadrature_fragile` ajouté aux diagnostics ; refit témoin 1D T2−7 2022 avec B = 100 lancé (4 chaînes, `r2_temoin_hier_B100`)] **(NOUVEAU 19/11, constat de §8.46.4) Précision de la quadrature 1D aux petits σ** : GL B = 25 donne jusqu'à 1,6 pt d'erreur sur π dans les fits 2022 (σ min 0,018) ; sans effet en 2027 (σ min 0,051). Tâche : garde-fou (alerte si σ_min < 0,035, ou B adaptatif) et mesure de l'effet sur les backtests 2022 publiés (V1/V2) ; priorité moyenne, pas de changement de production sans chiffrage.
 - NOTE (session locale, 2026-11-19 ~19:45Z, REMPLACE l'aperçu Mac) : l'ÉTAPE 2 OFFICIELLE de R3
   (`--only v2 --election 2022 --coupure T1-30 --variante hiercercle_sr`, chaînes 0-3) tourne
   sur un GPU T4 Google Colab (Linux x86 + CUDA, jax 0.10.2 / numpyro 0.22.0, float32 comme
@@ -975,6 +975,10 @@ Idées :
 
 - 2026-11-19 18:31-22:10Z (même tour) : protocole 1 de R3 (4 chaînes d'environ 3 h) ;
   échec strict sur la stabilité, le reste passe ; même verdict que T4 ⇒ arrêt de R3, suite R3b (session locale).
+
+- 2026-11-19 22:08-23:20Z (réveil) : quadrature 1D (§8.48) : sensibilité mesurée,
+  garde-fou `sigma_min`, refit B = 100 (σ_Mélenchon 0,02 → 0,03, conclusions
+  inchangées) ; R3 coché (clos, suite R3b en session locale).
 
 ## Revue Opus 2026-11-18 — intégration point par point
 

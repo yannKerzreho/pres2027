@@ -2790,6 +2790,35 @@ quadrature, puisqu'un noyau étroit tombé entre deux nœuds est mal intégré.
   de §8.44 sont à relire, et les backtests 2022 à refaire avec B plus grand.
 - Sinon, l'effet se limite au postérieur fixé ci-dessus.
 
+**Résultat du refit à B = 100** (19/11). Fichiers : `results/r2_temoin_hier_B100_v2_2022_T2-7.json`
+et `eval_r2_hier_B100_2022_T2-7_par_chaine.json`. Chaînes retenues : 0, 1 et 2, pour 16 nats
+d'écart de lp.
+
+| | B = 25 | B = 100 |
+|---|---|---|
+| σ_Mélenchon, médiane par chaîne retenue | 0,020 / 0,020 / 0,020 | **0,031 / 0,031 / 0,030** |
+| Macron–Le Pen prédit | 53,5 | 53,6 |
+| partage Mélenchon prédit par les reports (mesuré 63) | 100 | 100 |
+| MAE T1 contre le résultat | 1,23 | 1,25-1,26 |
+
+**Lecture.** σ_Mélenchon passe au-dessus de 0,03. L'effondrement du rayon de Mélenchon en 1D
+2022 est donc **en partie un artefact de quadrature** : à B = 25, un noyau à 0,02 tombe entre les
+nœuds (espacés d'environ 0,04) et le fit l'exploite. Mais rien de ce qui a été conclu ne change :
+
+- le duel Macron–Le Pen et le T1 sont stables ;
+- les reports 1D restent saturés (Mélenchon→Macron 100 %), donc §8.38 et le témoin de §8.44 tiennent.
+
+**Décision**, méthodologique et sans effet sur la production (σ min 0,051 en 2027, erreur
+0,001 pt) :
+
+- les backtests historiques futurs se font avec `PRES2027_B_QUAD=100` quand `quadrature_fragile`
+  est vrai ;
+- le garde-fou `sigma_min` reste dans les diagnostics, pour être vu en production si un σ 2027
+  descend sous 0,035.
+
+Les chiffres 2022 déjà publiés ne sont pas refaits : écarts ≤ 1,1 pt sur les duels de Mélenchon, et
+aucune conclusion ne change.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
