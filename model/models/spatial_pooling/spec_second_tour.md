@@ -2705,6 +2705,34 @@ Mélenchon 2017 mesuré à 76,4.
 duels et stabilité (§8.45), puis « ARBITRAGE À TRANCHER » sur l'adoption, qui toucherait aussi le
 T1 publié.
 
+**5. Ajout du 2026-11-20 : reports publiés AVANT le T1** (b6c29d3, `data/parsed/reports_avant_t1_{2017,2022,2027}.csv`).
+Ce sont des duels T2 croisés par intention de vote T1, publiés par les instituts pendant la campagne
+(2022 : 40 sondages de février 2019 à avril 2022 ; 2017 : 19 ; 2027 : 8 à ce jour). Ils lèvent le
+diagnostic du §8.47 (« aucun report n'existe avant le T1 »). Figé avant lecture :
+
+- **Vraisemblance.** Celle des reports d'entre-deux-tours (Dirichlet par notice et électorat,
+  §8.44.4), avec θ_k(t) évalué à la date du sondage. L'électorat k est celui de l'*intention* T1
+  déclarée, interprété comme l'électorat k du modèle à la date t.
+- **Fenêtre.** Seuls les reports datés dans $[\text{as\_of}-180\,\text{j};\ \text{as\_of}]$
+  entrent, la même fenêtre que les sondages T1 (`polls_historiques`) : un report de 2019 étirerait
+  la base OU sur trois ans. Les électorats absents du roster (ex. Hamon 2019) sont ignorés.
+- **Champ des électorats.** C'est la liste officielle du T1, connue avant T1−30 en 2017 (18/03) et
+  en 2022 (07/03). L'approximation est que chaque sondage avait son propre champ hypothétique.
+
+Variantes : `_reports_avant` (drapeau de backtest) charge ce fichier en plus des reports
+d'entre-deux-tours. Il s'ajoute aux variantes existantes sans changer leur sens.
+
+*Étape A′* (en file derrière A, mêmes critères 1-4 que A, lus sur 2022 à T1−30) :
+
+- **A′1** — une seule élection, cercle, 2022 à T1−30 avec reports d'avant T1 (`hiercercle_ra`).
+- **A′2** — même chose sur le segment (`hier_ra`), comme témoin.
+- **A′3** — le joint 2017 complet + 2022 à T1−30, reports d'avant T1 compris (`A2_cercle`).
+
+Lecture : si A′1 passe, ce sont les reports d'avant T1 qui suffisent, sans multi-élections. Si A′2
+passe aussi, le cercle n'apporte rien. A′3 dit ce que l'histoire ajoute par-dessus. Le gain de
+Mélenchon se lit hors échantillon : les reports d'entre-deux-tours 2022, que rien n'a vus, comme
+en A.
+
 **Limites connues.**
 
 - Deux élections seulement pour apprendre $s_\kappa$, $s_\mu$ et $s_\sigma$ : ces échelles
