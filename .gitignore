@@ -27,6 +27,7 @@ data/parsed/*.csv
 !data/parsed/intentions_2007_wiki.csv
 !data/parsed/intentions_2012_wiki.csv
 !data/parsed/reports_t2_*.csv
+!data/parsed/reports_avant_t1_*.csv
 # NB : tests/fixtures/pdf/ EST versionné (petites notices de référence pour les tests)
 
 # Sorties de modèle / traces d'inférence
@@ -48,3 +49,4 @@ historic/
 # Claude
 .claude
 model/backtest/results/chaines/
+data/raw/pdf_reports/

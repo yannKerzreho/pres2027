@@ -72,8 +72,32 @@ Dans `data/parsed/` :
   Une ligne par (sondage, électorat T1, option T2), `part` en % de l'électorat
   T1, options Macron / Aucun (abstention, blanc, nul) / Le Pen. Wikipedia ne
   relève que les 4 principaux électorats éliminés (2017 : Mélenchon, Hamon,
-  Fillon, Dupont-Aignan ; 2022 : Mélenchon, Jadot, Pécresse, Zemmour). Pas de
-  2027 : pas de reports observés avant un 1er tour.
+  Fillon, Dupont-Aignan ; 2022 : Mélenchon, Jadot, Pécresse, Zemmour). Tous
+  datés ENTRE les deux tours (vote T1 déclaré) ; pour la période avant le T1,
+  voir `reports_avant_t1_*`.
+- `reports_avant_t1_2017.csv`, `_2022`, `_2027` : duels de 2nd tour croisés par
+  INTENTION de vote au 1er tour, publiés avant le 1er tour, lus dans les
+  rapports PDF des instituts cités par les lignes de 2nd tour de
+  `intentions_{annee}_wiki.csv` (`python -m sondages.reports_avant_t1 --annee 2022 --telecharge` ;
+  cache PDF dans `data/raw/pdf_reports/`, hors dépôt, repli web.archive.org).
+  Schéma de `reports_t2_*` sans `rolling`, plus `nature_t1` (« intention » ;
+  `reports_t2_*` relève le « vote » T1 déclaré) et `page` (page du PDF).
+  `electorat_t1 = "Aucun"` : abstentionnistes / blancs du T1, quand l'institut
+  les croise ; pas de ligne « Ensemble ». Base des parts : quand un duel n'a
+  pas d’option « Aucun » (BVA 2022, Ifop 2019, la moitié des duels Opinion Way 2017), les parts
+  sont en % des exprimés de l'électorat ; sinon en % de l'électorat entier.
+  Couverture (sources de duels / PDF obtenus / sources extraites) : 2017
+  84 / 50 / 20 (Ifop 12, Opinion Way 6, Harris 2), 2022 145 / 100 / 40 (Harris
+  21, Elabe 9, BVA 5, Ipsos 3, Ifop 2), 2027 34 / 28 / 8 (Harris seul).
+  Absents par nature : pages HTML (Odoxa, BVA, Ipsos, TNS Sofres), notices
+  sans tableau croisé (Opinion Way 2022, Ifop 2027, Elabe 2027…), tris croisés
+  Ifop 2017-2021 qui croisent le VOTE de l'élection précédente (écartés
+  explicitement). Non lu : panneaux doubles d'Elabe 2020-2021 (deux
+  hypothèses de T1 côte à côte, duel hors du titre).
+  Contrôles : chaque électorat somme dans [97, 103] (sinon écarté) ; un
+  finaliste garde >= 75 % de son propre électorat (test) ; le T2 reconstruit
+  (parts T1 du sondage x reports) retrouve le T2 publié à 0,6 point près en
+  médiane (max 4,4 en 2022, 4,1 en 2027, sur les électorats couverts).
 - `intentions_2017_wiki.csv` : dates de terrain complétées
   (`python -m sondages.complete_dates`, lignes existantes inchangées hors
   dates) et sondages absents ajoutés en fin de fichier (`--ajoute-absentes`).
