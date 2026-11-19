@@ -1697,6 +1697,57 @@ $|e|>10$ pt et $|z|>2$ sur le partage parmi les exprimés, dans le sens attendu 
 seconde dimension, c'est-à-dire un report vers Le Pen sous-prédit. À défaut, on consigne
 seulement « limite §2.3 confirmée ou infirmée par électorat », et (A)(2) suit.
 
+**Résultats (2026-11-19, `results/reports_t2_A1.json`).** Contrôle : la reconstruction
+redonne le $s_{ab}$ committé à 0,1 pt près, par exemple 0,6133 contre 0,6125 pour
+hier 2017 et 0,5363 contre 0,5361 pour hier 2022.
+
+Partage Macron parmi les exprimés, en %, mesuré puis modèle (abst / hier) :
+
+| électorat | 2017 mesuré | 2017 abst / hier | 2022 mesuré | 2022 abst / hier |
+|---|---|---|---|---|
+| Mélenchon | 76,4 | 98,9 / 99,2 (z 3,4 / 3,6) | 63,0 | 100 / 100 (z 7,4 / 7,4) |
+| Hamon / Jadot | 93,4 | 98,7 / 99,0 | 87,5 | 100 / 100 |
+| Fillon / Pécresse | 62,8 | 68,0 / 68,6 | 65,0 | 61,4 / **36,6** |
+| NDA / Zemmour | 37,6 | 29,2 / 28,6 | 9,4 | 0,0 / 0,4 |
+
+MAE des cellules (Macron, Le Pen, Aucun), en pt :
+
+| | Macron | Le Pen | Aucun |
+|---|---|---|---|
+| abst 2017 | 6,3 | 9,8 | 10,1 |
+| abst 2022 | 17,8 | 9,5 | 22,5 |
+| hier 2017 | 5,1 | 9,6 | 9,2 |
+| hier 2022 | 17,6 | 19,0 | 11,2 |
+
+Abstention, cas extrême : l'électorat Jadot 2022 est prédit à 94 % « Aucun » en abst, contre
+33 % mesuré.
+
+**Lecture.**
+
+1. **Critère (D) rempli** pour les deux variantes et les deux années. L'électorat
+   Mélenchon ne reporte pratiquement rien sur Le Pen dans le modèle (0-1 % de
+   l'électorat), contre 15 % en 2017 et 21 % en 2022 dans les tableaux des instituts.
+   L'erreur sur le partage vaut 23 à 37 pt, alors qu'elle n'est que de 5 à 12 pt pour la
+   gauche modérée (Hamon, Jadot). C'est la seconde dimension anticipée au §2.3 : ce n'est
+   pas un simple défaut de netteté.
+2. **Reports trop nets partout.** Les cellules prédites valent 0 ou 100 % là où les
+   instituts mesurent 5 à 10 % de transfert croisé (Zemmour→Macron 8 %, Jadot→Le Pen 8 %).
+   Le choix $q$ par votant est une quasi-marche (§2.1). Le bruit de choix
+   individuel ne passe que par κ, global, et η, à l'agrégat.
+3. **L'abstention par électorat n'est pas tenue.** ω et la valeur inclusive ne sont
+   identifiés qu'au travers des duels agrégés. Le niveau « Aucun » par électorat erre de
+   10 à 60 pt et change de signe d'une variante à l'autre (Mélenchon 2022 : 57,7 contre
+   23,8 %).
+4. **Le duel agrégé reste juste alors que la décomposition est fausse.** L'interdit du
+   §2.3 tient : on ne publie pas $T$. C'est aussi un avertissement pour (A)(2). Ajouter
+   les reports comme observations à un modèle 1D obligerait la géométrie à se tordre pour
+   rapprocher Mélenchon de Le Pen sur l'axe. Les reports ne doivent entrer qu'avec un
+   mécanisme qui les représente : (D), ou à défaut un plancher de transfert.
+
+⇒ **(D) est ouvert.** Les maths du modèle 2D sont à écrire avant (A)(2). L'alternative
+minimale est à chiffrer en parallèle : un plancher de report par votant, avec bruit
+logistique additionnel, qui couvre le point 2 mais pas le point 1.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

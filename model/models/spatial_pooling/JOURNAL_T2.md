@@ -35,7 +35,7 @@ l'historique, ajouter en bas de « Historique ».
       LES DONNÉES SONT SUR MAIN depuis 844495b (déjà fusionnée ici via ab2178c) ;
       (A) et τ_T2 2002-2012 sont DÉBLOQUÉS. Roster (fb69009) et palette
       (9b95194) sur main ⇒ fits 2027 débloqués. Ordre :
-  - [ ] [EN COURS (début 2026-11-19 04:45Z) : spec §8.38 écrite (critère (D) fixé avant résultat), `model/backtest/reports_t2.py` + test ; V2 T2−7 abst/hier 2017/2022 reconstruits depuis les chaînes sauvées, sur les données de ee6365b (les données 2017 de main ajoutent Hollande/Pinel ⇒ chaînes incompatibles)] (A)(1) **Validation sans fit des tableaux de reports** :
+  - [x] [FAIT 2026-11-19 05:05Z, spec §8.38, `results/reports_t2_A1.json` : CRITÈRE (D) REMPLI (abst et hier, 2017 et 2022) — Mélenchon→Le Pen prédit 0-1 % contre 15 / 21 % mesurés, partage parmi exprimés +23 / +37 pt (z 3,4-7,4) ; reports trop nets partout (cellules 0/100 % contre 5-10 % de transfert croisé) ; « Aucun » par électorat non tenu (erreur 10-60 pt). Fits V2 T2−7 reconstruits depuis les chaînes sauvées sur les données de ee6365b (les données 2017 de main ajoutent Hollande/Pinel ⇒ chaînes incompatibles)] (A)(1) **Validation sans fit des tableaux de reports** :
         `data/parsed/reports_t2_2017.csv`, `reports_t2_2022.csv` (colonnes
         notice, institut, dates, hypothese « X – Y », electorat_t1 = nom complet
         du candidat T1, candidat_t2 ∈ {X, Y, Aucun}, part en %, base_electorat
@@ -45,7 +45,14 @@ l'historique, ajouter en bas de « Historique ».
         électorat et par candidat_t2 (y compris « Aucun » ↔ abstention ω),
         z par cellule. Maths dans la spec (§ nouveau) AVANT le code. Si erreur
         systématique par électorat que l'axe unique n'absorbe pas ⇒ ouvrir (D).
-  - [ ] (A)(2) **Reports comme observations** (multinomiale par électorat, ou
+  - [ ] **(D) OUVERT par (A)(1)** — maths AVANT (A)(2), qui ne doit pas entrer
+        dans le 1D (il tordrait la géométrie, §8.38 point 4) : (i) écrire dans la
+        spec la seconde coordonnée (axe système/anti-système, 1 paramètre par
+        candidat, prior centré 0, ou « fer à cheval » §2.3) et son identification
+        par les reports ; (ii) chiffrer d'abord, sans fit, l'alternative minimale
+        « plancher de report » (bruit logistique par votant) sur les mêmes
+        tirages : elle couvre la netteté (point 2) mais pas Mélenchon (point 1).
+  - [ ] (A)(2) [à faire DANS le modèle retenu en (D), pas en 1D] **Reports comme observations** (multinomiale par électorat, ou
         Dirichlet-multinomiale avec n effectif si base_electorat manque ; maths
         d'abord : vraisemblance, dépendance avec les duels de la même notice,
         poids). Backtest V1/V2 2017 et 2022 selon le protocole §8.29
@@ -85,7 +92,7 @@ l'historique, ajouter en bas de « Historique ».
         main, (1) validation sans fit : reports prédits par le modèle (tirages
         par électorat T1) contre reports mesurés, MAE par électorat ; (2) puis
         comme observations (multinomiale par électorat, maths d'abord).
-  - [ ] (D) Espace 2D (axe système/anti-système) — SEULEMENT si (A)(1) montre
+  - [ ] [OUVERT 19/11 par (A)(1), voir bloc PRIORITÉ] (D) Espace 2D (axe système/anti-système) — SEULEMENT si (A)(1) montre
         une erreur systématique par électorat que l'axe unique n'absorbe pas.
   - DÉBLOQUÉ 18/11 (844495b) : τ_T2 2002-2012, dates 2017.
 
@@ -646,6 +653,12 @@ conservé pour l'historique.
 - 2026-11-14 22:07-22:25Z (réveil) : log-densité par chaîne ⇒ modes inégaux
   (spec §8.8), sélection Δ = 10 nats, re-fusion 2022, phase 2 lancée.
   Tests : 6 chaînes/cadre verts. Tests : 148 passés (hors réseau).
+
+- 2026-11-19 04:30-05:10Z (réveil) : CORRECTION — les réveils 00:00-04:30Z
+  ont conclu « rien à faire » d'après une mémoire périmée alors que le bloc
+  PRIORITÉ (23:05Z) était actionnable. (A)(1) fait (spec §8.38) : critère (D)
+  rempli (Mélenchon→Le Pen 0-1 % prédit contre 15/21 % mesuré) ⇒ (D) ouvert,
+  (A)(2) déplacé dans le modèle de (D). Tests : 231 passés (hors réseau Wikipédia).
 
 ## Revue Opus 2026-11-18 — intégration point par point
 
