@@ -324,6 +324,8 @@ def _diag(fit, dt):
             # carte 2D (spec §8.44) : positions en u, λ, rayon moyen en v
             **({"nu": {c: round(float(x), 3) for c, x in zip(fit.candidates, fit.nu_draws.mean(0))},
                 "lambda_u": round(float(fit.lambda_draws.mean()), 4)} if fit.nu_draws is not None else {}),
+            **({"arc": round(float(fit.arc_draws.mean()), 4),
+                "f_arriere": round(float(1 - fit.arc_draws.mean() / (2 * np.pi)), 4)} if fit.arc_draws is not None else {}),
             "sigma_v_moyen": round(float(fit.sigma_draws.mean()), 4)}
 
 
@@ -511,7 +513,7 @@ def main() -> None:
     ap.add_argument("--coupure", default=None, choices=["T1-30", "T1-1", "T2-7"],
                     help="V2 : une seule coupure")
     ap.add_argument("--lister", action="store_true", help="liste les tâches unitaires et sort")
-    ap.add_argument("--variante", choices=["abst", "eta", "geo", "geo1", "hier", "hier_maison", "hier_notice", "hier2d", "hier_rep"], default="abst",
+    ap.add_argument("--variante", choices=["abst", "eta", "geo", "geo1", "hier", "hier_maison", "hier_notice", "hier2d", "hier_rep", "hiercercle", "hiercercle_sr"], default="abst",
                     help="abst = abstention + valence ; eta = valence seule ; geo = κ + abstention, "
                          "sans valence ; geo1 = abstention seule, κ = 1 (spec §8.9) ; hier = abst à échelle de "
                          "valence apprise (§8.10)")
@@ -540,7 +542,7 @@ def main() -> None:
     if args.ancres_famille:
         VARIANTE_KW["ancres_famille"] = True
     POS_SCALE_BT = args.pos_scale
-    ABSTENTION = args.variante in ("abst", "geo", "geo1", "hier", "hier_maison", "hier_notice", "hier2d", "hier_rep")
+    ABSTENTION = args.variante in ("abst", "geo", "geo1", "hier", "hier_maison", "hier_notice", "hier2d", "hier_rep", "hiercercle", "hiercercle_sr")
     VARIANTE_KW.update({"geo": {"eta_scale": 0.0},
                         "geo1": {"eta_scale": 0.0, "kappa_log_scale": 1e-3},
                         "hier": {"eta_hier": True},
@@ -549,7 +551,10 @@ def main() -> None:
                         # R2 (spec §8.44) : carte 2D + reports en vraisemblance (drapeau éteint ailleurs)
                         "hier2d": {"eta_hier": True, "carte_2d": True, "_reports": True},
                         # témoin équitable de R2 (revue 19/11, point 3) : reports en vraisemblance, 1D
-                        "hier_rep": {"eta_hier": True, "_reports": True}}.get(args.variante, {}))
+                        "hier_rep": {"eta_hier": True, "_reports": True},
+                        # R3 (spec §8.46) : votants sur un cercle, avec / sans reports
+                        "hiercercle": {"eta_hier": True, "carte_cercle": True, "_reports": True},
+                        "hiercercle_sr": {"eta_hier": True, "carte_cercle": True}}.get(args.variante, {}))
     SECOND_TOUR = not args.sans_t2
     if args.sans_t2 and args.only != "v2":
         ap.error("--sans-t2 n'a de sens qu'en V2 (V1 prédit un duel)")

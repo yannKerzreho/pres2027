@@ -60,6 +60,7 @@ class SpatialPoolingFit:
     w_dates: np.ndarray | None = None        # (T,) ordinaux des dates du chemin
     nu_draws: np.ndarray | None = None       # (S, N) carte 2D (spec_second_tour §8.44)
     lambda_draws: np.ndarray | None = None   # (S,)
+    arc_draws: np.ndarray | None = None      # (S,) cercle (spec_second_tour §8.46)
     reports_theta_draws: np.ndarray | None = None   # (S, R, 3) cellules prédites des reports en fit
     reports_rows: list | None = None         # [(notice, électorat, date)] dans l'ordre de R
     duel_s_draws: np.ndarray | None = None
@@ -83,7 +84,7 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
                         lse_champ: bool = False,
                         sigma_w_par_candidat: bool = False,
                         ancres_famille: bool = False,
-                        carte_2d: bool = False, nu_ancre_val: float = 0.3,
+                        carte_2d: bool = False, carte_cercle: bool = False, nu_ancre_val: float = 0.3,
                         reports: pd.DataFrame | None = None,
                         champ_reports: list | None = None) -> SpatialPoolingFit:
     """Roster -> arrays -> NUTS, en une seule inférence jointe.
@@ -167,6 +168,8 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
     )
     if sigma_w_par_candidat:
         kwargs["sigma_w_par_candidat"] = True
+    if carte_cercle:
+        kwargs["carte_cercle"] = True
     if carte_2d:
         if not has_t2:
             raise ValueError("carte_2d : l'ancre et l'ordre en u sont posés sur les finalistes d'un duel")
@@ -296,6 +299,7 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         duels=duels if has_t2 else None,
         nu_draws=np.asarray(samples["nu"]).reshape(-1, N) if "nu" in samples else None,
         lambda_draws=np.asarray(samples["lambda_u"]).reshape(-1) if "lambda_u" in samples else None,
+        arc_draws=np.asarray(samples["arc"]).reshape(-1) if "arc" in samples else None,
         reports_theta_draws=(np.asarray(samples["reports_theta"]).reshape(-1, len(rep["y"]), 3)
                              if "reports_theta" in samples else None),
         reports_rows=rep["rows"] if rep is not None else None,
@@ -366,6 +370,11 @@ def pi_draws_for_mask(fit: SpatialPoolingFit, mask: np.ndarray) -> np.ndarray:
     sondages récents d'un candidat se contredisent (pas besoin d'un mélange
     explicite comme linear_pooling -- cf. spec section "Incertitude" pour la
     comparaison et ses limites connues)."""
+    if fit.arc_draws is not None:                                         # cercle (§8.46)
+        from .geometry import spatial_shares_cercle
+        return np.asarray(spatial_shares_cercle(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
+                                                jnp.asarray(fit.arc_draws), jnp.asarray(fit.w_draws),
+                                                jnp.asarray(mask)))
     if fit.nu_draws is not None:                                          # carte 2D (§8.44)
         from .geometry import spatial_shares_2d
         return np.asarray(spatial_shares_2d(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
@@ -496,11 +505,17 @@ def projeter_w(fit: SpatialPoolingFit, horizon_days: float, seed: int = 27,
 def _duel_par_tirage(fit, w, ia: np.ndarray, ib: np.ndarray) -> np.ndarray:
     """Part de `ia[s]` contre `ib[s]` au tirage s (indices par tirage)."""
     s_idx = np.arange(len(ia))
-    if fit.nu_draws is not None:                                          # carte 2D (§8.44)
-        from .geometry import W2, duel_shares_poids, log_attractivite_2d
-        A = np.asarray(log_attractivite_2d(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
-                                           jnp.asarray(fit.nu_draws), jnp.asarray(fit.lambda_draws),
-                                           jnp.asarray(w)))
+    if fit.nu_draws is not None or fit.arc_draws is not None:            # carte 2D (§8.44) / cercle (§8.46)
+        from .geometry import W2, W_THETA, duel_shares_poids, log_attractivite_2d, log_attractivite_cercle
+        if fit.nu_draws is not None:
+            A = np.asarray(log_attractivite_2d(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
+                                               jnp.asarray(fit.nu_draws), jnp.asarray(fit.lambda_draws),
+                                               jnp.asarray(w)))
+            pq = W2
+        else:
+            A = np.asarray(log_attractivite_cercle(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
+                                                   jnp.asarray(fit.arc_draws), jnp.asarray(w)))
+            pq = W_THETA
         lse = None
         if fit.omega_draws is not None:
             from scipy.special import logsumexp
@@ -508,7 +523,7 @@ def _duel_par_tirage(fit, w, ia: np.ndarray, ib: np.ndarray) -> np.ndarray:
             lse = logsumexp(Am, axis=1)
         return np.asarray(duel_shares_poids(A[s_idx, ia], A[s_idx, ib], fit.kappa_draws,
                                             fit.eta_draws[s_idx, ia], fit.eta_draws[s_idx, ib],
-                                            lse, fit.omega_draws, W2))
+                                            lse, fit.omega_draws, pq))
     A = np.asarray(log_attractivite(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
                                     jnp.asarray(w)))                     # (S, N, B)
     extra = ()

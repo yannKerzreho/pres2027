@@ -103,3 +103,45 @@ def test_newton_cas_sature():
     th, d = reports_cellules(jnp.asarray(A), jnp.ones(6), jnp.array([1]), jnp.array([4]), jnp.array([2]),
                              0.75, jnp.array([0.0]), jnp.asarray(lse), -3.0, jnp.asarray(s), W, n_newton=4)
     assert np.allclose(np.asarray(th[0]), [ref["a"][0, 2], ref["b"][0, 2], ref["aucun"][0, 2]], atol=2e-3)
+
+
+def test_cercle_parts_et_quadrature():
+    """§8.46 : parts sommant à 1, N_θ = 128 proche d'une référence fine (σ = 0,04)."""
+    from model.models.spatial_pooling.geometry import spatial_shares_cercle
+    rng = np.random.default_rng(3)
+    mu = jnp.asarray(np.sort(rng.uniform(.05, .95, 10)))
+    sg, w, m = jnp.full(10, .04), jnp.asarray(rng.normal(0, .5, 10)), jnp.ones(10)
+    p = spatial_shares_cercle(mu, sg, 4.7, w, m)
+    th = jnp.asarray(2 * np.pi * np.arange(2048) / 2048 - np.pi)
+    ref = spatial_shares_cercle(mu, sg, 4.7, w, m, th, jnp.full(2048, 1 / 2048))
+    assert abs(float(p.sum()) - 1) < 1e-5 and float(jnp.abs(p - ref).max()) < 1e-3
+
+
+def test_cercle_votant_arriere_partage_entre_extremes():
+    """Le votant à θ = π (arrière) est équidistant des deux extrêmes symétriques."""
+    from model.models.spatial_pooling.geometry import log_attractivite_cercle
+    mu = jnp.asarray([0.1, 0.5, 0.9]); sg = jnp.full(3, 0.1); w = jnp.zeros(3)
+    th = jnp.asarray([np.pi - 1e-9, 0.0])
+    A = log_attractivite_cercle(mu, sg, 5.0, w, th, jnp.asarray([0.5, 0.5]))
+    assert abs(float(A[0, 0] - A[2, 0])) < 1e-4          # arrière : égalité gauche/droite
+    assert float(A[1, 1]) > float(A[0, 1])               # centre : le centriste domine
+
+
+def test_modele_cercle_densite_finie():
+    import numpyro
+    from numpyro.infer.util import log_density
+    from model.models.spatial_pooling.joint_model import spatial_pooling_model_ou
+    rng = np.random.default_rng(0)
+    N, P, T = 4, 6, 3
+    kw = dict(tested_mask=jnp.ones((P, N)), Y=jnp.asarray(rng.dirichlet(np.ones(N), P)), Np=jnp.full(P, 1000.0),
+              date_idx=jnp.asarray(rng.integers(0, T, P)), kl_basis=jnp.asarray(np.eye(2, T)),
+              pos_anchor=jnp.asarray([.2, .4, .6, .8]), tau_ou=200.0,
+              duel_a=jnp.array([1]), duel_b=jnp.array([3]), duel_y=jnp.array([.55]), duel_n=jnp.array([1000.0]),
+              duel_date_idx=jnp.array([2]), carte_cercle=True,
+              rep_y=jnp.asarray([[.5, .2, .3]]), rep_date_idx=jnp.array([2]), rep_k=jnp.array([0]),
+              rep_a=jnp.array([1]), rep_b=jnp.array([3]), rep_champ=jnp.ones(N))
+    with numpyro.handlers.seed(rng_seed=0):
+        tr = numpyro.handlers.trace(spatial_pooling_model_ou).get_trace(**kw)
+    params = {k: v["value"] for k, v in tr.items() if v["type"] == "sample" and not v.get("is_observed")}
+    assert np.isfinite(float(log_density(spatial_pooling_model_ou, (), kw, params)[0]))
+    assert 0 < float(tr["arc"]["value"]) < 2 * np.pi

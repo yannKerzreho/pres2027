@@ -2561,6 +2561,31 @@ d'environ $e^{-2\pi^2\sigma^2/h^2}\approx10^{-7}$. Le coût vaut environ 64/25 =
 1D, contre 7 fois pour R2. Un test vérifie que les parts sont stables à $10^{-4}$ entre 64 et 256
 nœuds.
 
+**Révision du point 4, mesurée avant tout fit.** L'estimation d'aliasing ci-dessus était
+optimiste : l'intégrande est un softmax entre noyaux étroits, plus raide qu'une gaussienne. Erreur
+maximale sur π, contre une référence à 2048 nœuds, sur 5 géométries aléatoires de 12 candidats :
+
+| σ | arc | N = 64 | N = 128 | N = 192 | N = 256 |
+|---|---|---|---|---|---|
+| 0,02 | 2,5 | 0,93 pt | 0,28 | 0,15 | 0,11 |
+| 0,02 | 4,7 | 0,51 | 0,12 | 0,04 | 0,02 |
+| 0,04 | 2,5 | 0,40 | 0,11 | 0,04 | 0,01 |
+| 0,04 | 4,7 | 0,10 | 0,003 | 0,0001 | 0 |
+
+On retient **$N_\theta=128$**, soit un coût d'environ **5 fois** le 1D, et non « à peu près celui du
+1D » comme le supposait l'idée.
+
+**Constat incident sur le 1D de production.** Gauss-Legendre à B = 25 a une erreur de 3,0 pt à
+σ = 0,02 et de 0,6 pt à σ = 0,04, sur les mêmes géométries aléatoires. Sur des tirages réels :
+
+- 2027 (`stabilite_2027_hier`, σ min 0,051) : 0,001 pt, sans effet ;
+- 2017 V2 T2−7 (σ min 0,062) : 0,005 pt ;
+- **2022 V2 T2−7** (σ min 0,018) : **1,6 pt au maximum**, 0,10 pt en moyenne.
+
+La production n'est pas touchée. Les backtests 2022 le sont, là où un σ s'effondre (Mélenchon,
+0,020). La note « 0,0015 pt dès B = 20 » de `geometry.py` ne vaut que pour σ ≥ 0,05 environ. À N =
+128, le cercle est donc plus précis que le 1D actuel aux petits σ.
+
 **5. Second tour.** Rien ne change : κ, η, ω, la valeur inclusive, la vraisemblance Dirichlet des
 reports et le Newton pour δ (§8.44.4), avec les poids $W^\circ$.
 

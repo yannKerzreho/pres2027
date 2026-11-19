@@ -318,3 +318,36 @@ def reports_cellules(A, champ_mask, ia, ib, k_idx, kappa, eta_diff, lse, omega, 
     Gt = jax.nn.sigmoid(lG[rows, k_idx] + d)
     R = Rk[rows, k_idx]
     return jnp.stack([R * Gt, R * (1 - Gt), 1 - R], axis=-1), d
+
+
+# --- Votants sur un cercle (spec_second_tour §8.46, piste R3 ; drapeau `carte_cercle`) -----
+# Les positions 1D mu ∈ (0,1) sont posées sur un ARC AVANT de longueur `arc` (rad), centré
+# en θ = 0 ; le reste du cercle (arc arrière, 2π − arc) porte aussi des votants, voisins
+# des deux extrêmes. Noyau de von Mises, κ_i = 1/(arc·σ_i)², normalisé sur la quadrature
+# (trapèzes, exacte pour les fonctions périodiques lisses).
+N_THETA = 128                  # §8.46.4 révisé : 64 nœuds donnent 0,5-0,9 pt d'erreur à σ = 0,02
+THETA = jnp.asarray(2 * np.pi * np.arange(N_THETA) / N_THETA - np.pi)
+W_THETA = jnp.full(N_THETA, 1.0 / N_THETA)
+
+
+def log_attractivite_cercle(mu, sigma, arc, w, theta=None, poids=None) -> jnp.ndarray:
+    """`A_i(θ) = w_i + κ_i cos(θ − θ_i) − log Σ W κ…`, θ_i = arc·(mu_i − ½). (...,N,N_θ)."""
+    th = THETA if theta is None else theta
+    pw = W_THETA if poids is None else poids
+    arc = jnp.asarray(arc)
+    arc_ = arc[..., None] if arc.ndim else arc
+    t_i = arc_ * (mu - 0.5)
+    k_i = 1.0 / (arc_ * sigma) ** 2
+    D = k_i[..., None] * (jnp.cos(th - t_i[..., None]) - 1.0)       # −1 : stabilité (κ grand)
+    return w[..., None] + D - jax.nn.logsumexp(D, axis=-1, b=pw, keepdims=True)
+
+
+def spatial_shares_cercle(mu, sigma, arc, w, tested_mask, theta=None, poids=None) -> jnp.ndarray:
+    """Analogue circulaire de `spatial_shares`."""
+    pw = W_THETA if poids is None else poids
+    A = log_attractivite_cercle(mu, sigma, arc, w, theta, poids)
+    A = A - jnp.max(A, axis=-2, keepdims=True)
+    expA = jnp.exp(A)
+    numerator = expA * tested_mask[..., :, None]
+    denom = jnp.clip(numerator.sum(axis=-2, keepdims=True), 1e-12, None)
+    return jnp.sum((numerator / denom) * pw, axis=-1)

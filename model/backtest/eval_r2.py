@@ -33,7 +33,9 @@ def reconstruire(variante: str, stem: str, coupure: str = "T2-7", chaines=None):
     sr.VARIANTE_KW.clear()
     sr.VARIANTE_KW.update({"hier": {"eta_hier": True},
                            "hier2d": {"eta_hier": True, "carte_2d": True, "_reports": True},
-                           "hier_rep": {"eta_hier": True, "_reports": True}}[variante])
+                           "hier_rep": {"eta_hier": True, "_reports": True},
+                           "hiercercle": {"eta_hier": True, "carte_cercle": True, "_reports": True},
+                           "hiercercle_sr": {"eta_hier": True, "carte_cercle": True}}[variante])
     ref = sr.T1_DATES[ELECTION] if coupure.startswith("T1") else sr.T2_DATES[ELECTION]
     as_of = ref - pd.Timedelta(days=int(coupure.split("-")[1]))
     raw = sr.polls_historiques(ELECTION, as_of)
@@ -43,6 +45,10 @@ def reconstruire(variante: str, stem: str, coupure: str = "T2-7", chaines=None):
 
 
 def _A(fit, w):
+    if fit.arc_draws is not None:
+        from model.models.spatial_pooling.geometry import W_THETA, log_attractivite_cercle
+        return np.asarray(log_attractivite_cercle(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
+                                                  jnp.asarray(fit.arc_draws), jnp.asarray(w))), W_THETA
     if fit.nu_draws is not None:
         return np.asarray(log_attractivite_2d(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
                                               jnp.asarray(fit.nu_draws), jnp.asarray(fit.lambda_draws),
@@ -51,6 +57,10 @@ def _A(fit, w):
 
 
 def _parts(fit, w, mask):
+    if fit.arc_draws is not None:
+        from model.models.spatial_pooling.geometry import spatial_shares_cercle
+        return np.asarray(spatial_shares_cercle(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
+                                                jnp.asarray(fit.arc_draws), jnp.asarray(w), jnp.asarray(mask)))
     if fit.nu_draws is not None:
         return np.asarray(spatial_shares_2d(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
                                             jnp.asarray(fit.nu_draws), jnp.asarray(fit.lambda_draws),
@@ -121,6 +131,9 @@ def evaluer(fit, raw, as_of) -> dict:
     if fit.nu_draws is not None:
         out["nu"] = {cands[i]: round(float(fit.nu_draws[:, i].mean()), 3) for i in champ}
         out["lambda_u"] = round(float(fit.lambda_draws.mean()), 4)
+    if fit.arc_draws is not None:
+        out["arc"] = round(float(fit.arc_draws.mean()), 4)
+        out["f_arriere"] = round(float(1 - fit.arc_draws.mean() / (2 * np.pi)), 4)
     out["s_ab"] = round(float(s_ab.mean()), 4)
     out["sigma_t2"] = fit.diagnostics.get("sigma_t2")
     out["kappa"] = fit.diagnostics.get("kappa")
@@ -171,7 +184,7 @@ def par_chaine(variante: str, stem: str, coupure: str) -> dict:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--variante", choices=["hier", "hier2d", "hier_rep"], required=True)
+    ap.add_argument("--variante", choices=["hier", "hier2d", "hier_rep", "hiercercle", "hiercercle_sr"], required=True)
     ap.add_argument("--stem", default=None)
     ap.add_argument("--coupure", default="T2-7")
     ap.add_argument("--par-chaine", action="store_true", help="critère 4 révisé (écarts entre chaînes)")
