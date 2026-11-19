@@ -980,6 +980,12 @@ Idées :
   garde-fou `sigma_min`, refit B = 100 (σ_Mélenchon 0,02 → 0,03, conclusions
   inchangées) ; R3 coché (clos, suite R3b en session locale).
 
+- 2026-11-19 23:17Z (réveil) : FUSION DE MAIN ABANDONNÉE — conflit sur `.gitignore` en
+  fusionnant b6c29d3 (données : reports T1→T2 publiés AVANT le T1, 2017/2022/2027,
+  `data/parsed/reports_avant_t1_*.csv`). `git merge --abort` fait, branche inchangée. À
+  résoudre par la session locale ou l'orchestrateur. Ces données concernent R3b (session
+  locale). Aucun nouveau duel 2027 après le 17/11 : pas de score prospectif.
+
 ## Revue Opus 2026-11-18 — intégration point par point
 
 1. §8.29 fragile (plafond) : **INTÉGRÉ** (vérifié : −5/−8/−10/aucun → p 0,008 /
