@@ -1,0 +1,1697 @@
+{
+ "spec": "spec_second_tour §8.43",
+ "familles": {
+  "jean-luc melenchon": "GR",
+  "philippe poutou": "GR",
+  "nathalie arthaud": "GR",
+  "fabien roussel": "GR",
+  "benoit hamon": "GE",
+  "yannick jadot": "GE",
+  "anne hidalgo": "GE",
+  "francois fillon": "D",
+  "valerie pecresse": "D",
+  "nicolas dupont-aignan": "DR",
+  "eric zemmour": "DR"
+ },
+ "resultats": [
+  {
+   "variante": "abst",
+   "forme": "R1a",
+   "perte": 7107.7,
+   "pi_as": {
+    "GR": 0.131,
+    "GE": 0.182,
+    "D": 0.184,
+    "DR": 0.143
+   },
+   "pi_aucun": null,
+   "duel": {
+    "2017": {
+     "delta_moyen": 0.988,
+     "decalage_duel_pt": -7.59
+    },
+    "2022": {
+     "delta_moyen": 2.42,
+     "decalage_duel_pt": -4.852
+    }
+   },
+   "pi_as_par_annee": {
+    "2017": {
+     "GR": 0.099,
+     "GE": 0.016,
+     "D": 0.13,
+     "DR": 0.0
+    },
+    "2022": {
+     "GR": 0.205,
+     "GE": 0.329,
+     "D": 0.243,
+     "DR": 0.054
+    }
+   },
+   "pi_aucun_par_annee": {
+    "2017": null,
+    "2022": null
+   },
+   "criteres": {
+    "melenchon_lt10": false,
+    "partage_melenchon_erreur": [
+     3.4,
+     10.7
+    ],
+    "autres_non_degrades": false,
+    "mae_autres_sans_melange": 13.0,
+    "mae_autres_melange": 14.1,
+    "stabilite_pi": false,
+    "ecart_pi_2017_2022": {
+     "GR": 0.106,
+     "GE": 0.313,
+     "D": 0.113,
+     "DR": 0.054
+    },
+    "passe": false
+   },
+   "cellules": [
+    {
+     "election": 2017,
+     "electorat": "Benoît Hamon",
+     "cellule": "Aucun",
+     "mesure": 20.4,
+     "modele": 21.0,
+     "erreur": 0.6
+    },
+    {
+     "election": 2017,
+     "electorat": "Benoît Hamon",
+     "cellule": "Le Pen",
+     "mesure": 5.3,
+     "modele": 18.5,
+     "erreur": 13.3
+    },
+    {
+     "election": 2017,
+     "electorat": "Benoît Hamon",
+     "cellule": "Macron",
+     "mesure": 74.3,
+     "modele": 60.4,
+     "erreur": -13.9
+    },
+    {
+     "election": 2017,
+     "electorat": "Benoît Hamon",
+     "cellule": "partage",
+     "mesure": 93.4,
+     "modele": 76.5,
+     "erreur": -16.9
+    },
+    {
+     "election": 2017,
+     "electorat": "François Fillon",
+     "cellule": "Aucun",
+     "mesure": 26.1,
+     "modele": 11.3,
+     "erreur": -14.8
+    },
+    {
+     "election": 2017,
+     "electorat": "François Fillon",
+     "cellule": "Le Pen",
+     "mesure": 27.5,
+     "modele": 27.6,
+     "erreur": 0.0
+    },
+    {
+     "election": 2017,
+     "electorat": "François Fillon",
+     "cellule": "Macron",
+     "mesure": 46.3,
+     "modele": 61.2,
+     "erreur": 14.8
+    },
+    {
+     "election": 2017,
+     "electorat": "François Fillon",
+     "cellule": "partage",
+     "mesure": 62.8,
+     "modele": 68.9,
+     "erreur": 6.2
+    },
+    {
+     "election": 2017,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Aucun",
+     "mesure": 36.4,
+     "modele": 33.3,
+     "erreur": -3.1
+    },
+    {
+     "election": 2017,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Le Pen",
+     "mesure": 15.0,
+     "modele": 13.5,
+     "erreur": -1.5
+    },
+    {
+     "election": 2017,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Macron",
+     "mesure": 48.6,
+     "modele": 53.2,
+     "erreur": 4.6
+    },
+    {
+     "election": 2017,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "partage",
+     "mesure": 76.4,
+     "modele": 79.8,
+     "erreur": 3.4
+    },
+    {
+     "election": 2017,
+     "electorat": "Nicolas Dupont-Aignan",
+     "cellule": "Aucun",
+     "mesure": 32.7,
+     "modele": 10.1,
+     "erreur": -22.6
+    },
+    {
+     "election": 2017,
+     "electorat": "Nicolas Dupont-Aignan",
+     "cellule": "Le Pen",
+     "mesure": 42.0,
+     "modele": 47.4,
+     "erreur": 5.4
+    },
+    {
+     "election": 2017,
+     "electorat": "Nicolas Dupont-Aignan",
+     "cellule": "Macron",
+     "mesure": 25.4,
+     "modele": 42.5,
+     "erreur": 17.1
+    },
+    {
+     "election": 2017,
+     "electorat": "Nicolas Dupont-Aignan",
+     "cellule": "partage",
+     "mesure": 37.6,
+     "modele": 47.3,
+     "erreur": 9.7
+    },
+    {
+     "election": 2022,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Aucun",
+     "mesure": 43.6,
+     "modele": 50.1,
+     "erreur": 6.6
+    },
+    {
+     "election": 2022,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Le Pen",
+     "mesure": 21.0,
+     "modele": 13.1,
+     "erreur": -7.9
+    },
+    {
+     "election": 2022,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Macron",
+     "mesure": 35.5,
+     "modele": 36.8,
+     "erreur": 1.3
+    },
+    {
+     "election": 2022,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "partage",
+     "mesure": 63.0,
+     "modele": 73.7,
+     "erreur": 10.7
+    },
+    {
+     "election": 2022,
+     "electorat": "Valérie Pécresse",
+     "cellule": "Aucun",
+     "mesure": 29.9,
+     "modele": 16.6,
+     "erreur": -13.3
+    },
+    {
+     "election": 2022,
+     "electorat": "Valérie Pécresse",
+     "cellule": "Le Pen",
+     "mesure": 24.6,
+     "modele": 26.7,
+     "erreur": 2.0
+    },
+    {
+     "election": 2022,
+     "electorat": "Valérie Pécresse",
+     "cellule": "Macron",
+     "mesure": 45.5,
+     "modele": 56.7,
+     "erreur": 11.3
+    },
+    {
+     "election": 2022,
+     "electorat": "Valérie Pécresse",
+     "cellule": "partage",
+     "mesure": 65.0,
+     "modele": 68.0,
+     "erreur": 3.0
+    },
+    {
+     "election": 2022,
+     "electorat": "Yannick Jadot",
+     "cellule": "Aucun",
+     "mesure": 33.3,
+     "modele": 77.1,
+     "erreur": 43.8
+    },
+    {
+     "election": 2022,
+     "electorat": "Yannick Jadot",
+     "cellule": "Le Pen",
+     "mesure": 8.2,
+     "modele": 18.2,
+     "erreur": 10.0
+    },
+    {
+     "election": 2022,
+     "electorat": "Yannick Jadot",
+     "cellule": "Macron",
+     "mesure": 58.5,
+     "modele": 4.7,
+     "erreur": -53.8
+    },
+    {
+     "election": 2022,
+     "electorat": "Yannick Jadot",
+     "cellule": "partage",
+     "mesure": 87.5,
+     "modele": 20.5,
+     "erreur": -67.0
+    },
+    {
+     "election": 2022,
+     "electorat": "Éric Zemmour",
+     "cellule": "Aucun",
+     "mesure": 12.7,
+     "modele": 15.6,
+     "erreur": 2.9
+    },
+    {
+     "election": 2022,
+     "electorat": "Éric Zemmour",
+     "cellule": "Le Pen",
+     "mesure": 79.1,
+     "modele": 84.4,
+     "erreur": 5.3
+    },
+    {
+     "election": 2022,
+     "electorat": "Éric Zemmour",
+     "cellule": "Macron",
+     "mesure": 8.2,
+     "modele": 0.0,
+     "erreur": -8.2
+    },
+    {
+     "election": 2022,
+     "electorat": "Éric Zemmour",
+     "cellule": "partage",
+     "mesure": 9.4,
+     "modele": 0.0,
+     "erreur": -9.4
+    }
+   ],
+   "cellules_annee_retiree": [
+    {
+     "election": 2017,
+     "electorat": "Benoît Hamon",
+     "cellule": "Aucun",
+     "mesure": 20.4,
+     "modele": 17.2,
+     "erreur": -3.2
+    },
+    {
+     "election": 2017,
+     "electorat": "Benoît Hamon",
+     "cellule": "Le Pen",
+     "mesure": 5.3,
+     "modele": 33.1,
+     "erreur": 27.9
+    },
+    {
+     "election": 2017,
+     "electorat": "Benoît Hamon",
+     "cellule": "Macron",
+     "mesure": 74.3,
+     "modele": 49.6,
+     "erreur": -24.7
+    },
+    {
+     "election": 2017,
+     "electorat": "Benoît Hamon",
+     "cellule": "partage",
+     "mesure": 93.4,
+     "modele": 60.0,
+     "erreur": -33.4
+    },
+    {
+     "election": 2017,
+     "electorat": "François Fillon",
+     "cellule": "Aucun",
+     "mesure": 26.1,
+     "modele": 10.5,
+     "erreur": -15.7
+    },
+    {
+     "election": 2017,
+     "electorat": "François Fillon",
+     "cellule": "Le Pen",
+     "mesure": 27.5,
+     "modele": 29.2,
+     "erreur": 1.7
+    },
+    {
+     "election": 2017,
+     "electorat": "François Fillon",
+     "cellule": "Macron",
+     "mesure": 46.3,
+     "modele": 60.4,
+     "erreur": 14.0
+    },
+    {
+     "election": 2017,
+     "electorat": "François Fillon",
+     "cellule": "partage",
+     "mesure": 62.8,
+     "modele": 67.4,
+     "erreur": 4.6
+    },
+    {
+     "election": 2017,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Aucun",
+     "mesure": 36.4,
+     "modele": 30.5,
+     "erreur": -6.0
+    },
+    {
+     "election": 2017,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Le Pen",
+     "mesure": 15.0,
+     "modele": 20.7,
+     "erreur": 5.8
+    },
+    {
+     "election": 2017,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Macron",
+     "mesure": 48.6,
+     "modele": 48.8,
+     "erreur": 0.2
+    },
+    {
+     "election": 2017,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "partage",
+     "mesure": 76.4,
+     "modele": 70.2,
+     "erreur": -6.2
+    },
+    {
+     "election": 2017,
+     "electorat": "Nicolas Dupont-Aignan",
+     "cellule": "Aucun",
+     "mesure": 32.7,
+     "modele": 11.2,
+     "erreur": -21.5
+    },
+    {
+     "election": 2017,
+     "electorat": "Nicolas Dupont-Aignan",
+     "cellule": "Le Pen",
+     "mesure": 42.0,
+     "modele": 30.2,
+     "erreur": -11.8
+    },
+    {
+     "election": 2017,
+     "electorat": "Nicolas Dupont-Aignan",
+     "cellule": "Macron",
+     "mesure": 25.4,
+     "modele": 58.7,
+     "erreur": 33.3
+    },
+    {
+     "election": 2017,
+     "electorat": "Nicolas Dupont-Aignan",
+     "cellule": "partage",
+     "mesure": 37.6,
+     "modele": 66.0,
+     "erreur": 28.4
+    },
+    {
+     "election": 2022,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Aucun",
+     "mesure": 43.6,
+     "modele": 52.0,
+     "erreur": 8.4
+    },
+    {
+     "election": 2022,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Le Pen",
+     "mesure": 21.0,
+     "modele": 9.9,
+     "erreur": -11.1
+    },
+    {
+     "election": 2022,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Macron",
+     "mesure": 35.5,
+     "modele": 38.1,
+     "erreur": 2.6
+    },
+    {
+     "election": 2022,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "partage",
+     "mesure": 63.0,
+     "modele": 79.4,
+     "erreur": 16.4
+    },
+    {
+     "election": 2022,
+     "electorat": "Valérie Pécresse",
+     "cellule": "Aucun",
+     "mesure": 29.9,
+     "modele": 17.7,
+     "erreur": -12.2
+    },
+    {
+     "election": 2022,
+     "electorat": "Valérie Pécresse",
+     "cellule": "Le Pen",
+     "mesure": 24.6,
+     "modele": 27.7,
+     "erreur": 3.0
+    },
+    {
+     "election": 2022,
+     "electorat": "Valérie Pécresse",
+     "cellule": "Macron",
+     "mesure": 45.5,
+     "modele": 54.7,
+     "erreur": 9.2
+    },
+    {
+     "election": 2022,
+     "electorat": "Valérie Pécresse",
+     "cellule": "partage",
+     "mesure": 65.0,
+     "modele": 66.4,
+     "erreur": 1.3
+    },
+    {
+     "election": 2022,
+     "electorat": "Yannick Jadot",
+     "cellule": "Aucun",
+     "mesure": 33.3,
+     "modele": 92.7,
+     "erreur": 59.4
+    },
+    {
+     "election": 2022,
+     "electorat": "Yannick Jadot",
+     "cellule": "Le Pen",
+     "mesure": 8.2,
+     "modele": 1.6,
+     "erreur": -6.5
+    },
+    {
+     "election": 2022,
+     "electorat": "Yannick Jadot",
+     "cellule": "Macron",
+     "mesure": 58.5,
+     "modele": 5.6,
+     "erreur": -52.9
+    },
+    {
+     "election": 2022,
+     "electorat": "Yannick Jadot",
+     "cellule": "partage",
+     "mesure": 87.5,
+     "modele": 77.6,
+     "erreur": -9.9
+    },
+    {
+     "election": 2022,
+     "electorat": "Éric Zemmour",
+     "cellule": "Aucun",
+     "mesure": 12.7,
+     "modele": 18.2,
+     "erreur": 5.5
+    },
+    {
+     "election": 2022,
+     "electorat": "Éric Zemmour",
+     "cellule": "Le Pen",
+     "mesure": 79.1,
+     "modele": 81.8,
+     "erreur": 2.7
+    },
+    {
+     "election": 2022,
+     "electorat": "Éric Zemmour",
+     "cellule": "Macron",
+     "mesure": 8.2,
+     "modele": 0.0,
+     "erreur": -8.2
+    },
+    {
+     "election": 2022,
+     "electorat": "Éric Zemmour",
+     "cellule": "partage",
+     "mesure": 9.4,
+     "modele": 0.0,
+     "erreur": -9.4
+    }
+   ],
+   "cellules_sans_melange": [
+    {
+     "election": 2017,
+     "electorat": "Benoît Hamon",
+     "cellule": "Aucun",
+     "mesure": 20.4,
+     "modele": 25.7,
+     "erreur": 5.3
+    },
+    {
+     "election": 2017,
+     "electorat": "Benoît Hamon",
+     "cellule": "Le Pen",
+     "mesure": 5.3,
+     "modele": 1.0,
+     "erreur": -4.3
+    },
+    {
+     "election": 2017,
+     "electorat": "Benoît Hamon",
+     "cellule": "Macron",
+     "mesure": 74.3,
+     "modele": 73.3,
+     "erreur": -1.0
+    },
+    {
+     "election": 2017,
+     "electorat": "Benoît Hamon",
+     "cellule": "partage",
+     "mesure": 93.4,
+     "modele": 98.7,
+     "erreur": 5.3
+    },
+    {
+     "election": 2017,
+     "electorat": "François Fillon",
+     "cellule": "Aucun",
+     "mesure": 26.1,
+     "modele": 13.8,
+     "erreur": -12.3
+    },
+    {
+     "election": 2017,
+     "electorat": "François Fillon",
+     "cellule": "Le Pen",
+     "mesure": 27.5,
+     "modele": 27.8,
+     "erreur": 0.3
+    },
+    {
+     "election": 2017,
+     "electorat": "François Fillon",
+     "cellule": "Macron",
+     "mesure": 46.3,
+     "modele": 58.4,
+     "erreur": 12.0
+    },
+    {
+     "election": 2017,
+     "electorat": "François Fillon",
+     "cellule": "partage",
+     "mesure": 62.8,
+     "modele": 67.8,
+     "erreur": 5.0
+    },
+    {
+     "election": 2017,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Aucun",
+     "mesure": 36.4,
+     "modele": 38.3,
+     "erreur": 1.9
+    },
+    {
+     "election": 2017,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Le Pen",
+     "mesure": 15.0,
+     "modele": 0.9,
+     "erreur": -14.1
+    },
+    {
+     "election": 2017,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Macron",
+     "mesure": 48.6,
+     "modele": 60.8,
+     "erreur": 12.2
+    },
+    {
+     "election": 2017,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "partage",
+     "mesure": 76.4,
+     "modele": 98.5,
+     "erreur": 22.2
+    },
+    {
+     "election": 2017,
+     "electorat": "Nicolas Dupont-Aignan",
+     "cellule": "Aucun",
+     "mesure": 32.7,
+     "modele": 11.8,
+     "erreur": -20.9
+    },
+    {
+     "election": 2017,
+     "electorat": "Nicolas Dupont-Aignan",
+     "cellule": "Le Pen",
+     "mesure": 42.0,
+     "modele": 62.7,
+     "erreur": 20.7
+    },
+    {
+     "election": 2017,
+     "electorat": "Nicolas Dupont-Aignan",
+     "cellule": "Macron",
+     "mesure": 25.4,
+     "modele": 25.4,
+     "erreur": 0.1
+    },
+    {
+     "election": 2017,
+     "electorat": "Nicolas Dupont-Aignan",
+     "cellule": "partage",
+     "mesure": 37.6,
+     "modele": 28.8,
+     "erreur": -8.8
+    },
+    {
+     "election": 2022,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Aucun",
+     "mesure": 43.6,
+     "modele": 57.7,
+     "erreur": 14.1
+    },
+    {
+     "election": 2022,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Le Pen",
+     "mesure": 21.0,
+     "modele": 0.0,
+     "erreur": -21.0
+    },
+    {
+     "election": 2022,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Macron",
+     "mesure": 35.5,
+     "modele": 42.3,
+     "erreur": 6.8
+    },
+    {
+     "election": 2022,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "partage",
+     "mesure": 63.0,
+     "modele": 100.0,
+     "erreur": 37.0
+    },
+    {
+     "election": 2022,
+     "electorat": "Valérie Pécresse",
+     "cellule": "Aucun",
+     "mesure": 29.9,
+     "modele": 20.3,
+     "erreur": -9.6
+    },
+    {
+     "election": 2022,
+     "electorat": "Valérie Pécresse",
+     "cellule": "Le Pen",
+     "mesure": 24.6,
+     "modele": 30.7,
+     "erreur": 6.1
+    },
+    {
+     "election": 2022,
+     "electorat": "Valérie Pécresse",
+     "cellule": "Macron",
+     "mesure": 45.5,
+     "modele": 49.0,
+     "erreur": 3.5
+    },
+    {
+     "election": 2022,
+     "electorat": "Valérie Pécresse",
+     "cellule": "partage",
+     "mesure": 65.0,
+     "modele": 61.4,
+     "erreur": -3.6
+    },
+    {
+     "election": 2022,
+     "electorat": "Yannick Jadot",
+     "cellule": "Aucun",
+     "mesure": 33.3,
+     "modele": 94.3,
+     "erreur": 60.9
+    },
+    {
+     "election": 2022,
+     "electorat": "Yannick Jadot",
+     "cellule": "Le Pen",
+     "mesure": 8.2,
+     "modele": 0.0,
+     "erreur": -8.2
+    },
+    {
+     "election": 2022,
+     "electorat": "Yannick Jadot",
+     "cellule": "Macron",
+     "mesure": 58.5,
+     "modele": 5.7,
+     "erreur": -52.8
+    },
+    {
+     "election": 2022,
+     "electorat": "Yannick Jadot",
+     "cellule": "partage",
+     "mesure": 87.5,
+     "modele": 100.0,
+     "erreur": 12.5
+    },
+    {
+     "election": 2022,
+     "electorat": "Éric Zemmour",
+     "cellule": "Aucun",
+     "mesure": 12.7,
+     "modele": 18.2,
+     "erreur": 5.5
+    },
+    {
+     "election": 2022,
+     "electorat": "Éric Zemmour",
+     "cellule": "Le Pen",
+     "mesure": 79.1,
+     "modele": 81.8,
+     "erreur": 2.7
+    },
+    {
+     "election": 2022,
+     "electorat": "Éric Zemmour",
+     "cellule": "Macron",
+     "mesure": 8.2,
+     "modele": 0.0,
+     "erreur": -8.2
+    },
+    {
+     "election": 2022,
+     "electorat": "Éric Zemmour",
+     "cellule": "partage",
+     "mesure": 9.4,
+     "modele": 0.0,
+     "erreur": -9.4
+    }
+   ]
+  },
+  {
+   "variante": "abst",
+   "forme": "R1b",
+   "perte": 5747.4,
+   "pi_as": {
+    "GR": 0.185,
+    "GE": 0.197,
+    "D": 0.224,
+    "DR": 0.365
+   },
+   "pi_aucun": {
+    "GR": 0.022,
+    "GE": 0.0,
+    "D": 0.178,
+    "DR": 0.165
+   },
+   "duel": {
+    "2017": {
+     "delta_moyen": 1.836,
+     "decalage_duel_pt": -10.46
+    },
+    "2022": {
+     "delta_moyen": 2.879,
+     "decalage_duel_pt": -6.101
+    }
+   },
+   "pi_as_par_annee": {
+    "2017": {
+     "GR": 0.146,
+     "GE": 0.0,
+     "D": 0.217,
+     "DR": 0.26
+    },
+    "2022": {
+     "GR": 0.212,
+     "GE": 0.331,
+     "D": 0.218,
+     "DR": 0.586
+    }
+   },
+   "pi_aucun_par_annee": {
+    "2017": {
+     "GR": 0.06,
+     "GE": 0.0,
+     "D": 0.178,
+     "DR": 0.271
+    },
+    "2022": {
+     "GR": 0.0,
+     "GE": 0.0,
+     "D": 0.176,
+     "DR": 0.113
+    }
+   },
+   "criteres": {
+    "melenchon_lt10": true,
+    "partage_melenchon_erreur": [
+     -4.2,
+     1.5
+    ],
+    "autres_non_degrades": true,
+    "mae_autres_sans_melange": 13.0,
+    "mae_autres_melange": 10.6,
+    "stabilite_pi": false,
+    "ecart_pi_2017_2022": {
+     "GR": 0.066,
+     "GE": 0.331,
+     "D": 0.001,
+     "DR": 0.326
+    },
+    "passe": false
+   },
+   "cellules": [
+    {
+     "election": 2017,
+     "electorat": "Benoît Hamon",
+     "cellule": "Aucun",
+     "mesure": 20.4,
+     "modele": 20.6,
+     "erreur": 0.2
+    },
+    {
+     "election": 2017,
+     "electorat": "Benoît Hamon",
+     "cellule": "Le Pen",
+     "mesure": 5.3,
+     "modele": 19.9,
+     "erreur": 14.7
+    },
+    {
+     "election": 2017,
+     "electorat": "Benoît Hamon",
+     "cellule": "Macron",
+     "mesure": 74.3,
+     "modele": 59.4,
+     "erreur": -14.9
+    },
+    {
+     "election": 2017,
+     "electorat": "Benoît Hamon",
+     "cellule": "partage",
+     "mesure": 93.4,
+     "modele": 74.9,
+     "erreur": -18.5
+    },
+    {
+     "election": 2017,
+     "electorat": "François Fillon",
+     "cellule": "Aucun",
+     "mesure": 26.1,
+     "modele": 26.1,
+     "erreur": -0.0
+    },
+    {
+     "election": 2017,
+     "electorat": "François Fillon",
+     "cellule": "Le Pen",
+     "mesure": 27.5,
+     "modele": 26.1,
+     "erreur": -1.4
+    },
+    {
+     "election": 2017,
+     "electorat": "François Fillon",
+     "cellule": "Macron",
+     "mesure": 46.3,
+     "modele": 47.8,
+     "erreur": 1.4
+    },
+    {
+     "election": 2017,
+     "electorat": "François Fillon",
+     "cellule": "partage",
+     "mesure": 62.8,
+     "modele": 64.7,
+     "erreur": 1.9
+    },
+    {
+     "election": 2017,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Aucun",
+     "mesure": 36.4,
+     "modele": 32.6,
+     "erreur": -3.8
+    },
+    {
+     "election": 2017,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Le Pen",
+     "mesure": 15.0,
+     "modele": 18.7,
+     "erreur": 3.8
+    },
+    {
+     "election": 2017,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Macron",
+     "mesure": 48.6,
+     "modele": 48.7,
+     "erreur": 0.1
+    },
+    {
+     "election": 2017,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "partage",
+     "mesure": 76.4,
+     "modele": 72.2,
+     "erreur": -4.2
+    },
+    {
+     "election": 2017,
+     "electorat": "Nicolas Dupont-Aignan",
+     "cellule": "Aucun",
+     "mesure": 32.7,
+     "modele": 22.1,
+     "erreur": -10.7
+    },
+    {
+     "election": 2017,
+     "electorat": "Nicolas Dupont-Aignan",
+     "cellule": "Le Pen",
+     "mesure": 42.0,
+     "modele": 48.2,
+     "erreur": 6.2
+    },
+    {
+     "election": 2017,
+     "electorat": "Nicolas Dupont-Aignan",
+     "cellule": "Macron",
+     "mesure": 25.4,
+     "modele": 29.7,
+     "erreur": 4.4
+    },
+    {
+     "election": 2017,
+     "electorat": "Nicolas Dupont-Aignan",
+     "cellule": "partage",
+     "mesure": 37.6,
+     "modele": 38.1,
+     "erreur": 0.5
+    },
+    {
+     "election": 2022,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Aucun",
+     "mesure": 43.6,
+     "modele": 48.0,
+     "erreur": 4.4
+    },
+    {
+     "election": 2022,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Le Pen",
+     "mesure": 21.0,
+     "modele": 18.5,
+     "erreur": -2.5
+    },
+    {
+     "election": 2022,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Macron",
+     "mesure": 35.5,
+     "modele": 33.6,
+     "erreur": -1.9
+    },
+    {
+     "election": 2022,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "partage",
+     "mesure": 63.0,
+     "modele": 64.5,
+     "erreur": 1.5
+    },
+    {
+     "election": 2022,
+     "electorat": "Valérie Pécresse",
+     "cellule": "Aucun",
+     "mesure": 29.9,
+     "modele": 30.0,
+     "erreur": 0.1
+    },
+    {
+     "election": 2022,
+     "electorat": "Valérie Pécresse",
+     "cellule": "Le Pen",
+     "mesure": 24.6,
+     "modele": 26.5,
+     "erreur": 1.8
+    },
+    {
+     "election": 2022,
+     "electorat": "Valérie Pécresse",
+     "cellule": "Macron",
+     "mesure": 45.5,
+     "modele": 43.6,
+     "erreur": -1.9
+    },
+    {
+     "election": 2022,
+     "electorat": "Valérie Pécresse",
+     "cellule": "partage",
+     "mesure": 65.0,
+     "modele": 62.2,
+     "erreur": -2.8
+    },
+    {
+     "election": 2022,
+     "electorat": "Yannick Jadot",
+     "cellule": "Aucun",
+     "mesure": 33.3,
+     "modele": 75.7,
+     "erreur": 42.4
+    },
+    {
+     "election": 2022,
+     "electorat": "Yannick Jadot",
+     "cellule": "Le Pen",
+     "mesure": 8.2,
+     "modele": 19.7,
+     "erreur": 11.5
+    },
+    {
+     "election": 2022,
+     "electorat": "Yannick Jadot",
+     "cellule": "Macron",
+     "mesure": 58.5,
+     "modele": 4.6,
+     "erreur": -53.9
+    },
+    {
+     "election": 2022,
+     "electorat": "Yannick Jadot",
+     "cellule": "partage",
+     "mesure": 87.5,
+     "modele": 18.9,
+     "erreur": -68.5
+    },
+    {
+     "election": 2022,
+     "electorat": "Éric Zemmour",
+     "cellule": "Aucun",
+     "mesure": 12.7,
+     "modele": 25.0,
+     "erreur": 12.4
+    },
+    {
+     "election": 2022,
+     "electorat": "Éric Zemmour",
+     "cellule": "Le Pen",
+     "mesure": 79.1,
+     "modele": 74.9,
+     "erreur": -4.2
+    },
+    {
+     "election": 2022,
+     "electorat": "Éric Zemmour",
+     "cellule": "Macron",
+     "mesure": 8.2,
+     "modele": 0.0,
+     "erreur": -8.2
+    },
+    {
+     "election": 2022,
+     "electorat": "Éric Zemmour",
+     "cellule": "partage",
+     "mesure": 9.4,
+     "modele": 0.0,
+     "erreur": -9.4
+    }
+   ],
+   "cellules_annee_retiree": [
+    {
+     "election": 2017,
+     "electorat": "Benoît Hamon",
+     "cellule": "Aucun",
+     "mesure": 20.4,
+     "modele": 17.2,
+     "erreur": -3.2
+    },
+    {
+     "election": 2017,
+     "electorat": "Benoît Hamon",
+     "cellule": "Le Pen",
+     "mesure": 5.3,
+     "modele": 33.2,
+     "erreur": 28.0
+    },
+    {
+     "election": 2017,
+     "electorat": "Benoît Hamon",
+     "cellule": "Macron",
+     "mesure": 74.3,
+     "modele": 49.6,
+     "erreur": -24.7
+    },
+    {
+     "election": 2017,
+     "electorat": "Benoît Hamon",
+     "cellule": "partage",
+     "mesure": 93.4,
+     "modele": 59.9,
+     "erreur": -33.5
+    },
+    {
+     "election": 2017,
+     "electorat": "François Fillon",
+     "cellule": "Aucun",
+     "mesure": 26.1,
+     "modele": 26.0,
+     "erreur": -0.1
+    },
+    {
+     "election": 2017,
+     "electorat": "François Fillon",
+     "cellule": "Le Pen",
+     "mesure": 27.5,
+     "modele": 24.5,
+     "erreur": -3.0
+    },
+    {
+     "election": 2017,
+     "electorat": "François Fillon",
+     "cellule": "Macron",
+     "mesure": 46.3,
+     "modele": 49.5,
+     "erreur": 3.1
+    },
+    {
+     "election": 2017,
+     "electorat": "François Fillon",
+     "cellule": "partage",
+     "mesure": 62.8,
+     "modele": 66.8,
+     "erreur": 4.1
+    },
+    {
+     "election": 2017,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Aucun",
+     "mesure": 36.4,
+     "modele": 30.2,
+     "erreur": -6.2
+    },
+    {
+     "election": 2017,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Le Pen",
+     "mesure": 15.0,
+     "modele": 21.3,
+     "erreur": 6.4
+    },
+    {
+     "election": 2017,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Macron",
+     "mesure": 48.6,
+     "modele": 48.4,
+     "erreur": -0.2
+    },
+    {
+     "election": 2017,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "partage",
+     "mesure": 76.4,
+     "modele": 69.4,
+     "erreur": -7.0
+    },
+    {
+     "election": 2017,
+     "electorat": "Nicolas Dupont-Aignan",
+     "cellule": "Aucun",
+     "mesure": 32.7,
+     "modele": 14.8,
+     "erreur": -17.9
+    },
+    {
+     "election": 2017,
+     "electorat": "Nicolas Dupont-Aignan",
+     "cellule": "Le Pen",
+     "mesure": 42.0,
+     "modele": 64.5,
+     "erreur": 22.5
+    },
+    {
+     "election": 2017,
+     "electorat": "Nicolas Dupont-Aignan",
+     "cellule": "Macron",
+     "mesure": 25.4,
+     "modele": 20.7,
+     "erreur": -4.7
+    },
+    {
+     "election": 2017,
+     "electorat": "Nicolas Dupont-Aignan",
+     "cellule": "partage",
+     "mesure": 37.6,
+     "modele": 24.3,
+     "erreur": -13.3
+    },
+    {
+     "election": 2022,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Aucun",
+     "mesure": 43.6,
+     "modele": 51.8,
+     "erreur": 8.2
+    },
+    {
+     "election": 2022,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Le Pen",
+     "mesure": 21.0,
+     "modele": 14.6,
+     "erreur": -6.4
+    },
+    {
+     "election": 2022,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Macron",
+     "mesure": 35.5,
+     "modele": 33.6,
+     "erreur": -1.9
+    },
+    {
+     "election": 2022,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "partage",
+     "mesure": 63.0,
+     "modele": 69.7,
+     "erreur": 6.7
+    },
+    {
+     "election": 2022,
+     "electorat": "Valérie Pécresse",
+     "cellule": "Aucun",
+     "mesure": 29.9,
+     "modele": 30.0,
+     "erreur": 0.1
+    },
+    {
+     "election": 2022,
+     "electorat": "Valérie Pécresse",
+     "cellule": "Le Pen",
+     "mesure": 24.6,
+     "modele": 29.0,
+     "erreur": 4.3
+    },
+    {
+     "election": 2022,
+     "electorat": "Valérie Pécresse",
+     "cellule": "Macron",
+     "mesure": 45.5,
+     "modele": 41.0,
+     "erreur": -4.5
+    },
+    {
+     "election": 2022,
+     "electorat": "Valérie Pécresse",
+     "cellule": "partage",
+     "mesure": 65.0,
+     "modele": 58.6,
+     "erreur": -6.4
+    },
+    {
+     "election": 2022,
+     "electorat": "Yannick Jadot",
+     "cellule": "Aucun",
+     "mesure": 33.3,
+     "modele": 94.3,
+     "erreur": 60.9
+    },
+    {
+     "election": 2022,
+     "electorat": "Yannick Jadot",
+     "cellule": "Le Pen",
+     "mesure": 8.2,
+     "modele": 0.0,
+     "erreur": -8.2
+    },
+    {
+     "election": 2022,
+     "electorat": "Yannick Jadot",
+     "cellule": "Macron",
+     "mesure": 58.5,
+     "modele": 5.7,
+     "erreur": -52.8
+    },
+    {
+     "election": 2022,
+     "electorat": "Yannick Jadot",
+     "cellule": "partage",
+     "mesure": 87.5,
+     "modele": 100.0,
+     "erreur": 12.5
+    },
+    {
+     "election": 2022,
+     "electorat": "Éric Zemmour",
+     "cellule": "Aucun",
+     "mesure": 12.7,
+     "modele": 35.7,
+     "erreur": 23.0
+    },
+    {
+     "election": 2022,
+     "electorat": "Éric Zemmour",
+     "cellule": "Le Pen",
+     "mesure": 79.1,
+     "modele": 64.3,
+     "erreur": -14.8
+    },
+    {
+     "election": 2022,
+     "electorat": "Éric Zemmour",
+     "cellule": "Macron",
+     "mesure": 8.2,
+     "modele": 0.0,
+     "erreur": -8.2
+    },
+    {
+     "election": 2022,
+     "electorat": "Éric Zemmour",
+     "cellule": "partage",
+     "mesure": 9.4,
+     "modele": 0.0,
+     "erreur": -9.4
+    }
+   ],
+   "cellules_sans_melange": [
+    {
+     "election": 2017,
+     "electorat": "Benoît Hamon",
+     "cellule": "Aucun",
+     "mesure": 20.4,
+     "modele": 25.7,
+     "erreur": 5.3
+    },
+    {
+     "election": 2017,
+     "electorat": "Benoît Hamon",
+     "cellule": "Le Pen",
+     "mesure": 5.3,
+     "modele": 1.0,
+     "erreur": -4.3
+    },
+    {
+     "election": 2017,
+     "electorat": "Benoît Hamon",
+     "cellule": "Macron",
+     "mesure": 74.3,
+     "modele": 73.3,
+     "erreur": -1.0
+    },
+    {
+     "election": 2017,
+     "electorat": "Benoît Hamon",
+     "cellule": "partage",
+     "mesure": 93.4,
+     "modele": 98.7,
+     "erreur": 5.3
+    },
+    {
+     "election": 2017,
+     "electorat": "François Fillon",
+     "cellule": "Aucun",
+     "mesure": 26.1,
+     "modele": 13.8,
+     "erreur": -12.3
+    },
+    {
+     "election": 2017,
+     "electorat": "François Fillon",
+     "cellule": "Le Pen",
+     "mesure": 27.5,
+     "modele": 27.8,
+     "erreur": 0.3
+    },
+    {
+     "election": 2017,
+     "electorat": "François Fillon",
+     "cellule": "Macron",
+     "mesure": 46.3,
+     "modele": 58.4,
+     "erreur": 12.0
+    },
+    {
+     "election": 2017,
+     "electorat": "François Fillon",
+     "cellule": "partage",
+     "mesure": 62.8,
+     "modele": 67.8,
+     "erreur": 5.0
+    },
+    {
+     "election": 2017,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Aucun",
+     "mesure": 36.4,
+     "modele": 38.3,
+     "erreur": 1.9
+    },
+    {
+     "election": 2017,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Le Pen",
+     "mesure": 15.0,
+     "modele": 0.9,
+     "erreur": -14.1
+    },
+    {
+     "election": 2017,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Macron",
+     "mesure": 48.6,
+     "modele": 60.8,
+     "erreur": 12.2
+    },
+    {
+     "election": 2017,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "partage",
+     "mesure": 76.4,
+     "modele": 98.5,
+     "erreur": 22.2
+    },
+    {
+     "election": 2017,
+     "electorat": "Nicolas Dupont-Aignan",
+     "cellule": "Aucun",
+     "mesure": 32.7,
+     "modele": 11.8,
+     "erreur": -20.9
+    },
+    {
+     "election": 2017,
+     "electorat": "Nicolas Dupont-Aignan",
+     "cellule": "Le Pen",
+     "mesure": 42.0,
+     "modele": 62.7,
+     "erreur": 20.7
+    },
+    {
+     "election": 2017,
+     "electorat": "Nicolas Dupont-Aignan",
+     "cellule": "Macron",
+     "mesure": 25.4,
+     "modele": 25.4,
+     "erreur": 0.1
+    },
+    {
+     "election": 2017,
+     "electorat": "Nicolas Dupont-Aignan",
+     "cellule": "partage",
+     "mesure": 37.6,
+     "modele": 28.8,
+     "erreur": -8.8
+    },
+    {
+     "election": 2022,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Aucun",
+     "mesure": 43.6,
+     "modele": 57.7,
+     "erreur": 14.1
+    },
+    {
+     "election": 2022,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Le Pen",
+     "mesure": 21.0,
+     "modele": 0.0,
+     "erreur": -21.0
+    },
+    {
+     "election": 2022,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "Macron",
+     "mesure": 35.5,
+     "modele": 42.3,
+     "erreur": 6.8
+    },
+    {
+     "election": 2022,
+     "electorat": "Jean-Luc Mélenchon",
+     "cellule": "partage",
+     "mesure": 63.0,
+     "modele": 100.0,
+     "erreur": 37.0
+    },
+    {
+     "election": 2022,
+     "electorat": "Valérie Pécresse",
+     "cellule": "Aucun",
+     "mesure": 29.9,
+     "modele": 20.3,
+     "erreur": -9.6
+    },
+    {
+     "election": 2022,
+     "electorat": "Valérie Pécresse",
+     "cellule": "Le Pen",
+     "mesure": 24.6,
+     "modele": 30.7,
+     "erreur": 6.1
+    },
+    {
+     "election": 2022,
+     "electorat": "Valérie Pécresse",
+     "cellule": "Macron",
+     "mesure": 45.5,
+     "modele": 49.0,
+     "erreur": 3.5
+    },
+    {
+     "election": 2022,
+     "electorat": "Valérie Pécresse",
+     "cellule": "partage",
+     "mesure": 65.0,
+     "modele": 61.4,
+     "erreur": -3.6
+    },
+    {
+     "election": 2022,
+     "electorat": "Yannick Jadot",
+     "cellule": "Aucun",
+     "mesure": 33.3,
+     "modele": 94.3,
+     "erreur": 60.9
+    },
+    {
+     "election": 2022,
+     "electorat": "Yannick Jadot",
+     "cellule": "Le Pen",
+     "mesure": 8.2,
+     "modele": 0.0,
+     "erreur": -8.2
+    },
+    {
+     "election": 2022,
+     "electorat": "Yannick Jadot",
+     "cellule": "Macron",
+     "mesure": 58.5,
+     "modele": 5.7,
+     "erreur": -52.8
+    },
+    {
+     "election": 2022,
+     "electorat": "Yannick Jadot",
+     "cellule": "partage",
+     "mesure": 87.5,
+     "modele": 100.0,
+     "erreur": 12.5
+    },
+    {
+     "election": 2022,
+     "electorat": "Éric Zemmour",
+     "cellule": "Aucun",
+     "mesure": 12.7,
+     "modele": 18.2,
+     "erreur": 5.5
+    },
+    {
+     "election": 2022,
+     "electorat": "Éric Zemmour",
+     "cellule": "Le Pen",
+     "mesure": 79.1,
+     "modele": 81.8,
+     "erreur": 2.7
+    },
+    {
+     "election": 2022,
+     "electorat": "Éric Zemmour",
+     "cellule": "Macron",
+     "mesure": 8.2,
+     "modele": 0.0,
+     "erreur": -8.2
+    },
+    {
+     "election": 2022,
+     "electorat": "Éric Zemmour",
+     "cellule": "partage",
+     "mesure": 9.4,
+     "modele": 0.0,
+     "erreur": -9.4
+    }
+   ]
+  }
+ ]
+}

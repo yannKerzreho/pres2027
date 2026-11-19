@@ -144,7 +144,7 @@ def main() -> None:
                                          .rename(columns={"erreur": "erreur_annee_retiree"}),
                                          on=["election", "electorat", "cellule"])
             print(t[t.cellule == "partage"].to_string(index=False), flush=True)
-    dest = OUT.with_name("reports_t2_r1.json")
+    dest = OUT.with_name(f"reports_t2_r1_{'_'.join(args.variantes)}.json")
     dest.write_text(json.dumps(sortie, ensure_ascii=False, indent=1, default=float) + "\n")
     print(f"-> {dest}")
 

@@ -2108,6 +2108,49 @@ Si R1a passe, on spécifie l'entrée dans le modèle : π par famille dans la vr
 reports, ce qui rend (A)(2) possible sans tordre la géométrie. Le backtest suit §8.29, et R2
 est fait en mode réduit (2022 seul). Si R1a échoue, on consigne l'échec et l'on passe à R2.
 
+**Résultats (2026-11-19, `results/reports_t2_r1_{hier,abst}.json`) : ÉCHEC de R1a sous
+hier, la variante de référence.**
+
+| | π GR | π GE | π D | π DR | partage Mélenchon 2017 / 2022 (erreur) | MAE des autres, sans → avec | duel sans recalage 2017 / 2022 |
+|---|---|---|---|---|---|---|---|
+| hier R1a, conjoint | 0,19 | 0,04 | 0,01 | 0,00 | −7,2 / **+13,3** | 9,8 → 8,5 | −5,0 / −4,3 pt |
+| hier R1a, 2017 seul | 0,09 | 0,01 | 0,11 | 0,00 | | | |
+| hier R1a, 2022 seul | **0,27** | 0,08 | 0,06 | 0,00 | | | |
+| hier R1b, conjoint | 0,21 (∅ 0,22) | 0,07 (0) | 0,18 (0,19) | 0,35 (0,16) | **−17,3** / +4,2 | 9,8 → 4,9 | −11,1 / −6,6 pt |
+| abst R1b, conjoint | 0,19 (∅ 0,02) | 0,20 (0) | 0,22 (0,18) | 0,37 (0,17) | −4,2 / +1,5 ✓ | 13,0 → 10,6 | −10,5 / −6,1 pt |
+
+Critères pour hier R1a :
+
+- (1) Mélenchon < 10 pt les deux années : non (+13,3 pt en 2022).
+- (2) Autres électorats non dégradés : oui.
+- (3) Stabilité de π : non, $\pi_{GR}$ vaut 0,09 en 2017 et 0,27 en 2022 (écart 0,18).
+
+En une année retirée, l'erreur sur le partage de Mélenchon est de −17 / +25 pt (R1a) et de
+−23 / +19 pt (R1b, hier).
+
+abst R1b remplit le critère 1, avec $\pi_{GR}\approx0{,}2$, mais pas la stabilité : π GE
+vaut 0 contre 0,33, et π DR 0,26 contre 0,59. Cette variante reproduit en outre l'artefact
+d'abstention de §8.38 : Jadot 2022 tombe à 19 % de partage contre 88 % mesuré.
+
+**Lecture.**
+
+1. **Le mélange orienté est la bonne forme pour la gauche radicale.** $\pi_{GR}$ est le
+   seul π nettement non nul en R1a, et il absorbe l'essentiel de l'erreur de Mélenchon.
+   C'est ce qu'aucune variante géométrique (§8.39-8.41) ne savait faire.
+2. **Il n'est pas stable entre élections.** Le report mesuré Mélenchon→Le Pen passe de 15 %
+   à 21 % de l'électorat entre 2017 et 2022, et l'électorat de Mélenchon a changé de
+   composition. Un π commun ne prédit pas l'année retirée : erreurs de 17 à 25 pt, du même
+   ordre que sans mélange. Avec deux élections, π est un paramètre d'élection, pas de famille.
+3. **Le mélange déplace les duels de 4 à 11 pt** si δ n'est pas recalé. Dans un modèle, π
+   et η se disputeraient donc le duel agrégé ; δ (lecture (i)) l'absorbe ici.
+
+**Décision (règle §8.43).** R1 n'est pas adopté. On passe à R2.
+
+Une variante « π par famille et par élection », appris sur les reports de l'élection en
+cours, resterait possible en 2027 *si* des tableaux de reports existent avant le T1. Or ils
+n'existent qu'entre les deux tours. Elle n'apporterait donc rien à la prévision avant le
+T1, qui est l'objet du site.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

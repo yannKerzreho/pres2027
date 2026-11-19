@@ -39,7 +39,7 @@ l'historique, ajouter en bas de « Historique ».
       AVANT lecture. Elles passent AVANT la revue Opus de (A), sauf si la revue
       quotidienne est due : dans ce cas la revue d'abord, et elle couvre aussi
       ces deux pistes. Le scoring prospectif 2027 reste à chaque réveil.
-  - [ ] [EN COURS (début 2026-11-19 08:05Z) : spec §8.43 (critères figés), `model/backtest/reports_r1.py` + test] (R1) **Part anti-système par électorat (0 fit)**, sur les tirages V2
+  - [x] [FAIT 19/11 08:40Z, spec §8.43, `results/reports_t2_r1_{hier,abst}.json` : ÉCHEC (hier R1a) — Mélenchon −7,2 / +13,3 pt ; π_GR 0,09 (2017) contre 0,27 (2022), instable ; année retirée −17 / +25 pt ; seul π_GR nettement non nul (forme juste, paramètre d'élection et non de famille) ; duel déplacé de 4-11 pt sans recalage ⇒ R2 suit] (R1) **Part anti-système par électorat (0 fit)**, sur les tirages V2
         T2−7 de §8.38. C'est un mélange orienté, pas le plancher symétrique de
         §8.39 : $q_k = (1-\pi_k)\,q_k^{spatial} + \pi_k\,q^{AS}$, où $q^{AS}$
         vote pour le finaliste « anti-système » (Le Pen contre Macron en
@@ -732,6 +732,11 @@ conservé pour l'historique.
 - 2026-11-19 07:10-07:45Z (réveil) : τ_T2 a posteriori 2002-2022 (§8.42,
   0 fit) : médiane 0,164, IC90 [0,10 ; 0,34], normale meilleure que t4 en LOO ;
   0,19 confirmé. Tests : 2 (test_tau_t2_historique).
+
+- 2026-11-19 07:50-08:45Z (réveil) : piste utilisateur R1 (mélange
+  anti-système par famille, §8.43, 0 fit) : échoue (π_GR instable 0,09 →
+  0,27, Mélenchon 2022 +13 pt) ; R2 (carte 2D dès le T1, fit) est la
+  prochaine tâche : maths d'abord. Tests : test_reports_t2 (7).
 
 ## Revue Opus 2026-11-18 — intégration point par point
 
