@@ -31,6 +31,64 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- [ ] **NOUVELLES PISTES REPORTS (utilisateur, 2026-11-19 ~08:00Z)** — suite de
+      §8.41. Le diagnostic de la 2D (« le noyau séparable garde l'écart en v, σ
+      étroit fixé par le T1 sature le logit ») vaut pour une 2D GREFFÉE sur un T1
+      1D figé, pas pour une carte 2D estimée dès le T1. Les deux pistes ci-dessous
+      sont dans cet ordre, maths dans la spec AVANT tout code, critères fixés
+      AVANT lecture. Elles passent AVANT la revue Opus de (A), sauf si la revue
+      quotidienne est due : dans ce cas la revue d'abord, et elle couvre aussi
+      ces deux pistes. Le scoring prospectif 2027 reste à chaque réveil.
+  - [ ] (R1) **Part anti-système par électorat (0 fit)**, sur les tirages V2
+        T2−7 de §8.38. C'est un mélange orienté, pas le plancher symétrique de
+        §8.39 : $q_k = (1-\pi_k)\,q_k^{spatial} + \pi_k\,q^{AS}$, où $q^{AS}$
+        vote pour le finaliste « anti-système » (Le Pen contre Macron en
+        2017/2022), et symétriquement pour « Aucun » si les données le
+        demandent. $\pi_k$ est par FAMILLE (gauche radicale, gauche/écolo,
+        droite, droite radicale, centre), pas par candidat, et commune aux deux
+        années. On minimise les cellules (Macron, Le Pen, Aucun) 2017+2022.
+        Critères proposés (à figer dans la spec avant lecture, ajustables avec
+        justification) :
+        - partage Mélenchon < 10 pt les deux années ;
+        - MAE des autres électorats non dégradée de plus de 1 pt ;
+        - $\pi$ stables entre 2017 et 2022 (ajustement séparé par année :
+          écart < 0,1) ;
+        - duels inchangés à δ recalé près (le mélange déplace $s_{ab}$ : le
+          mesurer et le dire).
+        Si R1 passe : spécifier son entrée dans le modèle (π par famille estimé
+        par les reports, (A)(2) devient possible sans tordre la géométrie) et
+        le backtest selon §8.29. Si R1 échoue : le consigner, passer à R2.
+        R2 se fait dans les deux cas, en mode réduit (2022 seul) si R1 passe.
+  - [ ] (R2) **Carte 2D estimée dès le T1** (fit, VM cloud ; jamais sur le
+        MacBook). Hypothèse à tester : avec un second axe u (système /
+        anti-système), u porte une partie de la séparation entre candidats
+        proches en v (Mélenchon / Hamon / Jadot / Roussel), σ_v s'élargit et
+        le logit T2 se désature. Maths d'abord, dans la spec (nouveau §) :
+        - noyau (séparable ou non, σ_v et λ libres) ;
+        - levée des symétries (réflexion de u, ancres : contrainte d'ordre RN ≥
+          centre sur u, et une seconde ancre à justifier) ;
+        - priors sur ν et λ ;
+        - identification : faible par le T1, forte par les reports ⇒ fit
+          CONJOINT T1 + duels + reports (vraisemblance des reports de (A)(2) :
+          multinomiale ou Dirichlet-multinomiale par électorat avec n effectif,
+          dépendance avec les duels de la même notice) ;
+        - coût : B_u = 7 ⇒ ≈ 4 h/chaîne, 4 chaînes en parallèle sur 4 cœurs ;
+          marquer EN COURS, sous-agent Sonnet + watcher.
+        Code derrière un drapeau ÉTEINT (production inchangée, `PUBLIER_T2`
+        False). D'abord 2022 seul, V2 T2−7. Critères fixés avant lecture :
+        - report Mélenchon→Le Pen à < 10 pt du mesuré ;
+        - σ_v a posteriori plus large qu'en 1D (le mécanisme attendu, sinon
+          le résultat ne s'explique pas) ;
+        - T1 non dégradé (V2 T1 2022 : MAE et couverture contre le 1D) ;
+        - duels V1 2022 non dégradés (protocole §8.29) ;
+        - ν interprétables et stables entre chaînes (R̂, sélection §8.8).
+        Si 2022 passe : 2017, puis le chiffrage de l'effet sur 2027 (P(élu),
+        duels), puis « ARBITRAGE À TRANCHER » sur l'adoption, qui toucherait
+        aussi le T1 publié. Positions d'experts (CHES, dimension anti-élite) :
+        inaccessibles depuis la VM ; si une ancre externe est nécessaire,
+        l'écrire en « ARBITRAGE À TRANCHER » (l'utilisateur peut fournir le
+        fichier).
+
 - [ ] **PRIORITÉ (orchestrateur, au nom de l'utilisateur, 2026-11-18 ~23:05Z)** —
       LES DONNÉES SONT SUR MAIN depuis 844495b (déjà fusionnée ici via ab2178c) ;
       (A) et τ_T2 2002-2012 sont DÉBLOQUÉS. Roster (fb69009) et palette
