@@ -35,6 +35,7 @@ anthropic>=0.40
 
 # Tests
 pytest==9.2.0
+PyYAML==6.0.2   # tests/test_alertes_prod.py lit les workflows
 
 # Retirés du dépôt (aucun import, sur AUCUNE branche) :
 #   dynamax    — ne servait qu'au filtre de Kalman du nowcast SSM, réimplémenté
