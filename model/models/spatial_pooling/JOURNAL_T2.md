@@ -31,6 +31,23 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- **COORDINATION GPU (utilisateur, 2026-11-19 ~19:50Z) — règle permanente.** Le GPU (T4
+  Google Colab) est piloté UNIQUEMENT par la session locale, depuis le Mac de l'utilisateur.
+  La routine n'utilise pas Colab et ne cherche aucun identifiant. Pour un fit lourd :
+  1. la routine pousse le code et les maths, puis ajoute ici une ligne
+     « - [ ] DEMANDE GPU (<date UTC>) : `<commande python -m … --chaine k>` pour k = … ;
+     sortie attendue : <fichiers .npz> » et la marque EN COURS côté demande ;
+  2. la session locale exécute sur le T4, toutes les chaînes d'une même étape sur la même
+     plateforme, et commite les `.npz` dans `model/backtest/results/chaines/` sous les noms
+     standard, puis coche la ligne « FAIT (T4, <date>) » ;
+  3. la routine fusionne (`--fusionner`) et rend le verdict selon les critères figés.
+  Ne jamais mélanger dans une même étape des chaînes VM et T4. Si la session locale ne
+  répond pas (Mac fermé), la routine peut lancer la demande sur la VM, mais seulement si
+  aucune ligne FAIT ou EN COURS (T4) n'existe pour cette étape : dans ce cas elle écrit
+  « REPRISE VM » sur la ligne et l'étape entière passe sur la VM.
+  Étape 1 de R3 (V2 T2−7 2022, avec reports) : sur la VM, en cours. Étape 2 de R3 (V2 T1−30
+  2022, sans reports) : EN COURS (T4, début 2026-11-19 19:41Z), 4 chaînes séquentielles.
+
 - [ ] **(NOUVEAU 19/11, constat de §8.46.4) Précision de la quadrature 1D aux petits σ** : GL B = 25 donne jusqu'à 1,6 pt d'erreur sur π dans les fits 2022 (σ min 0,018) ; sans effet en 2027 (σ min 0,051). Tâche : garde-fou (alerte si σ_min < 0,035, ou B adaptatif) et mesure de l'effet sur les backtests 2022 publiés (V1/V2) ; priorité moyenne, pas de changement de production sans chiffrage.
 - NOTE (session locale, 2026-11-19 ~19:45Z, REMPLACE l'aperçu Mac) : l'ÉTAPE 2 OFFICIELLE de R3
   (`--only v2 --election 2022 --coupure T1-30 --variante hiercercle_sr`, chaînes 0-3) tourne
