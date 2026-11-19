@@ -67,3 +67,21 @@ def test_plancher_rapproche_de_la_moitie():
     r = reports_predits(A, champ, 0, 4, kappa, omega, lse, s, plancher=0.4)
     p = r["a"] / (r["a"] + r["b"])
     assert (p > 0.15).all() and (p < 0.85).all()
+
+
+def test_2d_point_fixe_garde_le_t1():
+    """§8.41 : après re-résolution de w, parts T1 du champ = cible ; λ grand ≈ 1D."""
+    from model.backtest.reports_2d import attractivite_2d, parts_t1, resoudre_w
+    rng = np.random.default_rng(4)
+    S, N = 3, 5
+    mu = np.sort(rng.uniform(0.1, 0.9, (S, N)), axis=1)
+    sigma = np.full((S, N), 0.12)
+    w = rng.normal(0, 0.5, (S, N))
+    champ = np.arange(4)
+    A1 = np.asarray(log_attractivite(mu, sigma, w))
+    cible = parts_t1(A1, champ, np.asarray(W))
+    nu = rng.uniform(0.2, 0.8, N)
+    _, _, ecart = resoudre_w(mu, sigma, w, nu, 0.15, champ, cible)
+    assert ecart < 1e-4
+    A, poids = attractivite_2d(mu, sigma, w, nu, 50.0)        # u sans effet
+    assert np.allclose(parts_t1(A, champ, poids), cible, atol=1e-6)

@@ -45,7 +45,7 @@ l'historique, ajouter en bas de « Historique ».
         électorat et par candidat_t2 (y compris « Aucun » ↔ abstention ω),
         z par cellule. Maths dans la spec (§ nouveau) AVANT le code. Si erreur
         systématique par électorat que l'axe unique n'absorbe pas ⇒ ouvrir (D).
-  - [ ] [(ii) et test (D-a) FAITS 19/11 05:55Z, spec §8.39-8.40 : plancher ε = 0,2 ⇒ MAE des cellules −3 à −10 pt mais Mélenchon 2022 encore +24-29 pt ; fer à cheval (D-a) ÉCHOUE au test d'identification (Mélenchon 22 → 22, 37 → 37 pt), logit par votant saturé par le noyau gaussien étroit ⇒ À FAIRE : maths complètes de (D-b) 2D séparable (coût, quadrature, priors ν, identification T1) puis test sans fit si possible] **(D) OUVERT par (A)(1)** — maths AVANT (A)(2), qui ne doit pas entrer
+  - [ ] [EN COURS (début 2026-11-19 06:30Z) : maths (D-b) écrites spec §8.41 + test d'existence sans fit `model/backtest/reports_2d.py` (critères fixés avant lecture)] [(ii) et test (D-a) FAITS 19/11 05:55Z, spec §8.39-8.40 : plancher ε = 0,2 ⇒ MAE des cellules −3 à −10 pt mais Mélenchon 2022 encore +24-29 pt ; fer à cheval (D-a) ÉCHOUE au test d'identification (Mélenchon 22 → 22, 37 → 37 pt), logit par votant saturé par le noyau gaussien étroit ⇒ À FAIRE : maths complètes de (D-b) 2D séparable (coût, quadrature, priors ν, identification T1) puis test sans fit si possible] **(D) OUVERT par (A)(1)** — maths AVANT (A)(2), qui ne doit pas entrer
         dans le 1D (il tordrait la géométrie, §8.38 point 4) : (i) écrire dans la
         spec la seconde coordonnée (axe système/anti-système, 1 paramètre par
         candidat, prior centré 0, ou « fer à cheval » §2.3) et son identification

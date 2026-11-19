@@ -25,27 +25,30 @@ def _norm(s: str) -> str:
     return unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode().lower().strip()
 
 
-def reports_predits(A, champ, ia, ib, kappa, omega, lse, s_ab, n_iter=60, plancher=0.0, dnu=0.0):
+def reports_predits(A, champ, ia, ib, kappa, omega, lse, s_ab, n_iter=60, plancher=0.0, dnu=0.0, poids=None):
     """Parts (en fraction de l'électorat T1) par tirage, spec §8.38.
 
     A : (S, N, B) log-attractivités ; champ : indices du T1 réel ; ia, ib :
     finalistes ; kappa, omega, s_ab : (S,) ; lse : (S, B) ou None (sans
     abstention : rho = 1). Retour : dict de (S, K) pour K = len(champ),
     clés 'a', 'b', 'aucun', plus 'delta' (S,) et 'E' (S, K)."""
+    Wq = np.asarray(W) if poids is None else np.asarray(poids)   # poids de quadrature (2D : §8.41)
+    if poids is not None and dnu:
+        raise ValueError("dnu (fer à cheval 1D) incompatible avec une quadrature 2D")
     Ac = A[:, champ, :]
     p = np.exp(Ac - logsumexp(Ac, axis=1, keepdims=True))                 # (S,K,B)
     k = kappa[:, None]
-    q = expit(k * (A[:, ia, :] - A[:, ib, :]) + dnu * np.abs(2 * np.asarray(V) - 1))   # (S,B) ; fer à cheval §8.40
+    q = expit(k * (A[:, ia, :] - A[:, ib, :]) + (dnu * np.abs(2 * np.asarray(V) - 1) if dnu else 0.0))   # (S,B) ; fer à cheval §8.40
     q = (1 - plancher) * q + plancher / 2          # plancher de report (§8.39) : ε des votants tirent au hasard
     if lse is None:
         rho = np.ones_like(q)
     else:
         ins = np.logaddexp(k * A[:, ia, :], k * A[:, ib, :])
         rho = expit(ins - (omega[:, None] + k * lse))
-    E = np.einsum("skb,b->sk", p, W)
-    pr = np.einsum("skb,sb,b->sk", p, rho, W)
+    E = np.einsum("skb,b->sk", p, Wq)
+    pr = np.einsum("skb,sb,b->sk", p, rho, Wq)
     R = pr / E
-    G = np.clip(np.einsum("skb,sb,sb,b->sk", p, rho, q, W) / pr, 1e-9, 1 - 1e-9)
+    G = np.clip(np.einsum("skb,sb,sb,b->sk", p, rho, q, Wq) / pr, 1e-9, 1 - 1e-9)
     poids = E * R
     cible = np.clip(s_ab, 1e-9, 1 - 1e-9)
     lo, hi = np.full(len(cible), -20.0), np.full(len(cible), 20.0)

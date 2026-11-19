@@ -1853,6 +1853,73 @@ $\varphi_i(v,u)\propto\mathcal N(v;\mu_i,\sigma_i)\,\mathcal N(u;\nu_i,\lambda)$
 au T2. Le coût est multiplié par $B_u$. ν est alors aussi identifié par les substitutions du
 T1 (hypothèses à champs différents), mais faiblement.
 
+### 8.41 (D-b) Votants en 2D : maths et test d'existence sans fit (protocole fixé avant résultat)
+
+**Modèle.** Les votants sont uniformes sur $[0{,}01;0{,}99]^2$, de coordonnées
+$v$ (gauche-droite) et $u$ (système/anti-système). La quadrature est un produit de
+Gauss-Legendre $B_v\times B_u$, de poids $W_bW'_c$. Noyau séparable, normalisé sur la grille
+comme en 1D :
+
+$$\varphi_i(v,u)=\frac{\mathcal N(v;\mu_i,\sigma_i)\,\mathcal N(u;\nu_i,\lambda)}
+{\sum_{b,c}W_bW'_c\,\mathcal N(V_b;\mu_i,\sigma_i)\mathcal N(U_c;\nu_i,\lambda)},\qquad
+A_i(v,u)=w_i+\log\varphi_i(v,u).$$
+
+Tout le reste est inchangé, avec $\int dv$ remplacé par $\iint dv\,du$ : le premier tour
+$\pi_i(S)$, le duel $q$, l'expression ρ, la valeur inclusive, et η, ω, κ.
+
+Priors : $\nu_i=\mathrm{logistique}(\zeta_i)$ avec $\zeta_i\sim\mathcal N(0,1)$, et
+$\log\lambda\sim\mathcal N(\log 0{,}2;\,0{,}5)$. λ est **commun** à tous les candidats : un
+λ par candidat serait trop peu identifié.
+
+Le sens de l'axe $u$ est symétrique par réflexion $u\mapsto1-u$. On le fixe par la seule
+contrainte d'ordre $\nu_{\text{RN}}\ge\nu_{\text{centre}}$ (finaliste RN contre finaliste
+centriste), par une transformation ordonnée sur ces deux coordonnées.
+
+**Ce que la 2D change, et que la §8.40 n'atteignait pas.** L'électorat de $k$,
+$p_k(v,u)$, s'étale en $u$. Si $\nu_k$ est proche de $\nu_{LP}$ et que $\lambda$ n'est pas
+petit, une partie des électeurs de $k$ se trouve dans la région $u$ où Le Pen est forte.
+Le logit $\kappa[A_M-A_{LP}]$ y est alors bien moins saturé que sur un seul axe : c'est un
+croisement par la composition de l'électorat, et non par une utilité ajoutée.
+
+**Identification.**
+
+- **Au T1, faible :** ν ne modifie que les substitutions entre hypothèses à champs
+  différents (qui récupère l'électorat d'un absent ?).
+- **Au T2, forte :** par les reports, en (A)(2).
+
+D-b et (A)(2) vont donc ensemble, comme D-a.
+
+**Coût.** Le tenseur $P\times N\times B$ devient $P\times N\times B_vB_u$. À $B_u=7$, le
+gradient coûte environ 7 fois plus, soit à peu près 4 h par chaîne au lieu de 35 min. C'est
+le prix à justifier avant tout fit.
+
+**Test d'existence sans fit (porte avant le code).** On prend 40 tirages par fit V2 T2−7
+de §8.38. On ajoute $u$ avec $B_u=7$ et $\lambda\in\{0{,}1;0{,}2;0{,}3\}$.
+
+- À chaque évaluation, $w$ est **re-résolu** par point fixe
+  ($w\leftarrow w+\log\pi^{1D}/\pi^{2D}$ sur le champ réel du T1), de sorte que les parts
+  T1 du champ réel restent celles du fit 1D.
+- κ et ω sont repris tels quels ; δ est recalé (§8.38).
+- Seuls 9 ν sont libres, communs aux deux années : Macron, Le Pen, Mélenchon, Hamon,
+  Fillon, Dupont-Aignan, Jadot, Pécresse, Zemmour. Les autres valent 0,5.
+- On minimise la somme des carrés des erreurs des cellules (Macron, Le Pen, Aucun) des
+  deux années, soit 9 paramètres pour 16 degrés de liberté.
+
+Critères, fixés avant lecture. Pour au moins une valeur de λ, la variante hier doit
+vérifier les trois :
+
+- erreur sur le partage de Mélenchon < 10 pt **les deux années** ;
+- MAE des autres électorats non dégradée de plus de 1 pt par rapport à la 1D ;
+- ν interprétable : $\nu_{JLM}$ du côté de $\nu_{LP}$ par rapport à $\nu_M$, et plus
+  proche de $\nu_{LP}$ que $\nu_{Hamon}$ et $\nu_{Jadot}$ ne le sont.
+
+Si les trois passent, on code D-b derrière un drapeau éteint, avec le plancher ε de §8.39.
+Le chantier (A)(2) suit. Sinon, (D) est abandonné et l'on consigne que le croisement n'est
+pas représentable à coût raisonnable : on ne publie que $s_{ab}$, comme aujourd'hui.
+
+Limite : c'est un test d'**existence** en échantillon. Il dit si la 2D peut représenter les
+reports sans toucher au T1, pas que le fit les apprendra.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
