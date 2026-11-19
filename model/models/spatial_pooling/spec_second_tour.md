@@ -1637,6 +1637,66 @@ Lecture prévue : après ≥ 20 duels nouveaux, comparaison abst/hier en CRPS
 (inversion des signes appariée) et calibration (RMS z, couverture). Code :
 `model/backtest/prospectif_2027.py` (`--figer`, `--scorer`).
 
+### 8.38 (A)(1) Reports T1→T2 prédits contre tableaux des instituts (0 fit ; protocole fixé avant résultat)
+
+**Données.** `data/parsed/reports_t2_{2017,2022}.csv` : 23 notices en 2017 et 21 en 2022,
+toutes sur Macron–Le Pen, entre les deux tours. Électorats : Mélenchon, Hamon, Fillon,
+Dupont-Aignan (2017) et Mélenchon, Jadot, Pécresse, Zemmour (2022). Cellules
+{Macron, Le Pen, Aucun}, en % de l'électorat T1 du candidat (somme 99-102). `base_electorat`
+est vide partout, donc il n'y a pas de n effectif : la dispersion entre notices sert de bruit
+de mesure.
+
+**Reports prédits** (spec §2.2, révisée par §2.1 et §3.1). On travaille par tirage
+postérieur, avec $A_j(v)=w_j+\log\varphi_j(v)$ pris à `w_now`. Le champ $S_1$ est l'ensemble
+des candidats réellement présents au T1 de l'élection.
+
+- Électorat de $k$ : $p_k(v)=e^{A_k}/\sum_{j\in S_1}e^{A_j}$ et $E_k=\int p_k$.
+- Expression au T2 : $\rho(v)$, issu de `duel_expression`, avec la même valeur inclusive
+  que la vraisemblance.
+- Préférence entre les deux finalistes : $q(v)=\mathrm{logistique}(\kappa[A_a-A_b])$.
+
+On en déduit, pour chaque électorat $k$ :
+
+$$R_k=\frac{\int p_k\rho}{E_k},\qquad G_k=\frac{\int p_k\rho q}{\int p_k\rho}.$$
+
+La valence η est posée sur l'**agrégat** (§2.1). Pour la répartir entre électorats, on
+applique un décalage commun en logit $\tilde G_k=\mathrm{logistique}(\operatorname{logit}G_k+\delta)$.
+Le décalage $\delta$ est résolu par tirage (bissection, fonction monotone) pour que
+$\sum_{k\in S_1}E_kR_k\tilde G_k/\sum_kE_kR_k=s_{ab}$, la part prédite du duel. Ce choix est
+cohérent avec le duel publié, puisque $\sum_kp_k=1$ sur $S_1$. η étant par finaliste, il ne
+peut pas dépendre de l'électorat, et c'est précisément ce que teste (A)(1).
+
+Parts prédites, en % de l'électorat de $k$ :
+
+- Macron : $100R_k\tilde G_k$ ;
+- Le Pen : $100R_k(1-\tilde G_k)$ ;
+- Aucun : $100(1-R_k)$.
+
+« Aucun » regroupe l'abstention, les blancs, les nuls et les sans-réponse. $1-R_k$ en est
+l'analogue modèle : la non-expression parmi les votants du T1 de $k$.
+
+**Fits utilisés.** V2 T2−7 déjà committés (2017 et 2022, variantes abst et hier). On les
+reconstruit par fusion des chaînes sauvées, sans NUTS. Les reports ne sont pas dans la
+vraisemblance de ces fits ; les duels de la même période, eux, y sont.
+
+**Mesures**, par cellule (électorat × candidat) :
+
+- $\bar y$, moyenne sur les notices, et $s$, écart-type entre notices ;
+- erreur $e=\hat m-\bar y$, où $\hat m$ est la moyenne postérieure ;
+- $z=e/\sqrt{\mathrm{sd}_{post}^2+s^2}$, l'écart à ce qu'on attend d'une nouvelle notice.
+
+On calcule aussi la MAE par électorat et par candidat_t2, et deux grandeurs clés :
+
+- le partage parmi les exprimés, $M/(M+LP)$, que η ne peut régler que globalement ;
+- la non-expression, qui teste ω.
+
+**Critère d'ouverture de (D), fixé avant lecture.** On ouvre (D) s'il existe une
+« erreur systématique non absorbée ». C'est le cas si un électorat de la même famille
+(gauche radicale : Mélenchon 2017 et 2022) vérifie, **les deux années**, à la fois
+$|e|>10$ pt et $|z|>2$ sur le partage parmi les exprimés, dans le sens attendu d'une
+seconde dimension, c'est-à-dire un report vers Le Pen sous-prédit. À défaut, on consigne
+seulement « limite §2.3 confirmée ou infirmée par électorat », et (A)(2) suit.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

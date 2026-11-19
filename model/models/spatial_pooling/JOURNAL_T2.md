@@ -35,7 +35,7 @@ l'historique, ajouter en bas de « Historique ».
       LES DONNÉES SONT SUR MAIN depuis 844495b (déjà fusionnée ici via ab2178c) ;
       (A) et τ_T2 2002-2012 sont DÉBLOQUÉS. Roster (fb69009) et palette
       (9b95194) sur main ⇒ fits 2027 débloqués. Ordre :
-  - [ ] (A)(1) **Validation sans fit des tableaux de reports** :
+  - [ ] [EN COURS (début 2026-11-19 04:45Z) : spec §8.38 écrite (critère (D) fixé avant résultat), `model/backtest/reports_t2.py` + test ; V2 T2−7 abst/hier 2017/2022 reconstruits depuis les chaînes sauvées, sur les données de ee6365b (les données 2017 de main ajoutent Hollande/Pinel ⇒ chaînes incompatibles)] (A)(1) **Validation sans fit des tableaux de reports** :
         `data/parsed/reports_t2_2017.csv`, `reports_t2_2022.csv` (colonnes
         notice, institut, dates, hypothese « X – Y », electorat_t1 = nom complet
         du candidat T1, candidat_t2 ∈ {X, Y, Aucun}, part en %, base_electorat
