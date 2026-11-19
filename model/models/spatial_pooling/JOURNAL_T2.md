@@ -39,7 +39,7 @@ l'historique, ajouter en bas de « Historique ».
       AVANT lecture. Elles passent AVANT la revue Opus de (A), sauf si la revue
       quotidienne est due : dans ce cas la revue d'abord, et elle couvre aussi
       ces deux pistes. Le scoring prospectif 2027 reste à chaque réveil.
-  - [x] [FAIT 19/11 08:40Z, spec §8.43, `results/reports_t2_r1_{hier,abst}.json` : ÉCHEC (hier R1a) — Mélenchon −7,2 / +13,3 pt ; π_GR 0,09 (2017) contre 0,27 (2022), instable ; année retirée −17 / +25 pt ; seul π_GR nettement non nul (forme juste, paramètre d'élection et non de famille) ; duel déplacé de 4-11 pt sans recalage ⇒ R2 suit] (R1) **Part anti-système par électorat (0 fit)**, sur les tirages V2
+  - [x] [FAIT 19/11 ~08:00Z, spec §8.43, `results/reports_t2_r1_{hier,abst}.json` : ÉCHEC (hier R1a) — Mélenchon −7,2 / +13,3 pt ; π_GR 0,09 (2017) contre 0,27 (2022), instable ; année retirée −17 / +25 pt ; seul π_GR nettement non nul (forme juste, paramètre d'élection et non de famille) ; duel déplacé de 4-11 pt sans recalage ⇒ R2 suit] (R1) **Part anti-système par électorat (0 fit)**, sur les tirages V2
         T2−7 de §8.38. C'est un mélange orienté, pas le plancher symétrique de
         §8.39 : $q_k = (1-\pi_k)\,q_k^{spatial} + \pi_k\,q^{AS}$, où $q^{AS}$
         vote pour le finaliste « anti-système » (Le Pen contre Macron en
@@ -59,7 +59,7 @@ l'historique, ajouter en bas de « Historique ».
         par les reports, (A)(2) devient possible sans tordre la géométrie) et
         le backtest selon §8.29. Si R1 échoue : le consigner, passer à R2.
         R2 se fait dans les deux cas, en mode réduit (2022 seul) si R1 passe.
-  - [ ] [EN COURS (début 2026-11-19 09:05Z) : code fait (drapeaux `carte_2d`, `reports` ; `--variante hier2d` ; tests test_carte_2d), fit V2 T2−7 2022 hier2d lancé (4 processus d'une chaîne, ~4-5 h, données de main au 19/11)] [MATHS FAITES 19/11 08:30Z, spec §8.44 (noyau séparable, ancres ν_C = 0,3 + ordre RN ≥ C, Dirichlet des reports avec c appris, Newton pour δ, critères figés) ; À FAIRE : code derrière drapeau (`carte_2d`, `reports`) + tests, puis fit V2 T2−7 2022 hier2d (4 chaînes × ~4 h)] (R2) **Carte 2D estimée dès le T1** (fit, VM cloud ; jamais sur le
+  - [ ] [EN COURS (début 2026-11-19 08:15Z) : code fait (drapeaux `carte_2d`, `reports` ; `--variante hier2d` ; tests test_carte_2d), fit V2 T2−7 2022 hier2d lancé (4 processus d'une chaîne, ~4-5 h, données de main au 19/11)] [MATHS FAITES 19/11 07:55Z, spec §8.44 (noyau séparable, ancres ν_C = 0,3 + ordre RN ≥ C, Dirichlet des reports avec c appris, Newton pour δ, critères figés) ; À FAIRE : code derrière drapeau (`carte_2d`, `reports`) + tests, puis fit V2 T2−7 2022 hier2d (4 chaînes × ~4 h)] (R2) **Carte 2D estimée dès le T1** (fit, VM cloud ; jamais sur le
         MacBook). Hypothèse à tester : avec un second axe u (système /
         anti-système), u porte une partie de la séparation entre candidats
         proches en v (Mélenchon / Hamon / Jadot / Roussel), σ_v s'élargit et
@@ -733,15 +733,15 @@ conservé pour l'historique.
   0 fit) : médiane 0,164, IC90 [0,10 ; 0,34], normale meilleure que t4 en LOO ;
   0,19 confirmé. Tests : 2 (test_tau_t2_historique).
 
-- 2026-11-19 07:50-08:45Z (réveil) : piste utilisateur R1 (mélange
+- 2026-11-19 07:48-08:00Z (réveil) : piste utilisateur R1 (mélange
   anti-système par famille, §8.43, 0 fit) : échoue (π_GR instable 0,09 →
   0,27, Mélenchon 2022 +13 pt) ; R2 (carte 2D dès le T1, fit) est la
   prochaine tâche : maths d'abord. Tests : test_reports_t2 (7).
 
-- 2026-11-19 08:10-08:35Z (réveil) : maths de R2 (§8.44) ; limite notée : sans
+- 2026-11-19 07:45-07:55Z (réveil) : maths de R2 (§8.44) ; limite notée : sans
   reports avant le T1, ν n'est appris que par le T1 (critère V1 sans reports).
 
-- 2026-11-19 08:35-09:05Z (réveil, suite) : code R2 derrière drapeaux
+- 2026-11-19 07:55-08:15Z (réveil, suite) : code R2 derrière drapeaux
   (`geometry` 2D, `reports_cellules` Newton, `arrays_reports`, `ancres_u`,
   `--variante hier2d`), fit de fumée OK (37 lignes de reports ≤ as_of) ;
   fit V2 T2−7 2022 lancé. Production inchangée (drapeaux éteints).
