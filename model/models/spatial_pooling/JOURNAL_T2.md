@@ -141,7 +141,7 @@ l'historique, ajouter en bas de « Historique ».
       croisés « intention de vote T2 selon le vote T1 » publiés AVANT le T1 (2017, 2022,
       2027). S'ils existent, ce sont des reports d'avant T1 directement utilisables dans
       l'élection en cours ; les intégrer comme observations dès leur arrivée sur main.
-- [ ] [EN COURS (début 2026-11-19 18:31Z) : code fait (drapeau `carte_cercle`, `--variante hiercercle|hiercercle_sr`, tests), protocole 1 lancé : V2 T2−7 2022 hiercercle, 4 chaînes] [MATHS FAITES 19/11 18:26Z, spec §8.46 (positions 1D posées sur un arc avant A appris, von Mises κ = 1/(Aσ)², trou derrière les extrêmes, N_θ = 64, critères figés) ; À FAIRE : code + tests + protocole 1] **(R3) VOTANTS SUR UN CERCLE (utilisateur, 2026-11-19 ~18:30Z)** — suite
+- [ ] [PROTOCOLE 1 RÉPLIQUÉ SUR LA VM 19/11 22:10Z, §8.46 « Réplication VM » : 4 chaînes CPU d'environ 3 h, toutes retenues (lp à 6 nats près, contre 671 sur T4) ; Mélenchon hors fit +6,8 (11 notices après as_of), MAE hors fit 3,3 ; T1 1,08 ; échec STRICT sur la stabilité entre chaînes (partages Mélenchon 5,6, Pécresse 4,5 ; duel Zemmour–Pécresse 6,1, dû à une chaîne). Même verdict que T4 (d1c98e5) : le cercle reproduit les reports, la stabilité échoue ⇒ arrêt de R3 ; la suite est R3b (session locale)] [ex-EN COURS (début 2026-11-19 18:31Z) : code fait (drapeau `carte_cercle`, `--variante hiercercle|hiercercle_sr`, tests), protocole 1 lancé : V2 T2−7 2022 hiercercle, 4 chaînes] [MATHS FAITES 19/11 18:26Z, spec §8.46 (positions 1D posées sur un arc avant A appris, von Mises κ = 1/(Aσ)², trou derrière les extrêmes, N_θ = 64, critères figés) ; À FAIRE : code + tests + protocole 1] **(R3) VOTANTS SUR UN CERCLE (utilisateur, 2026-11-19 ~18:30Z)** — suite
       de §8.43-8.44. Maths dans la spec (nouveau §) AVANT le code, critères
       fixés AVANT lecture, code derrière un drapeau ÉTEINT, production
       inchangée, `PUBLIER_T2` False. Fits sur la VM cloud uniquement.
@@ -670,6 +670,7 @@ Résultats : `model/backtest/results/*.json` (committés).
 
 ## Arbitrages ouverts (pour l'utilisateur — ne pas trancher seul)
 
+
 **TRANCHÉS par l'utilisateur le 2026-11-15 ~21:45Z** (« je valide tes points de
 vue », sur les propositions de la session locale) :
 1. τ_T2 → **0,19** (élargir ; centres inchangés).
@@ -971,6 +972,9 @@ Idées :
   commitées seules, quadrature mesurée (N_θ = 128, coût ~5× le 1D) ; constat
   incident : erreur de quadrature 1D jusqu'à 1,6 pt dans les fits 2022 (σ min
   0,018), nulle en 2027 ; code, tests (247), protocole 1 lancé.
+
+- 2026-11-19 18:31-22:10Z (même tour) : protocole 1 de R3 (4 chaînes d'environ 3 h) ;
+  échec strict sur la stabilité, le reste passe ; même verdict que T4 ⇒ arrêt de R3, suite R3b (session locale).
 
 ## Revue Opus 2026-11-18 — intégration point par point
 

@@ -2713,6 +2713,41 @@ T1 publié.
 - L'électorat de Mélenchon a changé entre 2017 et 2022 (partage 76 contre 63) : c'est ce que
   $s_\mu$ et $s_\sigma$ doivent permettre, et ce que l'étape A mesure.
 
+#### Réplication VM du protocole 1 de §8.46 (V2 T2−7 2022 avec reports, CPU, 19/11)
+
+Run indépendant de celui du T4 (`_t4`, d1c98e5), sur la VM, avec les noms standard. Fichiers :
+`results/second_round_hiercercle_v2_2022_T2-7.json`, `eval_r2_hiercercle_2022.json` et
+`_T2-7_par_chaine.json`.
+
+**Coût.** Environ 3 h par chaîne et 511 pas de leapfrog par tirage, contre environ 1 h 30 pour la
+2D et 25 min pour le 1D. Hypothèse sur la cause : la crête $A\leftrightarrow\sigma$, puisque seul le
+produit $A\sigma$ règle la largeur des noyaux et que $A$ ne joue en propre que par l'arrière.
+
+**L'arc se ferme presque** : $A=6{,}06$ rad, soit 3,5 % de votants à l'arrière (prior : 25 %). Les
+deux extrêmes deviennent voisins. κ (0,68) et $\bar\sigma_v$ (0,052) restent proches du 1D.
+
+| critère (figé avant lecture) | cercle | 2D (hier2d) | 1D avec reports | verdict |
+|---|---|---|---|---|
+| Mélenchon hors fit, < 10 pt | +6,8 | −3,5 | +14,4 | ✓ |
+| MAE hors fit des 4 partages, ≤ 2,6 ou au moins < 8,2 | 3,3 | 2,6 | 8,2 | ✓ (forme faible) |
+| T1 : MAE des nœuds / du résultat | 0,622 / 1,08 | 0,603 / 1,17 | 0,618 / 1,26 | ✓ |
+| écart de lp entre chaînes | 6 nats (4 retenues) | 82 nats | | |
+| stabilité des partages, ≤ 3 pt | **Mélenchon 5,6, Pécresse 4,5**, Jadot 0,3, Zemmour 1,1 | jusqu'à 11,6 | | ✗ |
+| stabilité des duels, ≤ 2 pt | tous ≤ 1,7, sauf **Zemmour–Pécresse 6,1** | jusqu'à 11,8 | | ✗ |
+
+L'écart vient d'une seule chaîne : la chaîne 0, à 5-6 nats sous les trois autres, mais retenue par
+§8.8. Entre les chaînes 1 à 3, Mélenchon varie de 71,0 à 71,5 et Pécresse de 61,4 à 62,1. Le
+R̂ de 23 porte sur un μ, sans doute un candidat d'extrême qui passe d'un côté à l'autre du point
+arrière une fois le cercle presque fermé : c'est une symétrie que §8.46.2 n'avait pas prévue.
+
+**Verdict.** Le protocole 1 échoue strictement sur la stabilité, comme sur le T4 (671 nats,
+partage Pécresse 8,7 pt). Les deux runs s'accordent : le cercle reproduit les reports quand il les a.
+Mélenchon est à +6,8 pt hors fit sur la VM et à +8,1 en toutes notices sur le T4, alors que le 1D
+avec reports est à +14,4. La stabilité entre chaînes ne passe pas. Les deux runs diffèrent par la
+multimodalité : 6 nats et 4 chaînes retenues sur la VM, contre 671 nats et 2 chaînes sur le T4.
+Ce peut être la plateforme ou la graine, et c'est à garder en tête pour R3b. La suite est R3b
+(§8.47, session locale).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
