@@ -32,7 +32,8 @@ def reconstruire(variante: str, stem: str):
     sr.ABSTENTION = True
     sr.VARIANTE_KW.clear()
     sr.VARIANTE_KW.update({"hier": {"eta_hier": True},
-                           "hier2d": {"eta_hier": True, "carte_2d": True, "_reports": True}}[variante])
+                           "hier2d": {"eta_hier": True, "carte_2d": True, "_reports": True},
+                           "hier_rep": {"eta_hier": True, "_reports": True}}[variante])
     as_of = sr.T2_DATES[ELECTION] - pd.Timedelta(days=7)
     raw = sr.polls_historiques(ELECTION, as_of)
     paths = [sr.CHAINES_DIR / f"{stem}_c{k}.npz" for k in range(sr.N_CHAINES)]
@@ -141,7 +142,7 @@ def rhat_nu(stem: str, champ_noms: list[str], cands: list[str]) -> float | None:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--variante", choices=["hier", "hier2d"], required=True)
+    ap.add_argument("--variante", choices=["hier", "hier2d", "hier_rep"], required=True)
     ap.add_argument("--stem", default=None)
     args = ap.parse_args()
     stem = args.stem or f"second_round_{args.variante}_v2_{ELECTION}_T2-7"

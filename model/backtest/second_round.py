@@ -511,7 +511,7 @@ def main() -> None:
     ap.add_argument("--coupure", default=None, choices=["T1-30", "T1-1", "T2-7"],
                     help="V2 : une seule coupure")
     ap.add_argument("--lister", action="store_true", help="liste les tâches unitaires et sort")
-    ap.add_argument("--variante", choices=["abst", "eta", "geo", "geo1", "hier", "hier_maison", "hier_notice", "hier2d"], default="abst",
+    ap.add_argument("--variante", choices=["abst", "eta", "geo", "geo1", "hier", "hier_maison", "hier_notice", "hier2d", "hier_rep"], default="abst",
                     help="abst = abstention + valence ; eta = valence seule ; geo = κ + abstention, "
                          "sans valence ; geo1 = abstention seule, κ = 1 (spec §8.9) ; hier = abst à échelle de "
                          "valence apprise (§8.10)")
@@ -540,14 +540,16 @@ def main() -> None:
     if args.ancres_famille:
         VARIANTE_KW["ancres_famille"] = True
     POS_SCALE_BT = args.pos_scale
-    ABSTENTION = args.variante in ("abst", "geo", "geo1", "hier", "hier_maison", "hier_notice", "hier2d")
+    ABSTENTION = args.variante in ("abst", "geo", "geo1", "hier", "hier_maison", "hier_notice", "hier2d", "hier_rep")
     VARIANTE_KW.update({"geo": {"eta_scale": 0.0},
                         "geo1": {"eta_scale": 0.0, "kappa_log_scale": 1e-3},
                         "hier": {"eta_hier": True},
                         "hier_maison": {"eta_hier": True, "effets_maison": True},
                         "hier_notice": {"eta_hier": True, "effet_notice_seul": True},
                         # R2 (spec §8.44) : carte 2D + reports en vraisemblance (drapeau éteint ailleurs)
-                        "hier2d": {"eta_hier": True, "carte_2d": True, "_reports": True}}.get(args.variante, {}))
+                        "hier2d": {"eta_hier": True, "carte_2d": True, "_reports": True},
+                        # témoin équitable de R2 (revue 19/11, point 3) : reports en vraisemblance, 1D
+                        "hier_rep": {"eta_hier": True, "_reports": True}}.get(args.variante, {}))
     SECOND_TOUR = not args.sans_t2
     if args.sans_t2 and args.only != "v2":
         ap.error("--sans-t2 n'a de sens qu'en V2 (V1 prédit un duel)")
