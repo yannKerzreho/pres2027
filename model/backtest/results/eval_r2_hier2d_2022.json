@@ -1,0 +1,234 @@
+{
+ "spec": "spec_second_tour §8.44.8",
+ "variante": "hier2d",
+ "stem": "second_round_hier2d_v2_2022_T2-7",
+ "n_tirages": 800,
+ "reports": [
+  {
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Aucun",
+   "mesure": 43.6,
+   "modele": 43.5,
+   "ic90": [
+    40.2,
+    46.8
+   ],
+   "erreur": -0.1
+  },
+  {
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Le Pen",
+   "mesure": 21.0,
+   "modele": 21.3,
+   "ic90": [
+    18.3,
+    24.4
+   ],
+   "erreur": 0.4
+  },
+  {
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Macron",
+   "mesure": 35.5,
+   "modele": 35.2,
+   "ic90": [
+    32.1,
+    38.3
+   ],
+   "erreur": -0.3
+  },
+  {
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "partage",
+   "mesure": 63.0,
+   "modele": 62.3,
+   "ic90": [
+    57.6,
+    66.9
+   ],
+   "erreur": -0.8
+  },
+  {
+   "electorat": "Valérie Pécresse",
+   "cellule": "Aucun",
+   "mesure": 29.9,
+   "modele": 28.7,
+   "ic90": [
+    24.7,
+    32.8
+   ],
+   "erreur": -1.2
+  },
+  {
+   "electorat": "Valérie Pécresse",
+   "cellule": "Le Pen",
+   "mesure": 24.6,
+   "modele": 26.2,
+   "ic90": [
+    22.7,
+    30.1
+   ],
+   "erreur": 1.6
+  },
+  {
+   "electorat": "Valérie Pécresse",
+   "cellule": "Macron",
+   "mesure": 45.5,
+   "modele": 45.1,
+   "ic90": [
+    39.8,
+    49.8
+   ],
+   "erreur": -0.4
+  },
+  {
+   "electorat": "Valérie Pécresse",
+   "cellule": "partage",
+   "mesure": 65.0,
+   "modele": 63.2,
+   "ic90": [
+    57.7,
+    68.1
+   ],
+   "erreur": -1.9
+  },
+  {
+   "electorat": "Yannick Jadot",
+   "cellule": "Aucun",
+   "mesure": 33.3,
+   "modele": 33.3,
+   "ic90": [
+    29.0,
+    37.5
+   ],
+   "erreur": -0.0
+  },
+  {
+   "electorat": "Yannick Jadot",
+   "cellule": "Le Pen",
+   "mesure": 8.2,
+   "modele": 7.9,
+   "ic90": [
+    5.2,
+    11.0
+   ],
+   "erreur": -0.2
+  },
+  {
+   "electorat": "Yannick Jadot",
+   "cellule": "Macron",
+   "mesure": 58.5,
+   "modele": 58.8,
+   "ic90": [
+    54.3,
+    63.0
+   ],
+   "erreur": 0.3
+  },
+  {
+   "electorat": "Yannick Jadot",
+   "cellule": "partage",
+   "mesure": 87.5,
+   "modele": 88.1,
+   "ic90": [
+    83.5,
+    92.1
+   ],
+   "erreur": 0.7
+  },
+  {
+   "electorat": "Éric Zemmour",
+   "cellule": "Aucun",
+   "mesure": 12.7,
+   "modele": 13.2,
+   "ic90": [
+    11.3,
+    15.4
+   ],
+   "erreur": 0.6
+  },
+  {
+   "electorat": "Éric Zemmour",
+   "cellule": "Le Pen",
+   "mesure": 79.1,
+   "modele": 80.1,
+   "ic90": [
+    76.9,
+    83.1
+   ],
+   "erreur": 1.0
+  },
+  {
+   "electorat": "Éric Zemmour",
+   "cellule": "Macron",
+   "mesure": 8.2,
+   "modele": 6.6,
+   "ic90": [
+    4.6,
+    8.9
+   ],
+   "erreur": -1.6
+  },
+  {
+   "electorat": "Éric Zemmour",
+   "cellule": "partage",
+   "mesure": 9.4,
+   "modele": 7.7,
+   "ic90": [
+    5.3,
+    10.2
+   ],
+   "erreur": -1.7
+  }
+ ],
+ "sigma_v_champ": {
+  "mediane": 0.0638,
+  "ic90": [
+   0.0554,
+   0.0738
+  ]
+ },
+ "t1_mae_noeuds_pt": 0.603,
+ "t1_resultat": {
+  "mae_pt": 1.169,
+  "couverture_ic90": "3/12"
+ },
+ "nu": {
+  "Emmanuel Macron": 0.3,
+  "Marine Le Pen": 0.442,
+  "Jean-Luc Mélenchon": 0.418,
+  "Eric Zemmour": 0.733,
+  "Valérie Pécresse": 0.578,
+  "Yannick Jadot": 0.188,
+  "Jean Lassalle": 0.718,
+  "Fabien Roussel": 0.064,
+  "Nicolas Dupont-Aignan": 0.522,
+  "Anne Hidalgo": 0.312,
+  "Philippe Poutou": 0.114,
+  "Nathalie Arthaud": 0.14
+ },
+ "lambda_u": 0.0887,
+ "s_ab": 0.5421,
+ "sigma_t2": 0.0103,
+ "kappa": 0.2175,
+ "rhat_max": 11.5318,
+ "rhat_pires_sites": [
+  [
+   "nu",
+   11.532
+  ],
+  [
+   "mu",
+   9.981
+  ],
+  [
+   "zeta",
+   6.071
+  ]
+ ],
+ "chaines_retenues": [
+  0,
+  1
+ ],
+ "rhat_nu_champ": 7.481
+}

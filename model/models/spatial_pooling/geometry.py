@@ -298,7 +298,9 @@ def reports_cellules(A, champ_mask, ia, ib, k_idx, kappa, eta_diff, lse, omega, 
     Am = A + jnp.log(jnp.clip(champ_mask, 1e-30, None))[None, :, None]
     p = jnp.exp(Am - jax.nn.logsumexp(Am, axis=1, keepdims=True))         # (R,N,G)
     A_a, A_b = A[rows, ia], A[rows, ib]
-    q = jax.nn.sigmoid(kappa * (A_a - A_b))
+    kq = jnp.asarray(kappa)
+    kq = kq[:, None] if kq.ndim else kq                     # scalaire (modèle) ou (R,) (tirages)
+    q = jax.nn.sigmoid(kq * (A_a - A_b))
     rho = jnp.ones_like(q) if lse is None else duel_expression(A_a, A_b, kappa, lse, omega)
     E = jnp.einsum("rng,g->rn", p, poids)
     pr = jnp.einsum("rng,rg,g->rn", p, rho, poids)

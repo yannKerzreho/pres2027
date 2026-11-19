@@ -2261,6 +2261,55 @@ Les tâches sont marquées EN COURS, lancées par un sous-agent Sonnet qui les s
 Si 1 à 5 passent, on enchaîne avec V1 2022 (§8.29 : duels non dégradés). Si 1 passe sans 2, le mécanisme
 est autre et on le dit. Si 1 échoue, R2 est abandonné et (A) est clos pour de bon.
 
+**Résultats V2 T2−7 2022 (2026-11-19, 4 chaînes de 1 h 30 environ, données de main au 19/11).**
+Fichiers : `results/second_round_hier2d_v2_2022_T2-7.json`, `eval_r2_hier2d_2022.json`. Le
+témoin 1D hier a été refitté sur les **mêmes** données : `r2_temoin_hier_v2_2022_T2-7.json`,
+`eval_r2_hier_2022.json`. Chaînes retenues (§8.8) : 0 et 1 en 2D, 1 et 2 en 1D.
+
+| critère | 2D (hier2d) | 1D (témoin) | verdict |
+|---|---|---|---|
+| 1. partage Mélenchon, toutes notices (mesuré 63,0) | 62,3, IC90 [57,6 ; 66,9] | 100,0 | ✓ |
+| 1 bis. idem, 11 notices **après** `as_of`, hors fit (mesuré 65,8) | 62,3 (−3,5) | 100,0 (+34,2) | ✓ hors échantillon |
+| autres partages hors fit (Pécresse, Jadot, Zemmour) | −2,9 / −1,5 / −2,4 | +4,0 / +10,4 / −10,1 | |
+| 2. $\bar\sigma_v$ sur le champ T1 (médiane) | 0,064 | 0,048 | ✓ (rapport 1,33 ≥ 1,25) |
+| 3a. MAE des nœuds T1 | 0,603 pt | 0,616 pt | ✓ |
+| 3b. MAE des parts au T1 contre le résultat | 1,17 pt (couverture IC90 3/12) | 1,23 pt (5/12) | ✓ en MAE ; couverture en baisse |
+| 4. R̂ des ν du champ (2 chaînes retenues) | **7,5** | — | ✗ |
+| 4 bis. ν interprétable (sur les moyennes) | JLM 0,42 contre LP 0,44 ; Jadot 0,19, Hidalgo 0,31 ; Zemmour 0,73 ≥ Pécresse 0,58 | — | ✓, mais sur des chaînes en désaccord |
+| 5. $s_{ab}$ et σ_T2 à ±0,5 pt | 54,2 contre 53,5 (+0,7) ; 1,03 contre 0,93 | | ✗ de peu sur $s_{ab}$ |
+| κ | 0,22 | 0,75 | |
+| λ | 0,089 | — | |
+
+**Lecture.**
+
+1. **Le mécanisme existe.** Sur une carte 2D apprise dès le T1, le report Mélenchon→Le Pen est
+   reproduit (21,3 contre 21,0 % de l'électorat), y compris sur les 11 notices hors fit. Les
+   autres électorats le sont à 3 pt près, là où le 1D est à 10-34 pt. Le T1 n'est pas dégradé en
+   MAE.
+2. **La désaturation passe surtout par κ.** κ tombe de 0,75 à 0,22, soit une température de duel
+   trois fois plus haute. $\sigma_v$ s'élargit aussi (rapport 1,33, critère 2 passé), mais c'est κ
+   qui porte l'essentiel. L'hypothèse de l'utilisateur ($u$ porte une séparation, $\sigma_v$
+   s'élargit) est vraie en partie seulement. Le duel reste au bon niveau, car η et la valeur
+   inclusive compensent.
+3. **Les ν ne sont pas identifiés de façon stable** (R̂ 7,5). Les deux chaînes retenues
+   s'accordent sur Mélenchon (0,40 / 0,43), Roussel (0,06 / 0,06), Le Pen (0,42 / 0,47) et Hidalgo
+   (0,31 / 0,32). Elles divergent sur Jadot (0,31 / 0,06), Lassalle (0,58 / 0,86) et les putatifs
+   jamais au T1 réel. Avec 37 lignes de reports sur 4 électorats, ce sont les électorats mesurés
+   qui fixent les ν, pas les autres.
+4. **Double compte** : $s_{ab}$ monte de 0,7 pt, juste au-delà du seuil de 0,5.
+
+**Verdict (règle fixée avant lecture) : R2 ne passe pas encore.** Les critères 4 et 5 échouent ;
+1, 2 et 3 passent, avec un résultat fort hors échantillon. On ne passe pas à V1. Les remèdes déjà
+écrits sont à appliquer dans l'ordre :
+
+- (a) phase 2 de §8.8, quatre chaînes parties du mode dominant (chaîne 0), pour la stabilité
+  des ν ;
+- (b) si $s_{ab}$ reste au-delà de 0,5 pt, le repli de §8.44.4 : retirer le duel Macron–Le Pen
+  des notices qui publient des reports.
+
+Rappel de la limite de §8.44.5 : avant le T1, sans reports, ce gain n'existe pas. Le test V1
+dira ce qui en reste.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
