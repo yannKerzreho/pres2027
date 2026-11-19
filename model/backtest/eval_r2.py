@@ -35,7 +35,9 @@ def reconstruire(variante: str, stem: str, coupure: str = "T2-7", chaines=None):
                            "hier2d": {"eta_hier": True, "carte_2d": True, "_reports": True},
                            "hier_rep": {"eta_hier": True, "_reports": True},
                            "hiercercle": {"eta_hier": True, "carte_cercle": True, "_reports": True},
-                           "hiercercle_sr": {"eta_hier": True, "carte_cercle": True}}[variante])
+                           "hiercercle_sr": {"eta_hier": True, "carte_cercle": True},
+                           "hiercercle_ra": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True},
+                           "hier_ra": {"eta_hier": True, "_reports_avant": True}}[variante])
     ref = sr.T1_DATES[ELECTION] if coupure.startswith("T1") else sr.T2_DATES[ELECTION]
     as_of = ref - pd.Timedelta(days=int(coupure.split("-")[1]))
     raw = sr.polls_historiques(ELECTION, as_of)
@@ -184,7 +186,7 @@ def par_chaine(variante: str, stem: str, coupure: str) -> dict:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--variante", choices=["hier", "hier2d", "hier_rep", "hiercercle", "hiercercle_sr"], required=True)
+    ap.add_argument("--variante", choices=["hier", "hier2d", "hier_rep", "hiercercle", "hiercercle_sr", "hiercercle_ra", "hier_ra"], required=True)
     ap.add_argument("--stem", default=None)
     ap.add_argument("--coupure", default="T2-7")
     ap.add_argument("--par-chaine", action="store_true", help="critère 4 révisé (écarts entre chaînes)")

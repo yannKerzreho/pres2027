@@ -36,3 +36,16 @@ def test_modele_joint_partage_et_densite_finie():
     assert abs(z17[i17] - z22[i22]) < 1e-6
     assert abs(float(tr["e2017__kappa"]["value"]) - float(tr["e2022__kappa"]["value"])) < 1e-6
     assert float(tr["e2017__arc"]["value"]) == float(tr["e2022__arc"]["value"])
+
+
+def test_reports_avant_t1_fenetre():
+    """§8.47.5 : reports d'avant T1 dans [as_of − 180 j ; as_of], aucun d'entre-deux-tours."""
+    import model.backtest.second_round as sr
+    b = M.preparer(2022, "T1-30", "hiercercle_ra")
+    kw = b["kwargs"]
+    assert "rep_y" in kw and len(kw["rep_y"]) > 50
+    as_of = M.as_of_de(2022, "T1-30")
+    # la ligne du temps commune s'arrête à as_of et ne remonte pas avant la fenêtre
+    assert kw["kl_basis"].shape[1] >= 1
+    assert "Jean-Luc Mélenchon" in {b["candidats"][i] for i in list(kw["rep_k"])}
+    assert as_of < sr.T1_DATES[2022]

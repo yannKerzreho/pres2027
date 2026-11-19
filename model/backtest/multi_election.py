@@ -38,6 +38,9 @@ VARIANTES = {
     "hier_rep": {"eta_hier": True, "_reports": True},
     "hiercercle": {"eta_hier": True, "carte_cercle": True, "_reports": True},
     "hiercercle_sr": {"eta_hier": True, "carte_cercle": True},
+    # §8.47.5 : + reports publiés avant le T1
+    "hiercercle_full": {"eta_hier": True, "carte_cercle": True, "_reports": True, "_reports_avant": True},
+    "hiercercle_ra": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True},
 }
 
 # (élection, coupure, variante) ; « complet » = T2−1 + nœud du résultat T1.
@@ -45,6 +48,7 @@ CONFIGS = {
     "A_cercle": {"cercle": True, "blocs": [(2017, "complet", "hiercercle"), (2022, "T1-30", "hiercercle_sr")]},
     "A_segment": {"cercle": False, "blocs": [(2017, "complet", "hier_rep"), (2022, "T1-30", "hier")]},
     "B_cercle": {"cercle": True, "blocs": [(2022, "complet", "hiercercle"), (2017, "T1-30", "hiercercle_sr")]},
+    "A2_cercle": {"cercle": True, "blocs": [(2017, "complet", "hiercercle_full"), (2022, "T1-30", "hiercercle_ra")]},
     "B_segment": {"cercle": False, "blocs": [(2022, "complet", "hier_rep"), (2017, "T1-30", "hier")]},
 }
 

@@ -300,11 +300,20 @@ POS_SCALE_BT = None  # --pos-scale : EXPÉRIENCE de diagnostic (spec §8.7), pas
 def _fit(raw, as_of, election, nuts):
     t = time.time()
     kw = dict(VARIANTE_KW)
+    reps = []
     if kw.pop("_reports", False):
         # R2 (spec_second_tour §8.44.4) : reports T1→T2 en vraisemblance ; seuls
         # ceux datés au plus `as_of` entrent (filtre dans `arrays_reports`).
+        reps.append(pd.read_csv(Path(PARSED_DIR) / f"reports_t2_{election}.csv"))
+    if kw.pop("_reports_avant", False):
+        # R3b (spec_second_tour §8.47.5) : reports publiés AVANT le T1 (intention T1),
+        # dans la fenêtre des sondages T1 [as_of − 180 j ; as_of].
+        ra = pd.read_csv(Path(PARSED_DIR) / f"reports_avant_t1_{election}.csv")
+        ra = ra[pd.to_datetime(ra["date_fin"]) >= as_of - pd.Timedelta(days=180)]
+        reps.append(ra.drop(columns=[c for c in ("nature_t1", "page") if c in ra.columns]))
+    if reps:
         res = load_results()
-        kw["reports"] = pd.read_csv(Path(PARSED_DIR) / f"reports_t2_{election}.csv")
+        kw["reports"] = pd.concat(reps, ignore_index=True)
         kw["champ_reports"] = res[(res.election == election) & (res.tour == "Premier tour")].candidat.tolist()
     fit = fit_spatial_pooling(raw, str(as_of.date()), min_poll_date="1900-01-01",
                               order_groups=ORDER_GROUPS_HISTORIQUES[election],
@@ -513,7 +522,7 @@ def main() -> None:
     ap.add_argument("--coupure", default=None, choices=["T1-30", "T1-1", "T2-7"],
                     help="V2 : une seule coupure")
     ap.add_argument("--lister", action="store_true", help="liste les tâches unitaires et sort")
-    ap.add_argument("--variante", choices=["abst", "eta", "geo", "geo1", "hier", "hier_maison", "hier_notice", "hier2d", "hier_rep", "hiercercle", "hiercercle_sr"], default="abst",
+    ap.add_argument("--variante", choices=["abst", "eta", "geo", "geo1", "hier", "hier_maison", "hier_notice", "hier2d", "hier_rep", "hiercercle", "hiercercle_sr", "hiercercle_ra", "hier_ra"], default="abst",
                     help="abst = abstention + valence ; eta = valence seule ; geo = κ + abstention, "
                          "sans valence ; geo1 = abstention seule, κ = 1 (spec §8.9) ; hier = abst à échelle de "
                          "valence apprise (§8.10)")
@@ -542,7 +551,7 @@ def main() -> None:
     if args.ancres_famille:
         VARIANTE_KW["ancres_famille"] = True
     POS_SCALE_BT = args.pos_scale
-    ABSTENTION = args.variante in ("abst", "geo", "geo1", "hier", "hier_maison", "hier_notice", "hier2d", "hier_rep", "hiercercle", "hiercercle_sr")
+    ABSTENTION = args.variante in ("abst", "geo", "geo1", "hier", "hier_maison", "hier_notice", "hier2d", "hier_rep", "hiercercle", "hiercercle_sr", "hiercercle_ra", "hier_ra")
     VARIANTE_KW.update({"geo": {"eta_scale": 0.0},
                         "geo1": {"eta_scale": 0.0, "kappa_log_scale": 1e-3},
                         "hier": {"eta_hier": True},
@@ -554,7 +563,9 @@ def main() -> None:
                         "hier_rep": {"eta_hier": True, "_reports": True},
                         # R3 (spec §8.46) : votants sur un cercle, avec / sans reports
                         "hiercercle": {"eta_hier": True, "carte_cercle": True, "_reports": True},
-                        "hiercercle_sr": {"eta_hier": True, "carte_cercle": True}}.get(args.variante, {}))
+                        "hiercercle_sr": {"eta_hier": True, "carte_cercle": True},
+                        "hiercercle_ra": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True},
+                        "hier_ra": {"eta_hier": True, "_reports_avant": True}}.get(args.variante, {}))
     SECOND_TOUR = not args.sans_t2
     if args.sans_t2 and args.only != "v2":
         ap.error("--sans-t2 n'a de sens qu'en V2 (V1 prédit un duel)")
