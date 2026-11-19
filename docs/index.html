@@ -42,6 +42,7 @@
     à droite, la probabilité d'être qualifié·e au 2<sup>nd</sup> tour et celle d'arriver
     en tête au 1<sup>er</sup>. <b>Survolez une ligne</b> pour voir la distribution complète.</p>
   <div id="forecast"></div>
+  <div class="masques" id="masques" hidden></div>
 
   <h2>Intentions &amp; sondages</h2>
   <p class="legend">Points = sondages (part brute par institut) · ligne = estimation du modèle ·
@@ -95,6 +96,15 @@ const CHART_START = "2026-01-01";
 let MODELES = [];
 let COURANT = null;
 let DERNIER = null;   // dernier snapshot chargé, pour re-rendre au changement de thème
+// Candidats plus testés depuis Site.JOURS_SANS_SONDAGE jours : masqués des
+// barres, courbes, légendes et duels — affichage seulement, le modèle les garde.
+// Replis : un `site.js` antérieur encore en cache (Pages le garde ~10 min)
+// ne doit pas casser la page — on ne masque alors personne.
+const nonTeste = Site.nonTeste || (() => false);
+const chargeDerniersSondages = Site.chargeDerniersSondages || (async () => ({}));
+const lienMasques = Site.lienMasques || (() => {});
+let MONTRER_MASQUES = false;
+const affiche = (nom, asOf) => MONTRER_MASQUES || !nonTeste(nom, asOf);
 
 function interpAt(pts, day){
   // valeur interpolée linéairement à un jour donné (pts triés, y non nul)
@@ -275,7 +285,8 @@ function renderNowcast(latest){
   // Tri sur la PART, c'est-à-dire sur la longueur de la barre : un classement par
   // probabilité de qualification produisait des barres en désordre, dont l'œil
   // cherchait la logique.
-  const slots=Object.keys(fc).sort((a,b)=>fc[b].part_moyenne-fc[a].part_moyenne);
+  const slots=Object.keys(fc).filter(s=>affiche(s,latest.as_of))
+    .sort((a,b)=>fc[b].part_moyenne-fc[a].part_moyenne);
   barres(document.getElementById("forecast"), slots.map(s=>({
     nom:s, moyenne:fc[s].part_moyenne, ic90:fc[s].ic90,
     pTop2:fc[s].p_qualifie_top2, pPremier:fc[s].p_arrive_premier,
@@ -286,7 +297,7 @@ function renderNowcast(latest){
 
 function renderDuels(latest){
   const host=document.getElementById("duels");host.innerHTML="";
-  const duels=latest.duels_probables||[];
+  const duels=(latest.duels_probables||[]).filter(d=>d.candidats.every(c=>affiche(c,latest.as_of)));
   const dm=Math.max(...duels.map(x=>x.probabilite),1e-9);
   duels.slice(0,6).forEach(d=>{const e=document.createElement("div");e.className="duel";
     e.innerHTML=`<div class="dtrack"><div class="dbar" style="width:${100*d.probabilite/dm}%"></div>
@@ -367,7 +378,7 @@ function dessineCourbe(){
     ? Object.keys(autre.nowcast).sort((a,b)=>autre.nowcast[b].mean-autre.nowcast[a].mean)
     : Object.keys(latest.forecast_scrutin).sort((a,b)=>
         latest.forecast_scrutin[b].part_moyenne-latest.forecast_scrutin[a].part_moyenne);
-  const topSlots=ordre.slice(0,5);
+  const topSlots=ordre.filter(s=>affiche(s,src.as_of||latest.as_of)).slice(0,5);
   // Jours qui apportent de l'information : les dates de fin de sondage. Le graphe
   // temporel n'y marque ses points que là (cf. timeChart) — la trajectoire étant
   // échantillonnée tous les 7 jours, marquer chaque point de grille alignerait
@@ -402,6 +413,19 @@ function dessineCourbe(){
   chips(document.getElementById("legendB"),seriesB);
   timeChart(document.getElementById("chartB"),seriesB,{scatter,xMin:CHART_START,joursInfo});
   renderListes();
+  majLienMasques(latest, autre);
+}
+
+// Le lien compte les candidats masqués de TOUT ce que la page montre : barres,
+// courbe de la liste choisie, duels.
+function majLienMasques(latest, autre){
+  const noms=new Set([...Object.keys(latest.forecast_scrutin||{}),
+    ...Object.keys(autre?.nowcast||{}),
+    ...(latest.duels_probables||[]).flatMap(d=>d.candidats)]);
+  const masques=[...noms].filter(n=>nonTeste(n,(autre&&autre.as_of)||latest.as_of));
+  lienMasques(document.getElementById("masques"),masques,MONTRER_MASQUES,()=>{
+    MONTRER_MASQUES=!MONTRER_MASQUES; peindre(DERNIER);
+  });
 }
 
 function renderSecondTour(latest){
@@ -489,7 +513,8 @@ async function loadModel(id){
         sw.appendChild(b);
       });
     }
-    await loadModel(MODELES[0].id);
+    await Promise.all([loadModel(MODELES[0].id), chargeDerniersSondages()])
+      .then(()=>peindre(DERNIER));
     paint();
     // Facultatif : sans `listes.json` (site antérieur, échec du job), la page
     // reste celle d'avant, sans sélecteur.

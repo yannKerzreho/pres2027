@@ -25,6 +25,7 @@ on:
 # déploiement sur push, sinon un commit humain sur docs/ attend le cron.
 permissions:
   contents: write
+  issues: write     # alertes de production -> issues (dernière étape)
 
 # Deux exécutions simultanées (cron + lancement manuel) se marcheraient dessus :
 # elles écrivent le même snapshot du jour et poussent sur la même branche.
@@ -36,6 +37,12 @@ jobs:
   update:
     runs-on: ubuntu-latest
     timeout-minutes: 45   # runs mesurés de 9 à 20 min (nov. 2026)
+    # Chaque étape qui détecte un problème demandant une décision (candidat à
+    # classer, sondeur inconnu, ingestion abandonnée, modèle en échec) l'annote
+    # (::error::/::warning::) et l'ajoute ici ; la dernière étape en fait des
+    # issues (cf. pipeline/alertes.py).
+    env:
+      ALERTES_JSONL: /tmp/alertes-${{ github.run_id }}.jsonl
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -92,8 +99,14 @@ jobs:
             echo "sondages modifiés depuis le dernier commit : recalcul"
           fi
 
+      # `!cancelled()` : une ingestion abandonnée (mise en page Wikipédia
+      # changée, 17/11/2026) n'empêche plus la production. Le CSV n'a pas été
+      # écrasé ; les modèles tournent sur les sondages de la veille, le site
+      # reste daté du jour, et l'abandon est signalé (étape rouge + issue).
+      # `model.run` isole déjà les modèles entre eux : un modèle en échec garde
+      # son dernier snapshot, les autres publient.
       - name: Modèles du site -> docs/data/
-        if: ${{ steps.etat.outputs.a_jour != 'true' }}
+        if: ${{ !cancelled() && steps.etat.outputs.a_jour != 'true' }}
         run: python -m model.run
 
       # `!cancelled()` et pas le succès implicite : `model.run` échoue APRÈS
@@ -123,3 +136,12 @@ jobs:
           # jour pour une raison sans rapport avec le modèle.
           git pull --rebase origin "${GITHUB_REF_NAME}"
           git push origin "HEAD:${GITHUB_REF_NAME}"
+
+      # Une issue par type d'alerte, mise à jour si elle est déjà ouverte (pas
+      # de doublon d'un jour sur l'autre). Un échec ici ne doit pas masquer le
+      # reste : simple avertissement.
+      - name: Alertes -> issues
+        if: ${{ !cancelled() }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python -m pipeline.alertes publier "$ALERTES_JSONL" || echo "::warning::publication des alertes en issues impossible"

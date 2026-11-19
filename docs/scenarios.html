@@ -44,6 +44,7 @@
     <a data-preset="rn-lepen">RN = Le&nbsp;Pen</a>
     <a data-preset="rn-bardella">RN = Bardella</a>
   </div>
+  <div class="masques" id="masques" hidden></div>
 
   <h2>Intentions de vote</h2>
   <p class="legend">Part estimée <strong>au jour du scrutin</strong>, pas aujourd'hui&nbsp;:
@@ -74,6 +75,16 @@ const {pct, prob, nb, echappe, getJSON, barres, resumeDepuisTirages,
        montrerFiche, placerFiche, cacherFiche} = Site;
 const couleur = (nom) => Couleurs.couleur(nom);
 let D = null, on = [], ARTEFACT = "./data/spatial-pooling/scenarios.json";
+// Candidats plus testés depuis Site.JOURS_SANS_SONDAGE jours avant le snapshot :
+// absents du sélecteur et des raccourcis tant qu'on ne les réaffiche pas. Le
+// fit, lui, les garde (leurs sondages y sont) : affichage seulement.
+// Replis : un `site.js` antérieur encore en cache (Pages le garde ~10 min)
+// ne doit pas casser la page — on ne masque alors personne.
+const nonTeste = Site.nonTeste || (() => false);
+const chargeDerniersSondages = Site.chargeDerniersSondages || (async () => ({}));
+const lienMasques = Site.lienMasques || (() => {});
+let MONTRER_MASQUES = false;
+const masque = (i) => !MONTRER_MASQUES && nonTeste(D.candidats[i], D.as_of);
 
 // pi pour un champ arbitraire, tirage par tirage : c'est exactement le calcul du
 // modèle (softmax masqué sur la grille de quadrature), et il tient dans le
@@ -170,11 +181,18 @@ function normales(n, graine) {
 // de distance — des intervalles beaucoup trop serrés.
 const REPLIQUES = 6;   // par tirage postérieur
 
-function projeteAuScrutin(tirages) {
+// `idx` : indices GLOBAUX (dans D.candidats) des candidats cochés, dans l'ordre
+// des colonnes de `tirages`. Le bruit de projection est tiré par candidat, pas
+// par rang dans la liste cochée : sinon retirer Arthaud décalait d'un cran le
+// bruit de TOUS les suivants, et la comparaison avant/après mesurait un nouveau
+// tirage de Monte-Carlo (±1 pt sur P(2nd tour), Le Pen bougeait de 0,4 pt sans
+// qu'aucune part ne change avant projection) au lieu de l'effet du retrait.
+function projeteAuScrutin(tirages, idx) {
   const L = D.projection; if (!L) return tirages;
   const h = Math.max(L.horizon_jours, 0);
   const sd = Math.sqrt(2*L.sigma2*(1 - Math.exp(-h/L.tau)));
-  const K = tirages[0].length;
+  const K = tirages[0].length, N = D.candidats.length;
+  if (!idx) idx = Array.from({length:K}, (_,k) => k);
   // Chaque tirage postérieur est répliqué avec un bruit de projection
   // indépendant : l'écart sondages-urne a des queues épaisses, et 300 tirages
   // en estiment mal les quantiles à 5/95 %. Mesuré contre le calcul Python de
@@ -183,15 +201,15 @@ function projeteAuScrutin(tirages) {
   const base = [];
   for (let r=0; r<REPLIQUES; r++) for (const t of tirages) base.push(t);
   const S = base.length;
-  const g1 = normales(S*K, 20260814), g2 = normales(S*K, 987654321);
+  const g1 = normales(S*N, 20260814), g2 = normales(S*N, 987654321);
   const out = [];
   for (let s=0; s<S; s++) {
     const al = new Array(K); let mx = -Infinity;
     for (let k=0;k<K;k++) {
-      const z = g2[s*K+k];
+      const z = g2[s*N+idx[k]];
       // sinh-arcsinh : loc + scale*sinh((asinh(z) + skew)/tail)
       const d = L.delta_scale * Math.sinh((Math.asinh(z) + L.delta_skew)/L.delta_tail);
-      al[k] = Math.log(Math.max(base[s][k], 1e-9)) + sd*g1[s*K+k] + d;
+      al[k] = Math.log(Math.max(base[s][k], 1e-9)) + sd*g1[s*N+idx[k]] + d;
       if (al[k] > mx) mx = al[k];
     }
     let tot = 0; const e = al.map(x => { const y = Math.exp(x-mx); tot += y; return y; });
@@ -259,7 +277,7 @@ function dessine() {
     axe.innerHTML = ""; return;
   }
   const {idx, tirages} = partsParTirage(masque);
-  const auScrutin = projeteAuScrutin(tirages);
+  const auScrutin = projeteAuScrutin(tirages, idx);
   const P = probabilites(auScrutin);
   const stats = idx.map((i,k) => {
     const r = resumeDepuisTirages(auScrutin.map(t => t[k]));
@@ -352,8 +370,8 @@ function dessine() {
 
 function preset(nom) {
   const c = D.candidats;
-  const a = (liste) => c.map(x => liste.includes(x));
-  if (nom === "tous") on = c.map(() => true);
+  const a = (liste) => c.map((x,i) => liste.includes(x) && !masque(i));
+  if (nom === "tous") on = c.map((_,i) => !masque(i));
   if (nom === "sondage") on = a(D.champ_modal || c);
   if (nom === "rn-lepen") on = a((D.champ_modal||c).filter(x => x !== "Bardella").concat(["Le Pen"]));
   if (nom === "rn-bardella") on = a((D.champ_modal||c).filter(x => x !== "Le Pen").concat(["Bardella"]));
@@ -361,7 +379,20 @@ function preset(nom) {
 }
 
 function rendPicker() {
-  document.getElementById("picker").innerHTML = D.candidats.map((c,i) =>
+  // Un raccourci qui ne coche qu'un candidat masqué n'a plus de sens affiché.
+  const iB = D.candidats.indexOf("Bardella");
+  document.querySelector('[data-preset="rn-bardella"]').hidden = iB < 0 || masque(iB);
+  const iL = D.candidats.indexOf("Le Pen");
+  document.querySelector('[data-preset="rn-lepen"]').hidden = iL < 0 || masque(iL);
+  lienMasques(document.getElementById("masques"),
+    D.candidats.filter(c => nonTeste(c, D.as_of)), MONTRER_MASQUES, () => {
+      MONTRER_MASQUES = !MONTRER_MASQUES;
+      // Masquer, c'est aussi décocher : un candidat invisible ne doit pas peser
+      // en silence sur les barres.
+      if (!MONTRER_MASQUES) on = on.map((x,i) => x && !masque(i));
+      rendPicker(); dessine();
+    });
+  document.getElementById("picker").innerHTML = D.candidats.map((c,i) => masque(i) ? "" :
     `<button data-i="${i}" class="${on[i]?"on":""}" aria-pressed="${on[i]?"true":"false"}"
       style="${on[i]?`background:${couleur(c)}`:""}">${echappe(c)}</button>`).join("");
 }
@@ -372,8 +403,8 @@ function rendPicker() {
 getJSON("./data/models.json")
   .then(m => { const e = (m.scenarios||[])[0]; if (e && e.artefact) ARTEFACT = "./data/"+e.artefact; })
   .catch(() => {})
-  .then(() => getJSON(ARTEFACT))
-  .then(d => {
+  .then(() => Promise.all([getJSON(ARTEFACT), chargeDerniersSondages()]))
+  .then(([d]) => {
     D = d;
     // On part de la MÊME liste que l'onglet Suivi (RN = Le Pen), pour que les
     // deux pages soient lisibles ensemble. « Tout le monde » reste à un clic,
@@ -384,7 +415,7 @@ getJSON("./data/models.json")
     const retires = D.retires || [];
     const base = (D.champ_modal || D.candidats).filter(x => x !== "Bardella" && !retires.includes(x));
     if (!base.includes("Le Pen")) base.push("Le Pen");
-    on = D.candidats.map(c => base.includes(c));
+    on = D.candidats.map((c,i) => base.includes(c) && !masque(i));
     rendPicker(); dessine();
     document.getElementById("picker").addEventListener("click", e => {
       const b = e.target.closest("button"); if (!b) return;

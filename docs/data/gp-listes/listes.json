@@ -103,24 +103,6 @@
   {
    "date": "2026-03-22",
    "type": "entree",
-   "id": "04966243",
-   "candidats": [
-    "Arthaud",
-    "Attal",
-    "Bardella",
-    "Dupont-Aignan",
-    "Glucksmann",
-    "Mélenchon",
-    "Retailleau",
-    "Roussel",
-    "Tondelier",
-    "Zemmour"
-   ],
-   "libelle": "avec Attal, Bardella, sans Le Pen, Philippe"
-  },
-  {
-   "date": "2026-03-22",
-   "type": "entree",
    "id": "78307d1e",
    "candidats": [
     "Arthaud",
@@ -135,6 +117,24 @@
     "Zemmour"
    ],
    "libelle": "avec Bardella, sans Le Pen"
+  },
+  {
+   "date": "2026-03-22",
+   "type": "entree",
+   "id": "04966243",
+   "candidats": [
+    "Arthaud",
+    "Attal",
+    "Bardella",
+    "Dupont-Aignan",
+    "Glucksmann",
+    "Mélenchon",
+    "Retailleau",
+    "Roussel",
+    "Tondelier",
+    "Zemmour"
+   ],
+   "libelle": "avec Attal, Bardella, sans Le Pen, Philippe"
   },
   {
    "date": "2026-03-27",
