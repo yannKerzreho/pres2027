@@ -299,10 +299,17 @@ POS_SCALE_BT = None  # --pos-scale : EXPÉRIENCE de diagnostic (spec §8.7), pas
 
 def _fit(raw, as_of, election, nuts):
     t = time.time()
+    kw = dict(VARIANTE_KW)
+    if kw.pop("_reports", False):
+        # R2 (spec_second_tour §8.44.4) : reports T1→T2 en vraisemblance ; seuls
+        # ceux datés au plus `as_of` entrent (filtre dans `arrays_reports`).
+        res = load_results()
+        kw["reports"] = pd.read_csv(Path(PARSED_DIR) / f"reports_t2_{election}.csv")
+        kw["champ_reports"] = res[(res.election == election) & (res.tour == "Premier tour")].candidat.tolist()
     fit = fit_spatial_pooling(raw, str(as_of.date()), min_poll_date="1900-01-01",
                               order_groups=ORDER_GROUPS_HISTORIQUES[election],
                               couverture_min=None, abstention=ABSTENTION,
-                              second_tour=SECOND_TOUR, **VARIANTE_KW,
+                              second_tour=SECOND_TOUR, **kw,
                               **({"pos_scale": POS_SCALE_BT} if POS_SCALE_BT else {}), **nuts)
     return fit, round(time.time() - t, 1)
 
@@ -313,7 +320,11 @@ def _diag(fit, dt):
             "kappa": d.get("kappa"), "omega": d.get("omega"), "rhat_t2": d.get("rhat_t2"), "sigma_t2": d.get("sigma_t2"), "secondes": dt,
             "sigma_maison_t2": d.get("sigma_maison_t2"), "sigma_notice_t2": d.get("sigma_notice_t2"),
             "eta": {c: round(float(x), 3) for c, x in zip(fit.candidates, fit.eta_draws.mean(0))}
-            if fit.eta_draws is not None else None}
+            if fit.eta_draws is not None else None,
+            # carte 2D (spec §8.44) : positions en u, λ, rayon moyen en v
+            **({"nu": {c: round(float(x), 3) for c, x in zip(fit.candidates, fit.nu_draws.mean(0))},
+                "lambda_u": round(float(fit.lambda_draws.mean()), 4)} if fit.nu_draws is not None else {}),
+            "sigma_v_moyen": round(float(fit.sigma_draws.mean()), 4)}
 
 
 def v1_paire_retiree(election: int, nuts: dict, seule: tuple | None = None) -> list[dict]:
@@ -500,7 +511,7 @@ def main() -> None:
     ap.add_argument("--coupure", default=None, choices=["T1-30", "T1-1", "T2-7"],
                     help="V2 : une seule coupure")
     ap.add_argument("--lister", action="store_true", help="liste les tâches unitaires et sort")
-    ap.add_argument("--variante", choices=["abst", "eta", "geo", "geo1", "hier", "hier_maison", "hier_notice"], default="abst",
+    ap.add_argument("--variante", choices=["abst", "eta", "geo", "geo1", "hier", "hier_maison", "hier_notice", "hier2d"], default="abst",
                     help="abst = abstention + valence ; eta = valence seule ; geo = κ + abstention, "
                          "sans valence ; geo1 = abstention seule, κ = 1 (spec §8.9) ; hier = abst à échelle de "
                          "valence apprise (§8.10)")
@@ -529,12 +540,14 @@ def main() -> None:
     if args.ancres_famille:
         VARIANTE_KW["ancres_famille"] = True
     POS_SCALE_BT = args.pos_scale
-    ABSTENTION = args.variante in ("abst", "geo", "geo1", "hier", "hier_maison", "hier_notice")
+    ABSTENTION = args.variante in ("abst", "geo", "geo1", "hier", "hier_maison", "hier_notice", "hier2d")
     VARIANTE_KW.update({"geo": {"eta_scale": 0.0},
                         "geo1": {"eta_scale": 0.0, "kappa_log_scale": 1e-3},
                         "hier": {"eta_hier": True},
                         "hier_maison": {"eta_hier": True, "effets_maison": True},
-                        "hier_notice": {"eta_hier": True, "effet_notice_seul": True}}.get(args.variante, {}))
+                        "hier_notice": {"eta_hier": True, "effet_notice_seul": True},
+                        # R2 (spec §8.44) : carte 2D + reports en vraisemblance (drapeau éteint ailleurs)
+                        "hier2d": {"eta_hier": True, "carte_2d": True, "_reports": True}}.get(args.variante, {}))
     SECOND_TOUR = not args.sans_t2
     if args.sans_t2 and args.only != "v2":
         ap.error("--sans-t2 n'a de sens qu'en V2 (V1 prédit un duel)")

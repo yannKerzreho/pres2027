@@ -58,6 +58,10 @@ class SpatialPoolingFit:
     # duels eux-mêmes (sortie de `build_duel_arrays`). Aucun usage en production.
     w_path_draws: np.ndarray | None = None   # (S, N, T) chemin de w (tracker, spec_spatial_pooling §10)
     w_dates: np.ndarray | None = None        # (T,) ordinaux des dates du chemin
+    nu_draws: np.ndarray | None = None       # (S, N) carte 2D (spec_second_tour §8.44)
+    lambda_draws: np.ndarray | None = None   # (S,)
+    reports_theta_draws: np.ndarray | None = None   # (S, R, 3) cellules prédites des reports en fit
+    reports_rows: list | None = None         # [(notice, électorat, date)] dans l'ordre de R
     duel_s_draws: np.ndarray | None = None
     duels: dict | None = None
 
@@ -78,7 +82,10 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
                         effet_notice_seul: bool = False,
                         lse_champ: bool = False,
                         sigma_w_par_candidat: bool = False,
-                        ancres_famille: bool = False) -> SpatialPoolingFit:
+                        ancres_famille: bool = False,
+                        carte_2d: bool = False, nu_ancre_val: float = 0.3,
+                        reports: pd.DataFrame | None = None,
+                        champ_reports: list | None = None) -> SpatialPoolingFit:
     """Roster -> arrays -> NUTS, en une seule inférence jointe.
 
     `mu`, `sigma` et le chemin de `w` sont estimés ENSEMBLE. La chaîne en deux
@@ -119,6 +126,16 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         arrays["unique_dates"] = unique_dates
         duel_date_idx = np.searchsorted(unique_dates, np.floor(duels["dates"]))
 
+    rep = None
+    if reports is not None and has_t2:
+        rep = arrays_reports(reports, candidates, as_of, champ_reports)
+        if rep is not None:
+            unique_dates = np.union1d(arrays["unique_dates"], rep["dates"])
+            arrays["date_idx"] = np.searchsorted(unique_dates, np.floor(arrays["dates"]))
+            duel_date_idx = np.searchsorted(unique_dates, np.floor(duels["dates"]))
+            arrays["unique_dates"] = unique_dates
+            rep["date_idx"] = np.searchsorted(unique_dates, rep["dates"])
+
     if ancres_famille:
         from .geometry import ancres_par_famille
         anchors = ancres_par_famille(candidates, order_groups, min_gap)
@@ -150,6 +167,10 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
     )
     if sigma_w_par_candidat:
         kwargs["sigma_w_par_candidat"] = True
+    if carte_2d:
+        if not has_t2:
+            raise ValueError("carte_2d : l'ancre et l'ordre en u sont posés sur les finalistes d'un duel")
+        kwargs.update(carte_2d=True, nu_ancre_val=nu_ancre_val, **ancres_u(candidates, duels))
     if has_t2:
         kwargs.update(duel_a=jnp.asarray(duels["a"]), duel_b=jnp.asarray(duels["b"]),
                       duel_y=jnp.asarray(duels["y"]), duel_n=jnp.asarray(duels["n"]),
@@ -176,6 +197,10 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
             noms_maisons = kwargs.pop("_noms_maisons")
             if effet_notice_seul:
                 kwargs["n_maisons"] = 0
+    if rep is not None:
+        kwargs.update(rep_y=jnp.asarray(rep["y"]), rep_date_idx=jnp.asarray(rep["date_idx"]),
+                      rep_k=jnp.asarray(rep["k"]), rep_a=jnp.asarray(rep["a"]), rep_b=jnp.asarray(rep["b"]),
+                      rep_champ=jnp.asarray(rep["champ"]))
     t0 = time.time()
     # `mcmc_runner` : injectable (backtest découpé par chaîne, cf.
     # `model.backtest.second_round --chaine/--fusionner`), même signature que
@@ -192,7 +217,7 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
     # paramètres et écraserait le pire cas. On le retire du diagnostic.
     # `eta` ≡ 0 en variante sans valence (spec §8.9) : R-hat indéfini (NaN), exclu.
     diag = {k: v for k, v in numpyro_summary(samples, prob=0.9).items()
-            if k not in ("pi", "duel_s", "w_path") and not (k == "eta" and eta_scale == 0)}
+            if k not in ("pi", "duel_s", "w_path", "reports_theta") and not (k == "eta" and eta_scale == 0)}
     if has_t2:
         # `eta` d'un candidat sans duel suit son prior : R-hat valable, mais on
         # le distingue dans le diagnostic pour ne pas le confondre avec un
@@ -269,7 +294,64 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         duel_s_draws=(np.asarray(samples["duel_s"]).reshape(-1, len(duels["y"]))
                       if has_t2 else None),
         duels=duels if has_t2 else None,
+        nu_draws=np.asarray(samples["nu"]).reshape(-1, N) if "nu" in samples else None,
+        lambda_draws=np.asarray(samples["lambda_u"]).reshape(-1) if "lambda_u" in samples else None,
+        reports_theta_draws=(np.asarray(samples["reports_theta"]).reshape(-1, len(rep["y"]), 3)
+                             if "reports_theta" in samples else None),
+        reports_rows=rep["rows"] if rep is not None else None,
     )
+
+
+def _nom_court(s: str) -> str:
+    import unicodedata
+    s = unicodedata.normalize("NFKD", str(s)).encode("ascii", "ignore").decode().lower().strip()
+    return s.split()[-1] if s else s
+
+
+def ancres_u(candidates: list[str], duels: dict) -> dict:
+    """Ancres de la carte 2D (spec §8.44.3) : C = finaliste centriste (Macron, ou à
+    défaut le candidat en duel le plus fréquent hors RN), RN = Le Pen / Bardella."""
+    from collections import Counter
+    noms = [_nom_court(c) for c in candidates]
+    rn = next((i for i, n in enumerate(noms) if n in ("pen", "bardella")), None)
+    freq = Counter(list(np.asarray(duels["a"])) + list(np.asarray(duels["b"])))
+    c = next((i for i, n in enumerate(noms) if n == "macron"), None)
+    if c is None:
+        c = next((int(i) for i, _ in freq.most_common() if int(i) != rn), None)
+    return {"nu_ancre": c, "nu_ordre": rn}
+
+
+def arrays_reports(reports: pd.DataFrame, candidates: list[str], as_of: str,
+                   champ_reports: list | None) -> dict | None:
+    """Tableaux de reports (data/parsed/reports_t2_*.csv) -> observations de la
+    vraisemblance Dirichlet (spec §8.44.4). Une ligne par (notice, électorat) datée
+    au plus `as_of`, cellules (a, b, aucun) renormalisées, plancher 0,5 %."""
+    noms = {_nom_court(c): i for i, c in enumerate(candidates)}
+    complets = {c: i for i, c in enumerate(candidates)}
+    r = reports[pd.to_datetime(reports["date_fin"]) <= pd.Timestamp(as_of)]
+    if r.empty:
+        return None
+    champ = np.zeros(len(candidates))
+    for c in (champ_reports or []):
+        i = complets.get(c, noms.get(_nom_court(c)))
+        if i is not None:
+            champ[i] = 1.0
+    Y, K, A, Bf, D, rows = [], [], [], [], [], []
+    for (notice, elec), g in r.groupby(["notice", "electorat_t1"], sort=False):
+        a_lab, b_lab = [x.strip() for x in str(g["hypothese"].iloc[0]).replace("—", "–").split("–")]
+        ia, ib, k = noms.get(_nom_court(a_lab)), noms.get(_nom_court(b_lab)), complets.get(elec, noms.get(_nom_court(elec)))
+        parts = dict(zip(g["candidat_t2"], g["part"].astype(float)))
+        if None in (ia, ib, k) or not {a_lab, b_lab, "Aucun"} <= set(parts):
+            continue
+        y = np.maximum(np.array([parts[a_lab], parts[b_lab], parts["Aucun"]]), 0.5)
+        Y.append(y / y.sum()); K.append(k); A.append(ia); Bf.append(ib)
+        D.append(float(pd.Timestamp(g["date_fin"].iloc[0]).toordinal()))
+        rows.append((notice, elec, str(g["date_fin"].iloc[0])))
+        champ[[ia, ib, k]] = 1.0
+    if not Y:
+        return None
+    return {"y": np.array(Y), "k": np.array(K), "a": np.array(A), "b": np.array(Bf),
+            "dates": np.floor(np.array(D)), "champ": champ, "rows": rows}
 
 def pi_draws_for_mask(fit: SpatialPoolingFit, mask: np.ndarray) -> np.ndarray:
     """LE point de cette architecture (spec §7) : pi pour un scénario
@@ -284,6 +366,11 @@ def pi_draws_for_mask(fit: SpatialPoolingFit, mask: np.ndarray) -> np.ndarray:
     sondages récents d'un candidat se contredisent (pas besoin d'un mélange
     explicite comme linear_pooling -- cf. spec section "Incertitude" pour la
     comparaison et ses limites connues)."""
+    if fit.nu_draws is not None:                                          # carte 2D (§8.44)
+        from .geometry import spatial_shares_2d
+        return np.asarray(spatial_shares_2d(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
+                                            jnp.asarray(fit.nu_draws), jnp.asarray(fit.lambda_draws),
+                                            jnp.asarray(fit.w_draws), jnp.asarray(mask)))
     return np.asarray(spatial_shares(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
                                      jnp.asarray(fit.w_draws), jnp.asarray(mask)))
 
@@ -409,6 +496,19 @@ def projeter_w(fit: SpatialPoolingFit, horizon_days: float, seed: int = 27,
 def _duel_par_tirage(fit, w, ia: np.ndarray, ib: np.ndarray) -> np.ndarray:
     """Part de `ia[s]` contre `ib[s]` au tirage s (indices par tirage)."""
     s_idx = np.arange(len(ia))
+    if fit.nu_draws is not None:                                          # carte 2D (§8.44)
+        from .geometry import W2, duel_shares_poids, log_attractivite_2d
+        A = np.asarray(log_attractivite_2d(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
+                                           jnp.asarray(fit.nu_draws), jnp.asarray(fit.lambda_draws),
+                                           jnp.asarray(w)))
+        lse = None
+        if fit.omega_draws is not None:
+            from scipy.special import logsumexp
+            Am = A if fit.masque_lse is None else A + np.log(fit.masque_lse)[None, :, None]
+            lse = logsumexp(Am, axis=1)
+        return np.asarray(duel_shares_poids(A[s_idx, ia], A[s_idx, ib], fit.kappa_draws,
+                                            fit.eta_draws[s_idx, ia], fit.eta_draws[s_idx, ib],
+                                            lse, fit.omega_draws, W2))
     A = np.asarray(log_attractivite(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
                                     jnp.asarray(w)))                     # (S, N, B)
     extra = ()

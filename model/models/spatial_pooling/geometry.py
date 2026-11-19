@@ -238,3 +238,81 @@ def duel_expression(A_a, A_b, kappa, lse, omega) -> jnp.ndarray:
     k = jnp.asarray(kappa)[..., None]
     ins = jnp.logaddexp(k * A_a, k * A_b)
     return jax.nn.sigmoid(ins - (jnp.asarray(omega)[..., None] + k * lse))
+
+
+# --- Carte 2D (spec_second_tour §8.44, piste R2 ; drapeau `carte_2d`) ------------
+# Second axe u (système / anti-système), quadrature produit Gauss-Legendre
+# B × B_U, noyau SÉPARABLE N(v; mu, sigma)·N(u; nu, lambda) normalisé sur la
+# grille. Sur une grille aplatie de longueur B·B_U ; avec lambda → ∞ on retrouve
+# exactement le 1D (le facteur en u devient uniforme et se normalise).
+B_U = 7
+_glu_x, _glu_w = np.polynomial.legendre.leggauss(B_U)
+U_1D = 0.01 + (0.99 - 0.01) * (_glu_x + 1.0) / 2.0
+WU_1D = _glu_w / 2.0
+V2 = jnp.asarray(np.repeat(np.asarray(V), B_U))          # (B·B_U,), v lent, u rapide
+U2 = jnp.asarray(np.tile(U_1D, B))
+W2 = jnp.asarray(np.outer(np.asarray(W), WU_1D).ravel())
+
+
+def log_attractivite_2d(mu, sigma, nu, lam, w) -> jnp.ndarray:
+    """`A_i(v,u) = w_i + log phi_i(v,u)` sur la grille 2D aplatie (...,N,B·B_U).
+    `lam` : scalaire ou (...,) diffusable (λ commun aux candidats)."""
+    lam = jnp.asarray(lam)
+    lam = lam[..., None, None] if lam.ndim else lam
+    D = (-((V2 - mu[..., None]) ** 2) / (2 * sigma[..., None] ** 2)
+         - ((U2 - nu[..., None]) ** 2) / (2 * lam ** 2))
+    return w[..., None] + D - jax.nn.logsumexp(D, axis=-1, b=W2, keepdims=True)
+
+
+def spatial_shares_2d(mu, sigma, nu, lam, w, tested_mask) -> jnp.ndarray:
+    """Analogue 2D de `spatial_shares` (mêmes formes d'entrée et de sortie)."""
+    A = log_attractivite_2d(mu, sigma, nu, lam, w)
+    A = A - jnp.max(A, axis=-2, keepdims=True)
+    expA = jnp.exp(A)
+    numerator = expA * tested_mask[..., :, None]
+    denom = jnp.clip(numerator.sum(axis=-2, keepdims=True), 1e-12, None)
+    return jnp.sum((numerator / denom) * W2, axis=-1)
+
+
+def duel_shares_poids(A_a, A_b, kappa, eta_a, eta_b, lse, omega, poids) -> jnp.ndarray:
+    """`duel_shares` avec des poids de quadrature quelconques (grille 2D)."""
+    k = jnp.asarray(kappa)[..., None]
+    q = jax.nn.sigmoid(k * (A_a - A_b))
+    if lse is None:
+        g = jnp.sum(q * poids, axis=-1)
+    else:
+        rho = duel_expression(A_a, A_b, kappa, lse, omega)
+        g = jnp.sum(rho * q * poids, axis=-1) / jnp.clip(jnp.sum(rho * poids, axis=-1), 1e-12, None)
+    g = jnp.clip(g, 1e-6, 1.0 - 1e-6)
+    return jax.nn.sigmoid(jnp.log(g) - jnp.log1p(-g) + jnp.asarray(eta_a) - jnp.asarray(eta_b))
+
+
+def reports_cellules(A, champ_mask, ia, ib, k_idx, kappa, eta_diff, lse, omega, s_ab, poids, n_newton=4):
+    """Cellules (a, b, aucun) de l'électorat T1 `k_idx` (spec §8.38, §8.44.4),
+    différentiables : δ par `n_newton` pas de Newton depuis `eta_diff` pour que
+    l'agrégat des électorats du champ redonne `s_ab`.
+
+    A : (R, N, G) ; champ_mask : (N,) 0/1 ; ia, ib, k_idx : (R,) entiers ;
+    kappa, omega : scalaires ; eta_diff, s_ab : (R,) ; lse : (R, G) ou None."""
+    rows = jnp.arange(A.shape[0])
+    Am = A + jnp.log(jnp.clip(champ_mask, 1e-30, None))[None, :, None]
+    p = jnp.exp(Am - jax.nn.logsumexp(Am, axis=1, keepdims=True))         # (R,N,G)
+    A_a, A_b = A[rows, ia], A[rows, ib]
+    q = jax.nn.sigmoid(kappa * (A_a - A_b))
+    rho = jnp.ones_like(q) if lse is None else duel_expression(A_a, A_b, kappa, lse, omega)
+    E = jnp.einsum("rng,g->rn", p, poids)
+    pr = jnp.einsum("rng,rg,g->rn", p, rho, poids)
+    Rk = pr / jnp.clip(E, 1e-12, None)
+    G = jnp.clip(jnp.einsum("rng,rg,rg,g->rn", p, rho, q, poids) / jnp.clip(pr, 1e-12, None), 1e-6, 1 - 1e-6)
+    lG = jnp.log(G) - jnp.log1p(-G)
+    wgt = E * Rk * champ_mask[None, :]
+    wgt = wgt / jnp.clip(wgt.sum(1, keepdims=True), 1e-12, None)
+    d = jnp.asarray(eta_diff)
+    for _ in range(n_newton):
+        sg = jax.nn.sigmoid(lG + d[:, None])
+        f = (wgt * sg).sum(1) - s_ab
+        fp = (wgt * sg * (1 - sg)).sum(1)
+        d = d - f / jnp.clip(fp, 1e-6, None)
+    Gt = jax.nn.sigmoid(lG[rows, k_idx] + d)
+    R = Rk[rows, k_idx]
+    return jnp.stack([R * Gt, R * (1 - Gt), 1 - R], axis=-1), d
