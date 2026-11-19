@@ -2748,6 +2748,26 @@ multimodalité : 6 nats et 4 chaînes retenues sur la VM, contre 671 nats et 2 c
 Ce peut être la plateforme ou la graine, et c'est à garder en tête pour R3b. La suite est R3b
 (§8.47, session locale).
 
+### 8.48 Précision de la quadrature 1D aux petits σ (constat de §8.46.4 ; 0 fit)
+
+**Mesure.** On reconstruit les fits témoins 1D hier de 2022, sur les données courantes :
+`r2_temoin_hier_v2_2022_T2-7` et `_T1-30`. Les mêmes tirages postérieurs sont réévalués avec la
+grille de production (Gauss-Legendre, B = 25), puis avec une grille fine (B = 400). Les
+quantités publiées par les backtests sont :
+
+- le duel Macron–Le Pen prédit (`modele`) ;
+- les 10 duels clés de §8.44 ;
+- les parts T1 au T1 contre le résultat (MAE).
+
+Critère de lecture, fixé avant : un écart de plus de 0,5 pt sur un duel ou sur la MAE T1 rend
+le backtest 2022 sensible à la quadrature. Il faudrait alors refaire les chiffres 2022 publiés
+avec B plus grand (rien en production).
+
+**Garde-fou, en diagnostic seulement, sans changement de calcul.** `fit_spatial_pooling` publie
+`sigma_min` (la plus petite médiane a posteriori des σ) et `quadrature_fragile = sigma_min < 0,035`.
+Le seuil vient de §8.46.4 : à σ = 0,04, l'erreur de B = 25 vaut 0,6 pt au maximum sur des
+géométries aléatoires.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
