@@ -2035,6 +2035,18 @@ projection OU de $w$ (§6, point 1), pas par τ. Si l'on voulait que τ couvre l
 faudrait la moyenne à T2−7 : sensibilité notée dans la file. La couverture LOO de 5/5 n'apporte
 aucune information.
 
+**Sensibilité faite le 19/11** (`results/tau_t2_historique_t2m7.json`). On prend la moyenne des
+sondages connus à T2−7, de T2−13 à T2−7 ; 2002 n'a qu'une notice. Erreurs :
+
+| élection | 2002 | 2007 | 2012 | 2017 | 2022 |
+|---|---|---|---|---|---|
+| erreur en pt | +1,2 | +0,4 | −2,5 | +5,8 | +5,0 |
+
+A posteriori de τ (loi normale) : médiane **0,185**, moyenne 0,206, IC90 [0,11 ; 0,37] ; 0,207
+sans 2002. Student-t4 : 0,167. En une élection retirée, la normale reste meilleure (1,16 contre
+0,82). Avec cette fenêtre, la médiane rejoint 0,19 : **τ_T2 = 0,19 est confirmé dans les deux
+lectures**.
+
 **Lecture.** La médiane à 0,164 s'écarte de 0,19 de moins que le seuil de 0,05, et 0,19
 est dans l'IC90 de tous les sous-ensembles. **τ_T2 = 0,19 est confirmé**, du côté prudent :
 c'est la moyenne a posteriori, et non la médiane, qui vaut 0,18-0,19.

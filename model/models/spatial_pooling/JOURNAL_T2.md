@@ -61,7 +61,7 @@ l'historique, ajouter en bas de « Historique ».
         R2 se fait dans les deux cas, en mode réduit (2022 seul) si R1 passe.
   - [x] [FAIT 19/11 14:35Z, §8.44 « Avant le T1 » : sans reports, 2D = 1D sur les reports (Mélenchon 100 %, 0 % dans une chaîne), T1 égal (MAE 2,8-3,0 contre 3,0), lp multimodal (29 contre 4 nats) ⇒ R2 ABANDONNÉ POUR LE SITE ; piste (A) close] [ex-EN COURS (début 2026-11-19 12:20Z) : V2 T1−30 2022 hier2d, 4 chaînes indépendantes (aucun report n'est ≤ as_of) ; témoin 1D hier T1−30 ensuite, mêmes données (aucun hier T1−30 committé)] (revue 19/11, idée 2) **R2 V1 2022 à T1−30 sans reports**, 4 chaînes indépendantes (pas de phase 2), avec δ par notice (point 7) et le plancher de 1 % (point 8) ; critère 4 révisé (§8.44, révision 6) et écarts des duels hypothétiques entre chaînes. Si ν reste au prior et que les duels varient de plus de 2 pt ⇒ R2 abandonné pour le site. Après le témoin.
   - [x] [FAIT 19/11 15:40Z, §8.45 : STABLE — 4 chaînes retenues, écart max 0,90 pt sur les 78 paires (demi-IC90 9-17 pt) ⇒ aucun arbitrage] **(NOUVEAU 19/11, constat de §8.44) Stabilité entre chaînes des duels publiés 2027** : en 1D, Le Pen–Zemmour varie de 7,9 pt entre chaînes à T1−30 2022. Appliquer le critère (écart ≤ 2 pt entre ≥ 3 chaînes indépendantes) au fit de production 2027 (hier) sur toutes les paires publiées, en particulier celles jamais sondées : 0 fit si les chaînes du gel prospectif sont gardées, sinon 1 fit (4 chaînes, environ 30 min). Si des duels publiés dépassent 2 pt : ARBITRAGE À TRANCHER (élargir leur IC, ou ne pas les afficher).
-  - [ ] (revue 19/11, point 9) sensibilité τ_T2 avec la moyenne à T2−7, 0 fit, priorité basse.
+  - [x] [FAIT 19/11 16:15Z, §8.42 : fenêtre T2−13..T2−7 ⇒ médiane 0,185, moyenne 0,206 ; 0,19 confirmé] (revue 19/11, point 9) sensibilité τ_T2 avec la moyenne à T2−7, 0 fit, priorité basse.
   - [x] [FAIT 19/11 12:20Z, §8.44 « Témoin équitable » : 1D avec reports, Mélenchon +17,2, Jadot −8,3, hors fit MAE 8,2 contre 2,6 en 2D ⇒ 2D justifiée en entre-deux-tours] [ex-EN COURS (début 2026-11-19 11:32Z) : témoin équitable `hier_rep` (1D + reports), V2 T2−7 2022, 4 chaînes ; phase 2 ARRÊTÉE à 11:30Z (revue 19/11, point 5 : R̂ bon par construction, ne répond à rien)] [V2 2022 FAIT 19/11 10:35Z, spec §8.44 « Résultats » : critères 1-3 PASSENT (Mélenchon 62,3 contre 63,0 ; hors fit −3,5 pt contre +34,2 en 1D ; σ_v ×1,33 ; T1 non dégradé), 4 ÉCHOUE (R̂ ν 7,5), 5 de peu (s_ab +0,7 pt) ; κ 0,75 → 0,22. À FAIRE : (a) phase 2 §8.8 depuis la chaîne 0 (`--init-depuis second_round_hier2d_v2_2022_T2-7.json`), 4 chaînes ~1 h 30 ; (b) si s_ab > 0,5 pt, retirer le duel M–LP des notices à reports ; puis critères à nouveau, puis V1 2022 si 1-5 passent] [ex-EN COURS (début 2026-11-19 08:15Z) : code fait (drapeaux `carte_2d`, `reports` ; `--variante hier2d` ; tests test_carte_2d), fit V2 T2−7 2022 hier2d lancé (4 processus d'une chaîne, ~4-5 h, données de main au 19/11)] [MATHS FAITES 19/11 07:55Z, spec §8.44 (noyau séparable, ancres ν_C = 0,3 + ordre RN ≥ C, Dirichlet des reports avec c appris, Newton pour δ, critères figés) ; À FAIRE : code derrière drapeau (`carte_2d`, `reports`) + tests, puis fit V2 T2−7 2022 hier2d (4 chaînes × ~4 h)] (R2) **Carte 2D estimée dès le T1** (fit, VM cloud ; jamais sur le
         MacBook). Hypothèse à tester : avec un second axe u (système /
         anti-système), u porte une partie de la séparation entre candidats
@@ -148,12 +148,12 @@ l'historique, ajouter en bas de « Historique ».
         `model/backtest/suivi.py` 2022 (8 coupures) ; adopter seulement si MAE
         et couverture battent le σ_w commun. Sinon consigner « rôles
         spatial/gp assumés ».
-  - [ ] [DÉBLOQUÉ 18/11 23:05Z : données sur main (844495b), voir bloc PRIORITÉ en tête] (A) **Tableaux de reports T1→T2 des instituts** — ex-BLOQUÉ DONNÉES
+  - [x] [CLOS 19/11 : (A)(1) fait §8.38, (A)(2) réalisé dans R2 §8.44, abandonné pour le site] [DÉBLOQUÉ 18/11 23:05Z : données sur main (844495b), voir bloc PRIORITÉ en tête] (A) **Tableaux de reports T1→T2 des instituts** — ex-BLOQUÉ DONNÉES
         (demandés à la session pipeline-donnees le 17/11) : dès leur arrivée sur
         main, (1) validation sans fit : reports prédits par le modèle (tirages
         par électorat T1) contre reports mesurés, MAE par électorat ; (2) puis
         comme observations (multinomiale par électorat, maths d'abord).
-  - [ ] [OUVERT 19/11 par (A)(1), voir bloc PRIORITÉ] (D) Espace 2D (axe système/anti-système) — SEULEMENT si (A)(1) montre
+  - [x] [CLOS 19/11 : D-a et D-b greffés §8.40-8.41 (faux négatifs, revue), R2 §8.44 : abandonné pour le site] [OUVERT 19/11 par (A)(1), voir bloc PRIORITÉ] (D) Espace 2D (axe système/anti-système) — SEULEMENT si (A)(1) montre
         une erreur systématique par électorat que l'axe unique n'absorbe pas.
   - DÉBLOQUÉ 18/11 (844495b) : τ_T2 2002-2012, dates 2017.
 
@@ -800,6 +800,9 @@ Idées :
 
 - 2026-11-19 15:08-15:40Z (réveil) : stabilité entre chaînes des duels 2027
   (§8.45, 1 fit en 4 processus) : écart max 0,90 pt, rien à arbitrer.
+
+- 2026-11-19 16:08-16:15Z (réveil) : sensibilité τ_T2 à T2−7 (0 fit), 0,19
+  confirmé ; (A) et (D) cochés (clos).
 
 ## Revue Opus 2026-11-18 — intégration point par point
 

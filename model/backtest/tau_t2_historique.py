@@ -34,7 +34,7 @@ def finale(election: int) -> tuple[str, str, float]:
     return a, b, ya / (ya + yb)
 
 
-def sondages_finaux(election: int) -> tuple[pd.DataFrame, str]:
+def sondages_finaux(election: int, fenetre: str = "finale") -> tuple[pd.DataFrame, str]:
     """Une ligne par notice : part du vainqueur parmi les deux finalistes."""
     a, b, _ = finale(election)
     d = pd.read_csv(RACINE / "data/parsed" / f"intentions_{election}_wiki.csv")
@@ -55,15 +55,22 @@ def sondages_finaux(election: int) -> tuple[pd.DataFrame, str]:
                      "echantillon": g.echantillon.iloc[0], "p": ia / (ia + ib)})
     s = pd.DataFrame(rows)
     t1, t2 = pd.Timestamp(T1[election]), pd.Timestamp(T2[election])
+    if fenetre == "t2m7":
+        # Revue 19/11, point 9 : ce que sait le modèle à `as_of` = T2−7 (7 j avant).
+        fen = s[(s.date_fin > t2 - pd.Timedelta(days=14)) & (s.date_fin <= t2 - pd.Timedelta(days=7))
+                & (s.date_fin > t1)]
+        if len(fen):
+            return fen, "T2-13..T2-7"
+        return s[(s.date_fin > t1) & (s.date_fin <= t2 - pd.Timedelta(days=7))], "repli T1+1..T2-7"
     fen = s[(s.date_fin >= t2 - pd.Timedelta(days=7)) & (s.date_fin <= t2 - pd.Timedelta(days=1))]
     if len(fen):
         return fen, "T2-7..T2-1"
     return s[(s.date_fin > t1) & (s.date_fin < t2)], "repli entre-deux-tours"
 
 
-def observation(election: int) -> dict:
+def observation(election: int, fenetre: str = "finale") -> dict:
     _, _, y = finale(election)
-    s, fenetre = sondages_finaux(election)
+    s, fenetre = sondages_finaux(election, fenetre)
     p = s.p.to_numpy()
     k = len(p)
     pbar = float(p.mean())
@@ -110,8 +117,15 @@ def loo(obs: list[dict], loi: str) -> list[dict]:
 
 
 def main() -> None:
-    obs = [observation(e) for e in T1]
-    res = {"spec": "spec_second_tour §8.42", "observations": obs, "lois": {}}
+    import argparse
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--fenetre", choices=["finale", "t2m7"], default="finale")
+    args = ap.parse_args()
+    global OUT
+    if args.fenetre != "finale":
+        OUT = OUT.with_name(f"tau_t2_historique_{args.fenetre}.json")
+    obs = [observation(e, args.fenetre) for e in T1]
+    res = {"spec": "spec_second_tour §8.42", "fenetre": args.fenetre, "observations": obs, "lois": {}}
     sous = {"2002-2022": obs, "sans_2002": [o for o in obs if o["election"] != 2002],
             "2017-2022": [o for o in obs if o["election"] >= 2017]}
     for loi in ("normale", "student4"):
