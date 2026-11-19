@@ -50,6 +50,20 @@ l'historique, ajouter en bas de « Historique ».
   `second_round_hiercercle_v2_2022_T2-7_t4` (4 chaînes T4), pour débloquer R3b. Pas de
   mélange : les chaînes VM et T4 restent deux fits distincts ; le premier fini fait foi pour
   avancer, l'autre sert de contrôle de reproductibilité entre plateformes.
+  RÉSULTAT T4 (session locale, 21:30Z ; 10-15 min par chaîne ; fusion et `eval_r2` sur le Mac,
+  JSON `second_round_hiercercle_v2_2022_T2-7_t4.json`, `eval_r2_hiercercle_2022_t4.json`,
+  `eval_r2_hiercercle_2022_T2-7_par_chaine_t4.json`) — lecture brute, verdict formel à la
+  routine (§8.46.8, étape 1) :
+  - partages (toutes notices) : Mélenchon 71,1 (mesuré 63,0 ; +8,1), Pécresse 61,5 (65,0),
+    Jadot 87,5 (87,5), Zemmour 9,0 (9,4) ⇒ MAE des 4 partages 3,0 pt (2D 2,6 ; 1D avec
+    reports 8,2) ; NON calculé : la version hors fit (11 notices après `as_of`) ;
+  - T1 contre le résultat 1,09 pt (1D 1,23 ; 2D 1,17) ; σ_v 0,049 ; κ 0,73 ; arc 6,04 rad ⇒
+    f_arrière 0,038 seulement ;
+  - stabilité : lp par chaîne 5024 / 5695 / 5526 / 5692 (écart 671 nats), R̂ max 9,3 (mu),
+    chaînes retenues 1 et 3 ; écarts entre chaînes : partage Pécresse 8,7 pt, duel
+    Le Pen–Pécresse 7,8, Zemmour–Pécresse 5,7 ⇒ critère 4 révisé ÉCHOUE, comme pour la 2D.
+  ⇒ Le cercle REPRODUIT les reports quand il les a (prérequis de R3b rempli), mais sa
+  géométrie est multimodale.
   Étape 2 de R3 (V2 T1−30 2022, sans reports) : FAIT (T4, 19:41-20:14Z ; 6-10 min par chaîne
   sur le T4). Les `.npz` sont gitignorés : la session locale a fait elle-même la fusion
   (`--fusionner`) et `eval_r2 --variante hiercercle_sr --coupure T1-30 [--par-chaine]` sur

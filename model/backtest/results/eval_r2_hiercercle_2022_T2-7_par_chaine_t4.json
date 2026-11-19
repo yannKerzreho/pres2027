@@ -1,0 +1,132 @@
+{
+ "spec": "spec_second_tour §8.44 (révision 6)",
+ "variante": "hiercercle",
+ "stem": "second_round_hiercercle_v2_2022_T2-7_t4",
+ "coupure": "T2-7",
+ "chaines": [
+  {
+   "chaine": 0,
+   "lp": 5024.338846435547,
+   "partages": {
+    "Jean-Luc Mélenchon": 74.2,
+    "Valérie Pécresse": 70.1,
+    "Yannick Jadot": 87.7,
+    "Éric Zemmour": 10.1
+   },
+   "duels": {
+    "Emmanuel Macron / Marine Le Pen": 52.92,
+    "Emmanuel Macron / Jean-Luc Mélenchon": 56.86,
+    "Emmanuel Macron / Eric Zemmour": 64.97,
+    "Emmanuel Macron / Valérie Pécresse": 64.31,
+    "Marine Le Pen / Jean-Luc Mélenchon": 51.71,
+    "Marine Le Pen / Eric Zemmour": 68.07,
+    "Marine Le Pen / Valérie Pécresse": 53.66,
+    "Jean-Luc Mélenchon / Eric Zemmour": 59.1,
+    "Jean-Luc Mélenchon / Valérie Pécresse": 48.62,
+    "Eric Zemmour / Valérie Pécresse": 43.45
+   },
+   "t1_mae_pt": 1.058,
+   "kappa": 0.3884,
+   "nu": null,
+   "nu_sd_post_moyen": null
+  },
+  {
+   "chaine": 1,
+   "lp": 5694.948581542969,
+   "partages": {
+    "Jean-Luc Mélenchon": 71.2,
+    "Valérie Pécresse": 61.5,
+    "Yannick Jadot": 87.5,
+    "Éric Zemmour": 8.7
+   },
+   "duels": {
+    "Emmanuel Macron / Marine Le Pen": 53.02,
+    "Emmanuel Macron / Jean-Luc Mélenchon": 57.98,
+    "Emmanuel Macron / Eric Zemmour": 65.92,
+    "Emmanuel Macron / Valérie Pécresse": 65.08,
+    "Marine Le Pen / Jean-Luc Mélenchon": 52.75,
+    "Marine Le Pen / Eric Zemmour": 71.58,
+    "Marine Le Pen / Valérie Pécresse": 60.88,
+    "Jean-Luc Mélenchon / Eric Zemmour": 58.26,
+    "Jean-Luc Mélenchon / Valérie Pécresse": 52.52,
+    "Eric Zemmour / Valérie Pécresse": 40.04
+   },
+   "t1_mae_pt": 1.088,
+   "kappa": 0.6871,
+   "nu": null,
+   "nu_sd_post_moyen": null
+  },
+  {
+   "chaine": 2,
+   "lp": 5526.375805664063,
+   "partages": {
+    "Jean-Luc Mélenchon": 73.1,
+    "Valérie Pécresse": 63.2,
+    "Yannick Jadot": 87.7,
+    "Éric Zemmour": 9.6
+   },
+   "duels": {
+    "Emmanuel Macron / Marine Le Pen": 52.84,
+    "Emmanuel Macron / Jean-Luc Mélenchon": 58.13,
+    "Emmanuel Macron / Eric Zemmour": 66.49,
+    "Emmanuel Macron / Valérie Pécresse": 63.96,
+    "Marine Le Pen / Jean-Luc Mélenchon": 54.48,
+    "Marine Le Pen / Eric Zemmour": 71.39,
+    "Marine Le Pen / Valérie Pécresse": 60.24,
+    "Jean-Luc Mélenchon / Eric Zemmour": 58.13,
+    "Jean-Luc Mélenchon / Valérie Pécresse": 52.62,
+    "Eric Zemmour / Valérie Pécresse": 37.79
+   },
+   "t1_mae_pt": 1.04,
+   "kappa": 0.6239,
+   "nu": null,
+   "nu_sd_post_moyen": null
+  },
+  {
+   "chaine": 3,
+   "lp": 5691.772585449219,
+   "partages": {
+    "Jean-Luc Mélenchon": 71.0,
+    "Valérie Pécresse": 61.4,
+    "Yannick Jadot": 87.5,
+    "Éric Zemmour": 9.3
+   },
+   "duels": {
+    "Emmanuel Macron / Marine Le Pen": 53.05,
+    "Emmanuel Macron / Jean-Luc Mélenchon": 58.16,
+    "Emmanuel Macron / Eric Zemmour": 66.03,
+    "Emmanuel Macron / Valérie Pécresse": 65.3,
+    "Marine Le Pen / Jean-Luc Mélenchon": 52.81,
+    "Marine Le Pen / Eric Zemmour": 70.48,
+    "Marine Le Pen / Valérie Pécresse": 61.45,
+    "Jean-Luc Mélenchon / Eric Zemmour": 58.24,
+    "Jean-Luc Mélenchon / Valérie Pécresse": 52.15,
+    "Eric Zemmour / Valérie Pécresse": 39.63
+   },
+   "t1_mae_pt": 1.095,
+   "kappa": 0.7713,
+   "nu": null,
+   "nu_sd_post_moyen": null
+  }
+ ],
+ "ecart_partages": {
+  "Jean-Luc Mélenchon": 3.2,
+  "Valérie Pécresse": 8.7,
+  "Yannick Jadot": 0.2,
+  "Éric Zemmour": 1.4
+ },
+ "ecart_duels": {
+  "Emmanuel Macron / Marine Le Pen": 0.21,
+  "Emmanuel Macron / Jean-Luc Mélenchon": 1.3,
+  "Emmanuel Macron / Eric Zemmour": 1.52,
+  "Emmanuel Macron / Valérie Pécresse": 1.34,
+  "Marine Le Pen / Jean-Luc Mélenchon": 2.77,
+  "Marine Le Pen / Eric Zemmour": 3.51,
+  "Marine Le Pen / Valérie Pécresse": 7.79,
+  "Jean-Luc Mélenchon / Eric Zemmour": 0.97,
+  "Jean-Luc Mélenchon / Valérie Pécresse": 4.0,
+  "Eric Zemmour / Valérie Pécresse": 5.66
+ },
+ "ecart_lp": 670.61,
+ "nu_sd_prior": 0.208
+}
