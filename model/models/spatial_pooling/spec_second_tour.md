@@ -1957,6 +1957,93 @@ Piste non chiffrée, notée pour mémoire : un noyau **à queues lourdes en $v$*
 électorat loin de son centre. C'est la seule façon de désaturer $q$ dans cette famille. Elle
 toucherait au T1, donc à toute la production.
 
+### 8.42 τ_T2 a posteriori sur 2002-2022 (revue, 9 ; protocole fixé avant résultat)
+
+**Données.** `data/parsed/intentions_{2002,...,2022}_wiki.csv`, tour « Deuxième tour »,
+avec les duels de la finale réelle et `date_fin` dans $[T_2-7\,\mathrm j;\,T_2-1]$. Si une
+élection n'a aucun duel dans cette fenêtre, la fenêtre s'élargit à l'entre-deux-tours entier
+(depuis $T_1+1$), et ce repli est consigné. Résultats :
+`data/historical/results_*.csv`, en part parmi les exprimés du premier nommé.
+
+**Grandeur observée.** Pour l'élection $e$, avec $k_e$ notices dans la fenêtre :
+
+$$d_e=\operatorname{logit}y_e-\operatorname{logit}\bar p_e,\qquad
+\bar p_e=\frac1{k_e}\sum_j p_{ej}.$$
+
+Ici $y_e$ est le résultat, $p_{ej}$ la part du premier nommé dans la notice $j$, et la
+moyenne simple est une notice par institut et par jour.
+
+Le bruit de la moyenne, en logit, se lit par la méthode delta :
+
+$$v_e=\max\Big(\frac{1}{k_e\,\bar n_e\,\bar p_e(1-\bar p_e)},\ \frac{s_e^2}{k_e}\Big).$$
+
+Le premier terme est binomial, avec $\bar n_e$ l'échantillon moyen, ou 1 000 si
+l'échantillon manque. Le second est empirique, avec $s_e^2$ la variance entre notices des
+$\operatorname{logit}p_{ej}$ ; il contient déjà l'effet institut σ_T2.
+
+**Vraisemblance.** Les $d_e$ sont indépendantes entre élections :
+
+$$d_e\sim\mathcal N(0,\ \tau^2+v_e)\quad\text{(A)},\qquad
+d_e\sim t_4\big(0,\ \sqrt{\tau^2+v_e}\big)\quad\text{(B)}.$$
+
+La moyenne est nulle : un biais directionnel relève de l'arbitrage 2, non corrigé. Le
+prior est $\tau\sim\mathcal{HN}(0{,}5)$, large pour des erreurs de quelques points.
+L'a posteriori se calcule sur une grille de τ de 0 à 1,5, avec un pas de 0,001.
+
+**Sorties.**
+
+- Médiane, moyenne et IC90 de τ pour (A) et (B), sur les 5 élections, sans 2002, et
+  sur 2017-2022 seulement, pour retrouver la décision du 15/11.
+- Score de prédiction « une élection retirée » : log-densité prédictive de $d_e$ sous
+  l'a posteriori des quatre autres, pour comparer (A) et (B).
+- Couverture de l'IC90 prédictif de chaque $d_e$, en une élection retirée.
+
+**Décision.** Elle n'est pas prise ici. τ = 0,19 a été tranché par l'utilisateur le 15/11.
+Si la médiane a posteriori sur 5 élections s'écarte de 0,19 de plus de 0,05, on chiffre
+l'effet sur $P(\text{élu})$ 2027 et sur $P(\text{Philippe bat Le Pen})$ via
+`p_elu(tau_t2=…)`, et l'on ouvre la ligne « ARBITRAGE À TRANCHER ». Sinon, on consigne que
+0,19 est confirmé.
+
+**Résultats (2026-11-19, `results/tau_t2_historique.json`, 0 fit).** Erreur finale,
+résultat moins moyenne T2−7..T2−1 :
+
+| élection | 2002 | 2007 | 2012 | 2017 | 2022 |
+|---|---|---|---|---|---|
+| notices dans la fenêtre | 2 | 7 | 3 | 12 | 15 |
+| erreur en pt | +2,7 | −0,2 | −1,9 | +5,1 | +3,1 |
+| erreur en logit | +0,18 | −0,01 | −0,07 | +0,22 | +0,12 |
+
+Le +5,1 de 2017 diffère du +4,4 de §6.2, qui reposait sur une fenêtre et des dates
+antérieures à leur correction sur main.
+
+A posteriori de τ, en logit :
+
+| loi | 2002-2022 | sans 2002 | 2017-2022 |
+|---|---|---|---|
+| normale (A) | médiane 0,164, moyenne 0,184, IC90 [0,10 ; 0,34] | 0,165 [0,09 ; 0,38] | 0,255 [0,12 ; 0,67] |
+| Student-$t_4$ (B) | 0,151 [0,08 ; 0,33] | 0,147 [0,07 ; 0,36] | 0,248 [0,10 ; 0,67] |
+
+En une élection retirée, la loi normale fait mieux : log-densité prédictive totale de 1,70
+contre 1,37. Les deux lois couvrent 5 élections sur 5 à 90 %. 2002 ne pèse pas : la médiane
+passe de 0,164 à 0,165 sans elle.
+
+**Lecture.** La médiane à 0,164 s'écarte de 0,19 de moins que le seuil de 0,05, et 0,19
+est dans l'IC90 de tous les sous-ensembles. **τ_T2 = 0,19 est confirmé**, du côté prudent :
+c'est la moyenne a posteriori, et non la médiane, qui vaut 0,18-0,19.
+
+L'effet d'une valeur de 0,164 sur $P(	ext{élu})$ n'a pas été recalculé, faute de fit. On
+l'estime par interpolation linéaire entre les deux points de la grille §8.36 (hier, 17/11) :
+
+- Le Pen : 85,7 % à τ = 0,10 et 82,1 % à τ = 0,19, soit environ 83 % à 0,164 ;
+- Philippe : 10,9 % et 13,4 %, soit environ 12,7 %.
+
+L'écart, de l'ordre de 1 pt, est sous la variance de graine.
+
+Les trois erreurs contre le FN/RN sont toutes positives (+2,7, +5,1, +3,1), alors que les deux
+autres sont négatives et faibles. Cela rejoint l'arbitrage 2 (biais anti-RN non corrigé),
+déjà tranché ; on ne le rouvre pas ici. Une moyenne non nulle ferait baisser τ, mais
+déplacerait les duels 2027.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

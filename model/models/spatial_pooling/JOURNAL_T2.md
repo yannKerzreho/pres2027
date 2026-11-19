@@ -59,7 +59,7 @@ l'historique, ajouter en bas de « Historique ».
         (10 tâches, CRPS + LS plafonné) ; adopter seulement si non dégradé.
   - [ ] [À FAIRE avec la revue quotidienne due ~11:20Z : (A) est clos (§8.38-8.41)] **Revue Opus dédiée à (A)** dès (A)(2) fini (sous-agent model opus :
         spec + code + résultats de (A)) ; intégrer ou réfuter point par point.
-  - [ ] **τ_T2 calibré sur 2002-2022** (5 élections ; tâche « revue, 9 »
+  - [x] [FAIT 19/11 07:40Z, spec §8.42, `results/tau_t2_historique.json` (0 fit) : médiane a posteriori 0,164 (normale), moyenne 0,184, IC90 [0,10 ; 0,34] ; sans 2002 0,165 ; Student-t4 0,151, moins bon en LOO (1,37 contre 1,70) ; écart à 0,19 < 0,05 ⇒ 0,19 CONFIRMÉ, pas d'arbitrage ; effet interpolé ≈ 1 pt sur P(élu) Le Pen] **τ_T2 calibré sur 2002-2022** (5 élections ; tâche « revue, 9 »
         ci-dessous) : `data/historical/results_{2002,2007,2012}.csv`,
         `data/parsed/intentions_{2002,2007,2012}_wiki.csv` (tour = « Second tour »).
         Erreur de scrutin sondages finaux → résultat ; normale vs Student-t ;
@@ -411,7 +411,7 @@ Résultats : `model/backtest/results/*.json` (committés).
 - [ ] [GEL FAIT 18/11 20:40Z : prédictions abst et hier au 17/11 (78 paires, R̂ 1,015) dans results/prospectif/ ; À CHAQUE RÉVEIL où main apporte des duels datés après le 17/11 : `python -m model.backtest.prospectif_2027 --scorer`, committer scores.json ; lecture après ≥ 20 duels (§8.37)] (revue 18/11, idée 1) test prospectif 2027 : figer les prédictions abst
       et hier de toutes les paires (2 fits), puis scorer chaque nouveau duel
       publié (CRPS, z) sans fit.
-- [ ] (revue, 9) τ_T2 : a posteriori sur 2002-2022 (normale vs Student-t),
+- [x] [FAIT 19/11, §8.42 : 0,19 confirmé] (revue, 9) τ_T2 : a posteriori sur 2002-2022 (normale vs Student-t),
       données à sourcer (session données), effet sur P(Philippe bat Le Pen).
 - [x] [PÉRIMÉ, nettoyé 2026-11-15 21:30Z par la session locale : revue Opus faite
       08:20Z, `hier` jugée non préférée §8.15] Ensuite : revue Opus avant de changer le défaut.
@@ -670,6 +670,10 @@ conservé pour l'historique.
   test d'existence sans fit (4 essais parallèles, 40 tirages, w re-résolu) :
   échec (Mélenchon 2022 figé à 100 %), (D) abandonné, (A)(2) non entrepris.
   Revue Opus de (A) groupée avec la revue quotidienne. Suivant : τ_T2 2002-2022.
+
+- 2026-11-19 07:10-07:45Z (réveil) : τ_T2 a posteriori 2002-2022 (§8.42,
+  0 fit) : médiane 0,164, IC90 [0,10 ; 0,34], normale meilleure que t4 en LOO ;
+  0,19 confirmé. Tests : 2 (test_tau_t2_historique).
 
 ## Revue Opus 2026-11-18 — intégration point par point
 
