@@ -31,7 +31,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] **(R3) VOTANTS SUR UN CERCLE (utilisateur, 2026-11-19 ~18:30Z)** — suite
+- [ ] [MATHS FAITES 19/11 18:35Z, spec §8.46 (positions 1D posées sur un arc avant A appris, von Mises κ = 1/(Aσ)², trou derrière les extrêmes, N_θ = 64, critères figés) ; À FAIRE : code + tests + protocole 1] **(R3) VOTANTS SUR UN CERCLE (utilisateur, 2026-11-19 ~18:30Z)** — suite
       de §8.43-8.44. Maths dans la spec (nouveau §) AVANT le code, critères
       fixés AVANT lecture, code derrière un drapeau ÉTEINT, production
       inchangée, `PUBLIER_T2` False. Fits sur la VM cloud uniquement.

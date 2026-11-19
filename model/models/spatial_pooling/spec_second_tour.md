@@ -2513,6 +2513,91 @@ Glucksmann–Hollande), puis 0,76 pt (Hollande–Roussel). La médiane est sous 
 multimodalité vue à T1−30 2022 (Le Pen–Zemmour à 7,9 pt) ne se retrouve pas dans le fit de
 production 2027 : tâche close. À refaire si le roster ou le régime de données change nettement.
 
+### 8.46 (R3) Votants sur un cercle : maths (avant tout code ; critères fixés avant résultat)
+
+**Idée (utilisateur, 19/11).** Le segment $v\in[0{,}01;0{,}99]$ est remplacé par un cercle, et
+l'électorat est uniforme sur $\theta\in[0,2\pi)$. Les deux extrêmes deviennent voisins par
+« l'arrière ». La médiatrice du duel Macron–Le Pen coupe alors le cercle en deux points, au centre
+et à l'arrière. Un électorat placé près du point arrière se partage entre les deux finalistes sans
+logit saturé : c'est le mécanisme qui manquait en 1D (§8.44, révision 1).
+
+**1. Paramétrisation, qui garde les positions et les priors 1D.** La position $\mu_i\in(0,1)$ et le
+rayon $\sigma_i$ restent ceux du 1D, avec les mêmes priors, les mêmes ancres ORDER_GROUPS et le
+même `pos_scale`. On ajoute un seul paramètre global : l'**arc avant** $A\in(0,2\pi)$, sur
+lequel le segment est posé.
+
+$$\theta_i=A(\mu_i-\tfrac12),\qquad \sigma^{\theta}_i=A\,\sigma_i,\qquad
+\kappa^{vM}_i=1/(\sigma^{\theta}_i)^2,$$
+
+$$A_i(\theta)=w_i+\kappa^{vM}_i\cos(\theta-\theta_i)-\log\sum_jW^\circ_j\,e^{\kappa^{vM}_i\cos(\Theta_j-\theta_i)}.$$
+
+Le noyau de von Mises est normalisé sur la quadrature comme en 1D. Pour un κ grand, il équivaut à
+une gaussienne d'écart-type $\sigma^\theta$.
+
+L'**arc arrière** $2\pi-A$ porte la fraction $f=1-A/2\pi$ de l'électorat. Ces votants sont plus
+loin du centre que les deux extrêmes, et proches de l'un et de l'autre.
+
+Prior : $A=2\pi\,\mathrm{logistique}(a)$ avec $a\sim\mathcal N(\mathrm{logit}\,0{,}75;\,0{,}75)$, soit
+une médiane $f=0{,}25$ et un IC90 de 8 à 53 %.
+
+**2. Symétries.**
+
+- La **rotation** est fixée : $\mu=\tfrac12$, le centre des ancres, est à $\theta=0$.
+- La **réflexion** est fixée par les ancres : gauche vers $\theta<0$.
+
+Il n'y a pas de nouvelle symétrie, contrairement à R2 qui demandait deux ancres de plus. Le
+« trou » où le cercle se ferme est donc placé derrière les extrêmes de l'ordre ORDER_GROUPS, et sa
+taille $A$ est apprise. C'est le choix le plus simple ; un ordre cyclique libre (où l'arrière
+pourrait passer ailleurs) est écarté.
+
+**3. Ce que le cercle n'emboîte pas.** Le 1D n'est pas un cas limite exact : il y a toujours des
+votants sur l'arc arrière. Quand $A\to2\pi$, ils disparaissent, mais les deux extrêmes se touchent.
+Le 1D sert donc de **témoin**, pas de sous-modèle.
+
+**4. Quadrature.** On utilise des trapèzes à $N_\theta=64$ nœuds équidistants, de poids $1/64$.
+C'est spectralement exact pour une fonction périodique lisse. Le pas de 0,098 rad vaut 1,1 fois le
+plus petit $\sigma^\theta$ attendu ($A\approx4{,}7$, σ = 0,02) ; l'erreur d'aliasing est alors
+d'environ $e^{-2\pi^2\sigma^2/h^2}\approx10^{-7}$. Le coût vaut environ 64/25 = 2,6 fois celui du
+1D, contre 7 fois pour R2. Un test vérifie que les parts sont stables à $10^{-4}$ entre 64 et 256
+nœuds.
+
+**5. Second tour.** Rien ne change : κ, η, ω, la valeur inclusive, la vraisemblance Dirichlet des
+reports et le Newton pour δ (§8.44.4), avec les poids $W^\circ$.
+
+**6. Affichage.** La position publiée reste $\mu_i$ (abscisse le long de l'arc avant), qui garde
+son sens gauche-droite. On publie $f$ en plus, s'il est adopté.
+
+**7. Code**, derrière un drapeau éteint :
+
+- `carte_cercle=True` dans `fit_spatial_pooling` et `joint_model` (site `a_arc`, déterministe
+  `arc`) ;
+- `--variante hiercercle` (avec reports) et `hiercercle_sr` (sans reports, pour le protocole 2) ;
+- tests : convergence de la quadrature ; parts sommant à 1 ; votant de l'arc arrière partagé entre
+  les deux extrêmes ; densité finie avec reports.
+
+**8. Protocole et critères (utilisateur, figés avant lecture).**
+
+1. **V2 T2−7 2022 avec reports.**
+   - Partage Mélenchon hors fit (11 notices après `as_of`) à moins de 10 pt du mesuré.
+   - MAE hors fit des 4 partages ≤ 2,6 (hier2d), ou au moins < 8,2 (1D avec reports).
+   - T1 non dégradé (§8.44.8, critère 3).
+   - Critère 4 révisé de §8.44 : écart entre chaînes ≤ 3 pt sur les partages mesurés, ≤ 2 pt
+     sur les duels clés.
+
+   Si 1 échoue, on s'arrête.
+
+2. **V2 T1−30 2022 sans reports**, 4 chaînes indépendantes.
+   - Partage Mélenchon prédit (mesuré 63) : le T1 seul le place-t-il près de l'arrière ?
+   - Duels hypothétiques stables entre chaînes (≤ 3 pt).
+   - Écart de lp pas pire que le 1D (4 nats).
+   - T1 non dégradé.
+
+   Si 2 échoue : outil d'entre-deux-tours seulement, comparé explicitement à la 2D en coût et en
+   stabilité.
+
+3. **Si 2 passe** : 2017 (V2 T1−30), V1 (§8.29), effet sur 2027 (P(élu), duels, stabilité
+   §8.45), puis « ARBITRAGE À TRANCHER » sur l'adoption.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
