@@ -45,7 +45,11 @@ l'historique, ajouter en bas de « Historique ».
   répond pas (Mac fermé), la routine peut lancer la demande sur la VM, mais seulement si
   aucune ligne FAIT ou EN COURS (T4) n'existe pour cette étape : dans ce cas elle écrit
   « REPRISE VM » sur la ligne et l'étape entière passe sur la VM.
-  Étape 1 de R3 (V2 T2−7 2022, avec reports) : sur la VM, en cours.
+  Étape 1 de R3 (V2 T2−7 2022, avec reports) : sur la VM, en cours (lancée 18:31Z). AUSSI
+  lancée par la session locale sur T4 (20:29Z) comme JEU COMPLET SÉPARÉ, sortie
+  `second_round_hiercercle_v2_2022_T2-7_t4` (4 chaînes T4), pour débloquer R3b. Pas de
+  mélange : les chaînes VM et T4 restent deux fits distincts ; le premier fini fait foi pour
+  avancer, l'autre sert de contrôle de reproductibilité entre plateformes.
   Étape 2 de R3 (V2 T1−30 2022, sans reports) : FAIT (T4, 19:41-20:14Z ; 6-10 min par chaîne
   sur le T4). Les `.npz` sont gitignorés : la session locale a fait elle-même la fusion
   (`--fusionner`) et `eval_r2 --variante hiercercle_sr --coupure T1-30 [--par-chaine]` sur
