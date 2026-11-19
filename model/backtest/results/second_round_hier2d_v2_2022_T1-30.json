@@ -1,0 +1,115 @@
+{
+ "variante": "hier2d",
+ "nuts": {
+  "draws": 400,
+  "tune": 600,
+  "chains": 4,
+  "mode": "4 processus d'une chaîne (graines 27..30), fusionnés"
+ },
+ "pos_scale": null,
+ "tau_t2_scrutin": 0.19,
+ "v1": [],
+ "v2": [
+  {
+   "election": 2022,
+   "coupure": "T1-30",
+   "as_of": "2022-03-11",
+   "candidat": "Emmanuel Macron",
+   "resultat": 0.5855,
+   "n_notices_t1": 110,
+   "modele": 0.5857,
+   "modele_ic90": [
+    0.5002,
+    0.6726
+   ],
+   "couvre_ic90": true,
+   "log_score": 2.077,
+   "sondages_7j": 0.5886,
+   "n_sondages_7j": 7,
+   "log_score_sondages": 2.078,
+   "couvre_ic90_sondages": true,
+   "lp_par_chaine": [
+    11077.7,
+    11076.9,
+    11077.4,
+    11105.6
+   ],
+   "lp_se": [
+    1.04,
+    0.91,
+    1.2,
+    1.53
+   ],
+   "chaines_retenues": [
+    3
+   ],
+   "modele_par_chaine": [
+    0.5868
+   ],
+   "ecart_chaines_pt": 0.0,
+   "concluant": false,
+   "rhat_max": 1.0817,
+   "ess_min": 1.0,
+   "divergences": 0,
+   "kappa": 0.6262,
+   "omega": -6.425,
+   "rhat_t2": 1.0094,
+   "sigma_t2": 0.0123,
+   "secondes": 19.5,
+   "sigma_maison_t2": null,
+   "sigma_notice_t2": null,
+   "eta": {
+    "Nathalie Arthaud": -0.022,
+    "Philippe Poutou": -0.003,
+    "Jean-Luc Mélenchon": 0.285,
+    "Fabien Roussel": 0.016,
+    "Yannick Jadot": 0.013,
+    "Thouy": 0.013,
+    "Montebourg": -0.019,
+    "Taubira": -0.008,
+    "Anne Hidalgo": 0.011,
+    "Emmanuel Macron": -0.02,
+    "Lagarde": 0.026,
+    "Jean Lassalle": 0.008,
+    "Bertrand": 0.015,
+    "Valérie Pécresse": -0.071,
+    "Barnier": -0.002,
+    "Juvin": 0.007,
+    "Ciotti": -0.011,
+    "Nicolas Dupont-Aignan": -0.02,
+    "Poisson": 0.008,
+    "Asselineau": 0.004,
+    "Philippot": 0.018,
+    "Marine Le Pen": 0.015,
+    "Eric Zemmour": -0.22
+   },
+   "nu": {
+    "Nathalie Arthaud": 0.363,
+    "Philippe Poutou": 0.301,
+    "Jean-Luc Mélenchon": 0.674,
+    "Fabien Roussel": 0.099,
+    "Yannick Jadot": 0.577,
+    "Thouy": 0.459,
+    "Montebourg": 0.067,
+    "Taubira": 0.465,
+    "Anne Hidalgo": 0.423,
+    "Emmanuel Macron": 0.3,
+    "Lagarde": 0.252,
+    "Jean Lassalle": 0.536,
+    "Bertrand": 0.32,
+    "Valérie Pécresse": 0.215,
+    "Barnier": 0.331,
+    "Juvin": 0.428,
+    "Ciotti": 0.397,
+    "Nicolas Dupont-Aignan": 0.471,
+    "Poisson": 0.512,
+    "Asselineau": 0.484,
+    "Philippot": 0.493,
+    "Marine Le Pen": 0.555,
+    "Eric Zemmour": 0.705
+   },
+   "lambda_u": 0.0859,
+   "sigma_v_moyen": 0.0623
+  }
+ ]
+}

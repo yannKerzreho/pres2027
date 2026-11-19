@@ -2437,6 +2437,37 @@ T1−30 hier2d, 4 chaînes indépendantes, critère 4 révisé.
 Les duels contre Macron, très sondés, tiennent. Les duels hypothétiques entre deux candidats qui
 ne sont pas au centre dépendent du mode. **Échec net** en l'état, au-delà de la question du T1.
 
+**Avant le T1 : V2 T1−30 2022, sans aucun report (idée 2 de la revue, 19/11).** Comparaison 2D
+contre 1D, mêmes données, 4 chaînes indépendantes chacun. Fichiers :
+`eval_r2_hier2d_2022_T1-30_par_chaine.json` et `eval_r2_hier_2022_T1-30_par_chaine.json`.
+
+| | 2D (hier2d) | 1D (hier) |
+|---|---|---|
+| partage Mélenchon prédit (mesuré 63, après le T1) | 100 / 0 / 100 / 100 selon la chaîne | 100 (4/4) |
+| Jadot (mesuré 88) | 100 (4/4) | 100 (4/4) |
+| MAE des parts au T1 contre le résultat | 2,83 à 3,00 pt | 2,98 à 2,99 pt |
+| Macron–Le Pen (résultat 58,55) | 58,6 | 58,8 |
+| écart entre chaînes, duels hypothétiques (max) | 5,4 (Mélenchon–Pécresse, Le Pen–Mélenchon) | 7,9 (Le Pen–Zemmour), les autres ≤ 2,9 |
+| écart de lp entre chaînes | 28,7 nats | 4,0 nats |
+| sd a posteriori moyen des ν (prior 0,21) | 0,02 à 0,06 | — |
+
+**Lecture.** Sans reports, le T1 seul ne dit rien des reports : la 2D prédit la même chose que le
+1D (Mélenchon→Macron 100 %), ou l'inverse dans une chaîne. Le T1 n'est pas mieux prédit. Les ν sont
+serrés, mais différents d'une chaîne à l'autre : ce sont des modes, pas une information. R2
+ajoute de la multimodalité (29 nats contre 4) sans rien gagner.
+
+**Décision (règle de l'idée 2, fixée avant lecture) : R2 est abandonné pour le site.** Il reste un
+résultat de recherche d'entre-deux-tours : quand les reports existent, la carte 2D les représente
+et le 1D ne le peut pas, même avec les reports en vraisemblance. Ses duels hypothétiques y sont
+toutefois instables, donc rien n'est publiable. La production est inchangée, les drapeaux restent
+éteints. La piste (A) est close.
+
+**Constat incident, à traiter.** En 1D aussi, le duel hypothétique Le Pen–Zemmour varie de 7,9 pt
+entre chaînes à T1−30 2022, alors que les autres duels restent sous 2,9 pt. Le critère de
+stabilité des duels hypothétiques n'a jamais été appliqué au fit de production 2027, qui publie
+des duels jamais sondés. C'est à faire, à 0 fit sur les chaînes du gel prospectif s'il les a
+gardées, sinon avec 1 fit.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
