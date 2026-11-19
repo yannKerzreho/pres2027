@@ -59,7 +59,7 @@ l'historique, ajouter en bas de « Historique ».
         par les reports, (A)(2) devient possible sans tordre la géométrie) et
         le backtest selon §8.29. Si R1 échoue : le consigner, passer à R2.
         R2 se fait dans les deux cas, en mode réduit (2022 seul) si R1 passe.
-  - [ ] (R2) **Carte 2D estimée dès le T1** (fit, VM cloud ; jamais sur le
+  - [ ] [MATHS FAITES 19/11 08:30Z, spec §8.44 (noyau séparable, ancres ν_C = 0,3 + ordre RN ≥ C, Dirichlet des reports avec c appris, Newton pour δ, critères figés) ; À FAIRE : code derrière drapeau (`carte_2d`, `reports`) + tests, puis fit V2 T2−7 2022 hier2d (4 chaînes × ~4 h)] (R2) **Carte 2D estimée dès le T1** (fit, VM cloud ; jamais sur le
         MacBook). Hypothèse à tester : avec un second axe u (système /
         anti-système), u porte une partie de la séparation entre candidats
         proches en v (Mélenchon / Hamon / Jadot / Roussel), σ_v s'élargit et
@@ -737,6 +737,9 @@ conservé pour l'historique.
   anti-système par famille, §8.43, 0 fit) : échoue (π_GR instable 0,09 →
   0,27, Mélenchon 2022 +13 pt) ; R2 (carte 2D dès le T1, fit) est la
   prochaine tâche : maths d'abord. Tests : test_reports_t2 (7).
+
+- 2026-11-19 08:10-08:35Z (réveil) : maths de R2 (§8.44) ; limite notée : sans
+  reports avant le T1, ν n'est appris que par le T1 (critère V1 sans reports).
 
 ## Revue Opus 2026-11-18 — intégration point par point
 

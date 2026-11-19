@@ -2151,6 +2151,116 @@ cours, resterait possible en 2027 *si* des tableaux de reports existent avant le
 n'existent qu'entre les deux tours. Elle n'apporterait donc rien à la prévision avant le
 T1, qui est l'objet du site.
 
+### 8.44 (R2) Carte 2D estimée dès le T1 : maths (avant tout code ; critères fixés avant résultat)
+
+**Pourquoi R2 diffère de §8.41.** Le test de §8.41 greffait $u$ sur un T1 1D figé, avec $\sigma_v$ étroit
+appris sans $u$. Ici, $u$ est appris **avec** le T1. L'hypothèse, celle de l'utilisateur, est la
+suivante : en 1D, des candidats voisins (Mélenchon, Hamon, Jadot, Roussel) ne se séparent que par des
+$\sigma_v$ étroits et des $\mu$ écartés. En 2D, $u$ porte une partie de cette séparation, $\sigma_v$
+s'élargit et le logit T2 n'est plus saturé.
+
+**1. Grille et noyau.** Les votants sont uniformes sur $[0{,}01;0{,}99]^2$, avec une quadrature produit
+Gauss-Legendre $B_v\times B_u=25\times7$ et des poids $W_bW'_c$. Le noyau est séparable et normalisé sur
+la grille :
+
+$$A_i(v,u)=w_i+\log\frac{\mathcal N(v;\mu_i,\sigma_i)\,\mathcal N(u;\nu_i,\lambda)}
+{\sum_{b,c}W_bW'_c\,\mathcal N(V_b;\mu_i,\sigma_i)\,\mathcal N(U_c;\nu_i,\lambda)}.$$
+
+Un noyau corrélé, ou des axes non orthogonaux, est écarté : il ajoute une rotation non identifiée et un
+paramètre par candidat. Tout le reste est inchangé, avec $\int dv$ remplacé par $\iint dv\,du$ : π au T1,
+$q$, ρ, la valeur inclusive, κ, η, ω.
+
+**2. Priors.**
+
+- $\sigma_i$ et $\mu_i$ gardent **exactement** les priors 1D, dont les ancres ORDER_GROUPS en $v$. Rien
+  ne pousse $\sigma_v$ à s'élargir : c'est ce qu'on veut tester.
+- $\nu_i=\mathrm{logistique}(\zeta_i)$, avec $\zeta_i\sim\mathcal N(0,1)$.
+- $\log\lambda\sim\mathcal N(\log0{,}2;\,0{,}5)$, λ commun à tous les candidats.
+
+**3. Symétries.** Elles sont levées par deux ancres internes, sans aucune source externe.
+
+- **Réflexion** $u\mapsto1-u$ : contrainte d'ordre $\zeta_{RN}=\zeta_{C}+\mathrm{softplus}(\xi)$, avec
+  $\xi\sim\mathcal N(0,1)$. RN désigne le candidat RN principal (Le Pen, ou Bardella en 2027) et $C$ le
+  finaliste centriste (Macron en 2017 et 2022 ; en 2027, le candidat du bloc central au plus fort T1
+  modal).
+- **Translation du nuage en $u$.** Elle n'est que faiblement tenue par le bord du carré. On fixe donc
+  $\nu_C=0{,}3$, côté « système ». Justification : c'est la position la moins discutable, celle du
+  sortant ou de l'héritier du bloc central, et une ancre dure sur un seul candidat suffit à lever la
+  translation sans rien imposer aux autres.
+
+Le choix de 0,3 plutôt que 0,5 évite de placer l'ancre au centre de la grille, où la réflexion serait
+dégénérée. **Sensibilité : 0,2 et 0,4.** Si les conclusions dépendent de cette valeur, il faudra une
+ancre externe (par exemple la dimension anti-élite de CHES, inaccessible depuis la VM), et la ligne
+« ARBITRAGE À TRANCHER » sera écrite.
+
+**4. Vraisemblance des reports**, qui réalise (A)(2) dans R2. Pour une notice $j$ datée $t_j\le$
+`as_of` et un électorat $k$ du champ T1 réel, on observe
+$y_{jk}=(y^M,y^{LP},y^\varnothing)/100$, renormalisé à 1. Prédit :
+$\theta_k(t_j)=(a_k,b_k,\varnothing_k)$, issu de §8.38 sur la grille 2D, avec $w(t_j)$.
+
+$$y_{jk}\sim\mathrm{Dirichlet}\big(c\,\theta_k(t_j)\big),\qquad \log c\sim\mathcal N(\log 100;\,1).$$
+
+- **Pas de $n$.** `base_electorat` est vide partout, et $c$ joue le rôle d'un $n$ effectif ×
+  effet de plan. À titre d'ordre de grandeur, un électorat de 15 % dans un échantillon de 1 000 fait
+  $n\approx150$.
+- **δ dans le modèle.** La recalibration par bissection a un gradient nul. On la remplace par
+  4 itérations de Newton partant de $\delta_0=\eta_a-\eta_b$, sur
+  $f(\delta)=\sum_kE_kR_k\tilde G_k(\delta)/\sum_kE_kR_k-s_{ab}$. Elles sont différentiables, et l'on
+  teste leur convergence contre la bissection.
+- **Dépendance avec le duel de la même notice.** Les cellules d'une notice, pondérées par les parts T1
+  de ses répondants, redonnent son duel. Les compter en plus du duel compte une partie de
+  l'information deux fois. On l'accepte, par indépendance conditionnelle, car c'est surtout la
+  composition qui est nouvelle ; le contrôle consiste à vérifier que $\sigma_{T2}$ et $s_{ab}$ ne bougent
+  pas de plus de 0,5 pt. Repli si nécessaire : retirer le duel Macron–Le Pen des notices qui publient
+  des reports.
+- **Pas de tempérage** ($w_R=1$). En sensibilité, $w_R=0{,}5$ si le T1 se dégrade.
+
+**5. Ce que R2 peut apporter au site, et sa limite.** Les reports n'existent qu'**entre les deux
+tours**. Avant le T1, ce qui est l'objet du site, $\nu$ n'est appris que par le T1, faiblement, via les
+substitutions entre hypothèses. Le critère V1 2022 ci-dessous se fait donc **sans** reports. S'il ne
+passe pas, R2 ne vaut qu'en entre-deux-tours.
+
+Une extension est notée sans être faite : réutiliser les ν **par famille** appris sur 2017 et 2022
+comme prior pour 2027. R1 montre que les familles ne sont pas stables d'une élection à l'autre.
+
+**6. Code**, derrière des drapeaux éteints (production inchangée, `PUBLIER_T2 = False`) :
+
+- `fit_spatial_pooling(..., carte_2d=False, reports=None)` ;
+- dans `joint_model`, la grille 2D et les sites `zeta`, `xi`, `log_lambda`, `log_c` ;
+- dans `second_round.py`, une option `--variante hier2d`.
+
+Tests à écrire :
+
+- avec λ très grand, la 2D redonne exactement les parts 1D ;
+- la contrainte d'ordre et l'ancre ;
+- la convergence de Newton contre la bissection ;
+- la vraisemblance des reports, finie et maximale à $\theta=y$ pour $c$ grand.
+
+**7. Coût et ordre des fits.** À $B_u=7$, compter environ 4 h par chaîne et 4 chaînes en parallèle, soit
+une tâche par réveil long. L'ordre suit :
+
+1. V2 T2−7 2022, variante hier2d avec les reports ;
+2. seulement si le point 1 passe, V1 2022 (protocole §8.29, sans reports), puis 2017, puis l'effet sur
+   2027.
+
+Les tâches sont marquées EN COURS, lancées par un sous-agent Sonnet qui les surveille (watcher).
+
+**8. Critères, fixés avant lecture, sur V2 T2−7 2022.**
+
+1. **Report.** Partage Macron parmi les exprimés de l'électorat Mélenchon à moins de 10 pt du mesuré,
+   63,0 % (en 1D : 100 %). Mesuré sur les reports de toutes les notices 2022, y compris celles
+   postérieures à `as_of`, qui ne sont pas dans le fit.
+2. **Mécanisme.** Médiane a posteriori de $\bar\sigma_v$ (moyenne des σ sur le champ T1 réel) au moins
+   1,25 fois celle du fit 1D hier V2 T2−7 2022. Sinon, le résultat ne s'explique pas par l'hypothèse.
+3. **T1 non dégradé.** MAE des résidus des nœuds T1 au plus celle du 1D + 0,2 pt, et MAE des parts au
+   T1 (w au 10/04/2022) contre le résultat au plus celle du 1D + 0,3 pt.
+4. **Chaînes.** R̂ ≤ 1,1 sur les ν du champ T1 après la sélection §8.8. ν interprétable :
+   $\nu_{JLM}$ plus proche de $\nu_{LP}$ que $\nu_{Jadot}$ et $\nu_{Hidalgo}$, et $\nu_{Zemmour}\ge\nu_{Pécresse}$.
+5. **Contrôle de double compte.** $s_{ab}$ et $\sigma_{T2}$ à ±0,5 pt du 1D.
+
+Si 1 à 5 passent, on enchaîne avec V1 2022 (§8.29 : duels non dégradés). Si 1 passe sans 2, le mécanisme
+est autre et on le dit. Si 1 échoue, R2 est abandonné et (A) est clos pour de bon.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
