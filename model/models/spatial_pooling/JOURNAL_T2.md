@@ -81,7 +81,7 @@ l'historique, ajouter en bas de « Historique ».
   0,29 ms/chaîne en vmap 16-256 (gain ×2 seulement : le GPU est déjà saturé par une chaîne),
   float64 5 fois plus lent ; NUTS 1 chaîne 0,43 s/itération (≈ 508 pas/itération), soit
   ≈ 7 min pour 600+400. Chaînes Mac `_mac` arrêtées, non utilisées.
-- [ ] [PRIS PAR LA SESSION LOCALE (utilisateur, 2026-11-19 ~21:40Z) : maths, code et fits T4 faits par la session locale ; la routine NE le fait PAS, elle relit et critique (revue quotidienne) et termine l'étape 1 de R3] **(R3b) CERCLE NOURRI PAR TOUTES LES DONNÉES (utilisateur, 2026-11-19 ~21:20Z)** —
+- [ ] [EN COURS session locale 2026-11-19 ~21:00Z : maths §8.47 (4e49fa7), code `model/backtest/multi_election.py` + tests (0459aa9, 249 verts) ; T4 : étape A (configs A_cercle puis A_segment, 4 chaînes chacune) en file derrière l'étape 1 _t4] [PRIS PAR LA SESSION LOCALE (utilisateur, 2026-11-19 ~21:40Z) : maths, code et fits T4 faits par la session locale ; la routine NE le fait PAS, elle relit et critique (revue quotidienne) et termine l'étape 1 de R3] **(R3b) CERCLE NOURRI PAR TOUTES LES DONNÉES (utilisateur, 2026-11-19 ~21:20Z)** —
       suite de l'échec de l'étape 2 de R3 (cercle sans reports à T1−30 : Mélenchon 99,9 %,
       299 nats entre chaînes). Consigne utilisateur : « utilise les reports si nécessaire ;
       toutes les données doivent nourrir le même modèle ». Maths dans la spec AVANT le code,
