@@ -1,0 +1,184 @@
+{
+ "spec": "spec_second_tour §8.44 (révision 6)",
+ "variante": "hier2d",
+ "stem": "second_round_hier2d_v2_2022_T2-7",
+ "coupure": "T2-7",
+ "chaines": [
+  {
+   "chaine": 0,
+   "lp": 9573.937189941405,
+   "partages": {
+    "Jean-Luc Mélenchon": 63.7,
+    "Valérie Pécresse": 60.9,
+    "Yannick Jadot": 85.8,
+    "Éric Zemmour": 6.4
+   },
+   "duels": {
+    "Emmanuel Macron / Marine Le Pen": 54.4,
+    "Emmanuel Macron / Jean-Luc Mélenchon": 59.23,
+    "Emmanuel Macron / Eric Zemmour": 67.54,
+    "Emmanuel Macron / Valérie Pécresse": 66.05,
+    "Marine Le Pen / Jean-Luc Mélenchon": 52.8,
+    "Marine Le Pen / Eric Zemmour": 73.43,
+    "Marine Le Pen / Valérie Pécresse": 61.36,
+    "Jean-Luc Mélenchon / Eric Zemmour": 56.67,
+    "Jean-Luc Mélenchon / Valérie Pécresse": 47.4,
+    "Eric Zemmour / Valérie Pécresse": 37.44
+   },
+   "t1_mae_pt": 1.212,
+   "kappa": 0.2242,
+   "nu": {
+    "Emmanuel Macron": 0.3,
+    "Marine Le Pen": 0.419,
+    "Jean-Luc Mélenchon": 0.402,
+    "Eric Zemmour": 0.667,
+    "Valérie Pécresse": 0.5,
+    "Yannick Jadot": 0.314,
+    "Jean Lassalle": 0.576,
+    "Fabien Roussel": 0.065,
+    "Nicolas Dupont-Aignan": 0.469,
+    "Anne Hidalgo": 0.302,
+    "Philippe Poutou": 0.094,
+    "Nathalie Arthaud": 0.118
+   },
+   "nu_sd_post_moyen": 0.038938820362091064
+  },
+  {
+   "chaine": 1,
+   "lp": 9564.677807617187,
+   "partages": {
+    "Jean-Luc Mélenchon": 60.9,
+    "Valérie Pécresse": 65.5,
+    "Yannick Jadot": 90.5,
+    "Éric Zemmour": 8.9
+   },
+   "duels": {
+    "Emmanuel Macron / Marine Le Pen": 54.02,
+    "Emmanuel Macron / Jean-Luc Mélenchon": 58.34,
+    "Emmanuel Macron / Eric Zemmour": 68.29,
+    "Emmanuel Macron / Valérie Pécresse": 66.02,
+    "Marine Le Pen / Jean-Luc Mélenchon": 51.09,
+    "Marine Le Pen / Eric Zemmour": 70.93,
+    "Marine Le Pen / Valérie Pécresse": 60.71,
+    "Jean-Luc Mélenchon / Eric Zemmour": 64.27,
+    "Jean-Luc Mélenchon / Valérie Pécresse": 56.52,
+    "Eric Zemmour / Valérie Pécresse": 41.1
+   },
+   "t1_mae_pt": 1.194,
+   "kappa": 0.2108,
+   "nu": {
+    "Emmanuel Macron": 0.3,
+    "Marine Le Pen": 0.465,
+    "Jean-Luc Mélenchon": 0.433,
+    "Eric Zemmour": 0.798,
+    "Valérie Pécresse": 0.657,
+    "Yannick Jadot": 0.061,
+    "Jean Lassalle": 0.86,
+    "Fabien Roussel": 0.064,
+    "Nicolas Dupont-Aignan": 0.575,
+    "Anne Hidalgo": 0.321,
+    "Philippe Poutou": 0.134,
+    "Nathalie Arthaud": 0.162
+   },
+   "nu_sd_post_moyen": 0.02770203910768032
+  },
+  {
+   "chaine": 2,
+   "lp": 9550.46118408203,
+   "partages": {
+    "Jean-Luc Mélenchon": 61.1,
+    "Valérie Pécresse": 63.0,
+    "Yannick Jadot": 87.0,
+    "Éric Zemmour": 7.4
+   },
+   "duels": {
+    "Emmanuel Macron / Marine Le Pen": 54.02,
+    "Emmanuel Macron / Jean-Luc Mélenchon": 56.97,
+    "Emmanuel Macron / Eric Zemmour": 67.86,
+    "Emmanuel Macron / Valérie Pécresse": 66.19,
+    "Marine Le Pen / Jean-Luc Mélenchon": 51.13,
+    "Marine Le Pen / Eric Zemmour": 75.07,
+    "Marine Le Pen / Valérie Pécresse": 57.64,
+    "Jean-Luc Mélenchon / Eric Zemmour": 66.79,
+    "Jean-Luc Mélenchon / Valérie Pécresse": 53.35,
+    "Eric Zemmour / Valérie Pécresse": 38.97
+   },
+   "t1_mae_pt": 1.227,
+   "kappa": 0.4395,
+   "nu": {
+    "Emmanuel Macron": 0.3,
+    "Marine Le Pen": 0.523,
+    "Jean-Luc Mélenchon": 0.529,
+    "Eric Zemmour": 0.81,
+    "Valérie Pécresse": 0.262,
+    "Yannick Jadot": 0.443,
+    "Jean Lassalle": 0.133,
+    "Fabien Roussel": 0.102,
+    "Nicolas Dupont-Aignan": 0.362,
+    "Anne Hidalgo": 0.41,
+    "Philippe Poutou": 0.288,
+    "Nathalie Arthaud": 0.316
+   },
+   "nu_sd_post_moyen": 0.03172704204916954
+  },
+  {
+   "chaine": 3,
+   "lp": 9491.45845703125,
+   "partages": {
+    "Jean-Luc Mélenchon": 55.1,
+    "Valérie Pécresse": 53.9,
+    "Yannick Jadot": 89.4,
+    "Éric Zemmour": 10.2
+   },
+   "duels": {
+    "Emmanuel Macron / Marine Le Pen": 53.82,
+    "Emmanuel Macron / Jean-Luc Mélenchon": 59.56,
+    "Emmanuel Macron / Eric Zemmour": 67.9,
+    "Emmanuel Macron / Valérie Pécresse": 64.28,
+    "Marine Le Pen / Jean-Luc Mélenchon": 56.64,
+    "Marine Le Pen / Eric Zemmour": 67.78,
+    "Marine Le Pen / Valérie Pécresse": 57.58,
+    "Jean-Luc Mélenchon / Eric Zemmour": 54.95,
+    "Jean-Luc Mélenchon / Valérie Pécresse": 49.81,
+    "Eric Zemmour / Valérie Pécresse": 42.29
+   },
+   "t1_mae_pt": 1.034,
+   "kappa": 0.1012,
+   "nu": {
+    "Emmanuel Macron": 0.3,
+    "Marine Le Pen": 0.396,
+    "Jean-Luc Mélenchon": 0.96,
+    "Eric Zemmour": 0.581,
+    "Valérie Pécresse": 0.539,
+    "Yannick Jadot": 0.587,
+    "Jean Lassalle": 0.552,
+    "Fabien Roussel": 0.635,
+    "Nicolas Dupont-Aignan": 0.76,
+    "Anne Hidalgo": 0.811,
+    "Philippe Poutou": 0.519,
+    "Nathalie Arthaud": 0.504
+   },
+   "nu_sd_post_moyen": 0.017740216106176376
+  }
+ ],
+ "ecart_partages": {
+  "Jean-Luc Mélenchon": 8.6,
+  "Valérie Pécresse": 11.6,
+  "Yannick Jadot": 4.7,
+  "Éric Zemmour": 3.8
+ },
+ "ecart_duels": {
+  "Emmanuel Macron / Marine Le Pen": 0.58,
+  "Emmanuel Macron / Jean-Luc Mélenchon": 2.59,
+  "Emmanuel Macron / Eric Zemmour": 0.75,
+  "Emmanuel Macron / Valérie Pécresse": 1.91,
+  "Marine Le Pen / Jean-Luc Mélenchon": 5.55,
+  "Marine Le Pen / Eric Zemmour": 7.29,
+  "Marine Le Pen / Valérie Pécresse": 3.78,
+  "Jean-Luc Mélenchon / Eric Zemmour": 11.84,
+  "Jean-Luc Mélenchon / Valérie Pécresse": 9.12,
+  "Eric Zemmour / Valérie Pécresse": 4.85
+ },
+ "ecart_lp": 82.48,
+ "nu_sd_prior": 0.208
+}

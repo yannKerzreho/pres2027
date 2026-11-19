@@ -28,15 +28,16 @@ from model.models.spatial_pooling.roster import build_poll_arrays, split_tours
 ELECTION = 2022
 
 
-def reconstruire(variante: str, stem: str):
+def reconstruire(variante: str, stem: str, coupure: str = "T2-7", chaines=None):
     sr.ABSTENTION = True
     sr.VARIANTE_KW.clear()
     sr.VARIANTE_KW.update({"hier": {"eta_hier": True},
                            "hier2d": {"eta_hier": True, "carte_2d": True, "_reports": True},
                            "hier_rep": {"eta_hier": True, "_reports": True}}[variante])
-    as_of = sr.T2_DATES[ELECTION] - pd.Timedelta(days=7)
+    ref = sr.T1_DATES[ELECTION] if coupure.startswith("T1") else sr.T2_DATES[ELECTION]
+    as_of = ref - pd.Timedelta(days=int(coupure.split("-")[1]))
     raw = sr.polls_historiques(ELECTION, as_of)
-    paths = [sr.CHAINES_DIR / f"{stem}_c{k}.npz" for k in range(sr.N_CHAINES)]
+    paths = [sr.CHAINES_DIR / f"{stem}_c{k}.npz" for k in (chaines if chaines is not None else range(sr.N_CHAINES))]
     fit, _ = sr._fit(raw, as_of, ELECTION, dict(draws=400, tune=600, chains=4, mcmc_runner=sr._runner_fusion(paths)))
     return fit, raw, as_of
 
@@ -140,17 +141,58 @@ def rhat_nu(stem: str, champ_noms: list[str], cands: list[str]) -> float | None:
     return round(float(np.nanmax(split_gelman_rubin(x[..., idx]))), 3)
 
 
+DUELS_CLES = ["Emmanuel Macron", "Marine Le Pen", "Jean-Luc Mélenchon", "Eric Zemmour", "Valérie Pécresse"]
+
+
+def par_chaine(variante: str, stem: str, coupure: str) -> dict:
+    """Critère 4 révisé (§8.44, révision 6) : écarts ENTRE chaînes indépendantes
+    sur les partages de reports, les parts T1 et 10 duels clés (dont hypothétiques)."""
+    from itertools import combinations
+    lignes = []
+    for k in range(sr.N_CHAINES):
+        fit, raw, as_of = reconstruire(variante, stem, coupure, chaines=[k])
+        ev = evaluer(fit, raw, as_of)
+        duels = {}
+        for a, b in combinations(DUELS_CLES, 2):
+            duels[f"{a} / {b}"] = round(100 * float(duel_draws(fit, a, b, 0.0, scrutin=False).mean()), 2)
+        part = {r["electorat"]: r["modele"] for r in ev["reports"] if r["cellule"] == "partage"}
+        nu_sd = (float(np.mean([fit.nu_draws[:, fit.candidates.index(c)].std() for c in ev["nu"]
+                                if c not in ("Emmanuel Macron",)])) if fit.nu_draws is not None else None)
+        lignes.append({"chaine": k, "lp": float(sr.LP_CHAINES[0]) if sr.LP_CHAINES else None,
+                       "partages": part, "duels": duels, "t1_mae_pt": ev["t1_resultat"]["mae_pt"],
+                       "kappa": ev["kappa"], "nu": ev.get("nu"), "nu_sd_post_moyen": nu_sd})
+    ecart = lambda vals: round(float(max(vals) - min(vals)), 2)  # noqa: E731
+    return {"chaines": lignes,
+            "ecart_partages": {e: ecart([l["partages"][e] for l in lignes]) for e in lignes[0]["partages"]},
+            "ecart_duels": {d: ecart([l["duels"][d] for l in lignes]) for d in lignes[0]["duels"]},
+            "ecart_lp": ecart([l["lp"] for l in lignes if l["lp"] is not None]) if lignes[0]["lp"] is not None else None,
+            "nu_sd_prior": 0.208}
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--variante", choices=["hier", "hier2d", "hier_rep"], required=True)
     ap.add_argument("--stem", default=None)
+    ap.add_argument("--coupure", default="T2-7")
+    ap.add_argument("--par-chaine", action="store_true", help="critère 4 révisé (écarts entre chaînes)")
     args = ap.parse_args()
-    stem = args.stem or f"second_round_{args.variante}_v2_{ELECTION}_T2-7"
-    fit, raw, as_of = reconstruire(args.variante, stem)
+    stem = args.stem or f"second_round_{args.variante}_v2_{ELECTION}_{args.coupure}"
+    if args.par_chaine:
+        out = {"spec": "spec_second_tour §8.44 (révision 6)", "variante": args.variante, "stem": stem,
+               "coupure": args.coupure, **par_chaine(args.variante, stem, args.coupure)}
+        dest = sr.OUT_DIR / f"eval_r2_{args.variante}_{ELECTION}_{args.coupure}_par_chaine.json"
+        dest.write_text(json.dumps(out, ensure_ascii=False, indent=1, default=float) + "\n")
+        print(json.dumps({k: out[k] for k in ("ecart_partages", "ecart_duels", "ecart_lp")}, ensure_ascii=False, indent=1))
+        for l in out["chaines"]:
+            print(l["chaine"], l["lp"], l["kappa"], l["t1_mae_pt"], l["partages"], l["nu_sd_post_moyen"])
+        print(f"-> {dest}")
+        return
+    fit, raw, as_of = reconstruire(args.variante, stem, args.coupure)
     out = {"spec": "spec_second_tour §8.44.8", "variante": args.variante, "stem": stem, **evaluer(fit, raw, as_of)}
     if fit.nu_draws is not None:
         out["rhat_nu_champ"] = rhat_nu(stem, list(out["nu"]), fit.candidates)
-    dest = sr.OUT_DIR / f"eval_r2_{args.variante}_{ELECTION}.json"
+    dest = sr.OUT_DIR / (f"eval_r2_{args.variante}_{ELECTION}.json" if args.coupure == "T2-7"
+                         else f"eval_r2_{args.variante}_{ELECTION}_{args.coupure}.json")
     dest.write_text(json.dumps(out, ensure_ascii=False, indent=1, default=float) + "\n")
     print(json.dumps({k: v for k, v in out.items() if k != "reports"}, ensure_ascii=False, indent=1))
     print(pd.DataFrame(out["reports"]).to_string(index=False))

@@ -2421,6 +2421,22 @@ multimodal : une seule chaîne retenue.
 Reste à savoir ce que R2 vaut **avant le T1**, sans reports. C'est l'idée 2 de la revue : V2
 T1−30 hier2d, 4 chaînes indépendantes, critère 4 révisé.
 
+**Critère 4 révisé, appliqué à V2 T2−7 2D** (`eval_r2_hier2d_2022_T2-7_par_chaine.json`).
+Écarts entre les 4 chaînes indépendantes :
+
+- Partages des reports : Mélenchon 8,6 pt (2,8 sur les 3 chaînes de lp proche), Pécresse 11,6,
+  Jadot 4,7, Zemmour 3,8. Seuil 3 pt : ✗.
+- Duels :
+  - Macron–Le Pen 0,6 pt, Macron–Zemmour 0,8 ;
+  - Macron–Mélenchon 2,6, Macron–Pécresse 1,9 ;
+  - Le Pen–Mélenchon 5,6, Le Pen–Zemmour 7,3 ;
+  - Mélenchon–Zemmour **11,8**, Mélenchon–Pécresse 9,1.
+  Seuil 2 pt : ✗.
+- Écart de lp entre chaînes : 82 nats.
+
+Les duels contre Macron, très sondés, tiennent. Les duels hypothétiques entre deux candidats qui
+ne sont pas au centre dépendent du mode. **Échec net** en l'état, au-delà de la question du T1.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
