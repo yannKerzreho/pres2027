@@ -57,3 +57,29 @@ def test_retirer_un_candidat_ne_rebat_pas_le_bruit_des_autres():
     """)
     assert r["n"] == 300
     assert r["ecart"] < 1e-9
+
+
+@pytest.mark.skipif(NODE is None, reason="node absent")
+def test_texte_des_boutons_coches_lisible_dans_les_deux_themes():
+    """Un bouton coché (aplat de la couleur du candidat) garde au moins 3:1 de
+    contraste avec son texte, en clair comme en sombre — Riner sombre (#c6d478)
+    tombait à 1,6:1 en blanc."""
+    palette = PAGE.parent / "assets" / "palette.js"
+    prog = f"""
+      global.window = global; var theme = false;
+      global.matchMedia = () => ({{matches: theme}});
+      require({json.dumps(str(palette))});
+      var C = window.Couleurs, pire = 99, qui = "";
+      var lum = h => {{ var v = h.slice(1).match(/../g).map(x => {{ var c = parseInt(x,16)/255;
+        return c <= 0.04045 ? c/12.92 : Math.pow((c+0.055)/1.055, 2.4); }});
+        return 0.2126*v[0] + 0.7152*v[1] + 0.0722*v[2]; }};
+      for (theme of [false, true]) for (var n of Object.keys(C.CANDIDATS)) {{
+        var f = C.couleur(n), t = C.texteSur(f), a = lum(f), b = lum(t === "#fff" ? "#ffffff" : t);
+        var r = (Math.max(a,b) + 0.05) / (Math.min(a,b) + 0.05);
+        if (r < pire) {{ pire = r; qui = n + (theme ? " (sombre)" : ""); }}
+      }}
+      console.log(JSON.stringify({{pire: pire, qui: qui}}));
+    """
+    out = subprocess.run([NODE, "-e", prog], capture_output=True, text=True, check=True)
+    r = json.loads(out.stdout)
+    assert r["pire"] >= 3, r
