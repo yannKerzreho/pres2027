@@ -1,0 +1,338 @@
+{
+ "spec": "spec_second_tour §8.41",
+ "source": "reconstitué des journaux d'exécution (écriture JSON échouée : float32, corrigé ensuite)",
+ "essais": [
+  {
+   "variante": "abst",
+   "lambda": 0.2,
+   "perte": 6685.4,
+   "nu": {
+    "Emmanuel Macron": 0.0,
+    "Marine Le Pen": 0.396,
+    "Jean-Luc Mélenchon": 0.001,
+    "Benoît Hamon": 0.0,
+    "François Fillon": 0.357,
+    "Nicolas Dupont-Aignan": 1.0,
+    "Yannick Jadot": 0.121,
+    "Valérie Pécresse": 0.158,
+    "Éric Zemmour": 0.405
+   },
+   "ecart_t1_max": 0.00184,
+   "criteres": {
+    "melenchon_lt10": false,
+    "autres_non_degrades": true,
+    "interpretable": false,
+    "mae_autres_1d": 13.6,
+    "mae_autres_2d": 9.9,
+    "passe": false
+   },
+   "partage_2d": [
+    {
+     "election": 2017,
+     "electorat cellule": "Benoît Hamon partage",
+     "mesure": 93.4,
+     "modele": 99.2,
+     "erreur": 5.8
+    },
+    {
+     "election": 2017,
+     "electorat cellule": "François Fillon partage",
+     "mesure": 62.8,
+     "modele": 65.2,
+     "erreur": 2.4
+    },
+    {
+     "election": 2017,
+     "electorat cellule": "Jean-Luc Mélenchon partage",
+     "mesure": 76.4,
+     "modele": 98.9,
+     "erreur": 22.5
+    },
+    {
+     "election": 2017,
+     "electorat cellule": "Nicolas Dupont-Aignan partage",
+     "mesure": 37.6,
+     "modele": 14.3,
+     "erreur": -23.3
+    },
+    {
+     "election": 2022,
+     "electorat cellule": "Jean-Luc Mélenchon partage",
+     "mesure": 63.0,
+     "modele": 100.0,
+     "erreur": 37.0
+    },
+    {
+     "election": 2022,
+     "electorat cellule": "Valérie Pécresse partage",
+     "mesure": 65.0,
+     "modele": 60.3,
+     "erreur": -4.7
+    },
+    {
+     "election": 2022,
+     "electorat cellule": "Yannick Jadot partage",
+     "mesure": 87.5,
+     "modele": 100.0,
+     "erreur": 12.5
+    },
+    {
+     "election": 2022,
+     "electorat cellule": "Éric Zemmour partage",
+     "mesure": 9.4,
+     "modele": 0.0,
+     "erreur": -9.4
+    }
+   ]
+  },
+  {
+   "variante": "hier",
+   "lambda": 0.1,
+   "perte": 1970.3,
+   "nu": {
+    "Emmanuel Macron": 0.581,
+    "Marine Le Pen": 0.755,
+    "Jean-Luc Mélenchon": 0.7,
+    "Benoît Hamon": 0.535,
+    "François Fillon": 0.575,
+    "Nicolas Dupont-Aignan": 0.592,
+    "Yannick Jadot": 0.71,
+    "Valérie Pécresse": 0.35,
+    "Éric Zemmour": 0.708
+   },
+   "ecart_t1_max": 0.00203,
+   "criteres": {
+    "melenchon_lt10": false,
+    "autres_non_degrades": true,
+    "interpretable": false,
+    "mae_autres_1d": 9.9,
+    "mae_autres_2d": 4.3,
+    "passe": false
+   },
+   "partage_2d": [
+    {
+     "election": 2017,
+     "electorat cellule": "Benoît Hamon partage",
+     "mesure": 93.4,
+     "modele": 99.6,
+     "erreur": 6.2
+    },
+    {
+     "election": 2017,
+     "electorat cellule": "François Fillon partage",
+     "mesure": 62.8,
+     "modele": 76.0,
+     "erreur": 13.2
+    },
+    {
+     "election": 2017,
+     "electorat cellule": "Jean-Luc Mélenchon partage",
+     "mesure": 76.4,
+     "modele": 90.1,
+     "erreur": 13.7
+    },
+    {
+     "election": 2017,
+     "electorat cellule": "Nicolas Dupont-Aignan partage",
+     "mesure": 37.6,
+     "modele": 38.7,
+     "erreur": 1.1
+    },
+    {
+     "election": 2022,
+     "electorat cellule": "Jean-Luc Mélenchon partage",
+     "mesure": 63.0,
+     "modele": 100.0,
+     "erreur": 37.0
+    },
+    {
+     "election": 2022,
+     "electorat cellule": "Valérie Pécresse partage",
+     "mesure": 65.0,
+     "modele": 60.9,
+     "erreur": -4.1
+    },
+    {
+     "election": 2022,
+     "electorat cellule": "Yannick Jadot partage",
+     "mesure": 87.5,
+     "modele": 100.0,
+     "erreur": 12.5
+    },
+    {
+     "election": 2022,
+     "electorat cellule": "Éric Zemmour partage",
+     "mesure": 9.4,
+     "modele": 2.5,
+     "erreur": -6.8
+    }
+   ]
+  },
+  {
+   "variante": "hier",
+   "lambda": 0.2,
+   "perte": 2252.1,
+   "nu": {
+    "Emmanuel Macron": 0.777,
+    "Marine Le Pen": 1.0,
+    "Jean-Luc Mélenchon": 0.186,
+    "Benoît Hamon": 1.0,
+    "François Fillon": 1.0,
+    "Nicolas Dupont-Aignan": 0.145,
+    "Yannick Jadot": 0.698,
+    "Valérie Pécresse": 0.0,
+    "Éric Zemmour": 0.797
+   },
+   "ecart_t1_max": 0.00206,
+   "criteres": {
+    "melenchon_lt10": false,
+    "autres_non_degrades": true,
+    "interpretable": false,
+    "mae_autres_1d": 9.9,
+    "mae_autres_2d": 5.1,
+    "passe": false
+   },
+   "partage_2d": [
+    {
+     "election": 2017,
+     "electorat cellule": "Benoît Hamon partage",
+     "mesure": 93.4,
+     "modele": 99.1,
+     "erreur": 5.8
+    },
+    {
+     "election": 2017,
+     "electorat cellule": "François Fillon partage",
+     "mesure": 62.8,
+     "modele": 70.5,
+     "erreur": 7.7
+    },
+    {
+     "election": 2017,
+     "electorat cellule": "Jean-Luc Mélenchon partage",
+     "mesure": 76.4,
+     "modele": 98.6,
+     "erreur": 22.2
+    },
+    {
+     "election": 2017,
+     "electorat cellule": "Nicolas Dupont-Aignan partage",
+     "mesure": 37.6,
+     "modele": 40.8,
+     "erreur": 3.2
+    },
+    {
+     "election": 2022,
+     "electorat cellule": "Jean-Luc Mélenchon partage",
+     "mesure": 63.0,
+     "modele": 100.0,
+     "erreur": 37.0
+    },
+    {
+     "election": 2022,
+     "electorat cellule": "Valérie Pécresse partage",
+     "mesure": 65.0,
+     "modele": 50.5,
+     "erreur": -14.5
+    },
+    {
+     "election": 2022,
+     "electorat cellule": "Yannick Jadot partage",
+     "mesure": 87.5,
+     "modele": 100.0,
+     "erreur": 12.5
+    },
+    {
+     "election": 2022,
+     "electorat cellule": "Éric Zemmour partage",
+     "mesure": 9.4,
+     "modele": 1.0,
+     "erreur": -8.4
+    }
+   ]
+  },
+  {
+   "variante": "hier",
+   "lambda": 0.3,
+   "perte": 3126.0,
+   "nu": {
+    "Emmanuel Macron": 0.955,
+    "Marine Le Pen": 1.0,
+    "Jean-Luc Mélenchon": 0.0,
+    "Benoît Hamon": 1.0,
+    "François Fillon": 1.0,
+    "Nicolas Dupont-Aignan": 0.0,
+    "Yannick Jadot": 0.748,
+    "Valérie Pécresse": 0.0,
+    "Éric Zemmour": 0.53
+   },
+   "ecart_t1_max": 0.0016,
+   "criteres": {
+    "melenchon_lt10": false,
+    "autres_non_degrades": true,
+    "interpretable": false,
+    "mae_autres_1d": 9.9,
+    "mae_autres_2d": 7.0,
+    "passe": false
+   },
+   "partage_2d": [
+    {
+     "election": 2017,
+     "electorat cellule": "Benoît Hamon partage",
+     "mesure": 93.4,
+     "modele": 99.2,
+     "erreur": 5.8
+    },
+    {
+     "election": 2017,
+     "electorat cellule": "François Fillon partage",
+     "mesure": 62.8,
+     "modele": 72.7,
+     "erreur": 10.0
+    },
+    {
+     "election": 2017,
+     "electorat cellule": "Jean-Luc Mélenchon partage",
+     "mesure": 76.4,
+     "modele": 98.3,
+     "erreur": 21.9
+    },
+    {
+     "election": 2017,
+     "electorat cellule": "Nicolas Dupont-Aignan partage",
+     "mesure": 37.6,
+     "modele": 31.3,
+     "erreur": -6.3
+    },
+    {
+     "election": 2022,
+     "electorat cellule": "Jean-Luc Mélenchon partage",
+     "mesure": 63.0,
+     "modele": 100.0,
+     "erreur": 37.0
+    },
+    {
+     "election": 2022,
+     "electorat cellule": "Valérie Pécresse partage",
+     "mesure": 65.0,
+     "modele": 44.1,
+     "erreur": -20.9
+    },
+    {
+     "election": 2022,
+     "electorat cellule": "Yannick Jadot partage",
+     "mesure": 87.5,
+     "modele": 100.0,
+     "erreur": 12.5
+    },
+    {
+     "election": 2022,
+     "electorat cellule": "Éric Zemmour partage",
+     "mesure": 9.4,
+     "modele": 0.6,
+     "erreur": -8.8
+    }
+   ]
+  }
+ ]
+}

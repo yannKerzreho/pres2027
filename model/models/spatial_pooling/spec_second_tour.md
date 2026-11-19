@@ -1920,6 +1920,43 @@ pas représentable à coût raisonnable : on ne publie que $s_{ab}$, comme aujou
 Limite : c'est un test d'**existence** en échantillon. Il dit si la 2D peut représenter les
 reports sans toucher au T1, pas que le fit les apprendra.
 
+**Résultat (2026-11-19, `results/reports_t2_2d.json`) : ÉCHEC, (D) est abandonné.**
+
+| variante, λ | partage Mélenchon 2017 (mesuré 76,4) | partage Mélenchon 2022 (mesuré 63,0) | MAE des autres, 1D → 2D | ν interprétable |
+|---|---|---|---|---|
+| hier, 0,1 | 90,1 (+13,7) | 100,0 (+37,0) | 9,9 → 4,3 | non |
+| hier, 0,2 | 98,6 (+22,2) | 100,0 (+37,0) | 9,9 → 5,1 | non |
+| hier, 0,3 | 98,3 (+21,9) | 100,0 (+37,0) | 9,9 → 7,0 | non |
+| abst, 0,2 | 98,9 (+22,5) | 100,0 (+37,0) | 13,6 → 9,9 | non |
+
+Les parts T1 du champ réel restent tenues (écart ≤ 0,2 pt). Avec 9 ν libres, la 2D
+améliore les autres électorats, ce qui est attendu en échantillon. Le partage de Mélenchon
+2022 ne bouge pas, même en le laissant libre. Les ν ajustés ne racontent rien de stable :
+Macron et Hamon vont aux bords, et l'ordre change avec λ.
+
+**Cause.** Le noyau séparable ajoute les deux termes en log :
+$\logarphi=-(v-\mu)^2/2\sigma^2-(u-
+u)^2/2\lambda^2$. L'écart en $v$ entre Mélenchon et
+Le Pen reste dans chaque électeur de Mélenchon et sature toujours le logit (§8.40). Pour que
+la 2D croise réellement, il faudrait que σ en $v$ soit large. Or σ est réglé par le T1, qui
+le veut étroit.
+
+**Décision (règle §8.41, fixée avant lecture).**
+
+- Le croisement Mélenchon→Le Pen n'est pas représentable à coût raisonnable dans cette
+  famille de modèles.
+- On ne publie que $s_{ab}$ et $P(	ext{élu})$, comme aujourd'hui (§2.3).
+- (A)(2), les reports comme observations, n'est pas entrepris : en 1D comme en 2D, ils
+  tordraient la géométrie (§8.38, point 4) sans qu'aucun mécanisme ne les représente.
+
+Le plancher ε (§8.39) reste la seule piste utile ; elle relève de la netteté des reports
+par électorat, qu'on ne publie pas. Il n'est pas adopté.
+
+Piste non chiffrée, notée pour mémoire : un noyau **à queues lourdes en $v$**
+(Student, mélange avec une composante large), qui laisserait une fraction de chaque
+électorat loin de son centre. C'est la seule façon de désaturer $q$ dans cette famille. Elle
+toucherait au T1, donc à toute la production.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

@@ -45,19 +45,19 @@ l'historique, ajouter en bas de « Historique ».
         électorat et par candidat_t2 (y compris « Aucun » ↔ abstention ω),
         z par cellule. Maths dans la spec (§ nouveau) AVANT le code. Si erreur
         systématique par électorat que l'axe unique n'absorbe pas ⇒ ouvrir (D).
-  - [ ] [EN COURS (début 2026-11-19 06:30Z) : maths (D-b) écrites spec §8.41 + test d'existence sans fit `model/backtest/reports_2d.py` (critères fixés avant lecture)] [(ii) et test (D-a) FAITS 19/11 05:55Z, spec §8.39-8.40 : plancher ε = 0,2 ⇒ MAE des cellules −3 à −10 pt mais Mélenchon 2022 encore +24-29 pt ; fer à cheval (D-a) ÉCHOUE au test d'identification (Mélenchon 22 → 22, 37 → 37 pt), logit par votant saturé par le noyau gaussien étroit ⇒ À FAIRE : maths complètes de (D-b) 2D séparable (coût, quadrature, priors ν, identification T1) puis test sans fit si possible] **(D) OUVERT par (A)(1)** — maths AVANT (A)(2), qui ne doit pas entrer
+  - [x] [FAIT 19/11 07:00Z, spec §8.41 : (D-b) 2D séparable ÉCHOUE au test d'existence (Mélenchon 2022 reste à 100 % pour λ 0,1/0,2/0,3, même ν libres ; ν non interprétables) ⇒ (D) ABANDONNÉ par la règle fixée avant lecture ; on ne publie que s_ab (inchangé)] [(ii) et test (D-a) FAITS 19/11 05:55Z, spec §8.39-8.40 : plancher ε = 0,2 ⇒ MAE des cellules −3 à −10 pt mais Mélenchon 2022 encore +24-29 pt ; fer à cheval (D-a) ÉCHOUE au test d'identification (Mélenchon 22 → 22, 37 → 37 pt), logit par votant saturé par le noyau gaussien étroit ⇒ À FAIRE : maths complètes de (D-b) 2D séparable (coût, quadrature, priors ν, identification T1) puis test sans fit si possible] **(D) OUVERT par (A)(1)** — maths AVANT (A)(2), qui ne doit pas entrer
         dans le 1D (il tordrait la géométrie, §8.38 point 4) : (i) écrire dans la
         spec la seconde coordonnée (axe système/anti-système, 1 paramètre par
         candidat, prior centré 0, ou « fer à cheval » §2.3) et son identification
         par les reports ; (ii) chiffrer d'abord, sans fit, l'alternative minimale
         « plancher de report » (bruit logistique par votant) sur les mêmes
         tirages : elle couvre la netteté (point 2) mais pas Mélenchon (point 1).
-  - [ ] (A)(2) [à faire DANS le modèle retenu en (D), pas en 1D] **Reports comme observations** (multinomiale par électorat, ou
+  - [x] [NON ENTREPRIS 19/11 (§8.41) : aucun mécanisme (1D, plancher, fer à cheval, 2D) ne représente le report Mélenchon→Le Pen ; les reports en vraisemblance tordraient la géométrie] (A)(2) [à faire DANS le modèle retenu en (D), pas en 1D] **Reports comme observations** (multinomiale par électorat, ou
         Dirichlet-multinomiale avec n effectif si base_electorat manque ; maths
         d'abord : vraisemblance, dépendance avec les duels de la même notice,
         poids). Backtest V1/V2 2017 et 2022 selon le protocole §8.29
         (10 tâches, CRPS + LS plafonné) ; adopter seulement si non dégradé.
-  - [ ] **Revue Opus dédiée à (A)** dès (A)(2) fini (sous-agent model opus :
+  - [ ] [À FAIRE avec la revue quotidienne due ~11:20Z : (A) est clos (§8.38-8.41)] **Revue Opus dédiée à (A)** dès (A)(2) fini (sous-agent model opus :
         spec + code + résultats de (A)) ; intégrer ou réfuter point par point.
   - [ ] **τ_T2 calibré sur 2002-2022** (5 élections ; tâche « revue, 9 »
         ci-dessous) : `data/historical/results_{2002,2007,2012}.csv`,
@@ -665,6 +665,11 @@ conservé pour l'historique.
   fer à cheval sans effet (logit saturé) ⇒ (D-b) 2D séparable à spécifier.
   Résultats `reports_t2_plancher.json`, `reports_t2_nu.json`. Tests : 5 dans
   test_reports_t2.
+
+- 2026-11-19 06:10-07:05Z (réveil) : (D-b) 2D séparable, maths §8.41 et
+  test d'existence sans fit (4 essais parallèles, 40 tirages, w re-résolu) :
+  échec (Mélenchon 2022 figé à 100 %), (D) abandonné, (A)(2) non entrepris.
+  Revue Opus de (A) groupée avec la revue quotidienne. Suivant : τ_T2 2002-2022.
 
 ## Revue Opus 2026-11-18 — intégration point par point
 

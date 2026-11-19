@@ -109,7 +109,7 @@ class Annee:
         return rows
 
 
-def ajuster(annees, lam, departs=3):
+def ajuster(annees, lam, departs=2):
     def perte(z):
         nu = dict(zip(LIBRES, expit(z)))
         tot = 0.0
@@ -177,8 +177,10 @@ def main() -> None:
             print(json.dumps({k: ligne[k] for k in ("variante", "lambda", "perte", "nu", "ecart_t1_max", "criteres")},
                              ensure_ascii=False), flush=True)
             print(pd.DataFrame(err2d).query("cellule == 'partage'").to_string(index=False), flush=True)
-    dest = OUT.with_name("reports_t2_2d.json")
-    dest.write_text(json.dumps({"spec": "spec_second_tour §8.41", "essais": out}, ensure_ascii=False, indent=1) + "\n")
+    suff = "_".join(args.variantes) + "_" + "_".join(f"{x:g}" for x in args.lambdas)
+    dest = OUT.with_name(f"reports_t2_2d_{suff}.json")
+    dest.write_text(json.dumps({"spec": "spec_second_tour §8.41", "essais": out}, ensure_ascii=False, indent=1,
+                               default=float) + "\n")
     print(f"-> {dest}")
 
 
