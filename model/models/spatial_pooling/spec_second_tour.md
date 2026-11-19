@@ -2044,6 +2044,70 @@ autres sont négatives et faibles. Cela rejoint l'arbitrage 2 (biais anti-RN non
 déjà tranché ; on ne le rouvre pas ici. Une moyenne non nulle ferait baisser τ, mais
 déplacerait les duels 2027.
 
+### 8.43 (R1) Part anti-système par électorat (0 fit ; protocole fixé avant résultat)
+
+**Idée (utilisateur, 19/11).** Contrairement au plancher symétrique de §8.39, c'est un
+mélange **orienté**. Une fraction $\pi_k$ de l'électorat de $k$ vote pour le finaliste
+« anti-système », quelle que soit sa position sur l'axe. En 2017 et en 2022, c'est Le Pen
+contre Macron. Le reste suit le modèle spatial. $\pi$ est par **famille** et commun aux deux
+années :
+
+| famille | électorats mesurés | autres candidats du T1 rattachés |
+|---|---|---|
+| gauche radicale (GR) | Mélenchon 2017 et 2022 | Poutou, Arthaud, Roussel |
+| gauche / écologie (GE) | Hamon 2017, Jadot 2022 | Hidalgo |
+| droite (D) | Fillon 2017, Pécresse 2022 | — |
+| droite radicale (DR) | Dupont-Aignan 2017, Zemmour 2022 | — |
+
+Les finalistes ont $\pi=0$, car leur électorat leur est acquis. Pour Lassalle, Asselineau
+et Cheminade, $\pi=0$ : ils ne sont pas estimés et pèsent moins de 2 % du T1. La famille
+« centre » n'a aucun électorat mesuré ; son seul candidat est le finaliste Macron.
+
+**Parts par électorat.** On reprend $E_k, R_k, G_k$ de §8.38 et
+$\tilde G_k=\mathrm{logistique}(\operatorname{logit}G_k+\delta)$.
+
+- (R1a) :
+
+$$a_k=(1-\pi_k)R_k\tilde G_k,\qquad b_k=(1-\pi_k)R_k(1-\tilde G_k)+\pi_k,\qquad
+\varnothing_k=(1-\pi_k)(1-R_k).$$
+
+- (R1b), « Aucun » orienté, si les données le demandent : on ajoute $\pi^\varnothing_k$,
+  par famille également.
+
+$$a_k=(1-\pi_k-\pi^\varnothing_k)R_k\tilde G_k,\quad
+b_k=(1-\pi_k-\pi^\varnothing_k)R_k(1-\tilde G_k)+\pi_k,\quad
+\varnothing_k=(1-\pi_k-\pi^\varnothing_k)(1-R_k)+\pi^\varnothing_k.$$
+
+**Duel agrégé.** Le mélange déplace $s_{ab}$. Deux lectures :
+
+- (i) δ est recalé pour que $\sum_kE_ka_k/\sum_kE_k(a_k+b_k)=s_{ab}$ : le duel publié est
+  inchangé et seule la répartition bouge. C'est la lecture principale.
+- (ii) δ garde sa valeur sans mélange : on rapporte alors le déplacement du duel en points.
+
+**Ajustement.** On minimise la somme des carrés des erreurs des cellules Macron, Le Pen et
+Aucun, en %, sur les moyennes postérieures (tous les tirages), pour 2017 et 2022 ensemble.
+Cela fait 4 paramètres en R1a et 8 en R1b, pour 16 degrés de liberté. On utilise les fits
+hier, la variante de production, et abst en information. Optimiseur : Powell, sur
+$\operatorname{logit}\pi$.
+
+**Critères (R1a, hier), fixés avant lecture.**
+
+1. Partage Mélenchon parmi les exprimés à moins de 10 pt du mesuré, les deux années, avec
+   l'ajustement conjoint.
+2. MAE des cellules des autres électorats non dégradée de plus de 1 pt par rapport à la 1D
+   sans mélange (§8.38).
+3. Stabilité : avec un ajustement séparé par année, $|\pi_{2017}-\pi_{2022}|<0{,}1$ pour
+   chacune des quatre familles.
+4. Duels : on rapporte le déplacement (ii) de $s_{ab}$ et le δ recalé (i). Ce n'est pas un
+   critère éliminatoire, mais un fait à dire.
+
+**En information**, une prédiction « une année retirée » : π ajusté sur 2017 sert à prédire
+les cellules de 2022, et inversement. C'est le seul chiffre hors échantillon.
+
+Si R1a passe, on spécifie l'entrée dans le modèle : π par famille dans la vraisemblance des
+reports, ce qui rend (A)(2) possible sans tordre la géométrie. Le backtest suit §8.29, et R2
+est fait en mode réduit (2022 seul). Si R1a échoue, on consigne l'échec et l'on passe à R2.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

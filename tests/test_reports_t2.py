@@ -85,3 +85,20 @@ def test_2d_point_fixe_garde_le_t1():
     assert ecart < 1e-4
     A, poids = attractivite_2d(mu, sigma, w, nu, 50.0)        # u sans effet
     assert np.allclose(parts_t1(A, champ, poids), cible, atol=1e-6)
+
+
+def test_melange_anti_systeme():
+    """§8.43 : π_as pousse vers b ; δ recalé garde le duel ; cellules sommant à 1."""
+    from model.backtest.reports_t2 import composantes, melange
+    A, lse, kappa, omega = _cas(seed=5)
+    champ = np.arange(A.shape[1])
+    E, R, G = composantes(A, champ, 1, 3, kappa, omega, lse)
+    s = np.full(len(kappa), 0.6)
+    r0 = melange(E, R, G, s)
+    pa = np.array([0.3, 0, 0, 0, 0.1])
+    r1 = melange(E, R, G, s, pa, np.array([0, 0, 0, 0, 0.05]))
+    assert np.allclose(r1["a"] + r1["b"] + r1["aucun"], 1.0)
+    assert (r1["b"][:, 0] > r0["b"][:, 0]).all()
+    agg = (E * r1["a"]).sum(1) / (E * (r1["a"] + r1["b"])).sum(1)
+    assert np.allclose(agg, s, atol=1e-6)
+    assert (r1["decalage_duel"] < 0).all()            # sans recalage, le mélange fait perdre a

@@ -49,17 +49,61 @@ def reports_predits(A, champ, ia, ib, kappa, omega, lse, s_ab, n_iter=60, planch
     pr = np.einsum("skb,sb,b->sk", p, rho, Wq)
     R = pr / E
     G = np.clip(np.einsum("skb,sb,sb,b->sk", p, rho, q, Wq) / pr, 1e-9, 1 - 1e-9)
-    poids = E * R
-    cible = np.clip(s_ab, 1e-9, 1 - 1e-9)
+    return melange(E, R, G, s_ab, n_iter=n_iter)
+
+
+def _bissection(f, cible, n_iter=60):
     lo, hi = np.full(len(cible), -20.0), np.full(len(cible), 20.0)
-    for _ in range(n_iter):                                               # bissection monotone
+    for _ in range(n_iter):                                               # f croissante en d
         d = (lo + hi) / 2
-        m = (poids * expit(logit(G) + d[:, None])).sum(1) / poids.sum(1)
+        m = f(d)
         hi = np.where(m > cible, d, hi)
         lo = np.where(m > cible, lo, d)
-    d = (lo + hi) / 2
-    Gt = expit(logit(G) + d[:, None])
-    return {"a": R * Gt, "b": R * (1 - Gt), "aucun": 1 - R, "delta": d, "E": E}
+    return (lo + hi) / 2
+
+
+def melange(E, R, G, s_ab, pi_as=None, pi_aucun=None, n_iter=60):
+    """Cellules par électorat (§8.38) avec mélange orienté anti-système (§8.43).
+
+    pi_as, pi_aucun : (K,) ou None. Une fraction pi_as[k] de l'électorat k vote
+    pour b (finaliste anti-système), pi_aucun[k] ne s'exprime pas, le reste suit
+    le modèle spatial. δ est recalé pour que le duel agrégé reste s_ab (lecture
+    (i)) ; 'decalage_duel' donne le déplacement du duel si δ garde sa valeur
+    sans mélange (lecture (ii))."""
+    K = E.shape[1]
+    pa = np.zeros(K) if pi_as is None else np.asarray(pi_as, float)
+    pn = np.zeros(K) if pi_aucun is None else np.asarray(pi_aucun, float)
+    sp = 1.0 - pa - pn                                                    # part spatiale
+    cible = np.clip(s_ab, 1e-9, 1 - 1e-9)
+    lG = logit(G)
+
+    def agg(d):
+        Gt = expit(lG + d[:, None])
+        num = (E * sp * R * Gt).sum(1)
+        return num / (E * (sp * R + pa)).sum(1)
+
+    d0 = _bissection(lambda d: (E * R * expit(lG + d[:, None])).sum(1) / (E * R).sum(1), cible, n_iter)
+    d = d0 if (pi_as is None and pi_aucun is None) else _bissection(agg, cible, n_iter)
+    Gt = expit(lG + d[:, None])
+    out = {"a": sp * R * Gt, "b": sp * R * (1 - Gt) + pa, "aucun": sp * (1 - R) + pn, "delta": d, "E": E}
+    out["decalage_duel"] = agg(d0) - cible
+    return out
+
+
+def composantes(A, champ, ia, ib, kappa, omega, lse):
+    """(E, R, G) de §8.38 sans recalage, pour réutiliser le mélange (§8.43)."""
+    Ac = A[:, champ, :]
+    p = np.exp(Ac - logsumexp(Ac, axis=1, keepdims=True))
+    k = kappa[:, None]
+    q = expit(k * (A[:, ia, :] - A[:, ib, :]))
+    if lse is None:
+        rho = np.ones_like(q)
+    else:
+        rho = expit(np.logaddexp(k * A[:, ia, :], k * A[:, ib, :]) - (omega[:, None] + k * lse))
+    Wq = np.asarray(W)
+    E = np.einsum("skb,b->sk", p, Wq)
+    pr = np.einsum("skb,sb,b->sk", p, rho, Wq)
+    return E, pr / E, np.clip(np.einsum("skb,sb,sb,b->sk", p, rho, q, Wq) / pr, 1e-9, 1 - 1e-9)
 
 
 def _fit_v2(election: int, variante: str):

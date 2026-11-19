@@ -39,7 +39,7 @@ l'historique, ajouter en bas de « Historique ».
       AVANT lecture. Elles passent AVANT la revue Opus de (A), sauf si la revue
       quotidienne est due : dans ce cas la revue d'abord, et elle couvre aussi
       ces deux pistes. Le scoring prospectif 2027 reste à chaque réveil.
-  - [ ] (R1) **Part anti-système par électorat (0 fit)**, sur les tirages V2
+  - [ ] [EN COURS (début 2026-11-19 08:05Z) : spec §8.43 (critères figés), `model/backtest/reports_r1.py` + test] (R1) **Part anti-système par électorat (0 fit)**, sur les tirages V2
         T2−7 de §8.38. C'est un mélange orienté, pas le plancher symétrique de
         §8.39 : $q_k = (1-\pi_k)\,q_k^{spatial} + \pi_k\,q^{AS}$, où $q^{AS}$
         vote pour le finaliste « anti-système » (Le Pen contre Macron en
