@@ -86,3 +86,20 @@ def test_modele_2d_densite_finie():
     nu = np.asarray(tr["nu"]["value"])
     assert abs(nu[1] - 0.3) < 1e-6 and nu[3] >= nu[1]
     assert "ll_reports" in tr
+
+
+def test_newton_cas_sature():
+    """Revue 19/11, point 8 : σ ≈ 0,02, κ = 0,75 (logits saturés) — 4 pas suffisent."""
+    from model.backtest.reports_t2 import composantes, melange
+    rng = np.random.default_rng(7)
+    mu = jnp.asarray(np.sort(rng.uniform(.1, .9, 6)))
+    sg = jnp.full(6, 0.02)
+    w = jnp.asarray(rng.normal(0, .5, 6))
+    A = np.asarray(log_attractivite(mu, sg, w))[None]
+    lse = logsumexp(A, axis=1)
+    E, R, G = composantes(A, np.arange(6), 1, 4, np.array([0.75]), np.array([-3.0]), lse)
+    s = np.array([0.55])
+    ref = melange(E, R, G, s)
+    th, d = reports_cellules(jnp.asarray(A), jnp.ones(6), jnp.array([1]), jnp.array([4]), jnp.array([2]),
+                             0.75, jnp.array([0.0]), jnp.asarray(lse), -3.0, jnp.asarray(s), W, n_newton=4)
+    assert np.allclose(np.asarray(th[0]), [ref["a"][0, 2], ref["b"][0, 2], ref["aucun"][0, 2]], atol=2e-3)

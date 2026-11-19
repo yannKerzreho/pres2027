@@ -7,7 +7,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## État (mis à jour à chaque réveil)
 
-- Dernière revue Opus : 2026-11-18 ~11:20Z (routine, cf. « Revue Opus 2026-11-18 »).
+- Dernière revue Opus : 2026-11-19 ~11:20Z (routine, couvre aussi (A), R1, R2 ; cf. « Revue Opus 2026-11-19 »).
 - OBJECTIF (utilisateur, via l'orchestrateur, 2026-11-14) : « un modèle qui est
   backé par le passé mais qui représente bien les sondages et tendances
   actuels ». 2017/2022 servent à CALIBRER et VALIDER ; le critère final est la
@@ -59,7 +59,9 @@ l'historique, ajouter en bas de « Historique ».
         par les reports, (A)(2) devient possible sans tordre la géométrie) et
         le backtest selon §8.29. Si R1 échoue : le consigner, passer à R2.
         R2 se fait dans les deux cas, en mode réduit (2022 seul) si R1 passe.
-  - [ ] [EN COURS (début 2026-11-19 11:35Z) : témoin équitable `hier_rep` (1D + reports), V2 T2−7 2022, 4 chaînes ; phase 2 ARRÊTÉE à 11:30Z (revue 19/11, point 5 : R̂ bon par construction, ne répond à rien)] [V2 2022 FAIT 19/11 10:35Z, spec §8.44 « Résultats » : critères 1-3 PASSENT (Mélenchon 62,3 contre 63,0 ; hors fit −3,5 pt contre +34,2 en 1D ; σ_v ×1,33 ; T1 non dégradé), 4 ÉCHOUE (R̂ ν 7,5), 5 de peu (s_ab +0,7 pt) ; κ 0,75 → 0,22. À FAIRE : (a) phase 2 §8.8 depuis la chaîne 0 (`--init-depuis second_round_hier2d_v2_2022_T2-7.json`), 4 chaînes ~1 h 30 ; (b) si s_ab > 0,5 pt, retirer le duel M–LP des notices à reports ; puis critères à nouveau, puis V1 2022 si 1-5 passent] [ex-EN COURS (début 2026-11-19 08:15Z) : code fait (drapeaux `carte_2d`, `reports` ; `--variante hier2d` ; tests test_carte_2d), fit V2 T2−7 2022 hier2d lancé (4 processus d'une chaîne, ~4-5 h, données de main au 19/11)] [MATHS FAITES 19/11 07:55Z, spec §8.44 (noyau séparable, ancres ν_C = 0,3 + ordre RN ≥ C, Dirichlet des reports avec c appris, Newton pour δ, critères figés) ; À FAIRE : code derrière drapeau (`carte_2d`, `reports`) + tests, puis fit V2 T2−7 2022 hier2d (4 chaînes × ~4 h)] (R2) **Carte 2D estimée dès le T1** (fit, VM cloud ; jamais sur le
+  - [ ] (revue 19/11, idée 2) **R2 V1 2022 à T1−30 sans reports**, 4 chaînes indépendantes (pas de phase 2), avec δ par notice (point 7) et le plancher de 1 % (point 8) ; critère 4 révisé (§8.44, révision 6) et écarts des duels hypothétiques entre chaînes. Si ν reste au prior et que les duels varient de plus de 2 pt ⇒ R2 abandonné pour le site. Après le témoin.
+  - [ ] (revue 19/11, point 9) sensibilité τ_T2 avec la moyenne à T2−7, 0 fit, priorité basse.
+  - [ ] [EN COURS (début 2026-11-19 11:32Z) : témoin équitable `hier_rep` (1D + reports), V2 T2−7 2022, 4 chaînes ; phase 2 ARRÊTÉE à 11:30Z (revue 19/11, point 5 : R̂ bon par construction, ne répond à rien)] [V2 2022 FAIT 19/11 10:35Z, spec §8.44 « Résultats » : critères 1-3 PASSENT (Mélenchon 62,3 contre 63,0 ; hors fit −3,5 pt contre +34,2 en 1D ; σ_v ×1,33 ; T1 non dégradé), 4 ÉCHOUE (R̂ ν 7,5), 5 de peu (s_ab +0,7 pt) ; κ 0,75 → 0,22. À FAIRE : (a) phase 2 §8.8 depuis la chaîne 0 (`--init-depuis second_round_hier2d_v2_2022_T2-7.json`), 4 chaînes ~1 h 30 ; (b) si s_ab > 0,5 pt, retirer le duel M–LP des notices à reports ; puis critères à nouveau, puis V1 2022 si 1-5 passent] [ex-EN COURS (début 2026-11-19 08:15Z) : code fait (drapeaux `carte_2d`, `reports` ; `--variante hier2d` ; tests test_carte_2d), fit V2 T2−7 2022 hier2d lancé (4 processus d'une chaîne, ~4-5 h, données de main au 19/11)] [MATHS FAITES 19/11 07:55Z, spec §8.44 (noyau séparable, ancres ν_C = 0,3 + ordre RN ≥ C, Dirichlet des reports avec c appris, Newton pour δ, critères figés) ; À FAIRE : code derrière drapeau (`carte_2d`, `reports`) + tests, puis fit V2 T2−7 2022 hier2d (4 chaînes × ~4 h)] (R2) **Carte 2D estimée dès le T1** (fit, VM cloud ; jamais sur le
         MacBook). Hypothèse à tester : avec un second axe u (système /
         anti-système), u porte une partie de la séparation entre candidats
         proches en v (Mélenchon / Hamon / Jadot / Roussel), σ_v s'élargit et
@@ -115,7 +117,7 @@ l'historique, ajouter en bas de « Historique ».
         d'abord : vraisemblance, dépendance avec les duels de la même notice,
         poids). Backtest V1/V2 2017 et 2022 selon le protocole §8.29
         (10 tâches, CRPS + LS plafonné) ; adopter seulement si non dégradé.
-  - [ ] [À FAIRE avec la revue quotidienne due ~11:20Z : (A) est clos (§8.38-8.41)] **Revue Opus dédiée à (A)** dès (A)(2) fini (sous-agent model opus :
+  - [x] [FAIT 19/11 11:20Z avec la revue quotidienne (section « Revue Opus 2026-11-19 »)] **Revue Opus dédiée à (A)** dès (A)(2) fini (sous-agent model opus :
         spec + code + résultats de (A)) ; intégrer ou réfuter point par point.
   - [x] [FAIT 19/11 07:40Z, spec §8.42, `results/tau_t2_historique.json` (0 fit) : médiane a posteriori 0,164 (normale), moyenne 0,184, IC90 [0,10 ; 0,34] ; sans 2002 0,165 ; Student-t4 0,151, moins bon en LOO (1,37 contre 1,70) ; écart à 0,19 < 0,05 ⇒ 0,19 CONFIRMÉ, pas d'arbitrage ; effet interpolé ≈ 1 pt sur P(élu) Le Pen] **τ_T2 calibré sur 2002-2022** (5 élections ; tâche « revue, 9 »
         ci-dessous) : `data/historical/results_{2002,2007,2012}.csv`,
@@ -750,6 +752,45 @@ conservé pour l'historique.
   et témoin 1D hier refitté sur les mêmes données (4 × 25 min) ; évaluation
   `eval_r2.py` : reports reproduits (hors fit inclus), T1 non dégradé, mais ν
   instables (R̂ 7,5) et s_ab +0,7 pt ⇒ phase 2 à faire.
+
+
+## Revue Opus 2026-11-19 — intégration point par point
+
+Revue lancée à 11:20Z, en lecture seule. Elle couvre (A)(1), le plancher, le fer à cheval, la 2D
+greffée, τ_T2, R1 et R2.
+
+1. **« Désaturation surtout par κ » faux.** INTÉGRÉ et VÉRIFIÉ : contrefactuels rejoués, 1D à
+   κ 0,1 donne 98,7 ; 2D sans u, 82,4 ; 2D complet, 62,3. Interaction v-κ-u ; σ_Mélenchon
+   0,020 → 0,053 / 0,080 ; Jadot plus à gauche que Mélenchon en 1D. Lecture 2 de §8.44
+   remplacée.
+2. **§8.40 et §8.41 faux négatifs (κ, σ figés).** INTÉGRÉ : conclusion de §8.41 retirée, règle
+   « une porte à 0 fit qui gèle des paramètres couplés ne peut pas exclure ».
+3. **Témoin 1D inéquitable.** INTÉGRÉ : `hier_rep` (1D avec reports) lancé à 11:32Z.
+4. **Hors échantillon faible.** INTÉGRÉ : persistance naïve à 3,6 pt contre 2,6 pt pour le
+   modèle, requalifié en « prolongation à quelques jours ».
+5. **μ multimodal aussi ; phase 2 sans valeur.** INTÉGRÉ : phase 2 arrêtée à 11:30Z. Le
+   précédent du 14/11 (puits stable mais faux) est rappelé.
+6. **ν non identifié, grave pour le site.** INTÉGRÉ : nouveau critère 4 (≥ 3 chaînes
+   indépendantes ; écarts ≤ 3 pt sur les reports, ≤ 0,5 pt sur le T1, ≤ 2 pt sur les duels, y
+   compris hypothétiques). Le run actuel y échoue : Mélenchon–Le Pen de 43,4 à 48,9.
+7. **δ par notice au lieu du repli.** INTÉGRÉ pour le prochain run R2. Le témoin en cours garde
+   $s_{ab}$ modélisé, comme le 2D, pour rester comparable.
+8. **Code.** Test de Newton en cas saturé AJOUTÉ (vert). Plancher de 1 % : au prochain run.
+   Couverture T1 3/12 : notée, non expliquée.
+9. **τ_T2 : fenêtre postérieure à `as_of`.** PRÉCISÉ : la dérive après `as_of` est portée par la
+   projection OU, pas par τ. Sensibilité « moyenne à T2−7 » mise en file, priorité basse. LOO 5/5
+   non informatif : accepté.
+10. **Protocole.** ACCEPTÉ : désormais, les critères sont commités dans un commit séparé, avant de
+    lancer le script. R2 §8.44 l'a été (31a68b3, avant le code) ; §8.38 et R1 non, à 3 et 13 min
+    d'écart.
+
+Idées :
+
+- (1) le témoin équitable, en cours ;
+- (2) V1 2022 à T1−30 en R2, sans reports, avec 4 chaînes indépendantes : c'est le seul test de
+  la valeur de R2 pour le site, en file juste après (1) ;
+- (3) δ par notice et tableau de contrefactuels permanent dans `eval_r2.py` : en file, intégré
+  au prochain run.
 
 ## Revue Opus 2026-11-18 — intégration point par point
 

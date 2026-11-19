@@ -1941,6 +1941,8 @@ Le Pen reste dans chaque électeur de Mélenchon et sature toujours le logit (§
 la 2D croise réellement, il faudrait que σ en $v$ soit large. Or σ est réglé par le T1, qui
 le veut étroit.
 
+> **Retiré le 19/11 (revue, point 2)** : test faux négatif par construction (κ et σ figés au 1D) ; voir §8.44, révision.
+
 **Décision (règle §8.41, fixée avant lecture).**
 
 - Le croisement Mélenchon→Le Pen n'est pas représentable à coût raisonnable dans cette
@@ -2026,6 +2028,12 @@ A posteriori de τ, en logit :
 En une élection retirée, la loi normale fait mieux : log-densité prédictive totale de 1,70
 contre 1,37. Les deux lois couvrent 5 élections sur 5 à 90 %. 2002 ne pèse pas : la médiane
 passe de 0,164 à 0,165 sans elle.
+
+**Précision (revue 19/11, point 9).** La fenêtre T2−7..T2−1 est l'erreur des **derniers**
+sondages. La dérive entre `as_of` et le scrutin, comme le débat de 2017, est portée par la
+projection OU de $w$ (§6, point 1), pas par τ. Si l'on voulait que τ couvre l'erreur à T2−7, il
+faudrait la moyenne à T2−7 : sensibilité notée dans la file. La couverture LOO de 5/5 n'apporte
+aucune information.
 
 **Lecture.** La médiane à 0,164 s'écarte de 0,19 de moins que le seuil de 0,05, et 0,19
 est dans l'IC90 de tous les sous-ensembles. **τ_T2 = 0,19 est confirmé**, du côté prudent :
@@ -2309,6 +2317,78 @@ témoin 1D hier a été refitté sur les **mêmes** données : `r2_temoin_hier_v
 
 Rappel de la limite de §8.44.5 : avant le T1, sans reports, ce gain n'existe pas. Le test V1
 dira ce qui en reste.
+
+**Révision après la revue Opus du 19/11, intégrée le même jour.**
+
+**1. La lecture 2 est retirée.** Le mécanisme ne passe pas « surtout par κ ». Contrefactuels à
+0 fit, sur les mêmes tirages (`kappa_test.py` de la revue, rejoué) ; partage de Mélenchon parmi
+les exprimés, mesuré à 63,0 :
+
+| configuration | partage Mélenchon |
+|---|---|
+| 1D témoin (κ 0,75) | 100,0 |
+| 1D, κ forcé à 0,22 | 100,0 |
+| 1D, κ forcé à 0,1 | 98,7 |
+| 1D, κ 0,22 et σ × 1,33 | 99,6 |
+| 2D retenu (κ 0,22) | **62,3** |
+| 2D, κ forcé à 0,75 | 97,2 |
+| 2D, u effacé (λ = 50) | 82,4 |
+
+κ seul n'apporte rien. La géométrie en $v$ réorganisée, avec un κ bas, fait passer de 100 à 82 ;
+$u$ fait passer de 82 à 62. C'est une **interaction**.
+
+Le mécanisme se lit par candidat :
+
+- σ_Mélenchon vaut 0,020 en 1D, contre 0,053 et 0,080 dans les deux chaînes 2D retenues, soit
+  ×2,6 à ×4 ;
+- en 1D, Jadot ($\mu$ 0,11) est *plus à gauche* que Mélenchon (0,21) ;
+- en 2D, Jadot et Roussel se séparent de Mélenchon par $u$ (ν ≈ 0,06 contre ν_JLM ≈ 0,41 ≈ ν_LP).
+
+L'hypothèse de l'utilisateur est donc confirmée **pour Mélenchon** : $u$ porte la séparation avec
+la gauche modérée, et son rayon en $v$ s'élargit. Le $\bar\sigma_v$ du champ ne le montrait qu'en
+moyenne.
+
+**2. §8.40 et §8.41 étaient des faux négatifs par construction.** Les deux figeaient κ = 0,75 et
+σ du 1D ; or la 2D elle-même échoue à κ = 0,75 (97 %). La conclusion « non représentable dans
+cette famille » de §8.41 est **retirée**.
+
+Règle pour la suite : une porte à 0 fit qui gèle des paramètres couplés au mécanisme testé ne peut
+pas exclure ; seul un résultat positif y est informatif.
+
+**3. Le témoin 1D n'était pas équitable**, puisque les reports étaient dans la vraisemblance du 2D
+seulement. Le témoin `hier_rep` (1D avec reports) est en cours.
+
+**4. Le contrôle 1 bis est requalifié** en « prolongation à quelques jours » : mêmes instituts, à
+1-7 jours. La persistance naïve (moyenne des notices du fit) fait une MAE de 3,6 pt sur les quatre
+partages hors fit, Mélenchon −5,8. Le modèle 2D fait 2,6 pt. Le gain sur la persistance est
+d'environ 1 pt, pas de 30.
+
+**5. Multimodalité**, qui touche $\mu$ aussi (R̂ 9,98), et non seulement ν. La phase 2 depuis le
+mode dominant donnerait un R̂ bon par construction : elle a été **arrêtée**.
+
+**6. Nouveau critère 4, qui remplace R̂(ν) pour les runs suivants.** Sur au moins 3 chaînes
+initialisées indépendamment, l'écart maximal entre chaînes doit être :
+
+- ≤ 3 pt sur les partages mesurés ;
+- ≤ 0,5 pt sur les parts T1 ;
+- ≤ 2 pt sur tous les duels, observés et hypothétiques clés, dont Mélenchon–Le Pen.
+
+On rapporte en plus l'écart de lp entre modes.
+
+Le run actuel échoue aussi à ce critère. Mélenchon–Le Pen, un seul sondage en 2022, vaut 47,2 /
+48,9 / 48,9 / 43,4 selon les chaînes 2D, contre 42,4 en 1D. R2 déplace de 5-6 pt, et de façon
+instable, un duel hypothétique : c'est exactement ce que le site publie.
+
+**7. Double compte, nouvelle forme pour le prochain run R2.** δ est recalé **par notice** sur le
+duel publié par cette notice, au lieu de $s_{ab}$ modélisé : les reports ne portent alors plus que
+la composition. Le repli « retirer le duel » ôterait environ 10 des 15 duels de la dernière
+semaine.
+
+**8. Code.**
+
+- Test de Newton ajouté sur un cas saturé (σ = 0,02, κ = 0,75).
+- Sensibilité au plancher de 1 % (au lieu de 0,5 %) sur $y$ des reports : à faire au prochain run.
+- Couverture T1 de 3/12 contre 5/12 : non expliquée, à suivre.
 
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
