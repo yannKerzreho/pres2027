@@ -2492,6 +2492,15 @@ prédiction.
   demi-IC90, on ouvre la ligne « ARBITRAGE À TRANCHER » : élargir l'IC de ces paires (τ_paire
   plus grand, ou un mélange explicite des modes), ou ne pas les afficher.
 
+**Résultat (2026-11-19, sondages au 17/11, `results/stabilite_2027_hier_2026-11-17.json`) :
+stable.** Les 4 chaînes sont retenues (lp 8009,7 / 8007,7 / 8006,7 / 8007,6, soit 3 nats d'écart).
+Les écarts entre chaînes valent au plus **0,90 pt** sur les 78 paires (Bardella–Zemmour,
+Glucksmann–Hollande), puis 0,76 pt (Hollande–Roussel). La médiane est sous 0,4 pt.
+
+**Aucune paire instable**, et aucun écart n'approche le demi-IC90 publié (9 à 17 pt). La
+multimodalité vue à T1−30 2022 (Le Pen–Zemmour à 7,9 pt) ne se retrouve pas dans le fit de
+production 2027 : tâche close. À refaire si le roster ou le régime de données change nettement.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

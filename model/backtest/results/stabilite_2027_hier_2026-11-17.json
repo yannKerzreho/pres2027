@@ -1,0 +1,1038 @@
+{
+ "spec": "spec_second_tour §8.45",
+ "variante": "hier",
+ "as_of": "2026-11-17",
+ "lp_par_chaine": [
+  8009.747446289062,
+  8007.74275756836,
+  8006.676881103515,
+  8007.5922338867185
+ ],
+ "chaines_retenues": [
+  0,
+  1,
+  2,
+  3
+ ],
+ "critere_colonne": "ecart_retenues_pt",
+ "seuil_pt": 2.0,
+ "n_paires": 78,
+ "n_instables": 0,
+ "n_instables_au_dela_demi_ic90": 0,
+ "paires": [
+  {
+   "paire": "Arthaud|Attal",
+   "ecart_toutes_pt": 0.15,
+   "ecart_retenues_pt": 0.15,
+   "demi_ic90_publie_pt": 9.19,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    31.43,
+    31.49,
+    31.58,
+    31.49
+   ]
+  },
+  {
+   "paire": "Arthaud|Bardella",
+   "ecart_toutes_pt": 0.21,
+   "ecart_retenues_pt": 0.21,
+   "demi_ic90_publie_pt": 9.18,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    31.49,
+    31.44,
+    31.65,
+    31.48
+   ]
+  },
+  {
+   "paire": "Arthaud|Dupont-Aignan",
+   "ecart_toutes_pt": 0.18,
+   "ecart_retenues_pt": 0.18,
+   "demi_ic90_publie_pt": 9.95,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    38.93,
+    39.08,
+    39.04,
+    38.9
+   ]
+  },
+  {
+   "paire": "Arthaud|Glucksmann",
+   "ecart_toutes_pt": 0.34,
+   "ecart_retenues_pt": 0.34,
+   "demi_ic90_publie_pt": 10.12,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    19.69,
+    19.54,
+    19.35,
+    19.51
+   ]
+  },
+  {
+   "paire": "Arthaud|Hollande",
+   "ecart_toutes_pt": 0.55,
+   "ecart_retenues_pt": 0.55,
+   "demi_ic90_publie_pt": 11.75,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    20.05,
+    20.34,
+    20.31,
+    20.6
+   ]
+  },
+  {
+   "paire": "Arthaud|Le Pen",
+   "ecart_toutes_pt": 0.24,
+   "ecart_retenues_pt": 0.24,
+   "demi_ic90_publie_pt": 9.08,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    32.19,
+    32.16,
+    32.4,
+    32.18
+   ]
+  },
+  {
+   "paire": "Arthaud|Mélenchon",
+   "ecart_toutes_pt": 0.38,
+   "ecart_retenues_pt": 0.38,
+   "demi_ic90_publie_pt": 16.13,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    31.08,
+    31.3,
+    31.45,
+    31.09
+   ]
+  },
+  {
+   "paire": "Arthaud|Philippe",
+   "ecart_toutes_pt": 0.08,
+   "ecart_retenues_pt": 0.08,
+   "demi_ic90_publie_pt": 8.6,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    28.86,
+    28.93,
+    28.92,
+    28.94
+   ]
+  },
+  {
+   "paire": "Arthaud|Retailleau",
+   "ecart_toutes_pt": 0.28,
+   "ecart_retenues_pt": 0.28,
+   "demi_ic90_publie_pt": 9.42,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    30.92,
+    31.02,
+    31.2,
+    31.03
+   ]
+  },
+  {
+   "paire": "Arthaud|Roussel",
+   "ecart_toutes_pt": 0.24,
+   "ecart_retenues_pt": 0.24,
+   "demi_ic90_publie_pt": 13.64,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    32.4,
+    32.45,
+    32.63,
+    32.6
+   ]
+  },
+  {
+   "paire": "Arthaud|Tondelier",
+   "ecart_toutes_pt": 0.59,
+   "ecart_retenues_pt": 0.59,
+   "demi_ic90_publie_pt": 13.77,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    28.73,
+    28.75,
+    29.17,
+    29.32
+   ]
+  },
+  {
+   "paire": "Arthaud|Zemmour",
+   "ecart_toutes_pt": 0.33,
+   "ecart_retenues_pt": 0.33,
+   "demi_ic90_publie_pt": 10.2,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    34.26,
+    34.06,
+    34.35,
+    34.02
+   ]
+  },
+  {
+   "paire": "Attal|Bardella",
+   "ecart_toutes_pt": 0.13,
+   "ecart_retenues_pt": 0.13,
+   "demi_ic90_publie_pt": 8.27,
+   "sondee": true,
+   "moyennes_par_chaine": [
+    40.61,
+    40.65,
+    40.57,
+    40.7
+   ]
+  },
+  {
+   "paire": "Attal|Dupont-Aignan",
+   "ecart_toutes_pt": 0.25,
+   "ecart_retenues_pt": 0.25,
+   "demi_ic90_publie_pt": 9.86,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    53.8,
+    53.96,
+    53.71,
+    53.79
+   ]
+  },
+  {
+   "paire": "Attal|Glucksmann",
+   "ecart_toutes_pt": 0.14,
+   "ecart_retenues_pt": 0.14,
+   "demi_ic90_publie_pt": 8.86,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    48.72,
+    48.69,
+    48.58,
+    48.69
+   ]
+  },
+  {
+   "paire": "Attal|Hollande",
+   "ecart_toutes_pt": 0.34,
+   "ecart_retenues_pt": 0.34,
+   "demi_ic90_publie_pt": 9.43,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    50.92,
+    50.84,
+    50.95,
+    51.18
+   ]
+  },
+  {
+   "paire": "Attal|Le Pen",
+   "ecart_toutes_pt": 0.03,
+   "ecart_retenues_pt": 0.03,
+   "demi_ic90_publie_pt": 7.57,
+   "sondee": true,
+   "moyennes_par_chaine": [
+    41.17,
+    41.17,
+    41.18,
+    41.19
+   ]
+  },
+  {
+   "paire": "Attal|Mélenchon",
+   "ecart_toutes_pt": 0.06,
+   "ecart_retenues_pt": 0.06,
+   "demi_ic90_publie_pt": 8.3,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    60.42,
+    60.39,
+    60.46,
+    60.43
+   ]
+  },
+  {
+   "paire": "Attal|Philippe",
+   "ecart_toutes_pt": 0.31,
+   "ecart_retenues_pt": 0.31,
+   "demi_ic90_publie_pt": 11.03,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    38.74,
+    38.89,
+    38.59,
+    38.9
+   ]
+  },
+  {
+   "paire": "Attal|Retailleau",
+   "ecart_toutes_pt": 0.11,
+   "ecart_retenues_pt": 0.11,
+   "demi_ic90_publie_pt": 9.13,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    43.55,
+    43.62,
+    43.55,
+    43.51
+   ]
+  },
+  {
+   "paire": "Attal|Roussel",
+   "ecart_toutes_pt": 0.16,
+   "ecart_retenues_pt": 0.16,
+   "demi_ic90_publie_pt": 8.97,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    60.23,
+    60.07,
+    60.13,
+    60.19
+   ]
+  },
+  {
+   "paire": "Attal|Tondelier",
+   "ecart_toutes_pt": 0.26,
+   "ecart_retenues_pt": 0.26,
+   "demi_ic90_publie_pt": 9.29,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    57.78,
+    57.68,
+    57.68,
+    57.94
+   ]
+  },
+  {
+   "paire": "Attal|Zemmour",
+   "ecart_toutes_pt": 0.27,
+   "ecart_retenues_pt": 0.27,
+   "demi_ic90_publie_pt": 9.76,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    48.21,
+    47.98,
+    48.12,
+    47.94
+   ]
+  },
+  {
+   "paire": "Bardella|Dupont-Aignan",
+   "ecart_toutes_pt": 0.55,
+   "ecart_retenues_pt": 0.55,
+   "demi_ic90_publie_pt": 13.05,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    82.74,
+    82.59,
+    82.96,
+    82.41
+   ]
+  },
+  {
+   "paire": "Bardella|Glucksmann",
+   "ecart_toutes_pt": 0.11,
+   "ecart_retenues_pt": 0.11,
+   "demi_ic90_publie_pt": 7.86,
+   "sondee": true,
+   "moyennes_par_chaine": [
+    57.83,
+    57.8,
+    57.74,
+    57.72
+   ]
+  },
+  {
+   "paire": "Bardella|Hollande",
+   "ecart_toutes_pt": 0.13,
+   "ecart_retenues_pt": 0.13,
+   "demi_ic90_publie_pt": 8.77,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    57.5,
+    57.48,
+    57.52,
+    57.61
+   ]
+  },
+  {
+   "paire": "Bardella|Le Pen",
+   "ecart_toutes_pt": 0.52,
+   "ecart_retenues_pt": 0.52,
+   "demi_ic90_publie_pt": 17.24,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    48.58,
+    48.34,
+    48.76,
+    48.24
+   ]
+  },
+  {
+   "paire": "Bardella|Mélenchon",
+   "ecart_toutes_pt": 0.06,
+   "ecart_retenues_pt": 0.06,
+   "demi_ic90_publie_pt": 7.1,
+   "sondee": true,
+   "moyennes_par_chaine": [
+    66.88,
+    66.86,
+    66.88,
+    66.82
+   ]
+  },
+  {
+   "paire": "Bardella|Philippe",
+   "ecart_toutes_pt": 0.06,
+   "ecart_retenues_pt": 0.06,
+   "demi_ic90_publie_pt": 8.26,
+   "sondee": true,
+   "moyennes_par_chaine": [
+    55.74,
+    55.75,
+    55.8,
+    55.76
+   ]
+  },
+  {
+   "paire": "Bardella|Retailleau",
+   "ecart_toutes_pt": 0.34,
+   "ecart_retenues_pt": 0.34,
+   "demi_ic90_publie_pt": 10.82,
+   "sondee": true,
+   "moyennes_par_chaine": [
+    61.45,
+    61.46,
+    61.73,
+    61.4
+   ]
+  },
+  {
+   "paire": "Bardella|Roussel",
+   "ecart_toutes_pt": 0.12,
+   "ecart_retenues_pt": 0.12,
+   "demi_ic90_publie_pt": 8.79,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    63.12,
+    63.0,
+    63.02,
+    63.07
+   ]
+  },
+  {
+   "paire": "Bardella|Tondelier",
+   "ecart_toutes_pt": 0.21,
+   "ecart_retenues_pt": 0.21,
+   "demi_ic90_publie_pt": 9.01,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    61.82,
+    61.72,
+    61.76,
+    61.93
+   ]
+  },
+  {
+   "paire": "Bardella|Zemmour",
+   "ecart_toutes_pt": 0.9,
+   "ecart_retenues_pt": 0.9,
+   "demi_ic90_publie_pt": 15.75,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    73.97,
+    73.32,
+    74.04,
+    73.14
+   ]
+  },
+  {
+   "paire": "Dupont-Aignan|Glucksmann",
+   "ecart_toutes_pt": 0.22,
+   "ecart_retenues_pt": 0.22,
+   "demi_ic90_publie_pt": 10.22,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    49.73,
+    49.53,
+    49.74,
+    49.66
+   ]
+  },
+  {
+   "paire": "Dupont-Aignan|Hollande",
+   "ecart_toutes_pt": 0.37,
+   "ecart_retenues_pt": 0.37,
+   "demi_ic90_publie_pt": 10.33,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    48.69,
+    48.54,
+    48.88,
+    48.91
+   ]
+  },
+  {
+   "paire": "Dupont-Aignan|Le Pen",
+   "ecart_toutes_pt": 0.17,
+   "ecart_retenues_pt": 0.17,
+   "demi_ic90_publie_pt": 11.7,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    17.71,
+    17.76,
+    17.81,
+    17.89
+   ]
+  },
+  {
+   "paire": "Dupont-Aignan|Mélenchon",
+   "ecart_toutes_pt": 0.31,
+   "ecart_retenues_pt": 0.31,
+   "demi_ic90_publie_pt": 10.11,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    60.41,
+    60.24,
+    60.55,
+    60.4
+   ]
+  },
+  {
+   "paire": "Dupont-Aignan|Philippe",
+   "ecart_toutes_pt": 0.21,
+   "ecart_retenues_pt": 0.21,
+   "demi_ic90_publie_pt": 10.29,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    42.61,
+    42.46,
+    42.65,
+    42.67
+   ]
+  },
+  {
+   "paire": "Dupont-Aignan|Retailleau",
+   "ecart_toutes_pt": 0.16,
+   "ecart_retenues_pt": 0.16,
+   "demi_ic90_publie_pt": 12.36,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    35.24,
+    35.33,
+    35.4,
+    35.35
+   ]
+  },
+  {
+   "paire": "Dupont-Aignan|Roussel",
+   "ecart_toutes_pt": 0.31,
+   "ecart_retenues_pt": 0.31,
+   "demi_ic90_publie_pt": 10.56,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    55.31,
+    55.01,
+    55.32,
+    55.31
+   ]
+  },
+  {
+   "paire": "Dupont-Aignan|Tondelier",
+   "ecart_toutes_pt": 0.51,
+   "ecart_retenues_pt": 0.51,
+   "demi_ic90_publie_pt": 10.42,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    53.97,
+    53.67,
+    54.03,
+    54.18
+   ]
+  },
+  {
+   "paire": "Dupont-Aignan|Zemmour",
+   "ecart_toutes_pt": 0.26,
+   "ecart_retenues_pt": 0.26,
+   "demi_ic90_publie_pt": 12.42,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    35.56,
+    35.36,
+    35.62,
+    35.48
+   ]
+  },
+  {
+   "paire": "Glucksmann|Hollande",
+   "ecart_toutes_pt": 0.9,
+   "ecart_retenues_pt": 0.9,
+   "demi_ic90_publie_pt": 13.26,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    53.67,
+    54.01,
+    54.36,
+    54.57
+   ]
+  },
+  {
+   "paire": "Glucksmann|Le Pen",
+   "ecart_toutes_pt": 0.07,
+   "ecart_retenues_pt": 0.07,
+   "demi_ic90_publie_pt": 7.62,
+   "sondee": true,
+   "moyennes_par_chaine": [
+    42.32,
+    42.33,
+    42.38,
+    42.39
+   ]
+  },
+  {
+   "paire": "Glucksmann|Mélenchon",
+   "ecart_toutes_pt": 0.23,
+   "ecart_retenues_pt": 0.23,
+   "demi_ic90_publie_pt": 8.75,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    60.1,
+    60.15,
+    60.33,
+    60.15
+   ]
+  },
+  {
+   "paire": "Glucksmann|Philippe",
+   "ecart_toutes_pt": 0.11,
+   "ecart_retenues_pt": 0.11,
+   "demi_ic90_publie_pt": 8.63,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    46.5,
+    46.54,
+    46.61,
+    46.6
+   ]
+  },
+  {
+   "paire": "Glucksmann|Retailleau",
+   "ecart_toutes_pt": 0.12,
+   "ecart_retenues_pt": 0.12,
+   "demi_ic90_publie_pt": 8.92,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    44.97,
+    45.06,
+    45.09,
+    45.01
+   ]
+  },
+  {
+   "paire": "Glucksmann|Roussel",
+   "ecart_toutes_pt": 0.43,
+   "ecart_retenues_pt": 0.43,
+   "demi_ic90_publie_pt": 10.83,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    70.99,
+    71.17,
+    71.42,
+    71.14
+   ]
+  },
+  {
+   "paire": "Glucksmann|Tondelier",
+   "ecart_toutes_pt": 0.63,
+   "ecart_retenues_pt": 0.63,
+   "demi_ic90_publie_pt": 11.79,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    67.89,
+    67.76,
+    68.39,
+    68.39
+   ]
+  },
+  {
+   "paire": "Glucksmann|Zemmour",
+   "ecart_toutes_pt": 0.12,
+   "ecart_retenues_pt": 0.12,
+   "demi_ic90_publie_pt": 9.46,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    45.97,
+    45.87,
+    45.95,
+    45.86
+   ]
+  },
+  {
+   "paire": "Hollande|Le Pen",
+   "ecart_toutes_pt": 0.14,
+   "ecart_retenues_pt": 0.14,
+   "demi_ic90_publie_pt": 7.79,
+   "sondee": true,
+   "moyennes_par_chaine": [
+    42.86,
+    42.86,
+    42.84,
+    42.72
+   ]
+  },
+  {
+   "paire": "Hollande|Mélenchon",
+   "ecart_toutes_pt": 0.38,
+   "ecart_retenues_pt": 0.38,
+   "demi_ic90_publie_pt": 10.07,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    58.21,
+    58.21,
+    58.21,
+    57.83
+   ]
+  },
+  {
+   "paire": "Hollande|Philippe",
+   "ecart_toutes_pt": 0.25,
+   "ecart_retenues_pt": 0.25,
+   "demi_ic90_publie_pt": 9.32,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    44.08,
+    44.16,
+    44.02,
+    43.91
+   ]
+  },
+  {
+   "paire": "Hollande|Retailleau",
+   "ecart_toutes_pt": 0.28,
+   "ecart_retenues_pt": 0.28,
+   "demi_ic90_publie_pt": 9.41,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    44.42,
+    44.52,
+    44.45,
+    44.24
+   ]
+  },
+  {
+   "paire": "Hollande|Roussel",
+   "ecart_toutes_pt": 0.76,
+   "ecart_retenues_pt": 0.76,
+   "demi_ic90_publie_pt": 12.32,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    68.42,
+    68.07,
+    68.09,
+    67.67
+   ]
+  },
+  {
+   "paire": "Hollande|Tondelier",
+   "ecart_toutes_pt": 0.4,
+   "ecart_retenues_pt": 0.4,
+   "demi_ic90_publie_pt": 12.94,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    64.38,
+    63.97,
+    64.17,
+    63.97
+   ]
+  },
+  {
+   "paire": "Hollande|Zemmour",
+   "ecart_toutes_pt": 0.43,
+   "ecart_retenues_pt": 0.43,
+   "demi_ic90_publie_pt": 9.86,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    46.74,
+    46.57,
+    46.57,
+    46.31
+   ]
+  },
+  {
+   "paire": "Le Pen|Mélenchon",
+   "ecart_toutes_pt": 0.06,
+   "ecart_retenues_pt": 0.06,
+   "demi_ic90_publie_pt": 6.91,
+   "sondee": true,
+   "moyennes_par_chaine": [
+    66.71,
+    66.69,
+    66.73,
+    66.67
+   ]
+  },
+  {
+   "paire": "Le Pen|Philippe",
+   "ecart_toutes_pt": 0.08,
+   "ecart_retenues_pt": 0.08,
+   "demi_ic90_publie_pt": 7.67,
+   "sondee": true,
+   "moyennes_par_chaine": [
+    55.61,
+    55.68,
+    55.65,
+    55.69
+   ]
+  },
+  {
+   "paire": "Le Pen|Retailleau",
+   "ecart_toutes_pt": 0.11,
+   "ecart_retenues_pt": 0.11,
+   "demi_ic90_publie_pt": 7.31,
+   "sondee": true,
+   "moyennes_par_chaine": [
+    60.45,
+    60.54,
+    60.56,
+    60.55
+   ]
+  },
+  {
+   "paire": "Le Pen|Roussel",
+   "ecart_toutes_pt": 0.13,
+   "ecart_retenues_pt": 0.13,
+   "demi_ic90_publie_pt": 8.66,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    62.62,
+    62.49,
+    62.5,
+    62.58
+   ]
+  },
+  {
+   "paire": "Le Pen|Tondelier",
+   "ecart_toutes_pt": 0.25,
+   "ecart_retenues_pt": 0.25,
+   "demi_ic90_publie_pt": 8.95,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    61.4,
+    61.29,
+    61.34,
+    61.55
+   ]
+  },
+  {
+   "paire": "Le Pen|Zemmour",
+   "ecart_toutes_pt": 0.67,
+   "ecart_retenues_pt": 0.67,
+   "demi_ic90_publie_pt": 12.98,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    74.32,
+    73.81,
+    74.14,
+    73.64
+   ]
+  },
+  {
+   "paire": "Mélenchon|Philippe",
+   "ecart_toutes_pt": 0.1,
+   "ecart_retenues_pt": 0.1,
+   "demi_ic90_publie_pt": 7.3,
+   "sondee": true,
+   "moyennes_par_chaine": [
+    37.51,
+    37.57,
+    37.47,
+    37.57
+   ]
+  },
+  {
+   "paire": "Mélenchon|Retailleau",
+   "ecart_toutes_pt": 0.11,
+   "ecart_retenues_pt": 0.11,
+   "demi_ic90_publie_pt": 8.14,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    34.71,
+    34.82,
+    34.76,
+    34.79
+   ]
+  },
+  {
+   "paire": "Mélenchon|Roussel",
+   "ecart_toutes_pt": 0.37,
+   "ecart_retenues_pt": 0.37,
+   "demi_ic90_publie_pt": 11.82,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    55.71,
+    55.41,
+    55.46,
+    55.78
+   ]
+  },
+  {
+   "paire": "Mélenchon|Tondelier",
+   "ecart_toutes_pt": 0.57,
+   "ecart_retenues_pt": 0.57,
+   "demi_ic90_publie_pt": 11.03,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    51.52,
+    51.24,
+    51.34,
+    51.81
+   ]
+  },
+  {
+   "paire": "Mélenchon|Zemmour",
+   "ecart_toutes_pt": 0.15,
+   "ecart_retenues_pt": 0.15,
+   "demi_ic90_publie_pt": 8.62,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    35.41,
+    35.31,
+    35.28,
+    35.26
+   ]
+  },
+  {
+   "paire": "Philippe|Retailleau",
+   "ecart_toutes_pt": 0.19,
+   "ecart_retenues_pt": 0.19,
+   "demi_ic90_publie_pt": 9.47,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    50.09,
+    50.08,
+    50.09,
+    49.9
+   ]
+  },
+  {
+   "paire": "Philippe|Roussel",
+   "ecart_toutes_pt": 0.18,
+   "ecart_retenues_pt": 0.18,
+   "demi_ic90_publie_pt": 8.7,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    63.64,
+    63.46,
+    63.59,
+    63.53
+   ]
+  },
+  {
+   "paire": "Philippe|Tondelier",
+   "ecart_toutes_pt": 0.16,
+   "ecart_retenues_pt": 0.16,
+   "demi_ic90_publie_pt": 8.92,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    61.5,
+    61.39,
+    61.44,
+    61.55
+   ]
+  },
+  {
+   "paire": "Philippe|Zemmour",
+   "ecart_toutes_pt": 0.3,
+   "ecart_retenues_pt": 0.3,
+   "demi_ic90_publie_pt": 9.47,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    51.91,
+    51.67,
+    51.85,
+    51.61
+   ]
+  },
+  {
+   "paire": "Retailleau|Roussel",
+   "ecart_toutes_pt": 0.24,
+   "ecart_retenues_pt": 0.24,
+   "demi_ic90_publie_pt": 9.1,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    62.53,
+    62.29,
+    62.32,
+    62.42
+   ]
+  },
+  {
+   "paire": "Retailleau|Tondelier",
+   "ecart_toutes_pt": 0.28,
+   "ecart_retenues_pt": 0.28,
+   "demi_ic90_publie_pt": 9.52,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    60.77,
+    60.58,
+    60.62,
+    60.86
+   ]
+  },
+  {
+   "paire": "Retailleau|Zemmour",
+   "ecart_toutes_pt": 0.43,
+   "ecart_retenues_pt": 0.43,
+   "demi_ic90_publie_pt": 10.62,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    54.22,
+    53.8,
+    53.99,
+    53.79
+   ]
+  },
+  {
+   "paire": "Roussel|Tondelier",
+   "ecart_toutes_pt": 0.63,
+   "ecart_retenues_pt": 0.63,
+   "demi_ic90_publie_pt": 12.78,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    44.67,
+    44.57,
+    44.99,
+    45.2
+   ]
+  },
+  {
+   "paire": "Roussel|Zemmour",
+   "ecart_toutes_pt": 0.22,
+   "ecart_retenues_pt": 0.22,
+   "demi_ic90_publie_pt": 9.61,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    40.09,
+    40.05,
+    40.1,
+    39.88
+   ]
+  },
+  {
+   "paire": "Tondelier|Zemmour",
+   "ecart_toutes_pt": 0.39,
+   "ecart_retenues_pt": 0.39,
+   "demi_ic90_publie_pt": 9.69,
+   "sondee": false,
+   "moyennes_par_chaine": [
+    41.51,
+    41.47,
+    41.46,
+    41.12
+   ]
+  }
+ ]
+}
