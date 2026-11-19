@@ -31,6 +31,59 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- [ ] **(R3) VOTANTS SUR UN CERCLE (utilisateur, 2026-11-19 ~18:30Z)** — suite
+      de §8.43-8.44. Maths dans la spec (nouveau §) AVANT le code, critères
+      fixés AVANT lecture, code derrière un drapeau ÉTEINT, production
+      inchangée, `PUBLIER_T2` False. Fits sur la VM cloud uniquement.
+      **Idée.** Remplacer le segment $v\in[0{,}01;0{,}99]$ par un cercle
+      $\theta\in[0,2\pi)$ : électorat uniforme, noyau de von Mises
+      $\varphi_i(\theta)\propto\exp(\kappa_i\cos(\theta-\mu_i))$, normalisé
+      sur la quadrature comme en 1D. Différence avec §8.40 : ce n'est pas un
+      terme « fer à cheval » ajouté à un axe linéaire (qui restait saturé), mais
+      une géométrie où les extrêmes peuvent devenir voisins par l'arrière. Sur
+      un cercle, la médiatrice du duel Macron–Le Pen coupe le cercle en DEUX
+      points : l'un au centre, l'autre « à l'arrière ». Un candidat placé près
+      du point arrière (Mélenchon ?) voit son électorat se partager entre les
+      deux finalistes sans désaturer le logit et sans élargir σ. C'est
+      exactement le mécanisme qui manquait en 1D.
+      **Points forts à vérifier.**
+      - Coût ≈ 1D : une seule coordonnée, pas de produit de quadratures (R2
+        coûtait 7 fois plus). Vérifier le nombre de nœuds nécessaire sur le
+        cercle (quadrature trapèze, exacte pour les fonctions périodiques
+        lisses).
+      - Le segment est un cas limite : si l'arc entre les deux extrêmes est
+        grand devant les κ_i, on retrouve le 1D. Les données tranchent, ce qui
+        fait du 1D un témoin naturel.
+      - Moins de symétries que R2 : rotation (fixer un angle, par exemple le
+        centre) et réflexion (contrainte d'ordre gauche/droite sur les
+        voisins du centre).
+      **Points durs à écrire dans la spec.**
+      - ORDER_GROUPS devient un ordre CYCLIQUE avec un « trou » libre : où le
+        cercle se ferme-t-il ? Prior sur la longueur de l'arc arrière, ou les
+        deux extrêmes libres de se rejoindre.
+      - Correspondance des priors de position et de σ (von Mises κ_i ↔ σ_i).
+      - La quantité η/κ/ω du T2 et la valeur inclusive ne changent pas, seule
+        l'intégrale porte sur θ.
+      - Le site affiche une position gauche-droite : définir sa projection
+        (angle relatif au centre), ou dire qu'elle n'a plus de sens.
+      **Protocole, dans cet ordre (le test décisif est le 2, celui que R2 a
+      raté).**
+      1. V2 T2−7 2022 AVEC reports (comme hier2d) : partage Mélenchon hors
+         fit (11 notices après `as_of`) à < 10 pt du mesuré ; MAE hors fit des
+         partages ≤ celle de hier2d (2,6) ou au moins < 1D avec reports (8,2) ;
+         T1 non dégradé ; stabilité entre chaînes (critère 4 révisé de §8.44).
+      2. V2 T1−30 2022 SANS reports, 4 chaînes indépendantes : est-ce que le
+         T1 seul place Mélenchon près du point arrière ? Critères de l'idée 2
+         de §8.44 : partage Mélenchon prédit, stabilité des duels
+         hypothétiques entre chaînes (≤ 3 pt), multimodalité (écart de lp) pas
+         pire que le 1D, T1 non dégradé.
+      3. Si 2 passe : 2017 (V2 T1−30), puis V1 selon §8.29, puis l'effet sur
+         2027 (P(élu), duels, stabilité §8.45), puis « ARBITRAGE À TRANCHER »
+         sur l'adoption, qui toucherait aussi le T1 publié.
+      Si 1 échoue, consigner et s'arrêter. Si 1 passe mais 2 échoue : même
+      conclusion que R2 (outil d'entre-deux-tours seulement), à dire
+      explicitement en comparant cercle et 2D sur coût et stabilité.
+
 - [ ] **NOUVELLES PISTES REPORTS (utilisateur, 2026-11-19 ~08:00Z)** — suite de
       §8.41. Le diagnostic de la 2D (« le noyau séparable garde l'écart en v, σ
       étroit fixé par le T1 sature le logit ») vaut pour une 2D GREFFÉE sur un T1
