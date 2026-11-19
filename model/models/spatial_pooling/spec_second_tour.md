@@ -1748,6 +1748,111 @@ Abstention, cas extrême : l'électorat Jadot 2022 est prédit à 94 % « Aucun 
 minimale est à chiffrer en parallèle : un plancher de report par votant, avec bruit
 logistique additionnel, qui couvre le point 2 mais pas le point 1.
 
+### 8.39 (D)(ii) Plancher de report (0 fit ; lecture descriptive)
+
+Alternative minimale à une seconde dimension : une fraction ε des votants choisit au hasard
+entre les deux finalistes, quelle que soit sa position,
+$$q_\varepsilon(v)=(1-\varepsilon)\,q(v)+\varepsilon/2 .$$
+ρ est inchangé, donc la cellule « Aucun » aussi. δ est recalé pour que le duel agrégé reste
+$s_{ab}$ (§8.38) : seule la répartition entre électorats change. ε est un paramètre global.
+Il ne crée aucune dépendance à l'électorat d'origine au-delà de la géométrie : il rapproche
+tous les partages de 50 %, et le fait d'autant plus qu'ils en sont loin.
+
+**Ce qu'on attend, avant lecture.** Les cellules 0/100 % prennent 5 à 10 % de transfert
+croisé, ce qui corrige le point 2. En revanche, l'écart Mélenchon / gauche modérée subsiste :
+ε abaisse aussi le partage de Hamon et de Jadot, déjà proche de la mesure. La grille
+ε ∈ {0 ; 0,1 ; 0,2 ; 0,3 ; 0,4} est évaluée sur les mêmes tirages (`--planchers`), en MAE
+sur Macron, Le Pen et le partage. C'est une lecture descriptive : ε choisi sur les reports
+serait de l'ajustement en échantillon ; en (A)(2), il serait appris.
+
+**Résultats** (`results/reports_t2_plancher.json`, sur les mêmes tirages que §8.38). MAE sur
+Macron, Le Pen et le partage, en pt :
+
+| | ε = 0 | ε = 0,1 | ε = 0,2 | ε = 0,3 | ε = 0,4 |
+|---|---|---|---|---|---|
+| abst 2017 | 8,8 | 7,3 | 7,3 | 7,6 | 7,6 |
+| abst 2022 | 14,3 | 13,8 | 13,6 | 13,8 | 14,7 |
+| hier 2017 | 8,5 | 6,4 | 5,8 | 6,4 | 6,9 |
+| hier 2022 | 19,4 | 12,0 | 8,8 | 9,2 | 10,4 |
+
+À ε = 0,2, l'erreur sur le partage de l'électorat Mélenchon reste de +12 à +14 pt en 2017
+et de +24 à +29 pt en 2022. La prédiction faite avant lecture est vérifiée : ε corrige la
+netteté, pas Mélenchon. Comme mécanisme, le plancher est à garder pour (A)(2), avec ε appris.
+
+### 8.40 (D)(i) Seconde dimension : maths
+
+**Forme retenue d'abord : le « fer à cheval » à coordonnée apprise (D-a).** Elle garde la
+grille 1D des votants. Au second tour seulement, chaque finaliste reçoit une coordonnée
+anti-système $\nu_i$. Le votant en $v$ porte une affinité anti-système qui croît avec son
+excentrement, $e(v)=|2v-1|\in[0,1]$. Le votant choisit $a$ avec
+
+$$q_{ab}(v)=\mathrm{logistique}\big(\kappa[A_a(v)-A_b(v)]+(\nu_a-\nu_b)\,e(v)\big),$$
+
+η restant posé à l'agrégat (§2.1).
+
+Priors : $\nu_i=s_\nu z_i$, avec $z_i\sim\mathcal N(0,1)$ et $s_\nu\sim\mathcal{HN}(1)$.
+Seules les différences sont identifiées ; le niveau commun est tenu par le prior, comme pour η.
+
+Propriétés :
+
+1. **Non-monotonie en $v$.** Si $\nu_{LP}>\nu_M$, les deux extrémités de l'axe penchent
+   vers Le Pen. Pour la gauche radicale, ce penchant s'oppose à la pente géométrique : c'est
+   le report Mélenchon→Le Pen. La gauche modérée ($e$ plus petit) fuit moins.
+2. **Valeur inclusive inchangée** : ν n'entre pas dans ρ, pas plus que η (§3.1).
+3. **Un seul paramètre par candidat**, et rien au T1 : les fits T1 et la géométrie restent
+   ceux d'aujourd'hui.
+4. **Confusion avec η.** Sur une seule paire, $(\nu_a-\nu_b)\,\bar e$ se confond avec
+   $\eta_a-\eta_b$ dans le duel agrégé. ν n'est donc identifié que par la **forme** des
+   reports entre électorats, ou par des duels contre des adversaires variés (2027 : 11
+   paires et plus). Sans reports dans la vraisemblance, ν retombe sur son prior. (D-a) et
+   (A)(2) vont donc ensemble.
+
+**Test d'identification sans fit (préalable au code).** Sur les tirages de §8.38, pour
+Macron–Le Pen, on cherche par profil le scalaire $\Delta\nu=\nu_M-\nu_{LP}$ qui minimise
+la MAE des partages, avec δ recalé. Deux critères, fixés avant lecture :
+
+- un seul $\Delta\nu$ ramène l'erreur de Mélenchon sous 10 pt **sans** dégrader de plus de
+  3 pt la MAE des autres électorats, les deux années ;
+- les valeurs de $\Delta\nu$ de 2017 et de 2022 sont de même signe et dans un rapport
+  inférieur à 2.
+
+Si les deux critères passent, on code (D-a). Sinon, on passe à (D-b).
+
+**Résultat du test (2026-11-19, `results/reports_t2_nu.json`) : ÉCHEC, (D-a) n'est pas
+codé.** Δν est profilé sur {0 ; −1 ; −2 ; −3 ; −4 ; −6 ; −8}, à ε = 0 et à ε = 0,2.
+L'erreur de Mélenchon ne bouge presque pas : de 22,5 à 21,6 pt en 2017 et de 37,0 à 37,0 pt
+en 2022 (abst, ε = 0), à peine plus à ε = 0,2 (de 24,2 à 26,3 pt en hier 2022, en sens
+contraire). La MAE des autres électorats varie de moins de 1,5 pt.
+
+**Cause.** Le logit par votant $\kappa[A_a-A_b]$ est saturé à l'endroit de l'électorat
+Mélenchon. $A$ contient $\logarphi=-(v-\mu)^2/2\sigma^2$ ; avec des σ de 0,08 à 0,15,
+l'écart atteint des dizaines de logits à 0,3 d'axe de Le Pen. Un terme additif borné,
+$
+u\,e(v)$ avec $|
+u|\le 8$, ne passe pas, et le recalage δ en absorbe le peu qui
+passe. Le défaut ne tient donc pas au manque d'une **utilité** de second tour : la
+composition de l'électorat (un noyau gaussien étroit sur un seul axe) interdit qu'une
+partie des électeurs de Mélenchon soit proche de Le Pen.
+
+**Conséquence pour (D).** Il faut que des électeurs de Mélenchon soient *proches* de Le Pen
+dans l'espace des votants, et non pas seulement attirés par elle au T2. Deux voies :
+
+- **(D-b)**, la 2D séparable ci-dessus : l'électorat de $k$ s'étale en $u$ et chevauche
+  celui de Le Pen à $
+u$ voisin ;
+- **(D-c)**, plus légère : un noyau à queues lourdes dans $A$ pour le T2 seulement (Student
+  à faible ν_dof, ou mélange gaussien avec une composante large). Elle désature $q$ loin de
+  $\mu$, mais reste monotone : elle traiterait la netteté comme ε, pas le croisement.
+
+Seule (D-b) vise le point 1 ; ses maths complètes (coût, quadrature 2D, priors sur ν,
+identification par les champs T1) sont la prochaine tâche.
+
+**(D-b), plus coûteux, seulement si (D-a) échoue.** Votants sur une grille 2D
+$[0,1]\times[0,1]$, noyau séparable
+$\varphi_i(v,u)\propto\mathcal N(v;\mu_i,\sigma_i)\,\mathcal N(u;\nu_i,\lambda)$, au T1 comme
+au T2. Le coût est multiplié par $B_u$. ν est alors aussi identifié par les substitutions du
+T1 (hypothèses à champs différents), mais faiblement.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

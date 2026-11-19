@@ -44,3 +44,26 @@ def test_critere_D():
     assert critere_D(l, "hier")["ouvrir_D"]
     l[0]["z"] = 1.0
     assert not critere_D(l, "hier")["ouvrir_D"]
+
+
+def test_fer_a_cheval_extremes_vers_b():
+    """§8.40 : Δν < 0 fait fuir vers b les électorats excentrés, à agrégat fixé."""
+    A, _, kappa, _ = _cas(seed=2, sigma_egal=True)
+    kappa = np.full(len(kappa), 0.1)              # pente géométrique faible : le terme ν se voit
+    champ = np.arange(A.shape[1])
+    s = np.full(len(kappa), 0.55)
+    args = (A, champ, 2, 3, kappa, np.zeros(len(kappa)), None, s)
+    r0, r1 = reports_predits(*args), reports_predits(*args, dnu=-3.0)
+    p0, p1 = (r["a"] / (r["a"] + r["b"]) for r in (r0, r1))
+    assert (p1[:, 0] < p0[:, 0]).all()           # l'électorat le plus à gauche fuit vers b
+    agg = (r1["E"] * r1["a"]).sum(1) / (r1["E"] * (r1["a"] + r1["b"])).sum(1)
+    assert np.allclose(agg, s, atol=1e-6)
+
+
+def test_plancher_rapproche_de_la_moitie():
+    A, lse, kappa, omega = _cas(seed=3)
+    champ = np.arange(A.shape[1])
+    s = np.full(len(kappa), 0.5)
+    r = reports_predits(A, champ, 0, 4, kappa, omega, lse, s, plancher=0.4)
+    p = r["a"] / (r["a"] + r["b"])
+    assert (p > 0.15).all() and (p < 0.85).all()

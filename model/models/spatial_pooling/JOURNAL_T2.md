@@ -45,7 +45,7 @@ l'historique, ajouter en bas de « Historique ».
         électorat et par candidat_t2 (y compris « Aucun » ↔ abstention ω),
         z par cellule. Maths dans la spec (§ nouveau) AVANT le code. Si erreur
         systématique par électorat que l'axe unique n'absorbe pas ⇒ ouvrir (D).
-  - [ ] **(D) OUVERT par (A)(1)** — maths AVANT (A)(2), qui ne doit pas entrer
+  - [ ] [(ii) et test (D-a) FAITS 19/11 05:55Z, spec §8.39-8.40 : plancher ε = 0,2 ⇒ MAE des cellules −3 à −10 pt mais Mélenchon 2022 encore +24-29 pt ; fer à cheval (D-a) ÉCHOUE au test d'identification (Mélenchon 22 → 22, 37 → 37 pt), logit par votant saturé par le noyau gaussien étroit ⇒ À FAIRE : maths complètes de (D-b) 2D séparable (coût, quadrature, priors ν, identification T1) puis test sans fit si possible] **(D) OUVERT par (A)(1)** — maths AVANT (A)(2), qui ne doit pas entrer
         dans le 1D (il tordrait la géométrie, §8.38 point 4) : (i) écrire dans la
         spec la seconde coordonnée (axe système/anti-système, 1 paramètre par
         candidat, prior centré 0, ou « fer à cheval » §2.3) et son identification
@@ -659,6 +659,12 @@ conservé pour l'historique.
   PRIORITÉ (23:05Z) était actionnable. (A)(1) fait (spec §8.38) : critère (D)
   rempli (Mélenchon→Le Pen 0-1 % prédit contre 15/21 % mesuré) ⇒ (D) ouvert,
   (A)(2) déplacé dans le modèle de (D). Tests : 231 passés (hors réseau Wikipédia).
+
+- 2026-11-19 05:10-05:55Z (réveil) : (D)(ii) plancher de report (§8.39) et
+  test sans fit du fer à cheval (§8.40) : plancher utile pour la netteté,
+  fer à cheval sans effet (logit saturé) ⇒ (D-b) 2D séparable à spécifier.
+  Résultats `reports_t2_plancher.json`, `reports_t2_nu.json`. Tests : 5 dans
+  test_reports_t2.
 
 ## Revue Opus 2026-11-18 — intégration point par point
 

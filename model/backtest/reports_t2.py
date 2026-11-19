@@ -16,7 +16,7 @@ from scipy.special import expit, logit, logsumexp
 
 import model.backtest.second_round as sr
 from model.models.spatial_pooling.fit import duel_draws
-from model.models.spatial_pooling.geometry import W, log_attractivite
+from model.models.spatial_pooling.geometry import V, W, log_attractivite
 
 OUT = sr.OUT_DIR / "reports_t2_A1.json"
 
@@ -25,7 +25,7 @@ def _norm(s: str) -> str:
     return unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode().lower().strip()
 
 
-def reports_predits(A, champ, ia, ib, kappa, omega, lse, s_ab, n_iter=60):
+def reports_predits(A, champ, ia, ib, kappa, omega, lse, s_ab, n_iter=60, plancher=0.0, dnu=0.0):
     """Parts (en fraction de l'électorat T1) par tirage, spec §8.38.
 
     A : (S, N, B) log-attractivités ; champ : indices du T1 réel ; ia, ib :
@@ -35,7 +35,8 @@ def reports_predits(A, champ, ia, ib, kappa, omega, lse, s_ab, n_iter=60):
     Ac = A[:, champ, :]
     p = np.exp(Ac - logsumexp(Ac, axis=1, keepdims=True))                 # (S,K,B)
     k = kappa[:, None]
-    q = expit(k * (A[:, ia, :] - A[:, ib, :]))                            # (S,B)
+    q = expit(k * (A[:, ia, :] - A[:, ib, :]) + dnu * np.abs(2 * np.asarray(V) - 1))   # (S,B) ; fer à cheval §8.40
+    q = (1 - plancher) * q + plancher / 2          # plancher de report (§8.39) : ε des votants tirent au hasard
     if lse is None:
         rho = np.ones_like(q)
     else:
@@ -83,8 +84,8 @@ def mesures(rep: pd.DataFrame) -> pd.DataFrame:
     return long.groupby(["electorat_t1", "cellule"]).y.agg(["mean", "std", "count"]).reset_index()
 
 
-def analyse(election: int, variante: str) -> list[dict]:
-    fit = _fit_v2(election, variante)
+def analyse(election: int, variante: str, plancher: float = 0.0, fit=None, dnu: float = 0.0) -> list[dict]:
+    fit = fit or _fit_v2(election, variante)
     a, b = sr.FINALE[election]
     idx = {_norm(c): i for i, c in enumerate(fit.candidates)}
     res = sr.load_results()
@@ -96,7 +97,8 @@ def analyse(election: int, variante: str) -> list[dict]:
     lse = logsumexp(Am, axis=1) if fit.omega_draws is not None else None
     s_ab = duel_draws(fit, a, b, 0.0, scrutin=False)
     r = reports_predits(A, np.array(champ), idx[_norm(a)], idx[_norm(b)], fit.kappa_draws,
-                        fit.omega_draws if fit.omega_draws is not None else np.zeros(len(s_ab)), lse, s_ab)
+                        fit.omega_draws if fit.omega_draws is not None else np.zeros(len(s_ab)), lse, s_ab,
+                        plancher=plancher, dnu=dnu)
     rep = pd.read_csv(sr.PARSED_DIR / f"reports_t2_{election}.csv")
     m = mesures(rep)
     out = []
@@ -109,7 +111,8 @@ def analyse(election: int, variante: str) -> list[dict]:
                "partage": r["a"][:, j] / (r["a"][:, j] + r["b"][:, j])}[row.cellule] * 100
         e = float(tir.mean() - row["mean"])
         sd = float(np.sqrt(tir.var() + row["std"] ** 2))
-        out.append({"election": election, "variante": variante, "electorat": row.electorat_t1,
+        out.append({"election": election, "variante": variante, "plancher": plancher, "dnu": dnu,
+                    "electorat": row.electorat_t1,
                     "cellule": row.cellule, "mesure": round(row["mean"], 1), "sd_notices": round(row["std"], 1),
                     "n_notices": int(row["count"]), "modele": round(float(tir.mean()), 1),
                     "modele_ic90": [round(float(x), 1) for x in np.percentile(tir, [5, 95])],
@@ -134,7 +137,46 @@ def critere_D(lignes: list[dict], variante: str) -> dict:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--variantes", nargs="+", default=["abst", "hier"])
+    ap.add_argument("--planchers", nargs="+", type=float, default=None,
+                    help="§8.39 : grille de ε (sortie reports_t2_plancher.json)")
+    ap.add_argument("--nu-grille", nargs="+", type=float, default=None,
+                    help="§8.40 : profil de Δν = ν_Macron − ν_Le Pen (sortie reports_t2_nu.json)")
     args = ap.parse_args()
+    if args.nu_grille:
+        lignes = []
+        for v in args.variantes:
+            for e in (2017, 2022):
+                fit = _fit_v2(e, v)
+                for eps in (args.planchers or [0.0]):
+                    for dn in args.nu_grille:
+                        lignes += analyse(e, v, eps, fit, dn)[0]
+        t = pd.DataFrame(lignes)
+        t = t[t.cellule == "partage"].assign(abs_err=lambda d: d.erreur.abs(),
+                                            mel=lambda d: d.electorat == "Jean-Luc Mélenchon")
+        prof = (t.groupby(["variante", "election", "plancher", "dnu", "mel"]).abs_err.mean()
+                .unstack("mel").rename(columns={True: "err_melenchon", False: "mae_autres"}).round(1).reset_index())
+        out = OUT.with_name("reports_t2_nu.json")
+        out.write_text(json.dumps({"spec": "spec_second_tour §8.40", "cellules": lignes,
+                                   "profil": prof.to_dict("records")}, ensure_ascii=False, indent=1) + "\n")
+        print(prof.to_string(index=False)); print(f"-> {out}")
+        return
+    if args.planchers:
+        lignes = []
+        for v in args.variantes:
+            for e in (2017, 2022):
+                fit = _fit_v2(e, v)
+                for eps in args.planchers:
+                    lignes += analyse(e, v, eps, fit)[0]
+        t = pd.DataFrame(lignes).assign(abs_err=lambda d: d.erreur.abs())
+        mae = (t[t.cellule != "Aucun"].groupby(["variante", "election", "plancher"]).abs_err.mean()
+               .round(1).reset_index().rename(columns={"abs_err": "mae_M_LP_partage"}))
+        mel = t[(t.cellule == "partage") & (t.electorat == "Jean-Luc Mélenchon")][
+            ["variante", "election", "plancher", "mesure", "modele", "erreur", "z"]]
+        out = OUT.with_name("reports_t2_plancher.json")
+        out.write_text(json.dumps({"spec": "spec_second_tour §8.39", "cellules": lignes,
+                                   "mae": mae.to_dict("records")}, ensure_ascii=False, indent=1) + "\n")
+        print(mae.to_string(index=False)); print(mel.to_string(index=False)); print(f"-> {out}")
+        return
     lignes, metas = [], []
     for v in args.variantes:
         for e in (2017, 2022):

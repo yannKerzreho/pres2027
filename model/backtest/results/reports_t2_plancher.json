@@ -1,0 +1,5567 @@
+{
+ "spec": "spec_second_tour §8.39",
+ "cellules": [
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "Benoît Hamon",
+   "cellule": "Aucun",
+   "mesure": 20.4,
+   "sd_notices": 4.0,
+   "n_notices": 23,
+   "modele": 25.7,
+   "modele_ic90": [
+    4.1,
+    53.5
+   ],
+   "erreur": 5.3,
+   "z": 0.33
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "Benoît Hamon",
+   "cellule": "Le Pen",
+   "mesure": 5.3,
+   "sd_notices": 2.1,
+   "n_notices": 23,
+   "modele": 1.0,
+   "modele_ic90": [
+    0.0,
+    5.0
+   ],
+   "erreur": -4.3,
+   "z": -1.37
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "Benoît Hamon",
+   "cellule": "Macron",
+   "mesure": 74.3,
+   "sd_notices": 4.3,
+   "n_notices": 23,
+   "modele": 73.3,
+   "modele_ic90": [
+    45.7,
+    94.8
+   ],
+   "erreur": -1.0,
+   "z": -0.06
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "Benoît Hamon",
+   "cellule": "partage",
+   "mesure": 93.4,
+   "sd_notices": 2.6,
+   "n_notices": 23,
+   "modele": 98.7,
+   "modele_ic90": [
+    93.6,
+    100.0
+   ],
+   "erreur": 5.3,
+   "z": 1.39
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "François Fillon",
+   "cellule": "Aucun",
+   "mesure": 26.1,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 13.8,
+   "modele_ic90": [
+    1.8,
+    39.7
+   ],
+   "erreur": -12.3,
+   "z": -0.96
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "François Fillon",
+   "cellule": "Le Pen",
+   "mesure": 27.5,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 27.8,
+   "modele_ic90": [
+    12.7,
+    42.4
+   ],
+   "erreur": 0.3,
+   "z": 0.03
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "François Fillon",
+   "cellule": "Macron",
+   "mesure": 46.3,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 58.4,
+   "modele_ic90": [
+    40.5,
+    74.0
+   ],
+   "erreur": 12.0,
+   "z": 1.09
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "François Fillon",
+   "cellule": "partage",
+   "mesure": 62.8,
+   "sd_notices": 4.2,
+   "n_notices": 23,
+   "modele": 68.0,
+   "modele_ic90": [
+    54.4,
+    83.7
+   ],
+   "erreur": 5.3,
+   "z": 0.53
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Aucun",
+   "mesure": 36.4,
+   "sd_notices": 4.3,
+   "n_notices": 23,
+   "modele": 38.3,
+   "modele_ic90": [
+    5.5,
+    71.2
+   ],
+   "erreur": 1.9,
+   "z": 0.09
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Le Pen",
+   "mesure": 15.0,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 0.9,
+   "modele_ic90": [
+    0.0,
+    4.8
+   ],
+   "erreur": -14.1,
+   "z": -2.98
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Macron",
+   "mesure": 48.6,
+   "sd_notices": 5.4,
+   "n_notices": 23,
+   "modele": 60.8,
+   "modele_ic90": [
+    28.8,
+    92.4
+   ],
+   "erreur": 12.2,
+   "z": 0.6
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "partage",
+   "mesure": 76.4,
+   "sd_notices": 5.5,
+   "n_notices": 23,
+   "modele": 98.9,
+   "modele_ic90": [
+    94.3,
+    100.0
+   ],
+   "erreur": 22.5,
+   "z": 3.38
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Aucun",
+   "mesure": 32.7,
+   "sd_notices": 5.7,
+   "n_notices": 14,
+   "modele": 11.8,
+   "modele_ic90": [
+    1.4,
+    34.9
+   ],
+   "erreur": -20.9,
+   "z": -1.7
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Le Pen",
+   "mesure": 42.0,
+   "sd_notices": 7.3,
+   "n_notices": 14,
+   "modele": 62.7,
+   "modele_ic90": [
+    33.8,
+    85.2
+   ],
+   "erreur": 20.7,
+   "z": 1.18
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Macron",
+   "mesure": 25.4,
+   "sd_notices": 7.4,
+   "n_notices": 14,
+   "modele": 25.4,
+   "modele_ic90": [
+    8.1,
+    49.7
+   ],
+   "erreur": 0.1,
+   "z": 0.0
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "partage",
+   "mesure": 37.6,
+   "sd_notices": 9.7,
+   "n_notices": 14,
+   "modele": 29.2,
+   "modele_ic90": [
+    9.1,
+    57.0
+   ],
+   "erreur": -8.4,
+   "z": -0.48
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "Benoît Hamon",
+   "cellule": "Aucun",
+   "mesure": 20.4,
+   "sd_notices": 4.0,
+   "n_notices": 23,
+   "modele": 25.7,
+   "modele_ic90": [
+    4.1,
+    53.5
+   ],
+   "erreur": 5.3,
+   "z": 0.33
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "Benoît Hamon",
+   "cellule": "Le Pen",
+   "mesure": 5.3,
+   "sd_notices": 2.1,
+   "n_notices": 23,
+   "modele": 5.3,
+   "modele_ic90": [
+    2.1,
+    9.4
+   ],
+   "erreur": 0.0,
+   "z": 0.01
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "Benoît Hamon",
+   "cellule": "Macron",
+   "mesure": 74.3,
+   "sd_notices": 4.3,
+   "n_notices": 23,
+   "modele": 69.0,
+   "modele_ic90": [
+    43.3,
+    88.4
+   ],
+   "erreur": -5.3,
+   "z": -0.36
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "Benoît Hamon",
+   "cellule": "partage",
+   "mesure": 93.4,
+   "sd_notices": 2.6,
+   "n_notices": 23,
+   "modele": 93.0,
+   "modele_ic90": [
+    89.1,
+    96.0
+   ],
+   "erreur": -0.3,
+   "z": -0.09
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "François Fillon",
+   "cellule": "Aucun",
+   "mesure": 26.1,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 13.8,
+   "modele_ic90": [
+    1.8,
+    39.7
+   ],
+   "erreur": -12.3,
+   "z": -0.96
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "François Fillon",
+   "cellule": "Le Pen",
+   "mesure": 27.5,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 25.8,
+   "modele_ic90": [
+    13.9,
+    38.0
+   ],
+   "erreur": -1.7,
+   "z": -0.2
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "François Fillon",
+   "cellule": "Macron",
+   "mesure": 46.3,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 60.3,
+   "modele_ic90": [
+    40.7,
+    74.5
+   ],
+   "erreur": 14.0,
+   "z": 1.26
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "François Fillon",
+   "cellule": "partage",
+   "mesure": 62.8,
+   "sd_notices": 4.2,
+   "n_notices": 23,
+   "modele": 70.0,
+   "modele_ic90": [
+    58.2,
+    82.2
+   ],
+   "erreur": 7.2,
+   "z": 0.83
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Aucun",
+   "mesure": 36.4,
+   "sd_notices": 4.3,
+   "n_notices": 23,
+   "modele": 38.3,
+   "modele_ic90": [
+    5.5,
+    71.2
+   ],
+   "erreur": 1.9,
+   "z": 0.09
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Le Pen",
+   "mesure": 15.0,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 4.5,
+   "modele_ic90": [
+    1.2,
+    9.2
+   ],
+   "erreur": -10.4,
+   "z": -2.15
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Macron",
+   "mesure": 48.6,
+   "sd_notices": 5.4,
+   "n_notices": 23,
+   "modele": 57.1,
+   "modele_ic90": [
+    27.5,
+    85.9
+   ],
+   "erreur": 8.5,
+   "z": 0.45
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "partage",
+   "mesure": 76.4,
+   "sd_notices": 5.5,
+   "n_notices": 23,
+   "modele": 93.1,
+   "modele_ic90": [
+    89.5,
+    96.1
+   ],
+   "erreur": 16.7,
+   "z": 2.62
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Aucun",
+   "mesure": 32.7,
+   "sd_notices": 5.7,
+   "n_notices": 14,
+   "modele": 11.8,
+   "modele_ic90": [
+    1.4,
+    34.9
+   ],
+   "erreur": -20.9,
+   "z": -1.7
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Le Pen",
+   "mesure": 42.0,
+   "sd_notices": 7.3,
+   "n_notices": 14,
+   "modele": 57.1,
+   "modele_ic90": [
+    31.5,
+    78.9
+   ],
+   "erreur": 15.1,
+   "z": 0.92
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Macron",
+   "mesure": 25.4,
+   "sd_notices": 7.4,
+   "n_notices": 14,
+   "modele": 31.0,
+   "modele_ic90": [
+    13.0,
+    54.2
+   ],
+   "erreur": 5.7,
+   "z": 0.39
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "partage",
+   "mesure": 37.6,
+   "sd_notices": 9.7,
+   "n_notices": 14,
+   "modele": 35.4,
+   "modele_ic90": [
+    15.2,
+    61.7
+   ],
+   "erreur": -2.2,
+   "z": -0.13
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "Benoît Hamon",
+   "cellule": "Aucun",
+   "mesure": 20.4,
+   "sd_notices": 4.0,
+   "n_notices": 23,
+   "modele": 25.7,
+   "modele_ic90": [
+    4.1,
+    53.5
+   ],
+   "erreur": 5.3,
+   "z": 0.33
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "Benoît Hamon",
+   "cellule": "Le Pen",
+   "mesure": 5.3,
+   "sd_notices": 2.1,
+   "n_notices": 23,
+   "modele": 8.4,
+   "modele_ic90": [
+    4.1,
+    13.1
+   ],
+   "erreur": 3.1,
+   "z": 0.88
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "Benoît Hamon",
+   "cellule": "Macron",
+   "mesure": 74.3,
+   "sd_notices": 4.3,
+   "n_notices": 23,
+   "modele": 65.9,
+   "modele_ic90": [
+    41.5,
+    84.2
+   ],
+   "erreur": -8.4,
+   "z": -0.6
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "Benoît Hamon",
+   "cellule": "partage",
+   "mesure": 93.4,
+   "sd_notices": 2.6,
+   "n_notices": 23,
+   "modele": 88.9,
+   "modele_ic90": [
+    85.2,
+    92.2
+   ],
+   "erreur": -4.5,
+   "z": -1.27
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "François Fillon",
+   "cellule": "Aucun",
+   "mesure": 26.1,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 13.8,
+   "modele_ic90": [
+    1.8,
+    39.7
+   ],
+   "erreur": -12.3,
+   "z": -0.96
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "François Fillon",
+   "cellule": "Le Pen",
+   "mesure": 27.5,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 25.8,
+   "modele_ic90": [
+    15.4,
+    36.4
+   ],
+   "erreur": -1.7,
+   "z": -0.23
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "François Fillon",
+   "cellule": "Macron",
+   "mesure": 46.3,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 60.4,
+   "modele_ic90": [
+    40.6,
+    73.5
+   ],
+   "erreur": 14.0,
+   "z": 1.29
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "François Fillon",
+   "cellule": "partage",
+   "mesure": 62.8,
+   "sd_notices": 4.2,
+   "n_notices": 23,
+   "modele": 70.0,
+   "modele_ic90": [
+    59.7,
+    80.3
+   ],
+   "erreur": 7.2,
+   "z": 0.91
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Aucun",
+   "mesure": 36.4,
+   "sd_notices": 4.3,
+   "n_notices": 23,
+   "modele": 38.3,
+   "modele_ic90": [
+    5.5,
+    71.2
+   ],
+   "erreur": 1.9,
+   "z": 0.09
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Le Pen",
+   "mesure": 15.0,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 7.1,
+   "modele_ic90": [
+    2.4,
+    12.9
+   ],
+   "erreur": -7.8,
+   "z": -1.51
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Macron",
+   "mesure": 48.6,
+   "sd_notices": 5.4,
+   "n_notices": 23,
+   "modele": 54.5,
+   "modele_ic90": [
+    26.4,
+    82.0
+   ],
+   "erreur": 5.9,
+   "z": 0.33
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "partage",
+   "mesure": 76.4,
+   "sd_notices": 5.5,
+   "n_notices": 23,
+   "modele": 88.9,
+   "modele_ic90": [
+    85.3,
+    92.2
+   ],
+   "erreur": 12.5,
+   "z": 2.0
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Aucun",
+   "mesure": 32.7,
+   "sd_notices": 5.7,
+   "n_notices": 14,
+   "modele": 11.8,
+   "modele_ic90": [
+    1.4,
+    34.9
+   ],
+   "erreur": -20.9,
+   "z": -1.7
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Le Pen",
+   "mesure": 42.0,
+   "sd_notices": 7.3,
+   "n_notices": 14,
+   "modele": 53.3,
+   "modele_ic90": [
+    30.2,
+    73.7
+   ],
+   "erreur": 11.3,
+   "z": 0.74
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Macron",
+   "mesure": 25.4,
+   "sd_notices": 7.4,
+   "n_notices": 14,
+   "modele": 34.8,
+   "modele_ic90": [
+    17.1,
+    56.1
+   ],
+   "erreur": 9.5,
+   "z": 0.68
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "partage",
+   "mesure": 37.6,
+   "sd_notices": 9.7,
+   "n_notices": 14,
+   "modele": 39.7,
+   "modele_ic90": [
+    20.6,
+    63.2
+   ],
+   "erreur": 2.1,
+   "z": 0.13
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "Benoît Hamon",
+   "cellule": "Aucun",
+   "mesure": 20.4,
+   "sd_notices": 4.0,
+   "n_notices": 23,
+   "modele": 25.7,
+   "modele_ic90": [
+    4.1,
+    53.5
+   ],
+   "erreur": 5.3,
+   "z": 0.33
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "Benoît Hamon",
+   "cellule": "Le Pen",
+   "mesure": 5.3,
+   "sd_notices": 2.1,
+   "n_notices": 23,
+   "modele": 11.2,
+   "modele_ic90": [
+    6.0,
+    16.3
+   ],
+   "erreur": 5.9,
+   "z": 1.52
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "Benoît Hamon",
+   "cellule": "Macron",
+   "mesure": 74.3,
+   "sd_notices": 4.3,
+   "n_notices": 23,
+   "modele": 63.1,
+   "modele_ic90": [
+    39.8,
+    80.7
+   ],
+   "erreur": -11.2,
+   "z": -0.83
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "Benoît Hamon",
+   "cellule": "partage",
+   "mesure": 93.4,
+   "sd_notices": 2.6,
+   "n_notices": 23,
+   "modele": 85.1,
+   "modele_ic90": [
+    81.8,
+    88.3
+   ],
+   "erreur": -8.3,
+   "z": -2.42
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "François Fillon",
+   "cellule": "Aucun",
+   "mesure": 26.1,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 13.8,
+   "modele_ic90": [
+    1.8,
+    39.7
+   ],
+   "erreur": -12.3,
+   "z": -0.96
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "François Fillon",
+   "cellule": "Le Pen",
+   "mesure": 27.5,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 26.4,
+   "modele_ic90": [
+    16.9,
+    35.9
+   ],
+   "erreur": -1.2,
+   "z": -0.17
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "François Fillon",
+   "cellule": "Macron",
+   "mesure": 46.3,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 59.8,
+   "modele_ic90": [
+    40.4,
+    72.0
+   ],
+   "erreur": 13.4,
+   "z": 1.28
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "François Fillon",
+   "cellule": "partage",
+   "mesure": 62.8,
+   "sd_notices": 4.2,
+   "n_notices": 23,
+   "modele": 69.3,
+   "modele_ic90": [
+    60.2,
+    78.1
+   ],
+   "erreur": 6.5,
+   "z": 0.9
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Aucun",
+   "mesure": 36.4,
+   "sd_notices": 4.3,
+   "n_notices": 23,
+   "modele": 38.3,
+   "modele_ic90": [
+    5.5,
+    71.2
+   ],
+   "erreur": 1.9,
+   "z": 0.09
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Le Pen",
+   "mesure": 15.0,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 9.4,
+   "modele_ic90": [
+    3.5,
+    16.2
+   ],
+   "erreur": -5.5,
+   "z": -1.0
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Macron",
+   "mesure": 48.6,
+   "sd_notices": 5.4,
+   "n_notices": 23,
+   "modele": 52.2,
+   "modele_ic90": [
+    25.3,
+    78.5
+   ],
+   "erreur": 3.6,
+   "z": 0.21
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "partage",
+   "mesure": 76.4,
+   "sd_notices": 5.5,
+   "n_notices": 23,
+   "modele": 85.1,
+   "modele_ic90": [
+    81.8,
+    88.4
+   ],
+   "erreur": 8.7,
+   "z": 1.43
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Aucun",
+   "mesure": 32.7,
+   "sd_notices": 5.7,
+   "n_notices": 14,
+   "modele": 11.8,
+   "modele_ic90": [
+    1.4,
+    34.9
+   ],
+   "erreur": -20.9,
+   "z": -1.7
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Le Pen",
+   "mesure": 42.0,
+   "sd_notices": 7.3,
+   "n_notices": 14,
+   "modele": 50.3,
+   "modele_ic90": [
+    29.7,
+    68.7
+   ],
+   "erreur": 8.3,
+   "z": 0.59
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Macron",
+   "mesure": 25.4,
+   "sd_notices": 7.4,
+   "n_notices": 14,
+   "modele": 37.9,
+   "modele_ic90": [
+    21.3,
+    57.2
+   ],
+   "erreur": 12.5,
+   "z": 0.96
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "partage",
+   "mesure": 37.6,
+   "sd_notices": 9.7,
+   "n_notices": 14,
+   "modele": 43.1,
+   "modele_ic90": [
+    25.9,
+    63.7
+   ],
+   "erreur": 5.5,
+   "z": 0.37
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "Benoît Hamon",
+   "cellule": "Aucun",
+   "mesure": 20.4,
+   "sd_notices": 4.0,
+   "n_notices": 23,
+   "modele": 25.7,
+   "modele_ic90": [
+    4.1,
+    53.5
+   ],
+   "erreur": 5.3,
+   "z": 0.33
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "Benoît Hamon",
+   "cellule": "Le Pen",
+   "mesure": 5.3,
+   "sd_notices": 2.1,
+   "n_notices": 23,
+   "modele": 13.8,
+   "modele_ic90": [
+    7.8,
+    19.4
+   ],
+   "erreur": 8.6,
+   "z": 2.04
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "Benoît Hamon",
+   "cellule": "Macron",
+   "mesure": 74.3,
+   "sd_notices": 4.3,
+   "n_notices": 23,
+   "modele": 60.5,
+   "modele_ic90": [
+    38.3,
+    77.3
+   ],
+   "erreur": -13.8,
+   "z": -1.07
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "Benoît Hamon",
+   "cellule": "partage",
+   "mesure": 93.4,
+   "sd_notices": 2.6,
+   "n_notices": 23,
+   "modele": 81.5,
+   "modele_ic90": [
+    78.5,
+    84.4
+   ],
+   "erreur": -11.9,
+   "z": -3.63
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "François Fillon",
+   "cellule": "Aucun",
+   "mesure": 26.1,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 13.8,
+   "modele_ic90": [
+    1.8,
+    39.7
+   ],
+   "erreur": -12.3,
+   "z": -0.96
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "François Fillon",
+   "cellule": "Le Pen",
+   "mesure": 27.5,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 27.2,
+   "modele_ic90": [
+    18.4,
+    35.8
+   ],
+   "erreur": -0.3,
+   "z": -0.05
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "François Fillon",
+   "cellule": "Macron",
+   "mesure": 46.3,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 58.9,
+   "modele_ic90": [
+    40.1,
+    70.2
+   ],
+   "erreur": 12.6,
+   "z": 1.24
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "François Fillon",
+   "cellule": "partage",
+   "mesure": 62.8,
+   "sd_notices": 4.2,
+   "n_notices": 23,
+   "modele": 68.3,
+   "modele_ic90": [
+    60.4,
+    75.7
+   ],
+   "erreur": 5.5,
+   "z": 0.84
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Aucun",
+   "mesure": 36.4,
+   "sd_notices": 4.3,
+   "n_notices": 23,
+   "modele": 38.3,
+   "modele_ic90": [
+    5.5,
+    71.2
+   ],
+   "erreur": 1.9,
+   "z": 0.09
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Le Pen",
+   "mesure": 15.0,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 11.6,
+   "modele_ic90": [
+    4.7,
+    19.3
+   ],
+   "erreur": -3.3,
+   "z": -0.56
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Macron",
+   "mesure": 48.6,
+   "sd_notices": 5.4,
+   "n_notices": 23,
+   "modele": 50.0,
+   "modele_ic90": [
+    24.2,
+    75.3
+   ],
+   "erreur": 1.4,
+   "z": 0.08
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "partage",
+   "mesure": 76.4,
+   "sd_notices": 5.5,
+   "n_notices": 23,
+   "modele": 81.5,
+   "modele_ic90": [
+    78.5,
+    84.5
+   ],
+   "erreur": 5.2,
+   "z": 0.86
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Aucun",
+   "mesure": 32.7,
+   "sd_notices": 5.7,
+   "n_notices": 14,
+   "modele": 11.8,
+   "modele_ic90": [
+    1.4,
+    34.9
+   ],
+   "erreur": -20.9,
+   "z": -1.7
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Le Pen",
+   "mesure": 42.0,
+   "sd_notices": 7.3,
+   "n_notices": 14,
+   "modele": 47.6,
+   "modele_ic90": [
+    29.2,
+    63.9
+   ],
+   "erreur": 5.6,
+   "z": 0.44
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Macron",
+   "mesure": 25.4,
+   "sd_notices": 7.4,
+   "n_notices": 14,
+   "modele": 40.5,
+   "modele_ic90": [
+    25.7,
+    57.8
+   ],
+   "erreur": 15.2,
+   "z": 1.24
+  },
+  {
+   "election": 2017,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "partage",
+   "mesure": 37.6,
+   "sd_notices": 9.7,
+   "n_notices": 14,
+   "modele": 46.0,
+   "modele_ic90": [
+    31.2,
+    63.6
+   ],
+   "erreur": 8.4,
+   "z": 0.61
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Aucun",
+   "mesure": 43.6,
+   "sd_notices": 6.2,
+   "n_notices": 21,
+   "modele": 57.7,
+   "modele_ic90": [
+    29.2,
+    76.2
+   ],
+   "erreur": 14.1,
+   "z": 0.9
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Le Pen",
+   "mesure": 21.0,
+   "sd_notices": 4.3,
+   "n_notices": 21,
+   "modele": 0.0,
+   "modele_ic90": [
+    0.0,
+    0.0
+   ],
+   "erreur": -21.0,
+   "z": -4.9
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Macron",
+   "mesure": 35.5,
+   "sd_notices": 4.2,
+   "n_notices": 21,
+   "modele": 42.3,
+   "modele_ic90": [
+    23.8,
+    70.8
+   ],
+   "erreur": 6.8,
+   "z": 0.45
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "partage",
+   "mesure": 63.0,
+   "sd_notices": 5.0,
+   "n_notices": 21,
+   "modele": 100.0,
+   "modele_ic90": [
+    100.0,
+    100.0
+   ],
+   "erreur": 37.0,
+   "z": 7.41
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Aucun",
+   "mesure": 29.9,
+   "sd_notices": 5.5,
+   "n_notices": 20,
+   "modele": 20.3,
+   "modele_ic90": [
+    3.2,
+    51.7
+   ],
+   "erreur": -9.6,
+   "z": -0.57
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Le Pen",
+   "mesure": 24.6,
+   "sd_notices": 5.6,
+   "n_notices": 20,
+   "modele": 30.7,
+   "modele_ic90": [
+    14.0,
+    53.1
+   ],
+   "erreur": 6.1,
+   "z": 0.46
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Macron",
+   "mesure": 45.5,
+   "sd_notices": 4.4,
+   "n_notices": 20,
+   "modele": 49.0,
+   "modele_ic90": [
+    24.0,
+    70.6
+   ],
+   "erreur": 3.5,
+   "z": 0.23
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "Valérie Pécresse",
+   "cellule": "partage",
+   "mesure": 65.0,
+   "sd_notices": 6.5,
+   "n_notices": 20,
+   "modele": 61.4,
+   "modele_ic90": [
+    35.8,
+    80.3
+   ],
+   "erreur": -3.7,
+   "z": -0.25
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "Yannick Jadot",
+   "cellule": "Aucun",
+   "mesure": 33.3,
+   "sd_notices": 4.9,
+   "n_notices": 18,
+   "modele": 94.3,
+   "modele_ic90": [
+    71.4,
+    100.0
+   ],
+   "erreur": 60.9,
+   "z": 5.35
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "Yannick Jadot",
+   "cellule": "Le Pen",
+   "mesure": 8.2,
+   "sd_notices": 3.7,
+   "n_notices": 18,
+   "modele": 0.0,
+   "modele_ic90": [
+    0.0,
+    0.0
+   ],
+   "erreur": -8.2,
+   "z": -2.19
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "Yannick Jadot",
+   "cellule": "Macron",
+   "mesure": 58.5,
+   "sd_notices": 7.5,
+   "n_notices": 18,
+   "modele": 5.7,
+   "modele_ic90": [
+    0.0,
+    28.6
+   ],
+   "erreur": -52.8,
+   "z": -4.15
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "Yannick Jadot",
+   "cellule": "partage",
+   "mesure": 87.5,
+   "sd_notices": 6.5,
+   "n_notices": 18,
+   "modele": 100.0,
+   "modele_ic90": [
+    100.0,
+    100.0
+   ],
+   "erreur": 12.5,
+   "z": 1.93
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "Éric Zemmour",
+   "cellule": "Aucun",
+   "mesure": 12.7,
+   "sd_notices": 4.5,
+   "n_notices": 21,
+   "modele": 18.2,
+   "modele_ic90": [
+    5.4,
+    34.7
+   ],
+   "erreur": 5.5,
+   "z": 0.54
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "Éric Zemmour",
+   "cellule": "Le Pen",
+   "mesure": 79.1,
+   "sd_notices": 4.1,
+   "n_notices": 21,
+   "modele": 81.8,
+   "modele_ic90": [
+    65.3,
+    94.6
+   ],
+   "erreur": 2.7,
+   "z": 0.26
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "Éric Zemmour",
+   "cellule": "Macron",
+   "mesure": 8.2,
+   "sd_notices": 3.2,
+   "n_notices": 21,
+   "modele": 0.0,
+   "modele_ic90": [
+    0.0,
+    0.0
+   ],
+   "erreur": -8.2,
+   "z": -2.58
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.0,
+   "electorat": "Éric Zemmour",
+   "cellule": "partage",
+   "mesure": 9.4,
+   "sd_notices": 3.5,
+   "n_notices": 21,
+   "modele": 0.0,
+   "modele_ic90": [
+    0.0,
+    0.0
+   ],
+   "erreur": -9.4,
+   "z": -2.68
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Aucun",
+   "mesure": 43.6,
+   "sd_notices": 6.2,
+   "n_notices": 21,
+   "modele": 57.7,
+   "modele_ic90": [
+    29.2,
+    76.2
+   ],
+   "erreur": 14.1,
+   "z": 0.9
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Le Pen",
+   "mesure": 21.0,
+   "sd_notices": 4.3,
+   "n_notices": 21,
+   "modele": 1.6,
+   "modele_ic90": [
+    0.7,
+    3.4
+   ],
+   "erreur": -19.3,
+   "z": -4.43
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Macron",
+   "mesure": 35.5,
+   "sd_notices": 4.2,
+   "n_notices": 21,
+   "modele": 40.7,
+   "modele_ic90": [
+    23.0,
+    67.1
+   ],
+   "erreur": 5.2,
+   "z": 0.36
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "partage",
+   "mesure": 63.0,
+   "sd_notices": 5.0,
+   "n_notices": 21,
+   "modele": 96.3,
+   "modele_ic90": [
+    94.8,
+    97.3
+   ],
+   "erreur": 33.3,
+   "z": 6.6
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Aucun",
+   "mesure": 29.9,
+   "sd_notices": 5.5,
+   "n_notices": 20,
+   "modele": 20.3,
+   "modele_ic90": [
+    3.2,
+    51.7
+   ],
+   "erreur": -9.6,
+   "z": -0.57
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Le Pen",
+   "mesure": 24.6,
+   "sd_notices": 5.6,
+   "n_notices": 20,
+   "modele": 38.2,
+   "modele_ic90": [
+    24.7,
+    52.8
+   ],
+   "erreur": 13.6,
+   "z": 1.3
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Macron",
+   "mesure": 45.5,
+   "sd_notices": 4.4,
+   "n_notices": 20,
+   "modele": 41.5,
+   "modele_ic90": [
+    23.0,
+    54.8
+   ],
+   "erreur": -4.0,
+   "z": -0.37
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "Valérie Pécresse",
+   "cellule": "partage",
+   "mesure": 65.0,
+   "sd_notices": 6.5,
+   "n_notices": 20,
+   "modele": 51.9,
+   "modele_ic90": [
+    41.3,
+    60.6
+   ],
+   "erreur": -13.1,
+   "z": -1.48
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "Yannick Jadot",
+   "cellule": "Aucun",
+   "mesure": 33.3,
+   "sd_notices": 4.9,
+   "n_notices": 18,
+   "modele": 94.3,
+   "modele_ic90": [
+    71.4,
+    100.0
+   ],
+   "erreur": 60.9,
+   "z": 5.35
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "Yannick Jadot",
+   "cellule": "Le Pen",
+   "mesure": 8.2,
+   "sd_notices": 3.7,
+   "n_notices": 18,
+   "modele": 0.2,
+   "modele_ic90": [
+    0.0,
+    1.3
+   ],
+   "erreur": -7.9,
+   "z": -2.11
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "Yannick Jadot",
+   "cellule": "Macron",
+   "mesure": 58.5,
+   "sd_notices": 7.5,
+   "n_notices": 18,
+   "modele": 5.5,
+   "modele_ic90": [
+    0.0,
+    27.2
+   ],
+   "erreur": -53.0,
+   "z": -4.29
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "Yannick Jadot",
+   "cellule": "partage",
+   "mesure": 87.5,
+   "sd_notices": 6.5,
+   "n_notices": 18,
+   "modele": 96.3,
+   "modele_ic90": [
+    94.8,
+    97.3
+   ],
+   "erreur": 8.9,
+   "z": 1.36
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "Éric Zemmour",
+   "cellule": "Aucun",
+   "mesure": 12.7,
+   "sd_notices": 4.5,
+   "n_notices": 21,
+   "modele": 18.2,
+   "modele_ic90": [
+    5.4,
+    34.7
+   ],
+   "erreur": 5.5,
+   "z": 0.54
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "Éric Zemmour",
+   "cellule": "Le Pen",
+   "mesure": 79.1,
+   "sd_notices": 4.1,
+   "n_notices": 21,
+   "modele": 76.0,
+   "modele_ic90": [
+    61.2,
+    87.9
+   ],
+   "erreur": -3.1,
+   "z": -0.34
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "Éric Zemmour",
+   "cellule": "Macron",
+   "mesure": 8.2,
+   "sd_notices": 3.2,
+   "n_notices": 21,
+   "modele": 5.8,
+   "modele_ic90": [
+    3.5,
+    8.2
+   ],
+   "erreur": -2.4,
+   "z": -0.69
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.1,
+   "electorat": "Éric Zemmour",
+   "cellule": "partage",
+   "mesure": 9.4,
+   "sd_notices": 3.5,
+   "n_notices": 21,
+   "modele": 7.1,
+   "modele_ic90": [
+    4.8,
+    9.1
+   ],
+   "erreur": -2.3,
+   "z": -0.62
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Aucun",
+   "mesure": 43.6,
+   "sd_notices": 6.2,
+   "n_notices": 21,
+   "modele": 57.7,
+   "modele_ic90": [
+    29.2,
+    76.2
+   ],
+   "erreur": 14.1,
+   "z": 0.9
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Le Pen",
+   "mesure": 21.0,
+   "sd_notices": 4.3,
+   "n_notices": 21,
+   "modele": 3.5,
+   "modele_ic90": [
+    1.7,
+    6.6
+   ],
+   "erreur": -17.4,
+   "z": -3.84
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Macron",
+   "mesure": 35.5,
+   "sd_notices": 4.2,
+   "n_notices": 21,
+   "modele": 38.8,
+   "modele_ic90": [
+    22.0,
+    63.9
+   ],
+   "erreur": 3.3,
+   "z": 0.24
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "partage",
+   "mesure": 63.0,
+   "sd_notices": 5.0,
+   "n_notices": 21,
+   "modele": 91.9,
+   "modele_ic90": [
+    90.1,
+    93.2
+   ],
+   "erreur": 28.9,
+   "z": 5.69
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Aucun",
+   "mesure": 29.9,
+   "sd_notices": 5.5,
+   "n_notices": 20,
+   "modele": 20.3,
+   "modele_ic90": [
+    3.2,
+    51.7
+   ],
+   "erreur": -9.6,
+   "z": -0.57
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Le Pen",
+   "mesure": 24.6,
+   "sd_notices": 5.6,
+   "n_notices": 20,
+   "modele": 39.8,
+   "modele_ic90": [
+    25.4,
+    52.7
+   ],
+   "erreur": 15.1,
+   "z": 1.48
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Macron",
+   "mesure": 45.5,
+   "sd_notices": 4.4,
+   "n_notices": 20,
+   "modele": 39.9,
+   "modele_ic90": [
+    22.6,
+    50.9
+   ],
+   "erreur": -5.5,
+   "z": -0.57
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "Valérie Pécresse",
+   "cellule": "partage",
+   "mesure": 65.0,
+   "sd_notices": 6.5,
+   "n_notices": 20,
+   "modele": 50.0,
+   "modele_ic90": [
+    42.5,
+    56.2
+   ],
+   "erreur": -15.0,
+   "z": -1.93
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "Yannick Jadot",
+   "cellule": "Aucun",
+   "mesure": 33.3,
+   "sd_notices": 4.9,
+   "n_notices": 18,
+   "modele": 94.3,
+   "modele_ic90": [
+    71.4,
+    100.0
+   ],
+   "erreur": 60.9,
+   "z": 5.35
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "Yannick Jadot",
+   "cellule": "Le Pen",
+   "mesure": 8.2,
+   "sd_notices": 3.7,
+   "n_notices": 18,
+   "modele": 0.5,
+   "modele_ic90": [
+    0.0,
+    2.6
+   ],
+   "erreur": -7.7,
+   "z": -1.99
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "Yannick Jadot",
+   "cellule": "Macron",
+   "mesure": 58.5,
+   "sd_notices": 7.5,
+   "n_notices": 18,
+   "modele": 5.2,
+   "modele_ic90": [
+    0.0,
+    25.8
+   ],
+   "erreur": -53.3,
+   "z": -4.45
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "Yannick Jadot",
+   "cellule": "partage",
+   "mesure": 87.5,
+   "sd_notices": 6.5,
+   "n_notices": 18,
+   "modele": 91.9,
+   "modele_ic90": [
+    90.1,
+    93.2
+   ],
+   "erreur": 4.4,
+   "z": 0.68
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "Éric Zemmour",
+   "cellule": "Aucun",
+   "mesure": 12.7,
+   "sd_notices": 4.5,
+   "n_notices": 21,
+   "modele": 18.2,
+   "modele_ic90": [
+    5.4,
+    34.7
+   ],
+   "erreur": 5.5,
+   "z": 0.54
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "Éric Zemmour",
+   "cellule": "Le Pen",
+   "mesure": 79.1,
+   "sd_notices": 4.1,
+   "n_notices": 21,
+   "modele": 71.6,
+   "modele_ic90": [
+    57.6,
+    82.7
+   ],
+   "erreur": -7.6,
+   "z": -0.85
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "Éric Zemmour",
+   "cellule": "Macron",
+   "mesure": 8.2,
+   "sd_notices": 3.2,
+   "n_notices": 21,
+   "modele": 10.2,
+   "modele_ic90": [
+    7.1,
+    13.0
+   ],
+   "erreur": 2.0,
+   "z": 0.54
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.2,
+   "electorat": "Éric Zemmour",
+   "cellule": "partage",
+   "mesure": 9.4,
+   "sd_notices": 3.5,
+   "n_notices": 21,
+   "modele": 12.4,
+   "modele_ic90": [
+    10.1,
+    14.5
+   ],
+   "erreur": 3.1,
+   "z": 0.83
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Aucun",
+   "mesure": 43.6,
+   "sd_notices": 6.2,
+   "n_notices": 21,
+   "modele": 57.7,
+   "modele_ic90": [
+    29.2,
+    76.2
+   ],
+   "erreur": 14.1,
+   "z": 0.9
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Le Pen",
+   "mesure": 21.0,
+   "sd_notices": 4.3,
+   "n_notices": 21,
+   "modele": 5.5,
+   "modele_ic90": [
+    2.8,
+    9.8
+   ],
+   "erreur": -15.5,
+   "z": -3.22
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Macron",
+   "mesure": 35.5,
+   "sd_notices": 4.2,
+   "n_notices": 21,
+   "modele": 36.8,
+   "modele_ic90": [
+    20.9,
+    60.7
+   ],
+   "erreur": 1.3,
+   "z": 0.1
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "partage",
+   "mesure": 63.0,
+   "sd_notices": 5.0,
+   "n_notices": 21,
+   "modele": 87.3,
+   "modele_ic90": [
+    85.5,
+    88.6
+   ],
+   "erreur": 24.3,
+   "z": 4.77
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Aucun",
+   "mesure": 29.9,
+   "sd_notices": 5.5,
+   "n_notices": 20,
+   "modele": 20.3,
+   "modele_ic90": [
+    3.2,
+    51.7
+   ],
+   "erreur": -9.6,
+   "z": -0.57
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Le Pen",
+   "mesure": 24.6,
+   "sd_notices": 5.6,
+   "n_notices": 20,
+   "modele": 40.2,
+   "modele_ic90": [
+    25.2,
+    52.0
+   ],
+   "erreur": 15.5,
+   "z": 1.53
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Macron",
+   "mesure": 45.5,
+   "sd_notices": 4.4,
+   "n_notices": 20,
+   "modele": 39.5,
+   "modele_ic90": [
+    22.7,
+    49.4
+   ],
+   "erreur": -5.9,
+   "z": -0.63
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "Valérie Pécresse",
+   "cellule": "partage",
+   "mesure": 65.0,
+   "sd_notices": 6.5,
+   "n_notices": 20,
+   "modele": 49.6,
+   "modele_ic90": [
+    43.5,
+    54.7
+   ],
+   "erreur": -15.5,
+   "z": -2.12
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "Yannick Jadot",
+   "cellule": "Aucun",
+   "mesure": 33.3,
+   "sd_notices": 4.9,
+   "n_notices": 18,
+   "modele": 94.3,
+   "modele_ic90": [
+    71.4,
+    100.0
+   ],
+   "erreur": 60.9,
+   "z": 5.35
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "Yannick Jadot",
+   "cellule": "Le Pen",
+   "mesure": 8.2,
+   "sd_notices": 3.7,
+   "n_notices": 18,
+   "modele": 0.8,
+   "modele_ic90": [
+    0.0,
+    3.9
+   ],
+   "erreur": -7.4,
+   "z": -1.85
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "Yannick Jadot",
+   "cellule": "Macron",
+   "mesure": 58.5,
+   "sd_notices": 7.5,
+   "n_notices": 18,
+   "modele": 5.0,
+   "modele_ic90": [
+    0.0,
+    24.5
+   ],
+   "erreur": -53.5,
+   "z": -4.61
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "Yannick Jadot",
+   "cellule": "partage",
+   "mesure": 87.5,
+   "sd_notices": 6.5,
+   "n_notices": 18,
+   "modele": 87.3,
+   "modele_ic90": [
+    85.5,
+    88.6
+   ],
+   "erreur": -0.2,
+   "z": -0.03
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "Éric Zemmour",
+   "cellule": "Aucun",
+   "mesure": 12.7,
+   "sd_notices": 4.5,
+   "n_notices": 21,
+   "modele": 18.2,
+   "modele_ic90": [
+    5.4,
+    34.7
+   ],
+   "erreur": 5.5,
+   "z": 0.54
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "Éric Zemmour",
+   "cellule": "Le Pen",
+   "mesure": 79.1,
+   "sd_notices": 4.1,
+   "n_notices": 21,
+   "modele": 67.3,
+   "modele_ic90": [
+    54.1,
+    77.8
+   ],
+   "erreur": -11.8,
+   "z": -1.39
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "Éric Zemmour",
+   "cellule": "Macron",
+   "mesure": 8.2,
+   "sd_notices": 3.2,
+   "n_notices": 21,
+   "modele": 14.5,
+   "modele_ic90": [
+    10.8,
+    17.7
+   ],
+   "erreur": 6.2,
+   "z": 1.62
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.3,
+   "electorat": "Éric Zemmour",
+   "cellule": "partage",
+   "mesure": 9.4,
+   "sd_notices": 3.5,
+   "n_notices": 21,
+   "modele": 17.7,
+   "modele_ic90": [
+    15.5,
+    19.5
+   ],
+   "erreur": 8.3,
+   "z": 2.24
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Aucun",
+   "mesure": 43.6,
+   "sd_notices": 6.2,
+   "n_notices": 21,
+   "modele": 57.7,
+   "modele_ic90": [
+    29.2,
+    76.2
+   ],
+   "erreur": 14.1,
+   "z": 0.9
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Le Pen",
+   "mesure": 21.0,
+   "sd_notices": 4.3,
+   "n_notices": 21,
+   "modele": 7.5,
+   "modele_ic90": [
+    3.9,
+    13.2
+   ],
+   "erreur": -13.5,
+   "z": -2.62
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Macron",
+   "mesure": 35.5,
+   "sd_notices": 4.2,
+   "n_notices": 21,
+   "modele": 34.8,
+   "modele_ic90": [
+    19.8,
+    57.4
+   ],
+   "erreur": -0.7,
+   "z": -0.05
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "partage",
+   "mesure": 63.0,
+   "sd_notices": 5.0,
+   "n_notices": 21,
+   "modele": 82.5,
+   "modele_ic90": [
+    80.9,
+    83.8
+   ],
+   "erreur": 19.5,
+   "z": 3.85
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Aucun",
+   "mesure": 29.9,
+   "sd_notices": 5.5,
+   "n_notices": 20,
+   "modele": 20.3,
+   "modele_ic90": [
+    3.2,
+    51.7
+   ],
+   "erreur": -9.6,
+   "z": -0.57
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Le Pen",
+   "mesure": 24.6,
+   "sd_notices": 5.6,
+   "n_notices": 20,
+   "modele": 40.1,
+   "modele_ic90": [
+    25.0,
+    51.3
+   ],
+   "erreur": 15.5,
+   "z": 1.54
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Macron",
+   "mesure": 45.5,
+   "sd_notices": 4.4,
+   "n_notices": 20,
+   "modele": 39.6,
+   "modele_ic90": [
+    23.1,
+    48.7
+   ],
+   "erreur": -5.9,
+   "z": -0.64
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "Valérie Pécresse",
+   "cellule": "partage",
+   "mesure": 65.0,
+   "sd_notices": 6.5,
+   "n_notices": 20,
+   "modele": 49.6,
+   "modele_ic90": [
+    44.8,
+    53.8
+   ],
+   "erreur": -15.4,
+   "z": -2.18
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "Yannick Jadot",
+   "cellule": "Aucun",
+   "mesure": 33.3,
+   "sd_notices": 4.9,
+   "n_notices": 18,
+   "modele": 94.3,
+   "modele_ic90": [
+    71.4,
+    100.0
+   ],
+   "erreur": 60.9,
+   "z": 5.35
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "Yannick Jadot",
+   "cellule": "Le Pen",
+   "mesure": 8.2,
+   "sd_notices": 3.7,
+   "n_notices": 18,
+   "modele": 1.0,
+   "modele_ic90": [
+    0.0,
+    5.2
+   ],
+   "erreur": -7.1,
+   "z": -1.7
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "Yannick Jadot",
+   "cellule": "Macron",
+   "mesure": 58.5,
+   "sd_notices": 7.5,
+   "n_notices": 18,
+   "modele": 4.7,
+   "modele_ic90": [
+    0.0,
+    23.2
+   ],
+   "erreur": -53.8,
+   "z": -4.79
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "Yannick Jadot",
+   "cellule": "partage",
+   "mesure": 87.5,
+   "sd_notices": 6.5,
+   "n_notices": 18,
+   "modele": 82.5,
+   "modele_ic90": [
+    80.9,
+    83.8
+   ],
+   "erreur": -5.0,
+   "z": -0.76
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "Éric Zemmour",
+   "cellule": "Aucun",
+   "mesure": 12.7,
+   "sd_notices": 4.5,
+   "n_notices": 21,
+   "modele": 18.2,
+   "modele_ic90": [
+    5.4,
+    34.7
+   ],
+   "erreur": 5.5,
+   "z": 0.54
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "Éric Zemmour",
+   "cellule": "Le Pen",
+   "mesure": 79.1,
+   "sd_notices": 4.1,
+   "n_notices": 21,
+   "modele": 63.1,
+   "modele_ic90": [
+    50.7,
+    72.9
+   ],
+   "erreur": -16.0,
+   "z": -1.98
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "Éric Zemmour",
+   "cellule": "Macron",
+   "mesure": 8.2,
+   "sd_notices": 3.2,
+   "n_notices": 21,
+   "modele": 18.7,
+   "modele_ic90": [
+    14.3,
+    22.3
+   ],
+   "erreur": 10.4,
+   "z": 2.58
+  },
+  {
+   "election": 2022,
+   "variante": "abst",
+   "plancher": 0.4,
+   "electorat": "Éric Zemmour",
+   "cellule": "partage",
+   "mesure": 9.4,
+   "sd_notices": 3.5,
+   "n_notices": 21,
+   "modele": 22.8,
+   "modele_ic90": [
+    21.0,
+    24.4
+   ],
+   "erreur": 13.4,
+   "z": 3.68
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "Benoît Hamon",
+   "cellule": "Aucun",
+   "mesure": 20.4,
+   "sd_notices": 4.0,
+   "n_notices": 23,
+   "modele": 30.4,
+   "modele_ic90": [
+    7.6,
+    57.8
+   ],
+   "erreur": 10.0,
+   "z": 0.64
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "Benoît Hamon",
+   "cellule": "Le Pen",
+   "mesure": 5.3,
+   "sd_notices": 2.1,
+   "n_notices": 23,
+   "modele": 0.7,
+   "modele_ic90": [
+    0.0,
+    3.4
+   ],
+   "erreur": -4.6,
+   "z": -1.51
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "Benoît Hamon",
+   "cellule": "Macron",
+   "mesure": 74.3,
+   "sd_notices": 4.3,
+   "n_notices": 23,
+   "modele": 68.9,
+   "modele_ic90": [
+    41.9,
+    91.3
+   ],
+   "erreur": -5.4,
+   "z": -0.35
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "Benoît Hamon",
+   "cellule": "partage",
+   "mesure": 93.4,
+   "sd_notices": 2.6,
+   "n_notices": 23,
+   "modele": 99.0,
+   "modele_ic90": [
+    94.9,
+    100.0
+   ],
+   "erreur": 5.6,
+   "z": 1.48
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "François Fillon",
+   "cellule": "Aucun",
+   "mesure": 26.1,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 22.3,
+   "modele_ic90": [
+    3.2,
+    59.2
+   ],
+   "erreur": -3.8,
+   "z": -0.22
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "François Fillon",
+   "cellule": "Le Pen",
+   "mesure": 27.5,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 24.6,
+   "modele_ic90": [
+    9.2,
+    39.3
+   ],
+   "erreur": -2.9,
+   "z": -0.3
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "François Fillon",
+   "cellule": "Macron",
+   "mesure": 46.3,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 53.1,
+   "modele_ic90": [
+    28.0,
+    72.2
+   ],
+   "erreur": 6.8,
+   "z": 0.49
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "François Fillon",
+   "cellule": "partage",
+   "mesure": 62.8,
+   "sd_notices": 4.2,
+   "n_notices": 23,
+   "modele": 68.6,
+   "modele_ic90": [
+    54.1,
+    84.4
+   ],
+   "erreur": 5.8,
+   "z": 0.56
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Aucun",
+   "mesure": 36.4,
+   "sd_notices": 4.3,
+   "n_notices": 23,
+   "modele": 45.7,
+   "modele_ic90": [
+    11.5,
+    75.1
+   ],
+   "erreur": 9.3,
+   "z": 0.49
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Le Pen",
+   "mesure": 15.0,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 0.6,
+   "modele_ic90": [
+    0.0,
+    3.2
+   ],
+   "erreur": -14.3,
+   "z": -3.37
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Macron",
+   "mesure": 48.6,
+   "sd_notices": 5.4,
+   "n_notices": 23,
+   "modele": 53.7,
+   "modele_ic90": [
+    24.9,
+    85.5
+   ],
+   "erreur": 5.1,
+   "z": 0.27
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "partage",
+   "mesure": 76.4,
+   "sd_notices": 5.5,
+   "n_notices": 23,
+   "modele": 99.2,
+   "modele_ic90": [
+    95.4,
+    100.0
+   ],
+   "erreur": 22.8,
+   "z": 3.63
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Aucun",
+   "mesure": 32.7,
+   "sd_notices": 5.7,
+   "n_notices": 14,
+   "modele": 18.9,
+   "modele_ic90": [
+    2.3,
+    49.3
+   ],
+   "erreur": -13.8,
+   "z": -0.87
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Le Pen",
+   "mesure": 42.0,
+   "sd_notices": 7.3,
+   "n_notices": 14,
+   "modele": 58.7,
+   "modele_ic90": [
+    24.3,
+    85.2
+   ],
+   "erreur": 16.7,
+   "z": 0.85
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Macron",
+   "mesure": 25.4,
+   "sd_notices": 7.4,
+   "n_notices": 14,
+   "modele": 22.4,
+   "modele_ic90": [
+    6.1,
+    46.2
+   ],
+   "erreur": -3.0,
+   "z": -0.21
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "partage",
+   "mesure": 37.6,
+   "sd_notices": 9.7,
+   "n_notices": 14,
+   "modele": 28.6,
+   "modele_ic90": [
+    7.2,
+    59.0
+   ],
+   "erreur": -9.0,
+   "z": -0.48
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "Benoît Hamon",
+   "cellule": "Aucun",
+   "mesure": 20.4,
+   "sd_notices": 4.0,
+   "n_notices": 23,
+   "modele": 30.4,
+   "modele_ic90": [
+    7.6,
+    57.8
+   ],
+   "erreur": 10.0,
+   "z": 0.64
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "Benoît Hamon",
+   "cellule": "Le Pen",
+   "mesure": 5.3,
+   "sd_notices": 2.1,
+   "n_notices": 23,
+   "modele": 4.3,
+   "modele_ic90": [
+    1.6,
+    8.0
+   ],
+   "erreur": -1.0,
+   "z": -0.31
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "Benoît Hamon",
+   "cellule": "Macron",
+   "mesure": 74.3,
+   "sd_notices": 4.3,
+   "n_notices": 23,
+   "modele": 65.3,
+   "modele_ic90": [
+    40.0,
+    85.7
+   ],
+   "erreur": -9.0,
+   "z": -0.62
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "Benoît Hamon",
+   "cellule": "partage",
+   "mesure": 93.4,
+   "sd_notices": 2.6,
+   "n_notices": 23,
+   "modele": 94.0,
+   "modele_ic90": [
+    90.3,
+    96.9
+   ],
+   "erreur": 0.6,
+   "z": 0.16
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "François Fillon",
+   "cellule": "Aucun",
+   "mesure": 26.1,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 22.3,
+   "modele_ic90": [
+    3.2,
+    59.2
+   ],
+   "erreur": -3.8,
+   "z": -0.22
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "François Fillon",
+   "cellule": "Le Pen",
+   "mesure": 27.5,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 23.8,
+   "modele_ic90": [
+    12.0,
+    35.5
+   ],
+   "erreur": -3.7,
+   "z": -0.47
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "François Fillon",
+   "cellule": "Macron",
+   "mesure": 46.3,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 53.9,
+   "modele_ic90": [
+    23.2,
+    72.7
+   ],
+   "erreur": 7.6,
+   "z": 0.5
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "François Fillon",
+   "cellule": "partage",
+   "mesure": 62.8,
+   "sd_notices": 4.2,
+   "n_notices": 23,
+   "modele": 68.3,
+   "modele_ic90": [
+    51.6,
+    81.9
+   ],
+   "erreur": 5.5,
+   "z": 0.46
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Aucun",
+   "mesure": 36.4,
+   "sd_notices": 4.3,
+   "n_notices": 23,
+   "modele": 45.7,
+   "modele_ic90": [
+    11.5,
+    75.1
+   ],
+   "erreur": 9.3,
+   "z": 0.49
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Le Pen",
+   "mesure": 15.0,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 3.5,
+   "modele_ic90": [
+    1.0,
+    7.6
+   ],
+   "erreur": -11.5,
+   "z": -2.57
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Macron",
+   "mesure": 48.6,
+   "sd_notices": 5.4,
+   "n_notices": 23,
+   "modele": 50.8,
+   "modele_ic90": [
+    23.9,
+    80.3
+   ],
+   "erreur": 2.2,
+   "z": 0.13
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "partage",
+   "mesure": 76.4,
+   "sd_notices": 5.5,
+   "n_notices": 23,
+   "modele": 94.1,
+   "modele_ic90": [
+    90.4,
+    96.6
+   ],
+   "erreur": 17.7,
+   "z": 2.84
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Aucun",
+   "mesure": 32.7,
+   "sd_notices": 5.7,
+   "n_notices": 14,
+   "modele": 18.9,
+   "modele_ic90": [
+    2.3,
+    49.3
+   ],
+   "erreur": -13.8,
+   "z": -0.87
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Le Pen",
+   "mesure": 42.0,
+   "sd_notices": 7.3,
+   "n_notices": 14,
+   "modele": 54.3,
+   "modele_ic90": [
+    24.7,
+    78.9
+   ],
+   "erreur": 12.3,
+   "z": 0.69
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Macron",
+   "mesure": 25.4,
+   "sd_notices": 7.4,
+   "n_notices": 14,
+   "modele": 26.8,
+   "modele_ic90": [
+    9.9,
+    49.7
+   ],
+   "erreur": 1.4,
+   "z": 0.1
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "partage",
+   "mesure": 37.6,
+   "sd_notices": 9.7,
+   "n_notices": 14,
+   "modele": 33.5,
+   "modele_ic90": [
+    13.3,
+    61.8
+   ],
+   "erreur": -4.1,
+   "z": -0.24
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "Benoît Hamon",
+   "cellule": "Aucun",
+   "mesure": 20.4,
+   "sd_notices": 4.0,
+   "n_notices": 23,
+   "modele": 30.4,
+   "modele_ic90": [
+    7.6,
+    57.8
+   ],
+   "erreur": 10.0,
+   "z": 0.64
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "Benoît Hamon",
+   "cellule": "Le Pen",
+   "mesure": 5.3,
+   "sd_notices": 2.1,
+   "n_notices": 23,
+   "modele": 7.1,
+   "modele_ic90": [
+    3.4,
+    11.7
+   ],
+   "erreur": 1.8,
+   "z": 0.53
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "Benoît Hamon",
+   "cellule": "Macron",
+   "mesure": 74.3,
+   "sd_notices": 4.3,
+   "n_notices": 23,
+   "modele": 62.5,
+   "modele_ic90": [
+    38.6,
+    81.8
+   ],
+   "erreur": -11.8,
+   "z": -0.85
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "Benoît Hamon",
+   "cellule": "partage",
+   "mesure": 93.4,
+   "sd_notices": 2.6,
+   "n_notices": 23,
+   "modele": 89.9,
+   "modele_ic90": [
+    86.2,
+    93.3
+   ],
+   "erreur": -3.5,
+   "z": -0.94
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "François Fillon",
+   "cellule": "Aucun",
+   "mesure": 26.1,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 22.3,
+   "modele_ic90": [
+    3.2,
+    59.2
+   ],
+   "erreur": -3.8,
+   "z": -0.22
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "François Fillon",
+   "cellule": "Le Pen",
+   "mesure": 27.5,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 23.9,
+   "modele_ic90": [
+    13.3,
+    34.4
+   ],
+   "erreur": -3.6,
+   "z": -0.49
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "François Fillon",
+   "cellule": "Macron",
+   "mesure": 46.3,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 53.8,
+   "modele_ic90": [
+    23.0,
+    71.8
+   ],
+   "erreur": 7.4,
+   "z": 0.5
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "François Fillon",
+   "cellule": "partage",
+   "mesure": 62.8,
+   "sd_notices": 4.2,
+   "n_notices": 23,
+   "modele": 68.0,
+   "modele_ic90": [
+    52.5,
+    79.7
+   ],
+   "erreur": 5.3,
+   "z": 0.47
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Aucun",
+   "mesure": 36.4,
+   "sd_notices": 4.3,
+   "n_notices": 23,
+   "modele": 45.7,
+   "modele_ic90": [
+    11.5,
+    75.1
+   ],
+   "erreur": 9.3,
+   "z": 0.49
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Le Pen",
+   "mesure": 15.0,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 5.7,
+   "modele_ic90": [
+    2.0,
+    11.4
+   ],
+   "erreur": -9.2,
+   "z": -1.93
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Macron",
+   "mesure": 48.6,
+   "sd_notices": 5.4,
+   "n_notices": 23,
+   "modele": 48.6,
+   "modele_ic90": [
+    22.9,
+    76.5
+   ],
+   "erreur": -0.0,
+   "z": -0.0
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "partage",
+   "mesure": 76.4,
+   "sd_notices": 5.5,
+   "n_notices": 23,
+   "modele": 90.0,
+   "modele_ic90": [
+    86.3,
+    92.8
+   ],
+   "erreur": 13.6,
+   "z": 2.2
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Aucun",
+   "mesure": 32.7,
+   "sd_notices": 5.7,
+   "n_notices": 14,
+   "modele": 18.9,
+   "modele_ic90": [
+    2.3,
+    49.3
+   ],
+   "erreur": -13.8,
+   "z": -0.87
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Le Pen",
+   "mesure": 42.0,
+   "sd_notices": 7.3,
+   "n_notices": 14,
+   "modele": 50.9,
+   "modele_ic90": [
+    24.2,
+    73.6
+   ],
+   "erreur": 8.9,
+   "z": 0.54
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Macron",
+   "mesure": 25.4,
+   "sd_notices": 7.4,
+   "n_notices": 14,
+   "modele": 30.1,
+   "modele_ic90": [
+    13.7,
+    51.7
+   ],
+   "erreur": 4.8,
+   "z": 0.34
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "partage",
+   "mesure": 37.6,
+   "sd_notices": 9.7,
+   "n_notices": 14,
+   "modele": 37.4,
+   "modele_ic90": [
+    18.5,
+    62.6
+   ],
+   "erreur": -0.2,
+   "z": -0.01
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "Benoît Hamon",
+   "cellule": "Aucun",
+   "mesure": 20.4,
+   "sd_notices": 4.0,
+   "n_notices": 23,
+   "modele": 30.4,
+   "modele_ic90": [
+    7.6,
+    57.8
+   ],
+   "erreur": 10.0,
+   "z": 0.64
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "Benoît Hamon",
+   "cellule": "Le Pen",
+   "mesure": 5.3,
+   "sd_notices": 2.1,
+   "n_notices": 23,
+   "modele": 9.7,
+   "modele_ic90": [
+    5.1,
+    14.8
+   ],
+   "erreur": 4.5,
+   "z": 1.19
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "Benoît Hamon",
+   "cellule": "Macron",
+   "mesure": 74.3,
+   "sd_notices": 4.3,
+   "n_notices": 23,
+   "modele": 59.8,
+   "modele_ic90": [
+    36.9,
+    78.4
+   ],
+   "erreur": -14.5,
+   "z": -1.08
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "Benoît Hamon",
+   "cellule": "partage",
+   "mesure": 93.4,
+   "sd_notices": 2.6,
+   "n_notices": 23,
+   "modele": 86.1,
+   "modele_ic90": [
+    82.6,
+    89.5
+   ],
+   "erreur": -7.3,
+   "z": -2.04
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "François Fillon",
+   "cellule": "Aucun",
+   "mesure": 26.1,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 22.3,
+   "modele_ic90": [
+    3.2,
+    59.2
+   ],
+   "erreur": -3.8,
+   "z": -0.22
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "François Fillon",
+   "cellule": "Le Pen",
+   "mesure": 27.5,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 24.5,
+   "modele_ic90": [
+    14.5,
+    34.0
+   ],
+   "erreur": -3.1,
+   "z": -0.44
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "François Fillon",
+   "cellule": "Macron",
+   "mesure": 46.3,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 53.2,
+   "modele_ic90": [
+    22.9,
+    70.5
+   ],
+   "erreur": 6.9,
+   "z": 0.47
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "François Fillon",
+   "cellule": "partage",
+   "mesure": 62.8,
+   "sd_notices": 4.2,
+   "n_notices": 23,
+   "modele": 67.4,
+   "modele_ic90": [
+    53.5,
+    77.5
+   ],
+   "erreur": 4.6,
+   "z": 0.46
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Aucun",
+   "mesure": 36.4,
+   "sd_notices": 4.3,
+   "n_notices": 23,
+   "modele": 45.7,
+   "modele_ic90": [
+    11.5,
+    75.1
+   ],
+   "erreur": 9.3,
+   "z": 0.49
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Le Pen",
+   "mesure": 15.0,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 7.8,
+   "modele_ic90": [
+    3.0,
+    14.6
+   ],
+   "erreur": -7.2,
+   "z": -1.4
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Macron",
+   "mesure": 48.6,
+   "sd_notices": 5.4,
+   "n_notices": 23,
+   "modele": 46.5,
+   "modele_ic90": [
+    21.9,
+    73.3
+   ],
+   "erreur": -2.1,
+   "z": -0.13
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "partage",
+   "mesure": 76.4,
+   "sd_notices": 5.5,
+   "n_notices": 23,
+   "modele": 86.2,
+   "modele_ic90": [
+    82.7,
+    88.9
+   ],
+   "erreur": 9.8,
+   "z": 1.61
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Aucun",
+   "mesure": 32.7,
+   "sd_notices": 5.7,
+   "n_notices": 14,
+   "modele": 18.9,
+   "modele_ic90": [
+    2.3,
+    49.3
+   ],
+   "erreur": -13.8,
+   "z": -0.87
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Le Pen",
+   "mesure": 42.0,
+   "sd_notices": 7.3,
+   "n_notices": 14,
+   "modele": 48.1,
+   "modele_ic90": [
+    23.7,
+    68.9
+   ],
+   "erreur": 6.1,
+   "z": 0.39
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Macron",
+   "mesure": 25.4,
+   "sd_notices": 7.4,
+   "n_notices": 14,
+   "modele": 33.0,
+   "modele_ic90": [
+    17.6,
+    52.4
+   ],
+   "erreur": 7.6,
+   "z": 0.58
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "partage",
+   "mesure": 37.6,
+   "sd_notices": 9.7,
+   "n_notices": 14,
+   "modele": 40.9,
+   "modele_ic90": [
+    24.0,
+    63.1
+   ],
+   "erreur": 3.3,
+   "z": 0.21
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "Benoît Hamon",
+   "cellule": "Aucun",
+   "mesure": 20.4,
+   "sd_notices": 4.0,
+   "n_notices": 23,
+   "modele": 30.4,
+   "modele_ic90": [
+    7.6,
+    57.8
+   ],
+   "erreur": 10.0,
+   "z": 0.64
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "Benoît Hamon",
+   "cellule": "Le Pen",
+   "mesure": 5.3,
+   "sd_notices": 2.1,
+   "n_notices": 23,
+   "modele": 12.3,
+   "modele_ic90": [
+    6.8,
+    18.0
+   ],
+   "erreur": 7.0,
+   "z": 1.74
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "Benoît Hamon",
+   "cellule": "Macron",
+   "mesure": 74.3,
+   "sd_notices": 4.3,
+   "n_notices": 23,
+   "modele": 57.3,
+   "modele_ic90": [
+    35.2,
+    75.2
+   ],
+   "erreur": -17.0,
+   "z": -1.31
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "Benoît Hamon",
+   "cellule": "partage",
+   "mesure": 93.4,
+   "sd_notices": 2.6,
+   "n_notices": 23,
+   "modele": 82.5,
+   "modele_ic90": [
+    79.3,
+    85.6
+   ],
+   "erreur": -10.9,
+   "z": -3.23
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "François Fillon",
+   "cellule": "Aucun",
+   "mesure": 26.1,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 22.3,
+   "modele_ic90": [
+    3.2,
+    59.2
+   ],
+   "erreur": -3.8,
+   "z": -0.22
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "François Fillon",
+   "cellule": "Le Pen",
+   "mesure": 27.5,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 25.2,
+   "modele_ic90": [
+    15.1,
+    33.9
+   ],
+   "erreur": -2.3,
+   "z": -0.35
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "François Fillon",
+   "cellule": "Macron",
+   "mesure": 46.3,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 52.5,
+   "modele_ic90": [
+    22.8,
+    68.9
+   ],
+   "erreur": 6.1,
+   "z": 0.44
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "François Fillon",
+   "cellule": "partage",
+   "mesure": 62.8,
+   "sd_notices": 4.2,
+   "n_notices": 23,
+   "modele": 66.6,
+   "modele_ic90": [
+    54.5,
+    75.2
+   ],
+   "erreur": 3.8,
+   "z": 0.42
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Aucun",
+   "mesure": 36.4,
+   "sd_notices": 4.3,
+   "n_notices": 23,
+   "modele": 45.7,
+   "modele_ic90": [
+    11.5,
+    75.1
+   ],
+   "erreur": 9.3,
+   "z": 0.49
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Le Pen",
+   "mesure": 15.0,
+   "sd_notices": 3.5,
+   "n_notices": 23,
+   "modele": 9.7,
+   "modele_ic90": [
+    4.0,
+    17.4
+   ],
+   "erreur": -5.2,
+   "z": -0.95
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Macron",
+   "mesure": 48.6,
+   "sd_notices": 5.4,
+   "n_notices": 23,
+   "modele": 44.6,
+   "modele_ic90": [
+    20.9,
+    70.3
+   ],
+   "erreur": -4.1,
+   "z": -0.26
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "partage",
+   "mesure": 76.4,
+   "sd_notices": 5.5,
+   "n_notices": 23,
+   "modele": 82.5,
+   "modele_ic90": [
+    79.3,
+    85.1
+   ],
+   "erreur": 6.1,
+   "z": 1.02
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Aucun",
+   "mesure": 32.7,
+   "sd_notices": 5.7,
+   "n_notices": 14,
+   "modele": 18.9,
+   "modele_ic90": [
+    2.3,
+    49.3
+   ],
+   "erreur": -13.8,
+   "z": -0.87
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Le Pen",
+   "mesure": 42.0,
+   "sd_notices": 7.3,
+   "n_notices": 14,
+   "modele": 45.5,
+   "modele_ic90": [
+    23.9,
+    64.0
+   ],
+   "erreur": 3.5,
+   "z": 0.25
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "Macron",
+   "mesure": 25.4,
+   "sd_notices": 7.4,
+   "n_notices": 14,
+   "modele": 35.6,
+   "modele_ic90": [
+    20.5,
+    53.0
+   ],
+   "erreur": 10.2,
+   "z": 0.81
+  },
+  {
+   "election": 2017,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "Nicolas Dupont-Aignan",
+   "cellule": "partage",
+   "mesure": 37.6,
+   "sd_notices": 9.7,
+   "n_notices": 14,
+   "modele": 44.0,
+   "modele_ic90": [
+    29.5,
+    63.0
+   ],
+   "erreur": 6.4,
+   "z": 0.45
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Aucun",
+   "mesure": 43.6,
+   "sd_notices": 6.2,
+   "n_notices": 21,
+   "modele": 23.8,
+   "modele_ic90": [
+    7.3,
+    60.1
+   ],
+   "erreur": -19.7,
+   "z": -1.06
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Le Pen",
+   "mesure": 21.0,
+   "sd_notices": 4.3,
+   "n_notices": 21,
+   "modele": 0.0,
+   "modele_ic90": [
+    0.0,
+    0.0
+   ],
+   "erreur": -21.0,
+   "z": -4.9
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Macron",
+   "mesure": 35.5,
+   "sd_notices": 4.2,
+   "n_notices": 21,
+   "modele": 76.2,
+   "modele_ic90": [
+    39.9,
+    92.7
+   ],
+   "erreur": 40.7,
+   "z": 2.25
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "partage",
+   "mesure": 63.0,
+   "sd_notices": 5.0,
+   "n_notices": 21,
+   "modele": 100.0,
+   "modele_ic90": [
+    100.0,
+    100.0
+   ],
+   "erreur": 37.0,
+   "z": 7.41
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Aucun",
+   "mesure": 29.9,
+   "sd_notices": 5.5,
+   "n_notices": 20,
+   "modele": 8.4,
+   "modele_ic90": [
+    0.3,
+    44.6
+   ],
+   "erreur": -21.5,
+   "z": -1.32
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Le Pen",
+   "mesure": 24.6,
+   "sd_notices": 5.6,
+   "n_notices": 20,
+   "modele": 59.8,
+   "modele_ic90": [
+    17.2,
+    74.7
+   ],
+   "erreur": 35.1,
+   "z": 1.83
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Macron",
+   "mesure": 45.5,
+   "sd_notices": 4.4,
+   "n_notices": 20,
+   "modele": 31.8,
+   "modele_ic90": [
+    23.6,
+    45.8
+   ],
+   "erreur": -13.6,
+   "z": -1.69
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "Valérie Pécresse",
+   "cellule": "partage",
+   "mesure": 65.0,
+   "sd_notices": 6.5,
+   "n_notices": 20,
+   "modele": 36.6,
+   "modele_ic90": [
+    24.6,
+    69.4
+   ],
+   "erreur": -28.4,
+   "z": -1.87
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "Yannick Jadot",
+   "cellule": "Aucun",
+   "mesure": 33.3,
+   "sd_notices": 4.9,
+   "n_notices": 18,
+   "modele": 33.4,
+   "modele_ic90": [
+    9.1,
+    88.5
+   ],
+   "erreur": 0.0,
+   "z": 0.0
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "Yannick Jadot",
+   "cellule": "Le Pen",
+   "mesure": 8.2,
+   "sd_notices": 3.7,
+   "n_notices": 18,
+   "modele": 0.0,
+   "modele_ic90": [
+    0.0,
+    0.0
+   ],
+   "erreur": -8.2,
+   "z": -2.19
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "Yannick Jadot",
+   "cellule": "Macron",
+   "mesure": 58.5,
+   "sd_notices": 7.5,
+   "n_notices": 18,
+   "modele": 66.6,
+   "modele_ic90": [
+    11.5,
+    90.9
+   ],
+   "erreur": 8.1,
+   "z": 0.3
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "Yannick Jadot",
+   "cellule": "partage",
+   "mesure": 87.5,
+   "sd_notices": 6.5,
+   "n_notices": 18,
+   "modele": 100.0,
+   "modele_ic90": [
+    100.0,
+    100.0
+   ],
+   "erreur": 12.5,
+   "z": 1.93
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "Éric Zemmour",
+   "cellule": "Aucun",
+   "mesure": 12.7,
+   "sd_notices": 4.5,
+   "n_notices": 21,
+   "modele": 8.8,
+   "modele_ic90": [
+    3.0,
+    25.1
+   ],
+   "erreur": -3.8,
+   "z": -0.47
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "Éric Zemmour",
+   "cellule": "Le Pen",
+   "mesure": 79.1,
+   "sd_notices": 4.1,
+   "n_notices": 21,
+   "modele": 90.8,
+   "modele_ic90": [
+    74.9,
+    96.7
+   ],
+   "erreur": 11.6,
+   "z": 1.48
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "Éric Zemmour",
+   "cellule": "Macron",
+   "mesure": 8.2,
+   "sd_notices": 3.2,
+   "n_notices": 21,
+   "modele": 0.4,
+   "modele_ic90": [
+    0.0,
+    1.2
+   ],
+   "erreur": -7.8,
+   "z": -2.44
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.0,
+   "electorat": "Éric Zemmour",
+   "cellule": "partage",
+   "mesure": 9.4,
+   "sd_notices": 3.5,
+   "n_notices": 21,
+   "modele": 0.4,
+   "modele_ic90": [
+    0.0,
+    1.3
+   ],
+   "erreur": -8.9,
+   "z": -2.54
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Aucun",
+   "mesure": 43.6,
+   "sd_notices": 6.2,
+   "n_notices": 21,
+   "modele": 23.8,
+   "modele_ic90": [
+    7.3,
+    60.1
+   ],
+   "erreur": -19.7,
+   "z": -1.06
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Le Pen",
+   "mesure": 21.0,
+   "sd_notices": 4.3,
+   "n_notices": 21,
+   "modele": 6.5,
+   "modele_ic90": [
+    1.4,
+    9.1
+   ],
+   "erreur": -14.5,
+   "z": -2.9
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Macron",
+   "mesure": 35.5,
+   "sd_notices": 4.2,
+   "n_notices": 21,
+   "modele": 69.7,
+   "modele_ic90": [
+    38.6,
+    83.9
+   ],
+   "erreur": 34.2,
+   "z": 2.19
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "partage",
+   "mesure": 63.0,
+   "sd_notices": 5.0,
+   "n_notices": 21,
+   "modele": 92.0,
+   "modele_ic90": [
+    89.9,
+    96.6
+   ],
+   "erreur": 29.0,
+   "z": 5.31
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Aucun",
+   "mesure": 29.9,
+   "sd_notices": 5.5,
+   "n_notices": 20,
+   "modele": 8.4,
+   "modele_ic90": [
+    0.3,
+    44.6
+   ],
+   "erreur": -21.5,
+   "z": -1.32
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Le Pen",
+   "mesure": 24.6,
+   "sd_notices": 5.6,
+   "n_notices": 20,
+   "modele": 47.2,
+   "modele_ic90": [
+    27.0,
+    55.2
+   ],
+   "erreur": 22.5,
+   "z": 2.15
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Macron",
+   "mesure": 45.5,
+   "sd_notices": 4.4,
+   "n_notices": 20,
+   "modele": 44.4,
+   "modele_ic90": [
+    26.4,
+    51.9
+   ],
+   "erreur": -1.1,
+   "z": -0.13
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "Valérie Pécresse",
+   "cellule": "partage",
+   "mesure": 65.0,
+   "sd_notices": 6.5,
+   "n_notices": 20,
+   "modele": 48.6,
+   "modele_ic90": [
+    43.7,
+    55.1
+   ],
+   "erreur": -16.5,
+   "z": -2.24
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "Yannick Jadot",
+   "cellule": "Aucun",
+   "mesure": 33.3,
+   "sd_notices": 4.9,
+   "n_notices": 18,
+   "modele": 33.4,
+   "modele_ic90": [
+    9.1,
+    88.5
+   ],
+   "erreur": 0.0,
+   "z": 0.0
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "Yannick Jadot",
+   "cellule": "Le Pen",
+   "mesure": 8.2,
+   "sd_notices": 3.7,
+   "n_notices": 18,
+   "modele": 5.9,
+   "modele_ic90": [
+    0.4,
+    8.8
+   ],
+   "erreur": -2.3,
+   "z": -0.49
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "Yannick Jadot",
+   "cellule": "Macron",
+   "mesure": 58.5,
+   "sd_notices": 7.5,
+   "n_notices": 18,
+   "modele": 60.8,
+   "modele_ic90": [
+    11.0,
+    82.4
+   ],
+   "erreur": 2.3,
+   "z": 0.09
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "Yannick Jadot",
+   "cellule": "partage",
+   "mesure": 87.5,
+   "sd_notices": 6.5,
+   "n_notices": 18,
+   "modele": 92.0,
+   "modele_ic90": [
+    89.9,
+    96.6
+   ],
+   "erreur": 4.5,
+   "z": 0.66
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "Éric Zemmour",
+   "cellule": "Aucun",
+   "mesure": 12.7,
+   "sd_notices": 4.5,
+   "n_notices": 21,
+   "modele": 8.8,
+   "modele_ic90": [
+    3.0,
+    25.1
+   ],
+   "erreur": -3.8,
+   "z": -0.47
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "Éric Zemmour",
+   "cellule": "Le Pen",
+   "mesure": 79.1,
+   "sd_notices": 4.1,
+   "n_notices": 21,
+   "modele": 87.2,
+   "modele_ic90": [
+    70.7,
+    93.8
+   ],
+   "erreur": 8.1,
+   "z": 0.97
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "Éric Zemmour",
+   "cellule": "Macron",
+   "mesure": 8.2,
+   "sd_notices": 3.2,
+   "n_notices": 21,
+   "modele": 3.9,
+   "modele_ic90": [
+    2.8,
+    6.2
+   ],
+   "erreur": -4.3,
+   "z": -1.27
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.1,
+   "electorat": "Éric Zemmour",
+   "cellule": "partage",
+   "mesure": 9.4,
+   "sd_notices": 3.5,
+   "n_notices": 21,
+   "modele": 4.4,
+   "modele_ic90": [
+    2.9,
+    7.4
+   ],
+   "erreur": -5.0,
+   "z": -1.32
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Aucun",
+   "mesure": 43.6,
+   "sd_notices": 6.2,
+   "n_notices": 21,
+   "modele": 23.8,
+   "modele_ic90": [
+    7.3,
+    60.1
+   ],
+   "erreur": -19.7,
+   "z": -1.06
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Le Pen",
+   "mesure": 21.0,
+   "sd_notices": 4.3,
+   "n_notices": 21,
+   "modele": 10.1,
+   "modele_ic90": [
+    3.2,
+    13.5
+   ],
+   "erreur": -10.8,
+   "z": -1.97
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Macron",
+   "mesure": 35.5,
+   "sd_notices": 4.2,
+   "n_notices": 21,
+   "modele": 66.0,
+   "modele_ic90": [
+    36.8,
+    79.5
+   ],
+   "erreur": 30.6,
+   "z": 2.06
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "partage",
+   "mesure": 63.0,
+   "sd_notices": 5.0,
+   "n_notices": 21,
+   "modele": 87.2,
+   "modele_ic90": [
+    85.1,
+    92.2
+   ],
+   "erreur": 24.2,
+   "z": 4.4
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Aucun",
+   "mesure": 29.9,
+   "sd_notices": 5.5,
+   "n_notices": 20,
+   "modele": 8.4,
+   "modele_ic90": [
+    0.3,
+    44.6
+   ],
+   "erreur": -21.5,
+   "z": -1.32
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Le Pen",
+   "mesure": 24.6,
+   "sd_notices": 5.6,
+   "n_notices": 20,
+   "modele": 43.5,
+   "modele_ic90": [
+    28.2,
+    49.8
+   ],
+   "erreur": 18.8,
+   "z": 2.16
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Macron",
+   "mesure": 45.5,
+   "sd_notices": 4.4,
+   "n_notices": 20,
+   "modele": 48.1,
+   "modele_ic90": [
+    25.6,
+    56.2
+   ],
+   "erreur": 2.6,
+   "z": 0.26
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "Valérie Pécresse",
+   "cellule": "partage",
+   "mesure": 65.0,
+   "sd_notices": 6.5,
+   "n_notices": 20,
+   "modele": 52.3,
+   "modele_ic90": [
+    46.7,
+    56.7
+   ],
+   "erreur": -12.8,
+   "z": -1.78
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "Yannick Jadot",
+   "cellule": "Aucun",
+   "mesure": 33.3,
+   "sd_notices": 4.9,
+   "n_notices": 18,
+   "modele": 33.4,
+   "modele_ic90": [
+    9.1,
+    88.5
+   ],
+   "erreur": 0.0,
+   "z": 0.0
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "Yannick Jadot",
+   "cellule": "Le Pen",
+   "mesure": 8.2,
+   "sd_notices": 3.7,
+   "n_notices": 18,
+   "modele": 9.1,
+   "modele_ic90": [
+    0.9,
+    13.1
+   ],
+   "erreur": 0.9,
+   "z": 0.17
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "Yannick Jadot",
+   "cellule": "Macron",
+   "mesure": 58.5,
+   "sd_notices": 7.5,
+   "n_notices": 18,
+   "modele": 57.5,
+   "modele_ic90": [
+    10.5,
+    78.1
+   ],
+   "erreur": -1.0,
+   "z": -0.04
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "Yannick Jadot",
+   "cellule": "partage",
+   "mesure": 87.5,
+   "sd_notices": 6.5,
+   "n_notices": 18,
+   "modele": 87.2,
+   "modele_ic90": [
+    85.1,
+    92.2
+   ],
+   "erreur": -0.3,
+   "z": -0.04
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "Éric Zemmour",
+   "cellule": "Aucun",
+   "mesure": 12.7,
+   "sd_notices": 4.5,
+   "n_notices": 21,
+   "modele": 8.8,
+   "modele_ic90": [
+    3.0,
+    25.1
+   ],
+   "erreur": -3.8,
+   "z": -0.47
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "Éric Zemmour",
+   "cellule": "Le Pen",
+   "mesure": 79.1,
+   "sd_notices": 4.1,
+   "n_notices": 21,
+   "modele": 82.9,
+   "modele_ic90": [
+    66.7,
+    89.4
+   ],
+   "erreur": 3.8,
+   "z": 0.46
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "Éric Zemmour",
+   "cellule": "Macron",
+   "mesure": 8.2,
+   "sd_notices": 3.2,
+   "n_notices": 21,
+   "modele": 8.2,
+   "modele_ic90": [
+    6.8,
+    10.8
+   ],
+   "erreur": 0.0,
+   "z": 0.0
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.2,
+   "electorat": "Éric Zemmour",
+   "cellule": "partage",
+   "mesure": 9.4,
+   "sd_notices": 3.5,
+   "n_notices": 21,
+   "modele": 9.1,
+   "modele_ic90": [
+    7.3,
+    12.7
+   ],
+   "erreur": -0.2,
+   "z": -0.06
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Aucun",
+   "mesure": 43.6,
+   "sd_notices": 6.2,
+   "n_notices": 21,
+   "modele": 23.8,
+   "modele_ic90": [
+    7.3,
+    60.1
+   ],
+   "erreur": -19.7,
+   "z": -1.06
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Le Pen",
+   "mesure": 21.0,
+   "sd_notices": 4.3,
+   "n_notices": 21,
+   "modele": 13.4,
+   "modele_ic90": [
+    5.1,
+    17.4
+   ],
+   "erreur": -7.5,
+   "z": -1.26
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Macron",
+   "mesure": 35.5,
+   "sd_notices": 4.2,
+   "n_notices": 21,
+   "modele": 62.7,
+   "modele_ic90": [
+    34.9,
+    75.5
+   ],
+   "erreur": 27.3,
+   "z": 1.93
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "partage",
+   "mesure": 63.0,
+   "sd_notices": 5.0,
+   "n_notices": 21,
+   "modele": 82.8,
+   "modele_ic90": [
+    81.0,
+    87.5
+   ],
+   "erreur": 19.8,
+   "z": 3.64
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Aucun",
+   "mesure": 29.9,
+   "sd_notices": 5.5,
+   "n_notices": 20,
+   "modele": 8.4,
+   "modele_ic90": [
+    0.3,
+    44.6
+   ],
+   "erreur": -21.5,
+   "z": -1.32
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Le Pen",
+   "mesure": 24.6,
+   "sd_notices": 5.6,
+   "n_notices": 20,
+   "modele": 42.0,
+   "modele_ic90": [
+    28.4,
+    47.4
+   ],
+   "erreur": 17.3,
+   "z": 2.13
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Macron",
+   "mesure": 45.5,
+   "sd_notices": 4.4,
+   "n_notices": 20,
+   "modele": 49.6,
+   "modele_ic90": [
+    26.2,
+    57.7
+   ],
+   "erreur": 4.1,
+   "z": 0.38
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "Valérie Pécresse",
+   "cellule": "partage",
+   "mesure": 65.0,
+   "sd_notices": 6.5,
+   "n_notices": 20,
+   "modele": 53.8,
+   "modele_ic90": [
+    47.4,
+    58.2
+   ],
+   "erreur": -11.3,
+   "z": -1.55
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "Yannick Jadot",
+   "cellule": "Aucun",
+   "mesure": 33.3,
+   "sd_notices": 4.9,
+   "n_notices": 18,
+   "modele": 33.4,
+   "modele_ic90": [
+    9.1,
+    88.5
+   ],
+   "erreur": 0.0,
+   "z": 0.0
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "Yannick Jadot",
+   "cellule": "Le Pen",
+   "mesure": 8.2,
+   "sd_notices": 3.7,
+   "n_notices": 18,
+   "modele": 12.0,
+   "modele_ic90": [
+    1.5,
+    17.0
+   ],
+   "erreur": 3.8,
+   "z": 0.6
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "Yannick Jadot",
+   "cellule": "Macron",
+   "mesure": 58.5,
+   "sd_notices": 7.5,
+   "n_notices": 18,
+   "modele": 54.7,
+   "modele_ic90": [
+    10.0,
+    74.2
+   ],
+   "erreur": -3.8,
+   "z": -0.17
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "Yannick Jadot",
+   "cellule": "partage",
+   "mesure": 87.5,
+   "sd_notices": 6.5,
+   "n_notices": 18,
+   "modele": 82.8,
+   "modele_ic90": [
+    81.0,
+    87.5
+   ],
+   "erreur": -4.7,
+   "z": -0.68
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "Éric Zemmour",
+   "cellule": "Aucun",
+   "mesure": 12.7,
+   "sd_notices": 4.5,
+   "n_notices": 21,
+   "modele": 8.8,
+   "modele_ic90": [
+    3.0,
+    25.1
+   ],
+   "erreur": -3.8,
+   "z": -0.47
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "Éric Zemmour",
+   "cellule": "Le Pen",
+   "mesure": 79.1,
+   "sd_notices": 4.1,
+   "n_notices": 21,
+   "modele": 78.2,
+   "modele_ic90": [
+    62.7,
+    84.4
+   ],
+   "erreur": -0.9,
+   "z": -0.12
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "Éric Zemmour",
+   "cellule": "Macron",
+   "mesure": 8.2,
+   "sd_notices": 3.2,
+   "n_notices": 21,
+   "modele": 13.0,
+   "modele_ic90": [
+    11.4,
+    15.5
+   ],
+   "erreur": 4.7,
+   "z": 1.38
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.3,
+   "electorat": "Éric Zemmour",
+   "cellule": "partage",
+   "mesure": 9.4,
+   "sd_notices": 3.5,
+   "n_notices": 21,
+   "modele": 14.3,
+   "modele_ic90": [
+    12.4,
+    17.9
+   ],
+   "erreur": 4.9,
+   "z": 1.27
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Aucun",
+   "mesure": 43.6,
+   "sd_notices": 6.2,
+   "n_notices": 21,
+   "modele": 23.8,
+   "modele_ic90": [
+    7.3,
+    60.1
+   ],
+   "erreur": -19.7,
+   "z": -1.06
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Le Pen",
+   "mesure": 21.0,
+   "sd_notices": 4.3,
+   "n_notices": 21,
+   "modele": 16.6,
+   "modele_ic90": [
+    6.9,
+    21.2
+   ],
+   "erreur": -4.3,
+   "z": -0.67
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "Macron",
+   "mesure": 35.5,
+   "sd_notices": 4.2,
+   "n_notices": 21,
+   "modele": 59.5,
+   "modele_ic90": [
+    32.9,
+    71.8
+   ],
+   "erreur": 24.1,
+   "z": 1.78
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "Jean-Luc Mélenchon",
+   "cellule": "partage",
+   "mesure": 63.0,
+   "sd_notices": 5.0,
+   "n_notices": 21,
+   "modele": 78.6,
+   "modele_ic90": [
+    76.9,
+    82.7
+   ],
+   "erreur": 15.6,
+   "z": 2.91
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Aucun",
+   "mesure": 29.9,
+   "sd_notices": 5.5,
+   "n_notices": 20,
+   "modele": 8.4,
+   "modele_ic90": [
+    0.3,
+    44.6
+   ],
+   "erreur": -21.5,
+   "z": -1.32
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Le Pen",
+   "mesure": 24.6,
+   "sd_notices": 5.6,
+   "n_notices": 20,
+   "modele": 41.4,
+   "modele_ic90": [
+    28.1,
+    46.3
+   ],
+   "erreur": 16.7,
+   "z": 2.1
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "Valérie Pécresse",
+   "cellule": "Macron",
+   "mesure": 45.5,
+   "sd_notices": 4.4,
+   "n_notices": 20,
+   "modele": 50.2,
+   "modele_ic90": [
+    26.7,
+    57.9
+   ],
+   "erreur": 4.7,
+   "z": 0.43
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "Valérie Pécresse",
+   "cellule": "partage",
+   "mesure": 65.0,
+   "sd_notices": 6.5,
+   "n_notices": 20,
+   "modele": 54.4,
+   "modele_ic90": [
+    48.0,
+    58.4
+   ],
+   "erreur": -10.7,
+   "z": -1.47
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "Yannick Jadot",
+   "cellule": "Aucun",
+   "mesure": 33.3,
+   "sd_notices": 4.9,
+   "n_notices": 18,
+   "modele": 33.4,
+   "modele_ic90": [
+    9.1,
+    88.5
+   ],
+   "erreur": 0.0,
+   "z": 0.0
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "Yannick Jadot",
+   "cellule": "Le Pen",
+   "mesure": 8.2,
+   "sd_notices": 3.7,
+   "n_notices": 18,
+   "modele": 14.7,
+   "modele_ic90": [
+    2.1,
+    20.7
+   ],
+   "erreur": 6.6,
+   "z": 0.91
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "Yannick Jadot",
+   "cellule": "Macron",
+   "mesure": 58.5,
+   "sd_notices": 7.5,
+   "n_notices": 18,
+   "modele": 51.9,
+   "modele_ic90": [
+    9.4,
+    70.4
+   ],
+   "erreur": -6.6,
+   "z": -0.31
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "Yannick Jadot",
+   "cellule": "partage",
+   "mesure": 87.5,
+   "sd_notices": 6.5,
+   "n_notices": 18,
+   "modele": 78.6,
+   "modele_ic90": [
+    76.9,
+    82.7
+   ],
+   "erreur": -8.9,
+   "z": -1.32
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "Éric Zemmour",
+   "cellule": "Aucun",
+   "mesure": 12.7,
+   "sd_notices": 4.5,
+   "n_notices": 21,
+   "modele": 8.8,
+   "modele_ic90": [
+    3.0,
+    25.1
+   ],
+   "erreur": -3.8,
+   "z": -0.47
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "Éric Zemmour",
+   "cellule": "Le Pen",
+   "mesure": 79.1,
+   "sd_notices": 4.1,
+   "n_notices": 21,
+   "modele": 73.2,
+   "modele_ic90": [
+    58.6,
+    79.0
+   ],
+   "erreur": -5.9,
+   "z": -0.77
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "Éric Zemmour",
+   "cellule": "Macron",
+   "mesure": 8.2,
+   "sd_notices": 3.2,
+   "n_notices": 21,
+   "modele": 17.9,
+   "modele_ic90": [
+    16.1,
+    20.2
+   ],
+   "erreur": 9.7,
+   "z": 2.81
+  },
+  {
+   "election": 2022,
+   "variante": "hier",
+   "plancher": 0.4,
+   "electorat": "Éric Zemmour",
+   "cellule": "partage",
+   "mesure": 9.4,
+   "sd_notices": 3.5,
+   "n_notices": 21,
+   "modele": 19.7,
+   "modele_ic90": [
+    17.9,
+    23.0
+   ],
+   "erreur": 10.4,
+   "z": 2.7
+  }
+ ],
+ "mae": [
+  {
+   "variante": "abst",
+   "election": 2017,
+   "plancher": 0.0,
+   "mae_M_LP_partage": 8.8
+  },
+  {
+   "variante": "abst",
+   "election": 2017,
+   "plancher": 0.1,
+   "mae_M_LP_partage": 7.3
+  },
+  {
+   "variante": "abst",
+   "election": 2017,
+   "plancher": 0.2,
+   "mae_M_LP_partage": 7.3
+  },
+  {
+   "variante": "abst",
+   "election": 2017,
+   "plancher": 0.3,
+   "mae_M_LP_partage": 7.6
+  },
+  {
+   "variante": "abst",
+   "election": 2017,
+   "plancher": 0.4,
+   "mae_M_LP_partage": 7.6
+  },
+  {
+   "variante": "abst",
+   "election": 2022,
+   "plancher": 0.0,
+   "mae_M_LP_partage": 14.3
+  },
+  {
+   "variante": "abst",
+   "election": 2022,
+   "plancher": 0.1,
+   "mae_M_LP_partage": 13.8
+  },
+  {
+   "variante": "abst",
+   "election": 2022,
+   "plancher": 0.2,
+   "mae_M_LP_partage": 13.6
+  },
+  {
+   "variante": "abst",
+   "election": 2022,
+   "plancher": 0.3,
+   "mae_M_LP_partage": 13.8
+  },
+  {
+   "variante": "abst",
+   "election": 2022,
+   "plancher": 0.4,
+   "mae_M_LP_partage": 14.7
+  },
+  {
+   "variante": "hier",
+   "election": 2017,
+   "plancher": 0.0,
+   "mae_M_LP_partage": 8.5
+  },
+  {
+   "variante": "hier",
+   "election": 2017,
+   "plancher": 0.1,
+   "mae_M_LP_partage": 6.4
+  },
+  {
+   "variante": "hier",
+   "election": 2017,
+   "plancher": 0.2,
+   "mae_M_LP_partage": 5.8
+  },
+  {
+   "variante": "hier",
+   "election": 2017,
+   "plancher": 0.3,
+   "mae_M_LP_partage": 6.4
+  },
+  {
+   "variante": "hier",
+   "election": 2017,
+   "plancher": 0.4,
+   "mae_M_LP_partage": 6.9
+  },
+  {
+   "variante": "hier",
+   "election": 2022,
+   "plancher": 0.0,
+   "mae_M_LP_partage": 19.4
+  },
+  {
+   "variante": "hier",
+   "election": 2022,
+   "plancher": 0.1,
+   "mae_M_LP_partage": 12.0
+  },
+  {
+   "variante": "hier",
+   "election": 2022,
+   "plancher": 0.2,
+   "mae_M_LP_partage": 8.8
+  },
+  {
+   "variante": "hier",
+   "election": 2022,
+   "plancher": 0.3,
+   "mae_M_LP_partage": 9.2
+  },
+  {
+   "variante": "hier",
+   "election": 2022,
+   "plancher": 0.4,
+   "mae_M_LP_partage": 10.4
+  }
+ ]
+}
