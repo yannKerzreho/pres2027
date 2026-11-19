@@ -2623,6 +2623,96 @@ son sens gauche-droite. On publie $f$ en plus, s'il est adopté.
 3. **Si 2 passe** : 2017 (V2 T1−30), V1 (§8.29), effet sur 2027 (P(élu), duels, stabilité
    §8.45), puis « ARBITRAGE À TRANCHER » sur l'adoption.
 
+### 8.47 (R3b) Un seul modèle spatial pour toutes les élections : maths (avant code ; critères figés avant résultat)
+
+**Pourquoi.** L'étape 2 de R3 (§8.46) montre qu'avant le T1, sans reports, le cercle ne place pas
+Mélenchon près de l'arrière (99,9 % prédit contre 63 % mesuré en 2022). Aucun tableau de reports
+n'existe avant le T1 : les fichiers 2017/2022 sont tous datés après lui. L'information qui manque
+existe pourtant dans les élections passées, et la structure qu'elle décrit (LFI, RN, le centre) se
+retrouve d'une élection à l'autre. Consigne utilisateur : toutes les données nourrissent le même
+modèle.
+
+**1. Modèle.** Les élections $e\in\mathcal E$ (d'abord 2017 et 2022, puis 2027) sont ajustées
+ensemble. Chacune garde sa vraisemblance actuelle : T1 (nœuds), duels, reports s'ils sont datés au
+plus tôt à `as_of`, et nœud du résultat T1 si la coupure est postérieure. Chacune garde aussi ses
+paramètres propres : $w$ (niveaux et chemins OU), $\sigma_{global,e}$, $\eta_e$, $\omega_e$,
+$\sigma_{T2,e}$, $c_e$.
+
+Les paramètres suivants sont partagés.
+
+- **Arc avant** (cercle seulement) : un $A$ commun,
+  $A=2\pi\,\mathrm{logistique}(a)$ avec $a\sim\mathcal N(\mathrm{logit}\,0{,}75;0{,}75)$ (prior de
+  §8.46). C'est la taille de l'arrière, la grandeur structurelle qui transporte l'information des
+  reports.
+- **Personnes récurrentes.** Soit $p(c)$ la personne d'un candidat (même nom de famille normalisé
+  dans au moins deux élections : Arthaud, Poutou, Mélenchon, Jadot, Macron, Lassalle,
+  Dupont-Aignan, Asselineau, Le Pen). Les écarts d'ancre de position et de rayon sont tirés autour
+  d'une valeur propre à la personne :
+
+$$z^{\mu}_{c,e}=\bar z^{\mu}_{p(c)}+s_\mu\,\epsilon^{\mu}_{c,e},\qquad
+z^{\sigma}_{c,e}=\bar z^{\sigma}_{p(c)}+s_\sigma\,\epsilon^{\sigma}_{c,e},$$
+
+  avec $\bar z\sim\mathcal N(0,1)$, $\epsilon\sim\mathcal N(0,1)$ et
+  $s_\mu,s_\sigma\sim\mathrm{HalfNormal}(0{,}5)$. Pour un candidat non récurrent, $z=\epsilon$,
+  comme aujourd'hui. On a toujours $\mu_{c,e}=\mathrm{logistique}(\mathrm{logit}\,\mathrm{ancre}_{c,e}
+  +\mathrm{pos\_scale}\cdot z^\mu_{c,e})$, avec les ancres ORDER_GROUPS de chaque élection :
+  l'écart à l'ancre est partagé, pas la position absolue, car les ancres dépendent du nombre de
+  groupes. Les candidats récurrents gardent le même rang relatif, Mélenchon en tête de gauche et
+  Le Pen en tête de droite ; c'est l'approximation assumée.
+- **κ** (netteté du passage du T1 au T2) :
+  $\log\kappa_e=\log\bar\kappa+s_\kappa\epsilon^\kappa_e$, avec
+  $\log\bar\kappa\sim\mathcal N(0;0{,}5)$ (prior actuel), $s_\kappa\sim\mathrm{HalfNormal}(0{,}3)$ et
+  $\epsilon^\kappa_e\sim\mathcal N(0,1)$. κ décidait en §8.44 entre la saturation (0,75) et le
+  croisement (0,22) : le partager transporte l'information des reports passés vers une élection
+  qui n'en a pas.
+
+Rien d'autre ne change : la quadrature (trapèzes à 128 nœuds), le noyau de von Mises, la valeur
+inclusive, la vraisemblance Dirichlet des reports.
+
+**2. Témoin.** Le même modèle joint sur le segment (sans $A$), avec le même partage de $z$ et de
+κ. Il sépare l'apport du cercle de celui des données passées.
+
+**3. Mise en œuvre.** `spatial_pooling_model_ou` reçoit des valeurs imposées optionnelles
+(`z_pos_fixe`, `z_sigma_fixe`, `arc_fixe`, `kappa_fixe`). Il les enregistre comme déterministes
+sous les noms habituels, ce qui garde la reconstruction et l'évaluation par élection inchangées.
+Un modèle enveloppe tire les paramètres partagés, puis appelle le modèle d'une élection sous
+`numpyro.handlers.scope(prefix="e<année>")`. Les chaînes sont sauvées par élection, sous les noms
+de sites habituels, ce qui permet `eval_r2` et `_runner_fusion` tels quels. La log-densité JOINTE
+par chaîne, tirée de `potential_energy`, est rapportée à part : c'est elle qui juge la
+multimodalité.
+
+**4. Protocole et critères (figés avant lecture).**
+
+*Étape A, prospective vers 2022.* On ajuste 2017 complet (T1, duels, reports, nœud du résultat T1,
+`as_of` = T2−1) avec 2022 à T1−30 sans reports. Les grandeurs prédites pour 2022 sont lues
+exactement comme à l'étape 2 de §8.46 (`eval_r2 --coupure T1-30`). Quatre chaînes T4.
+
+1. Partage Mélenchon 2022 à moins de 10 pt du mesuré (63,0).
+2. MAE des 4 partages 2022 (Mélenchon, Pécresse, Jadot, Zemmour) inférieure à celle du 1D seul sans
+   reports (14,7 pt, §8.44).
+3. Stabilité entre chaînes : écart ≤ 3 pt sur les 10 duels clés de `eval_r2 --par-chaine`, et écart
+   de log-densité JOINTE ≤ 10 nats entre les 4 chaînes.
+4. T1 2022 non dégradé : MAE des parts contre le résultat ≤ 3,1 pt (1D : 2,98).
+
+*Témoin.* Le même protocole sur le segment joint. Si le témoin passe aussi, l'apport vient des
+données passées et non du cercle : on le dit, et c'est le segment joint (moins cher) qui serait
+retenu.
+
+*Étape B, symétrique* (seulement si A passe) : 2022 complet et 2017 à T1−30. Mêmes critères, partage
+Mélenchon 2017 mesuré à 76,4.
+
+*Étape C* (seulement si A et B passent) : 2017 + 2022 complets et 2027 à date. Effet sur P(élu),
+duels et stabilité (§8.45), puis « ARBITRAGE À TRANCHER » sur l'adoption, qui toucherait aussi le
+T1 publié.
+
+**Limites connues.**
+
+- Deux élections seulement pour apprendre $s_\kappa$, $s_\mu$ et $s_\sigma$ : ces échelles
+  suivront surtout leurs priors. Les valeurs retenues sont dans le §1 et ne seront pas retouchées
+  après lecture.
+- L'électorat de Mélenchon a changé entre 2017 et 2022 (partage 76 contre 63) : c'est ce que
+  $s_\mu$ et $s_\sigma$ doivent permettre, et ce que l'étape A mesure.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
