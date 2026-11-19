@@ -150,7 +150,7 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
     if carte_2d:
         # Carte 2D (spec_second_tour §8.44) : nu_i = logistique(zeta_i) ; ancre
         # dure nu_C = nu_ancre_val (translation), ordre nu_RN ≥ nu_C (réflexion).
-        zeta = numpyro.sample("zeta", dist.Normal(0.0, 1.0).expand([N]))
+        zeta = jnp.asarray(numpyro.sample("zeta", dist.Normal(0.0, 1.0).expand([N])))   # init_to_value : numpy
         z_c = jnp.log(nu_ancre_val / (1.0 - nu_ancre_val))
         if nu_ancre is not None:
             zeta = zeta.at[nu_ancre].set(z_c)
