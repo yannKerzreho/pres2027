@@ -45,8 +45,25 @@ l'historique, ajouter en bas de « Historique ».
   répond pas (Mac fermé), la routine peut lancer la demande sur la VM, mais seulement si
   aucune ligne FAIT ou EN COURS (T4) n'existe pour cette étape : dans ce cas elle écrit
   « REPRISE VM » sur la ligne et l'étape entière passe sur la VM.
-  Étape 1 de R3 (V2 T2−7 2022, avec reports) : sur la VM, en cours. Étape 2 de R3 (V2 T1−30
-  2022, sans reports) : EN COURS (T4, début 2026-11-19 19:41Z), 4 chaînes séquentielles.
+  Étape 1 de R3 (V2 T2−7 2022, avec reports) : sur la VM, en cours.
+  Étape 2 de R3 (V2 T1−30 2022, sans reports) : FAIT (T4, 19:41-20:14Z ; 6-10 min par chaîne
+  sur le T4). Les `.npz` sont gitignorés : la session locale a fait elle-même la fusion
+  (`--fusionner`) et `eval_r2 --variante hiercercle_sr --coupure T1-30 [--par-chaine]` sur
+  le Mac (sans NUTS), et commité les 3 JSON (`second_round_hiercercle_sr_v2_2022_T1-30.json`,
+  `eval_r2_hiercercle_sr_2022_T1-30{,_par_chaine}.json`). Lecture brute, à consigner en
+  spec §8.46 par la routine (verdict selon §8.46.8, étape 2) :
+  - partage Mélenchon prédit 99,9 % dans les 4 chaînes (mesuré 63) : le T1 seul ne place PAS
+    Mélenchon à l'arrière ; Jadot 52,7 % (mesuré 87,5 ; 38,9 à 84,8 selon la chaîne) ;
+  - écart de lp entre chaînes 299 nats (9124,9 / 8835,3 / 8853,1 / 9134,4 ; 1D : 4,0 ;
+    2D : 28,7) ; chaînes retenues 0 et 3, R̂ max 1,92 même entre elles ;
+  - duels hypothétiques entre chaînes : Le Pen–Zemmour 13,6 pt, Mélenchon–Pécresse 13,1,
+    Le Pen–Mélenchon 5,5 (seuil 3) ; Macron–Le Pen 0,5 ;
+  - MAE des parts T1 contre le résultat 2,84 à 2,94 pt par chaîne (1D 2,98-2,99) ;
+  - arc 5,54 rad ⇒ f_arrière 0,12 ; σ_v moyen 0,055 ; κ 0,80 ; Macron–Le Pen 59,1
+    (résultat 58,55).
+  ⇒ Selon la règle figée : étape 2 ÉCHOUE (Mélenchon, stabilité, multimodalité). Reste à
+  lire l'étape 1 : si elle passe, conclusion « outil d'entre-deux-tours seulement »,
+  comparée à la 2D en coût et en stabilité.
 
 - [ ] **(NOUVEAU 19/11, constat de §8.46.4) Précision de la quadrature 1D aux petits σ** : GL B = 25 donne jusqu'à 1,6 pt d'erreur sur π dans les fits 2022 (σ min 0,018) ; sans effet en 2027 (σ min 0,051). Tâche : garde-fou (alerte si σ_min < 0,035, ou B adaptatif) et mesure de l'effet sur les backtests 2022 publiés (V1/V2) ; priorité moyenne, pas de changement de production sans chiffrage.
 - NOTE (session locale, 2026-11-19 ~19:45Z, REMPLACE l'aperçu Mac) : l'ÉTAPE 2 OFFICIELLE de R3
