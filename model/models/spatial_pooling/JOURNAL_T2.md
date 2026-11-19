@@ -77,6 +77,52 @@ l'historique, ajouter en bas de « Historique ».
   0,29 ms/chaîne en vmap 16-256 (gain ×2 seulement : le GPU est déjà saturé par une chaîne),
   float64 5 fois plus lent ; NUTS 1 chaîne 0,43 s/itération (≈ 508 pas/itération), soit
   ≈ 7 min pour 600+400. Chaînes Mac `_mac` arrêtées, non utilisées.
+- [ ] **(R3b) CERCLE NOURRI PAR TOUTES LES DONNÉES (utilisateur, 2026-11-19 ~21:20Z)** —
+      suite de l'échec de l'étape 2 de R3 (cercle sans reports à T1−30 : Mélenchon 99,9 %,
+      299 nats entre chaînes). Consigne utilisateur : « utilise les reports si nécessaire ;
+      toutes les données doivent nourrir le même modèle ». Maths dans la spec AVANT le code,
+      critères figés AVANT lecture, drapeau éteint, production inchangée, `PUBLIER_T2` False.
+      Fits lourds : DEMANDE GPU (règle de coordination ci-dessus).
+      **Diagnostic.** Avant le T1 d'une élection, il n'existe aucun tableau de reports
+      (vérifié : `reports_t2_2017/2022.csv` sont tous datés après le T1). Le T1 seul ne
+      dit pas qui est « à l'arrière ». Mais les reports des élections PASSÉES le disent, et
+      la structure (LFI/Mélenchon, RN/Le Pen) persiste d'une élection à l'autre. La bonne
+      forme est donc un modèle JOINT MULTI-ÉLECTIONS, où les reports passés informent la
+      géométrie de l'élection en cours.
+      **Modèle à écrire (proposition, à critiquer avant code).**
+      - Fit conjoint 2017 + 2022 (puis + 2027) : T1, duels, reports de chaque élection,
+        chacun avec sa vraisemblance actuelle.
+      - Positions angulaires hiérarchiques par FAMILLE politique (table §8.43) :
+        θ_{candidat,e} = θ_{famille} + δ_{famille,e} + ε_{candidat,e}, avec δ (dérive
+        d'élection) et ε (candidat) d'échelles apprises, priors centrés 0. Les candidats
+        récurrents (Mélenchon, Le Pen, Macron) peuvent porter un terme propre partagé.
+      - Arc A : global, ou hiérarchique par élection (A_e = A + a_e).
+      - σ_i : idem, hiérarchique par famille.
+      - Ce qui reste propre à chaque élection : w (niveaux et chemins), κ, η, ω, τ.
+      - Multimodalité (299 nats) : la hiérarchie par famille ancre les positions ; chiffrer
+        aussi l'effet de priors plus serrés sur A et sur θ_famille. Ne PAS initialiser les
+        chaînes depuis un postérieur avec reports (ça fausserait le test de stabilité) :
+        inits dispersées comme d'habitude.
+      **Protocole (critères proposés, à figer dans la spec avant lecture).**
+      0. Pré-requis : étape 1 de R3 (V2 T2−7 2022 avec reports, VM) lue. Si le cercle ne
+         reproduit même pas les reports AVEC eux, R3b est sans objet : consigner, arrêter.
+      1. Backtest prospectif honnête : 2017 complet (T1, duels, reports) + 2022 jusqu'à
+         T1−30 (SANS reports 2022). On prédit les reports 2022 mesurés, les duels et le T1.
+         - partage Mélenchon 2022 à < 10 pt du mesuré (63) ;
+         - MAE des 4 partages 2022 < celle du 1D (14,7 sans reports) et, si possible,
+           < persistance naïve (3,6, à recalculer pour ce cadre) ;
+         - duels hypothétiques stables entre 4 chaînes (≤ 3 pt), écart de lp ≤ 10 nats ;
+         - T1 2022 non dégradé contre le 1D (MAE des parts contre le résultat).
+      2. Symétrique : 2022 complet + 2017 jusqu'à T1−30. Même critères pour 2017 (76,4).
+      3. Si 1 et 2 passent : fit 2017 + 2022 + 2027, effet sur 2027 (P(élu), duels,
+         stabilité §8.45), puis « ARBITRAGE À TRANCHER » sur l'adoption (touche le T1
+         publié).
+      Témoin obligatoire : le même modèle joint en 1D (segment), pour séparer l'apport du
+      cercle de celui des reports passés.
+      **Données en plus, demandées le 19/11 à la session pipeline-données :** tableaux
+      croisés « intention de vote T2 selon le vote T1 » publiés AVANT le T1 (2017, 2022,
+      2027). S'ils existent, ce sont des reports d'avant T1 directement utilisables dans
+      l'élection en cours ; les intégrer comme observations dès leur arrivée sur main.
 - [ ] [EN COURS (début 2026-11-19 18:31Z) : code fait (drapeau `carte_cercle`, `--variante hiercercle|hiercercle_sr`, tests), protocole 1 lancé : V2 T2−7 2022 hiercercle, 4 chaînes] [MATHS FAITES 19/11 18:26Z, spec §8.46 (positions 1D posées sur un arc avant A appris, von Mises κ = 1/(Aσ)², trou derrière les extrêmes, N_θ = 64, critères figés) ; À FAIRE : code + tests + protocole 1] **(R3) VOTANTS SUR UN CERCLE (utilisateur, 2026-11-19 ~18:30Z)** — suite
       de §8.43-8.44. Maths dans la spec (nouveau §) AVANT le code, critères
       fixés AVANT lecture, code derrière un drapeau ÉTEINT, production
