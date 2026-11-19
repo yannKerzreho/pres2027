@@ -32,13 +32,17 @@ l'historique, ajouter en bas de « Historique ».
 ## File de tâches (prendre la première non cochée)
 
 - [ ] **(NOUVEAU 19/11, constat de §8.46.4) Précision de la quadrature 1D aux petits σ** : GL B = 25 donne jusqu'à 1,6 pt d'erreur sur π dans les fits 2022 (σ min 0,018) ; sans effet en 2027 (σ min 0,051). Tâche : garde-fou (alerte si σ_min < 0,035, ou B adaptatif) et mesure de l'effet sur les backtests 2022 publiés (V1/V2) ; priorité moyenne, pas de changement de production sans chiffrage.
-- NOTE (session locale, 2026-11-19 ~18:45Z) : APERÇU de l'étape 2 de R3 lancé sur le Mac
-  de l'utilisateur (accord de l'utilisateur ; jax 0.10.2 / numpyro 0.22.0, Python 3.11) :
-  `--only v2 --election 2022 --coupure T1-30 --variante hiercercle_sr`, chaînes 0 et 1,
-  fichiers suffixés `_mac` (NE PAS fusionner avec les chaînes Linux). NON PROBANT pour la
-  stabilité entre chaînes (le Mac ARM ne visite pas certains modes que Linux visite) :
-  l'étape 2 officielle reste à faire sur la VM avec les critères §8.46.8. La session locale
-  consignera l'aperçu ici.
+- NOTE (session locale, 2026-11-19 ~19:45Z, REMPLACE l'aperçu Mac) : l'ÉTAPE 2 OFFICIELLE de R3
+  (`--only v2 --election 2022 --coupure T1-30 --variante hiercercle_sr`, chaînes 0-3) tourne
+  sur un GPU T4 Google Colab (Linux x86 + CUDA, jax 0.10.2 / numpyro 0.22.0, float32 comme
+  la production), pilotée par la session locale (le CLI colab et ses identifiants sont sur le
+  Mac de l'utilisateur, pas sur la VM). NE PAS lancer l'étape 2 sur la VM. La session locale
+  commitera les 4 `.npz` dans `results/chaines/` sous les noms standard ; la routine fera la
+  fusion et le verdict selon §8.46.8. Les 4 chaînes sont sur la MÊME plateforme (T4).
+  Banc d'essai T4 (modèle cercle, V2 T1−30 2022) : gradient 0,63 ms (1 chaîne, float32),
+  0,29 ms/chaîne en vmap 16-256 (gain ×2 seulement : le GPU est déjà saturé par une chaîne),
+  float64 5 fois plus lent ; NUTS 1 chaîne 0,43 s/itération (≈ 508 pas/itération), soit
+  ≈ 7 min pour 600+400. Chaînes Mac `_mac` arrêtées, non utilisées.
 - [ ] [EN COURS (début 2026-11-19 18:31Z) : code fait (drapeau `carte_cercle`, `--variante hiercercle|hiercercle_sr`, tests), protocole 1 lancé : V2 T2−7 2022 hiercercle, 4 chaînes] [MATHS FAITES 19/11 18:26Z, spec §8.46 (positions 1D posées sur un arc avant A appris, von Mises κ = 1/(Aσ)², trou derrière les extrêmes, N_θ = 64, critères figés) ; À FAIRE : code + tests + protocole 1] **(R3) VOTANTS SUR UN CERCLE (utilisateur, 2026-11-19 ~18:30Z)** — suite
       de §8.43-8.44. Maths dans la spec (nouveau §) AVANT le code, critères
       fixés AVANT lecture, code derrière un drapeau ÉTEINT, production
