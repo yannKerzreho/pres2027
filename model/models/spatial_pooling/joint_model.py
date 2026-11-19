@@ -80,7 +80,8 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
                              masque_lse=None, sigma_w_par_candidat=False,
                              carte_2d=False, carte_cercle=False, nu_ancre=None, nu_ordre=None, nu_ancre_val=0.3,
                              rep_y=None, rep_date_idx=None, rep_k=None, rep_a=None, rep_b=None,
-                             rep_champ=None):
+                             rep_champ=None, z_pos_fixe=None, z_sigma_fixe=None, arc_fixe=None,
+                             kappa_fixe=None):
     """Le modèle. Inférence JOINTE de la géométrie et du chemin de `w`.
 
     Trois paramètres par candidat, deux échelles globales, aucun bloc :
@@ -140,11 +141,15 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
         tau_ou = float(load_law()["tau"])
 
     sigma_global = numpyro.sample("sigma_global", dist.LogNormal(sigma_log_mu, sigma_log_scale))
-    z_sigma = numpyro.sample("z_sigma", dist.Normal(0.0, 1.0).expand([N]))
+    # Valeurs imposées (spec_second_tour §8.47, modèle joint multi-élections) :
+    # tirées par le modèle enveloppe, enregistrées sous les noms habituels.
+    z_sigma = (numpyro.sample("z_sigma", dist.Normal(0.0, 1.0).expand([N])) if z_sigma_fixe is None
+               else numpyro.deterministic("z_sigma", z_sigma_fixe))
     sigma = numpyro.deterministic("sigma", sigma_global * jnp.exp(z_sigma * sigma_jitter))
 
     raw_anchor = jnp.log(pos_anchor / (1.0 - pos_anchor))
-    z_pos = numpyro.sample("z_pos", dist.Normal(0.0, 1.0).expand([N]))
+    z_pos = (numpyro.sample("z_pos", dist.Normal(0.0, 1.0).expand([N])) if z_pos_fixe is None
+             else numpyro.deterministic("z_pos", z_pos_fixe))
     mu = numpyro.deterministic("mu", jax.nn.sigmoid(raw_anchor + z_pos * pos_scale))
 
     if carte_2d:
@@ -165,8 +170,13 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
     elif carte_cercle:
         # Votants sur un cercle (spec_second_tour §8.46) : positions 1D posées sur un
         # arc avant de longueur `arc`, le reste du cercle porte l'électorat « arrière ».
-        a_arc = numpyro.sample("a_arc", dist.Normal(jnp.log(0.75 / 0.25), 0.75))
-        arc = numpyro.deterministic("arc", 2 * jnp.pi * jax.nn.sigmoid(a_arc))
+        if arc_fixe is None:
+            a_arc = numpyro.sample("a_arc", dist.Normal(jnp.log(0.75 / 0.25), 0.75))
+            arc = numpyro.deterministic("arc", 2 * jnp.pi * jax.nn.sigmoid(a_arc))
+        else:
+            f = arc_fixe / (2 * jnp.pi)
+            numpyro.deterministic("a_arc", jnp.log(f / (1.0 - f)))
+            arc = numpyro.deterministic("arc", arc_fixe)
         _A = lambda m_, s_, w_: log_attractivite_cercle(m_, s_, arc, w_)   # noqa: E731
         poids = W_THETA
     else:
@@ -217,7 +227,8 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
     # parfaitement anticorrélées, les mettre toutes deux dans la gaussienne
     # compterait chaque duel deux fois. Bloc absent => modèle T1 inchangé.
     if duel_y is not None:
-        kappa = numpyro.sample("kappa", dist.LogNormal(0.0, kappa_log_scale))
+        kappa = (numpyro.sample("kappa", dist.LogNormal(0.0, kappa_log_scale)) if kappa_fixe is None
+                 else numpyro.deterministic("kappa", kappa_fixe))
         z_eta = numpyro.sample("z_eta", dist.Normal(0.0, 1.0).expand([N]))
         if eta_hier:
             # Échelle des valences APPRISE (spec_second_tour.md §8.10).

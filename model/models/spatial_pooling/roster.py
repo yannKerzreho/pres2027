@@ -167,7 +167,11 @@ ORDER_GROUPS_HISTORIQUES: dict[int, list[tuple[str, list[str]]]] = {
         ("LO",         ["Nathalie Arthaud", "Philippe Poutou"]),
         ("LFI",        ["Jean-Luc Mélenchon"]),
         ("ecolo",      ["Yannick Jadot"]),
-        ("PS",         ["Arnaud Montebourg", "Vincent Peillon", "Benoît Hamon", "Manuel Valls"]),
+        # Hollande, Pinel : apparus dans les sondages 2017 de main (réimport du
+        # 2026-11-18, 844495b). Groupe PS comme les autres candidats de la
+        # primaire de gauche (Pinel : PRG, candidate à cette primaire).
+        ("PS",         ["Arnaud Montebourg", "Vincent Peillon", "Benoît Hamon", "Manuel Valls",
+                        "François Hollande", "Sylvia Pinel"]),
         ("centre",     ["Emmanuel Macron", "François Bayrou"]),
         ("Lassalle",   ["Jean Lassalle"]),
         ("LR",         ["François Fillon"]),
