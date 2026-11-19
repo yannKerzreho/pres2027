@@ -11,6 +11,10 @@ Deux temps, parce que les étapes qui détectent n'ont pas le jeton GitHub :
    workflow : une issue par `cle`, mise à jour si elle est déjà ouverte (même
    titre), créée sinon. Pas de doublon d'un jour sur l'autre ; l'issue se ferme
    à la main, une fois la décision prise.
+
+`--a-blanc` : lit les issues ouvertes (seul appel `gh` fait) et imprime ce qui
+serait créé ou mis à jour, sans rien écrire — pour éprouver le chemin réel
+(`gh` authentifié, format JSON, appariement des titres) sans polluer le dépôt.
 """
 
 from __future__ import annotations
@@ -59,8 +63,9 @@ def _gh(args: list[str], entree: str | None = None) -> str:
                           capture_output=True).stdout
 
 
-def publier(chemin: Path, gh=_gh, url_run: str | None = None) -> list[str]:
-    """Ouvre ou met à jour une issue par alerte. Renvoie les actions faites."""
+def publier(chemin: Path, gh=_gh, url_run: str | None = None, a_blanc: bool = False) -> list[str]:
+    """Ouvre ou met à jour une issue par alerte. Renvoie les actions faites
+    (ou, à blanc, celles qui le seraient, préfixées « [à blanc] »)."""
     alertes = lire(chemin)
     if not alertes:
         return []
@@ -73,23 +78,29 @@ def publier(chemin: Path, gh=_gh, url_run: str | None = None) -> list[str]:
             "\n\n_Issue tenue à jour par le workflow « Daily update » ; à fermer une fois "
             "la décision prise._")
         if titre in ouvertes:
-            gh(["issue", "edit", str(ouvertes[titre]), "--body-file", "-"], corps)
+            if not a_blanc:
+                gh(["issue", "edit", str(ouvertes[titre]), "--body-file", "-"], corps)
             actions.append(f"mise à jour #{ouvertes[titre]} : {titre}")
         else:
-            gh(["issue", "create", "--title", titre, "--body-file", "-"], corps)
+            if not a_blanc:
+                gh(["issue", "create", "--title", titre, "--body-file", "-"], corps)
             actions.append(f"créée : {titre}")
+        if a_blanc:
+            actions[-1] = "[à blanc] " + actions[-1] + "\n" + corps
     return actions
 
 
 def main(argv: list[str] | None = None) -> None:
     argv = sys.argv[1:] if argv is None else argv
+    a_blanc = "--a-blanc" in argv
+    argv = [a for a in argv if a != "--a-blanc"]
     if len(argv) != 2 or argv[0] != "publier":
-        raise SystemExit("usage : python -m pipeline.alertes publier <fichier.jsonl>")
+        raise SystemExit("usage : python -m pipeline.alertes publier <fichier.jsonl> [--a-blanc]")
     url = None
     if os.environ.get("GITHUB_RUN_ID"):
         url = (f"{os.environ.get('GITHUB_SERVER_URL', 'https://github.com')}/"
                f"{os.environ.get('GITHUB_REPOSITORY')}/actions/runs/{os.environ['GITHUB_RUN_ID']}")
-    for action in publier(Path(argv[1]), url_run=url):
+    for action in publier(Path(argv[1]), url_run=url, a_blanc=a_blanc):
         print(action)
 
 

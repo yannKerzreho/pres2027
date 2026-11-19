@@ -142,3 +142,72 @@ def test_workflow_modeles_tournent_meme_si_l_ingestion_abandonne():
     assert "!cancelled()" in steps["Alertes -> issues"]["if"]
     assert wf["permissions"]["issues"] == "write"
     assert "ALERTES_JSONL" in wf["jobs"]["update"]["env"]
+
+
+def _faux_gh(tmp_path: Path, ouvertes: list[dict]) -> tuple[dict, Path]:
+    """Exécutable `gh` factice en tête du PATH : enregistre chaque appel
+    (arguments + entrée standard) et répond à `issue list`."""
+    journal = tmp_path / "appels.jsonl"
+    bin_ = tmp_path / "bin"
+    bin_.mkdir()
+    gh = bin_ / "gh"
+    gh.write_text(f"""#!{__import__('sys').executable}
+import json, sys
+with open({str(journal)!r}, "a") as f:
+    f.write(json.dumps({{"args": sys.argv[1:], "stdin": sys.stdin.read()}}) + "\\n")
+if sys.argv[1:3] == ["issue", "list"]:
+    print(json.dumps({ouvertes!r}))
+""")
+    gh.chmod(0o755)
+    import os
+    env = {**os.environ, "PATH": f"{bin_}{os.pathsep}{os.environ['PATH']}",
+           "GITHUB_RUN_ID": "123", "GITHUB_REPOSITORY": "proprio/depot",
+           "GITHUB_SERVER_URL": "https://github.com"}
+    env.pop("ALERTES_JSONL", None)
+    env.pop("GITHUB_ACTIONS", None)
+    return env, journal
+
+
+def _cli(env, *args):
+    import subprocess, sys
+    return subprocess.run([sys.executable, "-m", "pipeline.alertes", "publier", *args],
+                          cwd=ROOT, env=env, text=True, capture_output=True, check=True).stdout
+
+
+def _fichier_alertes(tmp_path: Path) -> Path:
+    f = tmp_path / "a.jsonl"
+    f.write_text("\n".join(json.dumps(a, ensure_ascii=False) for a in [
+        {"cle": "x", "titre": "spatial-pooling : candidats à classer dans ORDER_GROUPS",
+         "corps": "- Zorglub", "niveau": "error"},
+        {"cle": "y", "titre": "ingestion : sondeurs non reconnus", "corps": "Toluna", "niveau": "warning"},
+    ]) + "\n")
+    return f
+
+
+def test_chemin_reel_de_la_cli_avec_gh_factice(tmp_path):
+    """Le chemin exact de l'étape « Alertes -> issues » (module lancé en
+    sous-processus, `gh` appelé par subprocess, URL du run reconstruite), sans
+    toucher au dépôt."""
+    env, journal = _faux_gh(tmp_path, [{"number": 7, "title":
+                                        "[prod] spatial-pooling : candidats à classer dans ORDER_GROUPS"}])
+    sortie = _cli(env, str(_fichier_alertes(tmp_path)))
+    appels = [json.loads(l) for l in journal.read_text().splitlines()]
+    assert [a["args"][:2] for a in appels] == [["issue", "list"], ["issue", "edit"], ["issue", "create"]]
+    assert appels[1]["args"][2] == "7" and appels[1]["stdin"].startswith("- Zorglub")
+    assert appels[2]["args"][3] == "[prod] ingestion : sondeurs non reconnus"
+    assert "https://github.com/proprio/depot/actions/runs/123" in appels[2]["stdin"]
+    assert "mise à jour #7" in sortie and "créée : [prod] ingestion" in sortie
+
+
+def test_a_blanc_ne_fait_que_lire(tmp_path):
+    env, journal = _faux_gh(tmp_path, [])
+    sortie = _cli(env, str(_fichier_alertes(tmp_path)), "--a-blanc")
+    appels = [json.loads(l)["args"][:2] for l in journal.read_text().splitlines()]
+    assert appels == [["issue", "list"]]                       # aucune écriture
+    assert sortie.count("[à blanc] créée") == 2 and "- Zorglub" in sortie
+
+
+def test_sans_alerte_gh_n_est_pas_appele(tmp_path):
+    env, journal = _faux_gh(tmp_path, [])
+    assert _cli(env, str(tmp_path / "absent.jsonl")) == ""
+    assert not journal.exists()

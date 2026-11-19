@@ -175,5 +175,25 @@
     (mq.addEventListener ? mq.addEventListener.bind(mq, "change") : mq.addListener.bind(mq))(rappel);
   }
 
-  global.Couleurs = { couleur, parti, resoudre, sombre, surChangementDeTheme, CANDIDATS, PARTIS };
+  /* Texte lisible sur un aplat de cette couleur (boutons cochés du sélecteur) :
+   * blanc, ou encre foncée si le blanc contraste trop peu (rapport WCAG). Les
+   * variantes sombres sont éclaircies (cf. versSombre) : Riner y passe à
+   * #c6d478, où le blanc tombait à 1,6:1. */
+  const ENCRE = "#14171c";
+  function luminance(hex) {
+    const v = hex.replace("#", "").match(/../g).map((x) => {
+      const c = parseInt(x, 16) / 255;
+      return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2];
+  }
+  function texteSur(fond) {
+    const L = luminance(fond);
+    // Le blanc reste la règle (c'est l'allure du site) tant qu'il tient 3:1, le
+    // seuil WCAG du texte gras ; au-dessous, l'encre foncée.
+    return 1.05 / (L + 0.05) >= 3 ? "#fff" : ENCRE;
+  }
+
+  global.Couleurs = { couleur, parti, resoudre, sombre, surChangementDeTheme, texteSur,
+                      CANDIDATS, PARTIS };
 })(window);

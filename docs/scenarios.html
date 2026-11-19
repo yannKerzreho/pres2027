@@ -378,6 +378,14 @@ function preset(nom) {
   rendPicker(); dessine();
 }
 
+// Bouton coché : aplat de la couleur du candidat, texte blanc ou foncé selon le
+// contraste (les couleurs claires du mode sombre rendaient le blanc illisible).
+const texteSur = Couleurs.texteSur || (() => "#fff");
+function aplat(c) {
+  const t = texteSur(c);
+  return `background:${c};color:${t}` + (t === "#fff" ? "" : ";text-shadow:none");
+}
+
 function rendPicker() {
   // Un raccourci qui ne coche qu'un candidat masqué n'a plus de sens affiché.
   const iB = D.candidats.indexOf("Bardella");
@@ -394,7 +402,7 @@ function rendPicker() {
     });
   document.getElementById("picker").innerHTML = D.candidats.map((c,i) => masque(i) ? "" :
     `<button data-i="${i}" class="${on[i]?"on":""}" aria-pressed="${on[i]?"true":"false"}"
-      style="${on[i]?`background:${couleur(c)}`:""}">${echappe(c)}</button>`).join("");
+      style="${on[i]?aplat(couleur(c)):""}">${echappe(c)}</button>`).join("");
 }
 
 // Le chemin de l'artefact vient du manifeste (rubrique « scenarios ») plutôt que
