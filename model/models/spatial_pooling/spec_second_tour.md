@@ -2390,6 +2390,37 @@ semaine.
 - Sensibilité au plancher de 1 % (au lieu de 0,5 %) sur $y$ des reports : à faire au prochain run.
 - Couverture T1 de 3/12 contre 5/12 : non expliquée, à suivre.
 
+**Témoin équitable `hier_rep` (1D avec reports, mêmes données ; 19/11).** Fichiers :
+`results/second_round_hier_rep_v2_2022_T2-7.json`, `eval_r2_hier_rep_2022.json`.
+
+Partages parmi les exprimés, erreur en pt :
+
+| | Mélenchon | Pécresse | Jadot | Zemmour | MAE hors fit (11 notices) |
+|---|---|---|---|---|---|
+| 1D sans reports | +37,0 | +5,1 | +12,5 | −9,4 | 14,7 |
+| 1D avec reports | **+17,2** | −6,4 | **−8,3** | +0,4 | 8,2 |
+| 2D avec reports | −0,7 | −1,9 | +0,6 | −1,7 | 2,6 |
+| persistance naïve | | | | | 3,6 |
+
+Autres grandeurs :
+
+| | κ | $\bar\sigma_v$ | MAE T1, nœuds / résultat | chaînes retenues |
+|---|---|---|---|---|
+| 1D sans reports | 0,75 | 0,048 | 0,616 / 1,23 | 2 |
+| 1D avec reports | 0,41 | **0,042** | 0,618 / 1,26 | 1 |
+| 2D avec reports | 0,22 | 0,064 | 0,603 / 1,17 | 2 |
+
+La prédiction de la revue est vérifiée. Avec les reports mais sur un seul axe, Mélenchon reste à
+80 % au lieu de 63. Jadot est tiré vers le centre (79 % au lieu de 88), et $\sigma_v$ *rétrécit*.
+Le 1D ne peut pas séparer Mélenchon de la gauche modérée.
+
+**La 2D est donc justifiée pour l'entre-deux-tours.** Elle seule reproduit les reports, et le gain
+hors fit sur la persistance naïve est modeste : 2,6 contre 3,6 pt. Le 1D avec reports est en outre
+multimodal : une seule chaîne retenue.
+
+Reste à savoir ce que R2 vaut **avant le T1**, sans reports. C'est l'idée 2 de la revue : V2
+T1−30 hier2d, 4 chaînes indépendantes, critère 4 révisé.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
