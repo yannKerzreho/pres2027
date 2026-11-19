@@ -255,6 +255,9 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         "pas_leapfrog_median": int(np.median(steps)),
         "sigma_w": round(float(np.mean(np.asarray(samples["sigma_w"]))), 4),
         "sigma_global": round(float(np.mean(np.asarray(samples["sigma_global"]))), 4),
+        # Garde-fou de quadrature (spec_second_tour §8.48) : diagnostic seulement.
+        "sigma_min": round(float(np.median(np.asarray(samples["sigma"]).reshape(-1, N), 0).min()), 4),
+        "quadrature_fragile": bool(np.median(np.asarray(samples["sigma"]).reshape(-1, N), 0).min() < 0.035),
     }
     if has_t2:
         diagnostics.update({

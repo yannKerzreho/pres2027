@@ -1,0 +1,137 @@
+{
+ "spec": "spec_second_tour §8.48",
+ "cas": [
+  {
+   "stem": "r2_temoin_hier_v2_2022_T2-7",
+   "coupure": "T2-7",
+   "sigma_min_mediane": 0.0199,
+   "B25": {
+    "duels": {
+     "Emmanuel Macron / Marine Le Pen": 53.513,
+     "Emmanuel Macron / Jean-Luc Mélenchon": 58.593,
+     "Emmanuel Macron / Eric Zemmour": 66.729,
+     "Emmanuel Macron / Valérie Pécresse": 67.144,
+     "Marine Le Pen / Jean-Luc Mélenchon": 57.524,
+     "Marine Le Pen / Eric Zemmour": 70.826,
+     "Marine Le Pen / Valérie Pécresse": 62.605,
+     "Jean-Luc Mélenchon / Eric Zemmour": 56.31,
+     "Jean-Luc Mélenchon / Valérie Pécresse": 47.488,
+     "Eric Zemmour / Valérie Pécresse": 41.225
+    },
+    "t1_mae_pt": 1.23,
+    "parts_t1": {
+     "Emmanuel Macron": 26.839,
+     "Marine Le Pen": 22.902,
+     "Jean-Luc Mélenchon": 16.523,
+     "Eric Zemmour": 9.168,
+     "Valérie Pécresse": 8.022,
+     "Yannick Jadot": 4.995,
+     "Jean Lassalle": 2.452,
+     "Fabien Roussel": 3.502,
+     "Nicolas Dupont-Aignan": 2.285,
+     "Anne Hidalgo": 1.772,
+     "Philippe Poutou": 0.967,
+     "Nathalie Arthaud": 0.574
+    }
+   },
+   "B400": {
+    "duels": {
+     "Emmanuel Macron / Marine Le Pen": 53.422,
+     "Emmanuel Macron / Jean-Luc Mélenchon": 59.686,
+     "Emmanuel Macron / Eric Zemmour": 66.641,
+     "Emmanuel Macron / Valérie Pécresse": 66.975,
+     "Marine Le Pen / Jean-Luc Mélenchon": 56.597,
+     "Marine Le Pen / Eric Zemmour": 70.827,
+     "Marine Le Pen / Valérie Pécresse": 62.642,
+     "Jean-Luc Mélenchon / Eric Zemmour": 57.273,
+     "Jean-Luc Mélenchon / Valérie Pécresse": 48.443,
+     "Eric Zemmour / Valérie Pécresse": 41.175
+    },
+    "t1_mae_pt": 1.243,
+    "parts_t1": {
+     "Emmanuel Macron": 27.868,
+     "Marine Le Pen": 22.939,
+     "Jean-Luc Mélenchon": 15.398,
+     "Eric Zemmour": 9.169,
+     "Valérie Pécresse": 7.929,
+     "Yannick Jadot": 5.061,
+     "Jean Lassalle": 2.446,
+     "Fabien Roussel": 3.523,
+     "Nicolas Dupont-Aignan": 2.287,
+     "Anne Hidalgo": 1.789,
+     "Philippe Poutou": 1.001,
+     "Nathalie Arthaud": 0.591
+    }
+   },
+   "ecart_duels_max_pt": 1.093,
+   "ecart_parts_t1_max_pt": 1.125,
+   "ecart_mae_t1_pt": -0.013
+  },
+  {
+   "stem": "r2_temoin_hier_v2_2022_T1-30",
+   "coupure": "T1-30",
+   "sigma_min_mediane": 0.0209,
+   "B25": {
+    "duels": {
+     "Emmanuel Macron / Marine Le Pen": 59.414,
+     "Emmanuel Macron / Jean-Luc Mélenchon": 67.044,
+     "Emmanuel Macron / Eric Zemmour": 67.644,
+     "Emmanuel Macron / Valérie Pécresse": 63.744,
+     "Marine Le Pen / Jean-Luc Mélenchon": 55.102,
+     "Marine Le Pen / Eric Zemmour": 52.983,
+     "Marine Le Pen / Valérie Pécresse": 43.313,
+     "Jean-Luc Mélenchon / Eric Zemmour": 49.451,
+     "Jean-Luc Mélenchon / Valérie Pécresse": 37.606,
+     "Eric Zemmour / Valérie Pécresse": 34.203
+    },
+    "t1_mae_pt": 2.986,
+    "parts_t1": {
+     "Emmanuel Macron": 31.198,
+     "Marine Le Pen": 16.914,
+     "Jean-Luc Mélenchon": 11.827,
+     "Eric Zemmour": 11.866,
+     "Valérie Pécresse": 11.42,
+     "Yannick Jadot": 5.001,
+     "Jean Lassalle": 1.584,
+     "Fabien Roussel": 3.699,
+     "Nicolas Dupont-Aignan": 2.391,
+     "Anne Hidalgo": 2.29,
+     "Philippe Poutou": 1.146,
+     "Nathalie Arthaud": 0.665
+    }
+   },
+   "B400": {
+    "duels": {
+     "Emmanuel Macron / Marine Le Pen": 59.92,
+     "Emmanuel Macron / Jean-Luc Mélenchon": 66.51,
+     "Emmanuel Macron / Eric Zemmour": 67.638,
+     "Emmanuel Macron / Valérie Pécresse": 63.724,
+     "Marine Le Pen / Jean-Luc Mélenchon": 54.602,
+     "Marine Le Pen / Eric Zemmour": 53.004,
+     "Marine Le Pen / Valérie Pécresse": 43.589,
+     "Jean-Luc Mélenchon / Eric Zemmour": 49.895,
+     "Jean-Luc Mélenchon / Valérie Pécresse": 37.939,
+     "Eric Zemmour / Valérie Pécresse": 34.23
+    },
+    "t1_mae_pt": 2.91,
+    "parts_t1": {
+     "Emmanuel Macron": 30.85,
+     "Marine Le Pen": 16.925,
+     "Jean-Luc Mélenchon": 12.26,
+     "Eric Zemmour": 11.881,
+     "Valérie Pécresse": 11.396,
+     "Yannick Jadot": 5.004,
+     "Jean Lassalle": 1.593,
+     "Fabien Roussel": 3.693,
+     "Nicolas Dupont-Aignan": 2.386,
+     "Anne Hidalgo": 2.217,
+     "Philippe Poutou": 1.14,
+     "Nathalie Arthaud": 0.653
+    }
+   },
+   "ecart_duels_max_pt": 0.534,
+   "ecart_parts_t1_max_pt": 0.433,
+   "ecart_mae_t1_pt": 0.076
+  }
+ ]
+}

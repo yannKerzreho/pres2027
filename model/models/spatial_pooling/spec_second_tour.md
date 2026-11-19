@@ -2768,6 +2768,28 @@ avec B plus grand (rien en production).
 Le seuil vient de §8.46.4 : à σ = 0,04, l'erreur de B = 25 vaut 0,6 pt au maximum sur des
 géométries aléatoires.
 
+**Résultat de la mesure, à postérieur fixé** (`results/quadrature_1d_2022.json`). Écart entre
+B = 25 et B = 400 :
+
+| coupure | duel max | Macron–Le Pen | parts T1 (max) | MAE T1 |
+|---|---|---|---|---|
+| T2−7 (σ min 0,020) | **1,09** pt (Macron–Mélenchon, Le Pen–Mélenchon, Mélenchon–Zemmour, Mélenchon–Pécresse) | 0,09 | 1,1 | −0,01 |
+| T1−30 (σ min 0,021) | 0,53 | **0,51** | 0,43 | +0,08 |
+
+Le seuil de 0,5 pt est franchi : **les chiffres 2022 sont sensibles à la quadrature**, surtout ceux
+qui impliquent Mélenchon (σ ≈ 0,02). La MAE T1 ne bouge pas.
+
+C'est une borne inférieure. Le fit a été fait avec B = 25 : il peut avoir exploité l'erreur de
+quadrature, puisqu'un noyau étroit tombé entre deux nœuds est mal intégré.
+
+**Test, fixé avant lecture.** Refit du témoin 1D hier V2 T2−7 2022 avec
+`PRES2027_B_QUAD=100`, 4 chaînes, mêmes données.
+
+- Si la médiane de σ_Mélenchon passe au-dessus de 0,03, l'effondrement de σ est en partie un
+  artefact. On le rapporte avec ses conséquences : les reports 1D de §8.38 et le témoin équitable
+  de §8.44 sont à relire, et les backtests 2022 à refaire avec B plus grand.
+- Sinon, l'effet se limite au postérieur fixé ci-dessus.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

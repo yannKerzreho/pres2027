@@ -35,7 +35,9 @@ import numpy as np
 # Le tenseur `P×N×B` domine le coût du gradient, donc passer de 50 à 25 divise
 # par deux la vraisemblance sans aucune perte -- c'est la propriété de
 # convergence spectrale de Gauss-Legendre sur un intégrande lisse.
-B = 25
+import os as _os
+# Surchargeable pour un backtest de sensibilité (spec_second_tour §8.48) ; production : 25.
+B = int(_os.environ.get("PRES2027_B_QUAD", "25"))
 _gl_x, _gl_w = np.polynomial.legendre.leggauss(B)
 V = jnp.asarray(0.01 + (0.99 - 0.01) * (_gl_x + 1.0) / 2.0)
 W = jnp.asarray(_gl_w / 2.0)
