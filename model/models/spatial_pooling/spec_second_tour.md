@@ -2468,6 +2468,30 @@ stabilité des duels hypothétiques n'a jamais été appliqué au fit de product
 des duels jamais sondés. C'est à faire, à 0 fit sur les chaînes du gel prospectif s'il les a
 gardées, sinon avec 1 fit.
 
+### 8.45 Stabilité entre chaînes des duels 2027 (constat de §8.44 ; protocole fixé avant résultat)
+
+**Constat de départ.** À T1−30 2022, en 1D et en production, le duel hypothétique Le Pen–Zemmour
+varie de 7,9 pt d'une chaîne à l'autre. Le site publie pour 2027 des duels jamais sondés. La
+sélection des chaînes (§8.8) et le R̂ de la cible ne portent que sur les duels backtestés.
+
+**Protocole.** On fait un fit de production 2027 : variante hier, sondages au dernier terrain,
+`load_raw_polls(tour=None)` comme `prospectif_2027`. Il comporte 4 processus d'une chaîne, de
+graines 27 à 30, sans phase 2. Pour chaque chaîne prise seule, et pour toutes les paires du champ
+modal ∪ candidats en duel (les 78 paires du gel prospectif), on calcule $\bar s_{ab}$ à h = 0,
+sans aléa de scrutin. On rapporte aussi le lp par chaîne et les chaînes retenues par §8.8.
+
+**Critère, fixé avant lecture.** Une paire est **instable** si l'écart max − min de $\bar s_{ab}$
+entre les chaînes retenues par §8.8 dépasse 2 pt. On le rapporte aussi sur les 4 chaînes. On
+sépare les paires sondées des paires jamais sondées, ces dernières recevant τ_paire en
+prédiction.
+
+**Lecture prévue.**
+
+- Aucune paire instable parmi les chaînes retenues : on consigne et on clôt.
+- Des paires instables : on compare leur écart à leur demi-IC90 publié. Si l'écart dépasse le
+  demi-IC90, on ouvre la ligne « ARBITRAGE À TRANCHER » : élargir l'IC de ces paires (τ_paire
+  plus grand, ou un mélange explicite des modes), ou ne pas les afficher.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

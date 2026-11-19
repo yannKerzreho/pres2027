@@ -102,3 +102,9 @@ def test_melange_anti_systeme():
     agg = (E * r1["a"]).sum(1) / (E * (r1["a"] + r1["b"])).sum(1)
     assert np.allclose(agg, s, atol=1e-6)
     assert (r1["decalage_duel"] < 0).all()            # sans recalage, le mélange fait perdre a
+
+
+def test_ecarts_stabilite():
+    from model.backtest.stabilite_2027 import ecarts
+    e = ecarts({"A|B": [0.50, 0.53, 0.51, 0.40]}, [0, 1, 2])
+    assert e["A|B"]["ecart_toutes_pt"] == 13.0 and e["A|B"]["ecart_retenues_pt"] == 3.0
