@@ -62,6 +62,7 @@ class SpatialPoolingFit:
     lambda_draws: np.ndarray | None = None   # (S,)
     arc_draws: np.ndarray | None = None      # (S,) cercle (spec_second_tour §8.46)
     gamma_draws: np.ndarray | None = None    # (S,) abstention située (§8.48 bis)
+    nu_t_draws: np.ndarray | None = None     # (S,) noyau de Student-t (§8.51)
     reports_theta_draws: np.ndarray | None = None   # (S, R, 3) cellules prédites des reports en fit
     reports_rows: list | None = None         # [(notice, électorat, date)] dans l'ordre de R
     duel_s_draws: np.ndarray | None = None
@@ -87,7 +88,7 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
                         sigma_w_par_candidat: bool = False,
                         ancres_famille: bool = False,
                         carte_2d: bool = False, carte_cercle: bool = False, nu_ancre_val: float = 0.3,
-                        abst_situee: bool = False,
+                        abst_situee: bool = False, noyau_t: bool = False,
                         reports: pd.DataFrame | None = None,
                         champ_reports: list | None = None) -> SpatialPoolingFit:
     """Roster -> arrays -> NUTS, en une seule inférence jointe.
@@ -171,6 +172,10 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
     )
     if sigma_w_par_candidat:
         kwargs["sigma_w_par_candidat"] = True
+    if noyau_t:
+        if carte_cercle or carte_2d:
+            raise ValueError("noyau_t : segment seulement (§8.51)")
+        kwargs["noyau_t"] = True
     if carte_cercle:
         kwargs["carte_cercle"] = True
         if abst_situee:
@@ -314,6 +319,7 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         lambda_draws=np.asarray(samples["lambda_u"]).reshape(-1) if "lambda_u" in samples else None,
         arc_draws=np.asarray(samples["arc"]).reshape(-1) if "arc" in samples else None,
         gamma_draws=np.asarray(samples["gamma_abs"]).reshape(-1) if "gamma_abs" in samples else None,
+        nu_t_draws=np.asarray(samples["nu_t"]).reshape(-1) if "nu_t" in samples else None,
         reports_theta_draws=(np.asarray(samples["reports_theta"]).reshape(-1, len(rep["y"]), 3)
                              if "reports_theta" in samples else None),
         reports_rows=rep["rows"] if rep is not None else None,
@@ -419,7 +425,13 @@ def pi_draws_for_mask(fit: SpatialPoolingFit, mask: np.ndarray) -> np.ndarray:
                                             jnp.asarray(fit.nu_draws), jnp.asarray(fit.lambda_draws),
                                             jnp.asarray(fit.w_draws), jnp.asarray(mask)))
     return np.asarray(spatial_shares(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
-                                     jnp.asarray(fit.w_draws), jnp.asarray(mask)))
+                                     jnp.asarray(fit.w_draws), jnp.asarray(mask), nu=_nu(fit)))
+
+
+def _nu(fit):
+    """Degrés du noyau de Student-t par tirage (§8.51), ou None (gaussien)."""
+    v = getattr(fit, "nu_t_draws", None)
+    return None if v is None else jnp.asarray(v)
 
 
 def trajectoire(fit: SpatialPoolingFit, mask: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
@@ -430,7 +442,7 @@ def trajectoire(fit: SpatialPoolingFit, mask: np.ndarray) -> tuple[np.ndarray, n
     m = jnp.asarray(mask)
     mu, sg = jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws)
     T = fit.w_path_draws.shape[-1]
-    parts = [np.asarray(spatial_shares(mu, sg, jnp.asarray(fit.w_path_draws[:, :, t]), m))
+    parts = [np.asarray(spatial_shares(mu, sg, jnp.asarray(fit.w_path_draws[:, :, t]), m, nu=_nu(fit)))
              for t in range(T)]
     return fit.w_dates, np.stack(parts, axis=1)[:, :, np.asarray(mask).astype(bool)]
 
@@ -567,7 +579,7 @@ def _duel_par_tirage(fit, w, ia: np.ndarray, ib: np.ndarray) -> np.ndarray:
                                             fit.eta_draws[s_idx, ia], fit.eta_draws[s_idx, ib],
                                             lse, fit.omega_draws, pq, og))
     A = np.asarray(log_attractivite(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
-                                    jnp.asarray(w)))                     # (S, N, B)
+                                    jnp.asarray(w), _nu(fit)))           # (S, N, B)
     extra = ()
     if fit.omega_draws is not None:
         from scipy.special import logsumexp
@@ -632,7 +644,7 @@ def p_elu(fit: SpatialPoolingFit, mask: np.ndarray, horizon_t1: int, horizon_t2:
         from .geometry import spatial_shares
         w1 = projeter_w(fit, horizon_t1, seed)
         p1 = np.asarray(spatial_shares(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
-                                       jnp.asarray(w1), jnp.asarray(mask.astype(float))))[:, m]
+                                       jnp.asarray(w1), jnp.asarray(mask.astype(float)), nu=_nu(fit)))[:, m]
         a = np.log(np.clip(p1, 1e-9, None)) + delta_draws(load_law(), p1.shape, seed + 1)
         pi = np.exp(a - a.max(1, keepdims=True))
         w2 = projeter_w(fit, max(horizon_t2 - horizon_t1, 0), seed + 2, w0=w1)

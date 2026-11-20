@@ -81,7 +81,7 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
                              carte_2d=False, carte_cercle=False, nu_ancre=None, nu_ordre=None, nu_ancre_val=0.3,
                              rep_y=None, rep_date_idx=None, rep_k=None, rep_a=None, rep_b=None,
                              rep_champ=None, z_pos_fixe=None, z_sigma_fixe=None, arc_fixe=None,
-                             kappa_fixe=None, abst_situee=False):
+                             kappa_fixe=None, abst_situee=False, noyau_t=False):
     """Le modèle. Inférence JOINTE de la géométrie et du chemin de `w`.
 
     Trois paramètres par candidat, deux échelles globales, aucun bloc :
@@ -147,6 +147,10 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
                else numpyro.deterministic("z_sigma", z_sigma_fixe))
     sigma = numpyro.deterministic("sigma", sigma_global * jnp.exp(z_sigma * sigma_jitter))
 
+    # Noyau de Student-t (spec_second_tour §8.51) : un degré ν global, emboîte le gaussien.
+    nu_t = (numpyro.deterministic("nu_t", jnp.exp(numpyro.sample("log_nu_t", dist.Normal(jnp.log(5.0), 1.0))))
+            if noyau_t else None)
+
     raw_anchor = jnp.log(pos_anchor / (1.0 - pos_anchor))
     z_pos = (numpyro.sample("z_pos", dist.Normal(0.0, 1.0).expand([N])) if z_pos_fixe is None
              else numpyro.deterministic("z_pos", z_pos_fixe))
@@ -180,7 +184,7 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
         _A = lambda m_, s_, w_: log_attractivite_cercle(m_, s_, arc, w_)   # noqa: E731
         poids = W_THETA
     else:
-        _A = log_attractivite
+        _A = (lambda m_, s_, w_: log_attractivite(m_, s_, w_, nu_t)) if noyau_t else log_attractivite   # noqa: E731
         poids = None
 
     sigma_w = numpyro.sample("sigma_w", dist.HalfNormal(sigma_w_prior))
@@ -215,7 +219,7 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
     elif carte_cercle:
         pi = spatial_shares_cercle(mu, sigma, arc, w_full[:, date_idx].T, tested_mask)
     else:
-        pi = spatial_shares(mu, sigma, w_full[:, date_idx].T, tested_mask)
+        pi = spatial_shares(mu, sigma, w_full[:, date_idx].T, tested_mask, nu=nu_t)
     var = pi * (1.0 - pi) / jnp.clip(Np[:, None], 1.0, None)
     if excess_var is not None:
         var = var + excess_var[:, None]

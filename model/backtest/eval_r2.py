@@ -40,7 +40,8 @@ def reconstruire(variante: str, stem: str, coupure: str = "T2-7", chaines=None, 
                            "hiercercle_ra": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True},
                            "hier_ra": {"eta_hier": True, "_reports_avant": True},
                            "hiercercle_ra_abs": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True,
-                                                 "abst_situee": True}}[variante])
+                                                 "abst_situee": True},
+                           "hier_ra_t": {"eta_hier": True, "_reports_avant": True, "noyau_t": True}}[variante])
     if lse_officiel or LSE_OFFICIEL:
         sr.VARIANTE_KW["_lse_officiel"] = True
     ref = sr.T1_DATES[ELECTION] if coupure.startswith("T1") else sr.T2_DATES[ELECTION]
@@ -68,7 +69,8 @@ def _A(fit, w):
         return np.asarray(log_attractivite_2d(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
                                               jnp.asarray(fit.nu_draws), jnp.asarray(fit.lambda_draws),
                                               jnp.asarray(w))), W2
-    return np.asarray(log_attractivite(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws), jnp.asarray(w))), W
+    nu = None if getattr(fit, "nu_t_draws", None) is None else jnp.asarray(fit.nu_t_draws)
+    return np.asarray(log_attractivite(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws), jnp.asarray(w), nu)), W
 
 
 def _parts(fit, w, mask):
@@ -80,8 +82,9 @@ def _parts(fit, w, mask):
         return np.asarray(spatial_shares_2d(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
                                             jnp.asarray(fit.nu_draws), jnp.asarray(fit.lambda_draws),
                                             jnp.asarray(w), jnp.asarray(mask)))
+    nu = None if getattr(fit, "nu_t_draws", None) is None else jnp.asarray(fit.nu_t_draws)
     return np.asarray(spatial_shares(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
-                                     jnp.asarray(w), jnp.asarray(mask)))
+                                     jnp.asarray(w), jnp.asarray(mask), nu=nu))
 
 
 def evaluer(fit, raw, as_of) -> dict:
@@ -204,7 +207,7 @@ def par_chaine(variante: str, stem: str, coupure: str) -> dict:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--variante", choices=["hier", "hier2d", "hier_rep", "hiercercle", "hiercercle_sr", "hiercercle_ra", "hier_ra", "hiercercle_ra_abs"], required=True)
+    ap.add_argument("--variante", choices=["hier", "hier2d", "hier_rep", "hiercercle", "hiercercle_sr", "hiercercle_ra", "hier_ra", "hiercercle_ra_abs", "hier_ra_t"], required=True)
     ap.add_argument("--stem", default=None)
     ap.add_argument("--coupure", default="T2-7")
     ap.add_argument("--par-chaine", action="store_true", help="critère 4 révisé (écarts entre chaînes)")

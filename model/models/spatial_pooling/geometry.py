@@ -116,14 +116,26 @@ def ancres_par_famille(candidates, order_groups, min_gap: float = 0.25,
     return 1.0 / (1.0 + np.exp(-x))
 
 
-def spatial_shares(mu, sigma, w, tested_mask) -> jnp.ndarray:
+def _noyau(mu, sigma, nu=None, grille=None) -> jnp.ndarray:
+    """Log-noyau NON normalisé (...,N,B). `nu` None : gaussien ; sinon Student-t de
+    degré `nu` (scalaire ou (S,), spec §8.51), qui tend vers le gaussien quand nu → ∞."""
+    g = V if grille is None else grille
+    z2 = (g - mu[..., None]) ** 2 / sigma[..., None] ** 2
+    if nu is None:
+        return -z2 / 2
+    n = jnp.asarray(nu)
+    n = n.reshape(n.shape + (1, 1)) if n.ndim else n
+    return -(n + 1) / 2 * jnp.log1p(z2 / n)
+
+
+def spatial_shares(mu, sigma, w, tested_mask, nu=None) -> jnp.ndarray:
     """Coeur du modèle d'observation (spec §4) : softmax masqué sur la grille +
     agrégation par les poids démographiques W -> pi (P,N) ou (N,) selon la
     forme de tested_mask. `mu`/`sigma`/`w` : (N,) OU (S,N) pour S tirages
     postérieurs poussés en parallèle (cf. `pi_draws_for_mask`, spec §"Incertitude") ;
     dans ce dernier cas `tested_mask` doit être (N,) (un seul scénario) et la
     sortie est (S,N)."""
-    D = -((V[None, :] - mu[..., None]) ** 2) / (2 * sigma[..., None] ** 2)   # (...,N,B)
+    D = _noyau(mu, sigma, nu)                                              # (...,N,B)
     # Noyau NORMALISÉ sur la grille (spec §12.10) : on retranche
     # `log(Σ_b W_b e^{D_b})` pour que le profil d'attractivité de chaque
     # candidat intègre à 1, quels que soient `mu` et `sigma`.
@@ -194,10 +206,11 @@ def ou_kl_basis(unique_dates, as_of, tau_ou, var_cible=0.99, k_max=15, center=Fa
 
 
 # --- Second tour (spec_second_tour.md §2) ----------------------------------------
-def log_attractivite(mu, sigma, w) -> jnp.ndarray:
+def log_attractivite(mu, sigma, w, nu=None) -> jnp.ndarray:
     """`A_i(v) = w_i + log phi_i(v)`, noyau normalisé sur la grille (même
-    convention que `spatial_shares`). `mu`/`sigma`/`w` : (...,N) -> (...,N,B)."""
-    D = -((V - mu[..., None]) ** 2) / (2 * sigma[..., None] ** 2)
+    convention que `spatial_shares`). `mu`/`sigma`/`w` : (...,N) -> (...,N,B).
+    `nu` : degré du noyau de Student-t (§8.51), None = gaussien."""
+    D = _noyau(mu, sigma, nu)
     return w[..., None] + D - jax.nn.logsumexp(D, axis=-1, b=W, keepdims=True)
 
 
