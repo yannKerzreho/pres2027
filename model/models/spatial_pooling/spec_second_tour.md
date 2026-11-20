@@ -2967,6 +2967,51 @@ reports (R2, R3, A′) sont donc en partie des artefacts.
 Un refit avec le drapeau est **nécessaire** avant toute conclusion sur les cases « Aucun » ou sur
 R3c. C'est la mesure 2.
 
+### 8.50 Reports d'avant T1 : groupement par hypothèse et champ par ligne (revue locale du 20/11, points 1.1-1.2)
+
+**Défaut 1.1.** `arrays_reports` groupait par (notice, électorat). Une notice d'avant T1 teste
+jusqu'à 6 duels ; leurs cellules étaient fusionnées dans un `dict` (la dernière hypothèse lue
+gagnait), et la paire (a, b) venait de la première. En 2022, à T1−30, 179 groupes sur 196 sont
+touchés. Les tableaux d'entre-deux-tours (une hypothèse par notice) ne le sont pas. Les
+résultats A′1, A′2, B′2, les diagnostics de modes et `A2_cercle` sont donc **invalides**.
+
+**Défaut 1.2.** Le champ des électorats était un seul vecteur, enrichi de toutes les lignes : un
+finaliste hypothétique (Bertrand, Taubira) entrait dans le champ de *toutes* les lignes.
+
+**Correctif.**
+
+- Une observation par (notice, électorat, hypothèse).
+- Champ par ligne : $C_r = C_{\text{officiel}}\cup\{a_r, b_r, k_r\}$, transmis comme une matrice
+  (R, N) à `reports_cellules`.
+- Repli sans champ officiel (2027) : l'union de toutes les lignes, comme avant.
+- Test unitaire : une notice à deux duels donne deux lignes non mélangées.
+
+**Témoin de persistance (données seules, calculé avant tout fit).** On prend la moyenne des
+tableaux d'avant T1 Macron–Le Pen des 30 jours précédant `as_of`, et on la compare au partage
+mesuré entre les deux tours.
+
+| | Mélenchon | Pécresse / Hamon | Jadot / Fillon | Zemmour / Dupont-Aignan | MAE |
+|---|---|---|---|---|---|
+| 2022 | −1,9 | −1,5 | −2,9 | +4,1 | **2,6** |
+| 2017 | +4,8 | −1,2 | −3,2 | +7,3 | **4,1** |
+
+Les tableaux d'avant T1 *contiennent* presque la réponse. Un modèle n'apporte de la valeur que
+s'il fait au moins aussi bien, tout en donnant les duels jamais sondés et la cohérence avec le T1.
+
+**Critères révisés de l'étape A′ (corrigée), figés avant tout fit.** Ils remplacent les critères 1
+et 2 de §8.47.4, jugés trop faciles par la revue. Ils valent pour toute variante (segment, cercle,
+noyau t) sur 2022 à T1−30, avec `--lse-officiel`, 8 chaînes, une seule plateforme. Ils sont lus
+sur le **mode dominant** (les chaînes à moins de 10 nats de la meilleure, ET de même géométrie :
+écart de σ_Mélenchon ≤ 0,02 entre elles), et chaque mode est rapporté.
+
+1. MAE des 4 partages ≤ persistance + 1 = **3,6 pt** ;
+2. partage Mélenchon à moins de 5 pt du mesuré ;
+3. plausibilité : **σ_Le Pen / σ_Macron < 1,5** (orientation utilisateur du 20/11, désormais un
+   critère) ;
+4. stabilité : 8 chaînes, mode dominant visité par au moins 3 chaînes ; duels clés ≤ 3 pt entre
+   ces chaînes ;
+5. T1 contre le résultat ≤ 3,1 pt ; la couverture IC90 du T1 est rapportée (revue 1.4).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

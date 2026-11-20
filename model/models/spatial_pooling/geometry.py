@@ -299,10 +299,12 @@ def reports_cellules(A, champ_mask, ia, ib, k_idx, kappa, eta_diff, lse, omega, 
     différentiables : δ par `n_newton` pas de Newton depuis `eta_diff` pour que
     l'agrégat des électorats du champ redonne `s_ab`.
 
-    A : (R, N, G) ; champ_mask : (N,) 0/1 ; ia, ib, k_idx : (R,) entiers ;
+    A : (R, N, G) ; champ_mask : (N,) ou (R, N) 0/1 (champ par ligne, §8.50) ; ia, ib, k_idx : (R,) entiers ;
     kappa, omega : scalaires ; eta_diff, s_ab : (R,) ; lse : (R, G) ou None."""
     rows = jnp.arange(A.shape[0])
-    Am = A + jnp.log(jnp.clip(champ_mask, 1e-30, None))[None, :, None]
+    cm = jnp.asarray(champ_mask)
+    cm = cm if cm.ndim == 2 else cm[None, :]
+    Am = A + jnp.log(jnp.clip(cm, 1e-30, None))[:, :, None]
     p = jnp.exp(Am - jax.nn.logsumexp(Am, axis=1, keepdims=True))         # (R,N,G)
     A_a, A_b = A[rows, ia], A[rows, ib]
     kq = jnp.asarray(kappa)
@@ -314,7 +316,7 @@ def reports_cellules(A, champ_mask, ia, ib, k_idx, kappa, eta_diff, lse, omega, 
     Rk = pr / jnp.clip(E, 1e-12, None)
     G = jnp.clip(jnp.einsum("rng,rg,rg,g->rn", p, rho, q, poids) / jnp.clip(pr, 1e-12, None), 1e-6, 1 - 1e-6)
     lG = jnp.log(G) - jnp.log1p(-G)
-    wgt = E * Rk * champ_mask[None, :]
+    wgt = E * Rk * cm
     wgt = wgt / jnp.clip(wgt.sum(1, keepdims=True), 1e-12, None)
     d = jnp.asarray(eta_diff)
     for _ in range(n_newton):

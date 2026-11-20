@@ -355,20 +355,24 @@ def ancres_u(candidates: list[str], duels: dict) -> dict:
 def arrays_reports(reports: pd.DataFrame, candidates: list[str], as_of: str,
                    champ_reports: list | None) -> dict | None:
     """Tableaux de reports (data/parsed/reports_t2_*.csv) -> observations de la
-    vraisemblance Dirichlet (spec §8.44.4). Une ligne par (notice, électorat) datée
-    au plus `as_of`, cellules (a, b, aucun) renormalisées, plancher 0,5 %."""
+    vraisemblance Dirichlet (spec §8.44.4). Une ligne par (notice, électorat,
+    HYPOTHÈSE) datée au plus `as_of`, cellules (a, b, aucun) renormalisées, plancher
+    0,5 %. §8.50 : une notice d'avant T1 teste plusieurs duels ; les grouper par
+    (notice, électorat) seulement mélangeait leurs cellules. Champ PAR LIGNE : champ
+    officiel ∪ {a, b, k} de la ligne (un finaliste hypothétique hors champ n'entre que
+    dans sa propre ligne)."""
     noms = {_nom_court(c): i for i, c in enumerate(candidates)}
     complets = {c: i for i, c in enumerate(candidates)}
     r = reports[pd.to_datetime(reports["date_fin"]) <= pd.Timestamp(as_of)]
     if r.empty:
         return None
-    champ = np.zeros(len(candidates))
+    champ0 = np.zeros(len(candidates))
     for c in (champ_reports or []):
         i = complets.get(c, noms.get(_nom_court(c)))
         if i is not None:
-            champ[i] = 1.0
-    Y, K, A, Bf, D, rows = [], [], [], [], [], []
-    for (notice, elec), g in r.groupby(["notice", "electorat_t1"], sort=False):
+            champ0[i] = 1.0
+    Y, K, A, Bf, D, rows, CH = [], [], [], [], [], [], []
+    for (notice, elec, _hyp), g in r.groupby(["notice", "electorat_t1", "hypothese"], sort=False):
         a_lab, b_lab = [x.strip() for x in str(g["hypothese"].iloc[0]).replace("—", "–").split("–")]
         ia, ib, k = noms.get(_nom_court(a_lab)), noms.get(_nom_court(b_lab)), complets.get(elec, noms.get(_nom_court(elec)))
         parts = dict(zip(g["candidat_t2"], g["part"].astype(float)))
@@ -377,12 +381,19 @@ def arrays_reports(reports: pd.DataFrame, candidates: list[str], as_of: str,
         y = np.maximum(np.array([parts[a_lab], parts[b_lab], parts["Aucun"]]), 0.5)
         Y.append(y / y.sum()); K.append(k); A.append(ia); Bf.append(ib)
         D.append(float(pd.Timestamp(g["date_fin"].iloc[0]).toordinal()))
-        rows.append((notice, elec, str(g["date_fin"].iloc[0])))
-        champ[[ia, ib, k]] = 1.0
+        rows.append((notice, elec, str(g["date_fin"].iloc[0]), _hyp))
+        ch = champ0.copy()
+        ch[[ia, ib, k]] = 1.0
+        CH.append(ch)
     if not Y:
         return None
+    CH = np.array(CH)
+    if not champ_reports:
+        # Pas de champ officiel (ex. 2027) : repli sur l'union des candidats des reports,
+        # comme avant §8.50, appliquée à toutes les lignes.
+        CH = np.repeat(CH.max(axis=0, keepdims=True), len(CH), axis=0)
     return {"y": np.array(Y), "k": np.array(K), "a": np.array(A), "b": np.array(Bf),
-            "dates": np.floor(np.array(D)), "champ": champ, "rows": rows}
+            "dates": np.floor(np.array(D)), "champ": CH, "rows": rows}
 
 def pi_draws_for_mask(fit: SpatialPoolingFit, mask: np.ndarray) -> np.ndarray:
     """LE point de cette architecture (spec §7) : pi pour un scénario

@@ -36,3 +36,23 @@ def test_modele_initialise_avec_gamma():
     assert np.isfinite(float(info.potential_fn(info.param_info.z)))
     tr = handlers.trace(handlers.seed(spatial_pooling_model_ou, 0)).get_trace(**b["kwargs"])
     assert "gamma_abs" in tr
+
+
+def test_reports_groupes_par_hypothese():
+    """§8.50 : une notice qui teste deux duels donne deux lignes distinctes, non mélangées."""
+    import pandas as pd
+    from model.models.spatial_pooling.fit import arrays_reports
+    cands = ["Jean-Luc Mélenchon", "Emmanuel Macron", "Marine Le Pen", "Xavier Bertrand"]
+    lignes = []
+    for hyp, b, vals in (("Macron – Le Pen", "Le Pen", (60.0, 15.0, 25.0)),
+                         ("Macron – Bertrand", "Bertrand", (20.0, 30.0, 50.0))):
+        for c, v in zip(("Macron", b, "Aucun"), vals):
+            lignes.append({"notice": "N1", "date_fin": "2022-03-01", "hypothese": hyp,
+                           "electorat_t1": "Jean-Luc Mélenchon", "candidat_t2": c, "part": v})
+    rep = arrays_reports(pd.DataFrame(lignes), cands, "2022-03-10",
+                         ["Jean-Luc Mélenchon", "Emmanuel Macron", "Marine Le Pen"])
+    assert rep["y"].shape == (2, 3)
+    i_lp = [r[3] for r in rep["rows"]].index("Macron – Le Pen")
+    assert np.allclose(rep["y"][i_lp], [0.60, 0.15, 0.25])
+    # champ par ligne : Bertrand seulement dans sa propre ligne
+    assert rep["champ"][i_lp][3] == 0.0 and rep["champ"][1 - i_lp][3] == 1.0
