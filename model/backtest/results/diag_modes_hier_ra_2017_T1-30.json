@@ -1,0 +1,74 @@
+[
+ {
+  "chaine": 0,
+  "lp": 2886.9,
+  "melenchon": 92.0,
+  "fillon": 51.5,
+  "sigma_jlm": 0.112,
+  "sigma_lp_sur_macron": 1.16,
+  "t1_mae": 1.731
+ },
+ {
+  "chaine": 1,
+  "lp": 2889.0,
+  "melenchon": 91.7,
+  "fillon": 51.2,
+  "sigma_jlm": 0.108,
+  "sigma_lp_sur_macron": 1.11,
+  "t1_mae": 1.733
+ },
+ {
+  "chaine": 2,
+  "lp": 3005.3,
+  "melenchon": 83.0,
+  "fillon": 65.4,
+  "sigma_jlm": 0.083,
+  "sigma_lp_sur_macron": 2.39,
+  "t1_mae": 1.96
+ },
+ {
+  "chaine": 3,
+  "lp": 2888.2,
+  "melenchon": 92.1,
+  "fillon": 51.1,
+  "sigma_jlm": 0.11,
+  "sigma_lp_sur_macron": 1.11,
+  "t1_mae": 1.74
+ },
+ {
+  "chaine": 4,
+  "lp": 3004.6,
+  "melenchon": 82.9,
+  "fillon": 65.3,
+  "sigma_jlm": 0.082,
+  "sigma_lp_sur_macron": 2.38,
+  "t1_mae": 1.953
+ },
+ {
+  "chaine": 5,
+  "lp": 2888.8,
+  "melenchon": 92.0,
+  "fillon": 51.3,
+  "sigma_jlm": 0.113,
+  "sigma_lp_sur_macron": 1.13,
+  "t1_mae": 1.739
+ },
+ {
+  "chaine": 6,
+  "lp": 2887.4,
+  "melenchon": 92.0,
+  "fillon": 51.2,
+  "sigma_jlm": 0.111,
+  "sigma_lp_sur_macron": 1.12,
+  "t1_mae": 1.732
+ },
+ {
+  "chaine": 7,
+  "lp": 3003.7,
+  "melenchon": 82.9,
+  "fillon": 65.3,
+  "sigma_jlm": 0.083,
+  "sigma_lp_sur_macron": 2.39,
+  "t1_mae": 1.96
+ }
+]

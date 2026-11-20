@@ -61,6 +61,18 @@ l'historique, ajouter en bas de « Historique ».
   LECTURE : même sens qu'A′2. Les reports d'avant T1 rapprochent le partage Mélenchon de la mesure
   (+6,6 au lieu de la saturation), mais la multimodalité reste l'obstacle. Le mode dominant n'est
   visité que par 1 chaîne sur 4.
+- DIAGNOSTIC 8 CHAÎNES DE B′2 (session locale, 2026-11-20 11:50Z, `results/diag_modes_hier_ra_2017_T1-30.json`).
+  Deux modes, séparés de 117 nats :
+  · mode dominant (lp ≈ 3004-3005, chaînes 2, 4, 7) : partage Mélenchon 83 (mesuré 76,4), Fillon 65
+    (62,8), σ_LP/σ_Macron 2,4 (Le Pen LARGE), T1 1,95-1,96 ;
+  · mode secondaire (lp ≈ 2887-2889, 5 chaînes) : Mélenchon 92, Fillon 51, σ_LP/σ_Macron 1,1
+    (Le Pen ÉTROITE), T1 1,73.
+  La lecture de B′2 (chaîne retenue = mode dominant) tient. Mais 2017 confirme le mécanisme vu en
+  2022 : dans le SEGMENT, ce qui fait coller les reports est l'élargissement de Le Pen, que
+  l'utilisateur juge non crédible. Le mode « Le Pen étroite » prédit MIEUX le T1 (1,73 contre 1,96)
+  et PIRE les reports. Le T1 veut une Le Pen étroite, les reports la veulent large : le segment
+  ne peut pas satisfaire les deux, c'est la tension que le cercle (A′1) et l'abstention située
+  (R3c) doivent lever.
 - CORRECTION DE LA LECTURE D'A′2 (session locale, 2026-11-20 11:35Z ; diagnostic à 8 chaînes, graines
   27-34, `results/diag_modes_hier_ra_2022_T1-30.json`). Deux modes nets :
   · mode H (densité HAUTE, lp 11236-11241, chaînes 1, 4, 6, 7) : σ_Mélenchon 0,021-0,032,
