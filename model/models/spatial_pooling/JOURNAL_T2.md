@@ -31,6 +31,21 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- RÉSULTAT A′2 (session locale, Mac, 2026-11-20 10:20Z ; segment `hier_ra`, 2022 à T1−30 avec
+  reports d'AVANT T1, 4 chaînes de 25-47 min ; JSON `second_round_hier_ra_v2_2022_T1-30.json`,
+  `eval_r2_hier_ra_2022_T1-30{,_par_chaine}.json`, commit 989f304) — critères §8.47.4 :
+  1. partage Mélenchon 67,4 (mesuré 63,0 ; +4,4) ✓ — sans ces reports : 100 (§8.44) ;
+  2. MAE des 4 partages 3,2 pt (Mélenchon +4,4, Pécresse +1,8, Jadot +2,1, Zemmour +4,4) ✓
+     (seuil 14,7 ; persistance naïve après T1 : 3,6) ;
+  3. stabilité ✗ : partage Mélenchon 62,8 / 86,0 / 49,0 / 48,8 selon la chaîne (écart 37 pt),
+     duels Le Pen–Mélenchon 9,6, Mélenchon–Zemmour 9,3, Mélenchon–Pécresse 9,3 ; lp
+     11208 / 11239 / 11229 / 11231 (31 nats) ; R̂ max 7,4. ÉCHEC probant même sur le Mac
+     (le Mac sous-explore les modes, il ne les invente pas) ;
+  4. T1 contre le résultat 2,91-2,99 pt ✓ (1D sans reports 2,98).
+  LECTURE : le SEGMENT, avec les reports d'avant T1, prédit en moyenne les reports de Mélenchon
+  avant le T1 : le cercle n'est pas nécessaire pour cela (parcimonie, consigne utilisateur du
+  20/11). Reste la multimodalité de Mélenchon entre deux modes (≈ 49 et ≈ 86 %). À comparer
+  avec A′1 (cercle, VM).
 - [ ] [EN COURS VM (début 2026-11-20 09:32Z) : A′1 `hiercercle_ra` V2 T1−30 2022, 4 processus d'une chaîne] **DEMANDE VM (session locale, au nom de l'utilisateur, 2026-11-20 ~09:35Z)** — le GPU Colab
       est indisponible depuis 23:50Z ; l'utilisateur demande d'utiliser la VM et le Mac.
       Étape **A′1 de R3b** (spec §8.47.5, critères 1-4 de §8.47.4 figés) sur la VM, 4 processus
