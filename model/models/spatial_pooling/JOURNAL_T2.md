@@ -31,6 +31,14 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- [ ] **DEMANDE VM n° 3 (session locale, 2026-11-20 ~23:10Z)** — R6, cercle FERMÉ (A = 2π, un
+      paramètre de moins), spec §8.55 (critères figés avant tout fit), code sur la branche. Même
+      plateforme et même nombre de chaînes qu'A′1 corrigé, auquel il est comparé (VM, 4 chaînes) :
+      `python -m model.backtest.second_round --only v2 --election 2022 --coupure T1-30 --variante hiercercle_ra_ferme --lse-officiel --chaine k`
+      pour k = 0..3, puis `--fusionner --lse-officiel` et
+      `python -m model.backtest.modes --variante hiercercle_ra_ferme --stem second_round_hiercercle_ra_ferme_v2_2022_T1-30_lseo --n 4 --lse-officiel`
+      (`PRES2027_N_CHAINES=4`). Verdict selon §8.55, règle de parcimonie comprise.
+
 - **ALERTE (session locale, 2026-11-20 12:30Z, revue Opus locale point 1.1, VÉRIFIÉ) — reports
   d'avant T1 BROUILLÉS par `arrays_reports`** (fit.py, groupement par (notice, électorat) : les
   hypothèses de duel d'une même notice sont mélangées, la dernière lue gagne). 2022 : 179 groupes
