@@ -1160,6 +1160,37 @@ Idées :
   résoudre par la session locale ou l'orchestrateur. Ces données concernent R3b (session
   locale). Aucun nouveau duel 2027 après le 17/11 : pas de score prospectif.
 
+## Revue Opus 2026-11-20 ~20:00Z (session locale) — lecture d'A′2 corrigé, R4/R5, diagnostic de fond
+
+- **1.1-1.2 Lecture d'A′2 juste ; η ne change pas la monotonie (0 % même avec le décalage δ).**
+  Pris acte. Nuance consignée : au niveau des électorats, la gauche vote majoritairement Macron
+  (Mélenchon 66, Jadot 78) ; c'est le MÉCANISME qui est rejeté (votants v < 0,08 à 100 % Le Pen),
+  pas l'agrégat. Monotonie PONDÉRÉE par la masse ajoutée au rapport (§8.54) : 0,296 sur A′2
+  corrigé, 30 % des votants à gauche de Macron. Le critère 3b d'origine reste le critère du segment.
+- **1.1 `monotonie_gauche` n'a pas de sens sur le cercle.** ACCEPTÉ, CORRIGÉ AVANT LECTURE d'A′1 :
+  monotonie circulaire (arc entre Mélenchon et Macron, part mal classée ≤ 10 %), §8.54, `modes.py`.
+- **1.3 « Un seul mode » quasi probant** (jumeau T4 c0 identique). Pris acte ; le jumeau T4 complet
+  tourne (`_lseo_t4`).
+- **1.4 Pécresse ratée EN ÉCHANTILLON** (données d'apprentissage : 62,8 ; modèle : 51,5). Aucun
+  artefact. ACCEPTÉ : c'est un désajustement structurel, pas un défaut de généralisation.
+- **2.1-2.2 R5 correct mais tautologique sur 3/3b ; prédiction analytique : échec au critère 2
+  (Mélenchon ≥ 80).** ACCEPTÉ, prédiction FIGÉE (§8.54). R5 tourne quand même sur le Mac, après R4,
+  comme contrôle bon marché de la prédiction.
+- **2.3 R4 : le levier « σ_LP large » survit à la limite lointaine ; confusion ν/σ.** ACCEPTÉ :
+  corr(log ν, log σ_LP) rapportée, et R4 déclaré « équivalent au gaussien » si q95(ν) ≥ 30 (§8.54).
+- **3.1-3.3 Le segment imite un fer à cheval par DEUX noyaux larges (Le Pen ET Mélenchon) ;
+  Pécresse et Jadot en sont les dégâts collatéraux.** ACCEPTÉ comme diagnostic principal. Contrôles de
+  structure figés : σ_Mélenchon ≤ 0,15 ; électorat LP → Mélenchon ≥ 45 % ; électorat Zemmour →
+  Mélenchon ≤ 40 % dans Mélenchon–Macron (§8.54). Mesuré sur A′2 corrigé : 64,1 / 64,2, σ 0,27. Le
+  segment ne distingue pas Le Pen de Zemmour.
+- **3.4 κ de choix séparé, η par électorat, Le Pen plus centrale : rejetés.** Accord (le deuxième est
+  non géométrique et contraire à la parcimonie).
+- **3.5 Forme minimale = le cercle (1 paramètre).** ACCEPTÉ, et cohérent avec l'orientation de
+  l'utilisateur. Le cercle avec reports d'avant T1 corrigés est AJOUTÉ à la file T4 (8 chaînes,
+  `_lseo_t4`, jumeau Linux de l'A′1 de la VM), derrière A′2/R4 T4.
+- **4.2 Diagnostic en échantillon sur toutes les cellules d'avant T1 (0 fit).** RETENU, à coder
+  (critère : aucune cellule de plus de 50 lignes avec une erreur supérieure à 8 pt).
+
 ## Revue Opus 2026-11-20 ~16:15Z (session locale) — correctif §8.50 et code R4
 
 - **1.1 Groupement correct** (2022 : 671 lignes retenues, aucun doublon ni inversion). Pris acte.

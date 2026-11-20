@@ -3093,6 +3093,36 @@ construction et n'est pas compté.
 moins au lieu d'un de plus). S'il échoue à 1 ou 2, on mesure ce que coûte la plausibilité imposée :
 écart de MAE des partages et de log-densité des reports contre A′2 corrigé, rapportés tels quels.
 
+### 8.54 Lecture du cercle (A′1 corrigé) et prédictions figées (revue locale du 20/11 soir) — AVANT toute lecture d'A′1 corrigé ou de R4/R5
+
+**Monotonie circulaire (critère 3b sur le cercle).** La monotonie du segment n'a pas de sens sur le
+cercle : il n'y a pas de « v < μ_Macron ». On la remplace par la part des votants de l'**arc gauche**,
+c'est-à-dire des θ compris entre θ_Mélenchon et θ_Macron sur l'arc avant, pour lesquels
+q_Macron(θ) < 0,5 dans le duel Macron–Le Pen. Elle est pondérée par la densité uniforme des votants,
+et le critère est **≤ 10 %**, lu sur la moyenne a posteriori. Pour le segment, la même version
+pondérée (votants v < μ_M) est RAPPORTÉE à côté du critère 3b d'origine, qui reste le critère.
+
+**Contrôles de structure, rapportés pour toute variante**, avec seuils figés :
+
+- σ_Mélenchon ≤ 0,15 ;
+- σ_LP/σ_M < 1,5 ;
+- électorat Le Pen donnant ≥ 45 % à Mélenchon dans Mélenchon–Macron (données d'avant T1 : 56,8) ;
+- électorat Zemmour donnant ≤ 40 % à Mélenchon (données : 31,9).
+
+Ces deux derniers sont des « fers à cheval » mesurés, que la géométrie doit reproduire sans
+élargir de noyau.
+
+**Prédictions figées (revue, 2.2-2.3).**
+
+- **R5** (σ_LP ≡ σ_M) : A_M − A_LP est alors linéaire en v. Prédiction : **échec au critère 2,
+  Mélenchon ≥ 80**. Les critères 3 et 3b y sont vrais par construction et ne sont PAS informatifs.
+  R5 sert de contrôle de cette prédiction.
+- **R4** (noyau t) : on rapporte corr(log ν, log σ_LP). Si q95(ν) ≥ 30, R4 est déclaré « équivalent
+  au gaussien », sans verdict sur 3b.
+
+**Limite annoncée.** Le « Aucun » de Pécresse (15 contre 30) risque de rester raté, cercle ou pas :
+un électorat placé entre les deux finalistes s'abstient peu.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

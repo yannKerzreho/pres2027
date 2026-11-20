@@ -32,8 +32,77 @@ def _sig(fit, nom):
     return float(fit.sigma_draws[:, fit.candidates.index(nom)].mean())
 
 
+def _q_macron_lp(fit):
+    A, _ = E._A(fit, fit.w_draws)                                   # (S, N, G)
+    im, il = fit.candidates.index(EM), fit.candidates.index(MLP)
+    k = np.asarray(fit.kappa_draws)[:, None]
+    return 1 / (1 + np.exp(-k * (A[:, im] - A[:, il])))             # (S, G)
+
+
+def monotonie_ponderee(fit) -> float | None:
+    """§8.54 : part (pondérée par la densité uniforme des votants) de l'arc/segment « gauche »
+    (entre Mélenchon et Macron sur le cercle ; v < μ_Macron sur le segment) où q_Macron < 0,5,
+    moyenne a posteriori. Critère cercle : ≤ 0,10 ; rapportée seulement pour le segment."""
+    q = _q_macron_lp(fit)
+    im, ij = fit.candidates.index(EM), fit.candidates.index(JLM)
+    if fit.arc_draws is not None:
+        from model.models.spatial_pooling.geometry import THETA
+        th = np.asarray(THETA)[None, :]
+        t = fit.arc_draws[:, None] * (fit.mu_draws - 0.5)           # (S, N)
+        lo, hi = np.minimum(t[:, ij], t[:, im])[:, None], np.maximum(t[:, ij], t[:, im])[:, None]
+        zone = (th >= lo) & (th <= hi)
+        w = np.ones(th.shape[1])                                     # trapèzes : poids égaux
+    elif fit.nu_draws is None:
+        from model.models.spatial_pooling.geometry import V, W
+        zone = np.asarray(V)[None, :] < fit.mu_draws[:, im][:, None]
+        w = np.asarray(W)                                           # Gauss-Legendre : poids de masse
+    else:
+        return None
+    mal = ((q < 0.5) & zone) * w[None, :]
+    return float((mal.sum(1) / np.clip((zone * w[None, :]).sum(1), 1e-12, None)).mean())
+
+
+def structure(fit) -> dict:
+    """§8.54 : électorats Le Pen et Zemmour dans Mélenchon–Macron (fer à cheval mesuré)."""
+    from scipy.special import logsumexp
+    from model.models.spatial_pooling.geometry import reports_cellules
+    c = fit.candidates
+    if JLM not in c or EM not in c:
+        return {}
+    A, poids = E._A(fit, fit.w_draws)
+    S = A.shape[0]
+    lse = logsumexp(A if fit.masque_lse is None else A + np.log(fit.masque_lse)[None, :, None], axis=1)
+    ia, ib = c.index(JLM), c.index(EM)
+    res = E.sr.load_results()
+    t1 = res[(res.election == E.ELECTION) & (res.tour == "Premier tour")]
+    idx = {E._norm(x): i for i, x in enumerate(c)}
+    mask = np.zeros(len(c)); mask[[idx[E._norm(x)] for x in t1.candidat if E._norm(x) in idx]] = 1.0
+    s_ab = duel_draws(fit, JLM, EM, 0.0, scrutin=False)
+    out = {}
+    for nom, cle in ((MLP, "electorat_LP_vers_JLM"), ("Eric Zemmour", "electorat_Zemmour_vers_JLM")):
+        if nom not in c:
+            continue
+        th, _ = reports_cellules(jnp.asarray(A), jnp.asarray(mask), jnp.full(S, ia), jnp.full(S, ib),
+                                 jnp.full(S, c.index(nom)), jnp.asarray(fit.kappa_draws),
+                                 jnp.asarray(fit.eta_draws[:, ia] - fit.eta_draws[:, ib]), jnp.asarray(lse),
+                                 jnp.asarray(fit.omega_draws), jnp.asarray(s_ab), poids, n_newton=8,
+                                 omega_g=E._omega_g(fit))
+        th = np.asarray(th)
+        out[cle] = round(float(100 * (th[:, 0] / (th[:, 0] + th[:, 1])).mean()), 1)
+    out["sigma_melenchon"] = round(_sig(fit, JLM), 3)
+    out["ok_sigma_jlm"] = out["sigma_melenchon"] <= 0.15
+    if "electorat_LP_vers_JLM" in out:
+        out["ok_LP"] = out["electorat_LP_vers_JLM"] >= 45.0
+    if "electorat_Zemmour_vers_JLM" in out:
+        out["ok_Zemmour"] = out["electorat_Zemmour_vers_JLM"] <= 40.0
+    return out
+
+
 def monotonie_gauche(fit) -> float:
-    """Part des tirages où q_Macron(v) ≥ 0,5 pour tout nœud v < μ_Macron (duel Macron–Le Pen)."""
+    """Part des tirages où q_Macron(v) ≥ 0,5 pour tout nœud v < μ_Macron (duel Macron–Le Pen).
+    Segment seulement (§8.54) ; sur le cercle, voir `monotonie_ponderee`."""
+    if fit.arc_draws is not None:
+        return float("nan")
     A, _ = E._A(fit, fit.w_draws)                                   # (S, N, G)
     im, il = fit.candidates.index(EM), fit.candidates.index(MLP)
     from model.models.spatial_pooling.geometry import V
@@ -112,6 +181,15 @@ def criteres(variante, stem, coupure, lignes, dom, election) -> dict:
         "5_t1_couverture": ev["t1_resultat"]["couverture_ic90"],
         "aucun_mae": round(mae_a, 2), "aucun_ok": mae_a <= pers_aucun + 2.0,
     }
+    mp = monotonie_ponderee(fit)
+    res["3b_pondere_part_mal"] = None if mp is None else round(mp, 3)
+    if fit.arc_draws is not None:                                   # §8.54 : 3b circulaire
+        res["3b_ok"] = mp is not None and mp <= 0.10
+        res["3b_monotonie_gauche"] = None
+    res["structure"] = structure(fit)
+    if getattr(fit, "nu_t_draws", None) is not None:
+        res["corr_lognu_logsigmaLP"] = round(float(np.corrcoef(np.log(fit.nu_t_draws),
+                                                               np.log(fit.sigma_draws[:, fit.candidates.index(MLP)]))[0, 1]), 3)
     if getattr(fit, "nu_t_draws", None) is not None:
         lnu = np.log(fit.nu_t_draws)
         res.update({"6_log_nu_sd": round(float(lnu.std()), 3), "6_nu_q95": round(float(np.percentile(fit.nu_t_draws, 95)), 1),
