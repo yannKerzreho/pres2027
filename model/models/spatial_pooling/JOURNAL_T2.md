@@ -31,6 +31,18 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- [ ] **DEMANDE VM (session locale, au nom de l'utilisateur, 2026-11-20 ~09:35Z)** — le GPU Colab
+      est indisponible depuis 23:50Z ; l'utilisateur demande d'utiliser la VM et le Mac.
+      Étape **A′1 de R3b** (spec §8.47.5, critères 1-4 de §8.47.4 figés) sur la VM, 4 processus
+      en parallèle (marquer EN COURS, watcher) :
+      `python -m model.backtest.second_round --only v2 --election 2022 --coupure T1-30 --variante hiercercle_ra --chaine k`
+      pour k = 0..3, puis `--fusionner`, puis
+      `python -m model.backtest.eval_r2 --variante hiercercle_ra --coupure T1-30` et `--par-chaine`.
+      Commiter les JSON, consigner les chiffres en spec §8.47 et le verdict selon les critères.
+      Pour le critère 3, l'écart de lp est celui de la fusion (une seule élection). Code : cd9f341
+      (`_reports_avant`), déjà sur la branche. La session locale fait A′2 (`hier_ra`) sur le Mac
+      et garde A et A′3 (joints) pour le GPU : ne PAS lancer ceux-là.
+
 - **COORDINATION GPU (utilisateur, 2026-11-19 ~19:50Z) — règle permanente.** Le GPU (T4
   Google Colab) est piloté UNIQUEMENT par la session locale, depuis le Mac de l'utilisateur.
   La routine n'utilise pas Colab et ne cherche aucun identifiant. Pour un fit lourd :
