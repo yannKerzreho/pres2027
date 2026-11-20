@@ -104,6 +104,13 @@ l'historique, ajouter en bas de « Historique ».
   20/11). Reste la multimodalité de Mélenchon entre deux modes (≈ 49 et ≈ 86 %). À comparer
   avec A′1 (cercle, VM).
 - [ ] [CODE FAIT 20/11 11:39Z (`--lse-officiel` dans second_round et eval_r2, `masque_lse_officiel`, masque aussi dans le bloc reports) ; mesure 1 à 0 fit (§8.49) : sans les fantômes, la case « Aucun » de Pécresse 26,3 → 11,1 (mesuré 29,9) ⇒ le fit utilisait Bertrand comme réservoir d'abstention ; refits avec le drapeau NÉCESSAIRES, après A′1] **(NOUVEAU 20/11, revue point 1, PRÉALABLE à R3c et aux reruns A′) Valeur inclusive sans candidats fantômes** : spec §8.49 ; drapeau `lse_officiel` (backtests : champ officiel du T1 ∪ finalistes), tests ; mesure à 0 fit sur les chaînes existantes, puis reruns A′1/A′2 avec le drapeau, en 8 chaînes, à B = 100 pour le segment.
+- [ ] [EN COURS Mac (session locale, début 2026-11-20 12:00Z)] **A′2 relancé selon §8.49 (revue, points 1-2)** :
+      `hier_ra --lse-officiel`, `PRES2027_B_QUAD=100`, 8 chaînes (graines 27-34), 2 à la fois sur le
+      Mac ; sortie `second_round_hier_ra_v2_2022_T1-30_lseo_c*` ; lecture chaîne par chaîne. La
+      routine n'a PAS à le lancer.
+- NOTE (session locale, 12:00Z) : la DEMANDE VM n° 2 (R3c) ci-dessous se lance AVEC `--lse-officiel`
+  (§8.49 ; `--chaine k --lse-officiel`, puis `--fusionner --lse-officiel`, `eval_r2 … --lse-officiel`),
+  et se compare à A′1 RELANCÉ avec le même drapeau, pas à A′1 actuel.
 - [ ] [EN ATTENTE (routine, 20/11 11:40Z) : la revue (points 1 et 5) montre que la valeur inclusive inclut des candidats fantômes (Bertrand w = 3,3 > Macron dans le cercle 2022) ; or R3c modifie justement le terme d'abstention ⇒ R3c sera lancé APRÈS le correctif §8.49, avec le drapeau, pour ne pas tester une abstention située sur une abstention biaisée. Si la session locale ou l'utilisateur préfère le lancer tel quel, l'écrire ici.] **DEMANDE VM n° 2 (session locale, utilisateur, 2026-11-20 ~11:30Z) — À LANCER APRÈS A′1, sur
       la VM (même plateforme qu'A′1, auquel il est comparé)** : R3c, abstention située sur le
       cercle (idée utilisateur ; spec §8.48 bis, critères figés ; code et tests sur la branche).
