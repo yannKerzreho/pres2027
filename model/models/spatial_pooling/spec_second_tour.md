@@ -2733,6 +2733,19 @@ passe aussi, le cercle n'apporte rien. A′3 dit ce que l'histoire ajoute par-de
 Mélenchon se lit hors échantillon : les reports d'entre-deux-tours 2022, que rien n'a vus, comme
 en A.
 
+**6. Ajout du 2026-11-20, 10:30Z : étape B′2, figée avant lecture.** A′2 (segment + reports
+d'avant T1, 2022 à T1−30) remplit les critères 1, 2 et 4 mais pas le 3. Pour savoir si ce gain se
+généralise, on refait le même ajustement sur l'autre élection : le segment `hier_ra` sur 2017 à
+T1−30. La cible est les reports d'entre-deux-tours 2017, que le fit ne voit pas : partage Mélenchon
+mesuré 76,4. Critères :
+
+1. partage Mélenchon 2017 à moins de 10 pt ;
+2. MAE des partages mesurés 2017 (Mélenchon, Hamon, Fillon, Dupont-Aignan) inférieure à 10 pt ;
+3. stabilité (duels clés 2017 ≤ 3 pt entre chaînes, lp ≤ 10 nats) ;
+4. T1 2017 non dégradé contre le 1D sans reports à T1−30, s'il existe, sinon ≤ 3,1 pt.
+
+Il tourne sur le Mac (verdict de stabilité « non probant s'il est favorable »).
+
 **Limites connues.**
 
 - Deux élections seulement pour apprendre $s_\kappa$, $s_\mu$ et $s_\sigma$ : ces échelles

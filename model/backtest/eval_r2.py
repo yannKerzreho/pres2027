@@ -156,7 +156,11 @@ def rhat_nu(stem: str, champ_noms: list[str], cands: list[str]) -> float | None:
     return round(float(np.nanmax(split_gelman_rubin(x[..., idx]))), 3)
 
 
-DUELS_CLES = ["Emmanuel Macron", "Marine Le Pen", "Jean-Luc Mélenchon", "Eric Zemmour", "Valérie Pécresse"]
+DUELS_CLES_PAR_ELECTION = {
+    2022: ["Emmanuel Macron", "Marine Le Pen", "Jean-Luc Mélenchon", "Eric Zemmour", "Valérie Pécresse"],
+    2017: ["Emmanuel Macron", "Marine Le Pen", "Jean-Luc Mélenchon", "François Fillon", "Benoît Hamon"],
+}
+DUELS_CLES = DUELS_CLES_PAR_ELECTION[2022]
 
 
 def par_chaine(variante: str, stem: str, coupure: str) -> dict:
@@ -168,7 +172,7 @@ def par_chaine(variante: str, stem: str, coupure: str) -> dict:
         fit, raw, as_of = reconstruire(variante, stem, coupure, chaines=[k])
         ev = evaluer(fit, raw, as_of)
         duels = {}
-        for a, b in combinations(DUELS_CLES, 2):
+        for a, b in combinations(DUELS_CLES_PAR_ELECTION[ELECTION], 2):
             duels[f"{a} / {b}"] = round(100 * float(duel_draws(fit, a, b, 0.0, scrutin=False).mean()), 2)
         part = {r["electorat"]: r["modele"] for r in ev["reports"] if r["cellule"] == "partage"}
         nu_sd = (float(np.mean([fit.nu_draws[:, fit.candidates.index(c)].std() for c in ev["nu"]
@@ -190,7 +194,10 @@ def main() -> None:
     ap.add_argument("--stem", default=None)
     ap.add_argument("--coupure", default="T2-7")
     ap.add_argument("--par-chaine", action="store_true", help="critère 4 révisé (écarts entre chaînes)")
+    ap.add_argument("--election", type=int, choices=[2017, 2022], default=2022)
     args = ap.parse_args()
+    global ELECTION
+    ELECTION = args.election
     stem = args.stem or f"second_round_{args.variante}_v2_{ELECTION}_{args.coupure}"
     if args.par_chaine:
         out = {"spec": "spec_second_tour §8.44 (révision 6)", "variante": args.variante, "stem": stem,
