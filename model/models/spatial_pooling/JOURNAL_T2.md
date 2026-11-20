@@ -31,6 +31,21 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- ORIENTATION UTILISATEUR (2026-11-20 ~11:00Z), à respecter dans la suite de R3b et des revues :
+  « passer le plus d'info possible via la géométrie pour révéler la structure politique plutôt
+  que de la contraindre » ; le cercle reste une option viable. Avis d'expert : avec le front
+  républicain, un σ très large pour Le Pen n'est pas crédible. Or c'est exactement le mécanisme
+  par lequel le SEGMENT reproduit les reports en A′2/B′2 : σ_Le Pen 0,19-0,26 contre σ_Macron
+  0,07, si bien que la gaussienne large de Le Pen l'emporte aux deux extrémités (« fer à cheval »
+  par la largeur). Conséquences :
+  (i) LECTURE DE PLAUSIBILITÉ ajoutée à toute évaluation A′/B′ (sans changer les verdicts
+      figés) : σ_Le Pen / σ_Macron et σ_Le Pen / médiane des σ du champ ; un rapport ≫ 1 = le
+      mécanisme jugé non crédible par l'utilisateur ;
+  (ii) le CERCLE garde la priorité de modélisation : il fait croiser les extrêmes par l'arrière
+      sans élargir Le Pen. A′1 (VM) et A′3 (GPU) à lire avec (i) ;
+  (iii) un témoin « segment, σ_Le Pen contraint étroit » serait le test du mécanisme ; à
+      spécifier (maths et critères) seulement si A′1 ne tranche pas.
+  La parcimonie (consigne du même jour) se lit ensuite : à plausibilité égale, le plus simple.
 - RÉSULTAT B′2 (session locale, Mac, 2026-11-20 10:45Z ; segment `hier_ra`, 2017 à T1−30 avec
   reports d'AVANT T1, 4 chaînes de 8-18 min ; JSON `second_round_hier_ra_v2_2017_T1-30.json`,
   `eval_r2_hier_ra_2017_T1-30{,_par_chaine}.json`) — critères §8.47.6 :
