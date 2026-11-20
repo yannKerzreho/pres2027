@@ -3123,6 +3123,44 @@ Ces deux derniers sont des « fers à cheval » mesurés, que la géométrie doi
 **Limite annoncée.** Le « Aucun » de Pécresse (15 contre 30) risque de rester raté, cercle ou pas :
 un électorat placé entre les deux finalistes s'abstient peu.
 
+**Résultat d'A′1 corrigé** (cercle, reports d'avant T1 regroupés selon §8.50, `--lse-officiel`, V2
+T1−30 2022, VM, 4 chaînes d'environ 10 h chacune, 511 pas par tirage). Fichiers :
+`results/second_round_hiercercle_ra_v2_2022_T1-30_lseo.json` et
+`modes_second_round_hiercercle_ra_v2_2022_T1-30_lseo.json`.
+
+Le mode dominant regroupe les chaînes 0, 2 et 3 (lp à 1,6 nat près). La chaîne 1 est 36 nats plus
+bas (σ_Mélenchon 0,086 contre 0,102).
+
+| critère (figé avant lecture) | A′1 corrigé (cercle) | A′2 corrigé (segment, Mac) | verdict A′1 |
+|---|---|---|---|
+| 1. MAE des 4 partages (persistance 2,61) | 7,93 | 7,3 | ✗ |
+| 2. Mélenchon (mesuré 63,0, à moins de 10 pt) | **48,6** | 66 | ✗ (−14,4) |
+| 3. σ_LP/σ_M < 1,5 | 1,64 | ≈ 3,7 | ✗ de peu |
+| 3b. monotonie (circulaire, ≤ 10 %) | 0 % | 0 % (segment) | ✓ |
+| 4. stabilité (écart des duels dans le mode dominant) | 0,09 pt | un seul mode | ✓ |
+| 5. MAE T1 | 2,82 | | ✓ |
+| « Aucun » ≤ persistance + 2 (3,75) | 9,0 | | ✗ |
+| structure : électorat LP → JLM ≥ 45 (56,8) | 63,9 | | ✓ |
+| structure : électorat Zemmour → JLM ≤ 40 (31,9) | 26,6 | | ✓ |
+| structure : σ_Mélenchon ≤ 0,15 | 0,10 | | ✓ |
+
+Grandeurs du modèle : κ = 0,35, arc 3,97 rad (37 % des votants à l'arrière, contre 3,5 % à T2−7 avec
+les fantômes), Macron–Le Pen 59,6 (résultat 58,55).
+
+**Lecture.**
+
+1. **Une fois les deux défauts corrigés, le cercle est stable** : écart des duels de 0,09 pt dans le
+   mode dominant, contre 5-12 pt la veille. Les candidats fantômes et les reports brouillés
+   alimentaient donc la multimodalité (revue du 20/11, point 1).
+2. **Il reproduit la structure croisée sans élargir Le Pen à l'excès** : σ_LP/σ_M vaut 1,64, contre
+   environ 3,7 sur le segment. Il passe les deux « fers à cheval » mesurés (LP→JLM, Zemmour→JLM) et
+   la monotonie circulaire.
+3. **Il dépasse la cible pour Mélenchon** (48,6 contre 63, trop vers Le Pen) et rate les cases
+   « Aucun ». Il ne bat pas non plus la persistance des tableaux (7,9 contre 2,6 pt).
+4. **Verdict : A′1 échoue** (critères 1, 2, 3 et « Aucun »). Ni le cercle ni le segment gaussien ne
+   passent ; R4 (noyau t) et R5 sont en cours sur le Mac. Le cercle reste la seule géométrie qui
+   passe à la fois la stabilité, la monotonie et les contrôles de structure.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
