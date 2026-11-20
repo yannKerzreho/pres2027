@@ -1141,6 +1141,56 @@ Idées :
   résoudre par la session locale ou l'orchestrateur. Ces données concernent R3b (session
   locale). Aucun nouveau duel 2027 après le 17/11 : pas de score prospectif.
 
+## Revue Opus 2026-11-20 ~12:15Z (session locale) — intégration point par point
+
+Relecteur Opus en lecture seule ; rapport complet dans la transcription de la session locale.
+
+- **1.1 Reports d'avant T1 brouillés (hypothèses d'une même notice mélangées).** INTÉGRÉ,
+  VÉRIFIÉ à la main : 179 groupes sur 196 en 2022 à T1−30. Correctif §8.50 (46740e6). A′1, A′2,
+  B′2, les diagnostics de modes et `A2_cercle` sont invalides ; A′2 corrigé est relancé sur le Mac
+  (8 chaînes, B = 100, `--lse-officiel`).
+- **1.2 Champ des reports commun à toutes les lignes (fantômes).** INTÉGRÉ : champ par ligne,
+  §8.50.
+- **1.3 Fuites.** Accord : aucune au sens strict. La fuite méthodologique est réelle : la cible
+  « Mélenchon 2022 = 63 » a été regardée une dizaine de fois. Réponse : les critères révisés
+  (§8.50) sont relatifs à un témoin de persistance calculé avant tout fit, et la seule cible
+  vierge restante, les reports d'avant T1 2027 à paraître, est réservée au test final (à figer
+  le moment venu).
+- **1.4 Critères trop faciles ; couverture du T1 ignorée.** INTÉGRÉ : seuils relatifs à la
+  persistance (2,6 / 4,1 pt), partage Mélenchon à moins de 5 pt, couverture IC90 du T1 rapportée.
+- **1.5 « Le T1 veut une Le Pen étroite » sur-interprété.** ACCEPTÉ : la tension n'est pas
+  démontrée (écart de MAE de 0,1 à 0,2 pt, données de reports fausses). La phrase du diagnostic
+  B′2 est retirée comme conclusion ; la décomposition de la log-densité par facteur se fera sur
+  les fits corrigés.
+- **1.6 Défauts de `multi_election.py`** (variance 1 + s², appariement des putatifs par nom,
+  sélection sur une seule élection). ACCEPTÉ, sans urgence : le joint passe en sommeil (2.2).
+- **2.1 Arc A = crête, fermer le cercle (A = 2π).** RETENU comme piste 4.5 : un paramètre de moins.
+  Le cercle reste prioritaire selon l'orientation utilisateur, mais sous sa forme fermée,
+  seulement après le segment corrigé et la Student-t.
+- **2.2 Joint en sommeil.** ACCEPTÉ : les reports d'avant T1 apportent l'information pré-T1 que le
+  joint devait transporter. Les chaînes A restantes ne tournent que si le GPU revient ; aucun
+  nouveau travail sur le joint.
+- **2.3 Abstention située γ (R3c) à abandonner.** PARTIELLEMENT ACCEPTÉ : l'argument tient (la
+  valeur inclusive fait déjà s'abstenir les électeurs loin des deux finalistes ; un terme en cos θ
+  est symétrique). R3c reste SUSPENDU, pas supprimé. C'est une idée de l'utilisateur : la décision
+  de l'abandonner lui revient (ARBITRAGE À TRANCHER ci-dessous).
+- **2.4 Pondération des reports par l'effectif** (c_r = φ·n_eff). RETENU comme piste, à figer
+  avant le prochain fit avec reports.
+- **2.5 B = 100.** On garde B = 100 (règle §8.48). Le plancher sur σ serait une contrainte
+  supplémentaire.
+- **3.1-3.2 La saturation et la multimodalité tiennent à la forme du noyau (modèle mal spécifié).**
+  ACCEPTÉ comme diagnostic, à confirmer sur les fits corrigés.
+- **3.3 / 4.3 Noyau Student-t (log ν ~ N(log 5 ; 1), un paramètre, emboîte le gaussien).**
+  RETENU, PRIORITÉ 1 après A′2 corrigé : c'est la forme minimale qui croise les extrêmes sans
+  élargir Le Pen. Maths et critères (§8.50 + « ν < 30 ») à écrire avant code.
+- **4.1 Diagnostic à 0 fit** (log-densité par facteur). Reporté sur les fits corrigés, faute de
+  sens sur des chaînes ajustées à de fausses données.
+- **4.4 Témoin « σ_LP contraint ».** RETENU, après 4.3.
+
+ARBITRAGE À TRANCHER (utilisateur) : R3c (abstention située en cos θ) est suspendu. La revue
+pronostique γ ≈ 0, parce que la valeur inclusive produit déjà l'écart Mélenchon/Zemmour. Faut-il
+l'abandonner, ou le tester quand même, sur les données corrigées et après la Student-t ?
+
 ## Revue Opus 2026-11-18 — intégration point par point
 
 1. §8.29 fragile (plafond) : **INTÉGRÉ** (vérifié : −5/−8/−10/aucun → p 0,008 /
