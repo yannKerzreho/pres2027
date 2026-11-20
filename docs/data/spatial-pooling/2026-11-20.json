@@ -5,8 +5,8 @@
     "genere_le": "2026-11-20",
     "as_of": "2026-11-20",
     "scrutin_t1": "2027-04-18",
-    "n_sondages": 54,
-    "n_sondages_disponibles": 86,
+    "n_sondages": 55,
+    "n_sondages_disponibles": 87,
     "horizon_prevision_jours": 149,
     "instituts": [
       "Cluster17",
@@ -25,485 +25,485 @@
       "mean": 0.0054,
       "ic90": [
         0.0045,
-        0.0063
+        0.0064
       ]
     },
     "Mélenchon (LFI)": {
-      "mean": 0.1877,
+      "mean": 0.1883,
       "ic90": [
-        0.1784,
+        0.1801,
         0.1977
       ]
     },
     "Roussel (PCF)": {
-      "mean": 0.0184,
+      "mean": 0.0193,
       "ic90": [
-        0.0165,
-        0.0206
+        0.0171,
+        0.0215
       ]
     },
     "Tondelier (EELV)": {
-      "mean": 0.0274,
+      "mean": 0.0278,
       "ic90": [
-        0.0247,
-        0.0302
+        0.025,
+        0.0308
       ]
     },
     "Glucksmann (PP)": {
-      "mean": 0.1094,
+      "mean": 0.1074,
       "ic90": [
-        0.0996,
-        0.1193
+        0.0978,
+        0.1169
       ]
     },
     "Philippe (Horizons)": {
-      "mean": 0.161,
+      "mean": 0.162,
       "ic90": [
-        0.1489,
-        0.1728
+        0.15,
+        0.1742
       ]
     },
     "Retailleau (LR)": {
-      "mean": 0.0711,
+      "mean": 0.0695,
       "ic90": [
-        0.0621,
-        0.0813
+        0.0606,
+        0.0789
       ]
     },
     "Dupont-Aignan": {
-      "mean": 0.0197,
+      "mean": 0.0195,
       "ic90": [
         0.0174,
-        0.0221
+        0.0217
       ]
     },
     "RN": {
-      "mean": 0.3623,
+      "mean": 0.3632,
       "ic90": [
-        0.3509,
-        0.3732
+        0.3523,
+        0.3738
       ]
     },
     "Zemmour (Reconquête)": {
       "mean": 0.0376,
       "ic90": [
-        0.0334,
-        0.042
+        0.0335,
+        0.0419
       ]
     }
   },
   "forecast_scrutin": {
     "Arthaud (LO)": {
-      "part_moyenne": 0.0058,
+      "part_moyenne": 0.0059,
       "ic90": [
-        0.0016,
-        0.0134
+        0.0017,
+        0.0132
       ],
       "p_qualifie_top2": 0.0,
       "p_arrive_premier": 0.0,
       "quantiles": [
-        0.0016,
+        0.0017,
         0.0032,
-        0.0048,
+        0.0049,
         0.0073,
-        0.0134
+        0.0132
       ],
       "densite": {
         "x0": 0.0009,
-        "dx": 0.000932,
+        "dx": 0.000906,
         "y": [
-          40,
-          83,
-          90,
-          100,
-          64,
-          73,
-          47,
           39,
-          29,
-          17,
-          12,
-          12,
-          14,
-          8,
-          5,
-          3,
-          4,
-          3,
-          3,
-          2,
-          2,
-          1,
-          0,
-          2
-        ]
-      }
-    },
-    "Mélenchon (LFI)": {
-      "part_moyenne": 0.1874,
-      "ic90": [
-        0.0697,
-        0.3637
-      ],
-      "p_qualifie_top2": 0.525,
-      "p_arrive_premier": 0.1512,
-      "quantiles": [
-        0.0697,
-        0.1206,
-        0.1698,
-        0.2374,
-        0.3637
-      ],
-      "densite": {
-        "x0": 0.0411,
-        "dx": 0.019021,
-        "y": [
-          26,
-          45,
-          67,
-          88,
+          83,
+          94,
           100,
-          85,
-          87,
           80,
-          74,
-          63,
-          46,
-          44,
-          41,
-          34,
-          17,
-          17,
-          13,
-          11,
+          70,
+          57,
+          40,
+          28,
+          23,
+          21,
           9,
-          7,
-          7,
-          3,
-          2,
-          4
-        ]
-      }
-    },
-    "Roussel (PCF)": {
-      "part_moyenne": 0.0198,
-      "ic90": [
-        0.0063,
-        0.0425
-      ],
-      "p_qualifie_top2": 0.0,
-      "p_arrive_premier": 0.0,
-      "quantiles": [
-        0.0063,
-        0.011,
-        0.0167,
-        0.025,
-        0.0425
-      ],
-      "densite": {
-        "x0": 0.0036,
-        "dx": 0.003334,
-        "y": [
-          38,
-          88,
-          100,
-          79,
-          69,
-          53,
-          47,
-          33,
-          24,
-          17,
-          17,
+          12,
+          10,
+          6,
           6,
           4,
-          6,
           4,
           3,
-          3,
-          1,
-          1,
+          2,
           2,
           1,
-          0,
-          1,
+          2,
           1
         ]
       }
     },
-    "Tondelier (EELV)": {
-      "part_moyenne": 0.0294,
+    "Mélenchon (LFI)": {
+      "part_moyenne": 0.1881,
       "ic90": [
-        0.0096,
-        0.0688
+        0.0697,
+        0.3611
       ],
-      "p_qualifie_top2": 0.0019,
-      "p_arrive_premier": 0.0,
+      "p_qualifie_top2": 0.5194,
+      "p_arrive_premier": 0.1487,
       "quantiles": [
-        0.0096,
-        0.0161,
-        0.0241,
-        0.0364,
-        0.0688
+        0.0697,
+        0.1204,
+        0.1722,
+        0.2385,
+        0.3611
       ],
       "densite": {
-        "x0": 0.006,
-        "dx": 0.004814,
+        "x0": 0.0418,
+        "dx": 0.019036,
         "y": [
-          51,
-          95,
-          100,
-          100,
-          72,
-          53,
+          28,
           40,
-          30,
-          27,
-          15,
+          66,
+          89,
+          100,
+          80,
+          81,
+          78,
+          68,
+          60,
+          51,
+          44,
+          40,
+          29,
+          17,
+          23,
+          13,
+          7,
+          12,
+          5,
+          4,
+          6,
+          3,
+          3
+        ]
+      }
+    },
+    "Roussel (PCF)": {
+      "part_moyenne": 0.0206,
+      "ic90": [
+        0.0066,
+        0.0442
+      ],
+      "p_qualifie_top2": 0.0,
+      "p_arrive_premier": 0.0,
+      "quantiles": [
+        0.0066,
+        0.0114,
+        0.0174,
+        0.0257,
+        0.0442
+      ],
+      "densite": {
+        "x0": 0.004,
+        "dx": 0.003483,
+        "y": [
+          44,
+          100,
+          99,
+          91,
+          76,
+          55,
+          44,
+          36,
+          23,
+          23,
           14,
           9,
-          9,
-          12,
-          6,
+          4,
           2,
           3,
-          2,
+          5,
           3,
-          0,
+          1,
+          2,
           1,
           0,
           1,
+          0,
           0
         ]
       }
     },
-    "Glucksmann (PP)": {
-      "part_moyenne": 0.113,
+    "Tondelier (EELV)": {
+      "part_moyenne": 0.0298,
       "ic90": [
-        0.0395,
-        0.2349
+        0.0095,
+        0.0679
       ],
-      "p_qualifie_top2": 0.1425,
-      "p_arrive_premier": 0.0269,
+      "p_qualifie_top2": 0.0025,
+      "p_arrive_premier": 0.0,
       "quantiles": [
-        0.0395,
-        0.0672,
-        0.0988,
-        0.1432,
-        0.2349
+        0.0095,
+        0.0165,
+        0.0247,
+        0.0367,
+        0.0679
       ],
       "densite": {
-        "x0": 0.0231,
-        "dx": 0.013438,
+        "x0": 0.0058,
+        "dx": 0.004794,
         "y": [
-          29,
-          61,
-          88,
+          47,
+          89,
           100,
-          99,
-          88,
-          63,
-          65,
-          56,
-          43,
-          28,
-          30,
-          26,
-          16,
-          15,
-          14,
+          90,
+          82,
+          57,
+          37,
+          31,
+          27,
+          13,
+          17,
+          13,
           11,
-          8,
+          6,
+          6,
           4,
           2,
-          4,
-          4,
           2,
-          2
+          3,
+          1,
+          2,
+          0,
+          0,
+          1
+        ]
+      }
+    },
+    "Glucksmann (PP)": {
+      "part_moyenne": 0.1112,
+      "ic90": [
+        0.0399,
+        0.2332
+      ],
+      "p_qualifie_top2": 0.1406,
+      "p_arrive_premier": 0.0288,
+      "quantiles": [
+        0.0399,
+        0.0656,
+        0.0973,
+        0.1419,
+        0.2332
+      ],
+      "densite": {
+        "x0": 0.0214,
+        "dx": 0.013345,
+        "y": [
+          26,
+          60,
+          88,
+          90,
+          100,
+          91,
+          62,
+          71,
+          46,
+          48,
+          29,
+          35,
+          18,
+          16,
+          16,
+          14,
+          14,
+          5,
+          3,
+          5,
+          2,
+          2,
+          2,
+          3
         ]
       }
     },
     "Philippe (Horizons)": {
-      "part_moyenne": 0.1593,
+      "part_moyenne": 0.1602,
       "ic90": [
-        0.0573,
-        0.313
+        0.0595,
+        0.3107
       ],
-      "p_qualifie_top2": 0.3738,
-      "p_arrive_premier": 0.0919,
+      "p_qualifie_top2": 0.3762,
+      "p_arrive_premier": 0.095,
       "quantiles": [
-        0.0573,
-        0.1001,
-        0.1436,
-        0.2018,
-        0.313
+        0.0595,
+        0.1014,
+        0.1452,
+        0.2019,
+        0.3107
       ],
       "densite": {
-        "x0": 0.0323,
-        "dx": 0.018145,
+        "x0": 0.0334,
+        "dx": 0.017541,
         "y": [
-          25,
-          57,
-          87,
-          90,
-          99,
+          22,
+          53,
+          83,
+          85,
+          94,
           100,
           89,
-          78,
-          65,
-          57,
-          53,
+          72,
+          63,
+          67,
+          43,
+          37,
           30,
-          29,
           20,
-          18,
-          16,
-          7,
-          5,
+          21,
+          15,
+          12,
           8,
+          6,
           2,
-          7,
-          3,
-          1,
+          5,
+          4,
+          4,
           1
         ]
       }
     },
     "Retailleau (LR)": {
-      "part_moyenne": 0.0744,
+      "part_moyenne": 0.0728,
       "ic90": [
-        0.0233,
-        0.1611
+        0.0228,
+        0.1608
       ],
-      "p_qualifie_top2": 0.0519,
-      "p_arrive_premier": 0.0088,
+      "p_qualifie_top2": 0.0525,
+      "p_arrive_premier": 0.0069,
       "quantiles": [
-        0.0233,
-        0.0413,
-        0.0639,
-        0.095,
-        0.1611
+        0.0228,
+        0.0407,
+        0.0627,
+        0.0913,
+        0.1608
       ],
       "densite": {
-        "x0": 0.0143,
-        "dx": 0.009958,
+        "x0": 0.0142,
+        "dx": 0.00976,
         "y": [
-          40,
-          70,
+          43,
+          81,
           100,
-          79,
-          83,
-          68,
-          66,
-          47,
-          40,
-          28,
-          27,
-          24,
-          13,
+          91,
+          84,
+          82,
+          67,
+          52,
+          42,
+          30,
+          31,
+          17,
+          15,
           12,
-          11,
-          7,
+          12,
           6,
+          10,
           4,
+          7,
           3,
           4,
-          4,
           3,
-          0,
+          1,
           1
         ]
       }
     },
     "Dupont-Aignan": {
-      "part_moyenne": 0.0211,
+      "part_moyenne": 0.0208,
       "ic90": [
         0.0065,
-        0.0463
+        0.0469
       ],
       "p_qualifie_top2": 0.0,
       "p_arrive_premier": 0.0,
       "quantiles": [
         0.0065,
-        0.0118,
-        0.0177,
-        0.0265,
-        0.0463
+        0.0117,
+        0.0173,
+        0.0261,
+        0.0469
       ],
       "densite": {
-        "x0": 0.004,
-        "dx": 0.003213,
+        "x0": 0.0041,
+        "dx": 0.003207,
         "y": [
-          46,
-          89,
+          48,
+          86,
           100,
-          95,
-          72,
-          68,
-          54,
-          32,
+          92,
+          69,
+          64,
+          56,
           37,
-          25,
-          21,
-          13,
-          9,
+          32,
+          20,
+          19,
+          11,
           8,
-          4,
-          5,
+          8,
+          7,
           3,
           3,
+          3,
+          3,
+          1,
           2,
           1,
-          3,
           2,
-          1,
-          1
+          0
         ]
       }
     },
     "RN": {
-      "part_moyenne": 0.3497,
+      "part_moyenne": 0.3506,
       "ic90": [
-        0.1581,
-        0.5672
+        0.1575,
+        0.5698
       ],
-      "p_qualifie_top2": 0.9006,
+      "p_qualifie_top2": 0.905,
       "p_arrive_premier": 0.7206,
       "quantiles": [
-        0.1581,
-        0.2538,
-        0.3399,
-        0.4413,
-        0.5672
+        0.1575,
+        0.2535,
+        0.3394,
+        0.4422,
+        0.5698
       ],
       "densite": {
-        "x0": 0.0939,
-        "dx": 0.025426,
+        "x0": 0.0961,
+        "dx": 0.025557,
         "y": [
-          11,
+          13,
           33,
-          38,
-          48,
-          80,
-          80,
-          82,
-          79,
-          98,
-          100,
-          99,
-          79,
-          71,
-          59,
-          65,
-          56,
-          45,
           37,
-          29,
-          17,
-          15,
-          9,
-          3,
-          5
+          50,
+          75,
+          78,
+          79,
+          86,
+          89,
+          100,
+          96,
+          73,
+          61,
+          64,
+          70,
+          48,
+          44,
+          30,
+          33,
+          13,
+          10,
+          10,
+          4,
+          4
         ]
       }
     },
@@ -511,44 +511,44 @@
       "part_moyenne": 0.04,
       "ic90": [
         0.0134,
-        0.0873
+        0.0881
       ],
-      "p_qualifie_top2": 0.0044,
-      "p_arrive_premier": 0.0006,
+      "p_qualifie_top2": 0.0037,
+      "p_arrive_premier": 0.0,
       "quantiles": [
         0.0134,
-        0.0233,
-        0.0337,
-        0.0489,
-        0.0873
+        0.0237,
+        0.0339,
+        0.0494,
+        0.0881
       ],
       "densite": {
-        "x0": 0.0071,
-        "dx": 0.005858,
+        "x0": 0.0077,
+        "dx": 0.005842,
         "y": [
-          27,
-          82,
+          32,
+          76,
           90,
-          95,
           100,
-          75,
-          60,
-          46,
+          86,
+          70,
+          55,
+          42,
           29,
+          26,
           20,
-          23,
-          15,
-          10,
-          10,
-          7,
-          5,
+          12,
+          12,
+          6,
+          9,
           5,
           3,
+          3,
+          2,
           3,
           1,
-          3,
-          0,
           2,
+          1,
           1
         ]
       }
@@ -560,14 +560,14 @@
         "Mélenchon (LFI)",
         "RN"
       ],
-      "probabilite": 0.4444
+      "probabilite": 0.4412
     },
     {
       "candidats": [
         "Philippe (Horizons)",
         "RN"
       ],
-      "probabilite": 0.2963
+      "probabilite": 0.3031
     },
     {
       "candidats": [
@@ -581,7 +581,7 @@
         "Mélenchon (LFI)",
         "Philippe (Horizons)"
       ],
-      "probabilite": 0.0594
+      "probabilite": 0.0569
     },
     {
       "candidats": [
@@ -602,7 +602,7 @@
         "Glucksmann (PP)",
         "Philippe (Horizons)"
       ],
-      "probabilite": 0.0131
+      "probabilite": 0.0112
     },
     {
       "candidats": [
@@ -614,7 +614,7 @@
   ],
   "drift_modele": "aucune (dérive appliquée par le modèle)",
   "diagnostics": {
-    "n_noeuds": 245,
+    "n_noeuds": 249,
     "n_candidats": 19,
     "candidats_retires": [
       "Bardella"
@@ -622,27 +622,27 @@
     "n_champs_distincts": 76,
     "n_dynamiques": 9,
     "K_composantes": 15,
-    "temps_secondes": 1145.0,
-    "rhat_max": 1.0223,
+    "temps_secondes": 1156.1,
+    "rhat_max": 1.0235,
     "rhat_pires_sites": [
       [
         "z_m",
-        1.022
+        1.024
       ],
       [
         "w_level",
-        1.022
+        1.024
       ],
       [
         "w_now",
-        1.021
+        1.023
       ]
     ],
-    "ess_min": 251.4,
+    "ess_min": 237.0,
     "n_divergences": 0,
     "pas_leapfrog_median": 255,
-    "sigma_w": 0.5125,
-    "sigma_global": 0.1075,
+    "sigma_w": 0.5126,
+    "sigma_global": 0.1104,
     "scenario": "champ SLOTS (= champ le plus testé sur 2026)",
     "candidats_hors_scenario": [
       "Ruffin",
@@ -1217,6 +1217,86 @@
       "part": 0.0396,
       "notice": "Harris Interactive 3-5 novembre (WP)",
       "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/novembre/10362-pres-iv-toluna-harris-interactive-9-novembre.pdf"
+    },
+    {
+      "date_fin": "2026-11-04",
+      "institut": "Ifop",
+      "slot": "Arthaud (LO)",
+      "part": 0.0083,
+      "notice": "Ifop 2-4 novembre (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/novembre/10392-pres-iv-ifop-sud-radio-20-novembre.pdf"
+    },
+    {
+      "date_fin": "2026-11-04",
+      "institut": "Ifop",
+      "slot": "Mélenchon (LFI)",
+      "part": 0.1911,
+      "notice": "Ifop 2-4 novembre (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/novembre/10392-pres-iv-ifop-sud-radio-20-novembre.pdf"
+    },
+    {
+      "date_fin": "2026-11-04",
+      "institut": "Ifop",
+      "slot": "Roussel (PCF)",
+      "part": 0.0338,
+      "notice": "Ifop 2-4 novembre (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/novembre/10392-pres-iv-ifop-sud-radio-20-novembre.pdf"
+    },
+    {
+      "date_fin": "2026-11-04",
+      "institut": "Ifop",
+      "slot": "Tondelier (EELV)",
+      "part": 0.035,
+      "notice": "Ifop 2-4 novembre (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/novembre/10392-pres-iv-ifop-sud-radio-20-novembre.pdf"
+    },
+    {
+      "date_fin": "2026-11-04",
+      "institut": "Ifop",
+      "slot": "Glucksmann (PP)",
+      "part": 0.1733,
+      "notice": "Ifop 2-4 novembre (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/novembre/10392-pres-iv-ifop-sud-radio-20-novembre.pdf"
+    },
+    {
+      "date_fin": "2026-11-04",
+      "institut": "Ifop",
+      "slot": "Philippe (Horizons)",
+      "part": 0.19,
+      "notice": "Ifop 2-4 novembre (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/novembre/10392-pres-iv-ifop-sud-radio-20-novembre.pdf"
+    },
+    {
+      "date_fin": "2026-11-04",
+      "institut": "Ifop",
+      "slot": "Dupont-Aignan",
+      "part": 0.0232,
+      "notice": "Ifop 2-4 novembre (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/novembre/10392-pres-iv-ifop-sud-radio-20-novembre.pdf"
+    },
+    {
+      "date_fin": "2026-11-04",
+      "institut": "Ifop",
+      "slot": "RN",
+      "part": 0.4043,
+      "notice": "Ifop 2-4 novembre (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/novembre/10392-pres-iv-ifop-sud-radio-20-novembre.pdf"
+    },
+    {
+      "date_fin": "2026-11-04",
+      "institut": "Ifop",
+      "slot": "Zemmour (Reconquête)",
+      "part": 0.0485,
+      "notice": "Ifop 2-4 novembre (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/novembre/10392-pres-iv-ifop-sud-radio-20-novembre.pdf"
+    },
+    {
+      "date_fin": "2026-11-04",
+      "institut": "Ifop",
+      "slot": "Retailleau (LR)",
+      "part": 0.14,
+      "notice": "Ifop 2-4 novembre (WP)",
+      "notice_url": "https://www.commission-des-sondages.fr/notices/files/notices/2026/novembre/10392-pres-iv-ifop-sud-radio-20-novembre.pdf"
     },
     {
       "date_fin": "2026-10-29",
