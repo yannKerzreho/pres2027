@@ -3012,6 +3012,39 @@ sur le **mode dominant** (les chaînes à moins de 10 nats de la meilleure, ET d
    ces chaînes ;
 5. T1 contre le résultat ≤ 3,1 pt ; la couverture IC90 du T1 est rapportée (revue 1.4).
 
+### 8.51 (R4) Noyau de Student-t sur le segment : maths (revue locale du 20/11, point 3.3 ; avant code)
+
+**Diagnostic (revue, 3.1).** Sur le segment gaussien, le logit du votant au T2,
+$\kappa[\Delta w+(v-\mu_b)^2/2\sigma_b^2-(v-\mu_a)^2/2\sigma_a^2+\log\sigma_b/\sigma_a]$, n'a qu'un
+terme non monotone en v : $(1/\sigma_b^2-1/\sigma_a^2)v^2/2$. « Les deux extrêmes penchent vers
+Le Pen » équivaut donc à σ_LP > σ_Macron, ce que l'utilisateur juge non crédible. La cause est la
+forme quadratique du noyau, pas la dimension.
+
+**Forme.** On garde le noyau normalisé sur la grille, mais on remplace sa log-densité, au T1 comme
+au T2 (un seul noyau pour les deux tours) :
+
+$$\log\tilde\varphi_i(v)=-\frac{\nu+1}{2}\log\!\Big(1+\frac{(v-\mu_i)^2}{\nu\sigma_i^2}\Big),\qquad
+\log\varphi_i=\log\tilde\varphi_i-\log\textstyle\sum_bW_b\tilde\varphi_i(V_b).$$
+
+ν est **un seul paramètre global**, avec $\log\nu\sim\mathcal N(\log5;1)$. Quand ν → ∞, on retrouve
+exactement le noyau gaussien : le modèle actuel est emboîté. L'écart de log-attractivité entre
+deux candidats devient logarithmique en distance, au lieu de quadratique. Un électeur proche d'un
+candidat reste tranché ; un électeur loin des deux finalistes s'adoucit, sans qu'aucun σ ne
+s'élargisse.
+
+**Variantes.** Drapeau `noyau_t` ; variante `hier_ra_t` (segment, reports d'avant T1,
+`--lse-officiel`). Repli « t au T2 seul » si le T1 se dégrade : ce serait un second modèle, à
+spécifier séparément seulement si nécessaire.
+
+**Critères, figés avant tout fit.** Ce sont ceux de §8.50 (persistance + 1, Mélenchon à moins de
+5 pt, σ_LP/σ_M < 1,5, stabilité sur 8 chaînes, T1 ≤ 3,1). On ajoute :
+
+6. ν identifié et lourd : la médiane a posteriori de ν est inférieure à 30 ;
+7. emboîtement : si la médiane de ν dépasse 30, R4 n'apporte rien et l'on retombe sur le
+   gaussien (A′2 corrigé).
+
+Comparaison : A′2 corrigé (gaussien), même plateforme (Mac), même nombre de chaînes, même B = 100.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
