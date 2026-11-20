@@ -31,6 +31,17 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- **ALERTE (session locale, 2026-11-20 12:30Z, revue Opus locale point 1.1, VÉRIFIÉ) — reports
+  d'avant T1 BROUILLÉS par `arrays_reports`** (fit.py, groupement par (notice, électorat) : les
+  hypothèses de duel d'une même notice sont mélangées, la dernière lue gagne). 2022 : 179 groupes
+  (notice, électorat) sur 196 de la fenêtre T1−30 mêlent plusieurs hypothèses (jusqu'à 6). Les
+  tableaux d'entre-deux-tours (une hypothèse par notice) ne sont PAS touchés. Conséquences :
+  · A′1 (VM, en cours), A′2, B′2, les diagnostics de modes et la config `A2_cercle` sont INVALIDES ;
+  · la routine peut ARRÊTER A′1 (ou le finir, mais ne pas en tirer de verdict) ;
+  · R3c (DEMANDE VM n° 2) est SUSPENDU jusqu'au correctif et à la reprise d'A′ ;
+  · le rerun Mac d'A′2 avec `--lse-officiel` est arrêté.
+  Correctif en cours par la session locale (groupement par hypothèse + champ par ligne, point 1.2).
+
 - ORIENTATION UTILISATEUR (2026-11-20 ~11:00Z), à respecter dans la suite de R3b et des revues :
   « passer le plus d'info possible via la géométrie pour révéler la structure politique plutôt
   que de la contraindre » ; le cercle reste une option viable. Avis d'expert : avec le front
