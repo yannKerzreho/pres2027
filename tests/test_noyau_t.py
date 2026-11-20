@@ -72,3 +72,19 @@ def test_sigma_lie_egalise_le_pen_et_macron():
     tr = handlers.trace(handlers.seed(spatial_pooling_model_ou, 3)).get_trace(**b["kwargs"])
     s = np.asarray(tr["sigma"]["value"])
     assert abs(s[il] - s[im]) < 1e-9
+
+
+def test_cercle_ferme_arc_egal_2pi():
+    """R6 (§8.55) : avec `arc_ferme`, l'arc vaut exactement 2π et la densité est finie."""
+    from numpyro import handlers
+    import model.backtest.multi_election as M
+    M.VARIANTES["hiercercle_ra_ferme"] = {"eta_hier": True, "carte_cercle": True, "_reports_avant": True,
+                                          "arc_ferme": True}
+    b = M.preparer(2022, "T1-30", "hiercercle_ra_ferme")
+    from model.models.spatial_pooling.joint_model import spatial_pooling_model_ou
+    tr = handlers.trace(handlers.seed(spatial_pooling_model_ou, 0)).get_trace(**b["kwargs"])
+    assert abs(float(tr["arc"]["value"]) - 2 * np.pi) < 1e-6
+    assert "a_arc" in tr and np.isfinite(float(tr["a_arc"]["value"]))
+    info = initialize_model(jax.random.PRNGKey(0), spatial_pooling_model_ou, model_kwargs=b["kwargs"],
+                            init_strategy=init_to_median)
+    assert np.isfinite(float(info.potential_fn(info.param_info.z)))

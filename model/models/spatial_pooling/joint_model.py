@@ -181,7 +181,7 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
             a_arc = numpyro.sample("a_arc", dist.Normal(jnp.log(0.75 / 0.25), 0.75))
             arc = numpyro.deterministic("arc", 2 * jnp.pi * jax.nn.sigmoid(a_arc))
         else:
-            f = arc_fixe / (2 * jnp.pi)
+            f = jnp.clip(arc_fixe / (2 * jnp.pi), 1e-6, 1 - 1e-6)      # A = 2π (R6) : pas d'infini
             numpyro.deterministic("a_arc", jnp.log(f / (1.0 - f)))
             arc = numpyro.deterministic("arc", arc_fixe)
         _A = lambda m_, s_, w_: log_attractivite_cercle(m_, s_, arc, w_)   # noqa: E731

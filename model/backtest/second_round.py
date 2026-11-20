@@ -529,7 +529,7 @@ def main() -> None:
     ap.add_argument("--coupure", default=None, choices=["T1-30", "T1-1", "T2-7"],
                     help="V2 : une seule coupure")
     ap.add_argument("--lister", action="store_true", help="liste les tâches unitaires et sort")
-    ap.add_argument("--variante", choices=["abst", "eta", "geo", "geo1", "hier", "hier_maison", "hier_notice", "hier2d", "hier_rep", "hiercercle", "hiercercle_sr", "hiercercle_ra", "hier_ra", "hiercercle_ra_abs", "hier_ra_t", "hier_ra_lie"], default="abst",
+    ap.add_argument("--variante", choices=["abst", "eta", "geo", "geo1", "hier", "hier_maison", "hier_notice", "hier2d", "hier_rep", "hiercercle", "hiercercle_sr", "hiercercle_ra", "hier_ra", "hiercercle_ra_abs", "hier_ra_t", "hier_ra_lie", "hiercercle_ra_ferme"], default="abst",
                     help="abst = abstention + valence ; eta = valence seule ; geo = κ + abstention, "
                          "sans valence ; geo1 = abstention seule, κ = 1 (spec §8.9) ; hier = abst à échelle de "
                          "valence apprise (§8.10)")
@@ -562,7 +562,7 @@ def main() -> None:
     if args.ancres_famille:
         VARIANTE_KW["ancres_famille"] = True
     POS_SCALE_BT = args.pos_scale
-    ABSTENTION = args.variante in ("abst", "geo", "geo1", "hier", "hier_maison", "hier_notice", "hier2d", "hier_rep", "hiercercle", "hiercercle_sr", "hiercercle_ra", "hier_ra", "hiercercle_ra_abs", "hier_ra_t", "hier_ra_lie")
+    ABSTENTION = args.variante in ("abst", "geo", "geo1", "hier", "hier_maison", "hier_notice", "hier2d", "hier_rep", "hiercercle", "hiercercle_sr", "hiercercle_ra", "hier_ra", "hiercercle_ra_abs", "hier_ra_t", "hier_ra_lie", "hiercercle_ra_ferme")
     VARIANTE_KW.update({"geo": {"eta_scale": 0.0},
                         "geo1": {"eta_scale": 0.0, "kappa_log_scale": 1e-3},
                         "hier": {"eta_hier": True},
@@ -580,7 +580,8 @@ def main() -> None:
                         "hiercercle_ra_abs": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True,
                                               "abst_situee": True},
                         "hier_ra_t": {"eta_hier": True, "_reports_avant": True, "noyau_t": True},
-                        "hier_ra_lie": {"eta_hier": True, "_reports_avant": True, "sigma_lie": True}}.get(args.variante, {}))
+                        "hier_ra_lie": {"eta_hier": True, "_reports_avant": True, "sigma_lie": True},
+                        "hiercercle_ra_ferme": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True, "arc_ferme": True}}.get(args.variante, {}))
     SECOND_TOUR = not args.sans_t2
     if args.sans_t2 and args.only != "v2":
         ap.error("--sans-t2 n'a de sens qu'en V2 (V1 prédit un duel)")

@@ -3161,6 +3161,28 @@ les fantômes), Macron–Le Pen 59,6 (résultat 58,55).
    passent ; R4 (noyau t) et R5 sont en cours sur le Mac. Le cercle reste la seule géométrie qui
    passe à la fois la stabilité, la monotonie et les contrôles de structure.
 
+### 8.55 (R6) Cercle fermé, A = 2π (revue locale du 20/11 midi, point 2.1 ; avant code)
+
+**Constat (A′1 corrigé).** Le cercle à arc libre est stable et passe la structure (monotonie,
+« fers à cheval » LP/Zemmour, σ_LP/σ_M 1,64). Mais il apprend un arrière de 37 % des votants et
+DÉPASSE la cible : Mélenchon 48,6 contre 63. L'arc A règle à lui seul la masse d'électeurs placés
+entre les deux extrêmes.
+
+**Forme.** On fixe $A=2\pi$ : les positions ORDER_GROUPS couvrent tout le cercle, et les deux extrêmes
+sont voisins par construction, sans arc vide. C'est **un paramètre de moins**. La rotation et la
+réflexion restent fixées comme en §8.46.2. Mise en œuvre : `arc_fixe = 2π` (déjà dans `joint_model`),
+drapeau `arc_ferme`, variante `hiercercle_ra_ferme`, avec `--lse-officiel`.
+
+**Critères, figés avant tout fit.** Ce sont ceux de §8.50, §8.52 et §8.54 (1, 2, 3, 3b circulaire,
+4, 5, Aucun, contrôles de structure), lus comme pour A′1. Comparaison avec A′1 corrigé, sur la même
+plateforme (VM) et le même nombre de chaînes (4).
+
+**Règle de parcimonie.** Si R6 fait au moins aussi bien qu'A′1 sur 1, 2 et 3 (sans en dégrader un de
+plus de 1 pt), on préfère R6 (un paramètre de moins).
+
+**Prédiction (non contraignante).** Sans arrière vide, la masse entre les extrêmes diminue, et
+Mélenchon devrait remonter vers Macron.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
