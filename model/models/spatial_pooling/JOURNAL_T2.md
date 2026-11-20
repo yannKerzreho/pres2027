@@ -115,7 +115,8 @@ l'historique, ajouter en bas de « Historique ».
   20/11). Reste la multimodalité de Mélenchon entre deux modes (≈ 49 et ≈ 86 %). À comparer
   avec A′1 (cercle, VM).
 - [ ] [CODE FAIT 20/11 11:39Z (`--lse-officiel` dans second_round et eval_r2, `masque_lse_officiel`, masque aussi dans le bloc reports) ; mesure 1 à 0 fit (§8.49) : sans les fantômes, la case « Aucun » de Pécresse 26,3 → 11,1 (mesuré 29,9) ⇒ le fit utilisait Bertrand comme réservoir d'abstention ; refits avec le drapeau NÉCESSAIRES, après A′1] **(NOUVEAU 20/11, revue point 1, PRÉALABLE à R3c et aux reruns A′) Valeur inclusive sans candidats fantômes** : spec §8.49 ; drapeau `lse_officiel` (backtests : champ officiel du T1 ∪ finalistes), tests ; mesure à 0 fit sur les chaînes existantes, puis reruns A′1/A′2 avec le drapeau, en 8 chaînes, à B = 100 pour le segment.
-- [ ] [EN COURS Mac (session locale, début 2026-11-20 12:00Z)] **A′2 relancé selon §8.49 (revue, points 1-2)** :
+- [ ] [CODE FAIT 477d0eb ; EN FILE Mac après A′2 corrigé, et sur T4 si le GPU revient (jeu `_lseo_t4` séparé, avec un A′2 corrigé T4 jumeau)] **(R4) Noyau de Student-t** (revue locale 3.3, spec §8.51, critères §8.50 + ν < 30 figés) : `hier_ra_t --lse-officiel`, B = 100, 8 chaînes ; comparé à A′2 corrigé sur la MÊME plateforme.
+- [ ] [EN COURS Mac (session locale, RELANCÉ 2026-11-20 12:45Z avec le correctif §8.50)] **A′2 relancé selon §8.49 (revue, points 1-2)** :
       `hier_ra --lse-officiel`, `PRES2027_B_QUAD=100`, 8 chaînes (graines 27-34), 2 à la fois sur le
       Mac ; sortie `second_round_hier_ra_v2_2022_T1-30_lseo_c*` ; lecture chaîne par chaîne. La
       routine n'a PAS à le lancer.
