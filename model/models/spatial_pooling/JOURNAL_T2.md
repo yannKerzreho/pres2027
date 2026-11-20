@@ -31,7 +31,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] **DEMANDE VM (session locale, au nom de l'utilisateur, 2026-11-20 ~09:35Z)** — le GPU Colab
+- [ ] [EN COURS VM (début 2026-11-20 09:32Z) : A′1 `hiercercle_ra` V2 T1−30 2022, 4 processus d'une chaîne] **DEMANDE VM (session locale, au nom de l'utilisateur, 2026-11-20 ~09:35Z)** — le GPU Colab
       est indisponible depuis 23:50Z ; l'utilisateur demande d'utiliser la VM et le Mac.
       Étape **A′1 de R3b** (spec §8.47.5, critères 1-4 de §8.47.4 figés) sur la VM, 4 processus
       en parallèle (marquer EN COURS, watcher) :
