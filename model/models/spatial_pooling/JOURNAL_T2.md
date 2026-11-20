@@ -31,6 +31,21 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- RÉSULTAT B′2 (session locale, Mac, 2026-11-20 10:45Z ; segment `hier_ra`, 2017 à T1−30 avec
+  reports d'AVANT T1, 4 chaînes de 8-18 min ; JSON `second_round_hier_ra_v2_2017_T1-30.json`,
+  `eval_r2_hier_ra_2017_T1-30{,_par_chaine}.json`) — critères §8.47.6 :
+  1. partage Mélenchon 83,0 (mesuré 76,4 ; +6,6) ✓ sur la chaîne retenue (n° 2, seule) ; les 3 autres
+     chaînes donnent 92 (+15,6) ;
+  2. MAE des 4 partages 14,8 pt ✗ (Hamon +1,5, Fillon +2,6, Mélenchon +6,6, Dupont-Aignan +48,5).
+     Dupont-Aignan a rallié Le Pen ENTRE les deux tours (accord du 28/04/2017) : aucun report
+     d'avant T1 ne pouvait le prévoir. Hors Dupont-Aignan, la MAE vaut 3,6. Le critère, figé, reste
+     un échec ; l'explication est consignée, pas utilisée pour le réécrire ;
+  3. stabilité ✗ : lp 2887 / 2889 / 3005 / 2888 (118 nats ; une seule chaîne dans le mode dominant),
+     duels avec Hamon jusqu'à 31 pt d'écart ;
+  4. T1 contre le résultat 1,96 pt ✓ (≤ 3,1).
+  LECTURE : même sens qu'A′2. Les reports d'avant T1 rapprochent le partage Mélenchon de la mesure
+  (+6,6 au lieu de la saturation), mais la multimodalité reste l'obstacle. Le mode dominant n'est
+  visité que par 1 chaîne sur 4.
 - RÉSULTAT A′2 (session locale, Mac, 2026-11-20 10:20Z ; segment `hier_ra`, 2022 à T1−30 avec
   reports d'AVANT T1, 4 chaînes de 25-47 min ; JSON `second_round_hier_ra_v2_2022_T1-30.json`,
   `eval_r2_hier_ra_2022_T1-30{,_par_chaine}.json`, commit 989f304) — critères §8.47.4 :

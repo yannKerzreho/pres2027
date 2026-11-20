@@ -1,0 +1,132 @@
+{
+ "spec": "spec_second_tour §8.44 (révision 6)",
+ "variante": "hier_ra",
+ "stem": "second_round_hier_ra_v2_2017_T1-30",
+ "coupure": "T1-30",
+ "chaines": [
+  {
+   "chaine": 0,
+   "lp": 2886.9348583984374,
+   "partages": {
+    "Benoît Hamon": 88.0,
+    "François Fillon": 51.5,
+    "Jean-Luc Mélenchon": 92.0,
+    "Nicolas Dupont-Aignan": 74.5
+   },
+   "duels": {
+    "Emmanuel Macron / Marine Le Pen": 60.93,
+    "Emmanuel Macron / Jean-Luc Mélenchon": 45.5,
+    "Emmanuel Macron / François Fillon": 51.83,
+    "Emmanuel Macron / Benoît Hamon": 48.36,
+    "Marine Le Pen / Jean-Luc Mélenchon": 36.07,
+    "Marine Le Pen / François Fillon": 42.43,
+    "Marine Le Pen / Benoît Hamon": 37.83,
+    "Jean-Luc Mélenchon / François Fillon": 56.07,
+    "Jean-Luc Mélenchon / Benoît Hamon": 52.8,
+    "François Fillon / Benoît Hamon": 46.54
+   },
+   "t1_mae_pt": 1.731,
+   "kappa": 0.0578,
+   "nu": null,
+   "nu_sd_post_moyen": null
+  },
+  {
+   "chaine": 1,
+   "lp": 2889.019083251953,
+   "partages": {
+    "Benoît Hamon": 88.2,
+    "François Fillon": 51.2,
+    "Jean-Luc Mélenchon": 91.7,
+    "Nicolas Dupont-Aignan": 74.7
+   },
+   "duels": {
+    "Emmanuel Macron / Marine Le Pen": 60.98,
+    "Emmanuel Macron / Jean-Luc Mélenchon": 46.01,
+    "Emmanuel Macron / François Fillon": 52.04,
+    "Emmanuel Macron / Benoît Hamon": 48.6,
+    "Marine Le Pen / Jean-Luc Mélenchon": 36.39,
+    "Marine Le Pen / François Fillon": 42.41,
+    "Marine Le Pen / Benoît Hamon": 38.03,
+    "Jean-Luc Mélenchon / François Fillon": 55.81,
+    "Jean-Luc Mélenchon / Benoît Hamon": 52.53,
+    "François Fillon / Benoît Hamon": 46.57
+   },
+   "t1_mae_pt": 1.733,
+   "kappa": 0.0578,
+   "nu": null,
+   "nu_sd_post_moyen": null
+  },
+  {
+   "chaine": 2,
+   "lp": 3005.264302978516,
+   "partages": {
+    "Benoît Hamon": 94.9,
+    "François Fillon": 65.4,
+    "Jean-Luc Mélenchon": 83.0,
+    "Nicolas Dupont-Aignan": 86.1
+   },
+   "duels": {
+    "Emmanuel Macron / Marine Le Pen": 62.86,
+    "Emmanuel Macron / Jean-Luc Mélenchon": 50.43,
+    "Emmanuel Macron / François Fillon": 53.6,
+    "Emmanuel Macron / Benoît Hamon": 79.78,
+    "Marine Le Pen / Jean-Luc Mélenchon": 40.98,
+    "Marine Le Pen / François Fillon": 41.46,
+    "Marine Le Pen / Benoît Hamon": 66.39,
+    "Jean-Luc Mélenchon / François Fillon": 50.3,
+    "Jean-Luc Mélenchon / Benoît Hamon": 81.65,
+    "François Fillon / Benoît Hamon": 72.52
+   },
+   "t1_mae_pt": 1.96,
+   "kappa": 0.1253,
+   "nu": null,
+   "nu_sd_post_moyen": null
+  },
+  {
+   "chaine": 3,
+   "lp": 2888.2084606933595,
+   "partages": {
+    "Benoît Hamon": 88.0,
+    "François Fillon": 51.1,
+    "Jean-Luc Mélenchon": 92.1,
+    "Nicolas Dupont-Aignan": 74.4
+   },
+   "duels": {
+    "Emmanuel Macron / Marine Le Pen": 60.99,
+    "Emmanuel Macron / Jean-Luc Mélenchon": 46.49,
+    "Emmanuel Macron / François Fillon": 52.2,
+    "Emmanuel Macron / Benoît Hamon": 49.09,
+    "Marine Le Pen / Jean-Luc Mélenchon": 36.8,
+    "Marine Le Pen / François Fillon": 42.37,
+    "Marine Le Pen / Benoît Hamon": 38.46,
+    "Jean-Luc Mélenchon / François Fillon": 55.46,
+    "Jean-Luc Mélenchon / Benoît Hamon": 52.56,
+    "François Fillon / Benoît Hamon": 46.91
+   },
+   "t1_mae_pt": 1.74,
+   "kappa": 0.0569,
+   "nu": null,
+   "nu_sd_post_moyen": null
+  }
+ ],
+ "ecart_partages": {
+  "Benoît Hamon": 6.9,
+  "François Fillon": 14.3,
+  "Jean-Luc Mélenchon": 9.1,
+  "Nicolas Dupont-Aignan": 11.7
+ },
+ "ecart_duels": {
+  "Emmanuel Macron / Marine Le Pen": 1.93,
+  "Emmanuel Macron / Jean-Luc Mélenchon": 4.93,
+  "Emmanuel Macron / François Fillon": 1.77,
+  "Emmanuel Macron / Benoît Hamon": 31.42,
+  "Marine Le Pen / Jean-Luc Mélenchon": 4.91,
+  "Marine Le Pen / François Fillon": 0.97,
+  "Marine Le Pen / Benoît Hamon": 28.56,
+  "Jean-Luc Mélenchon / François Fillon": 5.77,
+  "Jean-Luc Mélenchon / Benoît Hamon": 29.12,
+  "François Fillon / Benoît Hamon": 25.98
+ },
+ "ecart_lp": 118.33,
+ "nu_sd_prior": 0.208
+}

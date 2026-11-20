@@ -1,0 +1,83 @@
+{
+ "variante": "hier_ra",
+ "nuts": {
+  "draws": 400,
+  "tune": 600,
+  "chains": 4,
+  "mode": "4 processus d'une chaîne (graines 27..30), fusionnés"
+ },
+ "pos_scale": null,
+ "tau_t2_scrutin": 0.19,
+ "v1": [],
+ "v2": [
+  {
+   "election": 2017,
+   "coupure": "T1-30",
+   "as_of": "2017-03-24",
+   "candidat": "Emmanuel Macron",
+   "resultat": 0.661,
+   "n_notices_t1": 45,
+   "modele": 0.621,
+   "modele_ic90": [
+    0.5073,
+    0.7272
+   ],
+   "couvre_ic90": true,
+   "log_score": 1.662,
+   "sondages_7j": 0.6222,
+   "n_sondages_7j": 9,
+   "log_score_sondages": 1.644,
+   "couvre_ic90_sondages": true,
+   "lp_par_chaine": [
+    2886.9,
+    2889.0,
+    3005.3,
+    2888.2
+   ],
+   "lp_se": [
+    0.96,
+    1.3,
+    1.02,
+    1.11
+   ],
+   "chaines_retenues": [
+    2
+   ],
+   "modele_par_chaine": [
+    0.6225
+   ],
+   "ecart_chaines_pt": 0.0,
+   "concluant": false,
+   "rhat_max": 1.0684,
+   "ess_min": 56.1,
+   "divergences": 5,
+   "kappa": 0.1253,
+   "omega": -2.4538,
+   "rhat_t2": 1.0223,
+   "sigma_t2": 0.0253,
+   "secondes": 8.2,
+   "sigma_maison_t2": null,
+   "sigma_notice_t2": null,
+   "eta": {
+    "Nathalie Arthaud": 0.009,
+    "Philippe Poutou": 0.008,
+    "Jean-Luc Mélenchon": 0.003,
+    "Yannick Jadot": -0.01,
+    "Arnaud Montebourg": 0.011,
+    "Benoît Hamon": -0.014,
+    "Manuel Valls": -0.002,
+    "François Hollande": 0.005,
+    "Sylvia Pinel": 0.002,
+    "Emmanuel Macron": 0.185,
+    "François Bayrou": 0.011,
+    "Jean Lassalle": 0.006,
+    "François Fillon": -0.026,
+    "Nicolas Dupont-Aignan": 0.017,
+    "François Asselineau": -0.012,
+    "Jacques Cheminade": -0.007,
+    "Marine Le Pen": -0.145
+   },
+   "sigma_v_moyen": 0.0598
+  }
+ ]
+}
