@@ -99,6 +99,23 @@ l'historique, ajouter en bas de « Historique ».
   soumettre à la revue Opus (sélection par mode plutôt que par seuil de lp ?). B′2 (2017) n'est
   pas concerné : une seule chaîne y est retenue, 117 nats au-dessus des autres.
   Plausibilité : σ_LP/σ_Macron vaut 2,3 à 3,8 dans tous les modes du segment.
+- RÉSULTAT A′2 CORRIGÉ (session locale, Mac, 2026-11-20 17:25Z ; segment gaussien `hier_ra`, reports d'avant
+  T1 corrigés §8.50, `--lse-officiel`, B = 100, 8 chaînes ; lecture `model/backtest/modes.py`) :
+  · UN SEUL MODE : 8 chaînes sur 8 à moins de 3 nats (lp 12028-12031), duels clés à ≤ 0,37 pt
+    entre chaînes. La multimodalité d'hier venait des données brouillées et des fantômes.
+  · critères §8.50 / §8.52, mode dominant = 8 chaînes :
+    1. MAE des 4 partages 7,27 > 3,61 ✗ — Mélenchon 66,0 (63,0), Pécresse 51,5 (65,0),
+       Jadot 78,5 (87,5), Zemmour 13,1 (9,4) ;
+    2. Mélenchon +2,9 ✓ ;
+    3. σ_LP/σ_Macron 3,71 ✗ ; 3b. monotonie à gauche 0 % des tirages ✗ (Le Pen l'emporte sur
+       Macron chez les votants à gauche de Macron : le mécanisme jugé non crédible) ;
+    4. stabilité ✓ (8/8, 0,37 pt ; VERDICT FAVORABLE SUR MAC = non probant, cf. règle) ;
+    5. T1 3,03 ✓ (couverture IC90 2/12) ; Aucun : MAE 5,47 > 3,75 ✗ (Pécresse 15,2 contre 29,9).
+  · σ_Mélenchon ≈ 0,27 : Mélenchon devient lui aussi très large.
+  LECTURE : avec les bonnes données, le segment gaussien est stable et place bien Mélenchon,
+  mais par le mécanisme « Le Pen très large » (3b = 0 %), et il rate Pécresse et Jadot. Selon
+  §8.52-7′, le gaussien échoue à 1 et 3b : R4 (Student-t) a donc sa chance. Il tourne ensuite
+  sur le Mac.
 - RÉSULTAT A′2 (session locale, Mac, 2026-11-20 10:20Z ; segment `hier_ra`, 2022 à T1−30 avec
   reports d'AVANT T1, 4 chaînes de 25-47 min ; JSON `second_round_hier_ra_v2_2022_T1-30.json`,
   `eval_r2_hier_ra_2022_T1-30{,_par_chaine}.json`, commit 989f304) — critères §8.47.4 :
@@ -116,7 +133,7 @@ l'historique, ajouter en bas de « Historique ».
   avec A′1 (cercle, VM).
 - [ ] [CODE FAIT 20/11 11:39Z (`--lse-officiel` dans second_round et eval_r2, `masque_lse_officiel`, masque aussi dans le bloc reports) ; mesure 1 à 0 fit (§8.49) : sans les fantômes, la case « Aucun » de Pécresse 26,3 → 11,1 (mesuré 29,9) ⇒ le fit utilisait Bertrand comme réservoir d'abstention ; refits avec le drapeau NÉCESSAIRES, après A′1] **(NOUVEAU 20/11, revue point 1, PRÉALABLE à R3c et aux reruns A′) Valeur inclusive sans candidats fantômes** : spec §8.49 ; drapeau `lse_officiel` (backtests : champ officiel du T1 ∪ finalistes), tests ; mesure à 0 fit sur les chaînes existantes, puis reruns A′1/A′2 avec le drapeau, en 8 chaînes, à B = 100 pour le segment.
 - [ ] [CODE FAIT 477d0eb ; EN FILE Mac après A′2 corrigé, et sur T4 si le GPU revient (jeu `_lseo_t4` séparé, avec un A′2 corrigé T4 jumeau)] **(R4) Noyau de Student-t** (revue locale 3.3, spec §8.51, critères §8.50 + ν < 30 figés) : `hier_ra_t --lse-officiel`, B = 100, 8 chaînes ; comparé à A′2 corrigé sur la MÊME plateforme.
-- [ ] [EN COURS Mac (session locale, RELANCÉ 2026-11-20 12:45Z avec le correctif §8.50)] **A′2 relancé selon §8.49 (revue, points 1-2)** :
+- [x] [FAIT Mac 2026-11-20 17:20Z, `results/modes_second_round_hier_ra_v2_2022_T1-30_lseo.json`] **A′2 relancé selon §8.49 (revue, points 1-2)** :
       `hier_ra --lse-officiel`, `PRES2027_B_QUAD=100`, 8 chaînes (graines 27-34), 2 à la fois sur le
       Mac ; sortie `second_round_hier_ra_v2_2022_T1-30_lseo_c*` ; lecture chaîne par chaîne. La
       routine n'a PAS à le lancer.
