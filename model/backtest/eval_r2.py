@@ -37,13 +37,23 @@ def reconstruire(variante: str, stem: str, coupure: str = "T2-7", chaines=None):
                            "hiercercle": {"eta_hier": True, "carte_cercle": True, "_reports": True},
                            "hiercercle_sr": {"eta_hier": True, "carte_cercle": True},
                            "hiercercle_ra": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True},
-                           "hier_ra": {"eta_hier": True, "_reports_avant": True}}[variante])
+                           "hier_ra": {"eta_hier": True, "_reports_avant": True},
+                           "hiercercle_ra_abs": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True,
+                                                 "abst_situee": True}}[variante])
     ref = sr.T1_DATES[ELECTION] if coupure.startswith("T1") else sr.T2_DATES[ELECTION]
     as_of = ref - pd.Timedelta(days=int(coupure.split("-")[1]))
     raw = sr.polls_historiques(ELECTION, as_of)
     paths = [sr.CHAINES_DIR / f"{stem}_c{k}.npz" for k in (chaines if chaines is not None else range(sr.N_CHAINES))]
     fit, _ = sr._fit(raw, as_of, ELECTION, dict(draws=400, tune=600, chains=4, mcmc_runner=sr._runner_fusion(paths)))
     return fit, raw, as_of
+
+
+def _omega_g(fit):
+    """Terme situé de l'abstention (§8.48 bis), (S, N_θ), ou None."""
+    if getattr(fit, "gamma_draws", None) is None:
+        return None
+    from model.models.spatial_pooling.geometry import THETA
+    return jnp.asarray(-fit.gamma_draws[:, None] * np.cos(np.asarray(THETA))[None, :])
 
 
 def _A(fit, w):
@@ -93,7 +103,8 @@ def evaluer(fit, raw, as_of) -> dict:
         k = idx[_norm(e)]
         th, _ = reports_cellules(jnp.asarray(A), jnp.asarray(mask), jnp.full(S, ia), jnp.full(S, ib), jnp.full(S, k),
                                  jnp.asarray(fit.kappa_draws), jnp.asarray(fit.eta_draws[:, ia] - fit.eta_draws[:, ib]),
-                                 jnp.asarray(lse), jnp.asarray(fit.omega_draws), jnp.asarray(s_ab), poids, n_newton=8)
+                                 jnp.asarray(lse), jnp.asarray(fit.omega_draws), jnp.asarray(s_ab), poids, n_newton=8,
+                                 omega_g=_omega_g(fit))
         th = 100 * np.asarray(th)
         pred = {"Macron": th[:, 0], "Le Pen": th[:, 1], "Aucun": th[:, 2], "partage": 100 * th[:, 0] / (th[:, 0] + th[:, 1])}
         for _, r in m[m.electorat_t1 == e].iterrows():
@@ -190,7 +201,7 @@ def par_chaine(variante: str, stem: str, coupure: str) -> dict:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--variante", choices=["hier", "hier2d", "hier_rep", "hiercercle", "hiercercle_sr", "hiercercle_ra", "hier_ra"], required=True)
+    ap.add_argument("--variante", choices=["hier", "hier2d", "hier_rep", "hiercercle", "hiercercle_sr", "hiercercle_ra", "hier_ra", "hiercercle_ra_abs"], required=True)
     ap.add_argument("--stem", default=None)
     ap.add_argument("--coupure", default="T2-7")
     ap.add_argument("--par-chaine", action="store_true", help="critère 4 révisé (écarts entre chaînes)")

@@ -11,7 +11,7 @@ import numpy as np
 import numpyro
 import numpyro.distributions as dist
 
-from .geometry import (W, W2, W_THETA, log_attractivite_cercle, spatial_shares_cercle, duel_shares, duel_shares_poids, log_attractivite, log_attractivite_2d,
+from .geometry import (W, W2, THETA, W_THETA, log_attractivite_cercle, spatial_shares_cercle, duel_shares, duel_shares_poids, log_attractivite, log_attractivite_2d,
                        reports_cellules, spatial_shares, spatial_shares_2d)
 
 # --- Rayon d'action : prior d'ORIGINE, resserrement ANNULÉ (spec §12.13) --------
@@ -81,7 +81,7 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
                              carte_2d=False, carte_cercle=False, nu_ancre=None, nu_ordre=None, nu_ancre_val=0.3,
                              rep_y=None, rep_date_idx=None, rep_k=None, rep_a=None, rep_b=None,
                              rep_champ=None, z_pos_fixe=None, z_sigma_fixe=None, arc_fixe=None,
-                             kappa_fixe=None):
+                             kappa_fixe=None, abst_situee=False):
     """Le modèle. Inférence JOINTE de la géométrie et du chemin de `w`.
 
     Trois paramètres par candidat, deux échelles globales, aucun bloc :
@@ -243,13 +243,17 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
         A_a, A_b = A_all[rows, duel_a], A_all[rows, duel_b]
         if abstention:
             omega = numpyro.sample("omega", dist.Normal(*omega_prior))
+            # Abstention située sur le cercle (spec_second_tour §8.48 bis) : ω(θ) = ω₀ − γ cos θ.
+            omega_g = (-numpyro.sample("gamma_abs", dist.HalfNormal(1.5)) * jnp.cos(THETA)
+                       if (abst_situee and carte_cercle) else None)
             # valeur inclusive (D, B) ; `masque_lse` : sur le CHAMP seulement (§8.27)
             lse = jax.nn.logsumexp(A_all if masque_lse is None
                                    else A_all + jnp.log(masque_lse)[None, :, None], axis=1)
-            s = (duel_shares_poids(A_a, A_b, kappa, eta[duel_a], eta[duel_b], lse, omega, poids) if poids is not None
+            s = (duel_shares_poids(A_a, A_b, kappa, eta[duel_a], eta[duel_b], lse, omega, poids, omega_g) if poids is not None
                  else duel_shares(A_a, A_b, kappa, eta[duel_a], eta[duel_b], lse, omega))
         else:
             omega = None
+            omega_g = None
             s = (duel_shares_poids(A_a, A_b, kappa, eta[duel_a], eta[duel_b], None, None, poids) if poids is not None
                  else duel_shares(A_a, A_b, kappa, eta[duel_a], eta[duel_b]))
         # Part prédite par duel observé, à SA date : sert aux résidus (diagnostic
@@ -284,9 +288,9 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
             pq = poids if poids is not None else W
             lse_r = jax.nn.logsumexp(A_r, axis=1) if abstention else None
             s_r = duel_shares_poids(A_r[rr, rep_a], A_r[rr, rep_b], kappa, eta[rep_a], eta[rep_b],
-                                    lse_r, omega, pq)
+                                    lse_r, omega, pq, omega_g)
             theta, _ = reports_cellules(A_r, rep_champ, rep_a, rep_b, rep_k, kappa,
-                                        eta[rep_a] - eta[rep_b], lse_r, omega, s_r, pq)
+                                        eta[rep_a] - eta[rep_b], lse_r, omega, s_r, pq, omega_g=omega_g)
             c = numpyro.deterministic("c_reports", jnp.exp(numpyro.sample(
                 "log_c", dist.Normal(jnp.log(100.0), 1.0))))
             numpyro.deterministic("reports_theta", theta)

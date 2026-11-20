@@ -234,12 +234,16 @@ def duel_shares(A_a, A_b, kappa, eta_a, eta_b, lse=None, omega=None) -> jnp.ndar
     return jax.nn.sigmoid(jnp.log(g) - jnp.log1p(-g) + jnp.asarray(eta_a) - jnp.asarray(eta_b))
 
 
-def duel_expression(A_a, A_b, kappa, lse, omega) -> jnp.ndarray:
+def duel_expression(A_a, A_b, kappa, lse, omega, omega_g=None) -> jnp.ndarray:
     """rho(v) : probabilité d'exprimer un vote pour a ou b (...,B).
-    `1 - ∫rho` = non-expression parmi les exprimés du premier tour."""
+    `1 - ∫rho` = non-expression parmi les exprimés du premier tour.
+    `omega_g` (..., B) : terme situé de l'option extérieure (abstention située, §8.48 bis)."""
     k = jnp.asarray(kappa)[..., None]
     ins = jnp.logaddexp(k * A_a, k * A_b)
-    return jax.nn.sigmoid(ins - (jnp.asarray(omega)[..., None] + k * lse))
+    om = jnp.asarray(omega)[..., None]
+    if omega_g is not None:
+        om = om + omega_g
+    return jax.nn.sigmoid(ins - (om + k * lse))
 
 
 # --- Carte 2D (spec_second_tour §8.44, piste R2 ; drapeau `carte_2d`) ------------
@@ -276,20 +280,21 @@ def spatial_shares_2d(mu, sigma, nu, lam, w, tested_mask) -> jnp.ndarray:
     return jnp.sum((numerator / denom) * W2, axis=-1)
 
 
-def duel_shares_poids(A_a, A_b, kappa, eta_a, eta_b, lse, omega, poids) -> jnp.ndarray:
+def duel_shares_poids(A_a, A_b, kappa, eta_a, eta_b, lse, omega, poids, omega_g=None) -> jnp.ndarray:
     """`duel_shares` avec des poids de quadrature quelconques (grille 2D)."""
     k = jnp.asarray(kappa)[..., None]
     q = jax.nn.sigmoid(k * (A_a - A_b))
     if lse is None:
         g = jnp.sum(q * poids, axis=-1)
     else:
-        rho = duel_expression(A_a, A_b, kappa, lse, omega)
+        rho = duel_expression(A_a, A_b, kappa, lse, omega, omega_g)
         g = jnp.sum(rho * q * poids, axis=-1) / jnp.clip(jnp.sum(rho * poids, axis=-1), 1e-12, None)
     g = jnp.clip(g, 1e-6, 1.0 - 1e-6)
     return jax.nn.sigmoid(jnp.log(g) - jnp.log1p(-g) + jnp.asarray(eta_a) - jnp.asarray(eta_b))
 
 
-def reports_cellules(A, champ_mask, ia, ib, k_idx, kappa, eta_diff, lse, omega, s_ab, poids, n_newton=4):
+def reports_cellules(A, champ_mask, ia, ib, k_idx, kappa, eta_diff, lse, omega, s_ab, poids, n_newton=4,
+                     omega_g=None):
     """Cellules (a, b, aucun) de l'électorat T1 `k_idx` (spec §8.38, §8.44.4),
     différentiables : δ par `n_newton` pas de Newton depuis `eta_diff` pour que
     l'agrégat des électorats du champ redonne `s_ab`.
@@ -303,7 +308,7 @@ def reports_cellules(A, champ_mask, ia, ib, k_idx, kappa, eta_diff, lse, omega, 
     kq = jnp.asarray(kappa)
     kq = kq[:, None] if kq.ndim else kq                     # scalaire (modèle) ou (R,) (tirages)
     q = jax.nn.sigmoid(kq * (A_a - A_b))
-    rho = jnp.ones_like(q) if lse is None else duel_expression(A_a, A_b, kappa, lse, omega)
+    rho = jnp.ones_like(q) if lse is None else duel_expression(A_a, A_b, kappa, lse, omega, omega_g)
     E = jnp.einsum("rng,g->rn", p, poids)
     pr = jnp.einsum("rng,rg,g->rn", p, rho, poids)
     Rk = pr / jnp.clip(E, 1e-12, None)

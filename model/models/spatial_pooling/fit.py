@@ -61,6 +61,7 @@ class SpatialPoolingFit:
     nu_draws: np.ndarray | None = None       # (S, N) carte 2D (spec_second_tour §8.44)
     lambda_draws: np.ndarray | None = None   # (S,)
     arc_draws: np.ndarray | None = None      # (S,) cercle (spec_second_tour §8.46)
+    gamma_draws: np.ndarray | None = None    # (S,) abstention située (§8.48 bis)
     reports_theta_draws: np.ndarray | None = None   # (S, R, 3) cellules prédites des reports en fit
     reports_rows: list | None = None         # [(notice, électorat, date)] dans l'ordre de R
     duel_s_draws: np.ndarray | None = None
@@ -85,6 +86,7 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
                         sigma_w_par_candidat: bool = False,
                         ancres_famille: bool = False,
                         carte_2d: bool = False, carte_cercle: bool = False, nu_ancre_val: float = 0.3,
+                        abst_situee: bool = False,
                         reports: pd.DataFrame | None = None,
                         champ_reports: list | None = None) -> SpatialPoolingFit:
     """Roster -> arrays -> NUTS, en une seule inférence jointe.
@@ -170,6 +172,8 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         kwargs["sigma_w_par_candidat"] = True
     if carte_cercle:
         kwargs["carte_cercle"] = True
+        if abst_situee:
+            kwargs["abst_situee"] = True
     if carte_2d:
         if not has_t2:
             raise ValueError("carte_2d : l'ancre et l'ordre en u sont posés sur les finalistes d'un duel")
@@ -303,6 +307,7 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         nu_draws=np.asarray(samples["nu"]).reshape(-1, N) if "nu" in samples else None,
         lambda_draws=np.asarray(samples["lambda_u"]).reshape(-1) if "lambda_u" in samples else None,
         arc_draws=np.asarray(samples["arc"]).reshape(-1) if "arc" in samples else None,
+        gamma_draws=np.asarray(samples["gamma_abs"]).reshape(-1) if "gamma_abs" in samples else None,
         reports_theta_draws=(np.asarray(samples["reports_theta"]).reshape(-1, len(rep["y"]), 3)
                              if "reports_theta" in samples else None),
         reports_rows=rep["rows"] if rep is not None else None,
@@ -524,9 +529,13 @@ def _duel_par_tirage(fit, w, ia: np.ndarray, ib: np.ndarray) -> np.ndarray:
             from scipy.special import logsumexp
             Am = A if fit.masque_lse is None else A + np.log(fit.masque_lse)[None, :, None]
             lse = logsumexp(Am, axis=1)
+        og = None
+        if getattr(fit, "gamma_draws", None) is not None:                 # §8.48 bis
+            from .geometry import THETA
+            og = -fit.gamma_draws[:, None] * np.cos(np.asarray(THETA))[None, :]
         return np.asarray(duel_shares_poids(A[s_idx, ia], A[s_idx, ib], fit.kappa_draws,
                                             fit.eta_draws[s_idx, ia], fit.eta_draws[s_idx, ib],
-                                            lse, fit.omega_draws, pq))
+                                            lse, fit.omega_draws, pq, og))
     A = np.asarray(log_attractivite(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
                                     jnp.asarray(w)))                     # (S, N, B)
     extra = ()
