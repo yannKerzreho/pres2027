@@ -7,7 +7,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## État (mis à jour à chaque réveil)
 
-- Dernière revue Opus : 2026-11-19 ~11:20Z (routine, couvre aussi (A), R1, R2 ; cf. « Revue Opus 2026-11-19 »).
+- Dernière revue Opus : 2026-11-20 ~11:20Z (routine, couvre R3, R3b, R3c, §8.48 ; cf. « Revue Opus 2026-11-20 »).
 - OBJECTIF (utilisateur, via l'orchestrateur, 2026-11-14) : « un modèle qui est
   backé par le passé mais qui représente bien les sondages et tendances
   actuels ». 2017/2022 servent à CALIBRER et VALIDER ; le critère final est la
@@ -91,7 +91,8 @@ l'historique, ajouter en bas de « Historique ».
   avant le T1 : le cercle n'est pas nécessaire pour cela (parcimonie, consigne utilisateur du
   20/11). Reste la multimodalité de Mélenchon entre deux modes (≈ 49 et ≈ 86 %). À comparer
   avec A′1 (cercle, VM).
-- [ ] **DEMANDE VM n° 2 (session locale, utilisateur, 2026-11-20 ~11:30Z) — À LANCER APRÈS A′1, sur
+- [ ] **(NOUVEAU 20/11, revue point 1, PRÉALABLE à R3c et aux reruns A′) Valeur inclusive sans candidats fantômes** : spec §8.49 ; drapeau `lse_officiel` (backtests : champ officiel du T1 ∪ finalistes), tests ; mesure à 0 fit sur les chaînes existantes, puis reruns A′1/A′2 avec le drapeau, en 8 chaînes, à B = 100 pour le segment.
+- [ ] [EN ATTENTE (routine, 20/11 11:40Z) : la revue (points 1 et 5) montre que la valeur inclusive inclut des candidats fantômes (Bertrand w = 3,3 > Macron dans le cercle 2022) ; or R3c modifie justement le terme d'abstention ⇒ R3c sera lancé APRÈS le correctif §8.49, avec le drapeau, pour ne pas tester une abstention située sur une abstention biaisée. Si la session locale ou l'utilisateur préfère le lancer tel quel, l'écrire ici.] **DEMANDE VM n° 2 (session locale, utilisateur, 2026-11-20 ~11:30Z) — À LANCER APRÈS A′1, sur
       la VM (même plateforme qu'A′1, auquel il est comparé)** : R3c, abstention située sur le
       cercle (idée utilisateur ; spec §8.48 bis, critères figés ; code et tests sur la branche).
       `python -m model.backtest.second_round --only v2 --election 2022 --coupure T1-30 --variante hiercercle_ra_abs --chaine k`
@@ -997,6 +998,51 @@ conservé pour l'historique.
   `eval_r2.py` : reports reproduits (hors fit inclus), T1 non dégradé, mais ν
   instables (R̂ 7,5) et s_ab +0,7 pt ⇒ phase 2 à faire.
 
+
+
+## Revue Opus 2026-11-20 — intégration point par point
+
+Revue lancée à 11:20Z, en lecture seule, sur les commits depuis le 19/11 11:20Z.
+
+1. **Candidats fantômes dans la valeur inclusive (haute).** VÉRIFIÉ : à T2−7 2022 sur le cercle,
+   `w_now` vaut 3,34 pour Bertrand contre 2,01 pour Macron (chaîne 1), alors qu'aucun sondage ne
+   le teste depuis des mois. μ_Montebourg vaut 0,76 dans la chaîne 0 et 0,08 dans la chaîne 1 :
+   c'est la vraie source du R̂ de 23. La lecture « un extrême qui passe par l'arrière » de la
+   réplication VM est donc RETIRÉE. INTÉGRÉ : correctif §8.49 (`lse_officiel`), préalable à R3c
+   et aux reruns. Le même défaut touche potentiellement le fit 2027 (lse sur le roster entier,
+   `lse_champ` non adopté, §8.27) : à mesurer après le correctif, avant toute publication du T2.
+2. **Critère 1 d'A′2 passé par moyenne de deux modes (86,0 et 48,8).** ACCEPTÉ : désormais, les
+   critères de reports se lisent chaîne par chaîne et ne passent que si toutes les chaînes
+   retenues passent. Le verdict d'A′2 est à relire par la session locale.
+3. **Base trop faible.** ACCEPTÉ : la persistance des tableaux d'avant T1 (MAE 1,8 pt en 2022,
+   4,0 en 2017) devient un témoin obligatoire des étapes A′/B′. Un modèle qui ne la bat pas
+   n'apporte rien sur les électorats mesurés. Sa valeur ajoutée est ailleurs : électorats et
+   paires non mesurés, d'où l'idée 2.
+4. **B′2 ne colle pas à ses propres données** (Dupont-Aignan 86 contre 45 ; κ 2017 à 0,06-0,13).
+   NOTÉ pour la session locale, auteur de B′2.
+5. **R3c, problème de signe** : cos θ vaut −0,6 pour Zemmour et 0,1 pour Mélenchon, et le ω
+   uniforme reproduit déjà les « Aucun ». ACCEPTÉ comme pronostic : γ ≈ 0 est probable. Raison de
+   plus pour faire passer le correctif §8.49 avant (cf. file).
+6. **Sélection des chaînes du joint sur la log-densité d'une seule élection.** NOTÉ pour la
+   session locale (code `multi_election`) : choisir sur `potential_energy`.
+7. **A′2 et B′2 à B = 25**, malgré la règle §8.48. NOTÉ ; les reruns A′ se feront à B = 100 pour le
+   segment.
+8. **Protocole.** Ordre des commits correct. Réserves acceptées : B′2 figé une minute après A′2 ;
+   la « lecture de plausibilité » affaiblit la règle de parcimonie de §8.47.5, ce qu'il faut dire.
+9. **Plateformes et nombre de chaînes.** ACCEPTÉ : comparer A′1 (VM) et A′2 (Mac) mêle deux
+   plateformes. Les reruns se feront avec 8 chaînes courtes par variante, sur une même
+   plateforme.
+10. **Cercle.** ACCEPTÉ : f = 3,5 % ne mesure pas l'arrière. Entre Roussel et Le Pen, l'écart fait
+    0,76-0,90 rad (12-14 % de l'électorat). Mélenchon est sur le flanc (θ ≈ −1,47), et le noyau
+    le plus large est celui de Macron, pas celui de Le Pen. Le cercle n'utilise pas le mécanisme
+    « Le Pen large ».
+
+Idées :
+
+- (1) correctif `lse` puis reruns A′1/A′2 : EN FILE (tâche §8.49) ;
+- (2) retirer de la fenêtre les tableaux de l'électorat Mélenchon et le prédire : seule mesure
+  d'une valeur ajoutée au-delà des tableaux, à proposer à la session locale (segment, Mac) ;
+- (3) fermer le cercle (A = 2π) : seulement si (1) donne l'avantage au cercle.
 
 ## Revue Opus 2026-11-19 — intégration point par point
 
