@@ -81,7 +81,7 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
                              carte_2d=False, carte_cercle=False, nu_ancre=None, nu_ordre=None, nu_ancre_val=0.3,
                              rep_y=None, rep_date_idx=None, rep_k=None, rep_a=None, rep_b=None,
                              rep_champ=None, z_pos_fixe=None, z_sigma_fixe=None, arc_fixe=None,
-                             kappa_fixe=None, abst_situee=False, noyau_t=False):
+                             kappa_fixe=None, abst_situee=False, noyau_t=False, sigma_lie=None):
     """Le modèle. Inférence JOINTE de la géométrie et du chemin de `w`.
 
     Trois paramètres par candidat, deux échelles globales, aucun bloc :
@@ -145,6 +145,9 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
     # tirées par le modèle enveloppe, enregistrées sous les noms habituels.
     z_sigma = (numpyro.sample("z_sigma", dist.Normal(0.0, 1.0).expand([N])) if z_sigma_fixe is None
                else numpyro.deterministic("z_sigma", z_sigma_fixe))
+    if sigma_lie is not None:
+        # R5 (spec_second_tour §8.53) : σ du candidat `sigma_lie[0]` ≡ σ de `sigma_lie[1]`.
+        z_sigma = jnp.asarray(z_sigma).at[sigma_lie[0]].set(jnp.asarray(z_sigma)[sigma_lie[1]])
     sigma = numpyro.deterministic("sigma", sigma_global * jnp.exp(z_sigma * sigma_jitter))
 
     # Noyau de Student-t (spec_second_tour §8.51) : un degré ν global, emboîte le gaussien.

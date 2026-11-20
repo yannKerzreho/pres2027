@@ -58,3 +58,17 @@ def test_partition_reproduit_les_modes_d_A2_ancien():
     p = partition(lignes)
     assert sorted(p["dominant"]) == [1, 4, 6, 7]
     assert sorted(map(sorted, p["autres"])) == [[0, 2, 3, 5]] or sorted(map(sorted, p["autres"])) == [[0], [2, 3, 5]]
+
+
+def test_sigma_lie_egalise_le_pen_et_macron():
+    """R5 (§8.53) : σ_Le Pen ≡ σ_Macron dans toute trace du modèle."""
+    from numpyro import handlers
+    import model.backtest.multi_election as M
+    M.VARIANTES["hier_ra_lie"] = {"eta_hier": True, "_reports_avant": True, "sigma_lie": True}
+    b = M.preparer(2022, "T1-30", "hier_ra_lie")
+    from model.models.spatial_pooling.joint_model import spatial_pooling_model_ou
+    il, im = b["kwargs"]["sigma_lie"]
+    assert b["candidats"][il] == "Marine Le Pen" and b["candidats"][im] == "Emmanuel Macron"
+    tr = handlers.trace(handlers.seed(spatial_pooling_model_ou, 3)).get_trace(**b["kwargs"])
+    s = np.asarray(tr["sigma"]["value"])
+    assert abs(s[il] - s[im]) < 1e-9

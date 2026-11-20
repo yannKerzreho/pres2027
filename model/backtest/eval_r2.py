@@ -41,7 +41,8 @@ def reconstruire(variante: str, stem: str, coupure: str = "T2-7", chaines=None, 
                            "hier_ra": {"eta_hier": True, "_reports_avant": True},
                            "hiercercle_ra_abs": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True,
                                                  "abst_situee": True},
-                           "hier_ra_t": {"eta_hier": True, "_reports_avant": True, "noyau_t": True}}[variante])
+                           "hier_ra_t": {"eta_hier": True, "_reports_avant": True, "noyau_t": True},
+                        "hier_ra_lie": {"eta_hier": True, "_reports_avant": True, "sigma_lie": True}}[variante])
     if lse_officiel or LSE_OFFICIEL:
         sr.VARIANTE_KW["_lse_officiel"] = True
     ref = sr.T1_DATES[ELECTION] if coupure.startswith("T1") else sr.T2_DATES[ELECTION]
@@ -207,7 +208,7 @@ def par_chaine(variante: str, stem: str, coupure: str) -> dict:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--variante", choices=["hier", "hier2d", "hier_rep", "hiercercle", "hiercercle_sr", "hiercercle_ra", "hier_ra", "hiercercle_ra_abs", "hier_ra_t"], required=True)
+    ap.add_argument("--variante", choices=["hier", "hier2d", "hier_rep", "hiercercle", "hiercercle_sr", "hiercercle_ra", "hier_ra", "hiercercle_ra_abs", "hier_ra_t", "hier_ra_lie"], required=True)
     ap.add_argument("--stem", default=None)
     ap.add_argument("--coupure", default="T2-7")
     ap.add_argument("--par-chaine", action="store_true", help="critère 4 révisé (écarts entre chaînes)")

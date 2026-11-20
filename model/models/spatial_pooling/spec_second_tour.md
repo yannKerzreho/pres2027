@@ -3076,6 +3076,23 @@ Aucune chaîne `_lseo` n'a été lue à l'écriture de ce paragraphe.
   - Pondération des reports par l'effectif.
   - Champ par ligne pour 2027 : l'union met Le Pen et Bardella ensemble.
 
+### 8.53 (R5) Témoin parcimonieux : rayon de Le Pen lié à celui de Macron (revue locale du 20/11 PM, point 4 ; avant code)
+
+**Forme.** Segment gaussien inchangé, sauf $z^\sigma_{LP}\equiv z^\sigma_{Macron}$, donc
+$\sigma_{LP}=\sigma_{Macron}$ : un paramètre de MOINS. Le Pen ne peut plus gagner les extrêmes par
+sa largeur (avec des σ égaux, le seul terme non monotone de §8.51 disparaît). Le croisement doit
+alors venir d'ailleurs : positions, κ, valeur inclusive.
+
+**Variante.** `hier_ra_lie` (drapeau `sigma_lie`), avec reports d'avant T1 corrigés,
+`--lse-officiel`, B = 100, 8 chaînes, Mac, comparée à A′2 corrigé et à R4.
+
+**Critères (figés).** Ceux de §8.50 / §8.52 (1, 2, 3b, 4, 5, Aucun). Le critère 3 est satisfait par
+construction et n'est pas compté.
+
+**Règle de parcimonie (extension de 7′).** Si R5 passe 1, 2 et 3b, il prime sur R4 (un paramètre de
+moins au lieu d'un de plus). S'il échoue à 1 ou 2, on mesure ce que coûte la plausibilité imposée :
+écart de MAE des partages et de log-densité des reports contre A′2 corrigé, rapportés tels quels.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

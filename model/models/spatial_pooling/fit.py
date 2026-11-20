@@ -88,7 +88,7 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
                         sigma_w_par_candidat: bool = False,
                         ancres_famille: bool = False,
                         carte_2d: bool = False, carte_cercle: bool = False, nu_ancre_val: float = 0.3,
-                        abst_situee: bool = False, noyau_t: bool = False,
+                        abst_situee: bool = False, noyau_t: bool = False, sigma_lie: bool = False,
                         reports: pd.DataFrame | None = None,
                         champ_reports: list | None = None) -> SpatialPoolingFit:
     """Roster -> arrays -> NUTS, en une seule inférence jointe.
@@ -172,6 +172,10 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
     )
     if sigma_w_par_candidat:
         kwargs["sigma_w_par_candidat"] = True
+    if sigma_lie:
+        # R5 (§8.53) : σ_Le Pen ≡ σ_Macron (noms de famille).
+        nc = [_nom_court(c) for c in candidates]
+        kwargs["sigma_lie"] = (nc.index("pen"), nc.index("macron"))
     if noyau_t:
         if carte_cercle or carte_2d:
             raise ValueError("noyau_t : segment seulement (§8.51)")
