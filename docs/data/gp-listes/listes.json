@@ -1,6 +1,6 @@
 {
- "as_of": "2026-11-19",
- "genere_le": "2026-11-19",
+ "as_of": "2026-11-20",
+ "genere_le": "2026-11-20",
  "regle": {
   "n_recents": 10,
   "n_max": 3,
@@ -26,31 +26,6 @@
  },
  "listes": [
   {
-   "cle": "arthaud|dupont aignan|glucksmann|le pen|lisnard|melenchon|philippe|retailleau|roussel|tondelier|zemmour",
-   "id": "79b20d02",
-   "candidats": [
-    "Arthaud",
-    "Dupont-Aignan",
-    "Glucksmann",
-    "Le Pen",
-    "Lisnard",
-    "Mélenchon",
-    "Philippe",
-    "Retailleau",
-    "Roussel",
-    "Tondelier",
-    "Zemmour"
-   ],
-   "n_recents": 5,
-   "n_total": 7,
-   "rang": 1,
-   "reference": false,
-   "libelle": "avec Lisnard",
-   "dans_le_classement_depuis": "2026-11-16",
-   "fichier": "gp-listes/79b20d02.json",
-   "n_sondages_ajustes": 7
-  },
-  {
    "cle": "arthaud|attal|dupont aignan|glucksmann|le pen|lisnard|melenchon|retailleau|roussel|tondelier|zemmour",
    "id": "0a2f81fb",
    "candidats": [
@@ -68,7 +43,7 @@
    ],
    "n_recents": 5,
    "n_total": 5,
-   "rang": 2,
+   "rang": 1,
    "reference": false,
    "libelle": "avec Attal, Lisnard, sans Philippe",
    "dans_le_classement_depuis": "2026-11-16",
@@ -76,13 +51,14 @@
    "n_sondages_ajustes": 5
   },
   {
-   "cle": "arthaud|dupont aignan|glucksmann|le pen|melenchon|philippe|retailleau|roussel|tondelier|zemmour",
-   "id": "39fd3710",
+   "cle": "arthaud|dupont aignan|glucksmann|le pen|lisnard|melenchon|philippe|retailleau|roussel|tondelier|zemmour",
+   "id": "79b20d02",
    "candidats": [
     "Arthaud",
     "Dupont-Aignan",
     "Glucksmann",
     "Le Pen",
+    "Lisnard",
     "Mélenchon",
     "Philippe",
     "Retailleau",
@@ -91,24 +67,24 @@
     "Zemmour"
    ],
    "n_recents": 4,
-   "n_total": 28,
-   "rang": 3,
-   "reference": true,
-   "libelle": "liste de la prévision",
-   "dans_le_classement_depuis": "2026-09-09",
-   "fichier": null
-  }
- ],
- "evenements": [
+   "n_total": 7,
+   "rang": 2,
+   "reference": false,
+   "libelle": "avec Lisnard",
+   "dans_le_classement_depuis": "2026-11-16",
+   "fichier": "gp-listes/79b20d02.json",
+   "n_sondages_ajustes": 7
+  },
   {
-   "date": "2026-03-22",
-   "type": "entree",
-   "id": "78307d1e",
+   "cle": "arthaud|attal|dupont aignan|glucksmann|le pen|lisnard|melenchon|philippe|retailleau|roussel|tondelier|zemmour",
+   "id": "e51832d2",
    "candidats": [
     "Arthaud",
-    "Bardella",
+    "Attal",
     "Dupont-Aignan",
     "Glucksmann",
+    "Le Pen",
+    "Lisnard",
     "Mélenchon",
     "Philippe",
     "Retailleau",
@@ -116,8 +92,17 @@
     "Tondelier",
     "Zemmour"
    ],
-   "libelle": "avec Bardella, sans Le Pen"
-  },
+   "n_recents": 4,
+   "n_total": 4,
+   "rang": 3,
+   "reference": false,
+   "libelle": "avec Attal, Lisnard",
+   "dans_le_classement_depuis": "2026-11-17",
+   "fichier": "gp-listes/e51832d2.json",
+   "n_sondages_ajustes": 4
+  }
+ ],
+ "evenements": [
   {
    "date": "2026-03-22",
    "type": "entree",
@@ -135,6 +120,24 @@
     "Zemmour"
    ],
    "libelle": "avec Attal, Bardella, sans Le Pen, Philippe"
+  },
+  {
+   "date": "2026-03-22",
+   "type": "entree",
+   "id": "78307d1e",
+   "candidats": [
+    "Arthaud",
+    "Bardella",
+    "Dupont-Aignan",
+    "Glucksmann",
+    "Mélenchon",
+    "Philippe",
+    "Retailleau",
+    "Roussel",
+    "Tondelier",
+    "Zemmour"
+   ],
+   "libelle": "avec Bardella, sans Le Pen"
   },
   {
    "date": "2026-03-27",
@@ -525,6 +528,44 @@
     "Zemmour"
    ],
    "libelle": "avec Attal"
+  },
+  {
+   "date": "2026-11-17",
+   "type": "entree",
+   "id": "e51832d2",
+   "candidats": [
+    "Arthaud",
+    "Attal",
+    "Dupont-Aignan",
+    "Glucksmann",
+    "Le Pen",
+    "Lisnard",
+    "Mélenchon",
+    "Philippe",
+    "Retailleau",
+    "Roussel",
+    "Tondelier",
+    "Zemmour"
+   ],
+   "libelle": "avec Attal, Lisnard"
+  },
+  {
+   "date": "2026-11-17",
+   "type": "sortie",
+   "id": "39fd3710",
+   "candidats": [
+    "Arthaud",
+    "Dupont-Aignan",
+    "Glucksmann",
+    "Le Pen",
+    "Mélenchon",
+    "Philippe",
+    "Retailleau",
+    "Roussel",
+    "Tondelier",
+    "Zemmour"
+   ],
+   "libelle": "liste de la prévision"
   }
  ]
 }
