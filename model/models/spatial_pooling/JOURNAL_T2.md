@@ -148,7 +148,7 @@ l'historique, ajouter en bas de « Historique ».
       pour k = 0..3, puis `--fusionner`, puis
       `python -m model.backtest.eval_r2 --variante hiercercle_ra_abs --coupure T1-30` et `--par-chaine`.
       Lire aussi γ (quantile 5 %) et σ_Le Pen/σ_Macron contre A′1. Verdict selon §8.48 bis.5.
-- [ ] [EN COURS VM (début 2026-11-20 12:35Z) : A′1 RELANCÉ avec les deux correctifs (groupement par hypothèse §8.50, 46740e6 ; `--lse-officiel` §8.49), 4 processus, sortie `second_round_hiercercle_ra_v2_2022_T1-30_lseo` ; le premier A′1 (09:32Z) a été ARRÊTÉ à 12:33Z, invalide (reports brouillés et fantômes), sans verdict] **DEMANDE VM (session locale, au nom de l'utilisateur, 2026-11-20 ~09:35Z)** — le GPU Colab
+- [ ] [21:00Z : 8 h 27 sans qu'aucune chaîne ait fini, processus sains (1 cœur chacun) ; plus lent que le cercle à T2−7 (environ 3 h, 511 pas) ⇒ probablement au plafond de 1023 pas. On le laisse tourner, la VM n'ayant rien d'autre à faire, jusqu'à 03:00Z au plus ; au-delà, coût jugé prohibitif sur CPU (fermer le cercle, A = 2π, ou passer par le T4)] [EN COURS VM (début 2026-11-20 12:35Z) : A′1 RELANCÉ avec les deux correctifs (groupement par hypothèse §8.50, 46740e6 ; `--lse-officiel` §8.49), 4 processus, sortie `second_round_hiercercle_ra_v2_2022_T1-30_lseo` ; le premier A′1 (09:32Z) a été ARRÊTÉ à 12:33Z, invalide (reports brouillés et fantômes), sans verdict] **DEMANDE VM (session locale, au nom de l'utilisateur, 2026-11-20 ~09:35Z)** — le GPU Colab
       est indisponible depuis 23:50Z ; l'utilisateur demande d'utiliser la VM et le Mac.
       Étape **A′1 de R3b** (spec §8.47.5, critères 1-4 de §8.47.4 figés) sur la VM, 4 processus
       en parallèle (marquer EN COURS, watcher) :
