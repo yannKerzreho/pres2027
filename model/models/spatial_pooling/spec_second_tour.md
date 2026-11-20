@@ -2860,6 +2860,53 @@ nœuds (espacés d'environ 0,04) et le fit l'exploite. Mais rien de ce qui a ét
 Les chiffres 2022 déjà publiés ne sont pas refaits : écarts ≤ 1,1 pt sur les duels de Mélenchon, et
 aucune conclusion ne change.
 
+### 8.48 bis (R3c) Abstention située sur le cercle : maths (avant code ; critères figés avant résultat)
+
+**Idée (utilisateur, 2026-11-20).** Sur le cercle, on lit les angles comme des points normalisés en L2
+d'un plan à deux axes, $x=\cos\theta$ (système, avec le centre en $\theta=0$) et $y=\sin\theta$
+(gauche–droite). L'arrière $\theta=\pi$ est le pôle anti-système, entre les deux extrêmes. Aujourd'hui,
+l'abstention du T2 est une option extérieure de niveau unique ω, la même pour tout électeur
+(§3.1). On la *situe* : elle est plus attirante à l'arrière qu'au centre.
+
+**1. Forme.** L'utilité de l'option extérieure en θ devient
+
+$$\omega(\theta)=\omega_0-\gamma\cos\theta=\omega_0+\gamma\,x_{\text{anti}}(\theta),\qquad \gamma\ge0,$$
+
+linéaire dans la coordonnée anti-système du cercle normalisé. Le reste ne change pas :
+
+$$\rho(\theta)=\mathrm{logistique}\big(\log(e^{\kappa A_a}+e^{\kappa A_b})-\omega(\theta)-\kappa\,\mathrm{lse}(\theta)\big).$$
+
+Le partage $q(\theta)$ entre a et b n'est pas touché : seule la probabilité de s'exprimer dépend de
+θ. **Emboîtement** : avec γ = 0, on retrouve exactement le cercle de §8.46 et §8.47 ; le témoin est
+donc A′1. **Coût** : un paramètre, γ. Le point d'abstention est fixé à l'arrière (θ = π) : un
+θ_abs libre coûterait un paramètre de plus pour une symétrie qui s'impose.
+
+**2. Prior.** $\gamma\sim\mathrm{HalfNormal}(1{,}5)$ en logit, soit un écart d'utilité centre–arrière
+de 2γ (médiane ≈ 2).
+
+**3. Identification.** Au T1, rien (les parts sont calculées parmi les exprimés). Au T2, par les
+cases « Aucun » des reports, d'avant et d'entre-deux-tours, par électorat : Mélenchon ≈ 44 % contre
+Zemmour ≈ 13 % en 2022. Un ω uniforme ne peut pas produire cet écart sans tordre les σ.
+
+**4. Mise en œuvre.** C'est un terme additif `omega_g` (forme (..., N_θ)) passé à `duel_expression`,
+`duel_shares_poids` et `reports_cellules`, avec `None` par défaut (comportement inchangé). Il est
+tiré dans `joint_model` sous le drapeau `abst_situee` (cercle seulement), et conservé dans le fit
+(`gamma_draws`) pour les prédictions (`duel_draws`) et l'évaluation (`eval_r2`). La variante est
+`hiercercle_ra_abs`.
+
+**5. Protocole (figé avant lecture).** R3c a le même cadre qu'A′1 : 2022 à T1−30, reports d'avant
+T1, 4 chaînes, une seule plateforme. Les critères 1 à 4 de §8.47.4 sont lus comme pour A′1. R3c est
+retenu contre A′1 s'il remplit les quatre conditions suivantes :
+
+1. critères 1, 2 et 4 pas plus mauvais que ceux d'A′1 de plus de 1 pt ;
+2. MAE des cases « Aucun » des 4 électorats mesurés inférieure d'au moins 2 pt à celle d'A′1 ;
+3. **plausibilité** (orientation utilisateur du 20/11) : rapport σ_Le Pen/σ_Macron inférieur à celui
+   d'A′1 ;
+4. γ identifié : quantile 5 % de γ supérieur à 0,1.
+
+Si R3c remplit 1, 2 et 4 mais pas 3, on le dit : l'abstention située n'aura pas suffi à rétrécir
+Le Pen.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
