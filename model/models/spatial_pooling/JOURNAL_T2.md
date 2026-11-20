@@ -61,6 +61,21 @@ l'historique, ajouter en bas de « Historique ».
   LECTURE : même sens qu'A′2. Les reports d'avant T1 rapprochent le partage Mélenchon de la mesure
   (+6,6 au lieu de la saturation), mais la multimodalité reste l'obstacle. Le mode dominant n'est
   visité que par 1 chaîne sur 4.
+- CORRECTION DE LA LECTURE D'A′2 (session locale, 2026-11-20 11:35Z ; diagnostic à 8 chaînes, graines
+  27-34, `results/diag_modes_hier_ra_2022_T1-30.json`). Deux modes nets :
+  · mode H (densité HAUTE, lp 11236-11241, chaînes 1, 4, 6, 7) : σ_Mélenchon 0,021-0,032,
+    partage Mélenchon 85-91 % (mesuré 63), T1 2,87-2,92 pt, σ_LP/σ_Macron 2,3-2,5 ;
+  · mode B (lp 11229-11231, chaînes 2, 3, 5) : σ_Mélenchon 0,12-0,13, partage 49 %, T1 2,98,
+    σ_LP/σ_Macron 3,7-3,8 ; la chaîne 0 (lp 11208, 62,8 %) est en dessous des deux.
+  Le « 67,4 % » d'A′2 venait du MÉLANGE des chaînes 1 (mode H) et 3 (mode B), retenues ensemble
+  parce que leur écart (8 nats) passe sous le seuil de sélection de §8.8 (10 nats). Le mode le
+  plus dense, qui porte ≈ e^8-e^10 fois plus de masse, donne 85-91 % : dans le postérieur, les
+  reports d'avant T1 NE corrigent PAS Mélenchon dans le segment. Le critère 1 d'A′2, lu sur le
+  mode dominant, ÉCHOUE (+22 à +28 pt). Mêmes réserves à appliquer à toute fusion qui mêle des
+  chaînes à moins de 10 nats mais dans des géométries différentes : faille du protocole §8.8, à
+  soumettre à la revue Opus (sélection par mode plutôt que par seuil de lp ?). B′2 (2017) n'est
+  pas concerné : une seule chaîne y est retenue, 117 nats au-dessus des autres.
+  Plausibilité : σ_LP/σ_Macron vaut 2,3 à 3,8 dans tous les modes du segment.
 - RÉSULTAT A′2 (session locale, Mac, 2026-11-20 10:20Z ; segment `hier_ra`, 2022 à T1−30 avec
   reports d'AVANT T1, 4 chaînes de 25-47 min ; JSON `second_round_hier_ra_v2_2022_T1-30.json`,
   `eval_r2_hier_ra_2022_T1-30{,_par_chaine}.json`, commit 989f304) — critères §8.47.4 :
