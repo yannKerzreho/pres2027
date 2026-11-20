@@ -3045,6 +3045,37 @@ spécifier séparément seulement si nécessaire.
 
 Comparaison : A′2 corrigé (gaussien), même plateforme (Mac), même nombre de chaînes, même B = 100.
 
+### 8.52 Critères de §8.50-8.51 précisés (revue locale du 20/11 PM) — figés AVANT toute lecture d'A′2 corrigé et de R4
+
+Aucune chaîne `_lseo` n'a été lue à l'écriture de ce paragraphe.
+
+- **Outillage.**
+  - `PRES2027_N_CHAINES=8` : `--fusionner` et `eval_r2` lisaient jusqu'ici c0..c3 sans prévenir.
+  - Évaluation avec `--stem …_lseo` et `PRES2027_B_QUAD=100` : sans eux, on évaluait les anciennes
+    chaînes brouillées, ou sur une autre grille.
+  - Lecteur par mode versionné : `model/backtest/modes.py`. Contrôle : sur les anciennes chaînes,
+    il retrouve H = {1, 4, 6, 7} (test).
+- **Mode dominant.** Ce sont les chaînes avec L̄ ≥ L̄_max − 10 nats et |σ_Mélenchon − σ_Mélenchon de la
+  meilleure chaîne| ≤ 0,02. Les autres modes sont regroupés par σ_Mélenchon et rapportés. Le terme de
+  volume ½·log det Σ peut valoir ±5 nats entre chaînes : la masse relative des modes n'est donc PAS
+  lue comme e^ΔL̄.
+- **Critère 3b (ajouté), monotonie à gauche.** q_Macron(v) ≥ 0,5 pour tout v < μ_Macron dans le duel
+  Macron–Le Pen, sur au moins 90 % des tirages. C'est la forme directe de « Le Pen ne gagne pas
+  l'extrême gauche par sa largeur ». Le rapport σ_LP/σ_M < 1,5 reste rapporté.
+- **Critère « Aucun » (ajouté).** MAE de la case Aucun ≤ persistance « Aucun » + 2, soit 1,75 + 2 en
+  2022 et 4,8 + 2 en 2017.
+- **R4 : les critères 6 et 7 de §8.51 sont REMPLACÉS.**
+  - Le prior donne P(ν < 30) = 0,96, et ν = 30 n'est pas gaussien sur cette grille : l'écart vaut
+    encore 2 pt sur π.
+  - **6′** : sd a posteriori de log ν ≤ 0,5 (la moitié du prior) ET q95(ν) < 30.
+  - **7′ (parcimonie)** : R4 n'est retenu que s'il passe 1-5, 3b et 6′ ALORS que le gaussien (A′2
+    corrigé) échoue à au moins un de 1, 2, 3b. Si les deux passent, on garde le gaussien.
+  - corr(log ν, log κ) et corr(log ν, log σ_global) sont rapportées.
+- **Hors comparaison A′2 / R4 (même données pour les deux), corrections reportées au tour suivant.**
+  - Case Aucun omise : poser 100 − a − b (12 lignes en 2022, 6 en 2017).
+  - Pondération des reports par l'effectif.
+  - Champ par ligne pour 2027 : l'union met Le Pen et Bardella ensemble.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

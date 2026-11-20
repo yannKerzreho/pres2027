@@ -44,3 +44,17 @@ def test_modele_initialise_avec_noyau_t():
     info = initialize_model(jax.random.PRNGKey(0), spatial_pooling_model_ou, model_kwargs=b["kwargs"],
                             init_strategy=init_to_median)
     assert np.isfinite(float(info.potential_fn(info.param_info.z)))
+
+
+def test_partition_reproduit_les_modes_d_A2_ancien():
+    """Contrôle figé avant lecture (revue locale du 20/11 PM, piste 1) : sur les valeurs des 8
+    anciennes chaînes d'A′2 (results/diag_modes_hier_ra_2022_T1-30.json), le sélecteur doit
+    rendre H = {1, 4, 6, 7}, B = {2, 3, 5}, {0}."""
+    import json
+    from pathlib import Path
+    from model.backtest.modes import partition
+    d = json.loads((Path(__file__).resolve().parents[1] / "model/backtest/results/diag_modes_hier_ra_2022_T1-30.json").read_text())
+    lignes = [{"chaine": x["chaine"], "lp": x["lp"], "sigma_melenchon": x["sigma_jlm"]} for x in d]
+    p = partition(lignes)
+    assert sorted(p["dominant"]) == [1, 4, 6, 7]
+    assert sorted(map(sorted, p["autres"])) == [[0, 2, 3, 5]] or sorted(map(sorted, p["autres"])) == [[0], [2, 3, 5]]

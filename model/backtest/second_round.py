@@ -53,7 +53,9 @@ OUT_DIR = Path(__file__).resolve().parent / "results"
 # processus a été essayé : fuite mémoire JAX/CPU (~100 Mo/s, OOM à 15 Go en
 # 2 min), le séquentiel reste plat à 1,4 Go.
 CHAINES_DIR = OUT_DIR / "chaines"
-N_CHAINES = 4
+# Surchargeable (revue locale du 20/11 PM, point 1.5) : runs à 8 chaînes (§8.50) ;
+# sans cela `--fusionner` et `eval_r2` ne lisaient que c0..c3 sans prévenir.
+N_CHAINES = int(__import__("os").environ.get("PRES2027_N_CHAINES", "4"))
 
 
 def _runner_chaine(path: Path, k: int, init: dict | None = None):

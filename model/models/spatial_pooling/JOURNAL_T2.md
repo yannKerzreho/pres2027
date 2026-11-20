@@ -1142,6 +1142,38 @@ Idées :
   résoudre par la session locale ou l'orchestrateur. Ces données concernent R3b (session
   locale). Aucun nouveau duel 2027 après le 17/11 : pas de score prospectif.
 
+## Revue Opus 2026-11-20 ~16:15Z (session locale) — correctif §8.50 et code R4
+
+- **1.1 Groupement correct** (2022 : 671 lignes retenues, aucun doublon ni inversion). Pris acte.
+- **1.2 Lignes écartées quand « Aucun » est omis (≈ 0 ; 12 lignes en 2022, 6 en 2017, des cases
+  de fidélité).** ACCEPTÉ. Correctif (Aucun = 100 − a − b) REPORTÉ au tour suivant pour garder
+  les mêmes données entre A′2 corrigé (déjà lancé) et R4. §8.52.
+- **1.3 Repli 2027 : Le Pen et Bardella dans le même champ.** ACCEPTÉ, à corriger avant tout fit
+  2027 avec reports (champ par ligne tiré de l'hypothèse T1 de la notice).
+- **1.4 Autres consommateurs sains.** Pris acte.
+- **1.5 Fusion limitée à 4 chaînes ; mauvaise souche par défaut ; B à l'évaluation.** ACCEPTÉ,
+  CORRIGÉ : `PRES2027_N_CHAINES`, `model/backtest/modes.py` avec `--stem` explicite, B = 100 à
+  l'évaluation.
+- **2.1-2.2 Code R4 exact sur le chemin des critères.** Pris acte.
+- **2.3 ν oublié dans suivi, reports_t2, reports_r1, reports_2d ; six répartiteurs dupliqués.**
+  ACCEPTÉ. Sans effet sur A′/R4. Une méthode unique `fit.A(w)` / `fit.parts(w, mask)` est à faire
+  si R4 est adopté.
+- **2.4 ν de forme (1,).** Pris acte (cas absent).
+- **2.5 ν non exporté.** CORRIGÉ dans `modes.py`.
+- **3.1 Mode dominant non codé ; règle ambiguë.** CORRIGÉ : règle précisée (Δσ par rapport à la
+  meilleure chaîne), codée, testée sur l'ancienne partition (H = {1, 4, 6, 7} retrouvé ; la
+  chaîne 0 tombe avec B par σ).
+- **3.2 Volume ½·log det Σ de ±5 nats.** ACCEPTÉ : la masse relative ne se lit plus comme e^ΔL̄
+  (§8.52). La phrase « e^8-e^10 fois plus de masse » de la correction d'A′2 est donc trop forte ;
+  le mode H reste le plus dense, sans facteur chiffré.
+- **3.3 Critères 6-7 mal calibrés.** ACCEPTÉ, remplacés par 6′ et 7′ (parcimonie), §8.52.
+- **3.4 Critère direct de monotonie à gauche.** ACCEPTÉ (3b, §8.52).
+- **3.5 Témoin « Aucun » (1,75 / 4,8).** ACCEPTÉ (critère « Aucun », §8.52).
+- **4 Parcimonie : témoin « σ_LP lié à σ_Macron », un paramètre de MOINS.** RETENU : spécifié et
+  codé (maths d'abord) après R4 sur le Mac ; règle de §8.52-7′ étendue : si le gaussien contraint
+  passe 1-3b, il prime sur R4.
+- **5.4 ν fixé à 4 en repli.** Noté, seulement si 6′ échoue par non-identification.
+
 ## Revue Opus 2026-11-20 ~12:15Z (session locale) — intégration point par point
 
 Relecteur Opus en lecture seule ; rapport complet dans la transcription de la session locale.
