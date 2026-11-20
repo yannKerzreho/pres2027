@@ -286,7 +286,8 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
             A_r = _A(mu, sigma, w_r)
             rr = jnp.arange(w_r.shape[0])
             pq = poids if poids is not None else W
-            lse_r = jax.nn.logsumexp(A_r, axis=1) if abstention else None
+            lse_r = (jax.nn.logsumexp(A_r if masque_lse is None else A_r + jnp.log(masque_lse)[None, :, None], axis=1)
+                     if abstention else None)                     # §8.49 : même champ que les duels
             s_r = duel_shares_poids(A_r[rr, rep_a], A_r[rr, rep_b], kappa, eta[rep_a], eta[rep_b],
                                     lse_r, omega, pq, omega_g)
             theta, _ = reports_cellules(A_r, rep_champ, rep_a, rep_b, rep_k, kappa,

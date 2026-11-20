@@ -145,3 +145,13 @@ def test_modele_cercle_densite_finie():
     params = {k: v["value"] for k, v in tr.items() if v["type"] == "sample" and not v.get("is_observed")}
     assert np.isfinite(float(log_density(spatial_pooling_model_ou, (), kw, params)[0]))
     assert 0 < float(tr["arc"]["value"]) < 2 * np.pi
+
+
+def test_lse_officiel_masque_les_fantomes():
+    """§8.49 : seuls le champ officiel et les finalistes entrent dans la valeur inclusive."""
+    from model.models.spatial_pooling.fit import masque_lse_officiel
+    cands = ["Emmanuel Macron", "Marine Le Pen", "Bertrand", "Jean-Luc Mélenchon", "Montebourg"]
+    m = masque_lse_officiel(cands, ["Emmanuel Macron", "Marine Le Pen", "Jean-Luc Melenchon"],
+                            {"a": np.array([0, 4]), "b": np.array([1, 0])})
+    assert list(m == 1.0) == [True, True, False, True, True]   # Montebourg : finaliste d'un duel observé
+    assert m[2] < 1e-20

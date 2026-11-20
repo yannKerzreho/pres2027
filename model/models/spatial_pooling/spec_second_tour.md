@@ -2907,6 +2907,66 @@ retenu contre A′1 s'il remplit les quatre conditions suivantes :
 Si R3c remplit 1, 2 et 4 mais pas 3, on le dit : l'abstention située n'aura pas suffi à rétrécir
 Le Pen.
 
+### 8.49 Valeur inclusive sans candidats fantômes (revue du 20/11, point 1 ; maths avant code)
+
+**Défaut.** La non-expression au T2 fait intervenir $U_0(v)=\omega+\kappa\log\sum_{j\in R}e^{A_j(v)}$
+(§3.1), où $R$ est le **roster** entier. En backtest, le roster comprend les putatifs testés dans
+les hypothèses T1 anciennes. En 2022, neuf d'entre eux n'étaient pas candidats : Bertrand,
+Barnier, Ciotti, Juvin, Montebourg, Taubira, Thouy, Philippot, Asselineau.
+
+Leur $w$ courant n'est contraint par aucun sondage récent : ils ne sont plus testés. Il entre
+pourtant dans la valeur inclusive, et donc dans l'abstention prédite et dans les duels. Mesures
+(cercle, V2 T2−7 2022) :
+
+- `w_now` de Bertrand vaut 3,34 contre 2,01 pour Macron (chaîne 1), et 1,97 dans la chaîne 0 ;
+- μ_Montebourg vaut 0,76 dans la chaîne 0 et 0,08 dans la chaîne 1, ce qui explique le R̂ de 23.
+
+Le §3.1 avait noté la fragilité (« $R$ = roster, pas le champ ») mais l'avait crue « sans effet en
+2017/2022 (roster = champ réel) ». C'est faux pour les backtests, où le roster inclut les putatifs.
+
+**Correctif.** La somme porte sur le **champ** $C$ :
+
+$$U_0(v)=\omega+\kappa\log\sum_{j\in C}e^{A_j(v)},\qquad
+C=\text{champ officiel du T1}\ \cup\ \{\text{finalistes des duels observés}\}.$$
+
+- En backtest, le champ officiel est connu avant T1−30 (dépôt des candidatures). Il est fixe pour
+  toutes les dates.
+- En 2027, il n'existe pas encore. L'analogue est le champ modal des sondages T1 (`lse_champ`,
+  §8.27, déjà codé), ce qui sera à décider au moment d'une publication du T2.
+
+Pour les finalistes hypothétiques d'un duel hors champ (rare en backtest), on les ajoute à $C$
+pour que le duel garde son sens. La mise en œuvre réutilise `masque_lse` : 1 sur $C$, $10^{-30}$
+ailleurs. Rien d'autre ne change.
+
+**Mesure prévue, fixée avant lecture.**
+
+1. **À 0 fit**, sur les chaînes existantes : on réévalue avec $C$ les reports prédits (dont la
+   case « Aucun ») et les duels de V2 T2−7 2022 (cercle et 1D). C'est indicatif, puisque le
+   postérieur a été ajusté avec $R$.
+2. **Reruns avec le drapeau `--lse-officiel`**, avec 8 chaînes, sur une même plateforme, à B = 100
+   pour le segment. Les critères sont ceux des étapes concernées, lus chaîne par chaîne (revue du
+   20/11, point 2), et la persistance des tableaux d'avant T1 sert de témoin (point 3).
+
+**Mesure 1, à 0 fit** (cercle, V2 T2−7 2022 ; `eval_r2_hiercercle_2022_lseo.json`). Cases du même
+postérieur, réévaluées avec $C$ au lieu de $R$ :
+
+| électorat | « Aucun » avec R | avec C | mesuré | partage avec R | avec C | mesuré |
+|---|---|---|---|---|---|---|
+| Mélenchon | 44,9 | 45,4 | 43,6 | 72,6 | 76,9 | 63,0 |
+| Pécresse | 26,3 | **11,1** | 29,9 | 62,7 | 66,4 | 65,0 |
+| Jadot | 31,1 | 28,9 | 33,3 | 87,6 | 87,9 | 87,5 |
+| Zemmour | 13,5 | 9,3 | 12,7 | 8,9 | 9,8 | 9,4 |
+
+Macron–Le Pen passe de 53,0 à 53,4 ; la MAE T1 ne bouge pas (1,08).
+
+**Lecture.** Le fit **utilisait les fantômes** comme réservoirs d'abstention. Bertrand, voisin de
+Pécresse à droite et de $w$ libre, fabriquait la non-expression de l'électorat Pécresse : sans lui,
+la case tombe à 11 % contre 30 mesurés. Les reports d'abstention de tous les backtests 2022 avec
+reports (R2, R3, A′) sont donc en partie des artefacts.
+
+Un refit avec le drapeau est **nécessaire** avant toute conclusion sur les cases « Aucun » ou sur
+R3c. C'est la mesure 2.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

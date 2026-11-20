@@ -26,9 +26,10 @@ from model.models.spatial_pooling.geometry import (W, W2, log_attractivite, log_
 from model.models.spatial_pooling.roster import build_poll_arrays, split_tours
 
 ELECTION = 2022
+LSE_OFFICIEL = False   # §8.49 : --lse-officiel (réévaluation ou fit refait avec le drapeau)
 
 
-def reconstruire(variante: str, stem: str, coupure: str = "T2-7", chaines=None):
+def reconstruire(variante: str, stem: str, coupure: str = "T2-7", chaines=None, lse_officiel: bool = False):
     sr.ABSTENTION = True
     sr.VARIANTE_KW.clear()
     sr.VARIANTE_KW.update({"hier": {"eta_hier": True},
@@ -40,6 +41,8 @@ def reconstruire(variante: str, stem: str, coupure: str = "T2-7", chaines=None):
                            "hier_ra": {"eta_hier": True, "_reports_avant": True},
                            "hiercercle_ra_abs": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True,
                                                  "abst_situee": True}}[variante])
+    if lse_officiel or LSE_OFFICIEL:
+        sr.VARIANTE_KW["_lse_officiel"] = True
     ref = sr.T1_DATES[ELECTION] if coupure.startswith("T1") else sr.T2_DATES[ELECTION]
     as_of = ref - pd.Timedelta(days=int(coupure.split("-")[1]))
     raw = sr.polls_historiques(ELECTION, as_of)
@@ -95,7 +98,7 @@ def evaluer(fit, raw, as_of) -> dict:
     # (1) reports prédits à `as_of` (w_now), tous électorats mesurés
     A, poids = _A(fit, fit.w_draws)
     S = A.shape[0]
-    lse = logsumexp(A, axis=1)
+    lse = logsumexp(A if fit.masque_lse is None else A + np.log(fit.masque_lse)[None, :, None], axis=1)   # §8.49
     s_ab = duel_draws(fit, a, b, 0.0, scrutin=False)
     m = mesures(pd.read_csv(sr.PARSED_DIR / f"reports_t2_{ELECTION}.csv"))
     cell = []
@@ -206,14 +209,17 @@ def main() -> None:
     ap.add_argument("--coupure", default="T2-7")
     ap.add_argument("--par-chaine", action="store_true", help="critère 4 révisé (écarts entre chaînes)")
     ap.add_argument("--election", type=int, choices=[2017, 2022], default=2022)
+    ap.add_argument("--lse-officiel", action="store_true", help="valeur inclusive sur le champ officiel (§8.49)")
     args = ap.parse_args()
-    global ELECTION
+    global ELECTION, LSE_OFFICIEL
     ELECTION = args.election
+    LSE_OFFICIEL = args.lse_officiel
+    sfx = "_lseo" if args.lse_officiel else ""
     stem = args.stem or f"second_round_{args.variante}_v2_{ELECTION}_{args.coupure}"
     if args.par_chaine:
         out = {"spec": "spec_second_tour §8.44 (révision 6)", "variante": args.variante, "stem": stem,
                "coupure": args.coupure, **par_chaine(args.variante, stem, args.coupure)}
-        dest = sr.OUT_DIR / f"eval_r2_{args.variante}_{ELECTION}_{args.coupure}_par_chaine.json"
+        dest = sr.OUT_DIR / f"eval_r2_{args.variante}_{ELECTION}_{args.coupure}{sfx}_par_chaine.json"
         dest.write_text(json.dumps(out, ensure_ascii=False, indent=1, default=float) + "\n")
         print(json.dumps({k: out[k] for k in ("ecart_partages", "ecart_duels", "ecart_lp")}, ensure_ascii=False, indent=1))
         for l in out["chaines"]:
@@ -224,8 +230,8 @@ def main() -> None:
     out = {"spec": "spec_second_tour §8.44.8", "variante": args.variante, "stem": stem, **evaluer(fit, raw, as_of)}
     if fit.nu_draws is not None:
         out["rhat_nu_champ"] = rhat_nu(stem, list(out["nu"]), fit.candidates)
-    dest = sr.OUT_DIR / (f"eval_r2_{args.variante}_{ELECTION}.json" if args.coupure == "T2-7"
-                         else f"eval_r2_{args.variante}_{ELECTION}_{args.coupure}.json")
+    dest = sr.OUT_DIR / (f"eval_r2_{args.variante}_{ELECTION}{sfx}.json" if args.coupure == "T2-7"
+                         else f"eval_r2_{args.variante}_{ELECTION}_{args.coupure}{sfx}.json")
     dest.write_text(json.dumps(out, ensure_ascii=False, indent=1, default=float) + "\n")
     print(json.dumps({k: v for k, v in out.items() if k != "reports"}, ensure_ascii=False, indent=1))
     print(pd.DataFrame(out["reports"]).to_string(index=False))

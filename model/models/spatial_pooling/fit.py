@@ -83,6 +83,7 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
                         eta_hier: bool = False, effets_maison: bool = False,
                         effet_notice_seul: bool = False,
                         lse_champ: bool = False,
+                        lse_officiel: list | None = None,
                         sigma_w_par_candidat: bool = False,
                         ancres_famille: bool = False,
                         carte_2d: bool = False, carte_cercle: bool = False, nu_ancre_val: float = 0.3,
@@ -198,6 +199,11 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
             modal = Counter(tuple(np.flatnonzero(r)) for r in tm).most_common(1)[0][0]
             masque_lse = np.full(len(candidates), 1e-30); masque_lse[list(modal)] = 1.0
             masque_lse[sorted(set(duels["a"]) | set(duels["b"]))] = 1.0   # les finalistes
+            kwargs["masque_lse"] = jnp.asarray(masque_lse)
+        if lse_officiel is not None and abstention:
+            # §8.49 : valeur inclusive sur le champ OFFICIEL du T1 (backtest) ∪ finalistes,
+            # sans les putatifs du roster dont le w n'est plus contraint.
+            masque_lse = masque_lse_officiel(candidates, lse_officiel, duels)
             kwargs["masque_lse"] = jnp.asarray(masque_lse)
         if effets_maison or effet_notice_seul:
             kwargs.update(arrays_effets_maison(raw_t2, duels))
@@ -318,6 +324,19 @@ def _nom_court(s: str) -> str:
     import unicodedata
     s = unicodedata.normalize("NFKD", str(s)).encode("ascii", "ignore").decode().lower().strip()
     return s.split()[-1] if s else s
+
+
+def masque_lse_officiel(candidates: list[str], champ: list[str], duels: dict) -> np.ndarray:
+    """§8.49 : 1 sur le champ officiel du T1 ∪ finalistes des duels observés, 1e-30 ailleurs."""
+    noms = {_nom_court(c): i for i, c in enumerate(candidates)}
+    complets = {c: i for i, c in enumerate(candidates)}
+    m = np.full(len(candidates), 1e-30)
+    for c in champ:
+        i = complets.get(c, noms.get(_nom_court(c)))
+        if i is not None:
+            m[i] = 1.0
+    m[sorted(set(np.asarray(duels["a"]).tolist()) | set(np.asarray(duels["b"]).tolist()))] = 1.0
+    return m
 
 
 def ancres_u(candidates: list[str], duels: dict) -> dict:

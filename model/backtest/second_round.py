@@ -311,6 +311,10 @@ def _fit(raw, as_of, election, nuts):
         ra = pd.read_csv(Path(PARSED_DIR) / f"reports_avant_t1_{election}.csv")
         ra = ra[pd.to_datetime(ra["date_fin"]) >= as_of - pd.Timedelta(days=180)]
         reps.append(ra.drop(columns=[c for c in ("nature_t1", "page") if c in ra.columns]))
+    if kw.pop("_lse_officiel", False):
+        # §8.49 : valeur inclusive sur le champ officiel du T1 (--lse-officiel)
+        res = load_results()
+        kw["lse_officiel"] = res[(res.election == election) & (res.tour == "Premier tour")].candidat.tolist()
     if reps:
         res = load_results()
         kw["reports"] = pd.concat(reps, ignore_index=True)
@@ -537,6 +541,8 @@ def main() -> None:
                          "partent du dernier tirage de sa chaîne la plus dense")
     ap.add_argument("--ancres-famille", action="store_true",
                     help="ancres cardinales par famille, écart minimal intra-famille (piste B)")
+    ap.add_argument("--lse-officiel", action="store_true",
+                    help="valeur inclusive sur le champ officiel du T1 (spec §8.49)")
     ap.add_argument("--stacking", action="store_true",
                     help="fusion : mélange des chaînes par stacking au lieu de la sélection (spec §8.26)")
     ap.add_argument("--noeud-resultat", action="store_true",
@@ -548,6 +554,8 @@ def main() -> None:
     NOEUD_RESULTAT = args.noeud_resultat
     global STACKING
     STACKING = args.stacking
+    if args.lse_officiel:
+        VARIANTE_KW["_lse_officiel"] = True
     if args.ancres_famille:
         VARIANTE_KW["ancres_famille"] = True
     POS_SCALE_BT = args.pos_scale
@@ -590,6 +598,7 @@ def main() -> None:
                                  + (f"_pos{args.pos_scale:g}" if args.pos_scale else "")
                                  + ("_noeud" if args.noeud_resultat else "")
                                  + ("_famille" if args.ancres_famille else "")
+                                 + ("_lseo" if args.lse_officiel else "")
                                  + ("_init" if args.init_depuis else "") + ".json")
     nuts_json = dict(nuts)
     if args.chaine is not None or args.fusionner:
