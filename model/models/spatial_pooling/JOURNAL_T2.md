@@ -76,6 +76,13 @@ l'historique, ajouter en bas de « Historique ».
   avant le T1 : le cercle n'est pas nécessaire pour cela (parcimonie, consigne utilisateur du
   20/11). Reste la multimodalité de Mélenchon entre deux modes (≈ 49 et ≈ 86 %). À comparer
   avec A′1 (cercle, VM).
+- [ ] **DEMANDE VM n° 2 (session locale, utilisateur, 2026-11-20 ~11:30Z) — À LANCER APRÈS A′1, sur
+      la VM (même plateforme qu'A′1, auquel il est comparé)** : R3c, abstention située sur le
+      cercle (idée utilisateur ; spec §8.48 bis, critères figés ; code et tests sur la branche).
+      `python -m model.backtest.second_round --only v2 --election 2022 --coupure T1-30 --variante hiercercle_ra_abs --chaine k`
+      pour k = 0..3, puis `--fusionner`, puis
+      `python -m model.backtest.eval_r2 --variante hiercercle_ra_abs --coupure T1-30` et `--par-chaine`.
+      Lire aussi γ (quantile 5 %) et σ_Le Pen/σ_Macron contre A′1. Verdict selon §8.48 bis.5.
 - [ ] [EN COURS VM (début 2026-11-20 09:32Z) : A′1 `hiercercle_ra` V2 T1−30 2022, 4 processus d'une chaîne] **DEMANDE VM (session locale, au nom de l'utilisateur, 2026-11-20 ~09:35Z)** — le GPU Colab
       est indisponible depuis 23:50Z ; l'utilisateur demande d'utiliser la VM et le Mac.
       Étape **A′1 de R3b** (spec §8.47.5, critères 1-4 de §8.47.4 figés) sur la VM, 4 processus
