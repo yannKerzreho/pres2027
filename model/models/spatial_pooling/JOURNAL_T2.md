@@ -31,7 +31,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] **DEMANDE VM n° 3 (session locale, 2026-11-20 ~23:10Z)** — R6, cercle FERMÉ (A = 2π, un
+- [ ] [EN COURS VM (début 2026-11-20 23:02Z) : R6 `hiercercle_ra_ferme --lse-officiel`, 4 processus ; durée attendue proche d'A′1 corrigé (environ 10 h par chaîne), donc des résultats vers 09:00Z] **DEMANDE VM n° 3 (session locale, 2026-11-20 ~23:10Z)** — R6, cercle FERMÉ (A = 2π, un
       paramètre de moins), spec §8.55 (critères figés avant tout fit), code sur la branche. Même
       plateforme et même nombre de chaînes qu'A′1 corrigé, auquel il est comparé (VM, 4 chaînes) :
       `python -m model.backtest.second_round --only v2 --election 2022 --coupure T1-30 --variante hiercercle_ra_ferme --lse-officiel --chaine k`
