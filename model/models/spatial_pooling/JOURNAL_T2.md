@@ -117,6 +117,18 @@ l'historique, ajouter en bas de « Historique ».
   soumettre à la revue Opus (sélection par mode plutôt que par seuil de lp ?). B′2 (2017) n'est
   pas concerné : une seule chaîne y est retenue, 117 nats au-dessus des autres.
   Plausibilité : σ_LP/σ_Macron vaut 2,3 à 3,8 dans tous les modes du segment.
+- RÉSULTAT R7 (session locale, Mac, 2026-11-21 10:40Z ; segment, fidélité révélée révisée 1bf4100, 8 chaînes) :
+  · les 8 chaînes sont à 4 nats près (lp de 12654 à 12658), mais il y a DEUX géométries : σ_Mélenchon 0,17
+    (chaîne 0, la meilleure) contre 0,33 (chaînes 1 à 7). Selon la règle du mode dominant, seule la
+    chaîne 0 est retenue (4 ✗).
+  · effet attendu de R7, CONFIRMÉ : c médian 15 → 50 ; résidus « Aucun » des lignes propres +5,55 → +1,59,
+    autres −1,30 → −0,60.
+  · critères (chaîne 0) : partages MAE 5,95 ✗ ; Mélenchon ✓ ; σ_LP/σ_M 3,17 ✗ (3,7-3,8 dans les 7 autres
+    chaînes) ; monotonie 0 % ✗ ; « Aucun » 4,38 ✗ ; T1 3,05 ✓ ; LP→JLM 46,6 ✓, Zemmour→JLM 41,0 ✗.
+  · prédiction figée de la revue (§8.57 : σ_LP/σ_M ≥ 3,7 et monotonie 0 %) : vérifiée pour la monotonie,
+    et pour σ dans 7 chaînes sur 8.
+  LECTURE : R7 règle la vraisemblance des reports, pas la géométrie du segment. Il n'est pas retenu seul ;
+  il est intégré à R8 et R8c.
 - RÉSULTAT R4 (session locale, Mac, 2026-11-21 05:00Z ; noyau de Student-t, segment, reports d'avant T1
   corrigés, `--lse-officiel`, B = 100, 8 chaînes) — §8.51/§8.52/§8.54 :
   · ν est appris et lourd : médiane 1,7 à 4,5 selon la chaîne ; sd(log ν) 0,08 ; q95 5,1 (6′ ✓).
@@ -168,7 +180,7 @@ l'historique, ajouter en bas de « Historique ».
   avec A′1 (cercle, VM).
 - [x] [CLOS 20/11 22:55Z : refits faits avec le drapeau, A′1 (VM, cercle) et A′2 (Mac, segment), lus en §8.54 ; le défaut reste à mesurer sur le fit 2027 avant toute publication du T2 (non publié)] [CODE FAIT 20/11 11:39Z (`--lse-officiel` dans second_round et eval_r2, `masque_lse_officiel`, masque aussi dans le bloc reports) ; mesure 1 à 0 fit (§8.49) : sans les fantômes, la case « Aucun » de Pécresse 26,3 → 11,1 (mesuré 29,9) ⇒ le fit utilisait Bertrand comme réservoir d'abstention ; refits avec le drapeau NÉCESSAIRES, après A′1] **(NOUVEAU 20/11, revue point 1, PRÉALABLE à R3c et aux reruns A′) Valeur inclusive sans candidats fantômes** : spec §8.49 ; drapeau `lse_officiel` (backtests : champ officiel du T1 ∪ finalistes), tests ; mesure à 0 fit sur les chaînes existantes, puis reruns A′1/A′2 avec le drapeau, en 8 chaînes, à B = 100 pour le segment.
 - [x] [FAIT Mac 2026-11-21 04:47Z, `results/modes_second_round_hier_ra_t_v2_2022_T1-30_lseo.json` ; CODE 477d0eb, et sur T4 si le GPU revient (jeu `_lseo_t4` séparé, avec un A′2 corrigé T4 jumeau)] **(R4) Noyau de Student-t** (revue locale 3.3, spec §8.51, critères §8.50 + ν < 30 figés) : `hier_ra_t --lse-officiel`, B = 100, 8 chaînes ; comparé à A′2 corrigé sur la MÊME plateforme.
-- [ ] [CODE FAIT 603f493 ; EN FILE Mac juste après R4] **(R7) Fidélité révélée** (spec §8.56, critères figés) : `hier_ra_fid --lse-officiel`, B = 100, 8 chaînes.
+- [x] [FAIT Mac 2026-11-21 10:34Z, `results/modes_second_round_hier_ra_fid_v2_2022_T1-30_lseo.json`] **(R7) Fidélité révélée** (spec §8.56, critères figés) : `hier_ra_fid --lse-officiel`, B = 100, 8 chaînes.
 - [ ] [CODE FAIT f1bfcbc ; EN FILE Mac après R7 ; prédiction figée : échec au critère 2] **(R5) σ_Le Pen ≡ σ_Macron** (revue locale PM, point 4 ; spec §8.53, critères figés) : `hier_ra_lie --lse-officiel`, B = 100, 8 chaînes ; s'il passe 1, 2 et 3b, il prime sur R4.
 - [x] [FAIT Mac 2026-11-20 17:20Z, `results/modes_second_round_hier_ra_v2_2022_T1-30_lseo.json`] **A′2 relancé selon §8.49 (revue, points 1-2)** :
       `hier_ra --lse-officiel`, `PRES2027_B_QUAD=100`, 8 chaînes (graines 27-34), 2 à la fois sur le
