@@ -3183,6 +3183,66 @@ plus de 1 pt), on préfère R6 (un paramètre de moins).
 **Prédiction (non contraignante).** Sans arrière vide, la masse entre les extrêmes diminue, et
 Mélenchon devrait remonter vers Macron.
 
+### 8.56 (R7) Fidélité révélée dans la vraisemblance des reports (revue locale du 21/11 ~00:30Z ; avant code)
+
+**Défaut.** 164 lignes de reports sur 585 (28 %) sont « propres » : l'électorat k est l'un des deux
+finalistes (électeurs Le Pen dans Macron–Le Pen, Zemmour dans Macron–Zemmour, Mélenchon dans
+Mélenchon–Macron…). Le modèle traite T1 et T2 comme indépendants sachant la position v ; il ne peut
+pas représenter le fait qu'un électeur ayant choisi k au T1 vote k au T2 quand k est présent.
+Postérieur d'A′2 corrigé :
+
+| ligne propre | « Aucun » observé / modèle | partage vers l'adversaire, observé / modèle |
+|---|---|---|
+| Le Pen dans Macron–Le Pen | 2,3 / 11,9 | 2,3 / 15,8 |
+| Zemmour dans Macron–Zemmour | 1,8 / 12,9 | 3,5 / 18,8 |
+| Mélenchon dans Mélenchon–Macron | 4,4 / 19,1 | fidélité 95 contre 72 au modèle |
+
+Conséquences :
+
+- c (concentration Dirichlet) s'effondre à 15, contre 8 sur les lignes propres et 25 ailleurs :
+  surdispersion d'un facteur 10 à 40 ;
+- ω est tiré dans deux sens contraires (résidu « Aucun » de +5,6 pt sur les lignes propres et de
+  −1,3 ailleurs), ce qui écrase l'abstention de Pécresse ;
+- les tableaux, qui « contiennent » la réponse, pèsent donc peu.
+
+**Forme (0 paramètre).** Pour une ligne où k ∈ {a, b}, le choc d'utilité individuel qui a fait
+choisir k au T1 persiste au T2 : l'électeur préfère k à l'adversaire. Il ne reste que la décision de
+s'exprimer, donnée par la formule actuelle avec k dominant : $\rho\approx\sigma(-\omega)$, puisque
+$\log(e^{\kappa A_a}+e^{\kappa A_b})\approx\kappa A_k\approx\kappa\,\mathrm{lse}$. La cellule devient
+
+$$\theta_r=(\,\sigma(-\omega),\ \varepsilon,\ \sigma(\omega)\,)\ \text{(k, adversaire, Aucun)},$$
+
+renormalisée, avec ε = 10⁻⁴ (le plancher déjà en place). Les autres lignes ne changent pas. Les
+duels et le T1 ne changent pas non plus : la même fidélité dans l'agrégation des duels est une
+étape B, à spécifier séparément, car elle modifierait les duels publiés.
+
+**Variante.** Drapeau `fidelite` ; `hier_ra_fid` (segment, reports d'avant T1 corrigés,
+`--lse-officiel`, B = 100, 8 chaînes, Mac), comparé à A′2 corrigé ; puis le cercle (VM) si le
+segment progresse.
+
+**Critères, figés avant tout fit** (proposés par la revue). Ceux de §8.50 / §8.52 / §8.54, plus :
+
+- c médian ≥ 22 ;
+- « Aucun » de Pécresse ≥ 22 (mesuré 29,9) ;
+- résidu moyen du « Aucun » ≤ 2 pt en valeur absolue, sur les lignes propres comme sur les autres.
+
+**Prédiction figée pour R6 (cercle fermé, revue)**, contraire à la prédiction non contraignante de
+§8.55 :
+
+- partage Mélenchon ≤ 48,6 ;
+- Zemmour → Mélenchon > 35 ;
+- « Aucun » de Pécresse inchangé.
+
+On rapportera θ_i et |z_pos| des extrêmes. Si les extrêmes ont |z_pos| > 2, R6 n'est qu'A′1 payé
+dans le prior.
+
+**Rejetés (revue, chiffrés).**
+
+- c_r = φ·n_eff : la part des lignes propres passerait de 28 % à 44 %, ce qui aggrave le défaut.
+- R3c (γ cos θ) : l'ordre des données est contraire. Zemmour, près de l'arrière, s'abstient à 13 % ;
+  Pécresse, près du centre, à 30 %.
+- « Aucun » = 100 − a − b : seulement 8 groupes concernés.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
