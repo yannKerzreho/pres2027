@@ -141,7 +141,8 @@ l'historique, ajouter en bas de « Historique ».
   avec A′1 (cercle, VM).
 - [x] [CLOS 20/11 22:55Z : refits faits avec le drapeau, A′1 (VM, cercle) et A′2 (Mac, segment), lus en §8.54 ; le défaut reste à mesurer sur le fit 2027 avant toute publication du T2 (non publié)] [CODE FAIT 20/11 11:39Z (`--lse-officiel` dans second_round et eval_r2, `masque_lse_officiel`, masque aussi dans le bloc reports) ; mesure 1 à 0 fit (§8.49) : sans les fantômes, la case « Aucun » de Pécresse 26,3 → 11,1 (mesuré 29,9) ⇒ le fit utilisait Bertrand comme réservoir d'abstention ; refits avec le drapeau NÉCESSAIRES, après A′1] **(NOUVEAU 20/11, revue point 1, PRÉALABLE à R3c et aux reruns A′) Valeur inclusive sans candidats fantômes** : spec §8.49 ; drapeau `lse_officiel` (backtests : champ officiel du T1 ∪ finalistes), tests ; mesure à 0 fit sur les chaînes existantes, puis reruns A′1/A′2 avec le drapeau, en 8 chaînes, à B = 100 pour le segment.
 - [ ] [EN COURS Mac depuis 2026-11-20 17:25Z ; CODE 477d0eb, et sur T4 si le GPU revient (jeu `_lseo_t4` séparé, avec un A′2 corrigé T4 jumeau)] **(R4) Noyau de Student-t** (revue locale 3.3, spec §8.51, critères §8.50 + ν < 30 figés) : `hier_ra_t --lse-officiel`, B = 100, 8 chaînes ; comparé à A′2 corrigé sur la MÊME plateforme.
-- [ ] [CODE FAIT f1bfcbc ; EN FILE Mac après R4] **(R5) σ_Le Pen ≡ σ_Macron** (revue locale PM, point 4 ; spec §8.53, critères figés) : `hier_ra_lie --lse-officiel`, B = 100, 8 chaînes ; s'il passe 1, 2 et 3b, il prime sur R4.
+- [ ] [CODE FAIT 603f493 ; EN FILE Mac juste après R4] **(R7) Fidélité révélée** (spec §8.56, critères figés) : `hier_ra_fid --lse-officiel`, B = 100, 8 chaînes.
+- [ ] [CODE FAIT f1bfcbc ; EN FILE Mac après R7 ; prédiction figée : échec au critère 2] **(R5) σ_Le Pen ≡ σ_Macron** (revue locale PM, point 4 ; spec §8.53, critères figés) : `hier_ra_lie --lse-officiel`, B = 100, 8 chaînes ; s'il passe 1, 2 et 3b, il prime sur R4.
 - [x] [FAIT Mac 2026-11-20 17:20Z, `results/modes_second_round_hier_ra_v2_2022_T1-30_lseo.json`] **A′2 relancé selon §8.49 (revue, points 1-2)** :
       `hier_ra --lse-officiel`, `PRES2027_B_QUAD=100`, 8 chaînes (graines 27-34), 2 à la fois sur le
       Mac ; sortie `second_round_hier_ra_v2_2022_T1-30_lseo_c*` ; lecture chaîne par chaîne. La
@@ -1171,6 +1172,38 @@ Idées :
   `data/parsed/reports_avant_t1_*.csv`). `git merge --abort` fait, branche inchangée. À
   résoudre par la session locale ou l'orchestrateur. Ces données concernent R3b (session
   locale). Aucun nouveau duel 2027 après le 17/11 : pas de score prospectif.
+
+## Revue Opus 2026-11-21 ~00:30Z (session locale) — A′1 corrigé, R6, case « Aucun »
+
+- **1 Deux causes distinctes.** ACCEPTÉ.
+  · Mélenchon 48,6 et son « Aucun » à 24,6 (contre 43,6) : l'arrière du cercle (37 %) rapproche Le
+    Pen. Les abstentionnistes de Mélenchon votent alors Le Pen. Le segment, à valeur inclusive et
+    vraisemblance égales, a ce « Aucun » juste.
+  · κ = 0,35 n'est pas une cause : c'est la crête κ–σ (netteté effective κ/σ̄² de 67 contre 58).
+  · Pécresse : même échec dans les deux géométries, donc pas une question de géométrie.
+- **2 R6 : code correct, mais « un paramètre de moins » seulement en apparence.** L'arc peut passer
+  dans le prior via une compression des μ. Pathologie aux ancres : Macron et Le Pen sont
+  antipodaux, et Mélenchon tombe du côté Le Pen. ACCEPTÉ : prédiction CONTRAIRE à §8.55 figée en
+  §8.56 (Mélenchon ≤ 48,6, Zemmour → Mélenchon > 35) ; θ_i et |z_pos| seront rapportés. R6 continue
+  sur la VM : la prédiction doit être confrontée.
+- **3 « Aucun » et écart à la persistance : d'abord la vraisemblance.** ACCEPTÉ, c'est le point
+  majeur. 28 % des lignes sont « propres » (l'électorat k est un finaliste), et le modèle ne peut pas
+  y représenter la fidélité. c tombe à 15 et ω est tiré dans deux sens. Correctif à 0 paramètre, la
+  FIDÉLITÉ RÉVÉLÉE : spec §8.56 (0495c01), code et test 603f493. Il passe AVANT R5 sur le Mac,
+  juste après R4.
+- **3 (a) c_r = φ·n_eff : contre-productif (28 % → 44 % de lignes propres).** ACCEPTÉ, abandonné.
+- **3 (b) R3c : l'ordre des données est contraire** (Zemmour s'abstient à 13 % près de l'arrière,
+  Pécresse à 30 % près du centre). ACCEPTÉ comme argument. R3c reste suspendu ; la décision
+  d'abandon revient à l'utilisateur (ARBITRAGE ci-dessous, mis à jour).
+- **3 (c) κ_abs distinct.** Gardé en réserve (piste 3), seulement si R7 laisse le « Aucun » de
+  Pécresse sous 22.
+- **3 (d) « Aucun » = 100 − a − b.** Négligeable (8 groupes) ; reporté.
+- **4 Pistes.** Ordre retenu : R7 segment (Mac), puis cercle + R7 (VM ou T4), puis κ_abs si besoin.
+  Le témoin « sans lignes propres » n'est pas lancé : R7 garde l'information d'abstention de ces
+  lignes.
+
+ARBITRAGE À TRANCHER (mise à jour) : deux revues jugent R3c (abstention située) inutile, et l'une
+montre un ordre des données contraire. Proposition : l'abandonner. Décision : utilisateur.
 
 ## Revue Opus 2026-11-20 ~20:00Z (session locale) — lecture d'A′2 corrigé, R4/R5, diagnostic de fond
 
