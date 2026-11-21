@@ -56,3 +56,20 @@ def test_reports_groupes_par_hypothese():
     assert np.allclose(rep["y"][i_lp], [0.60, 0.15, 0.25])
     # champ par ligne : Bertrand seulement dans sa propre ligne
     assert rep["champ"][i_lp][3] == 0.0 and rep["champ"][1 - i_lp][3] == 1.0
+
+
+def test_fidelite_revelee():
+    """§8.56 : électorat d'un finaliste → (σ(−ω), ε, σ(ω)) ; autres lignes inchangées."""
+    from model.models.spatial_pooling.geometry import W, reports_cellules
+    rng = np.random.default_rng(1)
+    R, N, G = 3, 4, W.shape[0]
+    A = jnp.asarray(rng.normal(size=(R, N, G)))
+    lse = jax.nn.logsumexp(A, axis=1)
+    ia, ib, k = jnp.array([0, 0, 0]), jnp.array([1, 1, 1]), jnp.array([0, 1, 2])
+    args = (A, jnp.ones(N), ia, ib, k, 0.8, jnp.zeros(R), lse, -3.0, jnp.full(R, 0.5), W)
+    c0, _ = reports_cellules(*args)
+    c1, _ = reports_cellules(*args, fidelite=True)
+    s = float(jax.nn.sigmoid(3.0))
+    assert np.allclose(c1[0], np.array([s, 1e-4, 1 - s]) / (1 + 1e-4), atol=1e-6)
+    assert np.allclose(c1[1], np.array([1e-4, s, 1 - s]) / (1 + 1e-4), atol=1e-6)
+    assert np.allclose(c1[2], c0[2])

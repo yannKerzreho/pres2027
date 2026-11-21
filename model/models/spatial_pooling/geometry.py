@@ -307,7 +307,7 @@ def duel_shares_poids(A_a, A_b, kappa, eta_a, eta_b, lse, omega, poids, omega_g=
 
 
 def reports_cellules(A, champ_mask, ia, ib, k_idx, kappa, eta_diff, lse, omega, s_ab, poids, n_newton=4,
-                     omega_g=None):
+                     omega_g=None, fidelite=False):
     """Cellules (a, b, aucun) de l'électorat T1 `k_idx` (spec §8.38, §8.44.4),
     différentiables : δ par `n_newton` pas de Newton depuis `eta_diff` pour que
     l'agrégat des électorats du champ redonne `s_ab`.
@@ -339,7 +339,20 @@ def reports_cellules(A, champ_mask, ia, ib, k_idx, kappa, eta_diff, lse, omega, 
         d = d - f / jnp.clip(fp, 1e-6, None)
     Gt = jax.nn.sigmoid(lG[rows, k_idx] + d)
     R = Rk[rows, k_idx]
-    return jnp.stack([R * Gt, R * (1 - Gt), 1 - R], axis=-1), d
+    cel = jnp.stack([R * Gt, R * (1 - Gt), 1 - R], axis=-1)
+    if fidelite and lse is not None:
+        # §8.56 (R7) : électorat d'un finaliste — le choc T1 persiste, l'électeur vote k
+        # s'il s'exprime ; il s'exprime avec la probabilité σ(−ω) (k dominant).
+        om = jnp.asarray(omega)
+        om = om if om.ndim else jnp.full(cel.shape[0], om)
+        e = 1e-4
+        s_ = jax.nn.sigmoid(-om)
+        fid_a = jnp.stack([s_, jnp.full_like(s_, e), 1 - s_], axis=-1)
+        fid_b = jnp.stack([jnp.full_like(s_, e), s_, 1 - s_], axis=-1)
+        ka, kb = (jnp.asarray(k_idx) == jnp.asarray(ia))[:, None], (jnp.asarray(k_idx) == jnp.asarray(ib))[:, None]
+        cel = jnp.where(ka, fid_a, jnp.where(kb, fid_b, cel))
+        cel = cel / cel.sum(-1, keepdims=True)
+    return cel, d
 
 
 # --- Votants sur un cercle (spec_second_tour §8.46, piste R3 ; drapeau `carte_cercle`) -----

@@ -81,7 +81,7 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
                              carte_2d=False, carte_cercle=False, nu_ancre=None, nu_ordre=None, nu_ancre_val=0.3,
                              rep_y=None, rep_date_idx=None, rep_k=None, rep_a=None, rep_b=None,
                              rep_champ=None, z_pos_fixe=None, z_sigma_fixe=None, arc_fixe=None,
-                             kappa_fixe=None, abst_situee=False, noyau_t=False, sigma_lie=None):
+                             kappa_fixe=None, abst_situee=False, noyau_t=False, sigma_lie=None, fidelite=False):
     """Le modèle. Inférence JOINTE de la géométrie et du chemin de `w`.
 
     Trois paramètres par candidat, deux échelles globales, aucun bloc :
@@ -298,7 +298,8 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
             s_r = duel_shares_poids(A_r[rr, rep_a], A_r[rr, rep_b], kappa, eta[rep_a], eta[rep_b],
                                     lse_r, omega, pq, omega_g)
             theta, _ = reports_cellules(A_r, rep_champ, rep_a, rep_b, rep_k, kappa,
-                                        eta[rep_a] - eta[rep_b], lse_r, omega, s_r, pq, omega_g=omega_g)
+                                        eta[rep_a] - eta[rep_b], lse_r, omega, s_r, pq, omega_g=omega_g,
+                                        fidelite=fidelite)
             c = numpyro.deterministic("c_reports", jnp.exp(numpyro.sample(
                 "log_c", dist.Normal(jnp.log(100.0), 1.0))))
             numpyro.deterministic("reports_theta", theta)
