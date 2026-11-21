@@ -26,6 +26,7 @@ Le rapport est écrit dans `model/backtest/results/` pour être lu.
 from __future__ import annotations
 
 import argparse
+import os
 import json
 import time
 from pathlib import Path
@@ -476,6 +477,8 @@ def v2_resultat(election: int, nuts: dict, coupures=("T1-30", "T1-1", "T2-7")) -
         as_of = ref - pd.Timedelta(days=int(c.split("-")[1]))
         print(f"[V2 {election}] {c} ({as_of.date()})", flush=True)
         raw = polls_historiques(election, as_of)
+        if os.environ.get("PRES2027_SANS_PAIRE"):                # V2 au MAP / NUTS (§8.69)
+            raw = _sans_paire(raw, *os.environ["PRES2027_SANS_PAIRE"].split("|"))
         if NOEUD_RESULTAT:
             if as_of <= T1_DATES[election]:
                 raise ValueError("--noeud-resultat : coupure postérieure au T1 seulement")

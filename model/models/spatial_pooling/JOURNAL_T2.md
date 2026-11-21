@@ -31,7 +31,18 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] (session locale) **V2 de `hiercercle_ra_fid` face à `hier` (§8.67 a).** Prérequis : option de
+- [ ] **DEMANDE VM n° 5 (session locale, 2026-11-21 ~23:45Z), après R8c** : V2 en NUTS de la référence
+  `hiercercle_ra_fid` et du témoin `hier` (spec §8.69 ; code sur la branche, 930d1ab et suivants).
+  - Pour chaque paire P ∈ {`Emmanuel Macron|Jean-Luc Mélenchon`, `Emmanuel Macron|Eric Zemmour`} et
+    chaque variante V ∈ {`hiercercle_ra_fid`, `hier`}, lancer :
+    `PRES2027_SANS_PAIRE="P" PRES2027_N_CHAINES=4 python -m model.backtest.second_round --only v2 --election 2022 --coupure T1-30 --variante V --lse-officiel --chaine k --out model/backtest/results/second_round_V_v2sans_<P sans espaces>_2022_T1-30_lseo.json`,
+    pour k = 0..3.
+  - Puis `--fusionner`, et la lecture :
+    `PRES2027_SANS_PAIRE="P" python -m model.backtest.modes --variante V --stem <stem> --n 4 --lse-officiel --v2-paire --sans-criteres`.
+  - Critères figés : MAE ≤ 8,3 ET ≤ `hier` − 1. Le cercle demande environ 10 h par chaîne, `hier`
+    environ 1 h ; commencer par `hier`.
+
+- [x] [FAIT 21/11 ~23:40Z au MAP, §8.69 : MAE 4,0 contre 6,9 pour `hier` (seuils 8,3 et 5,9) ⇒ favorable, NON PROBANT (Mac) ; NUTS demandé à la VM, n° 5] (session locale) **V2 de `hiercercle_ra_fid` face à `hier` (§8.67 a).** Prérequis : option de
   retrait d'une PAIRE de duels (Macron–Mélenchon, puis Macron–Zemmour) dans `second_round._fit`,
   derrière une variable d'environnement, avec un test qui vérifie le retrait. Dépistage MAP d'abord ;
   critère figé : ≤ `hier` − 1 (le témoin BT vaut 9,8, le seuil du modèle 8,3).

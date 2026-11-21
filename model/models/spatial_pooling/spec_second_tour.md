@@ -3846,6 +3846,27 @@ même point. Fichiers `results/v1loho_map_*_2022_T1-30_sans_*.json`.
 - **Prédiction consignée avant lecture :** comme en V1, Macron–Zemmour (les deux bords) devrait être
   bien prédit, et Macron–Mélenchon mal prédit (aucun pont).
 
+**§8.69, résultat (21/11 ~23:40Z, Mac, dépistage MAP, 6 inits).** Part de Macron prédite au mode
+retenu (Δlp ≤ 10). Fichiers `results/v2paire_map_*_2022_T1-30_v2sans_*.json`.
+
+| Paire retirée (observé) | `hiercercle_ra_fid` | `hier` (sans reports) |
+|---|---|---|
+| Macron–Mélenchon (66,3) | 64,3 (−2,0) ; 2ᵉ mode retenu 68,2 (+1,9) | 75,5 (+9,2) |
+| Macron–Zemmour (64,4) | 70,4 (+6,0) | 69,0 (+4,6) |
+| **MAE** | **4,0** | **6,9** |
+
+- **Les deux critères figés sont tenus au dépistage :** 4,0 ≤ 8,3, et 4,0 ≤ `hier` − 1 = 5,9.
+- **La prédiction consignée est démentie dans les deux sens :**
+  - Macron–Mélenchon est bien prédit (les reports placent l'électorat Mélenchon et la gauche) ;
+  - Macron–Zemmour est un peu moins bien prédit que par `hier`.
+- Les modes non retenus de la référence restent dans [−0,9 ; +7,2] pour Mélenchon et [+5,8 ; +9,7]
+  pour Zemmour.
+- **Verdict : favorable, sur le Mac, au MAP ⇒ NON PROBANT** par règle. NUTS sur une seule plateforme,
+  la VM : DEMANDE VM n° 5.
+- Lecture provisoire : les reports n'apprennent pas bien les cellules d'une hypothèse jamais sondée
+  (V1-LOHO, §8.68), mais ils améliorent l'AGRÉGAT d'un duel jamais sondé de près de 3 pt. C'est le
+  premier argument chiffré, hors plausibilité, pour garder la couche de reports dans le modèle unique.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
