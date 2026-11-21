@@ -31,6 +31,16 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- [ ] [EN COURS MAC, session locale, 21/11 ~16:10Z] **§8.63, réparer la mesure de V1.**
+  - Dépistages MAP de R8c avec Macron–Zemmour, puis Macron–Pécresse retirées (6 inits chacun).
+  - Coder le témoin U dans `modes.v1` et la partition par log-densité.
+  - Lire le V1-LOHO face à U ; critère figé ≤ U − 2 en moyenne, aucune hypothèse > U + 2.
+- [ ] (session locale) Test à 0 fit ω_k[Mélenchon] := ω sur le point MAP de R8c (prédiction de la
+  routine : −8 pt sur le partage Mélenchon).
+- [ ] (session locale) Brancher `reports_avant_t1_2027.csv`. Prérequis du LOHO Philippe–Le Pen : maths
+  et critères dans la spec d'abord.
+- [ ] F7 : aligner `s_r` et le champ du Newton δ des reports.
+
 - [ ] [EN COURS VM (début 2026-11-21 10:10Z, routine : 4 chaînes CPU, ~10 h attendues ; 1er lancement de 09:55Z perdu au redémarrage du conteneur)] **DEMANDE VM n° 4 (session locale, 2026-11-21 ~10:00Z) — PRIORITAIRE après R6** : R8c, cercle +
       fidélité révélée + abstention par électorat (spec §8.56, §8.58 ; dépistage MAP réussi sur les
       critères 2 et 3b, cf. §8.58 « Résultat du dépistage MAP de R8c »). Code sur la branche (02cc3ff
@@ -917,6 +927,13 @@ conservé pour l'historique.
 
   En attendant, R9 (λ) est dépisté.
 
+- **(21/11 ~16:00Z) ARBITRAGE À TRANCHER, forme recommandée par la revue pour l'option (ii).**
+  - β électorat × finaliste rétrécis par s_β ~ HN(0,3), environ 41 paramètres en 2022, posés
+    seulement sur les couples observés dans au moins 2 notices.
+  - τ_report constant, calibré en LOHO, pour les hypothèses jamais sondées.
+  - Un seul modèle : duels et T1 restent inchangés.
+  - La revue rejette (iii).
+
 ## Faits établis (ne pas re-mesurer)
 
 - Géométrie T1 seule : MAE 6,3 pt sur les 11 paires 2027 ; abstention (κ, ω)
@@ -1111,6 +1128,63 @@ conservé pour l'historique.
   instables (R̂ 7,5) et s_ab +0,7 pt ⇒ phase 2 à faire.
 
 
+
+## Revue Opus 2026-11-21 ~16:00Z (session locale) — R9, mesure de V1, arbitrage : intégration point par point
+
+- **Vérifications passées.** Le filtre `PRES2027_SANS_HYP` retire bien les 9 notices (164 → 148
+  lignes propres), la cible V1 n'est pas vue, λ est propagé dans tout le post-traitement, et le code
+  reproduit exactement 27,2. **Pris acte.**
+- **F1, témoin 50/50 mal choisi.** Le bon témoin, U (uniforme calé sur l'agrégat du fit), fait 14,8,
+  voire ≈ 11,5 : le critère de §8.61 est franchissable sans structure. Le plancher de bruit vaut 3,3,
+  pas 6. **Retenu** : §8.63 retire le critère de §8.61 et fige le protocole V1-LOHO face à U.
+- **F2, V1 2022 Mélenchon–Macron non informatif.** Mélenchon n'est finaliste dans aucune autre
+  hypothèse, et la cible dérive de 15 pt d'octobre à mars. **Retenu**, d'où le LOHO sur 3 hypothèses.
+- **F3, pseudo-chaînes MAP sur-interprétées.** On voit jusqu'à 973 nats d'écart, et la partition par
+  σ_Mélenchon fusionne des modes à 276 nats. **Retenu** : partition par log-densité (§8.63), à coder
+  dans `modes.partition`. Les comparaisons « meilleur sur 6 » entre variantes ne valent que comme
+  dépistage.
+- **F4, critère λ illisible au MAP, emboîtement seulement pour la vraisemblance.** **Retenu.** R9 est
+  retiré définitivement (§8.63).
+- **F5, géométrie forcée et non identifiée.** z_pos de Mélenchon à +3,7/+5,0, de Lassalle à −5 ;
+  Mélenchon passe à droite de Macron dans le mode dominant de R9 V1 ; s_ω vaut 3-4 pour un prior
+  HalfNormal(1). **Retenu** : drapeau max |z_pos| > 3 à chaque lecture (§8.63). Ce point devient le
+  diagnostic central.
+- **F6, R9 absent de `--variante` et du tuple ABSTENTION.** **Corrigé** dans ce lot ; R9 n'aura
+  néanmoins pas de NUTS.
+- **F7, champs incohérents (`s_r` sur `masque_lse`, Newton sur `rep_champ`).** **Retenu, en file**
+  (mineur : 5 notices Macron–Bertrand).
+- **F8, problèmes encore ouverts.** La fidélité est hors du Newton, les notices cibles gardent leurs
+  autres hypothèses, et le libellé « cellules vues » est trompeur : ce sont les tableaux d'après T1,
+  qui ne sont pas dans le fit. **Retenu** : libellé corrigé à « cellules post-T1 » dans les prochaines
+  lectures ; le reste en file.
+- **F9, libellés de quadrature.** Le cercle n'en dépend pas : on a 128 nœuds fixes, quelle que soit B.
+  **Pris acte** ; le §8.62 compare donc bien des conditions identiques.
+- **F10, les reports 2027 ne sont lus nulle part** (252 lignes, 17 notices, Mélenchon finaliste).
+  **Retenu, en file** (piste 4). C'est le seul pont pour l'électorat de Mélenchon.
+- **Parcimonie.**
+  - λ est retiré.
+  - ω_k est conditionnel : test à 0 fit ω_k[Mélenchon] := ω ; retrait si NUTS donne s_ω q5 < 0,2.
+  - Le cercle est gardé, sous le drapeau d'identification.
+  - R7 est gardé.
+  **Retenu.**
+- **Arbitrage.**
+  - (iii) est rejeté : un Bradley-Terry par électorat fait environ 38 pt d'erreur et l'unicité est
+    perdue.
+  - (i) est à arrêter sous sa forme actuelle.
+  - (ii) est recommandé, pour libérer la géométrie et pas pour V1 : β électorat × finaliste, environ
+    41 paramètres rétrécis par s_β ~ HN(0,3), plus un τ_report calibré en LOHO pour les hypothèses
+    jamais sondées. Duels et T1 restent inchangés grâce au Newton δ.
+
+  **Non tranché : ARBITRAGE À TRANCHER**, cf. « Arbitrages ouverts ».
+- **Pistes.**
+  1. Réparer la mesure : **en cours.** §8.63 est figé ; dépistages MAP de R8c avec Macron–Zemmour et
+     Macron–Pécresse retirés lancés sur le Mac à ~16:10Z ; témoin U et partition par log-densité à
+     coder.
+  2. τ_report : **en file, après 1.**
+  3. Test ω_k[Mélenchon] := ω : **en file.**
+  4. Reports 2027 : **en file.**
+  5. (ii) : **suspendu à l'arbitrage.**
+  6. κ_k et R3b : **différés.**
 
 ## Revue Opus 2026-11-21 ~12:30Z (session locale) — échec V1 de R8c : intégration point par point
 

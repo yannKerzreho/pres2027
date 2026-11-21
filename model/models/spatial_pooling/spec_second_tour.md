@@ -3599,6 +3599,48 @@ jamais sondé ne sont pas contraints par les données dans cette classe de modè
   non sondé ne sont pas contraints par les données.
 - L'arbitrage (i)/(ii)/(iii) devient bloquant : aucune piste spatiale à un paramètre ne reste en file.
 
+### 8.63 Réparer la mesure de V1 (revue locale du 21/11 ~16:00Z ; avant code, figé)
+
+**Constat (revue, données seules).**
+
+- Le témoin 50/50 ignore l'agrégat du duel, que le modèle connaît (5 duels Mélenchon–Macron
+  conservés). Le témoin à 0 paramètre qui convient est **U** : tous les électorats non finalistes
+  reçoivent le même logit, calé par le même Newton δ sur l'agrégat du fit. C'est τ = 0 dans
+  $\mathrm{logit}\,\tilde G_k=\tau\,\mathrm{lG}^{geo}_k+\delta$.
+  - Sur le point MAP V1 de R8c, U vaut **14,8** ; avec l'agrégat sondé, ≈ 11,5.
+  - Le critère « ≤ 12 ET ≤ 13,1 » de §8.61 est donc franchissable sans structure. **Il est retiré.**
+- Le plancher d'échantillonnage de la moyenne V1 est ≈ 3,3 pt (4,7 avec un effet de plan de 2), et
+  non 6.
+- En 2022, une fois l'hypothèse retirée, Mélenchon n'est finaliste dans aucune autre hypothèse de la
+  fenêtre : Mélenchon–Macron seul ne départage aucune option.
+
+**Nouveau protocole V1-LOHO (une hypothèse laissée de côté à la fois), figé :**
+
+- Hypothèses retirées tour à tour : Mélenchon–Macron, Macron–Zemmour, Macron–Pécresse (2022, T1−30).
+  Cible : moyenne des notices des 30 jours, lignes propres exclues.
+- Témoin **U**, calculé par le MÊME code sur le MÊME point ou tirage, et consigné avant toute lecture
+  du modèle.
+- **Critère :** MAE moyenne sur les 3 hypothèses ≤ U − 2, et aucune hypothèse > U + 2.
+- **Lecture des modes :** un mode est retenu si Δlp ≤ max(10, 4·SE) du meilleur, et la partition se
+  fait par log-densité, pas par σ_Mélenchon seul. Les points MAP ne valent que comme dépistage, sans
+  verdict de stabilité.
+- **Drapeau d'identification**, rapporté à chaque lecture : max |z_pos| > 3 (positions forcées).
+
+**Lecture prévue, 0 fit :** les points MAP existants de R8c pour les 3 hypothèses retirées.
+
+- R8c ≤ U − 2 sur Macron–Zemmour et Macron–Pécresse : seule Mélenchon–Macron est disqualifiée
+  (absence de pont).
+- Échec sur les deux : la classe spatiale ne prédit pas les reports d'une hypothèse jamais sondée
+  mieux que U.
+
+Il faut pour cela 2 nouveaux dépistages MAP de R8c, Macron–Zemmour et Macron–Pécresse retirées, sur le
+Mac.
+
+**R9 (λ) : retiré définitivement.**
+
+- Le critère sur le quantile 5 % de λ n'est pas lisible au MAP, et le mode du prior vaut ≈ 0,2.
+- La densité de Beta(2,8) est nulle en λ = 0 : « λ = 0 emboîte R8c » ne vaut que pour la vraisemblance.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
