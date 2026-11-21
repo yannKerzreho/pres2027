@@ -3296,6 +3296,56 @@ dans le prior.
   Pécresse, près du centre, à 30 %.
 - « Aucun » = 100 − a − b : seulement 8 groupes concernés.
 
+### 8.57 Synthèse des trois géométries et nouveau critère de valeur ajoutée (revue locale du 21/11 ~08:00Z) — figé AVANT lecture de R7
+
+**Diagnostic (revue, calculs sur le postérieur d'A′2).**
+
+- **Poids des blocs.** Les duels sont NEUTRES vis-à-vis de σ_LP : imposer σ_LP ≡ σ_M au MAP leur
+  coûte 3 nats, contre 366 aux reports et 48 au T1. La tension oppose le T1 aux reports, et les
+  reports portent environ 85 % de la largeur de Le Pen.
+- **Lignes qui l'élargissent.** Ce sont l'électorat Le Pen dans les duels SANS Le Pen (il s'abstient
+  à 38-60 % et donne 56 % à Mélenchon face à Macron) et Mélenchon dans Macron–Le Pen.
+- **Conclusion structurelle.** σ_k fait double emploi : il fixe la composition de l'électorat k et la
+  portée de k comme finaliste. Un noyau par candidat ne peut pas faire les deux. Le défaut vient de
+  l'hypothèse « T2 indépendant de l'électorat T1, sachant v ».
+- **Confirmation dans les données.** Sur les 421 cases « Aucun » hors lignes propres, l'électorat
+  seul donne R² = 0,36, et la cellule électorat × duel R² = 0,84. L'abstention dépend de l'identité
+  de l'électorat (Mélenchon environ 50 % quel que soit le duel, Pécresse environ 30 %) bien
+  au-delà de la position.
+- **Les trois échecs « en miroir »** (segment, cercle, noyau t) sont donc un seul et même défaut.
+
+**Prédiction figée pour R7, sans lecture de ses chaînes.** R7 retire la ligne propre qui tire σ_LP le
+plus vers l'étroit (−51). D'où **σ_LP/σ_M ≥ 3,7 et monotonie 3b à 0 %**, même si c et les résidus
+« Aucun » des lignes propres s'améliorent.
+
+**Nouveau critère de VALEUR AJOUTÉE, figé (remplace « ≤ persistance + 1 » comme verdict).** La
+persistance devient un diagnostic d'ajustement, avec un seuil de 5 pt : c'est un test en échantillon,
+qu'un modèle saturé passe trivialement.
+
+- **V1, reports d'une hypothèse retirée.** On refait le fit sans les lignes Mélenchon–Macron (9
+  notices), puis on prédit les partages de leurs 7 électorats.
+  - Témoin non structurel, calculé à 0 fit : la part de Macron chez k dans les autres duels Macron–X.
+    MAE de 35,8 pt sur le partage, 21,7 sur « Aucun ».
+  - Seuils :
+    - MAE ≤ 12 sur Mélenchon–Macron ;
+    - fers à cheval de bon signe sans les avoir vus : Le Pen → Mélenchon ≥ 50, Zemmour → Mélenchon
+      ≤ 40.
+- **V2, duels jamais sondés.** On retire tous les sondages d'une paire (Macron–Mélenchon, puis
+  Macron–Zemmour) et on prédit leur moyenne.
+  - Témoin : un Bradley-Terry ajusté sur les autres duels.
+  - Exigence : battre ce témoin d'au moins 1,5 pt en moyenne.
+  - Le chiffre de Bradley-Terry sera calculé à 0 fit et consigné AVANT le premier fit V2.
+- **B′ (2017)** accompagne tout verdict.
+
+**Méthode.** Un dépistage MAP/Laplace (4 à 8 initialisations, environ 1 min chacune) précède tout
+NUTS. On ne lance NUTS que si le MAP passe les critères 2 et 3b. Au MAP, R5 perd 366 nats sur les
+reports et σ_JLM monte à 0,38 : **R5 est ANNULÉ.**
+
+**Repli publiable (évaluation de la revue).** Le segment T1 + duels, sans reports, est stable et
+parcimonieux. Mais σ_LP/σ_M y vaut encore 3,1 au MAP : le mécanisme non crédible subsiste dans les
+duels jamais sondés impliquant Le Pen. Il est acceptable pour les duels SONDÉS seulement, pas comme
+modèle cible.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
