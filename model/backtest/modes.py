@@ -88,7 +88,9 @@ def structure(fit) -> dict:
                                  jnp.asarray(fit.omega_draws), jnp.asarray(s_ab), poids, n_newton=8,
                                  omega_g=E._omega_g(fit),
                                  omega_k=(None if getattr(fit, "omega_k_draws", None) is None
-                                          else jnp.asarray(fit.omega_k_draws)))
+                                          else jnp.asarray(fit.omega_k_draws)),
+                                 lam=(None if getattr(fit, "lam_mix_draws", None) is None
+                                      else jnp.asarray(fit.lam_mix_draws)))
         th = np.asarray(th)
         out[cle] = round(float(100 * (th[:, 0] / (th[:, 0] + th[:, 1])).mean()), 1)
     out["sigma_melenchon"] = round(_sig(fit, JLM), 3)
@@ -228,7 +230,9 @@ def v1(fit, election=2022, as_of="2022-03-11", hyp="Mélenchon – Macron") -> d
                                  jnp.asarray(fit.omega_draws), jnp.asarray(s_ab), poids, n_newton=8,
                                  omega_g=E._omega_g(fit),
                                  omega_k=(None if getattr(fit, "omega_k_draws", None) is None
-                                          else jnp.asarray(fit.omega_k_draws)))
+                                          else jnp.asarray(fit.omega_k_draws)),
+                                 lam=(None if getattr(fit, "lam_mix_draws", None) is None
+                                      else jnp.asarray(fit.lam_mix_draws)))
         th = np.asarray(th)
         out[e] = {"partage_modele": round(float((100 * th[:, 0] / (th[:, 0] + th[:, 1])).mean()), 1),
                   "partage_mesure": round(obs_part, 1),
@@ -239,7 +243,11 @@ def v1(fit, election=2022, as_of="2022-03-11", hyp="Mélenchon – Macron") -> d
         lpd = out.get(MLP, {})
         zmd = out.get("Eric Zemmour", out.get("Éric Zemmour", {}))
         ecart = lambda d: (None if not d else round(d["partage_modele"] - d["partage_mesure"], 1))  # noqa: E731
-        out["_criteres"] = {"mae_partages": round(mae, 2), "mae_ok": mae <= 12.0,
+        # §8.61 : témoin trivial 50/50 et critère révisé (≤ 12 ET ≤ 50/50 − 1,5)
+        mae_5050 = float(np.mean([abs(50.0 - v["partage_mesure"]) for v in out.values()]))
+        out["_criteres"] = {"mae_partages": round(mae, 2), "mae_5050": round(mae_5050, 2),
+                            "temoin_structurel": 25.9,
+                            "mae_ok": mae <= 12.0 and mae <= mae_5050 - 1.5,
                             "LP_ecart": ecart(lpd), "LP_ok": lpd != {} and abs(ecart(lpd)) <= 10,
                             "Zemmour_ecart": ecart(zmd), "Zemmour_ok": zmd != {} and abs(ecart(zmd)) <= 10}
     return out
@@ -301,6 +309,7 @@ def main() -> None:
     ap.add_argument("--n", type=int, default=8)
     ap.add_argument("--lse-officiel", action="store_true")
     ap.add_argument("--sans-criteres", action="store_true", help="partition seule (contrôle sur d'anciennes chaînes)")
+    ap.add_argument("--v1-modes", action="store_true", help="§8.61 : V1 lu sur TOUS les modes (médiane, pire)")
     args = ap.parse_args()
     E.ELECTION = args.election
     E.LSE_OFFICIEL = args.lse_officiel
@@ -312,6 +321,16 @@ def main() -> None:
     if not args.sans_criteres:
         out["criteres_mode_dominant"] = criteres(args.variante, args.stem, args.coupure, lignes, part["dominant"],
                                                  args.election)
+    if args.v1_modes and args.election == 2022:                       # §8.61
+        par_mode = []
+        for g in [part["dominant"]] + part["autres"]:
+            f, _, _ = E.reconstruire(args.variante, args.stem, args.coupure, chaines=g)
+            c = v1(f).get("_criteres", {})
+            par_mode.append({"chaines": g, **c})
+        maes = [m["mae_partages"] for m in par_mode if "mae_partages" in m]
+        out["v1_tous_modes"] = {"par_mode": par_mode, "mediane": round(float(np.median(maes)), 2),
+                                "pire": round(float(max(maes)), 2)}
+        print(json.dumps(out["v1_tous_modes"], ensure_ascii=False, indent=1, default=float))
     dest = sr.OUT_DIR / f"modes_{args.stem}.json"
     dest.write_text(json.dumps(out, ensure_ascii=False, indent=1, default=float) + "\n")
     print(json.dumps({"partition": part, **({"criteres": out["criteres_mode_dominant"]} if "criteres_mode_dominant" in out else {})},

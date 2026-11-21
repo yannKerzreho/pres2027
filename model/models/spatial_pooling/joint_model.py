@@ -82,7 +82,7 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
                              rep_y=None, rep_date_idx=None, rep_k=None, rep_a=None, rep_b=None,
                              rep_champ=None, z_pos_fixe=None, z_sigma_fixe=None, arc_fixe=None,
                              kappa_fixe=None, abst_situee=False, noyau_t=False, sigma_lie=None, fidelite=False,
-                             omega_electorat=False):
+                             omega_electorat=False, melange_lambda=False):
     """Le modèle. Inférence JOINTE de la géométrie et du chemin de `w`.
 
     Trois paramètres par candidat, deux échelles globales, aucun bloc :
@@ -249,6 +249,8 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
         A_all = _A(mu, sigma, w_d)                               # (D, N, B) ou (D, N, B·B_U)
         rows = jnp.arange(w_d.shape[0])
         A_a, A_b = A_all[rows, duel_a], A_all[rows, duel_b]
+        # R9 (spec_second_tour §8.61) : mélange individuel λ ~ Beta(2, 8).
+        lam_mx = numpyro.sample("lam_mix", dist.Beta(2.0, 8.0)) if melange_lambda else None
         if abstention:
             omega = numpyro.sample("omega", dist.Normal(*omega_prior))
             # Abstention située sur le cercle (spec_second_tour §8.48 bis) : ω(θ) = ω₀ − γ cos θ.
@@ -265,16 +267,17 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
                 omega_k = numpyro.deterministic("omega_k", omega + s_om * z_om)
                 rho_n, p_n = rho_electorats(A_all, A_a, A_b, kappa, lse, omega_k, masque_lse)
                 s = duel_shares_poids(A_a, A_b, kappa, eta[duel_a], eta[duel_b], lse, omega,
-                                      poids if poids is not None else W, rho=(p_n * rho_n).sum(-2))
+                                      poids if poids is not None else W, rho=(p_n * rho_n).sum(-2), lam=lam_mx)
             else:
-                s = (duel_shares_poids(A_a, A_b, kappa, eta[duel_a], eta[duel_b], lse, omega, poids, omega_g) if poids is not None
-                     else duel_shares(A_a, A_b, kappa, eta[duel_a], eta[duel_b], lse, omega))
+                s = (duel_shares_poids(A_a, A_b, kappa, eta[duel_a], eta[duel_b], lse, omega, poids, omega_g, lam=lam_mx)
+                     if poids is not None
+                     else duel_shares(A_a, A_b, kappa, eta[duel_a], eta[duel_b], lse, omega, lam=lam_mx))
         else:
             omega = None
             omega_g = None
             omega_k = None
-            s = (duel_shares_poids(A_a, A_b, kappa, eta[duel_a], eta[duel_b], None, None, poids) if poids is not None
-                 else duel_shares(A_a, A_b, kappa, eta[duel_a], eta[duel_b]))
+            s = (duel_shares_poids(A_a, A_b, kappa, eta[duel_a], eta[duel_b], None, None, poids, lam=lam_mx)
+                 if poids is not None else duel_shares(A_a, A_b, kappa, eta[duel_a], eta[duel_b], lam=lam_mx))
         # Part prédite par duel observé, à SA date : sert aux résidus (diagnostic
         # 2027, résidus standardisés) ; n'entre dans aucun calcul d'inférence.
         numpyro.deterministic("duel_s", s)
@@ -312,10 +315,10 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
                 rn_, pn_ = rho_electorats(A_r, A_r[rr, rep_a], A_r[rr, rep_b], kappa, lse_r, omega_k, masque_lse)
                 rho_r = (pn_ * rn_).sum(-2)
             s_r = duel_shares_poids(A_r[rr, rep_a], A_r[rr, rep_b], kappa, eta[rep_a], eta[rep_b],
-                                    lse_r, omega, pq, omega_g, rho=rho_r)
+                                    lse_r, omega, pq, omega_g, rho=rho_r, lam=lam_mx)
             theta, _ = reports_cellules(A_r, rep_champ, rep_a, rep_b, rep_k, kappa,
                                         eta[rep_a] - eta[rep_b], lse_r, omega, s_r, pq, omega_g=omega_g,
-                                        fidelite=fidelite, omega_k=omega_k)
+                                        fidelite=fidelite, omega_k=omega_k, lam=lam_mx)
             c = numpyro.deterministic("c_reports", jnp.exp(numpyro.sample(
                 "log_c", dist.Normal(jnp.log(100.0), 1.0))))
             numpyro.deterministic("reports_theta", theta)

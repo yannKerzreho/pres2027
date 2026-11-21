@@ -47,7 +47,8 @@ def reconstruire(variante: str, stem: str, coupure: str = "T2-7", chaines=None, 
                         "hier_ra_fid": {"eta_hier": True, "_reports_avant": True, "fidelite": True},
                         "hiercercle_ra_fid": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True, "fidelite": True},
                         "hier_ra_fid_omk": {"eta_hier": True, "_reports_avant": True, "fidelite": True, "omega_electorat": True},
-                        "hiercercle_ra_fid_omk": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True, "fidelite": True, "omega_electorat": True}}[variante])
+                        "hiercercle_ra_fid_omk": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True, "fidelite": True, "omega_electorat": True},
+                        "hiercercle_ra_fid_omk_lam": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True, "fidelite": True, "omega_electorat": True, "melange_lambda": True}}[variante])
     if lse_officiel or LSE_OFFICIEL:
         sr.VARIANTE_KW["_lse_officiel"] = True
     ref = sr.T1_DATES[ELECTION] if coupure.startswith("T1") else sr.T2_DATES[ELECTION]
@@ -118,7 +119,9 @@ def evaluer(fit, raw, as_of) -> dict:
                                  jnp.asarray(lse), jnp.asarray(fit.omega_draws), jnp.asarray(s_ab), poids, n_newton=8,
                                  omega_g=_omega_g(fit),
                                  omega_k=(None if getattr(fit, "omega_k_draws", None) is None
-                                          else jnp.asarray(fit.omega_k_draws)))
+                                          else jnp.asarray(fit.omega_k_draws)),
+                                 lam=(None if getattr(fit, "lam_mix_draws", None) is None
+                                      else jnp.asarray(fit.lam_mix_draws)))
         th = 100 * np.asarray(th)
         pred = {"Macron": th[:, 0], "Le Pen": th[:, 1], "Aucun": th[:, 2], "partage": 100 * th[:, 0] / (th[:, 0] + th[:, 1])}
         for _, r in m[m.electorat_t1 == e].iterrows():

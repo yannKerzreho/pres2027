@@ -214,7 +214,17 @@ def log_attractivite(mu, sigma, w, nu=None) -> jnp.ndarray:
     return w[..., None] + D - jax.nn.logsumexp(D, axis=-1, b=W, keepdims=True)
 
 
-def duel_shares(A_a, A_b, kappa, eta_a, eta_b, lse=None, omega=None) -> jnp.ndarray:
+def _melange(q, lam):
+    """§8.61 (R9) : q(v) = (1 − λ) q(v) + λ/2 (fraction λ indifférente à la géométrie).
+    λ scalaire ou (...,) diffusé sur le dernier axe (nœuds) ; None ⇒ q inchangé."""
+    if lam is None:
+        return q
+    l = jnp.asarray(lam)
+    l = l[..., None] if l.ndim else l
+    return (1.0 - l) * q + 0.5 * l
+
+
+def duel_shares(A_a, A_b, kappa, eta_a, eta_b, lse=None, omega=None, lam=None) -> jnp.ndarray:
     """Part de `a` parmi les exprimés du duel (a, b), spec §2.1 :
 
         g_ab = sum_b W_b · logistique( kappa·[A_a(V_b) - A_b(V_b)] )   (géométrie)
@@ -237,7 +247,7 @@ def duel_shares(A_a, A_b, kappa, eta_a, eta_b, lse=None, omega=None) -> jnp.ndar
     davantage. Parts parmi exprimés : g = ∫ rho·q / ∫ rho. Invariant par
     translation de `w` (contrairement au `max` non posé de la version Codex)."""
     k = jnp.asarray(kappa)[..., None]
-    q = jax.nn.sigmoid(k * (A_a - A_b))
+    q = _melange(jax.nn.sigmoid(k * (A_a - A_b)), lam)
     if lse is None:
         g = jnp.sum(q * W, axis=-1)
     else:
@@ -305,11 +315,12 @@ def rho_electorats(A_all, A_a, A_b, kappa, lse, omega_k, masque=None):
     return rho, p
 
 
-def duel_shares_poids(A_a, A_b, kappa, eta_a, eta_b, lse, omega, poids, omega_g=None, rho=None) -> jnp.ndarray:
+def duel_shares_poids(A_a, A_b, kappa, eta_a, eta_b, lse, omega, poids, omega_g=None, rho=None,
+                      lam=None) -> jnp.ndarray:
     """`duel_shares` avec des poids de quadrature quelconques (grille 2D). `rho` (..., G) : expression
     imposée (mélange par électorat, §8.58), sinon `duel_expression`."""
     k = jnp.asarray(kappa)[..., None]
-    q = jax.nn.sigmoid(k * (A_a - A_b))
+    q = _melange(jax.nn.sigmoid(k * (A_a - A_b)), lam)
     if lse is None and rho is None:
         g = jnp.sum(q * poids, axis=-1)
     else:
@@ -321,7 +332,7 @@ def duel_shares_poids(A_a, A_b, kappa, eta_a, eta_b, lse, omega, poids, omega_g=
 
 
 def reports_cellules(A, champ_mask, ia, ib, k_idx, kappa, eta_diff, lse, omega, s_ab, poids, n_newton=4,
-                     omega_g=None, fidelite=False, omega_k=None):
+                     omega_g=None, fidelite=False, omega_k=None, lam=None):
     """Cellules (a, b, aucun) de l'électorat T1 `k_idx` (spec §8.38, §8.44.4),
     différentiables : δ par `n_newton` pas de Newton depuis `eta_diff` pour que
     l'agrégat des électorats du champ redonne `s_ab`.
@@ -336,7 +347,7 @@ def reports_cellules(A, champ_mask, ia, ib, k_idx, kappa, eta_diff, lse, omega, 
     A_a, A_b = A[rows, ia], A[rows, ib]
     kq = jnp.asarray(kappa)
     kq = kq[:, None] if kq.ndim else kq                     # scalaire (modèle) ou (R,) (tirages)
-    q = jax.nn.sigmoid(kq * (A_a - A_b))
+    q = _melange(jax.nn.sigmoid(kq * (A_a - A_b)), lam)           # §8.61 (R9) ; lignes propres non concernées
     E = jnp.einsum("rng,g->rn", p, poids)
     if omega_k is not None and lse is not None:
         # §8.58 (R8) : ρ propre à chaque électorat j (ω_j), (R, N, G).

@@ -112,3 +112,36 @@ def test_modele_initialise_avec_omega_k():
     assert np.isfinite(float(info.potential_fn(info.param_info.z)))
     tr = handlers.trace(handlers.seed(spatial_pooling_model_ou, 0)).get_trace(**b["kwargs"])
     assert tr["omega_k"]["value"].shape == (len(b["candidats"]),)
+
+
+def test_melange_lambda_emboite():
+    """§8.61 (R9) : λ = 0 ⇒ R8c inchangé ; λ = 1 ⇒ q ≡ ½ hors lignes propres."""
+    from model.models.spatial_pooling.geometry import W, duel_shares_poids, reports_cellules
+    rng = np.random.default_rng(3)
+    R, N, G = 3, 4, W.shape[0]
+    A = jnp.asarray(rng.normal(size=(R, N, G)))
+    lse = jax.nn.logsumexp(A, axis=1)
+    ia, ib, k = jnp.array([0, 0, 0]), jnp.array([1, 1, 1]), jnp.array([2, 3, 0])
+    Aa, Ab = A[jnp.arange(R), ia], A[jnp.arange(R), ib]
+    s0 = duel_shares_poids(Aa, Ab, 0.8, 0.0, 0.0, lse, -2.5, W)
+    assert np.allclose(s0, duel_shares_poids(Aa, Ab, 0.8, 0.0, 0.0, lse, -2.5, W, lam=0.0), atol=1e-7)
+    assert np.allclose(duel_shares_poids(Aa, Ab, 0.8, 0.0, 0.0, lse, -2.5, W, lam=1.0), 0.5, atol=1e-6)
+    args = (A, jnp.ones(N), ia, ib, k, 0.8, jnp.zeros(R), lse, -2.5, s0, W)
+    c0, _ = reports_cellules(*args, fidelite=True, omega_k=jnp.full(N, -2.5))
+    c1, _ = reports_cellules(*args, fidelite=True, omega_k=jnp.full(N, -2.5), lam=jnp.zeros(R))
+    assert np.allclose(c0, c1, atol=1e-6)
+    c2, _ = reports_cellules(*args, fidelite=True, omega_k=jnp.full(N, -2.5), lam=0.4)
+    assert np.allclose(c2[2], c0[2], atol=1e-6)                 # ligne propre (k = a) inchangée
+
+
+def test_modele_initialise_avec_lambda():
+    import model.backtest.multi_election as M
+    M.VARIANTES["hiercercle_ra_fid_omk_lam"] = {"eta_hier": True, "carte_cercle": True, "_reports_avant": True,
+                                                "fidelite": True, "omega_electorat": True, "melange_lambda": True}
+    b = M.preparer(2022, "T1-30", "hiercercle_ra_fid_omk_lam")
+    from model.models.spatial_pooling.joint_model import spatial_pooling_model_ou
+    info = initialize_model(jax.random.PRNGKey(0), spatial_pooling_model_ou, model_kwargs=b["kwargs"],
+                            init_strategy=init_to_median)
+    assert np.isfinite(float(info.potential_fn(info.param_info.z)))
+    tr = handlers.trace(handlers.seed(spatial_pooling_model_ou, 0)).get_trace(**b["kwargs"])
+    assert 0.0 < float(tr["lam_mix"]["value"]) < 1.0

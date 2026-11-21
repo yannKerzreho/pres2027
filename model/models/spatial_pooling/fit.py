@@ -64,6 +64,7 @@ class SpatialPoolingFit:
     gamma_draws: np.ndarray | None = None    # (S,) abstention située (§8.48 bis)
     nu_t_draws: np.ndarray | None = None     # (S,) noyau de Student-t (§8.51)
     omega_k_draws: np.ndarray | None = None  # (S, N) abstention par électorat (§8.58)
+    lam_mix_draws: np.ndarray | None = None  # (S,) mélange individuel λ (§8.61)
     reports_theta_draws: np.ndarray | None = None   # (S, R, 3) cellules prédites des reports en fit
     reports_rows: list | None = None         # [(notice, électorat, date)] dans l'ordre de R
     duel_s_draws: np.ndarray | None = None
@@ -91,6 +92,7 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
                         carte_2d: bool = False, carte_cercle: bool = False, nu_ancre_val: float = 0.3,
                         abst_situee: bool = False, noyau_t: bool = False, sigma_lie: bool = False,
                         arc_ferme: bool = False, fidelite: bool = False, omega_electorat: bool = False,
+                        melange_lambda: bool = False,
                         reports: pd.DataFrame | None = None,
                         champ_reports: list | None = None) -> SpatialPoolingFit:
     """Roster -> arrays -> NUTS, en une seule inférence jointe.
@@ -178,6 +180,8 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         kwargs["fidelite"] = True                                      # R7 (§8.56)
     if omega_electorat:
         kwargs["omega_electorat"] = True                               # R8 (§8.58)
+    if melange_lambda:
+        kwargs["melange_lambda"] = True                                # R9 (§8.61)
     if sigma_lie:
         # R5 (§8.53) : σ_Le Pen ≡ σ_Macron (noms de famille).
         nc = [_nom_court(c) for c in candidates]
@@ -333,6 +337,7 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         gamma_draws=np.asarray(samples["gamma_abs"]).reshape(-1) if "gamma_abs" in samples else None,
         nu_t_draws=np.asarray(samples["nu_t"]).reshape(-1) if "nu_t" in samples else None,
         omega_k_draws=(np.asarray(samples["omega_k"]).reshape(-1, N) if "omega_k" in samples else None),
+        lam_mix_draws=np.asarray(samples["lam_mix"]).reshape(-1) if "lam_mix" in samples else None,
         reports_theta_draws=(np.asarray(samples["reports_theta"]).reshape(-1, len(rep["y"]), 3)
                              if "reports_theta" in samples else None),
         reports_rows=rep["rows"] if rep is not None else None,
@@ -565,6 +570,12 @@ def projeter_w(fit: SpatialPoolingFit, horizon_days: float, seed: int = 27,
     return np.where(fit.dynamic[None, :], w, w0)
 
 
+def _lam(fit):
+    """§8.61 (R9) : tirages de λ, ou None."""
+    v = getattr(fit, "lam_mix_draws", None)
+    return None if v is None else jnp.asarray(v)
+
+
 def _duel_par_tirage(fit, w, ia: np.ndarray, ib: np.ndarray) -> np.ndarray:
     """Part de `ia[s]` contre `ib[s]` au tirage s (indices par tirage)."""
     s_idx = np.arange(len(ia))
@@ -597,7 +608,7 @@ def _duel_par_tirage(fit, w, ia: np.ndarray, ib: np.ndarray) -> np.ndarray:
             rho = (pn * rn).sum(-2)
         return np.asarray(duel_shares_poids(A[s_idx, ia], A[s_idx, ib], fit.kappa_draws,
                                             fit.eta_draws[s_idx, ia], fit.eta_draws[s_idx, ib],
-                                            lse, fit.omega_draws, pq, og, rho=rho))
+                                            lse, fit.omega_draws, pq, og, rho=rho, lam=_lam(fit)))
     A = np.asarray(log_attractivite(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
                                     jnp.asarray(w), _nu(fit)))           # (S, N, B)
     extra = ()
@@ -612,9 +623,10 @@ def _duel_par_tirage(fit, w, ia: np.ndarray, ib: np.ndarray) -> np.ndarray:
                                     jnp.asarray(fit.omega_k_draws), fit.masque_lse)
             return np.asarray(duel_shares_poids(A[s_idx, ia], A[s_idx, ib], fit.kappa_draws,
                                                 fit.eta_draws[s_idx, ia], fit.eta_draws[s_idx, ib],
-                                                extra[0], fit.omega_draws, W, rho=(pn * rn).sum(-2)))
+                                                extra[0], fit.omega_draws, W, rho=(pn * rn).sum(-2),
+                                                lam=_lam(fit)))
     return np.asarray(duel_shares(A[s_idx, ia], A[s_idx, ib], fit.kappa_draws,
-                                  fit.eta_draws[s_idx, ia], fit.eta_draws[s_idx, ib], *extra))
+                                  fit.eta_draws[s_idx, ia], fit.eta_draws[s_idx, ib], *extra, lam=_lam(fit)))
 
 
 def duel_draws(fit: SpatialPoolingFit, a: str, b: str, horizon_days: float = 0.0,
