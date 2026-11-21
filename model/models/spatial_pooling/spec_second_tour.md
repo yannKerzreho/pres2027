@@ -3472,6 +3472,31 @@ R8c pourrait passer en 2022 sans se transférer à 2017.
 - **Méthode.** Dépistage MAP d'abord (6 initialisations), puis NUTS seulement si R8c passe en NUTS sur
   les données complètes.
 
+**Dépistage MAP V1 de R8c** (hypothèse Mélenchon–Macron retirée ;
+`results/modes_map_hiercercle_ra_fid_omk_2022_T1-30_sans_MélenchonMacron.json` ; 6 initialisations,
+mode dominant = init 3). Partage Mélenchon / (Mélenchon + Macron) prédit, contre la moyenne de mars :
+
+| électorat | modèle | mesuré | « Aucun » modèle / mesuré |
+|---|---|---|---|
+| Hidalgo | **0,6** | 38,5 | 42,6 / 22,0 |
+| Roussel | **99,4** | 65,8 | 0,6 / 21,0 |
+| Jadot | **96,8** | 43,9 | 0,4 / 22,5 |
+| Le Pen | 25,1 | 42,3 | 70,3 / 53,0 |
+| Pécresse | 11,8 | 10,6 | 43,4 / 38,5 |
+| Zemmour | 22,5 | 42,7 | 65,6 / 59,0 |
+
+- V1 : MAE 27,2 ✗ (≤ 12) ; écart Le Pen −17,2 ✗ ; écart Zemmour −20,2 ✗. Le témoin non structurel
+  donne 35,8 : le modèle fait mieux, mais il est loin du seuil.
+- Sur les cibles d'entre-deux-tours, le même fit reste bon : Mélenchon 64,8 ✓, σ_LP/σ_M 1,31 ✓,
+  monotonie ✓, partages MAE 4,5, « Aucun » 5,0.
+
+**Lecture.** Les électorats de la gauche modérée sont SATURÉS dans un duel Mélenchon–Macron
+qu'il n'a pas vu. Hidalgo va entièrement à Macron ; Roussel et Jadot vont presque entièrement à
+Mélenchon (mesuré 39 / 66 / 44 %). La géométrie interne de la gauche n'est identifiée que par le T1 et
+par les duels contre Macron ou Le Pen, et elle ne contient pas l'hésitation mesurée entre Mélenchon et
+Macron. **R8c échoue au test de valeur ajoutée V1** (dépistage) : ses bons chiffres sur les cibles
+d'entre-deux-tours sont en partie un ajustement en échantillon.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
