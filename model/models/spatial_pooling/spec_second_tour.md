@@ -3432,6 +3432,24 @@ NUTS pour juger la stabilité.
 
 Critères de §8.58, figés, inchangés.
 
+**Dépistage MAP B′ de R8c sur 2017 à T1−30** (`results/modes_map_hiercercle_ra_fid_omk_2017_T1-30.json`, 6
+initialisations ; mode dominant = init 3, lp 3201,9).
+
+| électorat | partage modèle | partage mesuré |
+|---|---|---|
+| Hamon | 95,6 | 93,4 |
+| Fillon | 62,9 | 62,8 |
+| Mélenchon | **87,2** | **76,4** |
+| Dupont-Aignan | 56,5 | 37,6 |
+
+- Dupont-Aignan : ralliement à Le Pen entre les deux tours, imprévisible avant le T1.
+- MAE des partages 8,0 ✗ (4,4 hors Dupont-Aignan) ; critère 2 (Mélenchon) ✗, +10,8.
+- « Aucun » 4,78 ✓ (≤ 6,8) ; σ_LP/σ_M 0,89 ✓ ; monotonie circulaire ✓ ; T1 1,93 ✓ ; c 49.
+
+**Lecture.** L'abstention et la plausibilité se généralisent ; le report Mélenchon → Le Pen de 2017,
+non. On n'en tire pas de verdict (dépistage, pas postérieur), mais cela pèse sur l'étape B :
+R8c pourrait passer en 2022 sans se transférer à 2017.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
