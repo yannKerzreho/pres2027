@@ -3236,6 +3236,21 @@ segment progresse.
 On rapportera θ_i et |z_pos| des extrêmes. Si les extrêmes ont |z_pos| > 2, R6 n'est qu'A′1 payé
 dans le prior.
 
+**Révision du 21/11 ~04:30Z, avant tout fit (revue locale de 04:00Z).**
+
+1. **Dérivation.** L'argument « κA_k ≈ κ·lse » est faux : E[lse − A_k] vaut 1,3 à 1,8 pour les
+   extrêmes. La bonne justification, toujours à 0 paramètre, est un choc T1 persistant de type
+   Gumbel. Si k a été choisi au T1, $U_k=\mathrm{lse}+G$ avec $G\sim\mathrm{Gumbel}(0,1)$, et k domine
+   aussi sur {a, b}. Donc $\rho_{fid}=\mathbb E_G\,\sigma(\kappa G-\omega)$, calculé par quadrature sur
+   32 quantiles fixes. Sur le postérieur d'A′2, cela donne 1,6 % d'« Aucun », pour 2,2 % observé
+   sur les lignes propres.
+2. **Défection.** ε passe de 10⁻⁴ à **0,02** (défection publiée typique de 1 à 3 %). La cellule
+   devient $(\rho(1-\varepsilon),\ \rho\varepsilon,\ 1-\rho)$. Avec ε = 10⁻⁴, la Dirichlet perdait
+   environ 850 nats sur les 164 lignes propres et poussait artificiellement c.
+3. **Lecture.** `modes.py` rapporte c médian et les résidus « Aucun » sur les lignes du fit, propres
+   et autres. Contrôle sur A′2 : 14,9 / +5,55 / −1,30. Le critère « c ≥ 22 » est jugé **non
+   probant** (il passerait presque mécaniquement) : il est rapporté, sans valeur de verdict.
+
 **Rejetés (revue, chiffrés).**
 
 - c_r = φ·n_eff : la part des lignes propres passerait de 28 % à 44 %, ce qui aggrave le défaut.

@@ -341,14 +341,22 @@ def reports_cellules(A, champ_mask, ia, ib, k_idx, kappa, eta_diff, lse, omega, 
     R = Rk[rows, k_idx]
     cel = jnp.stack([R * Gt, R * (1 - Gt), 1 - R], axis=-1)
     if fidelite and lse is not None:
-        # §8.56 (R7) : électorat d'un finaliste — le choc T1 persiste, l'électeur vote k
-        # s'il s'exprime ; il s'exprime avec la probabilité σ(−ω) (k dominant).
+        # §8.56 (R7, révisé 21/11) : électorat d'un finaliste. Choc d'utilité T1 persistant
+        # (Gumbel) : U_k = lse + G, G ~ Gumbel(0,1), et k domine aussi sur {a, b} ; l'électeur
+        # s'exprime avec ρ = E_G σ(κG − ω) (quadrature à 32 quantiles fixes), et vote k sauf une
+        # défection fixe ε = 2 % (défection publiée typique ; figé avant le fit).
         om = jnp.asarray(omega)
         om = om if om.ndim else jnp.full(cel.shape[0], om)
-        e = 1e-4
-        s_ = jax.nn.sigmoid(-om)
-        fid_a = jnp.stack([s_, jnp.full_like(s_, e), 1 - s_], axis=-1)
-        fid_b = jnp.stack([jnp.full_like(s_, e), s_, 1 - s_], axis=-1)
+        kq_ = jnp.asarray(kappa)
+        kq_ = kq_ if kq_.ndim else jnp.full(cel.shape[0], kq_)
+        u = (jnp.arange(32) + 0.5) / 32
+        g = -jnp.log(-jnp.log(u))                                         # quantiles Gumbel(0,1)
+        rho_f = jax.nn.sigmoid(kq_[:, None] * g[None, :] - om[:, None]).mean(axis=1)
+        e = 0.02
+        s_ = rho_f * (1 - e)
+        e = rho_f * e
+        fid_a = jnp.stack([s_, e, 1 - rho_f], axis=-1)
+        fid_b = jnp.stack([e, s_, 1 - rho_f], axis=-1)
         ka, kb = (jnp.asarray(k_idx) == jnp.asarray(ia))[:, None], (jnp.asarray(k_idx) == jnp.asarray(ib))[:, None]
         cel = jnp.where(ka, fid_a, jnp.where(kb, fid_b, cel))
         cel = cel / cel.sum(-1, keepdims=True)

@@ -153,8 +153,47 @@ def partition(lignes: list[dict]) -> dict:
     return {"dominant": dom, "autres": [[l["chaine"] for l in g] for g in groupes]}
 
 
+def _reconstruire_avec_kwargs(variante, stem, coupure, chaines):
+    """`eval_r2.reconstruire`, en capturant les arguments du modèle (lignes de reports)."""
+    cap, orig = {}, sr._runner_fusion
+
+    def enveloppe(paths):
+        r = orig(paths)
+
+        def run(model_fn, model_kwargs, **kw):
+            cap["kw"] = model_kwargs
+            return r(model_fn, model_kwargs, **kw)
+        return run
+    sr._runner_fusion = enveloppe
+    try:
+        fit, raw, as_of = E.reconstruire(variante, stem, coupure, chaines=chaines)
+    finally:
+        sr._runner_fusion = orig
+    return fit, raw, as_of, cap.get("kw", {})
+
+
+def lecture_reports_fit(fit, kw, stem, dom) -> dict:
+    """§8.56 : c médian et résidu moyen de la case « Aucun » sur les lignes DU FIT,
+    séparément pour les lignes propres (k ∈ {a, b}) et les autres."""
+    out = {}
+    cs = [np.asarray(np.load(sr.CHAINES_DIR / f"{stem}_c{k}.npz")["s__c_reports"]).ravel()
+          for k in dom if "s__c_reports" in np.load(sr.CHAINES_DIR / f"{stem}_c{k}.npz").files]
+    if cs:
+        out["c_median"] = round(float(np.median(np.concatenate(cs))), 1)
+    if fit.reports_theta_draws is not None and "rep_y" in kw:
+        th = np.asarray(fit.reports_theta_draws).mean(0)            # (R, 3)
+        y = np.asarray(kw["rep_y"])
+        k, a, b = (np.asarray(kw[x]) for x in ("rep_k", "rep_a", "rep_b"))
+        propre = (k == a) | (k == b)
+        r = 100 * (th[:, 2] - y[:, 2])
+        out["residu_aucun_propres"] = round(float(r[propre].mean()), 2)
+        out["residu_aucun_autres"] = round(float(r[~propre].mean()), 2)
+        out["n_lignes_propres"] = int(propre.sum())
+    return out
+
+
 def criteres(variante, stem, coupure, lignes, dom, election) -> dict:
-    fit, raw, as_of = E.reconstruire(variante, stem, coupure, chaines=dom)
+    fit, raw, as_of, kw = _reconstruire_avec_kwargs(variante, stem, coupure, dom)
     ev = E.evaluer(fit, raw, as_of)
     part = {r["electorat"]: (r["modele"], r["mesure"]) for r in ev["reports"] if r["cellule"] == "partage"}
     aucun = {r["electorat"]: (r["modele"], r["mesure"]) for r in ev["reports"] if r["cellule"] == "Aucun"}
@@ -187,6 +226,7 @@ def criteres(variante, stem, coupure, lignes, dom, election) -> dict:
         res["3b_ok"] = mp is not None and mp <= 0.10
         res["3b_monotonie_gauche"] = None
     res["structure"] = structure(fit)
+    res["reports_fit"] = lecture_reports_fit(fit, kw, stem, dom)          # §8.56
     if getattr(fit, "nu_t_draws", None) is not None:
         res["corr_lognu_logsigmaLP"] = round(float(np.corrcoef(np.log(fit.nu_t_draws),
                                                                np.log(fit.sigma_draws[:, fit.candidates.index(MLP)]))[0, 1]), 3)

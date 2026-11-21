@@ -69,7 +69,10 @@ def test_fidelite_revelee():
     args = (A, jnp.ones(N), ia, ib, k, 0.8, jnp.zeros(R), lse, -3.0, jnp.full(R, 0.5), W)
     c0, _ = reports_cellules(*args)
     c1, _ = reports_cellules(*args, fidelite=True)
-    s = float(jax.nn.sigmoid(3.0))
-    assert np.allclose(c1[0], np.array([s, 1e-4, 1 - s]) / (1 + 1e-4), atol=1e-6)
-    assert np.allclose(c1[1], np.array([1e-4, s, 1 - s]) / (1 + 1e-4), atol=1e-6)
+    u = (np.arange(32) + 0.5) / 32
+    g = -np.log(-np.log(u))
+    rho = float((1 / (1 + np.exp(-(0.8 * g + 3.0)))).mean())
+    assert np.allclose(c1[0], [rho * 0.98, rho * 0.02, 1 - rho], atol=1e-6)
+    assert np.allclose(c1[1], [rho * 0.02, rho * 0.98, 1 - rho], atol=1e-6)
+    assert np.allclose(c1.sum(-1), 1.0, atol=1e-6)
     assert np.allclose(c1[2], c0[2])
