@@ -7,7 +7,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## État (mis à jour à chaque réveil)
 
-- Dernière revue Opus : 2026-11-20 ~11:20Z (routine, couvre R3, R3b, R3c, §8.48 ; cf. « Revue Opus 2026-11-20 »).
+- Dernière revue Opus : 2026-11-21 ~12:15Z (routine, couvre R8, R8c, dépistage MAP, V1, V2 ; cf. « Revue Opus 2026-11-21 ~12:15Z (routine) »).
 - OBJECTIF (utilisateur, via l'orchestrateur, 2026-11-14) : « un modèle qui est
   backé par le passé mais qui représente bien les sondages et tendances
   actuels ». 2017/2022 servent à CALIBRER et VALIDER ; le critère final est la
@@ -847,6 +847,8 @@ Résultats : `model/backtest/results/*.json` (committés).
 
 ## Arbitrages ouverts (pour l'utilisateur — ne pas trancher seul)
 
+- ARBITRAGE À TRANCHER (revue routine 21/11 12:15Z, points 1 et 6) : rétrograder les critères 1-2 en diagnostics (in-sample, ω_k) et juger sur V1 strict / V2 témoin `hier` / 2017 ; et/ou figer la famille puis un fit confirmatoire 2017.
+
 
 **TRANCHÉS par l'utilisateur le 2026-11-15 ~21:45Z** (« je valide tes points de
 vue », sur les propositions de la session locale) :
@@ -1096,6 +1098,59 @@ conservé pour l'historique.
   instables (R̂ 7,5) et s_ab +0,7 pt ⇒ phase 2 à faire.
 
 
+
+## Revue Opus 2026-11-21 ~12:15Z (routine) — R8, R8c, dépistage MAP, V1, V2 : intégration point par point
+
+Relecture seule (aucun fit : cœurs pris par R8c NUTS). Vérifié par la routine : points 3a
+(`second_round.py:316-318` ne retire que des lignes de reports) et 6a (§8.58 : σ_LP/σ_M < 2 contre
+< 1,5 en §8.50). Les tests qui demandent un MAP (pseudo-chaînes absentes de la VM, cœurs pris) vont au Mac.
+
+1. **Critères 1-2 surtout in-sample ; ω_Mélenchon est un bouton propre à la ligne Mélenchon.**
+   24 notices Macron–Le Pen avant T1 avec ligne Mélenchon dans la fenêtre ; persistance −1,9 pt. Le saut
+   48,6 (A′1) / 50,5 (R6) → 62,4 (R8c MAP) vient avec ω_k seul ; même modèle sur 2017 : 85,6-88,4 contre
+   76,4. INTÉGRÉ : test à 0 fit sur le point MAP de R8c, ω_k[Mélenchon] := ω commun ; prédiction figée :
+   partage Mélenchon −8 pt ou plus. Si vérifié, 1-2 deviennent des diagnostics (ARBITRAGE ci-dessous).
+2. **Le dépistage MAP ne prédit pas NUTS de façon fiable.** Un seul étalonnage (A′2 corrigé), optimiste
+   (MAE 3,7 au MAP contre 7,27 en NUTS) ; R8c : inits à 130 nats près, σ_LP/σ_M de 0,72 à 1,54 ;
+   Adam lr fixe 0,01, 5000 pas, sans critère d'arrêt (`map_screen.py:61-73`) ; optimise `potential_fn`
+   (avec jacobiens) mais classe par `log_density` (sans). INTÉGRÉ : (i) prolonger 20 k pas, lr décroissant,
+   journaliser ‖∇‖ — prédiction : écart de lp < 20 nats ⇒ non-convergence, pas des modes ; (ii) PRÉDICTION
+   FIGÉE AVANT LECTURE de R8c NUTS (VM, 4 chaînes, en cours) : MAE des partages ≥ 5 ; σ_LP/σ_M dans
+   [0,7 ; 1,6]. Le dépistage reste un filtre d'élimination, pas une validation.
+3. **V1 en partie seulement hors échantillon.** Duels Mélenchon–Macron conservés (δ fixe l'agrégat) ;
+   les notices cibles (Harris 4-7/3, Elabe 7-8/3) gardent 24 et 21 lignes d'autres hypothèses ; Hidalgo et
+   Roussel reposent sur une notice (Harris), bruit d'échantillonnage ≈ 6-9 pt. INTÉGRÉ : V1 strict
+   (retirer toutes les lignes des 3 notices cibles) ; prédiction : verdict inchangé (|ΔMAE| < 2). Corriger
+   « 3 notices » en §8.59.
+4. **Saturation de la gauche modérée : structurelle ou d'identification, test décisif non fait.** Pente de
+   choix et séparation T1 partagent 1/(Aσ)² ; écart des logits 10,2 au modèle contre 1,1 mesuré ; ancres
+   `coco_ecolo` placent Jadot avec Roussel ; les hypothèses restantes (Macron contre droite) n'informent pas
+   la coupure Mélenchon–Macron. INTÉGRÉ (test à 0 fit, prioritaire) : `modes.v1` sur le point MAP de R8c
+   complet (avec les lignes Mélenchon–Macron) ; MAE > 15 ⇒ structurel (noyau), < 8 ⇒ identification.
+5. **Témoin V2 trop faible.** Bradley-Terry 9,8 − 1,5 = 8,3 ; `hier` battait déjà BT en paire retirée
+   (4,97 contre 12,2, §8.24). INTÉGRÉ : remplacer le témoin par `hier` sans reports à T1−30, même paire
+   retirée ; prédiction : passe ≤ 8,3 seul ⇒ le seuil actuel ne juge pas R8c. Tâche VM possible après R8c.
+6. **Chemins bifurquants sur 2022.** ≥ 9 variantes jugées sur les mêmes cibles, 6 révisions de critères,
+   dont le relâchement σ_LP/σ_M 1,5 → 2 qui fait passer R8c (1,54). Seule lecture propre (2017) : échec sur
+   les 6 inits. INTÉGRÉ : verdict R8c lu aux DEUX seuils (1,5 et 2), le relâchement signalé. Proposition :
+   2022 après T1 = validation ; figer la famille puis UN fit confirmatoire 2017 (§8.47.6) ; prédiction :
+   Mélenchon ≥ 85 ⇒ échec (ARBITRAGE ci-dessous).
+7. **Fidélité hors du Newton de δ.** La case de 98 % remplace la géométrie après résolution ; ε fixé à 2 %
+   alors que les mesures donnent 3-8 % (≈ 4,5). INTÉGRÉ (0 fit) : fidélité dans l'agrégat du Newton ;
+   prédiction : logits de la gauche modérée bougent < 0,5 (mineur).
+8. **Poids c de Dirichlet uniforme quelle que soit la taille de l'électorat.** L'argument de §8.56 contre
+   c_r = φ·n_eff ne tient plus depuis R7. INTÉGRÉ (MAP seul, Mac) : c_r ∝ part T1 × échantillon ; mesurer
+   V1 et MAE 2022.
+9. **Prochaine expérience si (4) dit « structurel » : une pente de second tour λ séparée du noyau**,
+   q = σ(λκΔA), λ ~ LogNormal(0, 0,5), λ = 1 redonne le modèle ; 2×2 {λ, ω_k} sur cercle + R7, MAP puis NUTS.
+   Attentes figées : λ < 0,5 ; V1 ≤ 12 avec Roussel > Jadot ≈ Hidalgo ; Macron–Le Pen à 2 pt de R8c ; 2017
+   Mélenchon à 10 pt. Parcimonie : si λ sans ω_k égale ω_k, retirer ω_k (1 paramètre contre N+1). Note :
+   la revue du 20/11 (point 3.4) avait refusé un κ de choix séparé sur un autre diagnostic ; V1 est un fait
+   nouveau. EN ATTENTE du test (4) ; maths dans la spec avant code, côté session locale.
+
+ARBITRAGE À TRANCHER : (revue 21/11, points 1 et 6) rétrograder les critères 1-2 (reports 2022 après T1,
+in-sample) en diagnostics et décider sur V1 strict, V2 (témoin `hier`) et 2017 ; et/ou figer la famille de
+modèles puis un seul fit confirmatoire 2017. La routine ne tranche pas.
 
 ## Revue Opus 2026-11-20 — intégration point par point
 
