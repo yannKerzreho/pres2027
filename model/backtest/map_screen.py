@@ -71,7 +71,7 @@ def capturer(variante: str, election: int, coupure: str, lse_officiel: bool):
     return cap["fn"], cap["kw"]
 
 
-def map_point(fn, kw, seed: int, pas: int, lr: float = 0.01):
+def map_point(fn, kw, seed: int, pas: int, lr: float = 0.01, decroissant: bool = False):
     info = initialize_model(jax.random.PRNGKey(seed), fn, model_kwargs=kw, init_strategy=init_to_median)
     z0 = info.param_info.z
     rng = np.random.default_rng(seed)
@@ -88,11 +88,14 @@ def map_point(fn, kw, seed: int, pas: int, lr: float = 0.01):
         for k in z:
             m[k] = 0.9 * m[k] + 0.1 * g[k]
             v2[k] = 0.999 * v2[k] + 0.001 * g[k] ** 2
-            z[k] = z[k] - lr * (m[k] / (1 - 0.9 ** it)) / (jnp.sqrt(v2[k] / (1 - 0.999 ** it)) + 1e-8)
+            lr_t = lr * (0.05 ** (it / pas)) if decroissant else lr        # §8.67 (c) : 0,01 → 5e-4
+            z[k] = z[k] - lr_t * (m[k] / (1 - 0.9 ** it)) / (jnp.sqrt(v2[k] / (1 - 0.999 ** it)) + 1e-8)
+    gnorm = float(jnp.sqrt(sum(jnp.sum(gg ** 2) for gg in pot(z)[1].values())))
     cons = info.postprocess_fn(z)
     tr = handlers.trace(handlers.substitute(handlers.seed(fn, 0), data=cons)).get_trace(**kw)
     vals = {n: np.asarray(s["value"]) for n, s in tr.items()
             if s["type"] in ("sample", "deterministic") and not s.get("is_observed", False)}
+    vals["_gnorm"] = np.asarray(gnorm)
     return float(val), vals
 
 
@@ -104,9 +107,12 @@ def main() -> None:
     ap.add_argument("--inits", type=int, default=6)
     ap.add_argument("--pas", type=int, default=5000)
     ap.add_argument("--lse-officiel", action="store_true")
+    ap.add_argument("--decroissant", action="store_true", help="§8.67 (c) : lr 0,01 → 5e-4 (géométrique)")
     args = ap.parse_args()
     fn, kw = capturer(args.variante, args.election, args.coupure, args.lse_officiel)
     stem = f"map_{args.variante}_{args.election}_{args.coupure}"
+    if args.pas != 5000 or args.decroissant:
+        stem += f"_p{args.pas}" + ("d" if args.decroissant else "")
     import os
     if os.environ.get("PRES2027_SANS_HYP"):                       # V1 (§8.59)
         stem += "_sans_" + "".join(ch for ch in os.environ["PRES2027_SANS_HYP"] if ch.isalnum())
@@ -116,12 +122,14 @@ def main() -> None:
     out = []
     for k in range(args.inits):
         t = time.time()
-        U, vals = map_point(fn, kw, k, args.pas)
+        U, vals = map_point(fn, kw, k, args.pas, decroissant=args.decroissant)
+        gn = float(vals.pop("_gnorm"))
         S = max(20, sr.N_LOTS_SE * 2)      # au moins N_LOTS_SE tirages (erreur-type par lots)
         np.savez_compressed(sr.CHAINES_DIR / f"{stem}_c{k}.npz",
                             **{f"s__{n}": np.repeat(v[None, None], S, axis=1) for n, v in vals.items()},
                             e__diverging=np.zeros(S, dtype=bool), e__num_steps=np.ones(S, dtype=int))
-        out.append({"init": k, "potentiel": round(U, 1), "secondes": round(time.time() - t, 1)})
+        out.append({"init": k, "potentiel": round(U, 1), "norme_gradient": round(gn, 3),
+                    "secondes": round(time.time() - t, 1)})
         print(json.dumps(out[-1]), flush=True)
     print(f"-> pseudo-chaînes {stem}_c0..c{args.inits - 1} ; lire : python -m model.backtest.modes "
           f"--variante {args.variante} --stem {stem} --n {args.inits}"
