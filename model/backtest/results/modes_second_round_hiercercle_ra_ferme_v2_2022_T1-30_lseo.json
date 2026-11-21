@@ -1,0 +1,251 @@
+{
+ "spec": "spec_second_tour §8.50-8.51",
+ "variante": "hiercercle_ra_ferme",
+ "stem": "second_round_hiercercle_ra_ferme_v2_2022_T1-30_lseo",
+ "election": 2022,
+ "coupure": "T1-30",
+ "B_quad": 25,
+ "chaines": [
+  {
+   "chaine": 0,
+   "lp": 12011.2,
+   "partages": {
+    "Jean-Luc Mélenchon": [
+     54.1,
+     63.0
+    ],
+    "Valérie Pécresse": [
+     75.9,
+     65.0
+    ],
+    "Yannick Jadot": [
+     89.8,
+     87.5
+    ],
+    "Éric Zemmour": [
+     23.9,
+     9.4
+    ]
+   },
+   "aucun": {
+    "Jean-Luc Mélenchon": [
+     27.5,
+     43.6
+    ],
+    "Valérie Pécresse": [
+     17.9,
+     29.9
+    ],
+    "Yannick Jadot": [
+     29.4,
+     33.3
+    ],
+    "Éric Zemmour": [
+     17.7,
+     12.7
+    ]
+   },
+   "sigma_melenchon": 0.0466,
+   "sigma_lp_sur_macron": 1.004,
+   "nu": null,
+   "log_nu_sd": null,
+   "nu_q95": null,
+   "t1_mae": 2.98,
+   "t1_couv": "0/12",
+   "monotonie_gauche": NaN
+  },
+  {
+   "chaine": 1,
+   "lp": 11969.9,
+   "partages": {
+    "Jean-Luc Mélenchon": [
+     75.5,
+     63.0
+    ],
+    "Valérie Pécresse": [
+     74.1,
+     65.0
+    ],
+    "Yannick Jadot": [
+     86.8,
+     87.5
+    ],
+    "Éric Zemmour": [
+     22.2,
+     9.4
+    ]
+   },
+   "aucun": {
+    "Jean-Luc Mélenchon": [
+     42.7,
+     43.6
+    ],
+    "Valérie Pécresse": [
+     18.0,
+     29.9
+    ],
+    "Yannick Jadot": [
+     29.6,
+     33.3
+    ],
+    "Éric Zemmour": [
+     16.8,
+     12.7
+    ]
+   },
+   "sigma_melenchon": 0.031,
+   "sigma_lp_sur_macron": 0.644,
+   "nu": null,
+   "log_nu_sd": null,
+   "nu_q95": null,
+   "t1_mae": 2.866,
+   "t1_couv": "2/12",
+   "monotonie_gauche": NaN
+  },
+  {
+   "chaine": 2,
+   "lp": 11990.7,
+   "partages": {
+    "Jean-Luc Mélenchon": [
+     72.3,
+     63.0
+    ],
+    "Valérie Pécresse": [
+     72.8,
+     65.0
+    ],
+    "Yannick Jadot": [
+     84.9,
+     87.5
+    ],
+    "Éric Zemmour": [
+     19.9,
+     9.4
+    ]
+   },
+   "aucun": {
+    "Jean-Luc Mélenchon": [
+     42.1,
+     43.6
+    ],
+    "Valérie Pécresse": [
+     17.4,
+     29.9
+    ],
+    "Yannick Jadot": [
+     29.7,
+     33.3
+    ],
+    "Éric Zemmour": [
+     15.9,
+     12.7
+    ]
+   },
+   "sigma_melenchon": 0.0342,
+   "sigma_lp_sur_macron": 0.695,
+   "nu": null,
+   "log_nu_sd": null,
+   "nu_q95": null,
+   "t1_mae": 2.885,
+   "t1_couv": "2/12",
+   "monotonie_gauche": NaN
+  },
+  {
+   "chaine": 3,
+   "lp": 12031.1,
+   "partages": {
+    "Jean-Luc Mélenchon": [
+     50.5,
+     63.0
+    ],
+    "Valérie Pécresse": [
+     72.8,
+     65.0
+    ],
+    "Yannick Jadot": [
+     88.3,
+     87.5
+    ],
+    "Éric Zemmour": [
+     21.1,
+     9.4
+    ]
+   },
+   "aucun": {
+    "Jean-Luc Mélenchon": [
+     25.4,
+     43.6
+    ],
+    "Valérie Pécresse": [
+     16.5,
+     29.9
+    ],
+    "Yannick Jadot": [
+     32.4,
+     33.3
+    ],
+    "Éric Zemmour": [
+     16.5,
+     12.7
+    ]
+   },
+   "sigma_melenchon": 0.0553,
+   "sigma_lp_sur_macron": 0.965,
+   "nu": null,
+   "log_nu_sd": null,
+   "nu_q95": null,
+   "t1_mae": 2.837,
+   "t1_couv": "3/12",
+   "monotonie_gauche": NaN
+  }
+ ],
+ "partition": {
+  "dominant": [
+   3
+  ],
+  "autres": [
+   [
+    1,
+    2,
+    0
+   ]
+  ]
+ },
+ "criteres_mode_dominant": {
+  "1_mae_partages": 8.2,
+  "1_ok": false,
+  "persistance": 2.61,
+  "2_melenchon": [
+   50.5,
+   63.0
+  ],
+  "2_ok": false,
+  "3_sigma_lp_sur_macron": 0.965,
+  "3_ok": true,
+  "3b_monotonie_gauche": null,
+  "3b_ok": true,
+  "4_n_dominant": 1,
+  "4_ecart_duels_max": null,
+  "4_ok": false,
+  "5_t1_mae": 2.837,
+  "5_ok": true,
+  "5_t1_couverture": "3/12",
+  "aucun_mae": 9.07,
+  "aucun_ok": false,
+  "3b_pondere_part_mal": 0.01,
+  "structure": {
+   "electorat_LP_vers_JLM": 63.7,
+   "electorat_Zemmour_vers_JLM": 23.0,
+   "sigma_melenchon": 0.055,
+   "ok_sigma_jlm": true,
+   "ok_LP": true,
+   "ok_Zemmour": true
+  },
+  "reports_fit": {
+   "c_median": 8.8,
+   "residu_aucun_propres": 11.15,
+   "residu_aucun_autres": -8.75,
+   "n_lignes_propres": 164
+  }
+ }
+}

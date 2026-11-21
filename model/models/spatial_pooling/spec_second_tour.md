@@ -3183,6 +3183,44 @@ plus de 1 pt), on préfère R6 (un paramètre de moins).
 **Prédiction (non contraignante).** Sans arrière vide, la masse entre les extrêmes diminue, et
 Mélenchon devrait remonter vers Macron.
 
+**Résultat de R6** (cercle fermé, VM, 4 chaînes d'environ 9 h, 21/11). Fichiers :
+`results/second_round_hiercercle_ra_ferme_v2_2022_T1-30_lseo.json` et `modes_…_lseo.json`.
+
+Le mode dominant se réduit à la **seule chaîne 3**. Les trois autres sont 20 à 61 nats plus bas, avec
+σ_Mélenchon de 0,031 à 0,047 contre 0,055 pour la chaîne 3.
+
+| critère | R6 (fermé) | A′1 corrigé (ouvert) | R6 |
+|---|---|---|---|
+| 1. MAE des 4 partages (persistance 2,61) | 8,2 | 7,93 | ✗ |
+| 2. Mélenchon (63,0) | 50,5 | 48,6 | ✗ |
+| 3. σ_LP/σ_M < 1,5 | **0,97** | 1,64 | ✓ |
+| 3b. monotonie circulaire | 1 % | 0 % | ✓ |
+| 4. stabilité | mode dominant à 1 chaîne | 3 chaînes, 0,09 pt | ✗ |
+| 5. MAE T1 | 2,84 | 2,82 | ✓ |
+| « Aucun » | 9,07 | 9,0 | ✗ |
+| structure LP→JLM / Zemmour→JLM / σ_JLM | 63,7 / 23,0 / 0,055 | 63,9 / 26,6 / 0,10 | ✓ |
+
+Ajustement des reports (`modes.py`) : c médian 8,8 ; résidu « Aucun » de +11,2 sur les 164 lignes
+« propres » et de −8,8 sur les autres.
+
+Positions (chaîne 3) : θ_Zemmour = 2,05 avec **|z_pos| = 3,9**, Poutou à 2,87, Le Pen à 2,44 (z −1,0),
+Arthaud à −2,83, Mélenchon à −2,22. L'écart entre Arthaud et Le Pen par l'arrière est d'environ
+1,0 rad.
+
+**Lecture.**
+
+- **Règle de parcimonie (§8.55).** R6 fait au moins aussi bien qu'A′1 sur 1 (+0,3 pt), 2 (+1,9 vers
+  le mesuré) et 3 (0,97 contre 1,64). R6 serait donc préféré à A′1. Mais il **perd la stabilité**
+  (critère 4), qui n'est pas dans la règle, et **les deux échouent** aux critères 1, 2 et « Aucun ».
+- **Prédictions.**
+  - Celle de la revue est contredite : Mélenchon 50,5 > 48,6 et Zemmour→JLM 23,0 < 35.
+  - Celle de §8.55 est faiblement vérifiée : Mélenchon remonte de 1,9 pt.
+- **Zemmour |z_pos| = 3,9 > 2** : l'ancre ORDER_GROUPS de l'extrême droite est forcée. Comme le
+  prévoyait la revue, R6 n'est en partie qu'A′1 payé par la tension des ancres.
+- **Bilan cercle.** Ni l'ouvert ni le fermé ne passent ; fermer le cercle n'apporte pas de gain
+  décisif. Le défaut commun aux deux (Mélenchon trop vers Le Pen, « Aucun » raté, résidu de +11 pt
+  sur les lignes propres) est celui que R7 (fidélité révélée) vise. R7 est la suite logique.
+
 ### 8.56 (R7) Fidélité révélée dans la vraisemblance des reports (revue locale du 21/11 ~00:30Z ; avant code)
 
 **Défaut.** 164 lignes de reports sur 585 (28 %) sont « propres » : l'électorat k est l'un des deux
