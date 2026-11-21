@@ -247,7 +247,17 @@ def v1(fit, election=2022, as_of="2022-03-11", hyp=None) -> dict:
                                   omega_k=(None if getattr(fit, "omega_k_draws", None) is None
                                            else jnp.asarray(fit.omega_k_draws)), tau=0.0)   # §8.63 témoin U
         thu = np.asarray(thu)
+        thf, _ = reports_cellules(jnp.asarray(A), jnp.asarray(mask), jnp.full(S, ia), jnp.full(S, ib),
+                                  jnp.full(S, idx[E._norm(e)]), jnp.asarray(fit.kappa_draws),
+                                  jnp.asarray(fit.eta_draws[:, ia] - fit.eta_draws[:, ib]), jnp.asarray(lse),
+                                  jnp.asarray(fit.omega_draws), jnp.asarray(s_ab), poids, n_newton=12,
+                                  omega_g=E._omega_g(fit),
+                                  omega_k=(None if getattr(fit, "omega_k_draws", None) is None
+                                           else jnp.asarray(fit.omega_k_draws)), tau=0.0,
+                                  fid_newton=True)                                 # §8.64 bis (c) U_fid
+        thf = np.asarray(thf)
         out[e] = {"partage_U": round(float((100 * thu[:, 0] / (thu[:, 0] + thu[:, 1])).mean()), 1),
+                  "partage_Ufid": round(float((100 * thf[:, 0] / (thf[:, 0] + thf[:, 1])).mean()), 1),
                   "partage_modele": round(float((100 * th[:, 0] / (th[:, 0] + th[:, 1])).mean()), 1),
                   "partage_mesure": round(obs_part, 1),
                   "aucun_modele": round(float(100 * th[:, 2].mean()), 1),
@@ -260,7 +270,8 @@ def v1(fit, election=2022, as_of="2022-03-11", hyp=None) -> dict:
         # §8.61 : témoin trivial 50/50 et critère révisé (≤ 12 ET ≤ 50/50 − 1,5)
         mae_5050 = float(np.mean([abs(50.0 - v["partage_mesure"]) for v in out.values()]))
         mae_U = float(np.mean([abs(v["partage_U"] - v["partage_mesure"]) for v in out.values()]))
-        out["_criteres"] = {"mae_partages": round(mae, 2), "mae_5050": round(mae_5050, 2), "mae_U": round(mae_U, 2), "loho_ok_U": mae <= mae_U - 2.0,
+        mae_Uf = float(np.mean([abs(v["partage_Ufid"] - v["partage_mesure"]) for v in out.values()]))
+        out["_criteres"] = {"mae_partages": round(mae, 2), "mae_5050": round(mae_5050, 2), "mae_U": round(mae_U, 2), "loho_ok_U": mae <= mae_U - 2.0, "mae_Ufid": round(mae_Uf, 2), "loho_ok_Ufid": mae <= mae_Uf - 2.0,
                             "temoin_structurel": 25.9,
                             "mae_ok": mae <= 12.0 and mae <= mae_5050 - 1.5,
                             "LP_ecart": ecart(lpd), "LP_ok": lpd != {} and abs(ecart(lpd)) <= 10,
@@ -351,7 +362,7 @@ def main() -> None:
             m.update({"lp_max": lp_m, "retenu_lp": lp_m >= lpmax - 10.0, "max_abs_z_pos": round(zp, 2),
                       "z_pos_force": zp > 3.0})
         ret = [m for m in par_mode if m["retenu_lp"]]
-        out["v1_modes_retenus_lp"] = [{k: m.get(k) for k in ("chaines", "mae_partages", "mae_U", "loho_ok_U",
+        out["v1_modes_retenus_lp"] = [{k: m.get(k) for k in ("chaines", "mae_partages", "mae_U", "mae_Ufid", "loho_ok_U",
                                                             "max_abs_z_pos")} for m in ret]
         maes = [m["mae_partages"] for m in par_mode if "mae_partages" in m]
         out["v1_tous_modes"] = {"par_mode": par_mode, "mediane": round(float(np.median(maes)), 2),

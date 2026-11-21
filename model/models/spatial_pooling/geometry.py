@@ -332,7 +332,8 @@ def duel_shares_poids(A_a, A_b, kappa, eta_a, eta_b, lse, omega, poids, omega_g=
 
 
 def reports_cellules(A, champ_mask, ia, ib, k_idx, kappa, eta_diff, lse, omega, s_ab, poids, n_newton=4,
-                     omega_g=None, fidelite=False, omega_k=None, lam=None, tau=None):
+                     omega_g=None, fidelite=False, omega_k=None, lam=None, tau=None,
+                     fid_newton=False):
     """Cellules (a, b, aucun) de l'électorat T1 `k_idx` (spec §8.38, §8.44.4),
     différentiables : δ par `n_newton` pas de Newton depuis `eta_diff` pour que
     l'agrégat des électorats du champ redonne `s_ab`.
@@ -369,15 +370,31 @@ def reports_cellules(A, champ_mask, ia, ib, k_idx, kappa, eta_diff, lse, omega, 
         j = jnp.arange(A.shape[1])[None, :]
         fin = (j == jnp.asarray(ia)[:, None]) | (j == jnp.asarray(ib)[:, None])
         lG = jnp.where(fin, lG, tau * lG)
+    fixe = jnp.zeros(Rk.shape, dtype=bool)
+    if fid_newton and lse is not None:
+        # §8.64 bis (c), témoin U_fid : électorats des finalistes à la fidélité R7 DANS le Newton
+        # (part 98/2 fixe, expression ρ_f), non décalés par δ.
+        j = jnp.arange(A.shape[1])[None, :]
+        fa_, fb_ = j == jnp.asarray(ia)[:, None], j == jnp.asarray(ib)[:, None]
+        okn = jnp.asarray(omega_k) if omega_k is not None else jnp.full(A.shape[1], jnp.asarray(omega))
+        okn = okn[None, :] if okn.ndim == 1 else okn
+        kq2 = jnp.asarray(kappa)
+        kq2 = kq2[:, None, None] if kq2.ndim else kq2
+        u_ = (jnp.arange(32) + 0.5) / 32
+        g_ = -jnp.log(-jnp.log(u_))
+        rf = jax.nn.sigmoid(kq2 * g_[None, None, :] - okn[:, :, None]).mean(-1)        # (R, N)
+        lG = jnp.where(fa_, jnp.log(0.98 / 0.02), jnp.where(fb_, jnp.log(0.02 / 0.98), lG))
+        Rk = jnp.where(fa_ | fb_, rf, Rk)
+        fixe = fa_ | fb_
     wgt = E * Rk * cm
     wgt = wgt / jnp.clip(wgt.sum(1, keepdims=True), 1e-12, None)
     d = jnp.asarray(eta_diff)
     for _ in range(n_newton):
-        sg = jax.nn.sigmoid(lG + d[:, None])
+        sg = jax.nn.sigmoid(lG + jnp.where(fixe, 0.0, d[:, None]))
         f = (wgt * sg).sum(1) - s_ab
-        fp = (wgt * sg * (1 - sg)).sum(1)
+        fp = (wgt * jnp.where(fixe, 0.0, sg * (1 - sg))).sum(1)
         d = d - f / jnp.clip(fp, 1e-6, None)
-    Gt = jax.nn.sigmoid(lG[rows, k_idx] + d)
+    Gt = jax.nn.sigmoid(lG[rows, k_idx] + jnp.where(fixe[rows, k_idx], 0.0, d))
     R = Rk[rows, k_idx]
     cel = jnp.stack([R * Gt, R * (1 - Gt), 1 - R], axis=-1)
     if fidelite and lse is not None:

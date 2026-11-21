@@ -162,3 +162,20 @@ def test_temoin_U_tau_nul():
     cu = np.asarray(cu)
     part = cu[:, 0] / (cu[:, 0] + cu[:, 1])
     assert np.allclose(part, part[0], atol=1e-5)
+
+
+def test_ufid_finalistes_fixes():
+    """§8.64 bis (c) : U_fid redonne l'agrégat, les non-finalistes sont uniformes, fid_newton=False inchangé."""
+    from model.models.spatial_pooling.geometry import W, reports_cellules
+    rng = np.random.default_rng(5)
+    R, N, G = 3, 5, W.shape[0]
+    A = jnp.tile(jnp.asarray(rng.normal(size=(1, N, G))), (R, 1, 1))
+    lse = jax.nn.logsumexp(A, axis=1)
+    ia, ib, k = jnp.zeros(R, int), jnp.ones(R, int), jnp.array([2, 3, 4])
+    args = (A, jnp.ones(N), ia, ib, k, 0.8, jnp.zeros(R), lse, -2.5, jnp.full(R, 0.6), W)
+    assert np.allclose(reports_cellules(*args, tau=0.0)[0], reports_cellules(*args, tau=0.0, fid_newton=False)[0])
+    cf = np.asarray(reports_cellules(*args, tau=0.0, fid_newton=True, n_newton=12)[0])
+    part = cf[:, 0] / (cf[:, 0] + cf[:, 1])
+    assert np.allclose(part, part[0], atol=1e-5)
+    c0 = np.asarray(reports_cellules(*args, tau=0.0)[0])
+    assert not np.allclose(part[0], (c0[0, 0] / (c0[0, 0] + c0[0, 1])), atol=1e-3)
