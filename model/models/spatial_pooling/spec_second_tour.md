@@ -3497,6 +3497,25 @@ par les duels contre Macron ou Le Pen, et elle ne contient pas l'hésitation mes
 Macron. **R8c échoue au test de valeur ajoutée V1** (dépistage) : ses bons chiffres sur les cibles
 d'entre-deux-tours sont en partie un ajustement en échantillon.
 
+### 8.60 Témoin V2 (duels jamais sondés) calculé à 0 fit, figé AVANT tout fit V2
+
+Cadre : 2022 à T1−30, Bradley-Terry ridge (`second_round._bradley_terry`, même prior que le modèle).
+Pour chaque paire, le témoin est ajusté sur tous les AUTRES duels de la fenêtre. La cible est la
+moyenne des duels de la paire dans les 30 jours précédant `as_of`.
+
+| paire retirée | observé (n) | Bradley-Terry | écart |
+|---|---|---|---|
+| Macron–Mélenchon | 66,3 (5) | 56,2 | −10,1 |
+| Macron–Zemmour | 64,4 (20) | 73,9 | +9,5 |
+| Macron–Pécresse (contrôle) | 59,2 (17) | 44,6 | −14,7 |
+| Macron–Le Pen (contrôle) | 57,4 (22) | 65,5 | +8,2 |
+
+Le graphe des duels de 2022 est une étoile autour de Macron : un candidat retiré de son seul duel n'a
+presque plus d'information, et le témoin est faible (MAE de 9,8 sur les deux paires V2).
+
+**Critère V2 figé** : sur Macron–Mélenchon et Macron–Zemmour, chacun retiré à son tour (deux fits), la
+MAE du modèle doit être ≤ 9,8 − 1,5 = **8,3 pt**. Les deux paires de contrôle sont rapportées.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
