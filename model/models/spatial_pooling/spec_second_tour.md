@@ -3450,6 +3450,28 @@ initialisations ; mode dominant = init 3, lp 3201,9).
 non. On n'en tire pas de verdict (dépistage, pas postérieur), mais cela pèse sur l'étape B :
 R8c pourrait passer en 2022 sans se transférer à 2017.
 
+### 8.59 Protocole V1 précisé (hypothèse retirée), figé AVANT tout fit V1
+
+- **Retrait.** Variable `PRES2027_SANS_HYP="Mélenchon – Macron"` : `_fit` écarte des reports d'avant T1
+  TOUTES les lignes de cette hypothèse (9 notices dans la fenêtre de 2022 à T1−30).
+- **Cible.** Moyenne, sur les 3 notices de mars 2022 (Harris 4-7, Elabe 7-8, BVA 8-9 mars), du partage
+  Mélenchon / (Mélenchon + Macron) et de la case « Aucun », pour les 6 électorats non finalistes :
+  Le Pen, Zemmour, Pécresse, Jadot, Hidalgo, Roussel.
+- **Prédiction du modèle.** Cellules de l'électorat k dans Mélenchon–Macron, calculées à `as_of` avec
+  `w_now` (même calcul que les cibles d'entre-deux-tours).
+- **Critères (§8.57, inchangés) :**
+  - MAE des 6 partages ≤ 12 ;
+  - ~~Le Pen → Mélenchon ≥ 50 ; Zemmour → Mélenchon ≤ 40~~. **Corrigé le 21/11 ~11:00Z, AVANT tout
+    fit V1 :** ces seuils avaient été posés sur la moyenne de toute la fenêtre (56,8 / 31,9). Or la
+    cible V1 est la moyenne des notices de mars, qui MESURE 42,3 (Le Pen) et 42,7 (Zemmour) : même un
+    modèle parfait aurait échoué. Nouveaux critères : |Le Pen → Mélenchon − mesuré| ≤ 10 et
+    |Zemmour → Mélenchon − mesuré| ≤ 10. Ces valeurs mesurées sont lues dans les DONNÉES (contrôle de
+    l'outil sur le fit complet), pas dans un résultat V1.
+- **Témoin.** Part de Macron chez k dans les autres duels Macron–X, soit une MAE de 35,8 (revue) ;
+  recalculé sur la même cible et rapporté.
+- **Méthode.** Dépistage MAP d'abord (6 initialisations), puis NUTS seulement si R8c passe en NUTS sur
+  les données complètes.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

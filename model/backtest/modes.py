@@ -194,6 +194,57 @@ def lecture_reports_fit(fit, kw, stem, dom) -> dict:
     return out
 
 
+def v1(fit, election=2022, as_of="2022-03-11", hyp="Mélenchon – Macron") -> dict:
+    """§8.59 : cellules de Mélenchon–Macron prédites contre la moyenne des notices de mars (30 j)."""
+    import pandas as pd
+    from scipy.special import logsumexp
+    from model.models.spatial_pooling.geometry import reports_cellules
+    r = pd.read_csv(sr.PARSED_DIR / f"reports_avant_t1_{election}.csv")
+    r = r[(r.hypothese.str.replace("—", "–") == hyp)
+          & (pd.to_datetime(r.date_fin) <= pd.Timestamp(as_of))
+          & (pd.to_datetime(r.date_fin) >= pd.Timestamp(as_of) - pd.Timedelta(days=30))]
+    c = fit.candidates
+    idx = {E._norm(x): i for i, x in enumerate(c)}
+    ia, ib = c.index(JLM), c.index(EM)
+    A, poids = E._A(fit, fit.w_draws)
+    S = A.shape[0]
+    lse = logsumexp(A if fit.masque_lse is None else A + np.log(fit.masque_lse)[None, :, None], axis=1)
+    res = E.sr.load_results()
+    t1 = res[(res.election == election) & (res.tour == "Premier tour")]
+    mask = np.zeros(len(c)); mask[[idx[E._norm(x)] for x in t1.candidat if E._norm(x) in idx]] = 1.0
+    s_ab = duel_draws(fit, JLM, EM, 0.0, scrutin=False)
+    out = {}
+    for e, g in r.groupby("electorat_t1"):
+        if E._norm(e) not in idx or e in (JLM, EM):
+            continue
+        p = g.pivot_table(index="notice", columns="candidat_t2", values="part")
+        if not {"Mélenchon", "Macron"} <= set(p.columns):
+            continue
+        obs_part = float((100 * p["Mélenchon"] / (p["Mélenchon"] + p["Macron"])).mean())
+        obs_aucun = float(p["Aucun"].mean()) if "Aucun" in p.columns else None
+        th, _ = reports_cellules(jnp.asarray(A), jnp.asarray(mask), jnp.full(S, ia), jnp.full(S, ib),
+                                 jnp.full(S, idx[E._norm(e)]), jnp.asarray(fit.kappa_draws),
+                                 jnp.asarray(fit.eta_draws[:, ia] - fit.eta_draws[:, ib]), jnp.asarray(lse),
+                                 jnp.asarray(fit.omega_draws), jnp.asarray(s_ab), poids, n_newton=8,
+                                 omega_g=E._omega_g(fit),
+                                 omega_k=(None if getattr(fit, "omega_k_draws", None) is None
+                                          else jnp.asarray(fit.omega_k_draws)))
+        th = np.asarray(th)
+        out[e] = {"partage_modele": round(float((100 * th[:, 0] / (th[:, 0] + th[:, 1])).mean()), 1),
+                  "partage_mesure": round(obs_part, 1),
+                  "aucun_modele": round(float(100 * th[:, 2].mean()), 1),
+                  "aucun_mesure": None if obs_aucun is None else round(obs_aucun, 1)}
+    if out:
+        mae = float(np.mean([abs(v["partage_modele"] - v["partage_mesure"]) for v in out.values()]))
+        lpd = out.get(MLP, {})
+        zmd = out.get("Eric Zemmour", out.get("Éric Zemmour", {}))
+        ecart = lambda d: (None if not d else round(d["partage_modele"] - d["partage_mesure"], 1))  # noqa: E731
+        out["_criteres"] = {"mae_partages": round(mae, 2), "mae_ok": mae <= 12.0,
+                            "LP_ecart": ecart(lpd), "LP_ok": lpd != {} and abs(ecart(lpd)) <= 10,
+                            "Zemmour_ecart": ecart(zmd), "Zemmour_ok": zmd != {} and abs(ecart(zmd)) <= 10}
+    return out
+
+
 def criteres(variante, stem, coupure, lignes, dom, election) -> dict:
     fit, raw, as_of, kw = _reconstruire_avec_kwargs(variante, stem, coupure, dom)
     ev = E.evaluer(fit, raw, as_of)
@@ -229,6 +280,8 @@ def criteres(variante, stem, coupure, lignes, dom, election) -> dict:
         res["3b_monotonie_gauche"] = None
     res["structure"] = structure(fit)
     res["reports_fit"] = lecture_reports_fit(fit, kw, stem, dom)          # §8.56
+    if election == 2022:
+        res["v1_melenchon_macron"] = v1(fit)                                 # §8.59
     if getattr(fit, "nu_t_draws", None) is not None:
         res["corr_lognu_logsigmaLP"] = round(float(np.corrcoef(np.log(fit.nu_t_draws),
                                                                np.log(fit.sigma_draws[:, fit.candidates.index(MLP)]))[0, 1]), 3)

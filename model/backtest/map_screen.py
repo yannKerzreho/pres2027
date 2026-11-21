@@ -100,6 +100,9 @@ def main() -> None:
     args = ap.parse_args()
     fn, kw = capturer(args.variante, args.election, args.coupure, args.lse_officiel)
     stem = f"map_{args.variante}_{args.election}_{args.coupure}"
+    import os
+    if os.environ.get("PRES2027_SANS_HYP"):                       # V1 (§8.59)
+        stem += "_sans_" + "".join(ch for ch in os.environ["PRES2027_SANS_HYP"] if ch.isalnum())
     sr.CHAINES_DIR.mkdir(parents=True, exist_ok=True)
     out = []
     for k in range(args.inits):

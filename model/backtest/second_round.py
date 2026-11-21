@@ -313,6 +313,9 @@ def _fit(raw, as_of, election, nuts):
         # dans la fenêtre des sondages T1 [as_of − 180 j ; as_of].
         ra = pd.read_csv(Path(PARSED_DIR) / f"reports_avant_t1_{election}.csv")
         ra = ra[pd.to_datetime(ra["date_fin"]) >= as_of - pd.Timedelta(days=180)]
+        sans = __import__("os").environ.get("PRES2027_SANS_HYP")      # V1 (§8.59) : hypothèse retirée
+        if sans:
+            ra = ra[ra["hypothese"].str.replace("—", "–") != sans]
         reps.append(ra.drop(columns=[c for c in ("nature_t1", "page") if c in ra.columns]))
     if kw.pop("_lse_officiel", False):
         # §8.49 : valeur inclusive sur le champ officiel du T1 (--lse-officiel)
