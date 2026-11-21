@@ -3668,6 +3668,38 @@ modérée, gauche et centre). C'est exactement le domaine où la revue recommand
 électorat × finaliste (option ii) avec un τ_report calibré. L'arbitrage (i)/(ii)/(iii) reste ouvert
 pour l'utilisateur.
 
+### 8.64 bis Corrections de la revue du 21/11 ~20:30Z
+
+**(a) La valeur 14,8 citée en §8.63 n'est pas le témoin U.** C'est le partage s_ab appliqué tel quel,
+sans Newton. Le code applique bien la définition de §8.63, et U = 10,5 est juste.
+
+**(b) Bug de nom dans modes.v1.** L'électorat « Éric Zemmour » était compté comme non finaliste dans
+Macron–Zemmour. C'est corrigé par la comparaison sur les noms normalisés.
+
+Valeurs corrigées pour Macron–Zemmour : R8c 9,7 (U 21,7). Moyennes : R8c 19,7 contre U 15,7. **Le
+verdict d'échec tient.**
+
+**(c) Le témoin U doit mettre les électorats des finalistes à la fidélité R7 dans le Newton** : c'est
+U_fid. Sinon δ se cale sur une fidélité géométrique trop basse (79,5 % au lieu de 95 %).
+
+| | U_fid (revue, à 0 fit) |
+|---|---|
+| Mélenchon–Macron | 11,3 |
+| Macron–Zemmour | 18,3 |
+| Macron–Pécresse | 12,7 |
+| **Moyenne** | **14,1** |
+
+À coder ; U_fid devient le témoin du V1-LOHO (§8.66).
+
+**(d) Lecture sélective.** Pour Mélenchon–Macron, les modes secondaires font 14,2 à 19,3, contre 27,2
+pour le mode retenu (meilleure log-densité). Le mode le mieux ajusté est le pire hors échantillon.
+L'échec tient grâce à Pécresse, à environ +5 de U sur tous les modes.
+
+**(e) Le drapeau |z_pos| > 3 ne discrimine pas.** Le « ≈ 5 » vient de Lassalle, ancre éditoriale du T1
+déjà à −4,1 sur le segment. Les signaux qui comptent sont Hidalgo à +3,8 (μ = 0,69, à droite de Macron)
+et Taubira à +3,4. Le drapeau est restreint aux finalistes et aux électorats des reports, et Lassalle
+est rapporté à part (à coder).
+
 ### 8.65 Test à 0 fit ω_k[Mélenchon] := ω (point MAP de R8c, init 3 ; 21/11 ~17:20Z)
 
 On remet l'abstention propre de l'électorat de Mélenchon (ω_k = −2,83) au niveau commun (ω = −3,56),
@@ -3685,6 +3717,60 @@ sans rien d'autre de changé.
   qui est son rôle.
 - Les critères 1-2 restent donc des critères, pas des artefacts de ω_k.
 - ω_k reste conditionnel à la lecture de NUTS (retrait si s_ω q5 < 0,2).
+
+### 8.66 τ_report en cross-fit (forme (ii-0) de l'option (ii)) — spécifié et figé, NON lancé avant l'arbitrage
+
+**Forme.** Pour un triplet électorat × hypothèse jamais observé :
+
+$$\mathrm{logit}\,\tilde G_k=\tau\,\mathrm{lG}^{geo}_k+\delta.$$
+
+- Les électorats des finalistes sont à la fidélité R7 DANS le Newton, et δ réimpose l'agrégat.
+- Les duels et le T1 sont inchangés : c'est le pendant de τ_paire (§8.33).
+
+**Calibrage sans fuite.** Pour chaque hypothèse h, τ est choisi sur les autres hypothèses (chacune lue
+sur son propre fit qui l'exclut), puis évalué sur h.
+
+**Critères figés :**
+
+- **V1-LOHO poolé :** 2022 (Mélenchon–Macron, Macron–Zemmour, Macron–Pécresse), 2017 (Fillon–Le Pen),
+  2027 (Philippe–Le Pen, Attal–Le Pen).
+  - Témoin U_fid ; finalistes exclus par nom normalisé.
+  - Seuils : moyenne ≤ U_fid − 2, aucune hypothèse > U_fid + 3, lus sur tous les modes à Δlp ≤ 10
+    (minimum et maximum rapportés).
+- **V2 :** MAE ≤ celle de `hier` sans reports + 0,5.
+- **Plausibilité :**
+  - σ_LP/σ_M < 1,5 et monotonie ≤ 10 % ;
+  - |z_pos| ≤ 3 pour les finalistes et les électorats des reports, Lassalle à part ;
+  - Hidalgo à gauche de Macron.
+
+**Prédictions consignées avant lecture (revue, 0 fit sur le mode c3 de 2022) :**
+
+- τ* entre 0,15 et 0,35 ;
+- moyenne 2022 ≈ 11,2 contre 14,1 pour U_fid ;
+- Mélenchon–Macron au-dessus de U_fid (+4) ;
+- duels inchangés.
+
+### 8.67 Échelle de parcimonie et V2 de R8c (revue du 21/11 ~20:30Z ; pas d'arbitrage requis)
+
+**(a) V2 de R8c face à `hier` sans reports.**
+
+- MAE sur Macron–Mélenchon et Macron–Zemmour retirés.
+- Seuil figé : R8c ≤ `hier` − 1, sinon la couche de reports ne se justifie que par la plausibilité et
+  ne sert pas aux duels publiés.
+- Lecture d'abord au MAP sur le Mac, puis NUTS sur la VM si R8c passe.
+
+**(b) Échelle de parcimonie au V1-LOHO (2022, 3 hypothèses, témoin U_fid).**
+
+- Variantes : `hier_ra` (segment), `hier_ra_fid_omk` (segment) et `hiercercle_ra_fid` (cercle sans
+  ω_k), face à R8c.
+- Règle de retrait figée : un mécanisme est retiré si son retrait coûte < 2 pt en V1 (partage) ET
+  < 1 pt en V1 (« Aucun »), sans casser σ_LP/σ_M < 1,5 ni la monotonie.
+
+**(c) MAP prolongé.**
+
+- 20 000 pas, lr décroissant, ‖∇‖ journalisé.
+- Si les écarts de log-densité entre initialisations bougent de plus de 10 nats après prolongation, ce
+  sont des non-convergences et non des modes.
 
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 

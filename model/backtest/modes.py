@@ -222,7 +222,7 @@ def v1(fit, election=2022, as_of="2022-03-11", hyp=None) -> dict:
     s_ab = duel_draws(fit, fa, fb, 0.0, scrutin=False)
     out = {}
     for e, g in r.groupby("electorat_t1"):
-        if E._norm(e) not in idx or e in (fa, fb):
+        if E._norm(e) not in idx or E._norm(e) in (E._norm(fa), E._norm(fb)):   # noms normalisés (« Éric » / « Eric »)
             continue
         p = g.pivot_table(index="notice", columns="candidat_t2", values="part")
         if not {sa, sb} <= set(p.columns):
@@ -357,6 +357,9 @@ def main() -> None:
         out["v1_tous_modes"] = {"par_mode": par_mode, "mediane": round(float(np.median(maes)), 2),
                                 "pire": round(float(max(maes)), 2)}
         print(json.dumps(out["v1_tous_modes"], ensure_ascii=False, indent=1, default=float))
+    import os as _os, platform as _pf
+    out["provenance"] = {"lse_officiel": args.lse_officiel, "plateforme": _pf.platform(),
+                         "sans_hyp": _os.environ.get("PRES2027_SANS_HYP")}
     pref = "v1loho" if (args.v1_modes and args.sans_criteres) else "modes"    # ne pas écraser une lecture complète
     dest = sr.OUT_DIR / f"{pref}_{args.stem}.json"
     dest.write_text(json.dumps(out, ensure_ascii=False, indent=1, default=float) + "\n")

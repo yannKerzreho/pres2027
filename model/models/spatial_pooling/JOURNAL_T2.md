@@ -31,6 +31,18 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- [ ] (session locale, Mac) **§8.64 bis et §8.67 (c), réparer la mesure.**
+  - U_fid : finalistes à la fidélité dans le Newton, paramètre du témoin seulement.
+  - `modes.partition` par log-densité.
+  - Drapeau |z_pos| restreint, Lassalle à part.
+  - `map_screen` à 20 000 pas avec lr décroissant et ‖∇‖.
+  - Succès : on retrouve 11,3 / 18,3 / 12,7.
+- [ ] (session locale, Mac puis VM) **§8.67 (a)**, V2 de R8c face à `hier`, MAP d'abord.
+- [ ] (session locale, Mac) **§8.67 (b)**, échelle de parcimonie au V1-LOHO : `hier_ra`,
+  `hier_ra_fid_omk`, `hiercercle_ra_fid` × 3 hypothèses × 6 inits.
+- [ ] (spec d'abord) Dirichlet des reports pondérée par l'effectif de l'électorat (c_r ∝ échantillon ×
+  part T1, puissance φ).
+
 - [x] [FAIT 21/11 ~17:10Z, §8.64 : V1-LOHO de R8c en ÉCHEC. Moyenne 20,0 contre U 15,8 ;
   Mélenchon–Macron +16,7, Pécresse +7,2, Zemmour −11,4 ; |z_pos| ≈ 5 partout.]
   **§8.63, réparer la mesure de V1.**
@@ -1130,6 +1142,55 @@ conservé pour l'historique.
   instables (R̂ 7,5) et s_ab +0,7 pt ⇒ phase 2 à faire.
 
 
+
+## Revue Opus 2026-11-21 ~20:30Z (session locale) — V1-LOHO, témoin U, parcimonie : intégration point par point
+
+- **NUTS de R8c sur la VM pas encore sur la branche.** **Pris acte**, la routine l'évalue.
+- **0. U = 10,5 est juste ; le 14,8 était le partage s_ab appliqué sans Newton. Aucune fuite.**
+  **Retenu** : §8.64 bis (a).
+- **0 bis. Le bon témoin est U_fid**, avec les finalistes à la fidélité dans le Newton : 11,3 / 18,3 /
+  12,7, moyenne 14,1. **Retenu** : §8.64 bis (c) ; il devient le témoin de §8.66 et §8.67. À coder.
+- **F1. Bug de nom « Éric » / « Eric » dans `modes.v1`.** **Corrigé** dans ce lot. Valeurs corrigées :
+  R8c 9,7 (U 21,7) ; moyennes 19,7 contre 15,7. L'échec tient.
+- **F2. Fidélité hors du Newton, qui fausse U et le modèle.** **Retenu.** Pour le témoin, en file
+  (U_fid). Pour le modèle : **différé** à une variante distincte, car il change les duels.
+- **F3. Partition encore par σ_Mélenchon.** **Retenu, en file** : partition par log-densité dans
+  `modes.partition`.
+- **F4. Le drapeau |z_pos| est porté par Lassalle (ancre du T1).** Les signaux réels sont Hidalgo
+  (+3,8, à droite de Macron), Taubira (+3,4) et Mélenchon (+3,7, données complètes). **Retenu** :
+  §8.64 bis (e) ; drapeau restreint, en file.
+- **F5. Lecture sélective.** Les modes secondaires de Mélenchon–Macron font 14,2 à 19,3 ; le mode le
+  mieux ajusté est le pire hors échantillon. **Retenu** : §8.64 bis (d). Le verdict tient grâce à
+  Pécresse.
+- **F6. Points MAP peu fiables** (de 50 à 2 400 nats, optimisation à taux fixe). **Retenu** : MAP
+  prolongé, §8.67 (c), en file.
+- **F7. Provenance absente des JSON.** **Corrigé** : `lse_officiel`, la plateforme et l'hypothèse
+  retirée sont maintenant dans `out`. Le nom de clé `v1_melenchon_macron` sous SANS_HYP reste à
+  renommer (mineur, en file).
+- **F8. Aucun critère relâché après lecture, aucun mélange de plateformes.** **Pris acte.**
+- **Parcimonie.**
+  - R7 et η hiérarchique sont gardés.
+  - Le cercle est gardé pour la plausibilité, mais **le segment n'a jamais passé V1-LOHO**.
+  - ω_k ne se justifie pas sur le partage et seulement en partie sur « Aucun ». Les pathologies
+    (s_ω ≈ 3 sous HN(1), « Aucun » de Roussel et Jadot à 0,5 % contre 21 %) le rendent suspect.
+  - Il manque aussi un V2 de R8c face à `hier`.
+
+  **Retenu** : échelle de parcimonie et V2, §8.67 (figé), en file. La proposition z_ω seulement pour
+  les électorats ayant au moins 10 lignes est **retenue**, conditionnée à §8.67 (b).
+- **Option (ii) : forme (ii-0), τ_report en cross-fit (1 scalaire, pendant de τ_paire).**
+  - À 0 fit, en cross-fit : 11,2 contre U_fid 14,1, mais Mélenchon–Macron +4,3 (faute de pont).
+  - (ii-b) β pivot RN seulement pour 2027.
+
+  **Spécifié et figé** en §8.66. **NON lancé** : il relève de l'ARBITRAGE (ii) ouvert pour
+  l'utilisateur.
+- **Pistes.**
+  1. Réparer la mesure (U_fid, partition, drapeau, MAP prolongé) : **en file, première.**
+  2. τ_report : **figé, suspendu à l'arbitrage.**
+  3. V2 face à `hier` : **en file.**
+  4. Échelle de parcimonie : **en file.**
+  5. Dirichlet pondérée par l'effectif de l'électorat : **en file**, maths à écrire (0 ou 1
+     paramètre, φ) ; c'est une correction de vraisemblance plus qu'un choix éditorial.
+  6. β pivot RN 2027 : **différé.**
 
 ## Revue Opus 2026-11-21 ~16:00Z (session locale) — R9, mesure de V1, arbitrage : intégration point par point
 
