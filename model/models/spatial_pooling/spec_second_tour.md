@@ -3516,6 +3516,55 @@ presque plus d'information, et le témoin est faible (MAE de 9,8 sur les deux pa
 **Critère V2 figé** : sur Macron–Mélenchon et Macron–Zemmour, chacun retiré à son tour (deux fits), la
 MAE du modèle doit être ≤ 9,8 − 1,5 = **8,3 pt**. Les deux paires de contrôle sont rapportées.
 
+### 8.61 V1 réévalué et mélange individuel λ (revue locale du 21/11 ~12:30Z ; avant code)
+
+**Évaluation de V1 corrigée (données seules).**
+
+- La cible ne compte que **2 notices**, pas 3 : BVA 8-9 mars ne publie que l'électorat de Macron.
+  Hidalgo et Roussel ne viennent que d'une notice (≈ 50 à 90 répondants), d'où un plancher de bruit
+  d'environ 6 pt de MAE.
+- Le témoin de 35,8 ne correspondait pas à la cible figée. Recalculé à 0 fit sur la cible de §8.59
+  (moyenne par hypothèse, lignes propres exclues), il vaut **25,9** pour le partage et 17,8 pour
+  « Aucun ».
+- Témoins triviaux : un 50/50 constant donne **14,6** ; « Pécresse 10, les autres 50 » donne 8,2,
+  mais il est construit a posteriori et n'est pas retenu.
+- **R8c (27,2) ne bat donc ni le témoin structurel (25,9) ni le 50/50 (14,6).** En échantillon, le
+  fit complet plafonne à 11,4 (de 7,8 à 15,5 selon le mode).
+- **Critère V1 révisé, figé :** MAE ≤ 12 ET ≤ 50/50 − 1,5 (= 13,1). Il est lu sur TOUS les modes
+  (médiane et pire), pas sur le seul mode dominant.
+
+**Diagnostic (revue).**
+
+- L'ordre interne de la gauche n'est pas identifié. Selon le mode, Hidalgo passe à droite de
+  Macron ; Jadot et Roussel ont σ ≈ 0,03-0,04 et ω_k ≈ −9.
+- Les électeurs sont quasi déterministes : la part d'électorat avec |κΔA + δ| < 2 vaut 0 à 7 %.
+- La quadrature n'est pas en cause (1024 nœuds donnent les mêmes prédictions).
+
+**(R9) Mélange individuel λ, un paramètre.** Une fraction λ des électeurs choisit entre les deux
+finalistes indépendamment de la géométrie (choc individuel dominant) :
+
+$$q(v)=(1-\lambda)\,\sigma\big(\kappa[A_a-A_b]\big)+\lambda\cdot\tfrac12,\qquad \lambda\sim\mathrm{Beta}(2,8).$$
+
+- La forme est la même pour les duels et les reports, et le δ de Newton réabsorbe le niveau.
+- Les lignes propres (fidélité, §8.56) ne sont pas concernées.
+- λ = 0 redonne R8c.
+
+À paramètres fixés sur le MAP V1 : 27,2 → 19,1 (λ = 0,3), avec des cellules vues qui s'améliorent.
+Ce n'est probablement pas suffisant seul.
+
+Variante `hiercercle_ra_fid_omk_lam`. Protocole : dépistage MAP sur les données complètes puis sur V1.
+Critères figés : V1 révisé ci-dessus (médiane des modes) ; cellules vues ≤ celles de R8c + 0,5 ;
+quantile 5 % de λ > 0,05 ; critères 2 et 3b de §8.58.
+
+**ARBITRAGE À TRANCHER (utilisateur), proposé par la revue.** Les reports par électorat dans un duel
+jamais sondé ne sont pas contraints par les données dans cette classe de modèles. Trois options :
+
+- (i) continuer l'empilement (λ, puis identification de la gauche via le modèle joint avec 2017) ;
+- (ii) un modèle unique, avec une couche de reports NON spatiale explicite : des effets électorat ×
+  finaliste rétrécis vers la prédiction spatiale ;
+- (iii) un modèle de transfert séparé pour les reports, avec le spatial seulement pour le T1 et les
+  duels (on renonce à l'unicité).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
