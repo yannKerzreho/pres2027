@@ -357,7 +357,8 @@ def main() -> None:
         out["v1_tous_modes"] = {"par_mode": par_mode, "mediane": round(float(np.median(maes)), 2),
                                 "pire": round(float(max(maes)), 2)}
         print(json.dumps(out["v1_tous_modes"], ensure_ascii=False, indent=1, default=float))
-    dest = sr.OUT_DIR / f"modes_{args.stem}.json"
+    pref = "v1loho" if (args.v1_modes and args.sans_criteres) else "modes"    # ne pas écraser une lecture complète
+    dest = sr.OUT_DIR / f"{pref}_{args.stem}.json"
     dest.write_text(json.dumps(out, ensure_ascii=False, indent=1, default=float) + "\n")
     print(json.dumps({"partition": part, **({"criteres": out["criteres_mode_dominant"]} if "criteres_mode_dominant" in out else {})},
                      ensure_ascii=False, indent=1, default=float))
