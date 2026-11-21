@@ -1173,6 +1173,21 @@ Idées :
   résoudre par la session locale ou l'orchestrateur. Ces données concernent R3b (session
   locale). Aucun nouveau duel 2027 après le 17/11 : pas de score prospectif.
 
+## Revue Opus 2026-11-21 ~04:00Z (session locale) — code R7 avant le fit
+
+- **1 Dérivation de σ(−ω) fausse** (lse ≫ A_k pour les extrêmes) ; la forme tient avec un choc Gumbel
+  persistant. ACCEPTÉ : on passe à ρ = E_G σ(κG − ω), sur 32 quantiles fixes, toujours sans
+  paramètre. « ρ_k moyen avec q = 1 » redonnerait A′2 : rejeté, comme le propose la revue.
+- **2 ε = 1e-4 coûte environ 850 nats et pousse c.** ACCEPTÉ : ε = 0,02 figé (option (a), sans
+  paramètre). La défection apprise (b) n'est pas retenue (parcimonie).
+- **3 Détection des lignes propres correcte** (164, aucun homonyme). Pris acte.
+- **4 Critères §8.56 illisibles.** CORRIGÉ : `modes.lecture_reports_fit` (c médian, résidus « Aucun »
+  propres/autres), contrôle sur A′2 = 14,9 / +5,55 / −1,30. « c ≥ 22 » déclaré non probant.
+  `omega_g` ignoré par la branche fidélité : la combinaison avec `abst_situee` est à interdire si
+  R3c revient.
+- **5 Verdict « corriger puis lancer ».** FAIT : R7 suspendu le temps du correctif (1bf4100), puis
+  relancé sur le Mac dès la fin de R4.
+
 ## Revue Opus 2026-11-21 ~00:30Z (session locale) — A′1 corrigé, R6, case « Aucun »
 
 - **1 Deux causes distinctes.** ACCEPTÉ.
