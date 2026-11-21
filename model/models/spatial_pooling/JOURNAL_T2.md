@@ -31,7 +31,9 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] [EN COURS MAC, session locale, 21/11 ~16:10Z] **§8.63, réparer la mesure de V1.**
+- [x] [FAIT 21/11 ~17:10Z, §8.64 : V1-LOHO de R8c en ÉCHEC. Moyenne 20,0 contre U 15,8 ;
+  Mélenchon–Macron +16,7, Pécresse +7,2, Zemmour −11,4 ; |z_pos| ≈ 5 partout.]
+  **§8.63, réparer la mesure de V1.**
   - Dépistages MAP de R8c avec Macron–Zemmour, puis Macron–Pécresse retirées (6 inits chacun).
   - Coder le témoin U dans `modes.v1` et la partition par log-densité.
   - Lire le V1-LOHO face à U ; critère figé ≤ U − 2 en moyenne, aucune hypothèse > U + 2.

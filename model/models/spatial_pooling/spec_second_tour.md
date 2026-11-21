@@ -3641,6 +3641,33 @@ Mac.
 - Le critère sur le quantile 5 % de λ n'est pas lisible au MAP, et le mode du prior vaut ≈ 0,2.
 - La densité de Beta(2,8) est nulle en λ = 0 : « λ = 0 emboîte R8c » ne vaut que pour la vraisemblance.
 
+### 8.64 Résultat du V1-LOHO de R8c face au témoin U (21/11 ~17:10Z, Mac, dépistage MAP, 6 inits par hypothèse)
+
+Mode retenu par log-densité (Δlp ≤ 10, un seul mode chaque fois). Fichiers
+`results/v1loho_map_hiercercle_ra_fid_omk_2022_T1-30_sans_*.json`.
+
+| Hypothèse retirée | MAE R8c | U | Écart à U | max \|z_pos\| |
+|---|---|---|---|---|
+| Mélenchon–Macron | 27,2 | 10,5 | +16,7 ✗ | 4,9 |
+| Macron–Zemmour | 10,6 | 22,0 | −11,4 ✓ | 5,0 |
+| Macron–Pécresse | 22,1 | 14,9 | +7,2 ✗ | 4,9 |
+| **Moyenne** | **20,0** | **15,8** | **+4,2** | |
+
+**Verdict au critère figé de §8.63** (moyenne ≤ U − 2, aucune hypothèse > U + 2) : **échec**.
+
+- Le modèle bat largement U là où la structure gauche-droite décide, c'est-à-dire face à Zemmour : U
+  est mauvais (22) parce que les électorats divergent fortement.
+- Il perd là où il faut ordonner finement le centre et la gauche (Mélenchon, Pécresse).
+- Dans les trois fits, la géométrie est forcée (max |z_pos| ≈ 5). Les modes secondaires donnent les
+  mêmes conclusions (Zemmour 9,7-10,6 ; Pécresse 20,6-22,6).
+- Ce sont des points MAP, qui ne valent que comme dépistage.
+
+**Lecture.** La classe spatiale actuelle prédit le sens d'un report jamais sondé quand les deux
+finalistes sont aux deux bords. Elle échoue quand ils sont voisins dans l'ordre (centre et droite
+modérée, gauche et centre). C'est exactement le domaine où la revue recommande une couche
+électorat × finaliste (option ii) avec un τ_report calibré. L'arbitrage (i)/(ii)/(iii) reste ouvert
+pour l'utilisateur.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
