@@ -196,8 +196,10 @@ def lecture_reports_fit(fit, kw, stem, dom) -> dict:
     return out
 
 
-def v1(fit, election=2022, as_of="2022-03-11", hyp="Mélenchon – Macron") -> dict:
+def v1(fit, election=2022, as_of="2022-03-11", hyp=None) -> dict:
     """§8.59 : cellules de Mélenchon–Macron prédites contre la moyenne des notices de mars (30 j)."""
+    import os
+    hyp = hyp or os.environ.get("PRES2027_SANS_HYP") or "Mélenchon – Macron"     # §8.63 : V1-LOHO
     import pandas as pd
     from scipy.special import logsumexp
     from model.models.spatial_pooling.geometry import reports_cellules
@@ -207,22 +209,25 @@ def v1(fit, election=2022, as_of="2022-03-11", hyp="Mélenchon – Macron") -> d
           & (pd.to_datetime(r.date_fin) >= pd.Timestamp(as_of) - pd.Timedelta(days=30))]
     c = fit.candidates
     idx = {E._norm(x): i for i, x in enumerate(c)}
-    ia, ib = c.index(JLM), c.index(EM)
+    sa, sb = [x.strip() for x in hyp.split("–")]
+    fa = next(x for x in c if E._norm(x).endswith(E._norm(sa)))
+    fb = next(x for x in c if E._norm(x).endswith(E._norm(sb)))
+    ia, ib = c.index(fa), c.index(fb)
     A, poids = E._A(fit, fit.w_draws)
     S = A.shape[0]
     lse = logsumexp(A if fit.masque_lse is None else A + np.log(fit.masque_lse)[None, :, None], axis=1)
     res = E.sr.load_results()
     t1 = res[(res.election == election) & (res.tour == "Premier tour")]
     mask = np.zeros(len(c)); mask[[idx[E._norm(x)] for x in t1.candidat if E._norm(x) in idx]] = 1.0
-    s_ab = duel_draws(fit, JLM, EM, 0.0, scrutin=False)
+    s_ab = duel_draws(fit, fa, fb, 0.0, scrutin=False)
     out = {}
     for e, g in r.groupby("electorat_t1"):
-        if E._norm(e) not in idx or e in (JLM, EM):
+        if E._norm(e) not in idx or e in (fa, fb):
             continue
         p = g.pivot_table(index="notice", columns="candidat_t2", values="part")
-        if not {"Mélenchon", "Macron"} <= set(p.columns):
+        if not {sa, sb} <= set(p.columns):
             continue
-        obs_part = float((100 * p["Mélenchon"] / (p["Mélenchon"] + p["Macron"])).mean())
+        obs_part = float((100 * p[sa] / (p[sa] + p[sb])).mean())   # part de a = 1er nom de l'hypothèse
         obs_aucun = float(p["Aucun"].mean()) if "Aucun" in p.columns else None
         th, _ = reports_cellules(jnp.asarray(A), jnp.asarray(mask), jnp.full(S, ia), jnp.full(S, ib),
                                  jnp.full(S, idx[E._norm(e)]), jnp.asarray(fit.kappa_draws),
@@ -234,7 +239,16 @@ def v1(fit, election=2022, as_of="2022-03-11", hyp="Mélenchon – Macron") -> d
                                  lam=(None if getattr(fit, "lam_mix_draws", None) is None
                                       else jnp.asarray(fit.lam_mix_draws)))
         th = np.asarray(th)
-        out[e] = {"partage_modele": round(float((100 * th[:, 0] / (th[:, 0] + th[:, 1])).mean()), 1),
+        thu, _ = reports_cellules(jnp.asarray(A), jnp.asarray(mask), jnp.full(S, ia), jnp.full(S, ib),
+                                  jnp.full(S, idx[E._norm(e)]), jnp.asarray(fit.kappa_draws),
+                                  jnp.asarray(fit.eta_draws[:, ia] - fit.eta_draws[:, ib]), jnp.asarray(lse),
+                                  jnp.asarray(fit.omega_draws), jnp.asarray(s_ab), poids, n_newton=8,
+                                  omega_g=E._omega_g(fit),
+                                  omega_k=(None if getattr(fit, "omega_k_draws", None) is None
+                                           else jnp.asarray(fit.omega_k_draws)), tau=0.0)   # §8.63 témoin U
+        thu = np.asarray(thu)
+        out[e] = {"partage_U": round(float((100 * thu[:, 0] / (thu[:, 0] + thu[:, 1])).mean()), 1),
+                  "partage_modele": round(float((100 * th[:, 0] / (th[:, 0] + th[:, 1])).mean()), 1),
                   "partage_mesure": round(obs_part, 1),
                   "aucun_modele": round(float(100 * th[:, 2].mean()), 1),
                   "aucun_mesure": None if obs_aucun is None else round(obs_aucun, 1)}
@@ -245,7 +259,8 @@ def v1(fit, election=2022, as_of="2022-03-11", hyp="Mélenchon – Macron") -> d
         ecart = lambda d: (None if not d else round(d["partage_modele"] - d["partage_mesure"], 1))  # noqa: E731
         # §8.61 : témoin trivial 50/50 et critère révisé (≤ 12 ET ≤ 50/50 − 1,5)
         mae_5050 = float(np.mean([abs(50.0 - v["partage_mesure"]) for v in out.values()]))
-        out["_criteres"] = {"mae_partages": round(mae, 2), "mae_5050": round(mae_5050, 2),
+        mae_U = float(np.mean([abs(v["partage_U"] - v["partage_mesure"]) for v in out.values()]))
+        out["_criteres"] = {"mae_partages": round(mae, 2), "mae_5050": round(mae_5050, 2), "mae_U": round(mae_U, 2), "loho_ok_U": mae <= mae_U - 2.0,
                             "temoin_structurel": 25.9,
                             "mae_ok": mae <= 12.0 and mae <= mae_5050 - 1.5,
                             "LP_ecart": ecart(lpd), "LP_ok": lpd != {} and abs(ecart(lpd)) <= 10,
@@ -327,6 +342,17 @@ def main() -> None:
             f, _, _ = E.reconstruire(args.variante, args.stem, args.coupure, chaines=g)
             c = v1(f).get("_criteres", {})
             par_mode.append({"chaines": g, **c})
+        # §8.63 : modes retenus par log-densité (Δlp ≤ 10 du meilleur ; pseudo-chaînes MAP : SE nul)
+        lpmax = max(l["lp"] for l in lignes)
+        for m in par_mode:
+            lp_m = max(l["lp"] for l in lignes if l["chaine"] in m["chaines"])
+            zp = max(float(np.abs(np.load(sr.CHAINES_DIR / f"{args.stem}_c{k}.npz")["s__z_pos"]).mean(axis=(0, 1)).max())
+                     for k in m["chaines"])
+            m.update({"lp_max": lp_m, "retenu_lp": lp_m >= lpmax - 10.0, "max_abs_z_pos": round(zp, 2),
+                      "z_pos_force": zp > 3.0})
+        ret = [m for m in par_mode if m["retenu_lp"]]
+        out["v1_modes_retenus_lp"] = [{k: m.get(k) for k in ("chaines", "mae_partages", "mae_U", "loho_ok_U",
+                                                            "max_abs_z_pos")} for m in ret]
         maes = [m["mae_partages"] for m in par_mode if "mae_partages" in m]
         out["v1_tous_modes"] = {"par_mode": par_mode, "mediane": round(float(np.median(maes)), 2),
                                 "pire": round(float(max(maes)), 2)}

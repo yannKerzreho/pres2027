@@ -332,7 +332,7 @@ def duel_shares_poids(A_a, A_b, kappa, eta_a, eta_b, lse, omega, poids, omega_g=
 
 
 def reports_cellules(A, champ_mask, ia, ib, k_idx, kappa, eta_diff, lse, omega, s_ab, poids, n_newton=4,
-                     omega_g=None, fidelite=False, omega_k=None, lam=None):
+                     omega_g=None, fidelite=False, omega_k=None, lam=None, tau=None):
     """Cellules (a, b, aucun) de l'électorat T1 `k_idx` (spec §8.38, §8.44.4),
     différentiables : δ par `n_newton` pas de Newton depuis `eta_diff` pour que
     l'agrégat des électorats du champ redonne `s_ab`.
@@ -363,6 +363,12 @@ def reports_cellules(A, champ_mask, ia, ib, k_idx, kappa, eta_diff, lse, omega, 
         G = jnp.clip(jnp.einsum("rng,rg,rg,g->rn", p, rho, q, poids) / jnp.clip(pr, 1e-12, None), 1e-6, 1 - 1e-6)
     Rk = pr / jnp.clip(E, 1e-12, None)
     lG = jnp.log(G) - jnp.log1p(-G)
+    if tau is not None:
+        # §8.63 : témoin U (τ = 0) ou τ_report — les électorats non finalistes reçoivent τ·lG,
+        # ceux des finalistes gardent leur logit géométrique ; δ réimpose l'agrégat.
+        j = jnp.arange(A.shape[1])[None, :]
+        fin = (j == jnp.asarray(ia)[:, None]) | (j == jnp.asarray(ib)[:, None])
+        lG = jnp.where(fin, lG, tau * lG)
     wgt = E * Rk * cm
     wgt = wgt / jnp.clip(wgt.sum(1, keepdims=True), 1e-12, None)
     d = jnp.asarray(eta_diff)

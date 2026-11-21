@@ -145,3 +145,20 @@ def test_modele_initialise_avec_lambda():
     assert np.isfinite(float(info.potential_fn(info.param_info.z)))
     tr = handlers.trace(handlers.seed(spatial_pooling_model_ou, 0)).get_trace(**b["kwargs"])
     assert 0.0 < float(tr["lam_mix"]["value"]) < 1.0
+
+
+def test_temoin_U_tau_nul():
+    """§8.63 : τ = 0 ⇒ tous les électorats non finalistes au même partage ; τ = 1 ⇒ inchangé."""
+    from model.models.spatial_pooling.geometry import W, reports_cellules
+    rng = np.random.default_rng(4)
+    R, N, G = 3, 5, W.shape[0]
+    A = jnp.tile(jnp.asarray(rng.normal(size=(1, N, G))), (R, 1, 1))   # même situation, électorats 2-4
+    lse = jax.nn.logsumexp(A, axis=1)
+    ia, ib, k = jnp.zeros(R, int), jnp.ones(R, int), jnp.array([2, 3, 4])
+    args = (A, jnp.ones(N), ia, ib, k, 0.8, jnp.zeros(R), lse, -2.5, jnp.full(R, 0.6), W)
+    c0, _ = reports_cellules(*args)
+    assert np.allclose(c0, reports_cellules(*args, tau=1.0)[0], atol=1e-6)
+    cu, _ = reports_cellules(*args, tau=0.0)
+    cu = np.asarray(cu)
+    part = cu[:, 0] / (cu[:, 0] + cu[:, 1])
+    assert np.allclose(part, part[0], atol=1e-5)
