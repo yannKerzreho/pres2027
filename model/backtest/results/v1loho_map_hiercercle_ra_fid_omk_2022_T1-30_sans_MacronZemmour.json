@@ -320,8 +320,9 @@
    "chaines": [
     3
    ],
-   "mae_partages": 10.64,
-   "mae_U": 22.0,
+   "mae_partages": 9.73,
+   "mae_U": 21.73,
+   "mae_Ufid": 18.13,
    "loho_ok_U": true,
    "max_abs_z_pos": 5.02
   }
@@ -332,15 +333,17 @@
     "chaines": [
      3
     ],
-    "mae_partages": 10.64,
-    "mae_5050": 31.04,
-    "mae_U": 22.0,
+    "mae_partages": 9.73,
+    "mae_5050": 28.6,
+    "mae_U": 21.73,
     "loho_ok_U": true,
+    "mae_Ufid": 18.13,
+    "loho_ok_Ufid": true,
     "temoin_structurel": 25.9,
     "mae_ok": true,
     "LP_ecart": 3.1,
     "LP_ok": true,
-    "Zemmour_ecart": 16.1,
+    "Zemmour_ecart": null,
     "Zemmour_ok": false,
     "lp_max": 12444.4,
     "retenu_lp": true,
@@ -351,15 +354,17 @@
     "chaines": [
      4
     ],
-    "mae_partages": 10.61,
-    "mae_5050": 31.04,
-    "mae_U": 21.64,
+    "mae_partages": 8.18,
+    "mae_5050": 28.6,
+    "mae_U": 22.53,
     "loho_ok_U": true,
+    "mae_Ufid": 20.13,
+    "loho_ok_Ufid": true,
     "temoin_structurel": 25.9,
     "mae_ok": true,
     "LP_ecart": -7.5,
     "LP_ok": true,
-    "Zemmour_ecart": 25.2,
+    "Zemmour_ecart": null,
     "Zemmour_ok": false,
     "lp_max": 12149.0,
     "retenu_lp": false,
@@ -370,15 +375,17 @@
     "chaines": [
      1
     ],
-    "mae_partages": 10.3,
-    "mae_5050": 31.04,
-    "mae_U": 22.54,
+    "mae_partages": 8.4,
+    "mae_5050": 28.6,
+    "mae_U": 23.2,
     "loho_ok_U": true,
+    "mae_Ufid": 19.47,
+    "loho_ok_Ufid": true,
     "temoin_structurel": 25.9,
     "mae_ok": true,
     "LP_ecart": -3.9,
     "LP_ok": true,
-    "Zemmour_ecart": 21.7,
+    "Zemmour_ecart": null,
     "Zemmour_ok": false,
     "lp_max": 12185.8,
     "retenu_lp": false,
@@ -389,15 +396,17 @@
     "chaines": [
      2
     ],
-    "mae_partages": 9.81,
-    "mae_5050": 31.04,
-    "mae_U": 22.11,
+    "mae_partages": 8.62,
+    "mae_5050": 28.6,
+    "mae_U": 22.07,
     "loho_ok_U": true,
+    "mae_Ufid": 18.33,
+    "loho_ok_Ufid": true,
     "temoin_structurel": 25.9,
     "mae_ok": true,
     "LP_ecart": 2.0,
     "LP_ok": true,
-    "Zemmour_ecart": 17.0,
+    "Zemmour_ecart": null,
     "Zemmour_ok": false,
     "lp_max": 12366.0,
     "retenu_lp": false,
@@ -409,15 +418,17 @@
      5,
      0
     ],
-    "mae_partages": 9.67,
-    "mae_5050": 31.04,
-    "mae_U": 22.03,
+    "mae_partages": 8.85,
+    "mae_5050": 28.6,
+    "mae_U": 22.07,
     "loho_ok_U": true,
+    "mae_Ufid": 18.53,
+    "loho_ok_Ufid": true,
     "temoin_structurel": 25.9,
     "mae_ok": true,
     "LP_ecart": 2.5,
     "LP_ok": true,
-    "Zemmour_ecart": 14.6,
+    "Zemmour_ecart": null,
     "Zemmour_ok": false,
     "lp_max": 12412.6,
     "retenu_lp": false,
@@ -425,7 +436,12 @@
     "z_pos_force": true
    }
   ],
-  "mediane": 10.3,
-  "pire": 10.64
+  "mediane": 8.62,
+  "pire": 9.73
+ },
+ "provenance": {
+  "lse_officiel": true,
+  "plateforme": "macOS-14.5-arm64-arm-64bit",
+  "sans_hyp": "Macron – Zemmour"
  }
 }

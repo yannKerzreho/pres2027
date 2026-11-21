@@ -376,8 +376,12 @@ def reports_cellules(A, champ_mask, ia, ib, k_idx, kappa, eta_diff, lse, omega, 
         # (part 98/2 fixe, expression ρ_f), non décalés par δ.
         j = jnp.arange(A.shape[1])[None, :]
         fa_, fb_ = j == jnp.asarray(ia)[:, None], j == jnp.asarray(ib)[:, None]
-        okn = jnp.asarray(omega_k) if omega_k is not None else jnp.full(A.shape[1], jnp.asarray(omega))
-        okn = okn[None, :] if okn.ndim == 1 else okn
+        if omega_k is not None:
+            okn = jnp.asarray(omega_k)
+            okn = okn[None, :] if okn.ndim == 1 else okn
+        else:
+            om0 = jnp.asarray(omega)
+            okn = (om0[:, None] if om0.ndim else om0) * jnp.ones((1, A.shape[1]))
         kq2 = jnp.asarray(kappa)
         kq2 = kq2[:, None, None] if kq2.ndim else kq2
         u_ = (jnp.arange(32) + 0.5) / 32

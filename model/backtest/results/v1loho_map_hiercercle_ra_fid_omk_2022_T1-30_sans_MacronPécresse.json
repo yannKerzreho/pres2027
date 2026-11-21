@@ -318,6 +318,7 @@
    ],
    "mae_partages": 22.08,
    "mae_U": 14.9,
+   "mae_Ufid": 13.9,
    "loho_ok_U": false,
    "max_abs_z_pos": 4.9
   }
@@ -332,6 +333,8 @@
     "mae_5050": 15.2,
     "mae_U": 14.9,
     "loho_ok_U": false,
+    "mae_Ufid": 13.9,
+    "loho_ok_Ufid": false,
     "temoin_structurel": 25.9,
     "mae_ok": false,
     "LP_ecart": -2.3,
@@ -354,6 +357,8 @@
     "mae_5050": 15.2,
     "mae_U": 15.17,
     "loho_ok_U": false,
+    "mae_Ufid": 13.83,
+    "loho_ok_Ufid": false,
     "temoin_structurel": 25.9,
     "mae_ok": false,
     "LP_ecart": -4.5,
@@ -373,6 +378,8 @@
     "mae_5050": 15.2,
     "mae_U": 15.0,
     "loho_ok_U": false,
+    "mae_Ufid": 13.03,
+    "loho_ok_Ufid": false,
     "temoin_structurel": 25.9,
     "mae_ok": false,
     "LP_ecart": -1.7,
@@ -387,5 +394,10 @@
   ],
   "mediane": 22.08,
   "pire": 22.58
+ },
+ "provenance": {
+  "lse_officiel": true,
+  "plateforme": "macOS-14.5-arm64-arm-64bit",
+  "sans_hyp": "Macron – Pécresse"
  }
 }

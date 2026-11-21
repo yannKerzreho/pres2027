@@ -322,6 +322,7 @@
    ],
    "mae_partages": 27.17,
    "mae_U": 10.5,
+   "mae_Ufid": 10.77,
    "loho_ok_U": false,
    "max_abs_z_pos": 4.88
   }
@@ -336,6 +337,8 @@
     "mae_5050": 14.63,
     "mae_U": 10.5,
     "loho_ok_U": false,
+    "mae_Ufid": 10.77,
+    "loho_ok_Ufid": false,
     "temoin_structurel": 25.9,
     "mae_ok": false,
     "LP_ecart": -17.2,
@@ -355,6 +358,8 @@
     "mae_5050": 14.63,
     "mae_U": 15.57,
     "loho_ok_U": false,
+    "mae_Ufid": 17.97,
+    "loho_ok_Ufid": false,
     "temoin_structurel": 25.9,
     "mae_ok": false,
     "LP_ecart": -42.1,
@@ -374,6 +379,8 @@
     "mae_5050": 14.63,
     "mae_U": 12.03,
     "loho_ok_U": false,
+    "mae_Ufid": 10.17,
+    "loho_ok_Ufid": false,
     "temoin_structurel": 25.9,
     "mae_ok": false,
     "LP_ecart": -9.6,
@@ -394,6 +401,8 @@
     "mae_5050": 14.63,
     "mae_U": 12.3,
     "loho_ok_U": false,
+    "mae_Ufid": 10.33,
+    "loho_ok_Ufid": false,
     "temoin_structurel": 25.9,
     "mae_ok": false,
     "LP_ecart": -12.4,
@@ -413,6 +422,8 @@
     "mae_5050": 14.63,
     "mae_U": 12.63,
     "loho_ok_U": false,
+    "mae_Ufid": 10.17,
+    "loho_ok_Ufid": false,
     "temoin_structurel": 25.9,
     "mae_ok": false,
     "LP_ecart": -1.1,
@@ -427,5 +438,10 @@
   ],
   "mediane": 19.28,
   "pire": 27.17
+ },
+ "provenance": {
+  "lse_officiel": true,
+  "plateforme": "macOS-14.5-arm64-arm-64bit",
+  "sans_hyp": "Mélenchon – Macron"
  }
 }
