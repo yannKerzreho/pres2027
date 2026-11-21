@@ -908,6 +908,15 @@ conservé pour l'historique.
    IC90 d'environ ±4-6 pt ; ne touche pas les duels sondés. Choix de
    présentation (honnêteté vs précision affichée) : à trancher.
 
+- **(21/11, §8.61) Option stratégique pour les reports.** Les reports par électorat dans un duel jamais
+  sondé ne sont pas contraints par les données. Trois options :
+  - (i) continuer l'empilement (λ, puis la gauche identifiée par 2017) ;
+  - (ii) un modèle unique avec une couche de reports non spatiale (effets électorat × finaliste
+    rétrécis vers le spatial) ;
+  - (iii) un modèle de transfert séparé (on renonce à l'unicité).
+
+  En attendant, R9 (λ) est dépisté.
+
 ## Faits établis (ne pas re-mesurer)
 
 - Géométrie T1 seule : MAE 6,3 pt sur les 11 paires 2027 ; abstention (κ, ω)
@@ -1098,6 +1107,28 @@ conservé pour l'historique.
   instables (R̂ 7,5) et s_ab +0,7 pt ⇒ phase 2 à faire.
 
 
+
+## Revue Opus 2026-11-21 ~12:30Z (session locale) — échec V1 de R8c : intégration point par point
+
+1. **La cible V1 ne compte que 2 notices** (BVA 8-9 mars ne publie que l'électorat de Macron).
+   Hidalgo et Roussel reposent sur une seule notice, d'où un plancher de bruit d'environ 6 pt.
+   **Retenu.** Le §8.61 le consigne.
+2. **Le témoin de 35,8 ne correspondait pas à la cible.** Recalculé à 0 fit, il vaut 25,9 (17,8
+   pour « Aucun ») ; un 50/50 constant fait 14,6. R8c (27,2) ne bat ni l'un ni l'autre.
+   **Retenu.** Critère révisé et figé : MAE ≤ 12 ET ≤ 13,1, lu sur tous les modes.
+   `modes.py --v1-modes` le calcule (5fd0ce0).
+3. **Diagnostic : l'ordre interne de la gauche n'est pas identifié** (Hidalgo bascule selon le mode,
+   σ ≈ 0,03 et ω_k ≈ −9 pour Jadot et Roussel), et les électeurs sont quasi déterministes.
+   La quadrature n'est pas en cause. **Retenu.**
+4. **Mélange individuel λ, le correctif le plus économe** (1 paramètre) : 27,2 → 19,1 à λ = 0,3 à
+   paramètres fixés. **Retenu** comme R9 : spécifié et figé en §8.61, codé derrière le drapeau
+   `melange_lambda` (5fd0ce0), λ = 0 redonne R8c (test). Dépistage MAP en cours sur le Mac, sur les
+   données complètes et sur V1.
+5. **L'identification de la gauche par le modèle joint avec 2017, plus λ, donnerait environ 11,2.**
+   **Différé.** On attend la lecture de R9 seul, par parcimonie : R3b reste dormant.
+6. **Recommandation de fond : une couche de reports non spatiale explicite.** **Non tranché.**
+   Choix stratégique pour l'utilisateur ; voir l'arbitrage (i)/(ii)/(iii) de §8.61 et la section
+   « Arbitrages ouverts ».
 
 ## Revue Opus 2026-11-21 ~12:15Z (routine) — R8, R8c, dépistage MAP, V1, V2 : intégration point par point
 
