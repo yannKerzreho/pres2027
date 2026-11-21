@@ -3346,6 +3346,54 @@ parcimonieux. Mais σ_LP/σ_M y vaut encore 3,1 au MAP : le mécanisme non créd
 duels jamais sondés impliquant Le Pen. Il est acceptable pour les duels SONDÉS seulement, pas comme
 modèle cible.
 
+### 8.58 (R8) Abstention par électorat ω_k (revue locale du 21/11 08:00Z, piste A ; avant code)
+
+**Idée.** Le type latent d'un électeur, ce n'est pas seulement sa position v : c'est aussi son choix T1
+k. L'abstention au T2 dépend de k (cf. §8.57 : R² = 0,84 avec la cellule électorat × duel, 0,36
+avec l'électorat seul). On donne donc à chaque électorat un niveau d'option extérieure :
+
+$$\omega_k=\omega+s_\omega z_k,\qquad z_k\sim\mathcal N(0,1),\ s_\omega\sim\mathrm{HalfNormal}(1).$$
+
+Il est hiérarchique : seuls les électorats présents dans les reports s'écartent de ω, les autres sont
+rétrécis vers ω.
+
+**Modèle, cohérent T2 / reports.** Un électeur situé en v est de type k avec la probabilité
+$p_k(v)=\pi_k(v)/\sum_{j\in C}\pi_j(v)$ (champ C, valeur inclusive officielle §8.49). Pour un type k :
+
+$$\rho_k(v)=\sigma\big(\log(e^{\kappa A_a}+e^{\kappa A_b})-\omega_k-\kappa\,\mathrm{lse}(v)\big).$$
+
+- **Duels** : $g_{ab}=\int\sum_kp_k\rho_kq\,dW\Big/\int\sum_kp_k\rho_k\,dW$. Avec des $\omega_k$ tous
+  égaux, on retrouve exactement la forme actuelle.
+- **Reports** : la cellule de l'électorat k utilise $\rho_k$. Le Newton sur δ agrège les électorats
+  du champ, chacun avec son propre $\rho_j$.
+- **Lignes propres, avec R7** : $\rho_{fid}=\mathbb E_G\sigma(\kappa G-\omega_k)$.
+
+**Coût.** N + 1 paramètres, rétrécis par la hiérarchie : seuls les 10 à 14 électorats des reports sont
+identifiés. Tenseurs (·, N, G) déjà présents dans le calcul. Variante `hier_ra_fid_omk` (segment, R7
+inclus, `--lse-officiel`, B = 100).
+
+**Protocole.**
+
+1. Dépistage MAP (§8.57) sur 6 initialisations dispersées. On ne lance NUTS que si le MAP passe les
+   critères 2 et 3b.
+2. NUTS, 8 chaînes, sur le Mac.
+3. Si le critère 2 passe, V1 : refit sans les lignes Mélenchon–Macron.
+
+**Critères, figés avant tout fit.**
+
+- « Aucun » : MAE ≤ 3,75 (cible post-T1) ;
+- MAE des 4 partages ≤ 5 (diagnostic, §8.57) ;
+- critère 2 de §8.50 : partage Mélenchon à moins de 5 pt ;
+- σ_LP/σ_M < 2 ;
+- 3b : monotonie ≥ 90 % des tirages ;
+- stabilité (§8.50) ;
+- T1 ≤ 3,1 ;
+- V1 (§8.57) ;
+- s_ω : quantile 5 % > 0,2. Sinon, ω_k n'est pas identifié et R8 se réduit à R7.
+
+**Parcimonie.** Si R7 seul passe les mêmes critères, R7 prime (R8 n'est jugé que sur ce que R7 ne fait
+pas).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
