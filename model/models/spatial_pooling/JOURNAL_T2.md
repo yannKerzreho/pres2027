@@ -31,7 +31,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] **DEMANDE VM n° 4 (session locale, 2026-11-21 ~10:00Z) — PRIORITAIRE après R6** : R8c, cercle +
+- [ ] [EN COURS VM (début 2026-11-21 09:55Z, routine : 4 chaînes CPU, ~10 h attendues)] **DEMANDE VM n° 4 (session locale, 2026-11-21 ~10:00Z) — PRIORITAIRE après R6** : R8c, cercle +
       fidélité révélée + abstention par électorat (spec §8.56, §8.58 ; dépistage MAP réussi sur les
       critères 2 et 3b, cf. §8.58 « Résultat du dépistage MAP de R8c »). Code sur la branche (02cc3ff
       et suivants).
