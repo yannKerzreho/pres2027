@@ -316,6 +316,7 @@
    ],
    "mae_partages": 9.33,
    "mae_U": 10.83,
+   "mae_Ufid": 10.8,
    "loho_ok_U": false,
    "max_abs_z_pos": 3.94
   }
@@ -330,6 +331,8 @@
     "mae_5050": 14.63,
     "mae_U": 10.83,
     "loho_ok_U": false,
+    "mae_Ufid": 10.8,
+    "loho_ok_Ufid": false,
     "temoin_structurel": 25.9,
     "mae_ok": true,
     "LP_ecart": -10.4,
@@ -353,6 +356,8 @@
     "mae_5050": 14.63,
     "mae_U": 11.17,
     "loho_ok_U": false,
+    "mae_Ufid": 10.17,
+    "loho_ok_Ufid": false,
     "temoin_structurel": 25.9,
     "mae_ok": false,
     "LP_ecart": -38.7,

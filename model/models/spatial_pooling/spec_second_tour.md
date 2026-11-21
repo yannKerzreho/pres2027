@@ -3772,6 +3772,48 @@ sur son propre fit qui l'exclut), puis évalué sur h.
 - Si les écarts de log-densité entre initialisations bougent de plus de 10 nats après prolongation, ce
   sont des non-convergences et non des modes.
 
+### 8.68 Échelle de parcimonie au V1-LOHO (§8.67 b) — résultat (21/11 ~22:30Z, Mac, dépistage MAP, 6 inits × 3 hypothèses × 4 variantes)
+
+MAE du partage du mode retenu (meilleure log-densité, Δlp ≤ 10) ; entre parenthèses, le témoin U_fid du
+même point. Fichiers `results/v1loho_map_*_2022_T1-30_sans_*.json`.
+
+| Variante | Mélenchon–Macron | Macron–Zemmour | Macron–Pécresse | Moyenne (U_fid) | Δ |
+|---|---|---|---|---|---|
+| R8c `hiercercle_ra_fid_omk` (cercle + R7 + ω_k) | 27,2 (10,8) | 9,7 (18,1) | 22,1 (13,9) | 19,7 (14,3) | +5,4 |
+| `hiercercle_ra_fid` (cercle + R7) | 10,6 (10,2) | 8,8 (17,4) | 24,3 (14,6) | **14,6 (14,1)** | +0,5 |
+| `hier_ra_fid_omk` (segment + R7 + ω_k) | 34,4 (10,3) | 7,1 (19,9) | 18,2 (14,9) | 19,9 (15,0) | +4,9 |
+| `hier_ra` (segment seul) | 9,3 (10,8) | 6,1 (19,1) | 24,8 (16,8) | **13,4 (15,6)** | −2,2 |
+
+**Critère figé** (moyenne ≤ U_fid − 2, aucune hypothèse > U_fid + 3) : **aucune variante ne le tient.**
+
+- Macron–Pécresse dépasse U_fid de 3,3 à 9,7 partout.
+- `hier_ra` tient la moyenne, de justesse (−2,2), mais pas Pécresse (+8,0).
+
+**Règle de retrait (partage) :**
+
+- **Retirer ω_k fait GAGNER 5,1 pt** sur le cercle (19,7 → 14,6) et 6,5 pt sur le segment (19,9 →
+  13,4, mais sans R7 non plus).
+- La règle (« retrait si son coût < 2 pt ») désigne donc **ω_k au retrait**, sous réserve de la case
+  « Aucun » : elle n'est pas encore lue par mode, à coder avant de conclure.
+- Le gain vient surtout de Mélenchon–Macron (27,2 → 10,6), conformément aux pathologies de ω_k
+  (s_ω ≈ 3, ω_k de Roussel et Jadot ≈ −9).
+
+**Cercle ou segment.**
+
+- Au V1, le segment seul (13,4) et le cercle + R7 (14,6) sont à 1,2 pt, soit dans le bruit (plancher
+  ≈ 3,3) et entre points MAP.
+- La parcimonie ne tranche donc pas par V1 ; elle tranche par la plausibilité.
+  - Segment : σ_LP/σ_M de 3,1 à 3,7, 21 à 33 % de votants mal classés.
+  - Cercle : de 1,0 à 1,6, et 0 %.
+- **Le cercle + R7 sans ω_k devient la variante de référence candidate.**
+
+**Avertissements.**
+
+- Ce sont des points MAP (Adam, 5 000 pas, non prolongés).
+- Les modes non retenus varient beaucoup : Pécresse fait 7,1 pour le mode c5 du cercle + R7, contre
+  24,3 retenu.
+- Aucun verdict de stabilité.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

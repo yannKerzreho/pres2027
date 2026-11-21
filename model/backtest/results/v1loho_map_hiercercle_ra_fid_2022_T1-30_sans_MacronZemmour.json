@@ -1,0 +1,447 @@
+{
+ "spec": "spec_second_tour §8.50-8.51",
+ "variante": "hiercercle_ra_fid",
+ "stem": "map_hiercercle_ra_fid_2022_T1-30_sans_MacronZemmour",
+ "election": 2022,
+ "coupure": "T1-30",
+ "B_quad": 100,
+ "chaines": [
+  {
+   "chaine": 0,
+   "lp": 12256.7,
+   "partages": {
+    "Jean-Luc Mélenchon": [
+     61.1,
+     63.0
+    ],
+    "Valérie Pécresse": [
+     66.0,
+     65.0
+    ],
+    "Yannick Jadot": [
+     86.4,
+     87.5
+    ],
+    "Éric Zemmour": [
+     17.5,
+     9.4
+    ]
+   },
+   "aucun": {
+    "Jean-Luc Mélenchon": [
+     40.1,
+     43.6
+    ],
+    "Valérie Pécresse": [
+     15.2,
+     29.9
+    ],
+    "Yannick Jadot": [
+     36.5,
+     33.3
+    ],
+    "Éric Zemmour": [
+     14.9,
+     12.7
+    ]
+   },
+   "sigma_melenchon": 0.1388,
+   "sigma_lp_sur_macron": 0.882,
+   "nu": null,
+   "log_nu_sd": null,
+   "nu_q95": null,
+   "t1_mae": 2.997,
+   "t1_couv": "0/12",
+   "monotonie_gauche": NaN
+  },
+  {
+   "chaine": 1,
+   "lp": 12099.1,
+   "partages": {
+    "Jean-Luc Mélenchon": [
+     59.0,
+     63.0
+    ],
+    "Valérie Pécresse": [
+     71.9,
+     65.0
+    ],
+    "Yannick Jadot": [
+     83.2,
+     87.5
+    ],
+    "Éric Zemmour": [
+     18.2,
+     9.4
+    ]
+   },
+   "aucun": {
+    "Jean-Luc Mélenchon": [
+     39.5,
+     43.6
+    ],
+    "Valérie Pécresse": [
+     15.1,
+     29.9
+    ],
+    "Yannick Jadot": [
+     36.3,
+     33.3
+    ],
+    "Éric Zemmour": [
+     16.4,
+     12.7
+    ]
+   },
+   "sigma_melenchon": 0.0928,
+   "sigma_lp_sur_macron": 0.558,
+   "nu": null,
+   "log_nu_sd": null,
+   "nu_q95": null,
+   "t1_mae": 3.027,
+   "t1_couv": "0/12",
+   "monotonie_gauche": NaN
+  },
+  {
+   "chaine": 2,
+   "lp": 12230.5,
+   "partages": {
+    "Jean-Luc Mélenchon": [
+     60.9,
+     63.0
+    ],
+    "Valérie Pécresse": [
+     66.5,
+     65.0
+    ],
+    "Yannick Jadot": [
+     86.1,
+     87.5
+    ],
+    "Éric Zemmour": [
+     18.3,
+     9.4
+    ]
+   },
+   "aucun": {
+    "Jean-Luc Mélenchon": [
+     38.5,
+     43.6
+    ],
+    "Valérie Pécresse": [
+     15.2,
+     29.9
+    ],
+    "Yannick Jadot": [
+     35.5,
+     33.3
+    ],
+    "Éric Zemmour": [
+     15.2,
+     12.7
+    ]
+   },
+   "sigma_melenchon": 0.1181,
+   "sigma_lp_sur_macron": 0.685,
+   "nu": null,
+   "log_nu_sd": null,
+   "nu_q95": null,
+   "t1_mae": 3.017,
+   "t1_couv": "0/12",
+   "monotonie_gauche": NaN
+  },
+  {
+   "chaine": 3,
+   "lp": 12328.5,
+   "partages": {
+    "Jean-Luc Mélenchon": [
+     64.6,
+     63.0
+    ],
+    "Valérie Pécresse": [
+     66.5,
+     65.0
+    ],
+    "Yannick Jadot": [
+     86.6,
+     87.5
+    ],
+    "Éric Zemmour": [
+     17.5,
+     9.4
+    ]
+   },
+   "aucun": {
+    "Jean-Luc Mélenchon": [
+     42.4,
+     43.6
+    ],
+    "Valérie Pécresse": [
+     14.9,
+     29.9
+    ],
+    "Yannick Jadot": [
+     34.5,
+     33.3
+    ],
+    "Éric Zemmour": [
+     14.5,
+     12.7
+    ]
+   },
+   "sigma_melenchon": 0.1528,
+   "sigma_lp_sur_macron": 1.398,
+   "nu": null,
+   "log_nu_sd": null,
+   "nu_q95": null,
+   "t1_mae": 2.917,
+   "t1_couv": "0/12",
+   "monotonie_gauche": NaN
+  },
+  {
+   "chaine": 4,
+   "lp": 12110.7,
+   "partages": {
+    "Jean-Luc Mélenchon": [
+     58.6,
+     63.0
+    ],
+    "Valérie Pécresse": [
+     76.2,
+     65.0
+    ],
+    "Yannick Jadot": [
+     84.9,
+     87.5
+    ],
+    "Éric Zemmour": [
+     17.8,
+     9.4
+    ]
+   },
+   "aucun": {
+    "Jean-Luc Mélenchon": [
+     36.7,
+     43.6
+    ],
+    "Valérie Pécresse": [
+     13.9,
+     29.9
+    ],
+    "Yannick Jadot": [
+     35.3,
+     33.3
+    ],
+    "Éric Zemmour": [
+     15.3,
+     12.7
+    ]
+   },
+   "sigma_melenchon": 0.0847,
+   "sigma_lp_sur_macron": 0.557,
+   "nu": null,
+   "log_nu_sd": null,
+   "nu_q95": null,
+   "t1_mae": 3.013,
+   "t1_couv": "0/12",
+   "monotonie_gauche": NaN
+  },
+  {
+   "chaine": 5,
+   "lp": 12219.6,
+   "partages": {
+    "Jean-Luc Mélenchon": [
+     63.3,
+     63.0
+    ],
+    "Valérie Pécresse": [
+     64.0,
+     65.0
+    ],
+    "Yannick Jadot": [
+     86.6,
+     87.5
+    ],
+    "Éric Zemmour": [
+     18.3,
+     9.4
+    ]
+   },
+   "aucun": {
+    "Jean-Luc Mélenchon": [
+     41.8,
+     43.6
+    ],
+    "Valérie Pécresse": [
+     16.0,
+     29.9
+    ],
+    "Yannick Jadot": [
+     35.8,
+     33.3
+    ],
+    "Éric Zemmour": [
+     15.3,
+     12.7
+    ]
+   },
+   "sigma_melenchon": 0.1907,
+   "sigma_lp_sur_macron": 1.33,
+   "nu": null,
+   "log_nu_sd": null,
+   "nu_q95": null,
+   "t1_mae": 3.03,
+   "t1_couv": "0/12",
+   "monotonie_gauche": NaN
+  }
+ ],
+ "partition": {
+  "dominant": [
+   3
+  ],
+  "autres": [
+   [
+    4,
+    1
+   ],
+   [
+    2
+   ],
+   [
+    0
+   ],
+   [
+    5
+   ]
+  ]
+ },
+ "v1_modes_retenus_lp": [
+  {
+   "chaines": [
+    3
+   ],
+   "mae_partages": 8.8,
+   "mae_U": 21.27,
+   "mae_Ufid": 17.4,
+   "loho_ok_U": true,
+   "max_abs_z_pos": 4.24
+  }
+ ],
+ "v1_tous_modes": {
+  "par_mode": [
+   {
+    "chaines": [
+     3
+    ],
+    "mae_partages": 8.8,
+    "mae_5050": 28.6,
+    "mae_U": 21.27,
+    "loho_ok_U": true,
+    "mae_Ufid": 17.4,
+    "loho_ok_Ufid": true,
+    "temoin_structurel": 25.9,
+    "mae_ok": true,
+    "LP_ecart": 3.5,
+    "LP_ok": true,
+    "Zemmour_ecart": null,
+    "Zemmour_ok": false,
+    "lp_max": 12328.5,
+    "retenu_lp": true,
+    "max_abs_z_pos": 4.24,
+    "z_pos_force": true
+   },
+   {
+    "chaines": [
+     4,
+     1
+    ],
+    "mae_partages": 11.93,
+    "mae_5050": 28.6,
+    "mae_U": 21.67,
+    "loho_ok_U": true,
+    "mae_Ufid": 18.4,
+    "loho_ok_Ufid": true,
+    "temoin_structurel": 25.9,
+    "mae_ok": true,
+    "LP_ecart": -6.8,
+    "LP_ok": true,
+    "Zemmour_ecart": null,
+    "Zemmour_ok": false,
+    "lp_max": 12110.7,
+    "retenu_lp": false,
+    "max_abs_z_pos": 4.07,
+    "z_pos_force": true
+   },
+   {
+    "chaines": [
+     2
+    ],
+    "mae_partages": 7.35,
+    "mae_5050": 28.6,
+    "mae_U": 22.2,
+    "loho_ok_U": true,
+    "mae_Ufid": 18.07,
+    "loho_ok_Ufid": true,
+    "temoin_structurel": 25.9,
+    "mae_ok": true,
+    "LP_ecart": 4.2,
+    "LP_ok": true,
+    "Zemmour_ecart": null,
+    "Zemmour_ok": false,
+    "lp_max": 12230.5,
+    "retenu_lp": false,
+    "max_abs_z_pos": 4.2,
+    "z_pos_force": true
+   },
+   {
+    "chaines": [
+     0
+    ],
+    "mae_partages": 7.68,
+    "mae_5050": 28.6,
+    "mae_U": 21.87,
+    "loho_ok_U": true,
+    "mae_Ufid": 17.93,
+    "loho_ok_Ufid": true,
+    "temoin_structurel": 25.9,
+    "mae_ok": true,
+    "LP_ecart": 4.1,
+    "LP_ok": true,
+    "Zemmour_ecart": null,
+    "Zemmour_ok": false,
+    "lp_max": 12256.7,
+    "retenu_lp": false,
+    "max_abs_z_pos": 3.94,
+    "z_pos_force": true
+   },
+   {
+    "chaines": [
+     5
+    ],
+    "mae_partages": 5.97,
+    "mae_5050": 28.6,
+    "mae_U": 21.8,
+    "loho_ok_U": true,
+    "mae_Ufid": 17.6,
+    "loho_ok_Ufid": true,
+    "temoin_structurel": 25.9,
+    "mae_ok": true,
+    "LP_ecart": 4.5,
+    "LP_ok": true,
+    "Zemmour_ecart": null,
+    "Zemmour_ok": false,
+    "lp_max": 12219.6,
+    "retenu_lp": false,
+    "max_abs_z_pos": 2.22,
+    "z_pos_force": false
+   }
+  ],
+  "mediane": 7.68,
+  "pire": 11.93
+ },
+ "provenance": {
+  "lse_officiel": true,
+  "plateforme": "macOS-14.5-arm64-arm-64bit",
+  "sans_hyp": "Macron – Zemmour"
+ }
+}

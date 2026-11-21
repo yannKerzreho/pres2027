@@ -31,6 +31,10 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- [ ] (session locale) **§8.68 suite.** Lire « Aucun » par mode dans `modes.v1`, pour appliquer
+  complètement la règle de retrait de ω_k (coût < 1 pt sur « Aucun »). Si ω_k est retiré, la référence
+  devient `hiercercle_ra_fid` : V2 face à `hier` (§8.67 a) sur cette variante, et non sur R8c.
+
 - [ ] (session locale, Mac) **§8.64 bis et §8.67 (c), réparer la mesure.**
   - U_fid : finalistes à la fidélité dans le Newton, paramètre du témoin seulement.
   - `modes.partition` par log-densité.
@@ -38,7 +42,10 @@ l'historique, ajouter en bas de « Historique ».
   - `map_screen` à 20 000 pas avec lr décroissant et ‖∇‖.
   - Succès : on retrouve 11,3 / 18,3 / 12,7.
 - [ ] (session locale, Mac puis VM) **§8.67 (a)**, V2 de R8c face à `hier`, MAP d'abord.
-- [ ] (session locale, Mac) **§8.67 (b)**, échelle de parcimonie au V1-LOHO : `hier_ra`,
+- [x] [FAIT 21/11 ~22:30Z, §8.68 : aucune variante ne tient le critère (Pécresse au-dessus de
+  U_fid + 3 partout). Retirer ω_k fait gagner 5,1 pt (R8c 19,7 → cercle + R7 14,6) ; segment seul
+  13,4. Cercle + R7 désigné comme référence candidate. Reste à lire la case « Aucun » par mode.]
+  (session locale, Mac) **§8.67 (b)**, échelle de parcimonie au V1-LOHO : `hier_ra`,
   `hier_ra_fid_omk`, `hiercercle_ra_fid` × 3 hypothèses × 6 inits.
 - [ ] (spec d'abord) Dirichlet des reports pondérée par l'effectif de l'électorat (c_r ∝ échantillon ×
   part T1, puissance φ).
