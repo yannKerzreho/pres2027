@@ -107,6 +107,23 @@ l'historique, ajouter en bas de « Historique ».
   soumettre à la revue Opus (sélection par mode plutôt que par seuil de lp ?). B′2 (2017) n'est
   pas concerné : une seule chaîne y est retenue, 117 nats au-dessus des autres.
   Plausibilité : σ_LP/σ_Macron vaut 2,3 à 3,8 dans tous les modes du segment.
+- RÉSULTAT R4 (session locale, Mac, 2026-11-21 05:00Z ; noyau de Student-t, segment, reports d'avant T1
+  corrigés, `--lse-officiel`, B = 100, 8 chaînes) — §8.51/§8.52/§8.54 :
+  · ν est appris et lourd : médiane 1,7 à 4,5 selon la chaîne ; sd(log ν) 0,08 ; q95 5,1 (6′ ✓).
+  · PATHOLOGIE : σ_Mélenchon s'effondre (0,0005 à 0,01) dans les 8 chaînes ; la log-densité s'étale sur
+    160 nats (12260 à 12419). Mode dominant = la seule chaîne 1 (ν 4,5, σ_JLM 0,010).
+  · critères sur le mode dominant :
+    1. MAE des partages 10,4 ✗ ;
+    2. Mélenchon 85,1 (63) ✗ ;
+    3. σ_LP/σ_M 0,64 ✓ ; 3b. monotonie 100 % ✓ ;
+    4. stabilité ✗ (1 chaîne) ;
+    5. T1 2,90 ✓ ;
+    Aucun 7,2 ✗ ; structure : LP→JLM 15,2 ✗ (≥ 45), Zemmour→JLM 14,9 ✓.
+  · corr(log ν, log σ_LP) 0,15 ; résidus « Aucun » du fit : propres +3,15, autres −1,46 ; c 17,9.
+  LECTURE : les queues lourdes rendent Le Pen étroite et la monotonie juste, mais Mélenchon se replie
+  sur un pic quasi ponctuel dont seules les queues recrutent. Le fer à cheval disparaît
+  (LP→JLM 15 contre 57) et Mélenchon repart à 85 %. Règle §8.52-7′ : R4 n'est PAS retenu (échec à 1
+  et 2, comme le gaussien). Le noyau t ne lève pas la tension : il la déplace.
 - RÉSULTAT A′2 CORRIGÉ (session locale, Mac, 2026-11-20 17:25Z ; segment gaussien `hier_ra`, reports d'avant
   T1 corrigés §8.50, `--lse-officiel`, B = 100, 8 chaînes ; lecture `model/backtest/modes.py`) :
   · UN SEUL MODE : 8 chaînes sur 8 à moins de 3 nats (lp 12028-12031), duels clés à ≤ 0,37 pt
@@ -140,7 +157,7 @@ l'historique, ajouter en bas de « Historique ».
   20/11). Reste la multimodalité de Mélenchon entre deux modes (≈ 49 et ≈ 86 %). À comparer
   avec A′1 (cercle, VM).
 - [x] [CLOS 20/11 22:55Z : refits faits avec le drapeau, A′1 (VM, cercle) et A′2 (Mac, segment), lus en §8.54 ; le défaut reste à mesurer sur le fit 2027 avant toute publication du T2 (non publié)] [CODE FAIT 20/11 11:39Z (`--lse-officiel` dans second_round et eval_r2, `masque_lse_officiel`, masque aussi dans le bloc reports) ; mesure 1 à 0 fit (§8.49) : sans les fantômes, la case « Aucun » de Pécresse 26,3 → 11,1 (mesuré 29,9) ⇒ le fit utilisait Bertrand comme réservoir d'abstention ; refits avec le drapeau NÉCESSAIRES, après A′1] **(NOUVEAU 20/11, revue point 1, PRÉALABLE à R3c et aux reruns A′) Valeur inclusive sans candidats fantômes** : spec §8.49 ; drapeau `lse_officiel` (backtests : champ officiel du T1 ∪ finalistes), tests ; mesure à 0 fit sur les chaînes existantes, puis reruns A′1/A′2 avec le drapeau, en 8 chaînes, à B = 100 pour le segment.
-- [ ] [EN COURS Mac depuis 2026-11-20 17:25Z ; CODE 477d0eb, et sur T4 si le GPU revient (jeu `_lseo_t4` séparé, avec un A′2 corrigé T4 jumeau)] **(R4) Noyau de Student-t** (revue locale 3.3, spec §8.51, critères §8.50 + ν < 30 figés) : `hier_ra_t --lse-officiel`, B = 100, 8 chaînes ; comparé à A′2 corrigé sur la MÊME plateforme.
+- [x] [FAIT Mac 2026-11-21 04:47Z, `results/modes_second_round_hier_ra_t_v2_2022_T1-30_lseo.json` ; CODE 477d0eb, et sur T4 si le GPU revient (jeu `_lseo_t4` séparé, avec un A′2 corrigé T4 jumeau)] **(R4) Noyau de Student-t** (revue locale 3.3, spec §8.51, critères §8.50 + ν < 30 figés) : `hier_ra_t --lse-officiel`, B = 100, 8 chaînes ; comparé à A′2 corrigé sur la MÊME plateforme.
 - [ ] [CODE FAIT 603f493 ; EN FILE Mac juste après R4] **(R7) Fidélité révélée** (spec §8.56, critères figés) : `hier_ra_fid --lse-officiel`, B = 100, 8 chaînes.
 - [ ] [CODE FAIT f1bfcbc ; EN FILE Mac après R7 ; prédiction figée : échec au critère 2] **(R5) σ_Le Pen ≡ σ_Macron** (revue locale PM, point 4 ; spec §8.53, critères figés) : `hier_ra_lie --lse-officiel`, B = 100, 8 chaînes ; s'il passe 1, 2 et 3b, il prime sur R4.
 - [x] [FAIT Mac 2026-11-20 17:20Z, `results/modes_second_round_hier_ra_v2_2022_T1-30_lseo.json`] **A′2 relancé selon §8.49 (revue, points 1-2)** :
