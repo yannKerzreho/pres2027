@@ -3814,6 +3814,20 @@ même point. Fichiers `results/v1loho_map_*_2022_T1-30_sans_*.json`.
   24,3 retenu.
 - Aucun verdict de stabilité.
 
+**§8.68, suite : case « Aucun » par mode (mode retenu, 21/11 ~23:00Z).**
+
+| | Mélenchon–Macron | Macron–Zemmour | Macron–Pécresse | Moyenne |
+|---|---|---|---|---|
+| R8c (avec ω_k) | 15,3 | 4,8 | 3,3 | 7,8 |
+| Cercle + R7 (sans ω_k) | 4,8 | 6,8 | 7,4 | **6,3** |
+
+- **Retirer ω_k améliore aussi « Aucun »** (−1,5 pt en moyenne).
+- ω_k aide Zemmour et Pécresse (−2 à −4) mais ruine Mélenchon–Macron (+10,5).
+- **Règle de retrait figée en §8.67 (b) : appliquée. ω_k est RETIRÉ** (partage −5,1, « Aucun » −1,5,
+  soit environ 24 paramètres de moins).
+- **Référence : `hiercercle_ra_fid`** (cercle + fidélité révélée R7, abstention commune).
+- C'est un dépistage MAP : le verdict sera à confirmer par NUTS sur une seule plateforme.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

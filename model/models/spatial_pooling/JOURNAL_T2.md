@@ -31,7 +31,14 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] (session locale) **§8.68 suite.** Lire « Aucun » par mode dans `modes.v1`, pour appliquer
+- [ ] (session locale) **V2 de `hiercercle_ra_fid` face à `hier` (§8.67 a).** Prérequis : option de
+  retrait d'une PAIRE de duels (Macron–Mélenchon, puis Macron–Zemmour) dans `second_round._fit`,
+  derrière une variable d'environnement, avec un test qui vérifie le retrait. Dépistage MAP d'abord ;
+  critère figé : ≤ `hier` − 1 (le témoin BT vaut 9,8, le seuil du modèle 8,3).
+- [ ] (VM, après V2) NUTS de `hiercercle_ra_fid` en V1-LOHO, sur une seule plateforme, pour confirmer
+  §8.68.
+
+- [x] [FAIT 21/11 ~23:00Z : « Aucun » 7,8 → 6,3 sans ω_k ⇒ ω_k RETIRÉ, référence `hiercercle_ra_fid`] (session locale) **§8.68 suite.** Lire « Aucun » par mode dans `modes.v1`, pour appliquer
   complètement la règle de retrait de ω_k (coût < 1 pt sur « Aucun »). Si ω_k est retiré, la référence
   devient `hiercercle_ra_fid` : V2 face à `hier` (§8.67 a) sur cette variante, et non sur R8c.
 
