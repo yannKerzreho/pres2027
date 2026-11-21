@@ -3668,6 +3668,24 @@ modérée, gauche et centre). C'est exactement le domaine où la revue recommand
 électorat × finaliste (option ii) avec un τ_report calibré. L'arbitrage (i)/(ii)/(iii) reste ouvert
 pour l'utilisateur.
 
+### 8.65 Test à 0 fit ω_k[Mélenchon] := ω (point MAP de R8c, init 3 ; 21/11 ~17:20Z)
+
+On remet l'abstention propre de l'électorat de Mélenchon (ω_k = −2,83) au niveau commun (ω = −3,56),
+sans rien d'autre de changé.
+
+| | Point MAP de R8c | ω_k[Mélenchon] := ω |
+|---|---|---|
+| Partage de l'électorat Mélenchon | 62,4 | 62,0 (mesure 63,0) |
+| « Aucun » de l'électorat Mélenchon | 41,3 | 28,4 (mesure 43,6) |
+| MAE des partages | 3,55 | 3,65 |
+| MAE « Aucun » | 3,35 | 6,57 |
+
+- **La prédiction de la routine (−8 pt sur le partage Mélenchon) est démentie** : −0,4.
+- Le partage de Mélenchon ne passe pas par ω_Mélenchon. ω_k sert à l'abstention de cet électorat, ce
+  qui est son rôle.
+- Les critères 1-2 restent donc des critères, pas des artefacts de ω_k.
+- ω_k reste conditionnel à la lecture de NUTS (retrait si s_ω q5 < 0,2).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

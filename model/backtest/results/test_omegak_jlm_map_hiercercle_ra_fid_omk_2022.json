@@ -1,0 +1,26 @@
+{
+ "R8c_point_MAP_c3": {
+  "melenchon_partage": [
+   62.4,
+   63.0
+  ],
+  "melenchon_aucun": [
+   41.3,
+   43.6
+  ],
+  "mae_partages": 3.55,
+  "aucun_mae": 3.35
+ },
+ "omega_k_JLM_egal_omega": {
+  "melenchon_partage": [
+   62.0,
+   63.0
+  ],
+  "melenchon_aucun": [
+   28.4,
+   43.6
+  ],
+  "mae_partages": 3.65,
+  "aucun_mae": 6.57
+ }
+}

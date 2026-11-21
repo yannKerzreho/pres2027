@@ -37,7 +37,7 @@ l'historique, ajouter en bas de « Historique ».
   - Dépistages MAP de R8c avec Macron–Zemmour, puis Macron–Pécresse retirées (6 inits chacun).
   - Coder le témoin U dans `modes.v1` et la partition par log-densité.
   - Lire le V1-LOHO face à U ; critère figé ≤ U − 2 en moyenne, aucune hypothèse > U + 2.
-- [ ] (session locale) Test à 0 fit ω_k[Mélenchon] := ω sur le point MAP de R8c (prédiction de la
+- [x] [FAIT 21/11 ~17:20Z, §8.65 : prédiction démentie ; partage 62,4 → 62,0 ; « Aucun » 41,3 → 28,4 (mesure 43,6)] (session locale) Test à 0 fit ω_k[Mélenchon] := ω sur le point MAP de R8c (prédiction de la
   routine : −8 pt sur le partage Mélenchon).
 - [ ] (session locale) Brancher `reports_avant_t1_2027.csv`. Prérequis du LOHO Philippe–Le Pen : maths
   et critères dans la spec d'abord.
