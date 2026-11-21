@@ -271,7 +271,9 @@ def v1(fit, election=2022, as_of="2022-03-11", hyp=None) -> dict:
         mae_5050 = float(np.mean([abs(50.0 - v["partage_mesure"]) for v in out.values()]))
         mae_U = float(np.mean([abs(v["partage_U"] - v["partage_mesure"]) for v in out.values()]))
         mae_Uf = float(np.mean([abs(v["partage_Ufid"] - v["partage_mesure"]) for v in out.values()]))
-        out["_criteres"] = {"mae_partages": round(mae, 2), "mae_5050": round(mae_5050, 2), "mae_U": round(mae_U, 2), "loho_ok_U": mae <= mae_U - 2.0, "mae_Ufid": round(mae_Uf, 2), "loho_ok_Ufid": mae <= mae_Uf - 2.0,
+        av = [abs(v["aucun_modele"] - v["aucun_mesure"]) for v in out.values() if v["aucun_mesure"] is not None]
+        mae_aucun = float(np.mean(av)) if av else None
+        out["_criteres"] = {"mae_partages": round(mae, 2), "mae_5050": round(mae_5050, 2), "mae_U": round(mae_U, 2), "loho_ok_U": mae <= mae_U - 2.0, "mae_Ufid": round(mae_Uf, 2), "mae_aucun": None if mae_aucun is None else round(mae_aucun, 2), "loho_ok_Ufid": mae <= mae_Uf - 2.0,
                             "temoin_structurel": 25.9,
                             "mae_ok": mae <= 12.0 and mae <= mae_5050 - 1.5,
                             "LP_ecart": ecart(lpd), "LP_ok": lpd != {} and abs(ecart(lpd)) <= 10,
@@ -362,7 +364,7 @@ def main() -> None:
             m.update({"lp_max": lp_m, "retenu_lp": lp_m >= lpmax - 10.0, "max_abs_z_pos": round(zp, 2),
                       "z_pos_force": zp > 3.0})
         ret = [m for m in par_mode if m["retenu_lp"]]
-        out["v1_modes_retenus_lp"] = [{k: m.get(k) for k in ("chaines", "mae_partages", "mae_U", "mae_Ufid", "loho_ok_U",
+        out["v1_modes_retenus_lp"] = [{k: m.get(k) for k in ("chaines", "mae_partages", "mae_aucun", "mae_U", "mae_Ufid", "loho_ok_U",
                                                             "max_abs_z_pos")} for m in ret]
         maes = [m["mae_partages"] for m in par_mode if "mae_partages" in m]
         out["v1_tous_modes"] = {"par_mode": par_mode, "mediane": round(float(np.median(maes)), 2),
