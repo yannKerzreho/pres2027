@@ -31,6 +31,16 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- [ ] **DEMANDE VM n° 4 (session locale, 2026-11-21 ~10:00Z) — PRIORITAIRE après R6** : R8c, cercle +
+      fidélité révélée + abstention par électorat (spec §8.56, §8.58 ; dépistage MAP réussi sur les
+      critères 2 et 3b, cf. §8.58 « Résultat du dépistage MAP de R8c »). Code sur la branche (02cc3ff
+      et suivants).
+      `python -m model.backtest.second_round --only v2 --election 2022 --coupure T1-30 --variante hiercercle_ra_fid_omk --lse-officiel --chaine k`
+      pour k = 0..3, puis `--fusionner --lse-officiel` et
+      `python -m model.backtest.modes --variante hiercercle_ra_fid_omk --stem second_round_hiercercle_ra_fid_omk_v2_2022_T1-30_lseo --n 4 --lse-officiel`
+      (`PRES2027_N_CHAINES=4`). Verdict selon §8.58. La session locale fait un jeu séparé de
+      8 chaînes sur le Mac.
+
 - [x] [FAIT 21/11 07:58Z, §8.55 « Résultat de R6 » : ÉCHEC (1 : 8,2 ; 2 : Mélenchon 50,5 ; 4 : mode dominant à 1 chaîne ; « Aucun » 9,1), mais σ_LP/σ_M 0,97 ✓ ; parcimonie : R6 ≥ A′1 sur 1-3, mais instable ; prédiction de la revue contredite (JLM 50,5 > 48,6 ; Zemmour→JLM 23 < 35) ; Zemmour |z_pos| 3,9 ⇒ ancres forcées ; suite logique : R7] [EN COURS VM (début 2026-11-20 23:02Z) : R6 `hiercercle_ra_ferme --lse-officiel`, 4 processus ; durée attendue proche d'A′1 corrigé (environ 10 h par chaîne), donc des résultats vers 09:00Z] **DEMANDE VM n° 3 (session locale, 2026-11-20 ~23:10Z)** — R6, cercle FERMÉ (A = 2π, un
       paramètre de moins), spec §8.55 (critères figés avant tout fit), code sur la branche. Même
       plateforme et même nombre de chaînes qu'A′1 corrigé, auquel il est comparé (VM, 4 chaînes) :

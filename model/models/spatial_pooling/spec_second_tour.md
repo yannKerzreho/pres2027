@@ -3411,6 +3411,27 @@ est géométrique, et c'est ce que le cercle traitait (monotonie et structure r�
 MAP d'abord, mêmes critères plus la monotonie circulaire. NUTS seulement si le dépistage passe 2 et
 3b.
 
+**Résultat du dépistage MAP de R8c** (cercle + R7 + ω_k ; `results/modes_map_hiercercle_ra_fid_omk_2022_T1-30.json`,
+6 initialisations, mode dominant = l'initialisation de lp la plus haute ; dépistage, PAS un postérieur) :
+
+- MAE des partages 3,55 ≤ 3,61 ✓ (au niveau du témoin de persistance, pour la première fois) ;
+- Mélenchon 62,4 (63) ✓ ;
+- « Aucun » 3,35 ✓ ;
+- monotonie circulaire : 0 % de votants mal classés ✓ ;
+- σ_LP/σ_M 1,54 : ✓ au critère de §8.58 (< 2), ✗ de peu au critère général de §8.50 (< 1,5) ;
+- Zemmour → Mélenchon 32,7 ✓ ; Le Pen → Mélenchon 41,2 ✗ (≥ 45) ; σ_Mélenchon 0,159 ✗ (≤ 0,15) ;
+- c 58 ; résidus « Aucun » +1,9 / −1,0 ; T1 3,0 ✓.
+
+Les 6 initialisations aboutissent à des modes différents (lp de 12068 à 13042) : il faudra 8 chaînes
+NUTS pour juger la stabilité.
+
+**Règle du protocole : NUTS lancé** (les critères 2 et 3b passent). Deux jeux SÉPARÉS, sans mélange :
+
+- Mac, 8 chaînes, après R7 (verdict de stabilité « non probant s'il est favorable ») ;
+- VM, 4 chaînes, après R6 (DEMANDE VM n° 4, probant).
+
+Critères de §8.58, figés, inchangés.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
