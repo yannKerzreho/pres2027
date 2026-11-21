@@ -1221,6 +1221,9 @@ Relecture seule (aucun fit : cœurs pris par R8c NUTS). Vérifié par la routine
    48,6 (A′1) / 50,5 (R6) → 62,4 (R8c MAP) vient avec ω_k seul ; même modèle sur 2017 : 85,6-88,4 contre
    76,4. INTÉGRÉ : test à 0 fit sur le point MAP de R8c, ω_k[Mélenchon] := ω commun ; prédiction figée :
    partage Mélenchon −8 pt ou plus. Si vérifié, 1-2 deviennent des diagnostics (ARBITRAGE ci-dessous).
+   → RÉFUTÉ (session locale, 2785453, §8.65) : partage 62,4 → 62,0 seulement ; ω_k porte la case
+     « Aucun » (41,3 → 28,4, mesure 43,6), pas le partage. Le soupçon d'un bouton propre au partage Mélenchon
+     tombe ; reste l'argument in-sample (point 6) pour l'arbitrage.
 2. **Le dépistage MAP ne prédit pas NUTS de façon fiable.** Un seul étalonnage (A′2 corrigé), optimiste
    (MAE 3,7 au MAP contre 7,27 en NUTS) ; R8c : inits à 130 nats près, σ_LP/σ_M de 0,72 à 1,54 ;
    Adam lr fixe 0,01, 5000 pas, sans critère d'arrêt (`map_screen.py:61-73`) ; optimise `potential_fn`
