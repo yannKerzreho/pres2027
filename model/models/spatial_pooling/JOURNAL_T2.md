@@ -942,6 +942,10 @@ conservé pour l'historique.
 - Colab gratuit : session `t2bt` perdue en cours de run (VM récupérée) le
   2026-11-14 — ne plus en dépendre.
 
+- (21/11, §8.62) **R9 (λ) échoue au dépistage MAP.** V1 hors échantillon : médiane 18,6 et pire 22,9,
+  contre ≤ 12 / ≤ 13,1 requis et 14,6 pour un 50/50. Cellules vues : 5,25 contre 3,55 pour R8c.
+  λ n'identifie pas le sens des reports d'un duel non sondé.
+
 ## Historique
 
 - 2026-11-19 00:08Z (routine) : main fusionnée (bruit de scénarios par candidat) ; test_alertes_prod adapté (mock acceptant `tour=`, comme test_listes) ; aucun duel postérieur au 17/11 (score prospectif vide).

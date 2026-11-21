@@ -3565,6 +3565,40 @@ jamais sondé ne sont pas contraints par les données dans cette classe de modè
 - (iii) un modèle de transfert séparé pour les reports, avec le spatial seulement pour le T1 et les
   duels (on renonce à l'unicité).
 
+### 8.62 Lecture du dépistage MAP de R9 (λ) — échec (21/11 ~13:20Z, Mac, B = 100, 6 inits)
+
+**Données complètes** (`modes_map_hiercercle_ra_fid_omk_lam_2022_T1-30.json`) :
+
+| | R9 | R8c (MAP) |
+|---|---|---|
+| MAE des cellules vues | 5,25 | 3,55 |
+| Mélenchon (modèle / mesure) | 59,4 / 63,0 | |
+| « Aucun » | 5,08 | |
+| σ_LP/σ_M | 1,30 | |
+
+- R9 dépasse R8c + 0,5 sur les cellules vues ⇒ critère **non tenu**.
+- Les modes sont éclatés (5 groupes sur 6 inits).
+- λ au MAP vaut de 0,12 à 0,34 ⇒ critère λ tenu.
+- En échantillon, V1 est à 9,6 en médiane des modes (pire 12,8 ; R8c : 11,4).
+
+**V1, hypothèse Mélenchon–Macron retirée** (`…_sans_MélenchonMacron.json`) :
+
+- V1 hors échantillon : **médiane des modes 18,6 et pire 22,9** (mode dominant 22,9, autres 16,5 et
+  18,6), avec λ au MAP de 0,16 à 0,40.
+- R8c faisait 27,2. **Le critère n'est pas tenu** (≤ 12 ET ≤ 13,1) : R9 bat le témoin structurel
+  (25,9) mais **pas le 50/50 (14,6)**.
+- Sur le mode dominant, l'électorat Le Pen part vers Mélenchon à 75,5 (mesure 42,3) et Zemmour à 68,0
+  (mesure 42,7). La gauche reste mal ordonnée : Hidalgo 26 et Roussel 36, contre 38 et 66 mesurés.
+- Cellules vues du fit V1 : MAE 3,53.
+
+**Verdict :** R9 n'est pas retenu.
+
+- λ adoucit les cellules, mais ne fixe pas le sens des reports hors échantillon. Sans
+  Mélenchon–Macron, le cercle bascule encore les droites vers Mélenchon.
+- Ce résultat confirme le diagnostic de §8.61 : dans cette classe de modèles, les reports d'un duel
+  non sondé ne sont pas contraints par les données.
+- L'arbitrage (i)/(ii)/(iii) devient bloquant : aucune piste spatiale à un paramètre ne reste en file.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
