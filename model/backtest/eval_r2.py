@@ -54,6 +54,9 @@ def reconstruire(variante: str, stem: str, coupure: str = "T2-7", chaines=None, 
     ref = sr.T1_DATES[ELECTION] if coupure.startswith("T1") else sr.T2_DATES[ELECTION]
     as_of = ref - pd.Timedelta(days=int(coupure.split("-")[1]))
     raw = sr.polls_historiques(ELECTION, as_of)
+    import os
+    if os.environ.get("PRES2027_SANS_PAIRE"):                    # V2 au MAP (§8.69)
+        raw = sr._sans_paire(raw, *os.environ["PRES2027_SANS_PAIRE"].split("|"))
     paths = [sr.CHAINES_DIR / f"{stem}_c{k}.npz" for k in (chaines if chaines is not None else range(sr.N_CHAINES))]
     fit, _ = sr._fit(raw, as_of, ELECTION, dict(draws=400, tune=600, chains=4, mcmc_runner=sr._runner_fusion(paths)))
     return fit, raw, as_of

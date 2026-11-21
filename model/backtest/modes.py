@@ -20,6 +20,7 @@ from itertools import combinations
 
 import jax.numpy as jnp
 import numpy as np
+import pandas as pd
 
 import model.backtest.eval_r2 as E
 import model.backtest.second_round as sr
@@ -337,6 +338,7 @@ def main() -> None:
     ap.add_argument("--n", type=int, default=8)
     ap.add_argument("--lse-officiel", action="store_true")
     ap.add_argument("--sans-criteres", action="store_true", help="partition seule (contrôle sur d'anciennes chaînes)")
+    ap.add_argument("--v2-paire", action="store_true", help="§8.69 : duel PRES2027_SANS_PAIRE prédit, par mode")
     ap.add_argument("--v1-modes", action="store_true", help="§8.61 : V1 lu sur TOUS les modes (médiane, pire)")
     args = ap.parse_args()
     E.ELECTION = args.election
@@ -349,6 +351,23 @@ def main() -> None:
     if not args.sans_criteres:
         out["criteres_mode_dominant"] = criteres(args.variante, args.stem, args.coupure, lignes, part["dominant"],
                                                  args.election)
+    if args.v2_paire:                                                  # §8.69
+        import os as _o
+        pa, pb = sorted(_o.environ["PRES2027_SANS_PAIRE"].split("|"))
+        as_of = sr.T1_DATES[args.election] - pd.Timedelta(days=int(args.coupure.split("-")[1]))
+        raw0 = sr.polls_historiques(args.election, as_of)
+        d = sr._duels_moyens(raw0, as_of - pd.Timedelta(days=30))
+        obs = 100 * float(d[(d.a == pa) & (d.b == pb)].y.mean())
+        lpmax = max(l["lp"] for l in lignes)
+        pm = []
+        for g in [part["dominant"]] + part["autres"]:
+            f, _, _ = E.reconstruire(args.variante, args.stem, args.coupure, chaines=g)
+            m = 100 * float(duel_draws(f, pa, pb, 0.0, scrutin=False).mean())
+            lp_m = max(l["lp"] for l in lignes if l["chaine"] in g)
+            pm.append({"chaines": g, "modele": round(m, 2), "ecart": round(m - obs, 2), "lp_max": lp_m,
+                       "retenu_lp": lp_m >= lpmax - 10.0})
+        out["v2_paire"] = {"paire": [pa, pb], "observe_30j": round(obs, 2), "par_mode": pm}
+        print(json.dumps(out["v2_paire"], ensure_ascii=False, indent=1))
     if args.v1_modes and args.election == 2022:                       # §8.61
         par_mode = []
         for g in [part["dominant"]] + part["autres"]:
@@ -373,7 +392,7 @@ def main() -> None:
     import os as _os, platform as _pf
     out["provenance"] = {"lse_officiel": args.lse_officiel, "plateforme": _pf.platform(),
                          "sans_hyp": _os.environ.get("PRES2027_SANS_HYP")}
-    pref = "v1loho" if (args.v1_modes and args.sans_criteres) else "modes"    # ne pas écraser une lecture complète
+    pref = ("v2paire" if args.v2_paire else "v1loho") if args.sans_criteres and (args.v1_modes or args.v2_paire) else "modes"    # ne pas écraser une lecture complète
     dest = sr.OUT_DIR / f"{pref}_{args.stem}.json"
     dest.write_text(json.dumps(out, ensure_ascii=False, indent=1, default=float) + "\n")
     print(json.dumps({"partition": part, **({"criteres": out["criteres_mode_dominant"]} if "criteres_mode_dominant" in out else {})},

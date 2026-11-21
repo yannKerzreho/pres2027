@@ -179,3 +179,27 @@ def test_ufid_finalistes_fixes():
     assert np.allclose(part, part[0], atol=1e-5)
     c0 = np.asarray(reports_cellules(*args, tau=0.0)[0])
     assert not np.allclose(part[0], (c0[0, 0] / (c0[0, 0] + c0[0, 1])), atol=1e-3)
+
+
+def test_v2_sans_paire_retire_duels_et_reports(monkeypatch):
+    """§8.69 : PRES2027_SANS_PAIRE retire les duels de la paire ET les reports de l'hypothèse."""
+    import pandas as pd
+    import model.backtest.second_round as sr
+    as_of = sr.T1_DATES[2022] - pd.Timedelta(days=30)
+    raw = sr.polls_historiques(2022, as_of)
+    r2 = sr._sans_paire(raw, "Emmanuel Macron", "Jean-Luc Mélenchon")
+    d = sr._duels_moyens(r2)
+    assert d[(d.a == "Emmanuel Macron") & (d.b == "Jean-Luc Mélenchon")].empty
+    assert not sr._duels_moyens(raw).query("a == 'Emmanuel Macron' and b == 'Jean-Luc Mélenchon'").empty
+    cap = {}
+    def faux_fit(raw, as_of, **kw):
+        cap.update(kw); raise RuntimeError("stop")
+    monkeypatch.setattr(sr, "fit_spatial_pooling", faux_fit)
+    monkeypatch.setenv("PRES2027_SANS_PAIRE", "Emmanuel Macron|Jean-Luc Mélenchon")
+    sr.VARIANTE_KW.clear(); sr.VARIANTE_KW.update({"_reports_avant": True})
+    try:
+        sr._fit(raw, as_of, 2022, {})
+    except RuntimeError:
+        pass
+    hyp = cap["reports"]["hypothese"].str.replace("—", "–")
+    assert not hyp.eq("Mélenchon – Macron").any() and hyp.eq("Macron – Zemmour").any()

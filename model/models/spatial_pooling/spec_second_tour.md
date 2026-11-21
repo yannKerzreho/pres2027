@@ -3828,6 +3828,24 @@ même point. Fichiers `results/v1loho_map_*_2022_T1-30_sans_*.json`.
 - **Référence : `hiercercle_ra_fid`** (cercle + fidélité révélée R7, abstention commune).
 - C'est un dépistage MAP : le verdict sera à confirmer par NUTS sur une seule plateforme.
 
+### 8.69 Protocole V2 au MAP (dépistage de §8.60 et §8.67 a ; avant code, figé)
+
+- **Retrait.** La variable `PRES2027_SANS_PAIRE="A|B"` retire tous les duels de la paire
+  (`_sans_paire`). Elle retire AUSSI les reports de l'hypothèse correspondante, pour un duel
+  véritablement jamais sondé : les cellules de reports d'une hypothèse informent son agrégat.
+
+  C'est plus strict que §8.60, dont le témoin BT ne voit pas de reports ; le seuil reste figé.
+- **Cadre.** 2022, T1−30, `--lse-officiel`, 6 inits. Variantes `hiercercle_ra_fid` (référence, §8.68)
+  et `hier` (témoin sans reports).
+- **Lecture.** Part de A prédite au mode retenu (Δlp ≤ 10), contre la moyenne des duels de la paire
+  sur les 30 jours avant `as_of` : Macron–Mélenchon 66,3, Macron–Zemmour 64,4. Les autres modes sont
+  rapportés.
+- **Critères figés :**
+  - MAE sur les deux paires ≤ 8,3 (§8.60) ;
+  - ET ≤ celle de `hier` − 1 (§8.67 a).
+- **Prédiction consignée avant lecture :** comme en V1, Macron–Zemmour (les deux bords) devrait être
+  bien prédit, et Macron–Mélenchon mal prédit (aucun pont).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

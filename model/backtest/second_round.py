@@ -316,6 +316,11 @@ def _fit(raw, as_of, election, nuts):
         sans = __import__("os").environ.get("PRES2027_SANS_HYP")      # V1 (§8.59) : hypothèse retirée
         if sans:
             ra = ra[ra["hypothese"].str.replace("—", "–") != sans]
+        paire = __import__("os").environ.get("PRES2027_SANS_PAIRE")   # V2 au MAP (§8.69)
+        if paire:
+            noms = {x.split()[-1] for x in paire.split("|")}
+            hyp = ra["hypothese"].str.replace("—", "–").str.split("–")
+            ra = ra[~hyp.apply(lambda h: {x.strip().split()[-1] for x in h} == noms)]
         reps.append(ra.drop(columns=[c for c in ("nature_t1", "page") if c in ra.columns]))
     if kw.pop("_lse_officiel", False):
         # §8.49 : valeur inclusive sur le champ officiel du T1 (--lse-officiel)

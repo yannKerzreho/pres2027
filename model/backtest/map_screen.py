@@ -44,6 +44,7 @@ def capturer(variante: str, election: int, coupure: str, lse_officiel: bool):
         "hiercercle_ra_fid": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True, "fidelite": True},
         "hiercercle_ra_fid_omk": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True, "fidelite": True,
                                   "omega_electorat": True},
+        "hier": {"eta_hier": True},
         "hiercercle_ra_fid_omk_lam": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True,
                                       "fidelite": True, "omega_electorat": True, "melange_lambda": True},
     }
@@ -54,6 +55,10 @@ def capturer(variante: str, election: int, coupure: str, lse_officiel: bool):
     import pandas as pd
     as_of = ref - pd.Timedelta(days=int(coupure.split("-")[1]))
     raw = sr.polls_historiques(election, as_of)
+    import os
+    if os.environ.get("PRES2027_SANS_PAIRE"):                    # V2 au MAP (§8.69)
+        pa, pb = os.environ["PRES2027_SANS_PAIRE"].split("|")
+        raw = sr._sans_paire(raw, pa, pb)
     cap = {}
 
     def run(model_fn, model_kwargs, **kw):
@@ -105,6 +110,8 @@ def main() -> None:
     import os
     if os.environ.get("PRES2027_SANS_HYP"):                       # V1 (§8.59)
         stem += "_sans_" + "".join(ch for ch in os.environ["PRES2027_SANS_HYP"] if ch.isalnum())
+    if os.environ.get("PRES2027_SANS_PAIRE"):
+        stem += "_v2sans_" + "".join(ch for ch in os.environ["PRES2027_SANS_PAIRE"] if ch.isalnum())
     sr.CHAINES_DIR.mkdir(parents=True, exist_ok=True)
     out = []
     for k in range(args.inits):
