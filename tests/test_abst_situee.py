@@ -76,3 +76,39 @@ def test_fidelite_revelee():
     assert np.allclose(c1[1], [rho * 0.02, rho * 0.98, 1 - rho], atol=1e-6)
     assert np.allclose(c1.sum(-1), 1.0, atol=1e-6)
     assert np.allclose(c1[2], c0[2])
+
+
+def test_omega_par_electorat_emboite():
+    """§8.58 (R8) : ω_k tous égaux à ω ⇒ mêmes duels et mêmes cellules que sans R8."""
+    from model.models.spatial_pooling.geometry import W, duel_shares_poids, reports_cellules, rho_electorats
+    rng = np.random.default_rng(2)
+    R, N, G = 3, 4, W.shape[0]
+    A = jnp.asarray(rng.normal(size=(R, N, G)))
+    lse = jax.nn.logsumexp(A, axis=1)
+    ia, ib, k = jnp.array([0, 0, 0]), jnp.array([1, 1, 1]), jnp.array([2, 3, 0])
+    Aa, Ab = A[jnp.arange(R), ia], A[jnp.arange(R), ib]
+    om = -2.5
+    s0 = duel_shares_poids(Aa, Ab, 0.8, 0.0, 0.0, lse, om, W)
+    rn, pn = rho_electorats(A, Aa, Ab, 0.8, lse, jnp.full(N, om))
+    s1 = duel_shares_poids(Aa, Ab, 0.8, 0.0, 0.0, lse, om, W, rho=(pn * rn).sum(-2))
+    assert np.allclose(s0, s1, atol=1e-6)
+    args = (A, jnp.ones(N), ia, ib, k, 0.8, jnp.zeros(R), lse, om, s0, W)
+    c0, _ = reports_cellules(*args, fidelite=True)
+    c1, _ = reports_cellules(*args, fidelite=True, omega_k=jnp.full(N, om))
+    assert np.allclose(c0, c1, atol=1e-6)
+    # un ω plus haut pour l'électorat 2 ⇒ plus d'abstention dans sa cellule
+    c2, _ = reports_cellules(*args, omega_k=jnp.array([om, om, om + 1.5, om]))
+    assert float(c2[0, 2]) > float(c0[0, 2])
+
+
+def test_modele_initialise_avec_omega_k():
+    import model.backtest.multi_election as M
+    M.VARIANTES["hier_ra_fid_omk"] = {"eta_hier": True, "_reports_avant": True, "fidelite": True,
+                                      "omega_electorat": True}
+    b = M.preparer(2022, "T1-30", "hier_ra_fid_omk")
+    from model.models.spatial_pooling.joint_model import spatial_pooling_model_ou
+    info = initialize_model(jax.random.PRNGKey(0), spatial_pooling_model_ou, model_kwargs=b["kwargs"],
+                            init_strategy=init_to_median)
+    assert np.isfinite(float(info.potential_fn(info.param_info.z)))
+    tr = handlers.trace(handlers.seed(spatial_pooling_model_ou, 0)).get_trace(**b["kwargs"])
+    assert tr["omega_k"]["value"].shape == (len(b["candidats"]),)

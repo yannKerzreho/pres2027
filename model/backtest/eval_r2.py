@@ -45,7 +45,8 @@ def reconstruire(variante: str, stem: str, coupure: str = "T2-7", chaines=None, 
                         "hier_ra_lie": {"eta_hier": True, "_reports_avant": True, "sigma_lie": True},
                         "hiercercle_ra_ferme": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True, "arc_ferme": True},
                         "hier_ra_fid": {"eta_hier": True, "_reports_avant": True, "fidelite": True},
-                        "hiercercle_ra_fid": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True, "fidelite": True}}[variante])
+                        "hiercercle_ra_fid": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True, "fidelite": True},
+                        "hier_ra_fid_omk": {"eta_hier": True, "_reports_avant": True, "fidelite": True, "omega_electorat": True}}[variante])
     if lse_officiel or LSE_OFFICIEL:
         sr.VARIANTE_KW["_lse_officiel"] = True
     ref = sr.T1_DATES[ELECTION] if coupure.startswith("T1") else sr.T2_DATES[ELECTION]
@@ -114,7 +115,9 @@ def evaluer(fit, raw, as_of) -> dict:
         th, _ = reports_cellules(jnp.asarray(A), jnp.asarray(mask), jnp.full(S, ia), jnp.full(S, ib), jnp.full(S, k),
                                  jnp.asarray(fit.kappa_draws), jnp.asarray(fit.eta_draws[:, ia] - fit.eta_draws[:, ib]),
                                  jnp.asarray(lse), jnp.asarray(fit.omega_draws), jnp.asarray(s_ab), poids, n_newton=8,
-                                 omega_g=_omega_g(fit))
+                                 omega_g=_omega_g(fit),
+                                 omega_k=(None if getattr(fit, "omega_k_draws", None) is None
+                                          else jnp.asarray(fit.omega_k_draws)))
         th = 100 * np.asarray(th)
         pred = {"Macron": th[:, 0], "Le Pen": th[:, 1], "Aucun": th[:, 2], "partage": 100 * th[:, 0] / (th[:, 0] + th[:, 1])}
         for _, r in m[m.electorat_t1 == e].iterrows():
@@ -211,7 +214,7 @@ def par_chaine(variante: str, stem: str, coupure: str) -> dict:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--variante", choices=["hier", "hier2d", "hier_rep", "hiercercle", "hiercercle_sr", "hiercercle_ra", "hier_ra", "hiercercle_ra_abs", "hier_ra_t", "hier_ra_lie", "hiercercle_ra_ferme", "hier_ra_fid", "hiercercle_ra_fid"], required=True)
+    ap.add_argument("--variante", choices=["hier", "hier2d", "hier_rep", "hiercercle", "hiercercle_sr", "hiercercle_ra", "hier_ra", "hiercercle_ra_abs", "hier_ra_t", "hier_ra_lie", "hiercercle_ra_ferme", "hier_ra_fid", "hiercercle_ra_fid", "hier_ra_fid_omk"], required=True)
     ap.add_argument("--stem", default=None)
     ap.add_argument("--coupure", default="T2-7")
     ap.add_argument("--par-chaine", action="store_true", help="critère 4 révisé (écarts entre chaînes)")

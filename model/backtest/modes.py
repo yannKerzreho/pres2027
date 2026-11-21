@@ -86,7 +86,9 @@ def structure(fit) -> dict:
                                  jnp.full(S, c.index(nom)), jnp.asarray(fit.kappa_draws),
                                  jnp.asarray(fit.eta_draws[:, ia] - fit.eta_draws[:, ib]), jnp.asarray(lse),
                                  jnp.asarray(fit.omega_draws), jnp.asarray(s_ab), poids, n_newton=8,
-                                 omega_g=E._omega_g(fit))
+                                 omega_g=E._omega_g(fit),
+                                 omega_k=(None if getattr(fit, "omega_k_draws", None) is None
+                                          else jnp.asarray(fit.omega_k_draws)))
         th = np.asarray(th)
         out[cle] = round(float(100 * (th[:, 0] / (th[:, 0] + th[:, 1])).mean()), 1)
     out["sigma_melenchon"] = round(_sig(fit, JLM), 3)

@@ -293,21 +293,35 @@ def spatial_shares_2d(mu, sigma, nu, lam, w, tested_mask) -> jnp.ndarray:
     return jnp.sum((numerator / denom) * W2, axis=-1)
 
 
-def duel_shares_poids(A_a, A_b, kappa, eta_a, eta_b, lse, omega, poids, omega_g=None) -> jnp.ndarray:
-    """`duel_shares` avec des poids de quadrature quelconques (grille 2D)."""
+def rho_electorats(A_all, A_a, A_b, kappa, lse, omega_k, masque=None):
+    """§8.58 (R8) : expression par type d'électorat. A_all (..., N, G) ; ω_k (N,) ou (..., N).
+    Renvoie (ρ_k (..., N, G), p_k (..., N, G)) avec p_k(v) = π_k(v) sur le champ `masque`."""
+    Am = A_all if masque is None else A_all + jnp.log(jnp.clip(jnp.asarray(masque), 1e-30, None))[..., :, None]
+    p = jnp.exp(Am - jax.nn.logsumexp(Am, axis=-2, keepdims=True))
+    k = jnp.asarray(kappa)[..., None]
+    ins = jnp.logaddexp(k * A_a, k * A_b)                                   # (..., G)
+    om = jnp.asarray(omega_k)[..., :, None]                                  # (..., N, 1)
+    rho = jax.nn.sigmoid(ins[..., None, :] - om - (k * lse)[..., None, :])
+    return rho, p
+
+
+def duel_shares_poids(A_a, A_b, kappa, eta_a, eta_b, lse, omega, poids, omega_g=None, rho=None) -> jnp.ndarray:
+    """`duel_shares` avec des poids de quadrature quelconques (grille 2D). `rho` (..., G) : expression
+    imposée (mélange par électorat, §8.58), sinon `duel_expression`."""
     k = jnp.asarray(kappa)[..., None]
     q = jax.nn.sigmoid(k * (A_a - A_b))
-    if lse is None:
+    if lse is None and rho is None:
         g = jnp.sum(q * poids, axis=-1)
     else:
-        rho = duel_expression(A_a, A_b, kappa, lse, omega, omega_g)
+        if rho is None:
+            rho = duel_expression(A_a, A_b, kappa, lse, omega, omega_g)
         g = jnp.sum(rho * q * poids, axis=-1) / jnp.clip(jnp.sum(rho * poids, axis=-1), 1e-12, None)
     g = jnp.clip(g, 1e-6, 1.0 - 1e-6)
     return jax.nn.sigmoid(jnp.log(g) - jnp.log1p(-g) + jnp.asarray(eta_a) - jnp.asarray(eta_b))
 
 
 def reports_cellules(A, champ_mask, ia, ib, k_idx, kappa, eta_diff, lse, omega, s_ab, poids, n_newton=4,
-                     omega_g=None, fidelite=False):
+                     omega_g=None, fidelite=False, omega_k=None):
     """Cellules (a, b, aucun) de l'électorat T1 `k_idx` (spec §8.38, §8.44.4),
     différentiables : δ par `n_newton` pas de Newton depuis `eta_diff` pour que
     l'agrégat des électorats du champ redonne `s_ab`.
@@ -323,11 +337,20 @@ def reports_cellules(A, champ_mask, ia, ib, k_idx, kappa, eta_diff, lse, omega, 
     kq = jnp.asarray(kappa)
     kq = kq[:, None] if kq.ndim else kq                     # scalaire (modèle) ou (R,) (tirages)
     q = jax.nn.sigmoid(kq * (A_a - A_b))
-    rho = jnp.ones_like(q) if lse is None else duel_expression(A_a, A_b, kappa, lse, omega, omega_g)
     E = jnp.einsum("rng,g->rn", p, poids)
-    pr = jnp.einsum("rng,rg,g->rn", p, rho, poids)
+    if omega_k is not None and lse is not None:
+        # §8.58 (R8) : ρ propre à chaque électorat j (ω_j), (R, N, G).
+        om = jnp.asarray(omega_k)
+        om = om[None, :] if om.ndim == 1 else om
+        ins = jnp.logaddexp(kq * A_a, kq * A_b)
+        rho_n = jax.nn.sigmoid(ins[:, None, :] - om[:, :, None] - (kq * lse)[:, None, :])
+        pr = jnp.einsum("rng,rng,g->rn", p, rho_n, poids)
+        G = jnp.clip(jnp.einsum("rng,rng,rg,g->rn", p, rho_n, q, poids) / jnp.clip(pr, 1e-12, None), 1e-6, 1 - 1e-6)
+    else:
+        rho = jnp.ones_like(q) if lse is None else duel_expression(A_a, A_b, kappa, lse, omega, omega_g)
+        pr = jnp.einsum("rng,rg,g->rn", p, rho, poids)
+        G = jnp.clip(jnp.einsum("rng,rg,rg,g->rn", p, rho, q, poids) / jnp.clip(pr, 1e-12, None), 1e-6, 1 - 1e-6)
     Rk = pr / jnp.clip(E, 1e-12, None)
-    G = jnp.clip(jnp.einsum("rng,rg,rg,g->rn", p, rho, q, poids) / jnp.clip(pr, 1e-12, None), 1e-6, 1 - 1e-6)
     lG = jnp.log(G) - jnp.log1p(-G)
     wgt = E * Rk * cm
     wgt = wgt / jnp.clip(wgt.sum(1, keepdims=True), 1e-12, None)
@@ -347,6 +370,9 @@ def reports_cellules(A, champ_mask, ia, ib, k_idx, kappa, eta_diff, lse, omega, 
         # défection fixe ε = 2 % (défection publiée typique ; figé avant le fit).
         om = jnp.asarray(omega)
         om = om if om.ndim else jnp.full(cel.shape[0], om)
+        if omega_k is not None:                                            # §8.58 : ω de l'électorat k
+            okk = jnp.asarray(omega_k)
+            om = okk[k_idx] if okk.ndim == 1 else okk[jnp.arange(cel.shape[0]), k_idx]
         kq_ = jnp.asarray(kappa)
         kq_ = kq_ if kq_.ndim else jnp.full(cel.shape[0], kq_)
         u = (jnp.arange(32) + 0.5) / 32
