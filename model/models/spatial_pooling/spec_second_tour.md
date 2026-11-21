@@ -3394,6 +3394,23 @@ inclus, `--lse-officiel`, B = 100).
 **Parcimonie.** Si R7 seul passe les mêmes critères, R7 prime (R8 n'est jugé que sur ce que R7 ne fait
 pas).
 
+**Résultat du dépistage MAP de R8 sur le segment** (`results/modes_map_hier_ra_fid_omk_2022_T1-30.json`,
+6 initialisations, mode dominant = init 0) :
+
+- partage Mélenchon 63,6 (63) ✓ ;
+- « Aucun » : MAE 3,63 ✓, pour la première fois ;
+- c médian 58, contre 15 pour A′2 ;
+- résidus « Aucun » +1,4 (lignes propres) et −0,3 (autres) ✓ ;
+- MAE des partages 5,0 ;
+- MAIS σ_LP/σ_M 3,08 ✗, monotonie 0 % ✗ (21 % en version pondérée), LP→JLM 41 ✗, σ_Mélenchon 0,28.
+
+**Règle du protocole : pas de NUTS** (3b échoue). L'abstention est réglée par ω_k et R7 ; ce qui reste
+est géométrique, et c'est ce que le cercle traitait (monotonie et structure réussies en A′1).
+
+**Étape suivante, figée.** R8c = cercle (arc libre) + R7 + ω_k (`hiercercle_ra_fid_omk`). Dépistage
+MAP d'abord, mêmes critères plus la monotonie circulaire. NUTS seulement si le dépistage passe 2 et
+3b.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

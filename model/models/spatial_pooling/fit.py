@@ -588,9 +588,16 @@ def _duel_par_tirage(fit, w, ia: np.ndarray, ib: np.ndarray) -> np.ndarray:
         if getattr(fit, "gamma_draws", None) is not None:                 # §8.48 bis
             from .geometry import THETA
             og = -fit.gamma_draws[:, None] * np.cos(np.asarray(THETA))[None, :]
+        rho = None
+        if getattr(fit, "omega_k_draws", None) is not None and lse is not None:   # §8.58 (R8)
+            from .geometry import rho_electorats
+            rn, pn = rho_electorats(jnp.asarray(A), jnp.asarray(A[s_idx, ia]), jnp.asarray(A[s_idx, ib]),
+                                    jnp.asarray(fit.kappa_draws), jnp.asarray(lse),
+                                    jnp.asarray(fit.omega_k_draws), fit.masque_lse)
+            rho = (pn * rn).sum(-2)
         return np.asarray(duel_shares_poids(A[s_idx, ia], A[s_idx, ib], fit.kappa_draws,
                                             fit.eta_draws[s_idx, ia], fit.eta_draws[s_idx, ib],
-                                            lse, fit.omega_draws, pq, og))
+                                            lse, fit.omega_draws, pq, og, rho=rho))
     A = np.asarray(log_attractivite(jnp.asarray(fit.mu_draws), jnp.asarray(fit.sigma_draws),
                                     jnp.asarray(w), _nu(fit)))           # (S, N, B)
     extra = ()

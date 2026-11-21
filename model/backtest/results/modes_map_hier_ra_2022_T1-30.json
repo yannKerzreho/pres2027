@@ -1,0 +1,64 @@
+{
+ "spec": "spec_second_tour §8.50-8.51",
+ "variante": "hier_ra",
+ "stem": "map_hier_ra_2022_T1-30",
+ "election": 2022,
+ "coupure": "T1-30",
+ "B_quad": 100,
+ "chaines": [
+  {
+   "chaine": 0,
+   "lp": 12072.3,
+   "partages": {
+    "Jean-Luc Mélenchon": [
+     66.0,
+     63.0
+    ],
+    "Valérie Pécresse": [
+     59.0,
+     65.0
+    ],
+    "Yannick Jadot": [
+     86.8,
+     87.5
+    ],
+    "Éric Zemmour": [
+     14.5,
+     9.4
+    ]
+   },
+   "aucun": {
+    "Jean-Luc Mélenchon": [
+     51.4,
+     43.6
+    ],
+    "Valérie Pécresse": [
+     12.4,
+     29.9
+    ],
+    "Yannick Jadot": [
+     37.7,
+     33.3
+    ],
+    "Éric Zemmour": [
+     11.2,
+     12.7
+    ]
+   },
+   "sigma_melenchon": 0.3014,
+   "sigma_lp_sur_macron": 4.714,
+   "nu": null,
+   "log_nu_sd": null,
+   "nu_q95": null,
+   "t1_mae": 3.032,
+   "t1_couv": "0/12",
+   "monotonie_gauche": 0.0
+  }
+ ],
+ "partition": {
+  "dominant": [
+   0
+  ],
+  "autres": []
+ }
+}
