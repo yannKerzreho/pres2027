@@ -31,7 +31,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] **DEMANDE VM n° 6 (session locale, 2026-11-22 ~03:10Z) : profil de l'arc, §8.70 (d) 4.** C'est une
+- [ ] [EN COURS VM (début 2026-11-22 03:05Z, routine : 8 tâches MAP, 4 en parallèle)] **DEMANDE VM n° 6 (session locale, 2026-11-22 ~03:10Z) : profil de l'arc, §8.70 (d) 4.** C'est une
   étape à part, que le Mac ne fait pas. Code : `PRES2027_ARC_FIXE` (commit de ce lot).
   - Pour A ∈ {1.8, 3.5, 5.0, 6.2} :
     - `PRES2027_ARC_FIXE=A PRES2027_B_QUAD=100 python -m model.backtest.map_screen --variante hiercercle_ra_fid --inits 4 --pas 20000 --decroissant --lse-officiel`
