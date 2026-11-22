@@ -31,7 +31,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] **DEMANDE VM n° 5 (session locale, 2026-11-21 ~23:45Z), après R8c** : V2 en NUTS de la référence
+- [ ] [SUSPENDUE 22/11 ~01:30Z par la session locale (revue du 22/11, F1/F7) : les points V2 à 5 000 pas ne sont pas convergés ; relecture d'abord au MAP 20 000 pas sur le Mac. NE PAS LANCER. Les noms de sortie incluent maintenant automatiquement `_v2sans…` / `_sans…` : ne plus passer `--out`] **DEMANDE VM n° 5 (session locale, 2026-11-21 ~23:45Z), après R8c** : V2 en NUTS de la référence
   `hiercercle_ra_fid` et du témoin `hier` (spec §8.69 ; code sur la branche, 930d1ab et suivants).
   - Pour chaque paire P ∈ {`Emmanuel Macron|Jean-Luc Mélenchon`, `Emmanuel Macron|Eric Zemmour`} et
     chaque variante V ∈ {`hiercercle_ra_fid`, `hier`}, lancer :

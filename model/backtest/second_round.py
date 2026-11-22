@@ -621,7 +621,13 @@ def main() -> None:
                                  + ("_noeud" if args.noeud_resultat else "")
                                  + ("_famille" if args.ancres_famille else "")
                                  + ("_lseo" if args.lse_officiel else "")
-                                 + ("_init" if args.init_depuis else "") + ".json")
+                                 + ("_init" if args.init_depuis else "")
+                                 # §8.69 / revue 22/11 F7 : jamais le même nom qu'un fit complet
+                                 + "".join(f"_{suf}{''.join(ch for ch in os.environ[ev] if ch.isalnum())}"
+                                           for ev, suf in (("PRES2027_SANS_HYP", "sans"),
+                                                           ("PRES2027_SANS_PAIRE", "v2sans"))
+                                           if os.environ.get(ev))
+                                 + ".json")
     nuts_json = dict(nuts)
     if args.chaine is not None or args.fusionner:
         # Une tâche unitaire = UN fit : sinon les fichiers de chaîne se mélangeraient.
