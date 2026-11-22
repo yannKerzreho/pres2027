@@ -3885,6 +3885,17 @@ Mélenchon–Macron, `hiercercle_ra_fid` :
 - L'arc est une crête plate (de 1,8 à 6,0 rad à κ, ω et c constants), et c'est lui qui règle le
   passage de la droite vers Mélenchon par l'arrière du cercle.
 
+**Lecture de la session locale à 20 000 pas (22/11 ~01:45Z), qui confirme la revue.** Fichiers
+`results/v1loho_map_hiercercle_ra_fid_2022_T1-30_p20000d_sans_*.json`.
+
+| Hypothèse retirée | Point retenu | MAE partage | « Aucun » | U_fid | Autres modes |
+|---|---|---|---|---|---|
+| Mélenchon–Macron | init 4, lp 12 707,5 | **24,0** | 10,8 | 10,4 | 10,7 (lp 12 656-12 657) |
+| Macron–Pécresse | inits 0/2, lp 12 357,3 | **24,0** | 7,3 | 14,5 | de 9,8 (init 5, −70 nats) à 25,6 |
+
+Avec Zemmour à 5 000 pas (8,8), la moyenne de la référence passe à ≈ 18,9 : le V1-LOHO échoue
+nettement.
+
 **(b) Retrait de ω_k : formulation corrigée.**
 
 - La règle de §8.67 (b) porte sur le COÛT du retrait (< 2 pt et < 1 pt). Elle reste remplie sur la
