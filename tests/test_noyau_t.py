@@ -88,3 +88,17 @@ def test_cercle_ferme_arc_egal_2pi():
     info = initialize_model(jax.random.PRNGKey(0), spatial_pooling_model_ou, model_kwargs=b["kwargs"],
                             init_strategy=init_to_median)
     assert np.isfinite(float(info.potential_fn(info.param_info.z)))
+
+
+def test_arc_fixe_param():
+    """§8.70 (d 4) : arc_fixe ⇒ arc déterministe égal à la valeur posée."""
+    import jax
+    from numpyro import handlers
+    import model.backtest.multi_election as M
+    M.VARIANTES["hiercercle_ra_fid_arc"] = {"eta_hier": True, "carte_cercle": True, "_reports_avant": True,
+                                            "fidelite": True}
+    b = M.preparer(2022, "T1-30", "hiercercle_ra_fid_arc")
+    from model.models.spatial_pooling.joint_model import spatial_pooling_model_ou
+    kw = dict(b["kwargs"], arc_fixe=3.5)
+    tr = handlers.trace(handlers.seed(spatial_pooling_model_ou, 0)).get_trace(**kw)
+    assert abs(float(tr["arc"]["value"]) - 3.5) < 1e-5

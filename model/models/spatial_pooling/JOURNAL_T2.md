@@ -31,6 +31,21 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- [ ] **DEMANDE VM n° 6 (session locale, 2026-11-22 ~03:10Z) : profil de l'arc, §8.70 (d) 4.** C'est une
+  étape à part, que le Mac ne fait pas. Code : `PRES2027_ARC_FIXE` (commit de ce lot).
+  - Pour A ∈ {1.8, 3.5, 5.0, 6.2} :
+    - `PRES2027_ARC_FIXE=A PRES2027_B_QUAD=100 python -m model.backtest.map_screen --variante hiercercle_ra_fid --inits 4 --pas 20000 --decroissant --lse-officiel`
+      (données complètes) ;
+    - la même commande précédée de `PRES2027_SANS_PAIRE="Emmanuel Macron|Jean-Luc Mélenchon"` (V2).
+  - Cela fait 8 tâches, 4 en parallèle au plus.
+  - Lecture :
+    - données complètes : `python -m model.backtest.modes --variante hiercercle_ra_fid --stem map_hiercercle_ra_fid_2022_T1-30_arc<A avec p>_p20000d --n 4 --lse-officiel --sans-criteres` (lp par chaîne) ;
+    - V2 : `PRES2027_SANS_PAIRE=… python -m model.backtest.modes … --stem map_hiercercle_ra_fid_2022_T1-30_arc<A>_p20000d_v2sans_EmmanuelMacronJeanLucMélenchon --n 4 --lse-officiel --v2-paire --sans-criteres`.
+  - Critère figé : si Δlp (meilleure lp par arc, données complètes) < 10 entre deux arcs alors que la
+    prédiction V2 bouge de plus de 4 pt, les données ne révèlent pas l'arc ⇒ ARBITRAGE (l'intégrer en
+    NUTS, ou le fixer par une règle pré-enregistrée sur 2017 + 2022).
+  - Consigner dans la spec, §8.70 (d) 4.
+
 - [ ] (session locale, Mac, MAP 20 000 pas `--decroissant`) **§8.70 (d), dans l'ordre :**
   1. V2 de la référence et de `hier` (2 paires) ; V1-LOHO de R8c (3 hypothèses) ;
   2. plan 2×2 (`hier_ra`, `hiercercle_sr`) ;

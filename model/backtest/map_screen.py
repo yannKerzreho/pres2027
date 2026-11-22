@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import time
 
 import jax
@@ -112,9 +113,10 @@ def main() -> None:
     args = ap.parse_args()
     fn, kw = capturer(args.variante, args.election, args.coupure, args.lse_officiel)
     stem = f"map_{args.variante}_{args.election}_{args.coupure}"
+    if os.environ.get("PRES2027_ARC_FIXE"):                      # §8.70 d 4
+        stem += "_arc" + os.environ["PRES2027_ARC_FIXE"].replace(".", "p")
     if args.pas != 5000 or args.decroissant:
         stem += f"_p{args.pas}" + ("d" if args.decroissant else "")
-    import os
     if os.environ.get("PRES2027_SANS_HYP"):                       # V1 (§8.59)
         stem += "_sans_" + "".join(ch for ch in os.environ["PRES2027_SANS_HYP"] if ch.isalnum())
     if os.environ.get("PRES2027_SANS_PAIRE"):

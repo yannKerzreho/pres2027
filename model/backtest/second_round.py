@@ -323,6 +323,8 @@ def _fit(raw, as_of, election, nuts):
             hyp = ra["hypothese"].str.replace("—", "–").str.split("–")
             ra = ra[~hyp.apply(lambda h: {x.strip().split()[-1] for x in h} == noms)]
         reps.append(ra.drop(columns=[c for c in ("nature_t1", "page") if c in ra.columns]))
+    if os.environ.get("PRES2027_ARC_FIXE"):                    # profil de l'arc (§8.70 d 4)
+        kw["arc_fixe"] = float(os.environ["PRES2027_ARC_FIXE"])
     if kw.pop("_lse_officiel", False):
         # §8.49 : valeur inclusive sur le champ officiel du T1 (--lse-officiel)
         res = load_results()
@@ -624,7 +626,7 @@ def main() -> None:
                                  + ("_init" if args.init_depuis else "")
                                  # §8.69 / revue 22/11 F7 : jamais le même nom qu'un fit complet
                                  + "".join(f"_{suf}{''.join(ch for ch in os.environ[ev] if ch.isalnum())}"
-                                           for ev, suf in (("PRES2027_SANS_HYP", "sans"),
+                                           for ev, suf in (("PRES2027_ARC_FIXE", "arc"), ("PRES2027_SANS_HYP", "sans"),
                                                            ("PRES2027_SANS_PAIRE", "v2sans"))
                                            if os.environ.get(ev))
                                  + ".json")

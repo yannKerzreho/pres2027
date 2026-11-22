@@ -3997,6 +3997,18 @@ La référence de la session locale est désormais `hiercercle_ra_fid` (ω_k ret
 §8.67 b, au MAP) : ce NUTS montre que ω_k est identifié (s_ω q5 1,01) et que la case « Aucun » y est bonne
 (3,20) ; à confronter au NUTS de `hiercercle_ra_fid` avant de confirmer le retrait.
 
+**§8.71, conséquence pour §8.70 (b) (session locale, 22/11 ~03:10Z).**
+
+- Le NUTS de R8c donne s_ω de quantile 5 % 1,01 > 0,2. Par le critère figé de la revue du 21/11
+  (« retrait si s_ω q5 < 0,2 en NUTS »), **ω_k est identifié et ne doit pas être retiré sur ce seul
+  motif**.
+- Le retrait de §8.68 reposait sur un coût V1-LOHO mesuré sur des points MAP non convergés ; il est
+  **suspendu**. R8c redevient la variante de référence jusqu'à la relecture à 20 000 pas : V1-LOHO de
+  R8c, en cours sur le Mac.
+- La règle sera réappliquée à 20 000 pas avec ses trois clauses (partage < 2, « Aucun » < 1,
+  σ_LP/σ_M < 1,5).
+- Les 6 « modes » MAP de R8c étaient des non-convergences (§8.71), ce qui confirme §8.70 (a).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

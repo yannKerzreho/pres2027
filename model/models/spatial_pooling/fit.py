@@ -93,6 +93,7 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
                         abst_situee: bool = False, noyau_t: bool = False, sigma_lie: bool = False,
                         arc_ferme: bool = False, fidelite: bool = False, omega_electorat: bool = False,
                         melange_lambda: bool = False,
+                        arc_fixe: float | None = None,
                         reports: pd.DataFrame | None = None,
                         champ_reports: list | None = None) -> SpatialPoolingFit:
     """Roster -> arrays -> NUTS, en une seule inférence jointe.
@@ -194,6 +195,8 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         kwargs["carte_cercle"] = True
         if arc_ferme:                                                  # R6 (§8.55) : A = 2π
             kwargs["arc_fixe"] = float(2 * np.pi)
+        elif arc_fixe is not None:                                     # profil de l'arc (§8.70 d 4)
+            kwargs["arc_fixe"] = float(arc_fixe)
         if abst_situee:
             kwargs["abst_situee"] = True
     if carte_2d:
