@@ -3867,6 +3867,69 @@ retenu (Δlp ≤ 10). Fichiers `results/v2paire_map_*_2022_T1-30_v2sans_*.json`.
   (V1-LOHO, §8.68), mais ils améliorent l'AGRÉGAT d'un duel jamais sondé de près de 3 pt. C'est le
   premier argument chiffré, hors plausibilité, pour garder la couche de reports dans le modèle unique.
 
+### 8.70 Corrections de la revue du 22/11 ~01:00Z (avant toute nouvelle lecture)
+
+**(a) MAP non convergé à 5 000 pas (§8.67 c vérifié).** À 20 000 pas (`--decroissant`), plusieurs
+inits convergent vers un même point. Le point de meilleure lp n'est pas celui de 5 000 pas.
+
+Mélenchon–Macron, `hiercercle_ra_fid` :
+
+| | 5 000 pas | 20 000 pas |
+|---|---|---|
+| Meilleur point | init 3, lp 12 642, MAE 10,6 | init 4, lp ≈ 12 703-12 708, MAE ≈ 24 |
+| Arc du meilleur point | | 1,76 rad (presque un segment) |
+| Inits 0, 2, 3 | | même point, lp 12 651, arc 3,56, MAE ≈ 10,7 |
+
+- **Les tableaux de §8.68 et §8.69 portent sur des points non convergés.** Leurs verdicts (ω_k retiré,
+  V2 favorable) sont **provisoires** et doivent être relus à 20 000 pas.
+- L'arc est une crête plate (de 1,8 à 6,0 rad à κ, ω et c constants), et c'est lui qui règle le
+  passage de la droite vers Mélenchon par l'arrière du cercle.
+
+**(b) Retrait de ω_k : formulation corrigée.**
+
+- La règle de §8.67 (b) porte sur le COÛT du retrait (< 2 pt et < 1 pt). Elle reste remplie sur la
+  médiane de tous les modes :
+  - partage : 16,7 avec ω_k, 11,9 sans ;
+  - « Aucun » : 8,1 avec ω_k, 6,4 sans.
+- Le « gain de 5,1 pt » n'est pas robuste à 20 000 pas (environ 18,9 contre 19,7, et R8c n'a pas été
+  prolongé). Il ne doit plus être présenté comme un gain.
+- **La clause « sans casser σ_LP/σ_M < 1,5 » n'était pas vérifiée.** La référence atteint 1,55-1,62 sur
+  des points retenus, alors que R8c restait entre 1,31 et 1,48. La mention « de 1,0 à 1,6 » de §8.68
+  était un relâchement non signalé de 1,5 à 1,6. **Retiré** : le seuil reste 1,5, et le retrait de ω_k
+  est **provisoire** tant que la clause n'est pas relue à 20 000 pas.
+
+**(c) V2 : attribution non identifiée.** Le témoin `hier` diffère de la référence par trois facteurs :
+la géométrie, les reports et R7. Le gain V2 vient du passage arrière du cercle : électorats Le Pen 45,6
+et Pécresse 28,8 vers Mélenchon, contre 0 pour `hier`. Les cellules de la référence (MAE 11,45) sont au
+niveau de U_fid (11,43), et l'agrégat juste vient en partie de compensations. **La phrase « premier
+argument chiffré pour garder la couche de reports » est retirée**, en attendant le plan 2×2 (d).
+
+Le critère V2 ne discrimine presque pas : `hier` tient seul le seuil de 8,3, et le gain vient d'une
+seule paire. Les seuils V2 de §8.66 (`hier` + 0,5) et de §8.67 (`hier` − 1) n'ont pas le même rôle :
+§8.66 protège les duels (τ_report ne doit pas les bouger), §8.67 exige un gain.
+
+**(d) Protocoles figés pour la suite (MAP 20 000 pas `--decroissant`, Mac) :**
+
+1. **Relecture V2 de la référence (2 paires) et V1-LOHO de R8c (3 hypothèses) à 20 000 pas.**
+   - Si le point de meilleure lp en V2 donne Macron–Mélenchon avec |écart| > 6, ou une MAE V2 >
+     `hier` − 1 (5,9, `hier` relu lui aussi à 20 000 pas), le V2 favorable est retiré et la DEMANDE
+     VM n° 5 annulée.
+   - La règle de retrait de ω_k est réappliquée à 20 000 pas, avec la clause σ_LP/σ_M < 1,5.
+2. **Plan 2×2 en V2 : {segment, cercle} × {sans, avec reports}** (`hier`, `hier_ra`, `hiercercle_sr`,
+   référence).
+   - On attribue le gain aux reports si MAE(`hiercercle_sr`) − MAE(référence) ≥ 1, en moyenne sur les
+     2 paires.
+   - Prédiction consignée : `hiercercle_sr` ≥ 70 sur Macron–Mélenchon.
+3. **Contrôles §8.60 en V2** (Macron–Pécresse, Macron–Le Pen). On qualifie le V2 de « favorable »
+   seulement si la référence est ≤ `hier` sur au moins 3 des 4 paires.
+4. **Profil de l'arc** (arc fixé à 1,8 / 3,5 / 5,0 / 6,2, données complètes et V2 Macron–Mélenchon).
+   - Si Δlp < 10 entre deux arcs alors que V2 bouge de plus de 4 pt, les données ne révèlent pas l'arc.
+   - Il faudra alors intégrer l'arc (NUTS), ou le fixer par une règle pré-enregistrée sur 2017 + 2022.
+     Ce dernier point est un **ARBITRAGE**.
+5. **η ≡ 0 sur la référence** (−24 paramètres). η est retiré si V2 ≤ référence + 1, les duels en
+   échantillon ≤ référence + 0,5 ET V1-LOHO ≤ référence + 2.
+6. **Confirmation sur 2017** (paires ayant au moins 3 duels), même seuil « ≤ `hier` − 1 ».
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

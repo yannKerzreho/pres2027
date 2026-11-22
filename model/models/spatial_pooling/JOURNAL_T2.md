@@ -31,6 +31,17 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- [ ] (session locale, Mac, MAP 20 000 pas `--decroissant`) **§8.70 (d), dans l'ordre :**
+  1. V2 de la référence et de `hier` (2 paires) ; V1-LOHO de R8c (3 hypothèses) ;
+  2. plan 2×2 (`hier_ra`, `hiercercle_sr`) ;
+  3. contrôles Macron–Pécresse et Macron–Le Pen ;
+  4. profil de l'arc (drapeau d'arc fixe à écrire) ;
+  5. η ≡ 0 ;
+  6. 2017.
+
+  Prérequis : `hiercercle_sr` dans le dictionnaire de map_screen ; provenance (SANS_PAIRE, pas,
+  `--decroissant`) ; partition par log-densité.
+
 - [ ] [SUSPENDUE 22/11 ~01:30Z par la session locale (revue du 22/11, F1/F7) : les points V2 à 5 000 pas ne sont pas convergés ; relecture d'abord au MAP 20 000 pas sur le Mac. NE PAS LANCER. Les noms de sortie incluent maintenant automatiquement `_v2sans…` / `_sans…` : ne plus passer `--out`] **DEMANDE VM n° 5 (session locale, 2026-11-21 ~23:45Z), après R8c** : V2 en NUTS de la référence
   `hiercercle_ra_fid` et du témoin `hier` (spec §8.69 ; code sur la branche, 930d1ab et suivants).
   - Pour chaque paire P ∈ {`Emmanuel Macron|Jean-Luc Mélenchon`, `Emmanuel Macron|Eric Zemmour`} et
@@ -1167,6 +1178,48 @@ conservé pour l'historique.
   instables (R̂ 7,5) et s_ab +0,7 pt ⇒ phase 2 à faire.
 
 
+
+## Revue Opus 2026-11-22 ~01:00Z (session locale) — MAP non convergé, V2, parcimonie : intégration point par point
+
+- **F1. MAP non convergé à 5 000 pas.** Le meilleur point à 20 000 pas renverse Mélenchon–Macron (MAE
+  ≈ 24 contre 10,6) ; l'arc est une crête plate. **Retenu** : §8.70 (a). Les verdicts de §8.68 et
+  §8.69 sont **provisoires**. La lecture à 20 000 pas de la session locale est en cours.
+- **F2. V2 confondu (géométrie, reports, R7).** **Retenu** : §8.70 (c) retire la phrase d'attribution ;
+  plan 2×2 en file.
+- **F3. Contrôles de §8.60 non rapportés.** **Retenu, en file** : §8.70 (d) 3.
+- **F4. Critère V2 peu discriminant, seuils incohérents.** **Retenu en partie.**
+  - Le constat est juste. On ajoute la règle « ≤ `hier` sur au moins 3 des 4 paires ».
+  - Les deux seuils n'ont pas le même rôle (protéger les duels ou exiger un gain) ; c'est désormais
+    écrit. **Réfuté** sur « incohérents ».
+- **F5. Retrait de ω_k.** Il tient sur le coût (médiane des modes 16,7 → 11,9), mais pas comme « gain
+  de 5,1 », et la clause σ_LP/σ_M < 1,5 a été relâchée sans le dire. **Retenu** : §8.70 (b).
+  Formulation corrigée, retrait provisoire, seuil 1,5 rétabli. C'était bien un relâchement non
+  signalé ; je le reconnais.
+- **F6. Partition encore par σ_Mélenchon ; `hier_ra` (13,4) reposant sur une seule init.** **Retenu.**
+  Partition par log-densité, en file (déjà notée le 21/11, pas faite). Le 13,4 du segment est requalifié
+  de fragile.
+- **F7. Risque d'écrasement des sorties NUTS (DEMANDE n° 5 sans `--out`, « | » en shell).** **Corrigé**
+  (0abefa7) : les noms sont automatiquement suffixés par `_sans…` / `_v2sans…`, et la DEMANDE n° 5 est
+  **SUSPENDUE**. Pour la provenance (SANS_PAIRE, pas, `--decroissant`) et le dictionnaire `hiercercle_sr`
+  dans map_screen : **en file.**
+- **F7 bis. Asymétrie de mesure.** Le modèle calcule ses cellules sans la fidélité dans le Newton,
+  alors que U_fid l'inclut, ce qui avantage le témoin. **Pris acte** : c'est conservateur, et c'est
+  écrit en §8.70.
+- **F8. Pas de fuite V2 au sens strict** (aucun report ni duel où Mélenchon est finaliste ; il reste
+  222 lignes de l'électorat Mélenchon dans les hypothèses Macron–X, ce qui est légitime et correspond
+  à la situation de 2027). **Pris acte.**
+- **Parcimonie.** Il reste environ 6 scalaires plus η (24 paramètres) ; l'arc est mal identifié ; ε de
+  R7 est figé à 2 % alors que la mesure donne 3-8 %. Ordre de retrait proposé : η ≡ 0 d'abord, puis le
+  profil de l'arc, puis R7. **Retenu** (pistes 4-5 ci-dessous).
+  - `hier_ra` passe en V2 comme témoin du plan factoriel et non comme candidat : son σ_LP/σ_M de 3,1 à
+    3,8 n'est pas crédible (front républicain). **Retenu.**
+- **Pistes**, toutes figées en §8.70 (d) et mises en file dans cet ordre :
+  1. relecture à 20 000 pas (V2 de la référence et V1-LOHO de R8c) ;
+  2. plan 2×2 ;
+  3. contrôles §8.60 ;
+  4. profil de l'arc ;
+  5. η ≡ 0 ;
+  6. 2017.
 
 ## Revue Opus 2026-11-21 ~20:30Z (session locale) — V1-LOHO, témoin U, parcimonie : intégration point par point
 
