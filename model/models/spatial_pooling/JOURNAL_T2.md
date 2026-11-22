@@ -91,7 +91,7 @@ l'historique, ajouter en bas de « Historique ».
   et critères dans la spec d'abord.
 - [ ] F7 : aligner `s_r` et le champ du Newton δ des reports.
 
-- [ ] [EN COURS VM (début 2026-11-21 10:10Z, routine : 4 chaînes CPU, ~10 h attendues ; 1er lancement de 09:55Z perdu au redémarrage du conteneur)] **DEMANDE VM n° 4 (session locale, 2026-11-21 ~10:00Z) — PRIORITAIRE après R6** : R8c, cercle +
+- [x] [FAIT 22/11 02:25Z, §8.71 : NUTS VM 4 chaînes, un seul mode (lp à 4 nats), PASSE tous les critères in-sample de §8.58 : « Aucun » 3,20, partages 3,65 (persistance 2,61), Mélenchon 62,3, σ_LP/σ_M 1,42 (< 1,5 aussi), T1 3,03, s_ω q5 1,01 ; structure LP→JLM 42,6 ✗, σ_JLM 0,17 ✗ ; V1 in-sample 11,25 (non concluant, Roussel 89 contre 66) ; V1 hors échantillon reste en échec (MAP) ⇒ conclusion de §8.64-8.68 inchangée ; prédiction « MAE ≥ 5 » démentie, MAP fidèle ici] [ex-EN COURS VM (début 2026-11-21 10:10Z)] **DEMANDE VM n° 4 (session locale, 2026-11-21 ~10:00Z) — PRIORITAIRE après R6** : R8c, cercle +
       fidélité révélée + abstention par électorat (spec §8.56, §8.58 ; dépistage MAP réussi sur les
       critères 2 et 3b, cf. §8.58 « Résultat du dépistage MAP de R8c »). Code sur la branche (02cc3ff
       et suivants).
@@ -1015,6 +1015,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-22 02:30Z (routine) : NUTS de R8c sur la VM terminé (DEMANDE VM n° 4, 4 chaînes, ≈ 16 h) ; tous les critères in-sample de §8.58 passent, V1 hors échantillon toujours en échec ; spec §8.71. VM libre ; DEMANDE VM n° 5 suspendue par la session locale.
 - 2026-11-19 00:08Z (routine) : main fusionnée (bruit de scénarios par candidat) ; test_alertes_prod adapté (mock acceptant `tour=`, comme test_listes) ; aucun duel postérieur au 17/11 (score prospectif vide).
 - 2026-11-18 20:08-20:40Z (routine) : test prospectif 2027 (§8.37) : gel des prédictions abst et hier au 17/11 (2 fits).
 - 2026-11-18 19:08-19:40Z (routine) : main fusionnée (Riner, Polony placés) ; sensibilité P(élu) cohérente (§8.36, 1 fit).

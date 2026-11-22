@@ -3941,6 +3941,62 @@ seule paire. Les seuils V2 de §8.66 (`hier` + 0,5) et de §8.67 (`hier` − 1) 
    échantillon ≤ référence + 0,5 ET V1-LOHO ≤ référence + 2.
 6. **Confirmation sur 2017** (paires ayant au moins 3 duels), même seuil « ≤ `hier` − 1 ».
 
+### 8.71 Résultat NUTS de R8c sur la VM (DEMANDE VM n° 4 ; 22/11 ~02:25Z, routine)
+
+`hiercercle_ra_fid_omk --lse-officiel`, 2022 à T1−30, 4 chaînes CPU indépendantes (≈ 16 h chacune),
+B = 25. Fichiers : `results/second_round_hiercercle_ra_fid_omk_v2_2022_T1-30_lseo.json`,
+`results/modes_second_round_hiercercle_ra_fid_omk_v2_2022_T1-30_lseo.json`. Lecture d'un postérieur, pas
+d'un dépistage.
+
+**Convergence.** lp 12876,6 / 12880,3 / 12878,2 / 12876,2 (écart 4 nats), 4 chaînes retenues, un seul mode
+(partition : 4 dominantes, 0 autre) ; R̂ max 1,035, ESS min 154, 0 divergence ; duel Macron–Le Pen
+58,96 % [48,0 ; 69,6] (résultat 58,55 ✓), écart entre chaînes 0,56 pt ; écart max des duels 0,14 pt.
+Les 6 modes distincts du dépistage MAP (§8.58) étaient donc des points non convergés, pas des modes du
+postérieur (revue du 21/11, point 2, test (i) confirmé indirectement).
+
+**Critères de §8.58 (figés) :**
+
+| critère | seuil | R8c NUTS (VM) | MAP (§8.58) |
+|---|---|---|---|
+| « Aucun » MAE | ≤ 3,75 | 3,20 ✓ | 3,35 |
+| MAE des 4 partages (diagnostic) | ≤ 5 | 3,65 ✓ (persistance 2,61) | 3,55 |
+| Mélenchon | à 5 pt de 63,0 | 62,3 ✓ | 62,4 |
+| σ_LP/σ_M | < 2 (et < 1,5 de §8.50) | 1,42 ✓ (✓) | 1,54 |
+| 3b monotonie | ≥ 90 % | part mal classée pondérée 0,0 ✓ | 0 % |
+| stabilité | §8.50 | 4/4 chaînes, 0,14 pt ✓ | — |
+| T1 MAE | ≤ 3,1 | 3,03 ✓ (couverture 1/12) | 3,0 |
+| s_ω, quantile 5 % | > 0,2 | 1,01 ✓ (médiane 1,58) | — |
+| V1 | §8.57 | non fait en NUTS (MAP : échec, §8.63-8.64) | — |
+
+Partages (modèle / mesure) : Mélenchon 62,3 / 63,0 ; Pécresse 61,6 / 65,0 ; Jadot 84,9 / 87,5 ;
+Zemmour 17,3 / 9,4. « Aucun » : 41,5 / 43,6 ; 20,7 / 29,9 ; 31,9 / 33,3 ; 12,8 / 12,7.
+Structure : Zemmour → Mélenchon 34,3 ✓ ; Le Pen → Mélenchon 42,6 ✗ (≥ 45) ; σ_Mélenchon 0,17 ✗ (≤ 0,15).
+c médian 55,5.
+
+**Verdict.** R8c passe TOUS les critères in-sample de §8.58 en NUTS, de façon stable, et passe aussi le
+seuil général σ_LP/σ_M < 1,5 (le relâchement à 2 ne sert plus). Le critère 1 de §8.50 (MAE ≤
+persistance) échoue (3,65 contre 2,61), comme tous les modèles. Le V1 reste le critère hors échantillon
+décisif, et il échoue au MAP (§8.63-8.64, §8.68) : **R8c reproduit les reports qu'il voit, pas ceux qu'on
+lui cache**. Ce résultat NUTS ne change donc pas la conclusion de §8.64-8.68.
+
+**Prédictions figées (journal, revue routine du 21/11).** « MAE ≥ 5 » : DÉMENTIE (3,65) ;
+« σ_LP/σ_M dans [0,7 ; 1,6] » : vérifiée (1,42). Sur ce modèle, le dépistage MAP à 5000 pas a bien prédit
+les grandeurs NUTS (écart ≤ 0,15 pt sur les critères, sauf σ_LP/σ_M 1,54 → 1,42) : le point 2 de la revue
+(MAP optimiste) ne se vérifie pas ici, contrairement à A′2.
+
+**Test de la revue du 21/11, point 4 (in-sample)** : bloc `v1_melenchon_macron` de ce fit, données
+complètes (lignes Mélenchon–Macron vues) : MAE des partages 11,25 (U 13,83, U_fid 10,17, 50/50 14,63).
+Entre les deux seuils figés (> 15 structurel, < 8 identification) : NON CONCLUANT. L'erreur vient surtout
+de Roussel (89,2 contre 65,8) puis Pécresse (23,0 / 10,6) et Jadot (55,8 / 43,9) ; Hidalgo 49,6 / 38,5,
+Le Pen 42,6 / 42,3 ✓, Zemmour 34,3 / 42,7. Même en voyant les données, le noyau ne sépare pas assez
+Roussel de Hidalgo ⇒ indice d'une limite structurelle partielle (Roussel), pas d'un simple défaut
+d'identification.
+
+**Plateforme.** Ce jeu (VM, 4 chaînes) est probant seul ; à ne pas fusionner avec le jeu du Mac.
+La référence de la session locale est désormais `hiercercle_ra_fid` (ω_k retiré par la règle figée de
+§8.67 b, au MAP) : ce NUTS montre que ω_k est identifié (s_ω q5 1,01) et que la case « Aucun » y est bonne
+(3,20) ; à confronter au NUTS de `hiercercle_ra_fid` avant de confirmer le retrait.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
