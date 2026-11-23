@@ -41,7 +41,7 @@ l'historique, ajouter en bas de « Historique ».
   - V1-LOHO : échec (R8c 20,1, cercle + R7 19,3).
   - ω_k n'est PAS retiré (clause σ_LP/σ_M) ⇒ référence R8c.
 
-- [ ] [EN COURS VM (vague 1, arcs 1,8 et 3,5, finie 22/11 04:56Z ; vague 2, arcs 5,0 et 6,2, perdue au redémarrage du conteneur et relancée 2026-11-23 20:07Z, ~2 h)] **DEMANDE VM n° 6 (session locale, 2026-11-22 ~03:10Z) : profil de l'arc, §8.70 (d) 4.** C'est une
+- [x] [FAIT 23/11 ~22:00Z, §8.75 : V2 Macron–Mélenchon stable à 0,6 pt près sur les 4 arcs (66,06-66,63, observé 66,3) ⇒ critère non déclenché, V2 indépendant de l'arc ; lp favorise 3,5 sur un point isolé non convergé ; arc faiblement identifié, à fixer par parcimonie (session locale)] **DEMANDE VM n° 6 (session locale, 2026-11-22 ~03:10Z) : profil de l'arc, §8.70 (d) 4.** C'est une
   étape à part, que le Mac ne fait pas. Code : `PRES2027_ARC_FIXE` (commit de ce lot).
   - Pour A ∈ {1.8, 3.5, 5.0, 6.2} :
     - `PRES2027_ARC_FIXE=A PRES2027_B_QUAD=100 python -m model.backtest.map_screen --variante hiercercle_ra_fid --inits 4 --pas 20000 --decroissant --lse-officiel`
@@ -1043,6 +1043,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-23 22:10Z (routine) : profil de l'arc terminé (DEMANDE VM n° 6, 8 MAP, vague 2 relancée après redémarrage) ; V2 indépendant de l'arc (0,6 pt) ; spec §8.75 ; lecture préliminaire erronée corrigée. VM libre.
 - 2026-11-22 02:30Z (routine) : NUTS de R8c sur la VM terminé (DEMANDE VM n° 4, 4 chaînes, ≈ 16 h) ; tous les critères in-sample de §8.58 passent, V1 hors échantillon toujours en échec ; spec §8.71. VM libre ; DEMANDE VM n° 5 suspendue par la session locale.
 - 2026-11-19 00:08Z (routine) : main fusionnée (bruit de scénarios par candidat) ; test_alertes_prod adapté (mock acceptant `tour=`, comme test_listes) ; aucun duel postérieur au 17/11 (score prospectif vide).
 - 2026-11-18 20:08-20:40Z (routine) : test prospectif 2027 (§8.37) : gel des prédictions abst et hier au 17/11 (2 fits).
@@ -1455,9 +1456,9 @@ Relecture seule (cœurs pris par la vague 2 du profil de l'arc). Vérifié par l
    3,5, de l'ordre du seuil) ; Δlp sur données complètes (paire retirée incluse) ; pas d'issue si V2 bouge
    < 4 pt. INTÉGRÉ : lire la vague 1 avec la vague 2 ; juger l'identification sur le profil V2 avec le prior
    ajouté explicitement et un accord ≤ 1 nat entre inits par arc ; si V2 bouge < 4 pt pour tous les arcs,
-   fixer l'arc par parcimonie (cercle fermé ou médiane a priori). Lecture préliminaire (logs, potentiel avec
-   jacobiens, sans prior d'arc) : complet 1,8 → lp 12829,9, 3,5 → 12817,3 (Δ 12,6 nats pour 1,8) ; V2
-   12631,6 / 12618,8 (Δ 12,8). Prédiction de la revue : V2 Mélenchon bouge ≤ 3 pt entre 1,8 et 3,5.
+   fixer l'arc par parcimonie (cercle fermé ou médiane a priori). [Lecture préliminaire RETIRÉE : fausse,
+   init 0 prise pour le maximum ; voir §8.75.] Prédiction de la revue (V2 ≤ 3 pt entre 1,8 et 3,5) : VÉRIFIÉE
+   (0,3 pt ; 0,6 pt sur les 4 arcs).
 6. **Chemins bifurquants sur la référence.** Elle a changé trois fois (§8.68, §8.71, §8.72). DÉJÀ TRAITÉ par
    la session locale (5c3c043) : référence `hiercercle_ra_fid` figée avant lecture du V2 de R8c ; rapporter
    les V2 des deux variantes.

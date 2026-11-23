@@ -4147,6 +4147,40 @@ aux lp à arc libre.
 **Statut.** Le code (paires 2027, témoin de régression, polissage) est à écrire. Le lancement attend
 l'ARBITRAGE « V2 2022 = développement ». La session locale y souscrit, l'utilisateur tranche.
 
+### 8.75 Profil de l'arc (§8.70 d 4 ; DEMANDE VM n° 6) — résultat (23/11 ~22:00Z, VM, routine)
+
+`hiercercle_ra_fid --lse-officiel`, 2022 à T1−30, `PRES2027_ARC_FIXE` ∈ {1,8 ; 3,5 ; 5,0 ; 6,2},
+B = 100, MAP 20 000 pas `--decroissant`, 4 inits ; données complètes et V2 (Macron–Mélenchon retirée).
+Fichiers : `results/modes_map_hiercercle_ra_fid_2022_T1-30_arc*_p20000d.json`,
+`results/v2paire_map_hiercercle_ra_fid_2022_T1-30_arc*_p20000d_v2sans_*.json`.
+
+| arc | lp max complet (`modes`, sans jacobien) | lp max V2 | V2 Macron–Mélenchon, mode retenu (observé 66,3) | autre mode | inits au mode retenu (V2) |
+|---|---|---|---|---|---|
+| 1,8 | 12830,2 | 12631,9 | 66,32 (+0,02) | — | 4/4 |
+| 3,5 | 12854,7 | 12670,6 | 66,63 (+0,33) | 66,06 | 1/4 |
+| 5,0 | 12829,9 | 12654,4 | 66,30 (0,00) | 66,28 | 1/4 |
+| 6,2 | 12801,2 | 12603,6 | 66,41 (+0,11) | — | 4/4 |
+
+Potentiel (jacobiens compris), meilleure init : complet 12829,9 / 12850,4 / 12824,7 / 12805,6 ; V2 12631,6 /
+12665,9 / 12649,1 / 12608,0. Les maxima à 3,5 et 5,0 viennent d'UNE init chacun, de ‖∇‖ élevée (25 et 75 à
+3,5) : non convergés au sens strict.
+
+**Critère figé (§8.70 d 4).** La prédiction V2 bouge de 0,6 pt au plus entre arcs et modes (66,06 à 66,63),
+loin des 4 pt : la clause « données qui ne révèlent pas l'arc ALORS QUE V2 bouge » ne se déclenche pas.
+**La prédiction V2 ne dépend pas de l'arc** ; aucun ARBITRAGE. Prédiction de la revue du 23/11 (≤ 3 pt
+entre 1,8 et 3,5) vérifiée (0,3 pt).
+
+**Identification de l'arc.** lp favorise un arc intermédiaire (3,5) de 24 nats (complet) et 39 nats (V2) sur
+1,8, mais sur un point isolé et non convergé, et sans le prior de `a_arc` (hors lp quand l'arc est fixé).
+Lecture : l'arc est faiblement identifié, il influe sur le premier tour (σ_LP/σ_M 0,54 / 1,58 / 1,12 / 0,93
+au mode d'init 0 des données complètes), pas sur V2. Par parcimonie et selon la branche proposée par la revue
+(point 5), il peut être fixé (cercle fermé, 6,2, ou médiane a priori) sans coût sur V2 ; choix laissé à la
+session locale, à faire AVANT toute lecture hors 2022 (§8.74).
+
+**Correction.** La lecture préliminaire du journal (revue routine du 23/11, point 5 : « 1,8 meilleur de 12,6
+nats ») était FAUSSE : le potentiel le plus négatif est le meilleur, et j'avais pris l'init 0 au lieu du
+maximum. Corrigée ici.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
