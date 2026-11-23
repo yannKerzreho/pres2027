@@ -4118,6 +4118,35 @@ sort de la lp : sur la grille, l'a priori seul vaut −3,6 / −0,7 / −0,1 / �
 donc comme une vraisemblance. On rapportera la lp avec l'a priori réintégré, et on ne la comparera pas
 aux lp à arc libre.
 
+### 8.74 Confirmation V2 hors 2022 (revue de la routine du 23/11 ~20:15Z, point 8) — spécifié, NON lancé
+
+**Pourquoi.**
+
+- V2 2022 porte sur 2 paires : un écart de 3 pt donne t ≈ 0,7.
+- La géométrie, les critères et la variante ont été choisis sur 2022 : V2 2022 est du DÉVELOPPEMENT.
+- 2017 n'a que 2 paires sondées en duel (Macron–Le Pen 40, Fillon–Le Pen 30 ; vérifié), ce qui est
+  inutilisable seul.
+- **La confirmation se fait donc sur 2027**, à T1−30 de la coupure courante, avec les 11 paires sondées.
+
+**Protocole.**
+
+- Pour chaque paire sondée en 2027 avec au moins 3 duels, on la retire (duels + hypothèse de reports,
+  comme en §8.69). On prédit la moyenne de ses duels sur les 30 jours.
+- Variante : la référence figée en §8.73 (`hiercercle_ra_fid`), avec l'arc libre. Si le profil de l'arc
+  conclut à « fixer l'arc par parcimonie » (revue de la routine, point 5), l'arc est fixé AVANT tout run
+  2027, à une valeur choisie sans 2027.
+- Témoins :
+  - `hier` (segment sans reports) ;
+  - régression T1 (part du finaliste a en duel ~ part T1 de b sur les autres paires de la même
+    élection ; définition exacte à écrire et chiffrer à 0 fit AVANT le premier run).
+- MAP 20 000 pas `--decroissant`, poli par L-BFGS (revue de la routine, point 3).
+
+**Critère figé :** MAE ≤ min(témoins) − 1, ET au moins 8 victoires sur 11 contre le meilleur témoin
+(test de signe ; si moins de 11 paires sont éligibles, ⌈0,7·n⌉).
+
+**Statut.** Le code (paires 2027, témoin de régression, polissage) est à écrire. Le lancement attend
+l'ARBITRAGE « V2 2022 = développement ». La session locale y souscrit, l'utilisateur tranche.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

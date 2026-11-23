@@ -1469,7 +1469,7 @@ Relecture seule (cœurs pris par la vague 2 du profil de l'arc). Vérifié par l
    témoins − 1 et ≥ 8 victoires sur 11 (test de signe). PROPOSÉ à la session locale (maths et critères dans la
    spec d'abord).
 
-ARBITRAGE À TRANCHER : (revue 23/11, points 1, 2 et 8) déclarer V2 2022 « développement » et réserver la
+ARBITRAGE À TRANCHER (la session locale y souscrit ; protocole figé en §8.74) : (revue 23/11, points 1, 2 et 8) déclarer V2 2022 « développement » et réserver la
 confirmation à un V2 en paire retirée sur 2027 (11 paires) et 2017, avec le témoin de régression T1. La
 routine ne tranche pas.
 
