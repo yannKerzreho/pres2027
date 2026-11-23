@@ -31,6 +31,13 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- NOTE (session locale, 24/11 ~00:15Z) : le venv du scratchpad (`/private/tmp/…/venv311`) a été vidé
+  par le nettoyage de /tmp de macOS (24/11 00:00Z). Les lectures du V2 de R8c ont échoué (`No module
+  named 'jax'`).
+  - Le venv est reconstruit, à versions identiques (jax 0.10.2, numpyro 0.22.0 ; liste dans
+    `.venv/freeze-venv311.txt`), dans le worktree : `.venv/`, ignoré par git. Les tests sont verts.
+  - Le V2 de R8c (diagnostic) est relancé.
+
 - [x] [FAIT 23/11 ~23:00Z pour les contrôles, §8.76 : référence 3/4 contre `hier`, MAE 2,65 contre 7,9 ⇒ V2 2022 favorable, non probant, développement ; V2 de R8c (diagnostic) toujours en cours] [EN COURS MAC (redémarré 2026-11-23 ~20:30Z, revue F3)] **Contrôles §8.70 (d) 3 de la RÉFÉRENCE `hiercercle_ra_fid` et de `hier` (Macron–Pécresse, Macron–Le Pen), puis V2 de R8c comme DIAGNOSTIC.** Ex-« §8.72 (c) : V2 de R8c, plus contrôles §8.60. »
   - MAP 20 000 pas `--decroissant` : R8c sur Macron–Mélenchon, Macron–Zemmour, Macron–Pécresse et
     Macron–Le Pen ; `hier` sur Macron–Pécresse et Macron–Le Pen.
