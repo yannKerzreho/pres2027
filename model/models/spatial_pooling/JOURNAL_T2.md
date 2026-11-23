@@ -31,7 +31,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] [EN COURS MAC (redémarré 2026-11-23 ~20:30Z, revue F3)] **Contrôles §8.70 (d) 3 de la RÉFÉRENCE `hiercercle_ra_fid` et de `hier` (Macron–Pécresse, Macron–Le Pen), puis V2 de R8c comme DIAGNOSTIC.** Ex-« §8.72 (c) : V2 de R8c, plus contrôles §8.60. »
+- [x] [FAIT 23/11 ~23:00Z pour les contrôles, §8.76 : référence 3/4 contre `hier`, MAE 2,65 contre 7,9 ⇒ V2 2022 favorable, non probant, développement ; V2 de R8c (diagnostic) toujours en cours] [EN COURS MAC (redémarré 2026-11-23 ~20:30Z, revue F3)] **Contrôles §8.70 (d) 3 de la RÉFÉRENCE `hiercercle_ra_fid` et de `hier` (Macron–Pécresse, Macron–Le Pen), puis V2 de R8c comme DIAGNOSTIC.** Ex-« §8.72 (c) : V2 de R8c, plus contrôles §8.60. »
   - MAP 20 000 pas `--decroissant` : R8c sur Macron–Mélenchon, Macron–Zemmour, Macron–Pécresse et
     Macron–Le Pen ; `hier` sur Macron–Pécresse et Macron–Le Pen.
   - Critère figé : MAE ≤ `hier` − 1 sur les 2 paires V2 ET R8c ≤ `hier` sur au moins 3 des 4 paires.
@@ -1011,6 +1011,11 @@ conservé pour l'historique.
   - τ_report constant, calibré en LOHO, pour les hypothèses jamais sondées.
   - Un seul modèle : duels et T1 restent inchangés.
   - La revue rejette (iii).
+
+- **(23/11, §8.76) Arc du cercle : FIXER ou laisser libre ?** La session locale le laisse libre
+  (aucune valeur choisie a posteriori ; V2 n'en dépend pas). Le fixer (par exemple le cercle fermé)
+  ferait gagner 1 scalaire, mais par un choix fondé sur le T1 de 2022. À trancher avant le lancement
+  de §8.74 (2027).
 
 ## Faits établis (ne pas re-mesurer)
 

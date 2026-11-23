@@ -4181,6 +4181,41 @@ session locale, à faire AVANT toute lecture hors 2022 (§8.74).
 nats ») était FAUSSE : le potentiel le plus négatif est le meilleur, et j'avais pris l'init 0 au lieu du
 maximum. Corrigée ici.
 
+### 8.76 Contrôles V2 de la référence (§8.70 d 3) et décision sur l'arc (session locale, 23/11 ~23:00Z)
+
+**V2 sur les 4 paires de 2022** (MAP 20 000 pas `--decroissant`, Mac, mode retenu). Écart de la part de
+Macron à la moyenne des 30 jours.
+
+| Paire retirée (observé) | Référence `hiercercle_ra_fid` | `hier` | Gagnant |
+|---|---|---|---|
+| Macron–Mélenchon (66,3) | −1,3 | +8,4 | référence |
+| Macron–Zemmour (64,4) | +5,3 | +4,2 | `hier` |
+| Macron–Pécresse (59,2) | +0,5 | −8,3 | référence |
+| Macron–Le Pen (57,4) | +3,5 | +10,8 | référence |
+| **MAE** | **2,65** | **7,9** | |
+
+- **Critère figé de §8.70 (d) 3 :**
+  - référence ≤ `hier` sur 3 paires sur 4 ✓ ;
+  - MAE sur les deux paires V2 3,3 ≤ `hier` − 1 = 5,3 ✓.
+
+  ⇒ **V2 2022 favorable.**
+- **Statut :** NON PROBANT (Mac, MAP) et DÉVELOPPEMENT (2022 a servi au choix du modèle ; revue de la
+  routine du 23/11). La confirmation relève de §8.74 (2027).
+- Les modes non retenus de la référence restent du même côté : Pécresse de 0,0 à +0,6, avec un mode
+  à +10,6 ; Le Pen de +4,6 à +5,5.
+- **Fichiers :** `results/v2paire_map_*_p20000d_v2sans_EmmanuelMacron{ValériePécresse,MarineLePen}.json`.
+
+**Décision sur l'arc (après §8.75, AVANT toute lecture hors 2022).**
+
+- La prédiction V2 ne dépend pas de l'arc (0,6 pt entre 1,8 et 6,2). L'arc agit sur le T1 : σ_LP/σ_M
+  vaut de 0,54 à 1,58 selon l'arc, sur des points d'init 0.
+- Le fixer exigerait de choisir une valeur sur 2022 seul, d'après le T1 et la plausibilité : on
+  économiserait 1 scalaire au prix d'un choix éditorial lu sur les données.
+- **Décision : l'arc reste LIBRE** (a priori N(log 3 ; 0,75) inchangé). Sa loi a posteriori sera
+  rapportée. Aucune valeur n'est choisie a posteriori, et 2027 reste propre.
+- Si l'utilisateur préfère le fixer (par exemple le cercle fermé), c'est un ARBITRAGE, à trancher avant
+  le lancement de §8.74.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
