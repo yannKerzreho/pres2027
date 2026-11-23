@@ -1,22 +1,22 @@
 {
- "as_of": "2026-11-22",
- "genere_le": "2026-11-22",
+ "as_of": "2026-11-23",
+ "genere_le": "2026-11-23",
  "noms": {
   "Arthaud": {
-   "dernier": "2026-11-17",
-   "n_sondages": 84
+   "dernier": "2026-11-19",
+   "n_sondages": 85
   },
   "Arthaud (LO)": {
-   "dernier": "2026-11-17",
-   "n_sondages": 84
+   "dernier": "2026-11-19",
+   "n_sondages": 85
   },
   "Asselineau": {
    "dernier": "2026-11-10",
    "n_sondages": 1
   },
   "Attal": {
-   "dernier": "2026-11-17",
-   "n_sondages": 71
+   "dernier": "2026-11-19",
+   "n_sondages": 72
   },
   "Autres": {
    "dernier": "2026-09-04",
@@ -67,20 +67,20 @@
    "n_sondages": 1
   },
   "Dupont-Aignan": {
-   "dernier": "2026-11-17",
-   "n_sondages": 80
+   "dernier": "2026-11-19",
+   "n_sondages": 81
   },
   "Faure": {
    "dernier": "2026-09-29",
    "n_sondages": 24
   },
   "Glucksmann": {
-   "dernier": "2026-11-17",
-   "n_sondages": 68
+   "dernier": "2026-11-19",
+   "n_sondages": 69
   },
   "Glucksmann (PP)": {
-   "dernier": "2026-11-17",
-   "n_sondages": 68
+   "dernier": "2026-11-19",
+   "n_sondages": 69
   },
   "Guedj": {
    "dernier": "2026-09-29",
@@ -115,16 +115,16 @@
    "n_sondages": 7
   },
   "Le Pen": {
-   "dernier": "2026-11-17",
-   "n_sondages": 80
+   "dernier": "2026-11-19",
+   "n_sondages": 81
   },
   "Lecornu": {
    "dernier": "2026-03-27",
    "n_sondages": 2
   },
   "Lisnard": {
-   "dernier": "2026-11-17",
-   "n_sondages": 26
+   "dernier": "2026-11-19",
+   "n_sondages": 27
   },
   "Macron": {
    "dernier": "2023-10-20",
@@ -135,20 +135,20 @@
    "n_sondages": 1
   },
   "Mélenchon": {
-   "dernier": "2026-11-17",
-   "n_sondages": 87
+   "dernier": "2026-11-19",
+   "n_sondages": 88
   },
   "Mélenchon (LFI)": {
-   "dernier": "2026-11-17",
-   "n_sondages": 87
+   "dernier": "2026-11-19",
+   "n_sondages": 88
   },
   "Philippe": {
-   "dernier": "2026-11-17",
-   "n_sondages": 81
+   "dernier": "2026-11-19",
+   "n_sondages": 82
   },
   "Philippe (Horizons)": {
-   "dernier": "2026-11-17",
-   "n_sondages": 81
+   "dernier": "2026-11-19",
+   "n_sondages": 82
   },
   "Polony": {
    "dernier": "2026-11-16",
@@ -163,32 +163,32 @@
    "n_sondages": 6
   },
   "RN": {
-   "dernier": "2026-11-17",
-   "n_sondages": 80
+   "dernier": "2026-11-19",
+   "n_sondages": 81
   },
   "Retailleau": {
-   "dernier": "2026-11-17",
-   "n_sondages": 68
+   "dernier": "2026-11-19",
+   "n_sondages": 69
   },
   "Retailleau (LR)": {
-   "dernier": "2026-11-17",
-   "n_sondages": 68
+   "dernier": "2026-11-19",
+   "n_sondages": 69
   },
   "Riner": {
-   "dernier": "2026-11-17",
-   "n_sondages": 5
+   "dernier": "2026-11-19",
+   "n_sondages": 6
   },
   "Rousseau": {
    "dernier": "2024-09-12",
    "n_sondages": 2
   },
   "Roussel": {
-   "dernier": "2026-11-17",
-   "n_sondages": 85
+   "dernier": "2026-11-19",
+   "n_sondages": 86
   },
   "Roussel (PCF)": {
-   "dernier": "2026-11-17",
-   "n_sondages": 85
+   "dernier": "2026-11-19",
+   "n_sondages": 86
   },
   "Royal": {
    "dernier": "2026-09-29",
@@ -199,16 +199,16 @@
    "n_sondages": 18
   },
   "Tondelier": {
-   "dernier": "2026-11-17",
-   "n_sondages": 74
+   "dernier": "2026-11-19",
+   "n_sondages": 75
   },
   "Tondelier (EELV)": {
-   "dernier": "2026-11-17",
-   "n_sondages": 74
+   "dernier": "2026-11-19",
+   "n_sondages": 75
   },
   "Villepin": {
-   "dernier": "2026-11-17",
-   "n_sondages": 23
+   "dernier": "2026-11-19",
+   "n_sondages": 24
   },
   "Villiers": {
    "dernier": "2025-10-31",
@@ -219,12 +219,12 @@
    "n_sondages": 18
   },
   "Zemmour": {
-   "dernier": "2026-11-17",
-   "n_sondages": 86
+   "dernier": "2026-11-19",
+   "n_sondages": 87
   },
   "Zemmour (Reconquête)": {
-   "dernier": "2026-11-17",
-   "n_sondages": 86
+   "dernier": "2026-11-19",
+   "n_sondages": 87
   }
  }
 }
