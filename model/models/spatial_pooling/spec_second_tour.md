@@ -4056,6 +4056,68 @@ référence. **Le V2 de R8c est à faire** (même protocole, 20 000 pas), avec l
 (Macron–Pécresse, Macron–Le Pen ; R8c et `hier`). Critère figé : MAE ≤ `hier` − 1 sur les deux paires
 V2, ET R8c ≤ `hier` sur au moins 3 des 4 paires (§8.70 d 3).
 
+### 8.73 Correction de §8.72 (b) et (c) : ω_k RETIRÉ, référence figée (revue du 23/11 ~20:30Z)
+
+**Erreur de lecture.** La clause σ_LP/σ_M de §8.72 (b) a été lue sur des valeurs périmées : les 1,55-1,62
+viennent de 5 000 pas, ou d'inits non retenues à 20 000 pas (inits 0/2/3 de Mélenchon–Macron, 51 nats
+sous le meilleur point). Vérifié dans les JSON à 20 000 pas, les points retenus de `hiercercle_ra_fid`
+donnent tous **σ_LP/σ_M de 1,10 à 1,14** :
+
+| Lecture | σ_LP/σ_M |
+|---|---|
+| V1-LOHO Mélenchon–Macron | 1,138 |
+| V1-LOHO Macron–Zemmour | 1,142 |
+| V1-LOHO Macron–Pécresse | 1,105 |
+| V2 Macron–Mélenchon | 1,104 |
+| V2 Macron–Zemmour | 1,132 |
+
+**Règle de §8.67 (b), appliquée au protocole figé de §8.70 (d) 1 (20 000 pas) :**
+
+- coût sur le partage −0,7 (< 2 ✓) ;
+- coût sur « Aucun » +0,86 (< 1 ✓, de justesse) ;
+- σ_LP/σ_M < 1,5 ✓.
+
+⇒ **ω_k est RETIRÉ** (environ 24 paramètres).
+
+**Qui prime.**
+
+- Le critère « s_ω q5 > 0,2 » (§8.58) est une condition d'identification à sens unique : il peut
+  ajouter un motif de retrait, jamais en annuler un. Être identifié ne prouve pas l'utilité hors
+  échantillon.
+- C'est la règle de parcimonie §8.67 (b) qui décide, conformément au principe de l'utilisateur.
+- La suspension de §8.71 et l'annulation de §8.72 (b) étaient des renversements a posteriori d'une
+  décision figée. **Elles sont retirées.**
+
+**Référence FIGÉE avant toute lecture du V2 de R8c :** `hiercercle_ra_fid` (cercle + reports d'avant
+T1 + fidélité R7, abstention commune). Le V2 de R8c, relancé après les contrôles, est un **diagnostic**.
+
+**Formulations corrigées.**
+
+- **Attribution du V2.** Le gain de 9,3 pt mesure le BLOC reports + R7 : `hiercercle_sr` n'a ni l'un ni
+  l'autre. Le plan 2×2 montre une interaction :
+  - reports + R7 sur le segment : −1,6 ;
+  - reports + R7 sur le cercle : −9,3.
+
+  Cercle et segment ne sont pas séparés par V2 (3,3 contre 4,7, dans le bruit). C'est la plausibilité
+  qui écarte le segment (σ_LP/σ_M de 2,3 à 3,7 avec reports, contre 1,1 pour le cercle). « Argument
+  pour l'unicité » est retiré ; il faut lire : les reports sont nécessaires, la géométrie du cercle
+  est retenue pour sa plausibilité.
+- **Ce que révèle la géométrie.** Elle reproduit l'agrégat des duels et les reports vus, pas les
+  reports d'une hypothèse cachée (V1-LOHO au-dessus de U_fid de 5 à 6 pt). La porte arrière (Le Pen →
+  Mélenchon) est apprise des reports, pas des duels.
+- **Le MAP à 20 000 pas reste partiellement non convergé** (`hier`, `hier_ra`, `hiercercle_sr` : une lp
+  différente par init). Plusieurs points retenus reposent sur une seule init, dont celui de la
+  référence sur Macron–Mélenchon (arc ≈ 1,76).
+
+**Contrôles de §8.70 (d) 3** (Macron–Pécresse, Macron–Le Pen ; référence et `hier`) : en cours, avec le
+critère figé (référence ≤ `hier` sur au moins 3 des 4 paires). Aujourd'hui la référence est à 1 sur 2,
+pire que `hier` sur Zemmour (+5,3 contre +4,2).
+
+**Profil de l'arc (VM n° 6) : précision avant lecture.** Avec `arc_fixe`, le terme a priori de l'arc
+sort de la lp : sur la grille, l'a priori seul vaut −3,6 / −0,7 / −0,1 / −9,2 nats. Le profil se lit
+donc comme une vraisemblance. On rapportera la lp avec l'a priori réintégré, et on ne la comparera pas
+aux lp à arc libre.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

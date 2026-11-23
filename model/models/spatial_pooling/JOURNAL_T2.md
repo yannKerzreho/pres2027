@@ -7,7 +7,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## État (mis à jour à chaque réveil)
 
-- Dernière revue Opus : 2026-11-21 ~12:15Z (routine, couvre R8, R8c, dépistage MAP, V1, V2 ; cf. « Revue Opus 2026-11-21 ~12:15Z (routine) »).
+- Dernière revue Opus : 2026-11-23 ~20:30Z (session locale)
 - OBJECTIF (utilisateur, via l'orchestrateur, 2026-11-14) : « un modèle qui est
   backé par le passé mais qui représente bien les sondages et tendances
   actuels ». 2017/2022 servent à CALIBRER et VALIDER ; le critère final est la
@@ -31,7 +31,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] [EN COURS MAC (début 2026-11-23 ~20:15Z)] **§8.72 (c) : V2 de R8c, plus contrôles §8.60.**
+- [ ] [EN COURS MAC (redémarré 2026-11-23 ~20:30Z, revue F3)] **Contrôles §8.70 (d) 3 de la RÉFÉRENCE `hiercercle_ra_fid` et de `hier` (Macron–Pécresse, Macron–Le Pen), puis V2 de R8c comme DIAGNOSTIC.** Ex-« §8.72 (c) : V2 de R8c, plus contrôles §8.60. »
   - MAP 20 000 pas `--decroissant` : R8c sur Macron–Mélenchon, Macron–Zemmour, Macron–Pécresse et
     Macron–Le Pen ; `hier` sur Macron–Pécresse et Macron–Le Pen.
   - Critère figé : MAE ≤ `hier` − 1 sur les 2 paires V2 ET R8c ≤ `hier` sur au moins 3 des 4 paires.
@@ -56,6 +56,7 @@ l'historique, ajouter en bas de « Historique ».
     NUTS, ou le fixer par une règle pré-enregistrée sur 2017 + 2022).
   - Consigner dans la spec, §8.70 (d) 4.
 
+- [ ] (session locale, Mac) **Après les contrôles :** η ≡ 0 sur la référence (§8.70 d 5) ; 12 inits pour les points retenus à une seule init ; ‖∇‖ et provenance dans les sorties ; `partition` par lp.
 - [ ] (session locale, Mac, MAP 20 000 pas `--decroissant`) **§8.70 (d), dans l'ordre :**
   1. V2 de la référence et de `hier` (2 paires) ; V1-LOHO de R8c (3 hypothèses) ;
   2. plan 2×2 (`hier_ra`, `hiercercle_sr`) ;
@@ -1204,6 +1205,54 @@ conservé pour l'historique.
   instables (R̂ 7,5) et s_ab +0,7 pt ⇒ phase 2 à faire.
 
 
+
+## Revue Opus 2026-11-23 ~20:30Z (session locale) — ω_k, référence, attribution V2 : intégration point par point
+
+- **F1. Clause σ_LP/σ_M lue sur des valeurs périmées ; par la règle figée, ω_k est retiré.**
+  **Retenu, vérifié** sur les JSON : les points retenus à 20 000 pas sont à 1,10-1,14. §8.73 corrige
+  §8.72 (b) : ω_k est RETIRÉ. C'était mon erreur.
+- **F2. §8.67 (b) prime sur s_ω q5 ; suspension et annulation étaient des renversements a posteriori.**
+  **Retenu** (§8.73).
+- **F3. Référence choisie après lecture du V2.** **Retenu** : la référence `hiercercle_ra_fid` est
+  figée AVANT la lecture du V2 de R8c. Les runs R8c lancés à 20:15Z ont été arrêtés après 3 min, sans
+  lecture. La file Mac passe aux contrôles de la référence d'abord, puis au V2 de R8c comme diagnostic.
+- **F4. MAP encore partiellement non convergé ; points retenus à une seule init.** **Retenu** : c'est
+  écrit en §8.73. Douze inits au lieu de six seront nécessaires avant tout verdict probant (piste 5).
+- **F5. Attribution : bloc reports + R7, interaction ; cercle et segment non séparés par V2 ;
+  « unicité » trop fort.** **Retenu** : formulations corrigées en §8.73.
+- **F6. Mineures.**
+  - ‖∇‖ seulement dans le log : **en file.**
+  - Provenance (pas, `decroissant`, SANS_PAIRE, ARC_FIXE) : **en file.**
+  - `partition` par lp : **en file**, troisième rappel.
+  - Profil de l'arc lu comme une vraisemblance : **retenu** (§8.73, précision consignée avant
+    lecture).
+  - En-têtes du journal : **corrigés** ci-dessous.
+  - Pas de fuite : **pris acte.**
+- **Parcimonie.**
+  - ω_k est retiré.
+  - η ≡ 0 est à tester (§8.70 d 5).
+  - Arc : arbitrage si le profil est plat.
+  - Reports + R7 sont gardés.
+  - Le cercle est retenu pour sa plausibilité.
+  - Modèle minimal défendable : cercle + reports + R7, environ 48 paramètres de moins que R8c si η
+    tombe.
+
+  **Retenu.**
+- **Lot « PRÊT À PUBLIER » honnête (résultat négatif, variante de recherche non branchée).** Les
+  conditions 1 à 8 sont **retenues** comme liste de contrôle :
+  - points 1 et 2 : faits (§8.73) ;
+  - point 3 : en cours ;
+  - points 4 et 7 : à écrire à la clôture ;
+  - point 5 : vérifié (PUBLIER_T2 False, variantes derrière drapeaux) ;
+  - point 6 : en partie (JSON committés dans ce lot) ;
+  - point 8 : déclaré en cours.
+- **Pistes, dans l'ordre :**
+  1. figer la référence : fait ;
+  2. contrôles V2 : en cours ;
+  3. η ≡ 0 ;
+  4. profil de l'arc : VM n° 6 ;
+  5. V2 probant : DEMANDE VM n° 5 rouverte sur la référence finale et `hier`, après 12 inits au MAP ;
+  6. τ_report : ARBITRAGE (ii).
 
 ## Revue Opus 2026-11-22 ~01:00Z (session locale) — MAP non convergé, V2, parcimonie : intégration point par point
 
