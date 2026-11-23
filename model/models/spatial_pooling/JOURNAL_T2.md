@@ -933,6 +933,8 @@ Résultats : `model/backtest/results/*.json` (committés).
 
 ## Arbitrages ouverts (pour l'utilisateur — ne pas trancher seul)
 
+- ARBITRAGE À TRANCHER (revue routine 23/11 20:15Z) : V2 2022 = développement ; confirmation par V2 en paire retirée sur 2027 (11 paires) et 2017, avec témoin de régression T1.
+
 - ARBITRAGE À TRANCHER (revue routine 21/11 12:15Z, points 1 et 6) : rétrograder les critères 1-2 en diagnostics (in-sample, ω_k) et juger sur V1 strict / V2 témoin `hier` / 2017 ; et/ou figer la famille puis un fit confirmatoire 2017.
 
 
@@ -1423,6 +1425,53 @@ conservé pour l'historique.
 6. **Recommandation de fond : une couche de reports non spatiale explicite.** **Non tranché.**
    Choix stratégique pour l'utilisateur ; voir l'arbitrage (i)/(ii)/(iii) de §8.61 et la section
    « Arbitrages ouverts ».
+
+## Revue Opus 2026-11-23 ~20:15Z (routine) — V2 à 20 000 pas, profil de l'arc : intégration point par point
+
+Relecture seule (cœurs pris par la vague 2 du profil de l'arc). Vérifié par la routine : point 3 en partie.
+
+1. **V2 non discriminant, n trop petit.** Écart 3,0 pt porté par une paire : différences appariées
+   (`hier` − référence) Mélenchon +7,1, Zemmour −1,1 ; SE ≈ 4,1, t ≈ 0,7. Un témoin à 0 fit (régression de
+   la part de Macron en duel sur la part T1 de l'adversaire, 3 autres paires Macron–X) donnerait MAE 2,9 < 3,3
+   (chiffre de la revue, NON revérifié). ≈ 17 paires pour détecter 3 pt. INTÉGRÉ : ajouter ce témoin, figé,
+   et viser V2 en « une paire retirée » sur toutes les paires sondées (2027 : 11 ; 2017). Prédiction : sur
+   2022 seule, la référence ne bat pas ce témoin d'1 pt ou plus.
+2. **Pas de fuite dans les données, fuite dans le dessin.** Canaux de données propres (retrait 28 / 106
+   lignes de duels, hypothèse de reports retirée, δ visant `s_r` du modèle, ε fixe). Mais le cercle, les
+   critères de §8.58 et la sélection de variante ont été choisis sur 2022 complet. INTÉGRÉ : V2 2022 =
+   développement ; seuls 2017 ou 2027 confirment. Fixer l'arc « par une règle sur 2017 + 2022 » (§8.70 d 4)
+   fuirait dans V2 2022 : à ne pas faire tel quel.
+3. **Convergence MAP non démontrée ; objectifs différents.** PARTIELLEMENT RÉFUTÉ : `map_screen` journalise
+   bien potentiel et ‖∇‖ (`map_screen.py:129-134`, logs de la vague 1) ; sur les arcs fixés, les inits
+   concordent à 0,1 nat (1,8 complet 4/4 ; 1,8 V2 4/4 ; 3,5 V2 3/4 ; 3,5 complet 2/4). Mais ‖∇‖ vaut 0,5 à
+   25 (75 pour une init écartée) : pas de convergence au sens strict. Le classement par `log_density` sans
+   jacobien reste un écart réel de quelques nats. INTÉGRÉ : polir les 2 meilleurs points (L-BFGS) et classer
+   par le même objectif ; prédiction : |Δlp| < 1 et ‖∇‖ < 1e-2, sinon verdicts à 20 000 pas provisoires.
+4. **Attribution 2×2 avec un comparateur dégénéré.** `hiercercle_sr` sature (cellules à 0 ou 100, Macron
+   87,5) ; effet du cercle à reports donnés 1,4 pt (3,3 / 4,7), inversé sur Zemmour ; cases retirées de la
+   référence = U_fid (11,45 / 11,43). INTÉGRÉ : noter le gain « dû aux reports » comme non établi ; scorer
+   aussi la table de reports Mélenchon–Macron retirée en V2 ; prédiction : MAE des cases ≥ U_fid − 1.
+5. **Critère du profil de l'arc mal posé.** Arc fixé ⇒ prior de `a_arc` hors de lp (≈ 8,5 nats entre 6,2 et
+   3,5, de l'ordre du seuil) ; Δlp sur données complètes (paire retirée incluse) ; pas d'issue si V2 bouge
+   < 4 pt. INTÉGRÉ : lire la vague 1 avec la vague 2 ; juger l'identification sur le profil V2 avec le prior
+   ajouté explicitement et un accord ≤ 1 nat entre inits par arc ; si V2 bouge < 4 pt pour tous les arcs,
+   fixer l'arc par parcimonie (cercle fermé ou médiane a priori). Lecture préliminaire (logs, potentiel avec
+   jacobiens, sans prior d'arc) : complet 1,8 → lp 12829,9, 3,5 → 12817,3 (Δ 12,6 nats pour 1,8) ; V2
+   12631,6 / 12618,8 (Δ 12,8). Prédiction de la revue : V2 Mélenchon bouge ≤ 3 pt entre 1,8 et 3,5.
+6. **Chemins bifurquants sur la référence.** Elle a changé trois fois (§8.68, §8.71, §8.72). DÉJÀ TRAITÉ par
+   la session locale (5c3c043) : référence `hiercercle_ra_fid` figée avant lecture du V2 de R8c ; rapporter
+   les V2 des deux variantes.
+7. **Le score ponctuel MAP cache l'incertitude dominante.** Paire retirée ⇒ z_η = 0 au MAP, η_Mélenchon
+   au prior (s_η ≈ 0,62, ≈ ±15 pt sur le duel). INTÉGRÉ : scorer V2 au CRPS / couverture 90 % (NUTS ou
+   Laplace) ; prédiction : écart de CRPS référence − `hier` < 1 pt.
+8. **Prochaine expérience la plus informative.** V2 en paire retirée sur les 11 paires sondées 2027 puis
+   2017, arc fixé (choisi sur V2), témoins `hier` et régression T1, MAP poli ; règle figée : MAE ≤ min des
+   témoins − 1 et ≥ 8 victoires sur 11 (test de signe). PROPOSÉ à la session locale (maths et critères dans la
+   spec d'abord).
+
+ARBITRAGE À TRANCHER : (revue 23/11, points 1, 2 et 8) déclarer V2 2022 « développement » et réserver la
+confirmation à un V2 en paire retirée sur 2027 (11 paires) et 2017, avec le témoin de régression T1. La
+routine ne tranche pas.
 
 ## Revue Opus 2026-11-21 ~12:15Z (routine) — R8, R8c, dépistage MAP, V1, V2 : intégration point par point
 
