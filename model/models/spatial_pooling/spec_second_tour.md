@@ -4009,6 +4009,53 @@ La référence de la session locale est désormais `hiercercle_ra_fid` (ω_k ret
   σ_LP/σ_M < 1,5).
 - Les 6 « modes » MAP de R8c étaient des non-convergences (§8.71), ce qui confirme §8.70 (a).
 
+### 8.72 Lectures à 20 000 pas (`--decroissant`, Mac, dépistage MAP, 6 inits ; consignées le 23/11 ~20:10Z)
+
+**(a) V2 et plan 2×2 (§8.70 d 1-2).** Écart de la part de Macron au mode retenu (Δlp ≤ 10). Fichiers
+`results/v2paire_map_*_p20000d_*`.
+
+| | Macron–Mélenchon (66,3) | Macron–Zemmour (64,4) | MAE |
+|---|---|---|---|
+| Cercle + reports (`hiercercle_ra_fid`) | −1,3 | +5,3 | **3,3** |
+| Segment + reports (`hier_ra`) | 0,0 | +9,3 / +9,7 | 4,7 |
+| Segment sans reports (`hier`) | +8,4 | +4,2 | 6,3 |
+| Cercle sans reports (`hiercercle_sr`) | +21,2 | +4,0 | 12,6 |
+
+- **Critère V2 de §8.70 (d) 1** (référence de l'époque) : |Mélenchon| = 1,3 ≤ 6 et MAE 3,3 ≤ `hier` −
+  1 = 5,3 ⇒ **tenu.** Favorable sur le Mac ⇒ **non probant.**
+- **Critère d'attribution de §8.70 (d) 2 :** MAE(`hiercercle_sr`) − MAE(référence) = 9,3 ≥ 1 ⇒ **le
+  gain V2 est attribué aux reports.**
+- **La prédiction consignée** (`hiercercle_sr` ≥ 70 sur Macron–Mélenchon) est **confirmée** (87,5).
+- **Lecture.**
+  - Sans reports, le cercle est PIRE que le segment (12,6 contre 6,3) : sa porte arrière, non
+    calibrée, envoie trop peu d'électeurs de droite vers Mélenchon.
+  - Avec les reports, il devient le meilleur des quatre (3,3 contre 4,7).
+  - La géométrie du cercle n'apporte donc quelque chose qu'**avec** les reports ; c'est l'argument
+    pour l'unicité du modèle.
+  - Le segment avec reports y parvient par un σ_LP/σ_M de 3 à 4, non crédible (front républicain).
+
+**(b) V1-LOHO à 20 000 pas.** MAE du partage du mode retenu, avec U_fid entre parenthèses.
+
+| | Mélenchon–Macron | Macron–Zemmour | Macron–Pécresse | Moyenne (U_fid) | « Aucun » |
+|---|---|---|---|---|---|
+| R8c (cercle + R7 + ω_k) | 28,1 (10,9) | 10,5 (18,3) | 21,7 (13,8) | **20,1 (14,3)** | 14,7 / 4,5 / 3,2 → 7,5 |
+| Cercle + R7 | 24,0 (10,4) | 10,0 (17,4) | 24,0 (14,5) | **19,3 (14,1)** | 10,8 / 6,8 / 7,3 → 8,3 |
+
+- **V1-LOHO :** échec des deux variantes (moyenne > U_fid − 2, et deux hypothèses > U_fid + 3).
+- **Règle de retrait de ω_k (§8.67 b), relue à 20 000 pas avec ses trois clauses :**
+  - coût sur le partage −0,8 (< 2 ✓) ;
+  - coût sur « Aucun » +0,85 (< 1 ✓) ;
+  - **σ_LP/σ_M < 1,5 non tenu sans ω_k** (1,55-1,62 sur des points retenus de la référence, revue du
+    22/11), contre 1,42 en NUTS pour R8c ✗.
+
+  **ω_k n'est donc PAS retiré.** Avec s_ω identifié en NUTS (q5 1,01), **R8c reste la référence.**
+  Le retrait provisoire de §8.68 est annulé.
+
+**(c) Conséquence de protocole.** Le V2 favorable porte sur `hiercercle_ra_fid`, qui n'est plus la
+référence. **Le V2 de R8c est à faire** (même protocole, 20 000 pas), avec les contrôles de §8.60
+(Macron–Pécresse, Macron–Le Pen ; R8c et `hier`). Critère figé : MAE ≤ `hier` − 1 sur les deux paires
+V2, ET R8c ≤ `hier` sur au moins 3 des 4 paires (§8.70 d 3).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

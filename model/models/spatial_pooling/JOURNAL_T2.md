@@ -31,6 +31,16 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- [ ] [EN COURS MAC (début 2026-11-23 ~20:15Z)] **§8.72 (c) : V2 de R8c, plus contrôles §8.60.**
+  - MAP 20 000 pas `--decroissant` : R8c sur Macron–Mélenchon, Macron–Zemmour, Macron–Pécresse et
+    Macron–Le Pen ; `hier` sur Macron–Pécresse et Macron–Le Pen.
+  - Critère figé : MAE ≤ `hier` − 1 sur les 2 paires V2 ET R8c ≤ `hier` sur au moins 3 des 4 paires.
+- [x] [FAIT 23/11 ~20:10Z, §8.72] Relecture à 20 000 pas.
+  - V2 de `hiercercle_ra_fid` : 3,3 contre 6,3 pour `hier`, attribué aux reports (cercle sans
+    reports 12,6).
+  - V1-LOHO : échec (R8c 20,1, cercle + R7 19,3).
+  - ω_k n'est PAS retiré (clause σ_LP/σ_M) ⇒ référence R8c.
+
 - [ ] [EN COURS VM (début 2026-11-22 03:05Z, routine : 8 tâches MAP, 4 en parallèle)] **DEMANDE VM n° 6 (session locale, 2026-11-22 ~03:10Z) : profil de l'arc, §8.70 (d) 4.** C'est une
   étape à part, que le Mac ne fait pas. Code : `PRES2027_ARC_FIXE` (commit de ce lot).
   - Pour A ∈ {1.8, 3.5, 5.0, 6.2} :

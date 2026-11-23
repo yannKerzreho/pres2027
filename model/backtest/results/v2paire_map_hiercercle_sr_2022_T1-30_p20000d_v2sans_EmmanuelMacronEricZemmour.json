@@ -1,0 +1,348 @@
+{
+ "spec": "spec_second_tour §8.50-8.51",
+ "variante": "hiercercle_sr",
+ "stem": "map_hiercercle_sr_2022_T1-30_p20000d_v2sans_EmmanuelMacronEricZemmour",
+ "election": 2022,
+ "coupure": "T1-30",
+ "B_quad": 100,
+ "chaines": [
+  {
+   "chaine": 0,
+   "lp": 11047.8,
+   "partages": {
+    "Jean-Luc Mélenchon": [
+     54.0,
+     63.0
+    ],
+    "Valérie Pécresse": [
+     77.4,
+     65.0
+    ],
+    "Yannick Jadot": [
+     86.8,
+     87.5
+    ],
+    "Éric Zemmour": [
+     5.8,
+     9.4
+    ]
+   },
+   "aucun": {
+    "Jean-Luc Mélenchon": [
+     23.5,
+     43.6
+    ],
+    "Valérie Pécresse": [
+     0.6,
+     29.9
+    ],
+    "Yannick Jadot": [
+     5.6,
+     33.3
+    ],
+    "Éric Zemmour": [
+     0.5,
+     12.7
+    ]
+   },
+   "sigma_melenchon": 0.0244,
+   "sigma_lp_sur_macron": 0.788,
+   "nu": null,
+   "log_nu_sd": null,
+   "nu_q95": null,
+   "t1_mae": 2.959,
+   "t1_couv": "0/12",
+   "monotonie_gauche": NaN
+  },
+  {
+   "chaine": 1,
+   "lp": 11082.7,
+   "partages": {
+    "Jean-Luc Mélenchon": [
+     99.8,
+     63.0
+    ],
+    "Valérie Pécresse": [
+     90.2,
+     65.0
+    ],
+    "Yannick Jadot": [
+     32.6,
+     87.5
+    ],
+    "Éric Zemmour": [
+     10.9,
+     9.4
+    ]
+   },
+   "aucun": {
+    "Jean-Luc Mélenchon": [
+     52.5,
+     43.6
+    ],
+    "Valérie Pécresse": [
+     1.2,
+     29.9
+    ],
+    "Yannick Jadot": [
+     29.6,
+     33.3
+    ],
+    "Éric Zemmour": [
+     1.6,
+     12.7
+    ]
+   },
+   "sigma_melenchon": 0.0171,
+   "sigma_lp_sur_macron": 0.701,
+   "nu": null,
+   "log_nu_sd": null,
+   "nu_q95": null,
+   "t1_mae": 2.874,
+   "t1_couv": "0/12",
+   "monotonie_gauche": NaN
+  },
+  {
+   "chaine": 2,
+   "lp": 10976.1,
+   "partages": {
+    "Jean-Luc Mélenchon": [
+     93.7,
+     63.0
+    ],
+    "Valérie Pécresse": [
+     90.3,
+     65.0
+    ],
+    "Yannick Jadot": [
+     32.1,
+     87.5
+    ],
+    "Éric Zemmour": [
+     20.7,
+     9.4
+    ]
+   },
+   "aucun": {
+    "Jean-Luc Mélenchon": [
+     39.2,
+     43.6
+    ],
+    "Valérie Pécresse": [
+     0.4,
+     29.9
+    ],
+    "Yannick Jadot": [
+     6.4,
+     33.3
+    ],
+    "Éric Zemmour": [
+     0.6,
+     12.7
+    ]
+   },
+   "sigma_melenchon": 0.0171,
+   "sigma_lp_sur_macron": 0.802,
+   "nu": null,
+   "log_nu_sd": null,
+   "nu_q95": null,
+   "t1_mae": 2.885,
+   "t1_couv": "0/12",
+   "monotonie_gauche": NaN
+  },
+  {
+   "chaine": 3,
+   "lp": 11088.3,
+   "partages": {
+    "Jean-Luc Mélenchon": [
+     100.0,
+     63.0
+    ],
+    "Valérie Pécresse": [
+     85.6,
+     65.0
+    ],
+    "Yannick Jadot": [
+     45.8,
+     87.5
+    ],
+    "Éric Zemmour": [
+     11.7,
+     9.4
+    ]
+   },
+   "aucun": {
+    "Jean-Luc Mélenchon": [
+     72.5,
+     43.6
+    ],
+    "Valérie Pécresse": [
+     0.5,
+     29.9
+    ],
+    "Yannick Jadot": [
+     58.7,
+     33.3
+    ],
+    "Éric Zemmour": [
+     1.2,
+     12.7
+    ]
+   },
+   "sigma_melenchon": 0.0163,
+   "sigma_lp_sur_macron": 0.717,
+   "nu": null,
+   "log_nu_sd": null,
+   "nu_q95": null,
+   "t1_mae": 2.784,
+   "t1_couv": "0/12",
+   "monotonie_gauche": NaN
+  },
+  {
+   "chaine": 4,
+   "lp": 11032.3,
+   "partages": {
+    "Jean-Luc Mélenchon": [
+     89.8,
+     63.0
+    ],
+    "Valérie Pécresse": [
+     67.8,
+     65.0
+    ],
+    "Yannick Jadot": [
+     88.7,
+     87.5
+    ],
+    "Éric Zemmour": [
+     5.9,
+     9.4
+    ]
+   },
+   "aucun": {
+    "Jean-Luc Mélenchon": [
+     26.2,
+     43.6
+    ],
+    "Valérie Pécresse": [
+     0.4,
+     29.9
+    ],
+    "Yannick Jadot": [
+     1.6,
+     33.3
+    ],
+    "Éric Zemmour": [
+     0.5,
+     12.7
+    ]
+   },
+   "sigma_melenchon": 0.0186,
+   "sigma_lp_sur_macron": 0.85,
+   "nu": null,
+   "log_nu_sd": null,
+   "nu_q95": null,
+   "t1_mae": 2.982,
+   "t1_couv": "0/12",
+   "monotonie_gauche": NaN
+  },
+  {
+   "chaine": 5,
+   "lp": 11118.9,
+   "partages": {
+    "Jean-Luc Mélenchon": [
+     100.0,
+     63.0
+    ],
+    "Valérie Pécresse": [
+     31.3,
+     65.0
+    ],
+    "Yannick Jadot": [
+     99.4,
+     87.5
+    ],
+    "Éric Zemmour": [
+     10.0,
+     9.4
+    ]
+   },
+   "aucun": {
+    "Jean-Luc Mélenchon": [
+     2.8,
+     43.6
+    ],
+    "Valérie Pécresse": [
+     0.5,
+     29.9
+    ],
+    "Yannick Jadot": [
+     2.1,
+     33.3
+    ],
+    "Éric Zemmour": [
+     0.5,
+     12.7
+    ]
+   },
+   "sigma_melenchon": 0.0808,
+   "sigma_lp_sur_macron": 0.801,
+   "nu": null,
+   "log_nu_sd": null,
+   "nu_q95": null,
+   "t1_mae": 2.916,
+   "t1_couv": "0/12",
+   "monotonie_gauche": NaN
+  }
+ ],
+ "partition": {
+  "dominant": [
+   5
+  ],
+  "autres": [
+   [
+    3,
+    1,
+    2,
+    4,
+    0
+   ]
+  ]
+ },
+ "v2_paire": {
+  "paire": [
+   "Emmanuel Macron",
+   "Eric Zemmour"
+  ],
+  "observe_30j": 64.4,
+  "par_mode": [
+   {
+    "chaines": [
+     5
+    ],
+    "modele": 68.35,
+    "ecart": 3.95,
+    "lp_max": 11118.9,
+    "retenu_lp": true
+   },
+   {
+    "chaines": [
+     3,
+     1,
+     2,
+     4,
+     0
+    ],
+    "modele": 79.77,
+    "ecart": 15.37,
+    "lp_max": 11088.3,
+    "retenu_lp": false
+   }
+  ]
+ },
+ "provenance": {
+  "lse_officiel": true,
+  "plateforme": "macOS-14.5-arm64-arm-64bit",
+  "sans_hyp": null
+ }
+}
