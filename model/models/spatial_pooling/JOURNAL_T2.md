@@ -41,7 +41,7 @@ l'historique, ajouter en bas de « Historique ».
   - V1-LOHO : échec (R8c 20,1, cercle + R7 19,3).
   - ω_k n'est PAS retiré (clause σ_LP/σ_M) ⇒ référence R8c.
 
-- [ ] [EN COURS VM (début 2026-11-22 03:05Z, routine : 8 tâches MAP, 4 en parallèle)] **DEMANDE VM n° 6 (session locale, 2026-11-22 ~03:10Z) : profil de l'arc, §8.70 (d) 4.** C'est une
+- [ ] [EN COURS VM (vague 1, arcs 1,8 et 3,5, finie 22/11 04:56Z ; vague 2, arcs 5,0 et 6,2, perdue au redémarrage du conteneur et relancée 2026-11-23 20:07Z, ~2 h)] **DEMANDE VM n° 6 (session locale, 2026-11-22 ~03:10Z) : profil de l'arc, §8.70 (d) 4.** C'est une
   étape à part, que le Mac ne fait pas. Code : `PRES2027_ARC_FIXE` (commit de ce lot).
   - Pour A ∈ {1.8, 3.5, 5.0, 6.2} :
     - `PRES2027_ARC_FIXE=A PRES2027_B_QUAD=100 python -m model.backtest.map_screen --variante hiercercle_ra_fid --inits 4 --pas 20000 --decroissant --lse-officiel`
