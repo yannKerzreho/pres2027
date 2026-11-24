@@ -1,0 +1,88 @@
+{
+ "spec": "§8.79",
+ "variante": "hiercercle_ra_fid_sigdyn30",
+ "stem": "map_hiercercle_ra_fid_sigdyn30_2022_T1-30_p20000d_v2sans_EmmanuelMacronEricZemmour",
+ "x64": true,
+ "env": {
+  "PRES2027_SANS_PAIRE": "Emmanuel Macron|Eric Zemmour",
+  "PRES2027_SANS_HYP": null,
+  "PRES2027_ARC_FIXE": null
+ },
+ "inits": [
+  {
+   "init": 0,
+   "U_adam": -12083.5,
+   "U_poli": -12083.5,
+   "delta_U": 0.0,
+   "norme_gradient": 0.002156090940229442,
+   "iterations": 603,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 1,
+   "U_adam": -12083.49,
+   "U_poli": -12083.5,
+   "delta_U": 0.01,
+   "norme_gradient": 0.0027236307343363,
+   "iterations": 722,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 2,
+   "U_adam": -12083.5,
+   "U_poli": -12083.5,
+   "delta_U": 0.0,
+   "norme_gradient": 0.002921018912726468,
+   "iterations": 345,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 3,
+   "U_adam": -12083.5,
+   "U_poli": -12083.5,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0027000265427331075,
+   "iterations": 412,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 4,
+   "U_adam": -12078.91,
+   "U_poli": -12083.5,
+   "delta_U": 4.59,
+   "norme_gradient": 0.0029708347498799866,
+   "iterations": 1230,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": false,
+   "arret_maxiter": false
+  },
+  {
+   "init": 5,
+   "U_adam": -12083.5,
+   "U_poli": -12083.5,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0035078732878178398,
+   "iterations": 371,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  }
+ ],
+ "meilleur": 0,
+ "a_1_nat": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5
+ ]
+}

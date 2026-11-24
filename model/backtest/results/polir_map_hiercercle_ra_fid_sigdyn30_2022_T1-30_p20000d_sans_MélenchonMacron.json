@@ -1,0 +1,88 @@
+{
+ "spec": "§8.79",
+ "variante": "hiercercle_ra_fid_sigdyn30",
+ "stem": "map_hiercercle_ra_fid_sigdyn30_2022_T1-30_p20000d_sans_MélenchonMacron",
+ "x64": true,
+ "env": {
+  "PRES2027_SANS_PAIRE": null,
+  "PRES2027_SANS_HYP": "Mélenchon – Macron",
+  "PRES2027_ARC_FIXE": null
+ },
+ "inits": [
+  {
+   "init": 0,
+   "U_adam": -12641.76,
+   "U_poli": -12641.76,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0035379154596550137,
+   "iterations": 354,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 1,
+   "U_adam": -12641.75,
+   "U_poli": -12641.76,
+   "delta_U": 0.01,
+   "norme_gradient": 0.003332470691889229,
+   "iterations": 609,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 2,
+   "U_adam": -12641.76,
+   "U_poli": -12641.76,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0027946214680762806,
+   "iterations": 198,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 3,
+   "U_adam": -12641.76,
+   "U_poli": -12641.76,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0021441832392659612,
+   "iterations": 151,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 4,
+   "U_adam": -12636.72,
+   "U_poli": -12641.76,
+   "delta_U": 5.04,
+   "norme_gradient": 0.0033930761598025684,
+   "iterations": 1134,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": false,
+   "arret_maxiter": false
+  },
+  {
+   "init": 5,
+   "U_adam": -12641.76,
+   "U_poli": -12641.76,
+   "delta_U": 0.0,
+   "norme_gradient": 0.002755962213726268,
+   "iterations": 314,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  }
+ ],
+ "meilleur": 0,
+ "a_1_nat": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5
+ ]
+}

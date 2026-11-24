@@ -1,0 +1,87 @@
+{
+ "spec": "§8.79",
+ "variante": "hiercercle_ra_fid_sigdyn30",
+ "stem": "map_hiercercle_ra_fid_sigdyn30_2022_T1-30_p20000d_v2sans_EmmanuelMacronValériePécresse",
+ "x64": true,
+ "env": {
+  "PRES2027_SANS_PAIRE": "Emmanuel Macron|Valérie Pécresse",
+  "PRES2027_SANS_HYP": null,
+  "PRES2027_ARC_FIXE": null
+ },
+ "inits": [
+  {
+   "init": 0,
+   "U_adam": -12232.87,
+   "U_poli": -12232.87,
+   "delta_U": 0.0,
+   "norme_gradient": 0.002765089127153802,
+   "iterations": 302,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 1,
+   "U_adam": -12232.86,
+   "U_poli": -12232.87,
+   "delta_U": 0.01,
+   "norme_gradient": 0.0022034544929000767,
+   "iterations": 725,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 2,
+   "U_adam": -12232.87,
+   "U_poli": -12232.87,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0035631348472149028,
+   "iterations": 149,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 3,
+   "U_adam": -12212.91,
+   "U_poli": -12212.91,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0031429071323261543,
+   "iterations": 170,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 4,
+   "U_adam": -12232.84,
+   "U_poli": -12232.87,
+   "delta_U": 0.03,
+   "norme_gradient": 0.0047012626668431114,
+   "iterations": 633,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 5,
+   "U_adam": -12232.87,
+   "U_poli": -12232.87,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0030598888040604412,
+   "iterations": 201,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  }
+ ],
+ "meilleur": 0,
+ "a_1_nat": [
+  0,
+  1,
+  2,
+  4,
+  5
+ ]
+}

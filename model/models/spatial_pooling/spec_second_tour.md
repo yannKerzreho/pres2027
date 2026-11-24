@@ -5000,6 +5000,44 @@ l'identification de λ font défaut. Verdict laissé à la session locale après
 - T0 (+4,7 sur la même paire, 0 paramètre ajusté) reste le meilleur prédicteur : l'information est
   là, mais sous une forme qu'aucune variante spatiale ne capte de façon stable.
 
+### 8.89 Résultat de P4c sur 2022 (§8.87 ; 24/11 ~23:30Z, Mac, MAP 20 000 pas + polissage)
+
+`hiercercle_ra_fid_sigdyn30` : 6 rayons libres (Mélenchon, Jadot, Macron, Pécresse, Le Pen, Zemmour).
+
+| Fit | Écart V2 | Inits à 1 nat | Arc | max \|z_σ\| | max \|z_pos\| des finalistes | σ_LP/σ_M | ΔU contre P4b |
+|---|---|---|---|---|---|---|---|
+| Données complètes | — | 6/6 | 2,81 | 1,03 | 2,63 | 1,27 | +2,7 |
+| Macron–Mélenchon | −0,4 | 6/6 | 2,97 | 1,22 | 2,52 | 1,23 | +3,5 |
+| Macron–Zemmour | +6,2 | 6/6 | 2,44 | 0,80 | 2,88 | 1,31 | +0,6 |
+| Macron–Le Pen | +4,2 | 6/6 | 3,06 | 1,65 | 2,45 | **1,77** | +0,9 |
+| Macron–Pécresse | +1,6 | 5/6 | 2,73 | 1,89 | 2,34 | 1,23 | −1,4 |
+| **MAE V2** | **3,09** | | | | | | |
+
+V1-LOHO : Mélenchon–Macron 10,1 (U_fid 10,3), Macron–Zemmour 5,5 (17,5), Macron–Pécresse 23,5 (13,8).
+Moyenne **13,0** (P4b 13,2).
+
+**Critères de §8.87, 2022 :**
+
+- V2 ≤ 3,39 ✓ (3,09) ;
+- V1-LOHO ≤ 14,2 ✓ (13,0) ;
+- |z_pos| ≤ 3 ✓ (2,88 au plus en V2 ; en V1, 2,92 à 2,98, tous candidats, au mode retenu) ;
+- **σ_LP/σ_M < 1,5 : ✗ dans le fit Macron–Le Pen retiré (1,77)**, ✓ ailleurs (1,23 à 1,31).
+  - Le texte figé ne dit pas sur quels fits la clause s'applique. La lecture stricte (tous les fits) la
+    fait échouer.
+  - P4b échoue de même dans ce fit (1,86, revue du 24/11 ~14:00Z). Sa règle §8.82 ne contenait pas
+    cette clause : **la clause n'est donc pas comparable**.
+  - Aucun assouplissement après lecture : je ne requalifie pas la clause.
+
+**Verdict.**
+
+- 2017 ✗ (§8.87) : P4c ne peut qu'être « retenu par parcimonie si 2022 tient ».
+- 2022 **ne tient PAS en lecture stricte.** **P4b reste donc la référence** et P4c est un candidat non
+  adopté.
+- P4c ne dégrade rien d'autre : mêmes prédictions à 0,2 pt près, stabilité au moins égale (5 à 6
+  inits sur 6), 2 rayons et 2 fantômes de moins, ΔU ≤ 3,5 contre P4b.
+- **ARBITRAGE À TRANCHER (utilisateur)** : la clause σ_LP/σ_M < 1,5 porte-t-elle sur tous les fits
+  (P4c non retenu) ou sur les données complètes (P4c retenu par parcimonie) ?
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

@@ -48,7 +48,7 @@ l'historique, ajouter en bas de « Historique ».
   `z_pos`, `z_sigma`, `mu` et `sigma` lus depuis les npz `_poli_c<k>.npz`, dans
   `results/points_<stem>.json`. Les npz sont ignorés par git, et la session locale doit faire le
   Procuste.
-- [ ] [EN COURS MAC (début 2026-11-24 ~17:00Z)] **P4c sur 2022** : 4 V2 + données complètes, puis 3
+- [x] [FAIT 24/11 ~23:30Z, §8.89 : V2 3,09 ✓, V1 13,0 ✓, |z_pos| ✓, mais σ_LP/σ_M 1,77 dans le fit Macron–Le Pen retiré ⇒ 2022 non tenu en lecture stricte ; P4b reste la référence ; ARBITRAGE posé] **P4c sur 2022** : 4 V2 + données complètes, puis 3
   V1-LOHO.
 
 - [x] [FAIT 24/11 ~17:40Z : listes.json et derniers-sondages.json identiques à l'octet à graine de hachage égale ; test durable tests/test_run_premier_tour.py ; non-déterminisme préexistant de l'ordre des événements selon PYTHONHASHSEED, sur main aussi, signalé] (session locale) **Test de non-régression de production** : `listes.json` et
@@ -1115,6 +1115,10 @@ conservé pour l'historique.
     - (a) a priori ou borne d'arc posés à l'avance (contrainte éditoriale) ;
     - (b) modèle sans espace + reports pour le T2 ;
     - (c) modèle joint multi-élections (R3b) avant de trancher.
+
+- **(24/11 ~23:30Z, §8.89) ARBITRAGE À TRANCHER : portée de la clause σ_LP/σ_M < 1,5 pour P4c.** Tous les
+  fits (P4c non retenu, P4b reste la référence) ou données complètes seules (P4c retenu par
+  parcimonie, 2 rayons et 2 candidats fantômes de moins) ? Par défaut, la lecture stricte s'applique.
 
 ## Faits établis (ne pas re-mesurer)
 
