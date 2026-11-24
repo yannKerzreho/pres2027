@@ -31,7 +31,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] **DEMANDE VM n° 8 (session locale, 2026-11-24 ~17:00Z) : P4c sur 2017** (spec §8.87, critères
+- [ ] [EN COURS VM (début 2026-11-24 16:58Z, routine : 2 séquences, complet et V2)] **DEMANDE VM n° 8 (session locale, 2026-11-24 ~17:00Z) : P4c sur 2017** (spec §8.87, critères
   figés). Variante `hiercercle_ra_fid_sigdyn30` ; même séquence que la DEMANDE n° 7 (map_screen
   `--election 2017 --inits 6 --pas 20000 --decroissant --lse-officiel`, puis `polir` avec
   `JAX_ENABLE_X64=1`, puis `modes`), sur les données complètes ET avec
