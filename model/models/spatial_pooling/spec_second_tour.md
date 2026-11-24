@@ -4789,6 +4789,22 @@ vaut 13,2 et Pécresse dépasse de +9,5.
   gp-pooling et le spatial de production sont neutres (revue : mêmes kwargs, mêmes paramètres, même
   potentiel en un point fixé, sur les données 2027).
 
+**Neutralité vérifiée après correction (24/11 ~17:40Z, 0 fit, même CSV au 2026-11-24, script
+`scratchpad/rev9/neutral.py` et `listes_seul.py`, main extrait par `git archive`).**
+
+| Sortie ou entrée | Main contre branche |
+|---|---|
+| `listes.json` et `derniers-sondages.json` | **identiques à l'octet**, à graine de hachage égale |
+| Entrée et affichage de gp-pooling | identiques |
+| Entrée, affichage, kwargs et potentiel du spatial | identiques |
+| Hachage du T1 | identique |
+
+- Les seules différences sont l'ordre des événements de même date de `listes.json` et la colonne
+  `non_expression` (NaN) du brut. L'ordre dépend de `PYTHONHASHSEED`, **sur main aussi** :
+  c'est un non-déterminisme préexistant, hors périmètre, signalé en suivi.
+- **Test durable** `tests/test_run_premier_tour.py` : run.py ne charge que le premier tour, et
+  `PUBLIER_T2` est False. Le test échoue bien si l'on réintroduit `tour=None` (mutation vérifiée).
+
 **SYNTHÈSE DE FIN DE RECHERCHE** (2022 = développement ; MAP sur le Mac, NON PROBANT).
 
 - **Établi.**

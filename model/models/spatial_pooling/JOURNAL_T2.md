@@ -31,7 +31,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] (session locale) **Test de non-régression de production** : `listes.json` et
+- [x] [FAIT 24/11 ~17:40Z : listes.json et derniers-sondages.json identiques à l'octet à graine de hachage égale ; test durable tests/test_run_premier_tour.py ; non-déterminisme préexistant de l'ordre des événements selon PYTHONHASHSEED, sur main aussi, signalé] (session locale) **Test de non-régression de production** : `listes.json` et
   `derniers-sondages.json`, branche contre main, sur le même CSV, à 0 fit. C'est le prérequis de tout
   « PRÊT À PUBLIER ».
 - [ ] (spec d'abord) **Rayons libres sur la fenêtre de 30 jours** (part ≥ 5 % dans les 30 jours avant
