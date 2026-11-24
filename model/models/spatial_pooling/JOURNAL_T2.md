@@ -31,6 +31,14 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- [ ] **DEMANDE VM n° 9 (session locale, 2026-11-24 ~19:20Z) : pénalité d'extrémité sur 2017** (spec
+  §8.88, critères figés). Variante `hiercercle_ra_fid_sigdyn_ext`, même séquence que la n° 8 (données
+  complètes, puis V2 `PRES2027_SANS_PAIRE="François Fillon|Marine Le Pen"`, polissage, lecture),
+  avec export JSON des points retenus (dont `lam_ext`). Rapporter le Procuste si possible ; sinon la
+  session locale le fait depuis les points.
+- [ ] (session locale, Mac, après P4c 2022) **Pénalité d'extrémité sur 2022** (§8.88) : 4 V2, 3
+  V1-LOHO, données complètes.
+
 - [x] [FAIT 24/11 17:25Z, §8.87 « Résultat » : T1 1,77 ✓, σ 0,95 ✓, V2 Fillon–LP −14,0 ✗ (seuil 9,3), stabilité ambiguë (4/6 identiques mais 245 nats sous les 2 meilleurs, eux-mêmes distincts) ; Mélenchon 79,9 au meilleur point mais 89,4 à l'init voisine ; points exportés en JSON pour le Procuste] **DEMANDE VM n° 8 (session locale, 2026-11-24 ~17:00Z) : P4c sur 2017** (spec §8.87, critères
   figés). Variante `hiercercle_ra_fid_sigdyn30` ; même séquence que la DEMANDE n° 7 (map_screen
   `--election 2017 --inits 6 --pas 20000 --decroissant --lse-officiel`, puis `polir` avec
@@ -51,7 +59,7 @@ l'historique, ajouter en bas de « Historique ».
   - 2017 : Procuste ≥ 4/6, T1 ≤ 2,23, V2 Fillon–LP ≤ `hier` ;
   - 2022 : V2 ≤ 3,39, V1-LOHO ≤ 14,2 ;
   - T0 rapporté.
-- [ ] (spec d'abord) **η ≡ 0 contre pénalité d'extrémité à 1 paramètre.**
+- [x] [spécifié et codé 24/11 ~19:20Z, §8.88] **η ≡ 0 contre pénalité d'extrémité à 1 paramètre.**
 - [ ] Témoins à 0 fit systématiques (T0, constante par hypothèse, 50/50, R1) dans les tableaux V1/V2.
 - [ ] Rapatrier les npz de la VM (B′ 2017) ou les exporter en JSON ; Procuste.
 

@@ -4917,6 +4917,37 @@ rapporté à l'échelle. Les poids ne sont pas pondérés par les parts, à la d
 - 2022 est en cours sur le Mac. Le verdict de §8.87 ne peut plus être que « retenu par parcimonie »
   (si 2022 tient) ou « non retenu ».
 
+### 8.88 Pénalité d'extrémité à 1 paramètre à la place de η (revue du 24/11 ~17:00Z ; avant code, figé)
+
+**Motif.** Témoin T0 en 2017 : « pénalité propre à Le Pen » fait +4,7 sur Fillon–Le Pen, contre −14 à
+−17 pour les variantes spatiales. Le mécanisme transférable est une désaffection pour les extrêmes au
+second tour (front républicain), et non une valence libre par candidat.
+
+**Forme.** Extrémité e_i = (2μ_i − 1)² ∈ [0, 1], avec μ_i la position sur l'arc, valable aussi pour
+le segment. Elle vaut 0 au centre et 1 aux deux bouts.
+
+$$\eta_i=-\lambda\,e_i,\qquad \lambda\sim\mathrm{HalfNormal}(1)\ \text{(logit)}.$$
+
+- Remplace z_η (N) et s_η : **−N + 0 paramètre net** (1 au lieu de 24).
+- La symétrie est assumée : Mélenchon et Le Pen sont pénalisés de la même façon ; aucune pénalité n'est
+  attribuée à un nom.
+- Variante `hiercercle_ra_fid_sigdyn_ext` (sur la base P4b, la référence).
+
+**Plateformes (une par étape).**
+
+- 2017 (données complètes et V2 Fillon–Le Pen) : **la VM**, DEMANDE n° 9 ;
+- 2022 (4 V2, 3 V1-LOHO, données complètes) : **le Mac**, après P4c.
+
+**Critères figés :**
+
+- **2017** : |écart V2 Fillon–LP| ≤ 8,3 (`hier` − 1) ; T1 ≤ 2,23 ; Procuste ≥ 4/6. Rapporté : T0
+  (+4,7) et Mélenchon (76,4).
+- **2022** : MAE V2 ≤ 3,59 (P4b + 0,5) ; duels en échantillon ≤ P4b + 0,5 (1,59 → 2,09) ; V1-LOHO
+  ≤ 14,2 ; |z_pos| des finalistes ≤ 3 ; perte de vraisemblance rapportée (AIC : −23 paramètres ×
+  1 nat ; BIC : −23 × ln(3 500)/2 ≈ −94).
+- **Verdict.** 2017 ET 2022 tenus ⇒ la variante devient la référence. 2022 seul ⇒ retenue par
+  parcimonie, 2017 restant en échec. Sinon, P4b (ou P4c) reste la référence.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

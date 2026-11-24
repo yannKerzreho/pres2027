@@ -82,7 +82,7 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
                              rep_y=None, rep_date_idx=None, rep_k=None, rep_a=None, rep_b=None,
                              rep_champ=None, z_pos_fixe=None, z_sigma_fixe=None, arc_fixe=None,
                              kappa_fixe=None, abst_situee=False, noyau_t=False, sigma_lie=None, fidelite=False,
-                             sigma_idx_libres=None,
+                             sigma_idx_libres=None, eta_extremite=False,
                              omega_electorat=False, melange_lambda=False):
     """Le modèle. Inférence JOINTE de la géométrie et du chemin de `w`.
 
@@ -243,12 +243,18 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
     if duel_y is not None:
         kappa = (numpyro.sample("kappa", dist.LogNormal(0.0, kappa_log_scale)) if kappa_fixe is None
                  else numpyro.deterministic("kappa", kappa_fixe))
-        z_eta = numpyro.sample("z_eta", dist.Normal(0.0, 1.0).expand([N]))
-        if eta_hier:
+        if eta_extremite:
+            # §8.88 : pénalité d'extrémité, η_i = −λ (2μ_i − 1)² (1 paramètre, à la place de z_η/s_η).
+            lam_ext = numpyro.sample("lam_ext", dist.HalfNormal(1.0))
+            eta = numpyro.deterministic("eta", -lam_ext * (2.0 * mu - 1.0) ** 2)
+            z_eta = None
+        elif eta_hier:
+            z_eta = numpyro.sample("z_eta", dist.Normal(0.0, 1.0).expand([N]))
             # Échelle des valences APPRISE (spec_second_tour.md §8.10).
             s_eta = numpyro.sample("s_eta", dist.HalfNormal(eta_scale))
             eta = numpyro.deterministic("eta", z_eta * s_eta)
         else:
+            z_eta = numpyro.sample("z_eta", dist.Normal(0.0, 1.0).expand([N]))
             eta = numpyro.deterministic("eta", z_eta * eta_scale)
         sigma_t2 = numpyro.sample("sigma_t2", dist.HalfNormal(sigma_t2_prior))
         w_d = w_full[:, duel_date_idx].T                         # (D, N)

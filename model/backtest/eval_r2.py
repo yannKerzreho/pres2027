@@ -51,7 +51,8 @@ def reconstruire(variante: str, stem: str, coupure: str = "T2-7", chaines=None, 
                         "hiercercle_ra_fid_omk_lam": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True, "fidelite": True, "omega_electorat": True, "melange_lambda": True},
                         "hiercercle_ra_fid_sigeq": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True, "fidelite": True, "sigma_egaux": True},
                         "hiercercle_ra_fid_sigdyn": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True, "fidelite": True, "sigma_dynamiques": True},
-                        "hiercercle_ra_fid_sigdyn30": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True, "fidelite": True, "sigma_dynamiques_30j": True}}[variante])
+                        "hiercercle_ra_fid_sigdyn30": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True, "fidelite": True, "sigma_dynamiques_30j": True},
+                        "hiercercle_ra_fid_sigdyn_ext": {"eta_extremite": True, "carte_cercle": True, "_reports_avant": True, "fidelite": True, "sigma_dynamiques": True}}[variante])
     if lse_officiel or LSE_OFFICIEL:
         sr.VARIANTE_KW["_lse_officiel"] = True
     ref = sr.T1_DATES[ELECTION] if coupure.startswith("T1") else sr.T2_DATES[ELECTION]
@@ -224,7 +225,7 @@ def par_chaine(variante: str, stem: str, coupure: str) -> dict:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--variante", choices=["hier", "hier2d", "hier_rep", "hiercercle", "hiercercle_sr", "hiercercle_ra", "hier_ra", "hiercercle_ra_abs", "hier_ra_t", "hier_ra_lie", "hiercercle_ra_ferme", "hier_ra_fid", "hiercercle_ra_fid", "hier_ra_fid_omk", "hiercercle_ra_fid_omk", "hiercercle_ra_fid_sigeq", "hiercercle_ra_fid_sigdyn", "hiercercle_ra_fid_sigdyn30"], required=True)
+    ap.add_argument("--variante", choices=["hier", "hier2d", "hier_rep", "hiercercle", "hiercercle_sr", "hiercercle_ra", "hier_ra", "hiercercle_ra_abs", "hier_ra_t", "hier_ra_lie", "hiercercle_ra_ferme", "hier_ra_fid", "hiercercle_ra_fid", "hier_ra_fid_omk", "hiercercle_ra_fid_omk", "hiercercle_ra_fid_sigeq", "hiercercle_ra_fid_sigdyn", "hiercercle_ra_fid_sigdyn30", "hiercercle_ra_fid_sigdyn_ext"], required=True)
     ap.add_argument("--stem", default=None)
     ap.add_argument("--coupure", default="T2-7")
     ap.add_argument("--par-chaine", action="store_true", help="critère 4 révisé (écarts entre chaînes)")

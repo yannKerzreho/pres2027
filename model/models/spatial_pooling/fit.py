@@ -97,6 +97,7 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
                         sigma_egaux: bool = False,
                         sigma_dynamiques: bool = False,
                         sigma_dynamiques_30j: bool = False,
+                        eta_extremite: bool = False,
                         reports: pd.DataFrame | None = None,
                         champ_reports: list | None = None) -> SpatialPoolingFit:
     """Roster -> arrays -> NUTS, en une seule inférence jointe.
@@ -224,7 +225,9 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
             kwargs["eta_scale"] = eta_scale
         if kappa_log_scale is not None:
             kwargs["kappa_log_scale"] = kappa_log_scale
-        if eta_hier:
+        if eta_extremite:                                              # §8.88
+            kwargs["eta_extremite"] = True
+        elif eta_hier:
             kwargs["eta_hier"] = True
         masque_lse = None
         noms_maisons = None
@@ -276,7 +279,8 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         # le `rhat_max` global est celui du T1 et ne garde rien du T2.
         rhat_t2 = max([float(np.max(diag[k]["r_hat"])) for k in ("kappa", "sigma_t2")]
                       + ([float(np.max(np.asarray(diag["z_eta"]["r_hat"])[en_duel]))]
-                         if eta_scale != 0 else [])
+                         if eta_scale != 0 and "z_eta" in diag else [])
+                      + ([float(diag["lam_ext"]["r_hat"])] if "lam_ext" in diag else [])
                       + ([float(diag["omega"]["r_hat"])] if abstention else [])
                       # revue 2026-11-15 : l'échelle apprise est le site fragile de `hier`
                       + ([float(diag["s_eta"]["r_hat"])] if "s_eta" in diag else [])

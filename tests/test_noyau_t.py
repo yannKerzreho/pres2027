@@ -143,3 +143,23 @@ def test_sigma_dynamiques_30j():
     b = M.preparer(2017, "T1-30", "hiercercle_ra_fid_sigdyn30")
     libres = {b["candidats"][i] for i in b["kwargs"]["sigma_idx_libres"]}
     assert libres == {"Jean-Luc Mélenchon", "Benoît Hamon", "Emmanuel Macron", "François Fillon", "Marine Le Pen"}
+
+
+def test_eta_extremite():
+    """§8.88 : η_i = −λ (2μ_i − 1)², un seul paramètre, pas de z_η."""
+    import jax
+    import numpy as np
+    from numpyro import handlers
+    from numpyro.infer import init_to_median
+    from numpyro.infer.util import initialize_model
+    import model.backtest.multi_election as M
+    M.VARIANTES["hiercercle_ra_fid_sigdyn_ext"] = {"eta_extremite": True, "carte_cercle": True, "_reports_avant": True,
+                                                   "fidelite": True, "sigma_dynamiques": True}
+    b = M.preparer(2022, "T1-30", "hiercercle_ra_fid_sigdyn_ext")
+    from model.models.spatial_pooling.joint_model import spatial_pooling_model_ou
+    tr = handlers.trace(handlers.seed(spatial_pooling_model_ou, 2)).get_trace(**b["kwargs"])
+    lam, mu, eta = (np.asarray(tr[k]["value"]) for k in ("lam_ext", "mu", "eta"))
+    assert np.allclose(eta, -lam * (2 * mu - 1) ** 2) and "z_eta" not in tr and "s_eta" not in tr
+    info = initialize_model(jax.random.PRNGKey(0), spatial_pooling_model_ou, model_kwargs=b["kwargs"],
+                            init_strategy=init_to_median)
+    assert np.isfinite(float(info.potential_fn(info.param_info.z)))

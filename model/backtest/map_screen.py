@@ -46,6 +46,8 @@ def capturer(variante: str, election: int, coupure: str, lse_officiel: bool):
         "hiercercle_ra_fid_omk": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True, "fidelite": True,
                                   "omega_electorat": True},
         "hier": {"eta_hier": True},
+        "hiercercle_ra_fid_sigdyn_ext": {"eta_extremite": True, "carte_cercle": True, "_reports_avant": True,
+                                         "fidelite": True, "sigma_dynamiques": True},
         "hiercercle_ra_fid_sigdyn30": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True,
                                        "fidelite": True, "sigma_dynamiques_30j": True},
         "hiercercle_ra_fid_sigdyn": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True, "fidelite": True,
