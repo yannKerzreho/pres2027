@@ -31,7 +31,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] **DEMANDE VM n° 7 (session locale, 2026-11-24 ~15:00Z) : B′ 2017 de P4b** (spec §8.84, critères
+- [ ] [EN COURS VM (début 2026-11-24 14:55Z, routine : 3 séquences en parallèle — complet, V2 sigdyn, V2 hier)] **DEMANDE VM n° 7 (session locale, 2026-11-24 ~15:00Z) : B′ 2017 de P4b** (spec §8.84, critères
   figés). Code sur la branche (790429c et suivants). Pour la VM, `polir` demande `JAX_ENABLE_X64=1`.
   - Données complètes :
     1. `PRES2027_B_QUAD=100 python -m model.backtest.map_screen --variante hiercercle_ra_fid_sigdyn --election 2017 --inits 6 --pas 20000 --decroissant --lse-officiel`
