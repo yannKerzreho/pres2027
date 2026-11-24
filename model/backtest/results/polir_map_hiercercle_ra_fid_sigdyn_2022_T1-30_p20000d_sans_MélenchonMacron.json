@@ -1,0 +1,85 @@
+{
+ "spec": "§8.79",
+ "variante": "hiercercle_ra_fid_sigdyn",
+ "stem": "map_hiercercle_ra_fid_sigdyn_2022_T1-30_p20000d_sans_MélenchonMacron",
+ "x64": true,
+ "env": {
+  "PRES2027_SANS_PAIRE": null,
+  "PRES2027_SANS_HYP": "Mélenchon – Macron",
+  "PRES2027_ARC_FIXE": null
+ },
+ "inits": [
+  {
+   "init": 0,
+   "U_adam": -12645.86,
+   "U_poli": -12645.87,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0034835552978364393,
+   "iterations": 448,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 1,
+   "U_adam": -12636.45,
+   "U_poli": -12636.5,
+   "delta_U": 0.05,
+   "norme_gradient": 0.0031627245328791887,
+   "iterations": 893,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 2,
+   "U_adam": -12636.5,
+   "U_poli": -12636.5,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0033789500137177035,
+   "iterations": 569,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 3,
+   "U_adam": -12645.86,
+   "U_poli": -12645.87,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0036383490077658677,
+   "iterations": 535,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 4,
+   "U_adam": -11280.16,
+   "U_poli": -11330.51,
+   "delta_U": 50.34,
+   "norme_gradient": 0.48411036562964127,
+   "iterations": 5000,
+   "message": "STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT",
+   "adam_converge": false,
+   "arret_maxiter": true
+  },
+  {
+   "init": 5,
+   "U_adam": -12645.86,
+   "U_poli": -12645.87,
+   "delta_U": 0.0,
+   "norme_gradient": 0.002925615154268655,
+   "iterations": 364,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  }
+ ],
+ "meilleur": 0,
+ "a_1_nat": [
+  0,
+  3,
+  5
+ ]
+}

@@ -42,7 +42,7 @@ l'historique, ajouter en bas de « Historique ».
     inits : script de la revue `scratchpad/rev8/procuste_p4b.py`, inaccessible depuis la VM ; à défaut,
     rapporter U poli et les prédictions par init, et la session locale fera le Procuste.
 
-- [ ] (session locale, Mac, après la V1-LOHO) **B′ 2017 de P4b**, la règle de spec:3338 étant due.
+- [x] [FAIT par la VM, §8.84 : échec de stabilité et du V2 Fillon–Le Pen] (session locale, Mac, après la V1-LOHO) **B′ 2017 de P4b**, la règle de spec:3338 étant due.
   Critères à figer avant le run : T1 2017 ≤ référence + 0,3 ; Procuste ≥ 4/6 ; Mélenchon → Le Pen de
   bon signe ; V2 Fillon–Le Pen ≤ `hier` − 1.
 - [ ] η ≡ 0 sur P4b (§8.70 d 5 : V2 ≤ P4b + 1, duels en échantillon ≤ P4b + 0,5, V1-LOHO ≤ P4b + 2 ;
@@ -54,7 +54,7 @@ l'historique, ajouter en bas de « Historique ».
   - scripts Procuste et critères dans `model/backtest/` ;
   - export JSON des points retenus.
 
-- [ ] (session locale, Mac) **V1-LOHO de la nouvelle référence P4b** (3 hypothèses, 20 000 pas +
+- [x] [FAIT 24/11 ~16:30Z, §8.85 : ÉCHEC (moyenne 13,2 contre U_fid 13,9, Pécresse +9,5), mais nette amélioration (19,3 → 13,2 ; « Aucun » 8,3 → 5,0)] (session locale, Mac) **V1-LOHO de la nouvelle référence P4b** (3 hypothèses, 20 000 pas +
   polissage), face à U_fid (14,1) et au critère de §8.63 (moyenne ≤ U_fid − 2, aucune hypothèse >
   U_fid + 3).
 - [ ] (VM, après V1-LOHO) NUTS de P4b sur données complètes, sur une seule plateforme : confirmer la

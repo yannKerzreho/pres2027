@@ -1,0 +1,88 @@
+{
+ "spec": "§8.79",
+ "variante": "hiercercle_ra_fid_sigdyn",
+ "stem": "map_hiercercle_ra_fid_sigdyn_2022_T1-30_p20000d_sans_MacronZemmour",
+ "x64": true,
+ "env": {
+  "PRES2027_SANS_PAIRE": null,
+  "PRES2027_SANS_HYP": "Macron – Zemmour",
+  "PRES2027_ARC_FIXE": null
+ },
+ "inits": [
+  {
+   "init": 0,
+   "U_adam": -12219.48,
+   "U_poli": -12219.49,
+   "delta_U": 0.0,
+   "norme_gradient": 0.002801912603878324,
+   "iterations": 718,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 1,
+   "U_adam": -12203.26,
+   "U_poli": -12219.49,
+   "delta_U": 16.23,
+   "norme_gradient": 0.003321519630905176,
+   "iterations": 1892,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": false,
+   "arret_maxiter": false
+  },
+  {
+   "init": 2,
+   "U_adam": -12203.53,
+   "U_poli": -12219.49,
+   "delta_U": 15.95,
+   "norme_gradient": 0.0026039098847118114,
+   "iterations": 1723,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": false,
+   "arret_maxiter": false
+  },
+  {
+   "init": 3,
+   "U_adam": -12219.48,
+   "U_poli": -12219.49,
+   "delta_U": 0.01,
+   "norme_gradient": 0.002867539820604371,
+   "iterations": 803,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 4,
+   "U_adam": -12203.29,
+   "U_poli": -12219.49,
+   "delta_U": 16.19,
+   "norme_gradient": 0.003693731569421633,
+   "iterations": 1919,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": false,
+   "arret_maxiter": false
+  },
+  {
+   "init": 5,
+   "U_adam": -12219.48,
+   "U_poli": -12219.49,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0035478500667262473,
+   "iterations": 587,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  }
+ ],
+ "meilleur": 0,
+ "a_1_nat": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5
+ ]
+}

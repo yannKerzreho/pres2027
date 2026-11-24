@@ -4715,6 +4715,29 @@ Données complètes, par init (potentiel poli ; partage Mélenchon, mesure 76,4 
 structure de P4b **ne se généralise pas à 2017** tant que le Procuste n'a pas montré ≥ 4/6. Le critère 3
 échoue comme prévu (limite connue). La V2 2017 ne confirme pas le gain de 2022.
 
+### 8.85 V1-LOHO de P4b (critère de §8.63 ; 24/11 ~16:30Z, Mac, MAP 20 000 pas + polissage)
+
+Fichiers `results/v1loho_map_hiercercle_ra_fid_sigdyn_2022_T1-30_p20000d_sans_*_poli.json`. Mode
+retenu par lp.
+
+| Hypothèse retirée | P4b, partage (« Aucun ») | U_fid | Écart à U_fid | Inits dans le mode | Ancienne référence (cercle + R7) |
+|---|---|---|---|---|---|
+| Mélenchon–Macron | 10,6 (5,0) | 10,4 | +0,2 | 5/6 | 24,0 (10,8) |
+| Macron–Zemmour | **5,7** (4,6) | 17,5 | −11,8 | 6/6 | 10,0 (6,8) |
+| Macron–Pécresse | 23,4 (5,5) | 13,9 | **+9,5** | 3/6 (+2 à 26 nats) | 24,0 (7,3) |
+| **Moyenne** | **13,2 (5,0)** | **13,9** | −0,7 | | 19,3 (8,3) |
+
+**Critère figé** (moyenne ≤ U_fid − 2 = 11,9, aucune hypothèse > U_fid + 3) : **ÉCHEC**. La moyenne
+vaut 13,2 et Pécresse dépasse de +9,5.
+
+**Lecture.**
+
+- P4b améliore nettement les cellules d'une hypothèse cachée : partage 19,3 → 13,2, « Aucun »
+  8,3 → 5,0. Sur Mélenchon–Macron, il passe de 24,0 à 10,6, au niveau de U_fid.
+- Il ne bat pas encore le témoin sans géométrie U_fid en moyenne.
+- L'échec est concentré sur Macron–Pécresse : la droite modérée reste mal ordonnée par rapport à la
+  gauche dans les reports, comme pour toutes les variantes depuis §8.64.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
