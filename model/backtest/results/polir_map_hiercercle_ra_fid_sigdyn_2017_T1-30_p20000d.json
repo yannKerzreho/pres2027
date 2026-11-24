@@ -1,0 +1,83 @@
+{
+ "spec": "§8.79",
+ "variante": "hiercercle_ra_fid_sigdyn",
+ "stem": "map_hiercercle_ra_fid_sigdyn_2017_T1-30_p20000d",
+ "x64": true,
+ "env": {
+  "PRES2027_SANS_PAIRE": null,
+  "PRES2027_SANS_HYP": null,
+  "PRES2027_ARC_FIXE": null
+ },
+ "inits": [
+  {
+   "init": 0,
+   "U_adam": -2822.1,
+   "U_poli": -2822.1,
+   "delta_U": 0.0,
+   "norme_gradient": 0.00340601095543616,
+   "iterations": 153,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 1,
+   "U_adam": -3005.25,
+   "U_poli": -3005.25,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0027998860346277604,
+   "iterations": 379,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 2,
+   "U_adam": -3075.39,
+   "U_poli": -3075.39,
+   "delta_U": 0.0,
+   "norme_gradient": 0.002477909269423636,
+   "iterations": 34,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 3,
+   "U_adam": -3052.88,
+   "U_poli": -3052.88,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0031917559951093787,
+   "iterations": 193,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 4,
+   "U_adam": -3007.32,
+   "U_poli": -3007.32,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0031875977683333933,
+   "iterations": 28,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 5,
+   "U_adam": -2821.45,
+   "U_poli": -2821.46,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0032812653134745673,
+   "iterations": 239,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  }
+ ],
+ "meilleur": 2,
+ "a_1_nat": [
+  2
+ ]
+}

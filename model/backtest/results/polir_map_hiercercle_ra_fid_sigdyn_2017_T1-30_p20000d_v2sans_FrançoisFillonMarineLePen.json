@@ -1,0 +1,83 @@
+{
+ "spec": "§8.79",
+ "variante": "hiercercle_ra_fid_sigdyn",
+ "stem": "map_hiercercle_ra_fid_sigdyn_2017_T1-30_p20000d_v2sans_FrançoisFillonMarineLePen",
+ "x64": true,
+ "env": {
+  "PRES2027_SANS_PAIRE": "François Fillon|Marine Le Pen",
+  "PRES2027_SANS_HYP": null,
+  "PRES2027_ARC_FIXE": null
+ },
+ "inits": [
+  {
+   "init": 0,
+   "U_adam": -2872.97,
+   "U_poli": -2872.97,
+   "delta_U": 0.0,
+   "norme_gradient": 0.00283514491138506,
+   "iterations": 151,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 1,
+   "U_adam": -2872.97,
+   "U_poli": -2872.97,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0029808368913779117,
+   "iterations": 379,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 2,
+   "U_adam": -2661.53,
+   "U_poli": -2661.53,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0026693088174029435,
+   "iterations": 12,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 3,
+   "U_adam": -2932.61,
+   "U_poli": -2932.62,
+   "delta_U": 0.01,
+   "norme_gradient": 0.003397143216931243,
+   "iterations": 363,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 4,
+   "U_adam": -2923.49,
+   "U_poli": -2923.49,
+   "delta_U": 0.0,
+   "norme_gradient": 0.00317716312851848,
+   "iterations": 96,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 5,
+   "U_adam": -2872.97,
+   "U_poli": -2872.97,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0033242251758223876,
+   "iterations": 135,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  }
+ ],
+ "meilleur": 3,
+ "a_1_nat": [
+  3
+ ]
+}

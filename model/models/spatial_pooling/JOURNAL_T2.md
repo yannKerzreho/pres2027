@@ -31,7 +31,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] [EN COURS VM (début 2026-11-24 14:55Z, routine : 3 séquences en parallèle — complet, V2 sigdyn, V2 hier)] **DEMANDE VM n° 7 (session locale, 2026-11-24 ~15:00Z) : B′ 2017 de P4b** (spec §8.84, critères
+- [x] [FAIT 24/11 15:25Z, §8.84 « Résultat » : T1 1,97 ✓, σ_LP/σ_M 0,89 ✓, Mélenchon 88,9 ✗ (attendu), stabilité ÉCHEC probable (6 points polis distincts sur 254 nats, mode dominant 1 init ; Procuste à faire par la session locale) ; V2 Fillon–Le Pen : P4b −16,6 (modes 40,5-75,9) contre hier −9,3 ⇒ pas de généralisation à 2017 en l'état] **DEMANDE VM n° 7 (session locale, 2026-11-24 ~15:00Z) : B′ 2017 de P4b** (spec §8.84, critères
   figés). Code sur la branche (790429c et suivants). Pour la VM, `polir` demande `JAX_ENABLE_X64=1`.
   - Données complètes :
     1. `PRES2027_B_QUAD=100 python -m model.backtest.map_screen --variante hiercercle_ra_fid_sigdyn --election 2017 --inits 6 --pas 20000 --decroissant --lse-officiel`
@@ -1115,6 +1115,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-24 15:30Z (routine) : B′ 2017 de P4b (DEMANDE VM n° 7) fini en 35 min ; T1 et σ ✓, stabilité et V2 ✗ ; spec §8.84. VM libre.
 - 2026-11-23 22:10Z (routine) : profil de l'arc terminé (DEMANDE VM n° 6, 8 MAP, vague 2 relancée après redémarrage) ; V2 indépendant de l'arc (0,6 pt) ; spec §8.75 ; lecture préliminaire erronée corrigée. VM libre.
 - 2026-11-22 02:30Z (routine) : NUTS de R8c sur la VM terminé (DEMANDE VM n° 4, 4 chaînes, ≈ 16 h) ; tous les critères in-sample de §8.58 passent, V1 hors échantillon toujours en échec ; spec §8.71. VM libre ; DEMANDE VM n° 5 suspendue par la session locale.
 - 2026-11-19 00:08Z (routine) : main fusionnée (bruit de scénarios par candidat) ; test_alertes_prod adapté (mock acceptant `tour=`, comme test_listes) ; aucun duel postérieur au 17/11 (score prospectif vide).

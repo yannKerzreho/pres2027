@@ -4680,6 +4680,41 @@ pour cette étape.**
 - Le critère 3 a échoué pour R8c (+10,8) ; un nouvel échec serait attendu (report Mélenchon → Le Pen
   de 2017). Il serait rapporté comme la limite connue, sans bloquer.
 
+**Résultat du B′ 2017 de P4b** (VM, DEMANDE n° 7, 24/11 15:25Z, routine). Fichiers :
+`results/polir_map_hiercercle_ra_fid_sigdyn_2017_T1-30_p20000d{,_v2sans_FrançoisFillonMarineLePen}.json`,
+`results/modes_map_hiercercle_ra_fid_sigdyn_2017_T1-30_p20000d_poli.json`,
+`results/v2paire_map_{hiercercle_ra_fid_sigdyn,hier}_2017_T1-30_p20000d_v2sans_FrançoisFillonMarineLePen_poli.json`.
+Polissage convergé partout (‖∇‖ 0,0025-0,0034, critère PGTOL).
+
+Données complètes, par init (potentiel poli ; partage Mélenchon, mesure 76,4 ; σ_LP/σ_M ; T1) :
+
+| init | −U | Mélenchon | σ_LP/σ_M | T1 |
+|---|---|---|---|---|
+| 0 | 2822,1 | 84,9 | 0,63 | 2,21 |
+| 1 | 3005,3 | 88,1 | 1,05 | 2,08 |
+| 2 | **3075,4** | 88,9 | 0,89 | 1,97 |
+| 3 | 3052,9 | 86,4 | 0,84 | 1,79 |
+| 4 | 3007,3 | 90,5 | 0,81 | 2,03 |
+| 5 | 2821,5 | 84,8 | 0,62 | 2,21 |
+
+1. **Stabilité : ÉCHEC probable.** Six points polis distincts sur 254 nats, sauf 0 ≈ 5 (0,6 nat) ; la
+   partition par log-densité donne un mode dominant d'une seule init (2). Procuste non calculé (script
+   hors de la VM) ; la session locale le fera. La concordance 0/5 par lp rend « ≥ 4/6 » improbable.
+2. **T1 2017 : ✓** 1,97 au meilleur point (toutes inits ≤ 2,21 ≤ 2,23).
+3. **Mélenchon : ✗ attendu**, 88,9 contre 76,4 (+12,5 ; R8c +10,8) ; toutes inits entre 84,8 et 90,5.
+4. **σ_LP/σ_M : ✓** 0,89 (< 1,5 à toutes les inits) ; |z_σ| et |z_pos| non calculés sur la VM.
+5. **V2 Fillon–Le Pen (rapporté, sans seuil)**, observé 57,1 :
+   - P4b : modes très dispersés — 40,5 (init 3, meilleur lp), 42,9, 46,7, 75,9 (inits 0, 1, 5) ;
+     mode retenu −16,6 pt ;
+   - `hier` : 47,8 (−9,3 ; 4/6 inits) ; autre mode 56,7 (2/6).
+   P4b fait moins bien que `hier` et n'est pas stable sur cette paire.
+
+Également : « Aucun » MAE 7,15 (critère 3,75 de 2022 : ✗) ; structure Le Pen → Mélenchon 95,3.
+
+**Lecture (règle figée ci-dessus).** 2 et 4 tiennent, 1 échoue vraisemblablement : selon la règle, la
+structure de P4b **ne se généralise pas à 2017** tant que le Procuste n'a pas montré ≥ 4/6. Le critère 3
+échoue comme prévu (limite connue). La V2 2017 ne confirme pas le gain de 2022.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
