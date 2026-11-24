@@ -1,0 +1,354 @@
+{
+ "spec": "spec_second_tour §8.50-8.51",
+ "variante": "hiercercle_ra_fid_sigdyn_ext",
+ "stem": "map_hiercercle_ra_fid_sigdyn_ext_2017_T1-30_p20000d_poli",
+ "election": 2017,
+ "coupure": "T1-30",
+ "B_quad": 100,
+ "chaines": [
+  {
+   "chaine": 0,
+   "lp": 2797.6,
+   "partages": {
+    "Benoît Hamon": [
+     93.1,
+     93.4
+    ],
+    "François Fillon": [
+     67.8,
+     62.8
+    ],
+    "Jean-Luc Mélenchon": [
+     85.2,
+     76.4
+    ],
+    "Nicolas Dupont-Aignan": [
+     63.9,
+     37.6
+    ]
+   },
+   "aucun": {
+    "Benoît Hamon": [
+     21.7,
+     20.4
+    ],
+    "François Fillon": [
+     21.9,
+     26.1
+    ],
+    "Jean-Luc Mélenchon": [
+     33.3,
+     36.4
+    ],
+    "Nicolas Dupont-Aignan": [
+     30.2,
+     32.7
+    ]
+   },
+   "sigma_melenchon": 0.1082,
+   "sigma_lp_sur_macron": 0.819,
+   "nu": null,
+   "log_nu_sd": null,
+   "nu_q95": null,
+   "t1_mae": 2.211,
+   "t1_couv": "0/11",
+   "monotonie_gauche": NaN
+  },
+  {
+   "chaine": 1,
+   "lp": 2797.6,
+   "partages": {
+    "Benoît Hamon": [
+     93.1,
+     93.4
+    ],
+    "François Fillon": [
+     67.8,
+     62.8
+    ],
+    "Jean-Luc Mélenchon": [
+     85.2,
+     76.4
+    ],
+    "Nicolas Dupont-Aignan": [
+     63.9,
+     37.6
+    ]
+   },
+   "aucun": {
+    "Benoît Hamon": [
+     21.7,
+     20.4
+    ],
+    "François Fillon": [
+     21.9,
+     26.1
+    ],
+    "Jean-Luc Mélenchon": [
+     33.3,
+     36.4
+    ],
+    "Nicolas Dupont-Aignan": [
+     30.2,
+     32.7
+    ]
+   },
+   "sigma_melenchon": 0.1082,
+   "sigma_lp_sur_macron": 0.819,
+   "nu": null,
+   "log_nu_sd": null,
+   "nu_q95": null,
+   "t1_mae": 2.211,
+   "t1_couv": "0/11",
+   "monotonie_gauche": NaN
+  },
+  {
+   "chaine": 2,
+   "lp": 2987.5,
+   "partages": {
+    "Benoît Hamon": [
+     93.5,
+     93.4
+    ],
+    "François Fillon": [
+     62.1,
+     62.8
+    ],
+    "Jean-Luc Mélenchon": [
+     87.8,
+     76.4
+    ],
+    "Nicolas Dupont-Aignan": [
+     37.8,
+     37.6
+    ]
+   },
+   "aucun": {
+    "Benoît Hamon": [
+     20.8,
+     20.4
+    ],
+    "François Fillon": [
+     10.5,
+     26.1
+    ],
+    "Jean-Luc Mélenchon": [
+     32.7,
+     36.4
+    ],
+    "Nicolas Dupont-Aignan": [
+     10.5,
+     32.7
+    ]
+   },
+   "sigma_melenchon": 0.0304,
+   "sigma_lp_sur_macron": 0.803,
+   "nu": null,
+   "log_nu_sd": null,
+   "nu_q95": null,
+   "t1_mae": 1.867,
+   "t1_couv": "0/11",
+   "monotonie_gauche": NaN
+  },
+  {
+   "chaine": 3,
+   "lp": 3035.7,
+   "partages": {
+    "Benoît Hamon": [
+     94.8,
+     93.4
+    ],
+    "François Fillon": [
+     54.7,
+     62.8
+    ],
+    "Jean-Luc Mélenchon": [
+     85.6,
+     76.4
+    ],
+    "Nicolas Dupont-Aignan": [
+     100.0,
+     37.6
+    ]
+   },
+   "aucun": {
+    "Benoît Hamon": [
+     17.1,
+     20.4
+    ],
+    "François Fillon": [
+     26.8,
+     26.1
+    ],
+    "Jean-Luc Mélenchon": [
+     32.9,
+     36.4
+    ],
+    "Nicolas Dupont-Aignan": [
+     7.7,
+     32.7
+    ]
+   },
+   "sigma_melenchon": 0.0412,
+   "sigma_lp_sur_macron": 0.804,
+   "nu": null,
+   "log_nu_sd": null,
+   "nu_q95": null,
+   "t1_mae": 1.725,
+   "t1_couv": "0/11",
+   "monotonie_gauche": NaN
+  },
+  {
+   "chaine": 4,
+   "lp": 2797.6,
+   "partages": {
+    "Benoît Hamon": [
+     93.1,
+     93.4
+    ],
+    "François Fillon": [
+     67.8,
+     62.8
+    ],
+    "Jean-Luc Mélenchon": [
+     85.2,
+     76.4
+    ],
+    "Nicolas Dupont-Aignan": [
+     63.9,
+     37.6
+    ]
+   },
+   "aucun": {
+    "Benoît Hamon": [
+     21.7,
+     20.4
+    ],
+    "François Fillon": [
+     21.9,
+     26.1
+    ],
+    "Jean-Luc Mélenchon": [
+     33.3,
+     36.4
+    ],
+    "Nicolas Dupont-Aignan": [
+     30.2,
+     32.7
+    ]
+   },
+   "sigma_melenchon": 0.1082,
+   "sigma_lp_sur_macron": 0.819,
+   "nu": null,
+   "log_nu_sd": null,
+   "nu_q95": null,
+   "t1_mae": 2.211,
+   "t1_couv": "0/11",
+   "monotonie_gauche": NaN
+  },
+  {
+   "chaine": 5,
+   "lp": 2797.6,
+   "partages": {
+    "Benoît Hamon": [
+     93.1,
+     93.4
+    ],
+    "François Fillon": [
+     67.8,
+     62.8
+    ],
+    "Jean-Luc Mélenchon": [
+     85.2,
+     76.4
+    ],
+    "Nicolas Dupont-Aignan": [
+     63.9,
+     37.6
+    ]
+   },
+   "aucun": {
+    "Benoît Hamon": [
+     21.7,
+     20.4
+    ],
+    "François Fillon": [
+     21.9,
+     26.1
+    ],
+    "Jean-Luc Mélenchon": [
+     33.3,
+     36.4
+    ],
+    "Nicolas Dupont-Aignan": [
+     30.2,
+     32.7
+    ]
+   },
+   "sigma_melenchon": 0.1082,
+   "sigma_lp_sur_macron": 0.819,
+   "nu": null,
+   "log_nu_sd": null,
+   "nu_q95": null,
+   "t1_mae": 2.211,
+   "t1_couv": "0/11",
+   "monotonie_gauche": NaN
+  }
+ ],
+ "partition": {
+  "dominant": [
+   3
+  ],
+  "autres": [
+   [
+    2
+   ],
+   [
+    0,
+    1,
+    4,
+    5
+   ]
+  ]
+ },
+ "criteres_mode_dominant": {
+  "1_mae_partages": 20.27,
+  "1_ok": false,
+  "persistance": 4.11,
+  "2_melenchon": [
+   85.6,
+   76.4
+  ],
+  "2_ok": false,
+  "3_sigma_lp_sur_macron": 0.804,
+  "3_ok": true,
+  "3b_monotonie_gauche": null,
+  "3b_ok": true,
+  "4_n_dominant": 1,
+  "4_ecart_duels_max": null,
+  "4_ok": false,
+  "5_t1_mae": 1.725,
+  "5_ok": true,
+  "5_t1_couverture": "0/11",
+  "aucun_mae": 8.12,
+  "aucun_ok": false,
+  "3b_pondere_part_mal": 0.0,
+  "structure": {
+   "electorat_LP_vers_JLM": 89.5,
+   "sigma_melenchon": 0.041,
+   "ok_sigma_jlm": true,
+   "ok_LP": true
+  },
+  "reports_fit": {
+   "c_median": 18.5,
+   "residu_aucun_propres": 3.41,
+   "residu_aucun_autres": -0.11,
+   "n_lignes_propres": 40
+  }
+ },
+ "provenance": {
+  "lse_officiel": true,
+  "plateforme": "Linux-6.18.44-fc-v819-x86_64-with-glibc2.39",
+  "sans_hyp": null
+ }
+}

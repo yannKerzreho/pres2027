@@ -31,7 +31,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] [EN COURS VM (début 2026-11-24 19:00Z, routine : 2 séquences, complet et V2)] **DEMANDE VM n° 9 (session locale, 2026-11-24 ~19:20Z) : pénalité d'extrémité sur 2017** (spec
+- [x] [FAIT 24/11 19:25Z, §8.88 « Résultat » : V2 Fillon–LP +8,2 ✓ de justesse (seuil 8,3) mais modes de −0,3 à +22,8 ; T1 1,73 ✓ ; stabilité ambiguë (4/6 à λ ≈ 0, 240 nats sous le meilleur, seul) ; λ non identifié (0,007-3,8) ; points exportés] **DEMANDE VM n° 9 (session locale, 2026-11-24 ~19:20Z) : pénalité d'extrémité sur 2017** (spec
   §8.88, critères figés). Variante `hiercercle_ra_fid_sigdyn_ext`, même séquence que la n° 8 (données
   complètes, puis V2 `PRES2027_SANS_PAIRE="François Fillon|Marine Le Pen"`, polissage, lecture),
   avec export JSON des points retenus (dont `lam_ext`). Rapporter le Procuste si possible ; sinon la
@@ -1147,6 +1147,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-24 19:30Z (routine) : pénalité d'extrémité sur 2017 (DEMANDE VM n° 9, 27 min) ; V2 ✓ de justesse et fragile, T1 ✓, stabilité ambiguë, λ non identifié ; spec §8.88. VM libre.
 - 2026-11-24 17:30Z (routine) : P4c sur 2017 (DEMANDE VM n° 8, 30 min) ; V2 ✗, T1 et σ ✓ ; points retenus exportés ; spec §8.87. VM libre.
 - 2026-11-24 15:30Z (routine) : B′ 2017 de P4b (DEMANDE VM n° 7) fini en 35 min ; T1 et σ ✓, stabilité et V2 ✗ ; spec §8.84. VM libre.
 - 2026-11-23 22:10Z (routine) : profil de l'arc terminé (DEMANDE VM n° 6, 8 MAP, vague 2 relancée après redémarrage) ; V2 indépendant de l'arc (0,6 pt) ; spec §8.75 ; lecture préliminaire erronée corrigée. VM libre.

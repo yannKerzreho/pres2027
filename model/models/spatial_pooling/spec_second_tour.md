@@ -4948,6 +4948,36 @@ $$\eta_i=-\lambda\,e_i,\qquad \lambda\sim\mathrm{HalfNormal}(1)\ \text{(logit)}.
 - **Verdict.** 2017 ET 2022 tenus ⇒ la variante devient la référence. 2022 seul ⇒ retenue par
   parcimonie, 2017 restant en échec. Sinon, P4b (ou P4c) reste la référence.
 
+
+**Résultat de la pénalité d'extrémité sur 2017** (VM, DEMANDE n° 9, 24/11 19:25Z, routine). Fichiers :
+`results/{polir,modes}_map_hiercercle_ra_fid_sigdyn_ext_2017_T1-30_p20000d*.json`,
+`results/v2paire_map_hiercercle_ra_fid_sigdyn_ext_2017_T1-30_p20000d_v2sans_FrançoisFillonMarineLePen_poli.json`,
+points retenus `results/points_map_hiercercle_ra_fid_sigdyn_ext_2017_T1-30_p20000d{,_v2sans_FrançoisFillonMarineLePen}_poli.json`
+(par init : `arc`, `lam_ext`, `z_pos`, `z_sigma`, `z_sigma_dyn`, `mu`, `sigma`). Polissage convergé (‖∇‖ ≤ 0,0034).
+
+Données complètes, par init (−U poli ; λ ; Mélenchon, mesure 76,4 ; σ_LP/σ_M ; T1 ; arc) :
+
+| init | −U | λ | Mélenchon | σ_LP/σ_M | T1 | arc |
+|---|---|---|---|---|---|---|
+| 0, 1, 4, 5 | 2788,3 (identiques) | 0,007 | 85,2 | 0,82 | 2,21 | 4,58 |
+| 2 | 2981,0 | 2,00 | 87,8 | 0,80 | 1,87 | 6,21 |
+| 3 | **3027,9** | 0,33 | 85,6 | 0,80 | 1,73 | 5,69 |
+
+V2 Fillon–Le Pen (observé 57,1), par mode : init 4 (meilleur lp, λ 3,81) **65,3 (+8,2)** ; inits 2-3
+(λ 0,60-2,15) 56,8 (−0,3) ; init 1 68,0 (+10,9) ; inits 0, 5 (λ 0,59) 79,9 (+22,8).
+
+- **|écart V2| ≤ 8,3 : ✓ de justesse** (+8,2) au mode retenu, mais les modes s'étalent de −0,3 à +22,8 et
+  le meilleur lp ne devance le suivant que de 13,5 nats ⇒ fragile.
+- **T1 ≤ 2,23 : ✓** 1,73 au meilleur point.
+- **Procuste ≥ 4/6 : ambigu**, même figure que P4c : 4 inits identiques à λ ≈ 0 (pénalité éteinte),
+  240 nats sous le meilleur point, qui est seul. Procuste à faire par la session locale sur les points.
+- **λ non identifié** : de 0,007 à 3,8 selon l'init, et le mode retenu change avec λ ⇒ la pénalité
+  ajoute des modes plus qu'elle ne contraint.
+- Rapporté : Mélenchon 85,6 (+9,2) ; σ_LP/σ_M 0,80.
+
+**Lecture.** Le critère V2 passe au mode retenu mais pas de façon robuste ; la stabilité et
+l'identification de λ font défaut. Verdict laissé à la session locale après Procuste et 2022.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

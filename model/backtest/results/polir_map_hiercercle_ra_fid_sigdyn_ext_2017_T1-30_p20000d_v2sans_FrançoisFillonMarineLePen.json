@@ -1,0 +1,83 @@
+{
+ "spec": "§8.79",
+ "variante": "hiercercle_ra_fid_sigdyn_ext",
+ "stem": "map_hiercercle_ra_fid_sigdyn_ext_2017_T1-30_p20000d_v2sans_FrançoisFillonMarineLePen",
+ "x64": true,
+ "env": {
+  "PRES2027_SANS_PAIRE": "François Fillon|Marine Le Pen",
+  "PRES2027_SANS_HYP": null,
+  "PRES2027_ARC_FIXE": null
+ },
+ "inits": [
+  {
+   "init": 0,
+   "U_adam": -2888.49,
+   "U_poli": -2888.49,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0026426512045442502,
+   "iterations": 195,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 1,
+   "U_adam": -2905.37,
+   "U_poli": -2905.37,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0017198512118974413,
+   "iterations": 442,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 2,
+   "U_adam": -2677.15,
+   "U_poli": -2677.15,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0028424354328704673,
+   "iterations": 17,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 3,
+   "U_adam": -2947.35,
+   "U_poli": -2947.35,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0034010251104357857,
+   "iterations": 10,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 4,
+   "U_adam": -2960.9,
+   "U_poli": -2960.9,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0022565706960908905,
+   "iterations": 20,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 5,
+   "U_adam": -2888.49,
+   "U_poli": -2888.49,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0023120746686180814,
+   "iterations": 139,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  }
+ ],
+ "meilleur": 4,
+ "a_1_nat": [
+  4
+ ]
+}
