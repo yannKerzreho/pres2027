@@ -31,7 +31,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] **DEMANDE VM n° 9 (session locale, 2026-11-24 ~19:20Z) : pénalité d'extrémité sur 2017** (spec
+- [ ] [EN COURS VM (début 2026-11-24 19:00Z, routine : 2 séquences, complet et V2)] **DEMANDE VM n° 9 (session locale, 2026-11-24 ~19:20Z) : pénalité d'extrémité sur 2017** (spec
   §8.88, critères figés). Variante `hiercercle_ra_fid_sigdyn_ext`, même séquence que la n° 8 (données
   complètes, puis V2 `PRES2027_SANS_PAIRE="François Fillon|Marine Le Pen"`, polissage, lecture),
   avec export JSON des points retenus (dont `lam_ext`). Rapporter le Procuste si possible ; sinon la
