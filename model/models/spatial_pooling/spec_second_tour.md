@@ -4510,6 +4510,63 @@ inchangée. Témoins rapportés : R1 (2,86) et `hier` (7,9).
 - Piste ouverte par ce résultat : la piste P3 (vecteur 2D explicite, jauge fixée), qui garde le rayon
   mais le paramètre proprement.
 
+### 8.82 Errata de §8.80-8.81 et piste P4b (revue du 24/11 ~10:00Z ; avant code, figé)
+
+**Errata.**
+
+- **§8.81, colonne « Référence » : FAUSSE.** Elle reprenait les points Adam non polis de §8.76, dont un
+  point effondré pour Le Pen. Le bassin non effondré à 2,98 donne :
+
+  | | Mélenchon | Zemmour | Le Pen | Pécresse |
+  |---|---|---|---|---|
+  | Référence (bassin non effondré) | −0,05 | +6,75 | +4,6 | +0,53 |
+  | P4 | −4,7 | +5,0 | −1,35 | +13,1 |
+
+  P4 fait MIEUX que la référence sur Zemmour et sur Le Pen. Sans Pécresse, la MAE sur 3 paires vaut
+  3,66 pour P4 contre 3,80 pour la référence. **L'échec de P4 tient à la seule paire Pécresse.** Le
+  verdict est inchangé : 6,03 dépasse toute référence + 1.
+- **« Bassin homogène » (§8.80) : retiré.** Les arcs vont de 0,99 à 5,01. Le meilleur bassin non
+  effondré pour Le Pen est c4 (arc 3,21, +3,04), ce qui donne une MAE de 2,59.
+- **Troisième pathologie, jamais nommée : les « pointes » de σ des petits candidats.** Montebourg
+  (putatif, non officiel) a z_σ de −2,2 à −8,8 à tous les points, Roussel de −6,7 à −7,7.
+- **Le critère |z_pos| ≤ 3 n'est pas discriminant** : la référence y échoue aussi (Zemmour 3,32 dans le
+  même fit Macron–Le Pen, Mélenchon 4,3-4,6 aux points effondrés, Zemmour 5,25 en Pécresse c1). P4
+  fait mieux partout.
+- **Perte T1 de P4**, figée « rapportée » et pourtant omise : ΔU de 110 à 199 nats selon la paire,
+  au-dessus de la pénalité BIC pour 23 paramètres (≈ 94). Les rayons portent de l'information au sens
+  de la vraisemblance.
+- **Horodatage.** La mesure des duels en échantillon a été commitée (fe12837) APRÈS que 3 V2 de P4 sur
+  4 et les données complètes ont été écrits sur disque. L'affirmation « avant toute lecture » n'est pas
+  vérifiable ; ce critère reste « pour mémoire ». Les critères V2 de P4 avaient été figés avant le
+  premier fit.
+
+**Mécanisme Pécresse (revue, reproduit à 0 fit).**
+
+- Sous σ égaux, une petite candidate proche d'une grande ne peut être petite au T1 qu'avec un w bas,
+  qui se reporte sur le duel : son propre électorat préfère Macron (21 % contre 62 % dans la
+  référence).
+- Au point P4, multiplier le seul κ de Pécresse par 2,8 ramène Macron–Pécresse de 72,4 à 59,7.
+- **Le rayon encode la concentration de l'électorat, identifiée au T1 par les substitutions.** C'est la
+  géométrie qui révèle la structure, au sens de l'utilisateur.
+
+**(P4b) Rayons libres pour les seuls candidats « dynamiques ».** Règle PRÉEXISTANTE :
+`SEUIL_DYNAMIQUE` = 5 % de part moyenne au T1, celle qui donne déjà un chemin à w. Les autres
+candidats ont z_σ ≡ 0 (σ_global). En 2022, cela laisse 8 rayons au lieu de 23 (−15 paramètres). Aucun
+nom n'est choisi, et la règle se transpose à 2027. Variante `hiercercle_ra_fid_sigdyn`.
+
+Critères figés AVANT le code (2022, développement, Mac, MAP 20 000 pas `--decroissant` + polissage ;
+4 V2 + données complètes) :
+
+1. V2 sur 4 paires ≤ 3,98 ;
+2. stabilité Procuste (§8.80 e) : au moins 4 inits sur 6 dans le même mode sur chacun des 5 fits ;
+3. aucun |z_σ| > 3 au point retenu ;
+4. écart d'arc entre les 5 fits ≤ 1 rad ;
+5. |z_pos| des finalistes ≤ max(3, valeur de la référence au même fit) ;
+6. Roussel → Mélenchon ≥ 50 ;
+7. ΔU contre la référence rapporté ; les 15 rayons retirés sont jugés inutiles si ΔU ≤ 15·ln(3 500)/2 ≈ 61.
+
+Si tous ces critères tiennent, P4b devient la référence (plus parcimonieux, stable).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

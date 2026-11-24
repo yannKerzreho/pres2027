@@ -82,6 +82,7 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
                              rep_y=None, rep_date_idx=None, rep_k=None, rep_a=None, rep_b=None,
                              rep_champ=None, z_pos_fixe=None, z_sigma_fixe=None, arc_fixe=None,
                              kappa_fixe=None, abst_situee=False, noyau_t=False, sigma_lie=None, fidelite=False,
+                             sigma_idx_libres=None,
                              omega_electorat=False, melange_lambda=False):
     """Le modèle. Inférence JOINTE de la géométrie et du chemin de `w`.
 
@@ -144,8 +145,13 @@ def spatial_pooling_model_ou(tested_mask, Y, Np, date_idx, kl_basis, pos_anchor,
     sigma_global = numpyro.sample("sigma_global", dist.LogNormal(sigma_log_mu, sigma_log_scale))
     # Valeurs imposées (spec_second_tour §8.47, modèle joint multi-élections) :
     # tirées par le modèle enveloppe, enregistrées sous les noms habituels.
-    z_sigma = (numpyro.sample("z_sigma", dist.Normal(0.0, 1.0).expand([N])) if z_sigma_fixe is None
-               else numpyro.deterministic("z_sigma", z_sigma_fixe))
+    if sigma_idx_libres is not None and z_sigma_fixe is None:
+        # P4b (spec_second_tour §8.82) : rayon libre pour les seuls candidats dynamiques.
+        z_d = numpyro.sample("z_sigma_dyn", dist.Normal(0.0, 1.0).expand([len(sigma_idx_libres)]))
+        z_sigma = numpyro.deterministic("z_sigma", jnp.zeros(N).at[jnp.asarray(sigma_idx_libres)].set(z_d))
+    else:
+        z_sigma = (numpyro.sample("z_sigma", dist.Normal(0.0, 1.0).expand([N])) if z_sigma_fixe is None
+                   else numpyro.deterministic("z_sigma", z_sigma_fixe))
     if sigma_lie is not None:
         # R5 (spec_second_tour §8.53) : σ du candidat `sigma_lie[0]` ≡ σ de `sigma_lie[1]`.
         z_sigma = jnp.asarray(z_sigma).at[sigma_lie[0]].set(jnp.asarray(z_sigma)[sigma_lie[1]])

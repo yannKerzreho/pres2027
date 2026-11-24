@@ -95,6 +95,7 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
                         melange_lambda: bool = False,
                         arc_fixe: float | None = None,
                         sigma_egaux: bool = False,
+                        sigma_dynamiques: bool = False,
                         reports: pd.DataFrame | None = None,
                         champ_reports: list | None = None) -> SpatialPoolingFit:
     """Roster -> arrays -> NUTS, en une seule inférence jointe.
@@ -184,6 +185,8 @@ def fit_spatial_pooling(raw_polls: pd.DataFrame, as_of: str, draws: int = 400, t
         kwargs["omega_electorat"] = True                               # R8 (§8.58)
     if melange_lambda:
         kwargs["melange_lambda"] = True                                # R9 (§8.61)
+    if sigma_dynamiques:                                               # P4b (§8.82)
+        kwargs["sigma_idx_libres"] = [int(i) for i in np.flatnonzero(part >= seuil_dynamique)]
     if sigma_egaux:
         kwargs["z_sigma_fixe"] = jnp.zeros(len(candidates))            # P4 (§8.80 f) : σ_i ≡ σ_global
     if sigma_lie:

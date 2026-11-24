@@ -116,3 +116,20 @@ def test_sigma_egaux():
     tr = handlers.trace(handlers.seed(spatial_pooling_model_ou, 0)).get_trace(**b["kwargs"])
     sig = np.asarray(tr["sigma"]["value"])
     assert np.allclose(sig, sig[0]) and tr["z_sigma"]["type"] == "deterministic"
+
+
+def test_sigma_dynamiques():
+    """§8.82 P4b : rayons libres pour les seuls candidats dynamiques (part ≥ 5 %), z_σ = 0 ailleurs."""
+    import numpy as np
+    from numpyro import handlers
+    import model.backtest.multi_election as M
+    M.VARIANTES["hiercercle_ra_fid_sigdyn"] = {"eta_hier": True, "carte_cercle": True, "_reports_avant": True,
+                                               "fidelite": True, "sigma_dynamiques": True}
+    b = M.preparer(2022, "T1-30", "hiercercle_ra_fid_sigdyn")
+    idx = b["kwargs"]["sigma_idx_libres"]
+    assert 4 <= len(idx) < len(b["candidats"])
+    from model.models.spatial_pooling.joint_model import spatial_pooling_model_ou
+    tr = handlers.trace(handlers.seed(spatial_pooling_model_ou, 1)).get_trace(**b["kwargs"])
+    z = np.asarray(tr["z_sigma"]["value"])
+    autres = np.setdiff1d(np.arange(len(z)), idx)
+    assert np.all(z[autres] == 0.0) and np.all(z[idx] != 0.0)

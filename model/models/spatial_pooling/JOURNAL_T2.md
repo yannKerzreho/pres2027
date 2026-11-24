@@ -7,7 +7,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## État (mis à jour à chaque réveil)
 
-- Dernière revue Opus : 2026-11-23 ~20:30Z (session locale)
+- Dernière revue Opus : 2026-11-24 ~10:00Z (session locale)
 - OBJECTIF (utilisateur, via l'orchestrateur, 2026-11-14) : « un modèle qui est
   backé par le passé mais qui représente bien les sondages et tendances
   actuels ». 2017/2022 servent à CALIBRER et VALIDER ; le critère final est la
@@ -30,6 +30,14 @@ l'historique, ajouter en bas de « Historique ».
   (voir Faits établis) ; fusion/push = orchestrateur.
 
 ## File de tâches (prendre la première non cochée)
+
+- [ ] [EN COURS MAC (début 2026-11-24 ~10:15Z)] **P4b, rayons des seuls dynamiques
+  (`hiercercle_ra_fid_sigdyn`, §8.82).** 8 rayons sur 23 en 2022. 4 V2 + données complètes, MAP
+  20 000 pas + polissage. Critères figés en §8.82.
+- [ ] (0 fit) Diagnostic de l'erreur Zemmour → Macron (31-33 % contre 9,4 %) : géométrie, κ, η ou ω.
+- [ ] Clôture : §8.83 Bilan (synthèse de la revue du 24/11 ~10:00Z) ; tableau référence / P4 / P4b /
+  `hier` / R1 / U_fid ; vérifier le diff de production contre main ; archiver les npz qui portent les
+  conclusions.
 
 - [x] [FAIT 24/11 ~09:30Z, §8.81 : NON retenu ; V2 6,03 (Pécresse +13,1), Zemmour |z_pos| 3,69 ; mais stabilité retrouvée, 4 à 6 inits sur 6] **P4, σ égaux (`hiercercle_ra_fid_sigeq`, §8.80 f).**
   MAP 20 000 pas `--decroissant`, puis polissage ; V2 sur les 4 paires de 2022 et données complètes.
@@ -1243,6 +1251,36 @@ conservé pour l'historique.
   instables (R̂ 7,5) et s_ab +0,7 pt ⇒ phase 2 à faire.
 
 
+
+## Revue Opus 2026-11-24 ~10:00Z (session locale) — P4, mécanisme Pécresse, bilan : intégration point par point
+
+- **F1. La colonne « Référence » de §8.81 reprenait des points Adam non polis.** **Retenu,
+  corrigé** (§8.82). P4 fait mieux sur Zemmour et Le Pen ; l'échec tient à Pécresse seule. Le
+  verdict est inchangé.
+- **F2. Bassin non « homogène » (arcs 0,99 à 5,01) ; pointes de σ des petits candidats (Montebourg,
+  Roussel).** **Retenu** (§8.82).
+- **F3. Le critère |z_pos| n'est pas discriminant, la référence y échoue aussi.** **Retenu** : P4b
+  utilise max(3, valeur de la référence).
+- **F4. Perte T1 de P4 non rapportée : ΔU de 110 à 199, au-dessus du BIC (≈ 94).** **Retenu** (§8.82).
+- **F5. Horodatage du critère des duels en échantillon, figé après écriture des résultats.**
+  **Retenu.** Reconnu : le critère reste « pour mémoire » et l'erratum est écrit.
+- **F6. Divers.**
+  - Procuste non appliqué en §8.81 : sans conséquence, mais appliqué à P4b.
+  - En-tête du journal : corrigé.
+  - npz ignorés par git : archivage en file.
+  - Docstring de `joint_model.py` (σ « absorbe le désajustement ») : cité ici.
+- **Mécanisme Pécresse** (le rayon encode la concentration de l'électorat ; κ_P × 2,8 suffit à 0 fit).
+  **Retenu.** Un remède nommé (Pécresse seule) est **rejeté**, car ce serait une fuite. Le jitter à
+  0,05 est **rejeté**, car il tue aussi l'information. **P4b (rayons des seuls dynamiques, règle
+  préexistante de 5 %) est RETENU et lancé**, critères figés en §8.82.
+- **P3 (vecteur 2D) : jauge non fixée par l'abstention ; même classe de fonctions.** **Retenu** :
+  P3 est différé, seulement si P4b échoue sur la stabilité.
+- **Parcimonie et bilan.** La référence ne bat ni R1 (V2) ni U_fid (V1-LOHO). Sa seule justification
+  est le modèle génératif unique et la carte. **Retenu** pour la synthèse §8.83, à écrire après P4b.
+- **Erreur structurelle commune** (Zemmour → Macron 31-33 % contre 9,4 %). **Retenu, en file** :
+  diagnostic à 0 fit (piste 3).
+- **Lot « PRÊT À PUBLIER », conditions 1 à 7.** **Retenu** comme liste de clôture après P4b.
+  Point 2 (diff de production) : à vérifier avant tout « PRÊT À PUBLIER ».
 
 ## Revue Opus 2026-11-24 ~05:00Z (session locale) — dégénérescence de l'arc : intégration point par point
 
