@@ -133,3 +133,13 @@ def test_sigma_dynamiques():
     z = np.asarray(tr["z_sigma"]["value"])
     autres = np.setdiff1d(np.arange(len(z)), idx)
     assert np.all(z[autres] == 0.0) and np.all(z[idx] != 0.0)
+
+
+def test_sigma_dynamiques_30j():
+    """§8.87 P4c : rayons libres = part ≥ 5 % dans les 30 j avant as_of (fantômes de 2017 exclus)."""
+    import model.backtest.multi_election as M
+    M.VARIANTES["hiercercle_ra_fid_sigdyn30"] = {"eta_hier": True, "carte_cercle": True, "_reports_avant": True,
+                                                 "fidelite": True, "sigma_dynamiques_30j": True}
+    b = M.preparer(2017, "T1-30", "hiercercle_ra_fid_sigdyn30")
+    libres = {b["candidats"][i] for i in b["kwargs"]["sigma_idx_libres"]}
+    assert libres == {"Jean-Luc Mélenchon", "Benoît Hamon", "Emmanuel Macron", "François Fillon", "Marine Le Pen"}

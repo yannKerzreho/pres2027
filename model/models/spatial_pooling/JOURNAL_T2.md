@@ -31,6 +31,18 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- [ ] **DEMANDE VM n° 8 (session locale, 2026-11-24 ~17:00Z) : P4c sur 2017** (spec §8.87, critères
+  figés). Variante `hiercercle_ra_fid_sigdyn30` ; même séquence que la DEMANDE n° 7 (map_screen
+  `--election 2017 --inits 6 --pas 20000 --decroissant --lse-officiel`, puis `polir` avec
+  `JAX_ENABLE_X64=1`, puis `modes`), sur les données complètes ET avec
+  `PRES2027_SANS_PAIRE="François Fillon|Marine Le Pen"` (lecture `--v2-paire --sans-criteres`).
+  **NOUVEAU : committer aussi les points retenus en JSON**, c'est-à-dire, pour chaque init, `arc`,
+  `z_pos`, `z_sigma`, `mu` et `sigma` lus depuis les npz `_poli_c<k>.npz`, dans
+  `results/points_<stem>.json`. Les npz sont ignorés par git, et la session locale doit faire le
+  Procuste.
+- [ ] [EN COURS MAC (début 2026-11-24 ~17:00Z)] **P4c sur 2022** : 4 V2 + données complètes, puis 3
+  V1-LOHO.
+
 - [x] [FAIT 24/11 ~17:40Z : listes.json et derniers-sondages.json identiques à l'octet à graine de hachage égale ; test durable tests/test_run_premier_tour.py ; non-déterminisme préexistant de l'ordre des événements selon PYTHONHASHSEED, sur main aussi, signalé] (session locale) **Test de non-régression de production** : `listes.json` et
   `derniers-sondages.json`, branche contre main, sur le même CSV, à 0 fit. C'est le prérequis de tout
   « PRÊT À PUBLIER ».

@@ -4832,6 +4832,39 @@ vaut 13,2 et Pécresse dépasse de +9,5.
     - (2) pénalité d'extrémité à 1 paramètre à la place de η.
   - Sans gain, publier R1 / T0 comme référence des duels, et la carte spatiale comme représentation.
 
+### 8.87 P4c : rayons libres sur la fenêtre de 30 jours (revue du 24/11 ~17:00Z ; avant code, figé)
+
+**Règle.** Le rayon du candidat i est libre si sa part moyenne au T1 dans les 30 jours avant `as_of`
+est d'au moins 5 % ; sinon z_σ,i ≡ 0. Même seuil et même calcul que `SEUIL_DYNAMIQUE`, mais sur la
+seule fenêtre récente.
+
+- Aucune fuite : la règle n'utilise que les sondages ≤ `as_of`.
+- Elle retire les « fantômes » (candidats testés en début de campagne seulement, sans duel ni tableau
+  croisé). Attendu : 2017, 9 → 5 (Le Pen, Fillon, Macron, Mélenchon, Hamon) ; 2022, 8 → 6.
+- Variante `hiercercle_ra_fid_sigdyn30`.
+
+**Plateformes (une par étape).**
+
+- 2022 (4 V2 + données complètes, puis 3 V1-LOHO) : **le Mac**.
+- 2017 (données complètes + V2 Fillon–Le Pen) : **la VM**, DEMANDE n° 8.
+
+Protocole : MAP 20 000 pas `--decroissant` + polissage float64, 6 inits.
+
+**Critères figés :**
+
+- **2017** :
+  - Procuste ≥ 4/6 ;
+  - T1 ≤ 2,23 ;
+  - |écart V2 Fillon–LP| ≤ 9,3 (`hier`) ;
+  - T0 (+4,7) rapporté.
+- **2022** :
+  - MAE V2 sur 4 paires ≤ 3,39 (P4b + 0,3) ;
+  - V1-LOHO ≤ 14,2 (P4b + 1) ;
+  - σ_LP/σ_M < 1,5 ; |z_pos| des finalistes ≤ 3.
+- **Verdict.** Si 2017 ET 2022 tiennent, P4c remplace P4b comme référence. Si seul 2022 tient, P4c
+  est retenu par parcimonie (moins de rayons à prédiction égale) et 2017 reste en échec. Si 2022
+  échoue, P4b reste la référence.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
