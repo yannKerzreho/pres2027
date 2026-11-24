@@ -1,0 +1,71 @@
+{
+ "spec": "§8.79",
+ "variante": "hiercercle_ra_fid",
+ "stem": "map_hiercercle_ra_fid_2022_T1-30_p20000d_v2sans_EmmanuelMacronJeanLucMélenchon",
+ "x64": true,
+ "env": {
+  "PRES2027_SANS_PAIRE": "Emmanuel Macron|Jean-Luc Mélenchon",
+  "PRES2027_SANS_HYP": null,
+  "PRES2027_ARC_FIXE": null
+ },
+ "inits": [
+  {
+   "init": 0,
+   "U_adam": -12617.58,
+   "U_poli": -12622.85,
+   "delta_U": 5.27,
+   "norme_gradient": 0.003198138397799876,
+   "iterations": 2270,
+   "converge": false
+  },
+  {
+   "init": 1,
+   "U_adam": -12602.53,
+   "U_poli": -12622.85,
+   "delta_U": 20.32,
+   "norme_gradient": 0.00293224766825107,
+   "iterations": 2698,
+   "converge": false
+  },
+  {
+   "init": 2,
+   "U_adam": -12617.58,
+   "U_poli": -12622.85,
+   "delta_U": 5.27,
+   "norme_gradient": 0.0030515281253360536,
+   "iterations": 2316,
+   "converge": false
+  },
+  {
+   "init": 3,
+   "U_adam": -12617.83,
+   "U_poli": -12622.85,
+   "delta_U": 5.02,
+   "norme_gradient": 0.003147377107660601,
+   "iterations": 2253,
+   "converge": false
+  },
+  {
+   "init": 4,
+   "U_adam": -12687.05,
+   "U_poli": -12897.64,
+   "delta_U": 210.59,
+   "norme_gradient": 12.842168643213913,
+   "iterations": 5000,
+   "converge": false
+  },
+  {
+   "init": 5,
+   "U_adam": -12621.11,
+   "U_poli": -12622.85,
+   "delta_U": 1.74,
+   "norme_gradient": 0.002479992028783754,
+   "iterations": 1938,
+   "converge": false
+  }
+ ],
+ "meilleur": 4,
+ "a_1_nat": [
+  4
+ ]
+}

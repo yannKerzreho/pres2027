@@ -1,0 +1,72 @@
+{
+ "spec": "§8.79",
+ "variante": "hiercercle_ra_fid",
+ "stem": "map_hiercercle_ra_fid_2022_T1-30_p20000d_v2sans_EmmanuelMacronValériePécresse",
+ "x64": true,
+ "env": {
+  "PRES2027_SANS_PAIRE": "Emmanuel Macron|Valérie Pécresse",
+  "PRES2027_SANS_HYP": null,
+  "PRES2027_ARC_FIXE": null
+ },
+ "inits": [
+  {
+   "init": 0,
+   "U_adam": -12243.39,
+   "U_poli": -12243.39,
+   "delta_U": 0.0,
+   "norme_gradient": 0.002853979426543146,
+   "iterations": 426,
+   "converge": true
+  },
+  {
+   "init": 1,
+   "U_adam": -12218.45,
+   "U_poli": -12218.51,
+   "delta_U": 0.06,
+   "norme_gradient": 0.003093004609463302,
+   "iterations": 685,
+   "converge": true
+  },
+  {
+   "init": 2,
+   "U_adam": -12243.39,
+   "U_poli": -12243.39,
+   "delta_U": 0.0,
+   "norme_gradient": 0.003225520171134993,
+   "iterations": 413,
+   "converge": true
+  },
+  {
+   "init": 3,
+   "U_adam": -12123.04,
+   "U_poli": -12123.04,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0015672863096980552,
+   "iterations": 30,
+   "converge": true
+  },
+  {
+   "init": 4,
+   "U_adam": -12216.69,
+   "U_poli": -12216.69,
+   "delta_U": 0.0,
+   "norme_gradient": 0.003382052820409892,
+   "iterations": 527,
+   "converge": true
+  },
+  {
+   "init": 5,
+   "U_adam": -12218.25,
+   "U_poli": -12218.4,
+   "delta_U": 0.14,
+   "norme_gradient": 0.0024272075848861593,
+   "iterations": 1224,
+   "converge": true
+  }
+ ],
+ "meilleur": 0,
+ "a_1_nat": [
+  0,
+  2
+ ]
+}

@@ -4342,6 +4342,35 @@ Proposition de la revue, à figer :
     verdict d'instabilité de §8.78 tient ;
   - si elles se rejoignent, c'étaient des non-convergences, et §8.78 est à relire.
 
+**§8.79, résultat (24/11 ~03:45Z, Mac, float64).** Fichiers `results/polir_*.json` et pseudo-chaînes
+`…_poli_c<k>.npz`.
+
+**Arc fixé à 2π : convergé.** Sur les 24 points, ΔU ≤ 0,05 (un seul à 2,3) et ‖∇‖ ≈ 3e-3. Les écarts
+entre inits sont de **vrais modes distincts** :
+
+| Paire retirée | Écarts des inits au meilleur point (nats) |
+|---|---|
+| Zemmour | 0, 0, 5,9, 11,9, 28, 29 |
+| Le Pen | 0, 2,3, 16, 50 ×3 |
+| Pécresse | 0, 9 ×3, 21 ×2 |
+| Mélenchon | 5/6 à moins de 1 nat |
+
+⇒ Le verdict d'instabilité de §8.78 **tient** : c'est de la multimodalité réelle, pas de
+l'optimisation.
+
+**Arc libre (référence) : NON convergé, et dégénérescence vers la frontière.**
+
+- Le polissage gagne de 48 à 211 nats sur les meilleurs points, et laisse ‖∇‖ de 10 à 200. Les points
+  d'Adam à 20 000 pas n'étaient pas des optima.
+- Les meilleurs points polis **s'effondrent vers arc ≈ 0,07-0,08 rad** (Mélenchon c4, Zemmour
+  c0/c2/c3/c5, Le Pen c3), avec κ ≈ 1,9-2,3. Ils sont encore en mouvement : le maximum est sur le bord
+  arc → 0, où presque tout le cercle est « arrière ».
+- Pécresse reste à 5,0 (inits 0/2 convergées).
+- ⇒ **Les V2 de la référence à arc libre (§8.72, §8.76 : MAE 2,65 ; §8.77 c contre R1) portent sur des
+  points non convergés. Ils sont PROVISOIRES.** Le vrai mode du MAP est une géométrie dégénérée, que
+  l'a priori N(log 3 ; 0,75) sur log(arc) ne retient pas (à 0,075, z ≈ −4,9).
+- Lecture des prédictions V2 aux points polis : en cours.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

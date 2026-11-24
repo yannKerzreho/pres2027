@@ -1,0 +1,72 @@
+{
+ "spec": "§8.79",
+ "variante": "hiercercle_ra_fid",
+ "stem": "map_hiercercle_ra_fid_2022_T1-30_p20000d_v2sans_EmmanuelMacronEricZemmour",
+ "x64": true,
+ "env": {
+  "PRES2027_SANS_PAIRE": "Emmanuel Macron|Eric Zemmour",
+  "PRES2027_SANS_HYP": null,
+  "PRES2027_ARC_FIXE": null
+ },
+ "inits": [
+  {
+   "init": 0,
+   "U_adam": -12225.88,
+   "U_poli": -12309.58,
+   "delta_U": 83.71,
+   "norme_gradient": 153.22184740096128,
+   "iterations": 5000,
+   "converge": false
+  },
+  {
+   "init": 1,
+   "U_adam": -12109.45,
+   "U_poli": -12109.49,
+   "delta_U": 0.04,
+   "norme_gradient": 0.0030737191378491817,
+   "iterations": 623,
+   "converge": true
+  },
+  {
+   "init": 2,
+   "U_adam": -12223.37,
+   "U_poli": -12309.96,
+   "delta_U": 86.59,
+   "norme_gradient": 234.29577617787353,
+   "iterations": 5000,
+   "converge": false
+  },
+  {
+   "init": 3,
+   "U_adam": -12228.14,
+   "U_poli": -12305.68,
+   "delta_U": 77.54,
+   "norme_gradient": 133.72968533450995,
+   "iterations": 5000,
+   "converge": false
+  },
+  {
+   "init": 4,
+   "U_adam": -12109.47,
+   "U_poli": -12109.49,
+   "delta_U": 0.01,
+   "norme_gradient": 0.0027134903695741133,
+   "iterations": 591,
+   "converge": true
+  },
+  {
+   "init": 5,
+   "U_adam": -12226.99,
+   "U_poli": -12303.45,
+   "delta_U": 76.46,
+   "norme_gradient": 236.92106173891915,
+   "iterations": 5000,
+   "converge": false
+  }
+ ],
+ "meilleur": 2,
+ "a_1_nat": [
+  2,
+  0
+ ]
+}

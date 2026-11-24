@@ -1,0 +1,71 @@
+{
+ "spec": "§8.79",
+ "variante": "hiercercle_ra_fid",
+ "stem": "map_hiercercle_ra_fid_2022_T1-30_p20000d_v2sans_EmmanuelMacronMarineLePen",
+ "x64": true,
+ "env": {
+  "PRES2027_SANS_PAIRE": "Emmanuel Macron|Marine Le Pen",
+  "PRES2027_SANS_HYP": null,
+  "PRES2027_ARC_FIXE": null
+ },
+ "inits": [
+  {
+   "init": 0,
+   "U_adam": -12059.41,
+   "U_poli": -12059.41,
+   "delta_U": 0.0,
+   "norme_gradient": 0.002764033507816786,
+   "iterations": 452,
+   "converge": true
+  },
+  {
+   "init": 1,
+   "U_adam": -12050.76,
+   "U_poli": -12050.79,
+   "delta_U": 0.03,
+   "norme_gradient": 0.002459512206900969,
+   "iterations": 812,
+   "converge": true
+  },
+  {
+   "init": 2,
+   "U_adam": -12059.41,
+   "U_poli": -12059.41,
+   "delta_U": 0.0,
+   "norme_gradient": 0.00233269468396602,
+   "iterations": 493,
+   "converge": true
+  },
+  {
+   "init": 3,
+   "U_adam": -12265.98,
+   "U_poli": -12314.34,
+   "delta_U": 48.36,
+   "norme_gradient": 8.914499999314991,
+   "iterations": 5000,
+   "converge": false
+  },
+  {
+   "init": 4,
+   "U_adam": -12090.26,
+   "U_poli": -12107.46,
+   "delta_U": 17.2,
+   "norme_gradient": 0.002363777357824868,
+   "iterations": 1989,
+   "converge": false
+  },
+  {
+   "init": 5,
+   "U_adam": -12059.31,
+   "U_poli": -12059.32,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0032515803133040546,
+   "iterations": 1010,
+   "converge": true
+  }
+ ],
+ "meilleur": 3,
+ "a_1_nat": [
+  3
+ ]
+}
