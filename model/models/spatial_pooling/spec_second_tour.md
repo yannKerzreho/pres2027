@@ -4216,6 +4216,14 @@ Macron à la moyenne des 30 jours.
 - Si l'utilisateur préfère le fixer (par exemple le cercle fermé), c'est un ARBITRAGE, à trancher avant
   le lancement de §8.74.
 
+**§8.76, diagnostic : V2 de R8c (avec ω_k ; lu APRÈS avoir figé la référence, §8.73).** MAP 20 000
+pas, Mac, mode retenu : Macron–Mélenchon −5,0 (61,3 contre 66,3), Macron–Zemmour +4,2 (68,6 contre
+64,4) ⇒ MAE **4,6**, contre 3,3 pour la référence et 6,3 pour `hier`.
+
+- ω_k dégrade le V2 de 1,3 pt (surtout sur Mélenchon). Cela va dans le sens de son retrait, sans en
+  être une preuve.
+- Ce chiffre ne change pas la référence, figée avant la lecture.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
