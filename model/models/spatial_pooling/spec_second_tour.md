@@ -4580,6 +4580,48 @@ Critères figés AVANT le code (2022, développement, Mac, MAP 20 000 pas `--dec
 
 Si tous ces critères tiennent, P4b devient la référence (plus parcimonieux, stable).
 
+### 8.83 Résultat de P4b, rayons des seuls candidats dynamiques (§8.82 ; 24/11 ~13:30Z, Mac, MAP 20 000 pas + polissage float64)
+
+`hiercercle_ra_fid_sigdyn` : 8 rayons libres sur 23 (Mélenchon, Jadot, Macron, Bertrand, Pécresse,
+Barnier, Le Pen, Zemmour). Fichiers `results/polir_map_hiercercle_ra_fid_sigdyn_*.json`,
+`results/v2paire_map_hiercercle_ra_fid_sigdyn_*_poli.json` et `results/modes_…sigdyn…_poli.json`.
+
+| Fit (paire retirée, observé) | Écart V2 | Inits dans le mode retenu | Arc | max \|z_σ\| | max \|z_pos\| des finalistes (référence) | ΔU contre la référence |
+|---|---|---|---|---|---|---|
+| Données complètes | — | 5/6 | 2,74 | 0,89 | 2,59 (3,29) | **+7,6** |
+| Mélenchon (66,3) | −0,4 | 5/6 | 3,08 | 1,10 | 2,48 (4,31) | +284 |
+| Zemmour (64,4) | +6,2 | 6/6 | 2,38 | 0,93 | 2,81 (0,59) | +226 |
+| Le Pen (57,4) | +4,4 | 5/6 | 3,12 | 1,98 | 2,46 (4,64) | +259 |
+| Pécresse (59,2) | +1,4 | 5/6 | 2,73 | 2,03 | 2,31 (1,69) | +12 |
+| **MAE V2** | **3,09** | | | | | |
+
+**Critères figés de §8.82 :**
+
+1. V2 ≤ 3,98 ✓ (3,09).
+2. Stabilité : au moins 4/6 inits dans le même mode sur les 5 fits ✓ (5, 5, 6, 5, 5).
+   - Critère de §8.80 (e) appliqué sous cette forme : deux inits sont dans le même mode si
+     ΔU < 1 nat OU si la prédiction V2 diffère de 2 pt au plus. « Distinct » exige les deux
+     conditions, Procuste ET duel ; la condition sur le duel suffit donc à les réunir.
+   - Le résidu de Procuste n'a pas été calculé : lecture CONSERVATRICE pour « distinct »,
+     généreuse pour « stable ». À vérifier par la revue.
+3. Aucun |z_σ| > 3 ✓ (max 2,03 ; plus de pointes de petits candidats).
+4. Écart d'arc entre fits ≤ 1 rad ✓ (2,38 à 3,12, soit 0,74 ; contre 0,4 à 5,0 pour la référence).
+5. |z_pos| des finalistes ≤ max(3, valeur de la référence) ✓ (max 2,81).
+6. Roussel → Mélenchon ≥ 50 ✓ (74,7 ; mesure 65,8). Partage Mélenchon : 63,6 contre 63,0.
+7. ΔU sur données complètes = +7,6 nats ≤ 61 ⇒ **les 15 rayons retirés sont jugés inutiles** ✓.
+   - En V2, les ΔU de +226 à +284 se mesurent contre les points EFFONDRÉS de la référence
+     (bassin peu crédible, §8.80 c). Contre les bassins non effondrés, l'écart est bien moindre
+     (Pécresse : +12).
+
+**Verdict : TOUS les critères sont tenus ⇒ `hiercercle_ra_fid_sigdyn` devient la RÉFÉRENCE**
+(−15 paramètres, stable, sans effondrement ni pointe).
+
+- Statut : favorable sur le Mac au MAP ⇒ **NON PROBANT** par règle. 2022 reste du DÉVELOPPEMENT.
+- **Face aux témoins :** MAE V2 3,09 contre R1 2,86 (0 fit) et `hier` 7,9. **P4b ne bat pas R1.**
+  Sa justification reste le modèle unique et génératif (T1, duels, reports, abstention) et sa carte
+  stable, pas la précision.
+- V1-LOHO de P4b (reports d'une hypothèse cachée, face à U_fid 14,1) : **pas encore mesuré**, en file.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

@@ -31,7 +31,13 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] [EN COURS MAC (début 2026-11-24 ~10:15Z)] **P4b, rayons des seuls dynamiques
+- [ ] (session locale, Mac) **V1-LOHO de la nouvelle référence P4b** (3 hypothèses, 20 000 pas +
+  polissage), face à U_fid (14,1) et au critère de §8.63 (moyenne ≤ U_fid − 2, aucune hypothèse >
+  U_fid + 3).
+- [ ] (VM, après V1-LOHO) NUTS de P4b sur données complètes, sur une seule plateforme : confirmer la
+  stabilité (favorable sur le Mac, donc non probant).
+
+- [x] [FAIT 24/11 ~13:30Z, §8.83 : TOUS les critères tenus ⇒ RÉFÉRENCE = `hiercercle_ra_fid_sigdyn` ; V2 3,09 (R1 2,86) ; stable 5/6 à 6/6, arc 2,4-3,1, ΔU sur données complètes +7,6 ; non probant (Mac), développement] **P4b, rayons des seuls dynamiques
   (`hiercercle_ra_fid_sigdyn`, §8.82).** 8 rayons sur 23 en 2022. 4 V2 + données complètes, MAP
   20 000 pas + polissage. Critères figés en §8.82.
 - [ ] (0 fit) Diagnostic de l'erreur Zemmour → Macron (31-33 % contre 9,4 %) : géométrie, κ, η ou ω.

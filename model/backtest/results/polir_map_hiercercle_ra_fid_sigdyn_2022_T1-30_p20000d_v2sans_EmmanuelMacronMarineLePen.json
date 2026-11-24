@@ -1,0 +1,87 @@
+{
+ "spec": "§8.79",
+ "variante": "hiercercle_ra_fid_sigdyn",
+ "stem": "map_hiercercle_ra_fid_sigdyn_2022_T1-30_p20000d_v2sans_EmmanuelMacronMarineLePen",
+ "x64": true,
+ "env": {
+  "PRES2027_SANS_PAIRE": "Emmanuel Macron|Marine Le Pen",
+  "PRES2027_SANS_HYP": null,
+  "PRES2027_ARC_FIXE": null
+ },
+ "inits": [
+  {
+   "init": 0,
+   "U_adam": -12055.56,
+   "U_poli": -12055.56,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0032811274816107404,
+   "iterations": 298,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 1,
+   "U_adam": -12044.97,
+   "U_poli": -12055.56,
+   "delta_U": 10.59,
+   "norme_gradient": 0.00293086544905305,
+   "iterations": 1741,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": false,
+   "arret_maxiter": false
+  },
+  {
+   "init": 2,
+   "U_adam": -12046.12,
+   "U_poli": -12055.56,
+   "delta_U": 9.44,
+   "norme_gradient": 0.002911743714485018,
+   "iterations": 1491,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": false,
+   "arret_maxiter": false
+  },
+  {
+   "init": 3,
+   "U_adam": -12055.55,
+   "U_poli": -12055.56,
+   "delta_U": 0.0,
+   "norme_gradient": 0.002768012444320813,
+   "iterations": 366,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 4,
+   "U_adam": -11061.1,
+   "U_poli": -11080.37,
+   "delta_U": 19.27,
+   "norme_gradient": 0.0031512203990454023,
+   "iterations": 4771,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": false,
+   "arret_maxiter": false
+  },
+  {
+   "init": 5,
+   "U_adam": -12055.56,
+   "U_poli": -12055.56,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0027251366341235653,
+   "iterations": 255,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  }
+ ],
+ "meilleur": 0,
+ "a_1_nat": [
+  0,
+  1,
+  2,
+  3,
+  5
+ ]
+}

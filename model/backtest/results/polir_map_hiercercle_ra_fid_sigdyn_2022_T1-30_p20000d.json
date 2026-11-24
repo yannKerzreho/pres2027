@@ -1,0 +1,87 @@
+{
+ "spec": "§8.79",
+ "variante": "hiercercle_ra_fid_sigdyn",
+ "stem": "map_hiercercle_ra_fid_sigdyn_2022_T1-30_p20000d",
+ "x64": true,
+ "env": {
+  "PRES2027_SANS_PAIRE": null,
+  "PRES2027_SANS_HYP": null,
+  "PRES2027_ARC_FIXE": null
+ },
+ "inits": [
+  {
+   "init": 0,
+   "U_adam": -12808.41,
+   "U_poli": -12808.41,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0037576934107593327,
+   "iterations": 458,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 1,
+   "U_adam": -12798.1,
+   "U_poli": -12808.41,
+   "delta_U": 10.31,
+   "norme_gradient": 0.003776733652255045,
+   "iterations": 1425,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": false,
+   "arret_maxiter": false
+  },
+  {
+   "init": 2,
+   "U_adam": -12808.09,
+   "U_poli": -12808.41,
+   "delta_U": 0.32,
+   "norme_gradient": 0.0026832568770140787,
+   "iterations": 1018,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 3,
+   "U_adam": -12808.41,
+   "U_poli": -12808.41,
+   "delta_U": 0.01,
+   "norme_gradient": 0.0026914013890530775,
+   "iterations": 580,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 4,
+   "U_adam": -11278.77,
+   "U_poli": -11372.43,
+   "delta_U": 93.66,
+   "norme_gradient": 0.003319626273796856,
+   "iterations": 4455,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": false,
+   "arret_maxiter": false
+  },
+  {
+   "init": 5,
+   "U_adam": -12808.41,
+   "U_poli": -12808.41,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0031426846167878384,
+   "iterations": 344,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  }
+ ],
+ "meilleur": 0,
+ "a_1_nat": [
+  0,
+  1,
+  2,
+  3,
+  5
+ ]
+}
