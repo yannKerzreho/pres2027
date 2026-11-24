@@ -262,7 +262,9 @@ def assemble_snapshot(model: ForecastModel, as_of: str, nc: Nowcast, fc: dict,
         "nowcast": nc.summary(),
         "forecast_scrutin": fc["forecast_scrutin"],
         "duels_probables": fc["duels_probables"],
-        "seconds_tours": fc.get("seconds_tours", []),
+        # Clé écrite seulement si elle est non vide : tant que PUBLIER_T2 est False, les JSON
+        # publiés gardent exactement les clés de main (revue du 25/11).
+        **({"seconds_tours": fc["seconds_tours"]} if fc.get("seconds_tours") else {}),
         "drift_modele": fc.get("drift_modele"),
         "diagnostics": nc.diagnostics,
         "trajectoire": nc.trajectoire,

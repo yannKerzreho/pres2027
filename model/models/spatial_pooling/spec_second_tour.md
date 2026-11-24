@@ -4796,7 +4796,7 @@ vaut 13,2 et Pécresse dépasse de +9,5.
 |---|---|
 | `listes.json` et `derniers-sondages.json` | **identiques à l'octet**, à graine de hachage égale |
 | Entrée et affichage de gp-pooling | identiques |
-| Entrée, affichage, kwargs et potentiel du spatial | identiques |
+| Entrée, affichage, kwargs et potentiel du spatial | identiques (portée CORRIGÉE en §8.90 : pas les chiffres publiés à l'octet) |
 | Hachage du T1 | identique |
 
 - Les seules différences sont l'ordre des événements de même date de `listes.json` et la colonne
@@ -5037,6 +5037,62 @@ Moyenne **13,0** (P4b 13,2).
   inits sur 6), 2 rayons et 2 fantômes de moins, ΔU ≤ 3,5 contre P4b.
 - **ARBITRAGE À TRANCHER (utilisateur)** : la clause σ_LP/σ_M < 1,5 porte-t-elle sur tous les fits
   (P4c non retenu) ou sur les données complètes (P4c retenu par parcimonie) ?
+
+### 8.90 Errata de §8.86-8.89 et portée réelle de la neutralité (revue du 25/11 ~00:15Z)
+
+**(a) Neutralité : l'énoncé de §8.86 était trop large.** Il ne couvrait pas les SNAPSHOTS.
+
+| Objet | Constat (main contre branche, CSV au 2026-11-24) |
+|---|---|
+| `seconds_tours` dans chaque snapshot | ajouté par la branche ; **CORRIGÉ** (clé écrite seulement si non vide), testé |
+| Snapshot gp-pooling complet | identique (0 différence) |
+| Spatial : arguments par le vrai chemin `nowcast` | identiques |
+| Spatial : U et gradient, 8 points, float32 et float64 | identiques au bit près |
+| Spatial : chaîne NUTS à graine égale | **identique jusqu'à 4 pas, puis divergente** |
+| `diagnostics` du spatial | deux clés de plus, `sigma_min` et `quadrature_fragile` (§8.48) : **restantes, déclarées** |
+
+- L'écart des chaînes vaut 2e-15 (6 pas), 7e-14 (8), 2e-9 (12) en float64 : arrondi d'une compilation
+  différente, amplifié par NUTS. **Même postérieur visé, mais pas les mêmes octets.** Les chiffres
+  spatiaux publiés changeraient dans le bruit Monte-Carlo.
+- Non fait : un fit de production complet des deux côtés, comparé à ce bruit. En file.
+
+**(b) σ_LP/σ_M dépend de la jauge** : la clause est mal posée. La revue mesure, sur 15 fits,
+σ_LP/σ_M de 1,00 à 1,86 à concentration d'électorat presque constante (R_LP de 0,58 à 0,66). En
+« sans Macron–Le Pen », P4b fait 1,86 et P4c 1,77. Mon verdict (« P4b reste la référence car P4c fait
+1,77 ») est donc **incohérent**, puisque P4b fait pire. Le verdict figé reste écrit ; l'arbitrage est
+reformulé en (g). Tous les verdicts antérieurs fondés sur cette clause sont affectés (dont la
+justification « cercle plutôt que segment » par le rapport, §8.68 et §8.72) : à relire avec R.
+
+**(c) Extrémité (2μ − 1)² : mauvaise grandeur.** Elle dépend de la jauge et du roster (μ = ½ est le rang
+médian), et n'a plus de sens quand l'arc approche 2π. λ n'est pas identifié PAR CONSTRUCTION. Le
+« ✓ de justesse » de 2017 (+8,2) a z_pos(Le Pen) = −4,3 : la clause |z| ≤ 3 avait été OMISE du volet
+2017 de §8.88. **Le volet 2017 est un échec.** Même omission pour P4c 2017 (point c4 à −5,0).
+
+**(d) Procuste de §8.87-8.88** : protocole non conforme à §8.80 (e) (non pondéré, volet duel non
+mesuré). Errata : « 6 points tous distincts » est faux (c0 ≡ c5) ; P4c V2, c1/c2 sont le même mode
+selon (e), donc 2/6. L'échec de stabilité tient.
+
+- Les 4 inits identiques à +240 nats sont un **échec d'optimisation** : 6 inits ne suffisent pas.
+
+**(e) « 2017 ne peut identifier même 1 paramètre » (§8.88) est trop fort.** Test à 0 fit de la revue,
+non revérifié ici : T0-cellules donne Fillon–LP à 57,2 (observé 57,1) sans paramètre ; l'enveloppe
+plausible est [47,8 ; 61,5], et P4b (40,5) comme P4c (43,1) en sortent. **L'échec de 2017 est donc
+surtout celui du modèle et de l'optimisation.** Les bornes de l'enveloppe sont choisies par la revue.
+
+**(f) Parcimonie de §8.88 mal comptée.** Le « −24 paramètres, BIC −94 » est nominal : ½Σz_η² vaut
+0,32 nat au MAP, soit environ 3 à 5 degrés de liberté effectifs. ΔU contient environ 21 nats de
+normalisation, à retirer avant lecture.
+
+**(g) T0 comme témoin permanent** (constante par centre d'étoile, retrait d'une paire ; chiffres de la
+revue, non revérifiés) : MAE 4,7 sur les 5 paires de 2017 + 2022, contre 4,6 à 5,8 pour P4b, 5,3 pour
+P4c et 10,8 pour R1. **R1 ne doit pas être publié comme référence** : il s'effondre en 2017.
+
+**Prédiction de la revue pour l'extrémité 2022, consignée AVANT lecture :** λ ≲ 0,3 ; V2 hors Pécresse
+à ± 1 pt ; Pécresse seule dégradée. Même si 2022 tient, la variante ne sera PAS adoptée (c).
+
+**ARBITRAGE reformulé (utilisateur), remplace celui de §8.89 :** figer P4c comme référence de recherche
+en remplaçant la clause σ_LP/σ_M par R_LP ≥ R_M − 0,05 (posée APRÈS lecture, donc à déclarer comme
+telle), ou garder P4b ? Les prédictions sont les mêmes.
 
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 

@@ -7,7 +7,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## État (mis à jour à chaque réveil)
 
-- Dernière revue Opus : 2026-11-24 ~17:00Z (session locale)
+- Dernière revue Opus : 2026-11-25 ~00:15Z (session locale)
 - OBJECTIF (utilisateur, via l'orchestrateur, 2026-11-14) : « un modèle qui est
   backé par le passé mais qui représente bien les sondages et tendances
   actuels ». 2017/2022 servent à CALIBRER et VALIDER ; le critère final est la
@@ -30,6 +30,10 @@ l'historique, ajouter en bas de « Historique ».
   (voir Faits établis) ; fusion/push = orchestrateur.
 
 ## File de tâches (prendre la première non cochée)
+
+- [ ] (Mac libre) **Fit de production complet main contre branche** (spatial, 4 chaînes), écarts comparés
+  au bruit Monte-Carlo (§8.90 a). Prérequis de « PRÊT À PUBLIER ».
+- [ ] (0 fit) Vérifier T0, T0-cellules, l'enveloppe et R (§8.90 b, e, g) dans `model/backtest/`.
 
 - [x] [FAIT 24/11 19:25Z, §8.88 « Résultat » : V2 Fillon–LP +8,2 ✓ de justesse (seuil 8,3) mais modes de −0,3 à +22,8 ; T1 1,73 ✓ ; stabilité ambiguë (4/6 à λ ≈ 0, 240 nats sous le meilleur, seul) ; λ non identifié (0,007-3,8) ; points exportés] **DEMANDE VM n° 9 (session locale, 2026-11-24 ~19:20Z) : pénalité d'extrémité sur 2017** (spec
   §8.88, critères figés). Variante `hiercercle_ra_fid_sigdyn_ext`, même séquence que la n° 8 (données
@@ -1116,7 +1120,7 @@ conservé pour l'historique.
     - (b) modèle sans espace + reports pour le T2 ;
     - (c) modèle joint multi-élections (R3b) avant de trancher.
 
-- **(24/11 ~23:30Z, §8.89) ARBITRAGE À TRANCHER : portée de la clause σ_LP/σ_M < 1,5 pour P4c.** Tous les
+- [REFORMULÉ 25/11, §8.90] **ARBITRAGE : P4c avec la clause R_LP ≥ R_M − 0,05 (posée après lecture), ou P4b ?** Ex-« portée de la clause σ_LP/σ_M < 1,5 pour P4c ». Tous les
   fits (P4c non retenu, P4b reste la référence) ou données complètes seules (P4c retenu par
   parcimonie, 2 rayons et 2 candidats fantômes de moins) ? Par défaut, la lecture stricte s'applique.
 
@@ -1319,6 +1323,23 @@ conservé pour l'historique.
   instables (R̂ 7,5) et s_ab +0,7 pt ⇒ phase 2 à faire.
 
 
+
+## Revue Opus 2026-11-25 ~00:15Z (session locale) — P4c, extrémité, 2017, neutralité : intégration point par point
+
+- **F1. Fenêtre de 30 j : pas de fuite ; Jadot fragile (5,42 %).** **Retenu.**
+- **F2. σ_LP/σ_M dépend de la jauge, P4b y échoue davantage.** **Retenu** : §8.90 (b). Mon verdict était
+  incohérent ; arbitrage reformulé. Je ne change PAS le critère moi-même après lecture.
+- **F3-F4. Extrémité : mauvaise grandeur ; « ✓ de justesse » sans valeur.** **Retenu** : (c).
+- **F5. Clause |z| omise en 2017 pour P4c.** **Retenu** : (c).
+- **F6. Procuste non conforme, deux errata.** **Retenu** : (d).
+- **F7. Paramètres de η mal comptés.** **Retenu** : (f).
+- **2017 : échec du modèle plus que des données.** **Retenu comme lecture** : (e) ; l'enveloppe et
+  T0-cellules ne sont pas revérifiés ici.
+- **T0 permanent, R1 non publié.** **Retenu** : (g).
+- **Snapshot non comparé.** **Retenu et vérifié** : (a) ; clé corrigée et testée, deux clés de
+  diagnostics déclarées, chiffres spatiaux non identiques à l'octet.
+- **Arrêter l'extrémité ; supprimer les drapeaux morts ; PR allégée ; NUTS unique ; η ≡ 0.** **En file**
+  (η ≡ 0 seulement si λ ≈ 0 ; nettoyage des drapeaux à faire à la clôture).
 
 ## Revue Opus 2026-11-24 ~17:00Z (session locale) — B′ 2017, V1-LOHO, neutralité en production : intégration point par point
 
