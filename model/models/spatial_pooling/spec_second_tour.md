@@ -4896,6 +4896,27 @@ Données complètes, par init (−U poli ; Mélenchon, mesure 76,4 ; σ_LP/σ_M 
 **Lecture.** T1 et σ tiennent ; V2 échoue (−14,0 contre −16,6 pour P4b, `hier` −9,3) ; stabilité au mieux
 ambiguë. La fenêtre de 30 jours n'apporte pas la généralisation à 2017 sur V2.
 
+**§8.87, Procuste de 2017 (session locale, 24/11 ~18:00Z, sur les points JSON exportés par la VM).**
+
+Calcul : m_i = κ_i·e^{iθ_i}, centré ; rotation et réflexion orthogonales, sans échelle ; résidu
+rapporté à l'échelle. Les poids ne sont pas pondérés par les parts, à la différence de la revue.
+
+| Fit | Points | ΔU | Procuste |
+|---|---|---|---|
+| Données complètes | init 2 (meilleur) et init 4 | **0,5 nat** | **0,91** |
+| Données complètes | inits 0, 1, 3, 5 | +245 nats | 0,84 (identiques entre elles) |
+| V2 Fillon–LP | 6 points | 0 à 168 nats | 0,52 à 1,03 |
+
+- Sur les données complètes, les inits 2 et 4 sont **deux configurations distinctes à U quasi égal**
+  (0,5 nat) : vraie non-identification. Les inits 0, 1, 3 et 5 forment un même mode, mais 245 nats
+  plus bas.
+- En V2 Fillon–LP, il y a 6 points, dont aucun à moins de 30 nats du meilleur.
+- **Stabilité 2017 : ÉCHEC** (critère « ≥ 4/6 dans le mode retenu »).
+- Avec le V2 Fillon–LP à −14,0 (seuil 9,3) : **P4c ÉCHOUE sur 2017.** Retirer les fantômes ne suffit
+  pas.
+- 2022 est en cours sur le Mac. Le verdict de §8.87 ne peut plus être que « retenu par parcimonie »
+  (si 2022 tient) ou « non retenu ».
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
