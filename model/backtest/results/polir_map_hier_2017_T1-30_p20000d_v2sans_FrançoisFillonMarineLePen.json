@@ -1,0 +1,86 @@
+{
+ "spec": "§8.79",
+ "variante": "hier",
+ "stem": "map_hier_2017_T1-30_p20000d_v2sans_FrançoisFillonMarineLePen",
+ "x64": true,
+ "env": {
+  "PRES2027_SANS_PAIRE": "François Fillon|Marine Le Pen",
+  "PRES2027_SANS_HYP": null,
+  "PRES2027_ARC_FIXE": null
+ },
+ "inits": [
+  {
+   "init": 0,
+   "U_adam": -2825.24,
+   "U_poli": -2825.24,
+   "delta_U": 0.0,
+   "norme_gradient": 0.002571271539866934,
+   "iterations": 31,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 1,
+   "U_adam": -2825.24,
+   "U_poli": -2825.24,
+   "delta_U": 0.0,
+   "norme_gradient": 0.00220705912583755,
+   "iterations": 36,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 2,
+   "U_adam": -2774.93,
+   "U_poli": -2774.93,
+   "delta_U": 0.0,
+   "norme_gradient": 0.00219065573240507,
+   "iterations": 21,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 3,
+   "U_adam": -2825.39,
+   "U_poli": -2825.39,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0027588624812649202,
+   "iterations": 94,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 4,
+   "U_adam": -2775.83,
+   "U_poli": -2775.83,
+   "delta_U": 0.0,
+   "norme_gradient": 0.002919319051858546,
+   "iterations": 18,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 5,
+   "U_adam": -2825.24,
+   "U_poli": -2825.24,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0018637991784101176,
+   "iterations": 21,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  }
+ ],
+ "meilleur": 3,
+ "a_1_nat": [
+  3,
+  0,
+  1,
+  5
+ ]
+}
