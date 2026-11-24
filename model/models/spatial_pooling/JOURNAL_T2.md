@@ -31,6 +31,14 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- [ ] [EN COURS MAC (début 2026-11-24 ~00:45Z)] **§8.77 (b) : arc fixé à 2π**, V2 sur les 4 paires de
+  2022, 6 inits, 20 000 pas `--decroissant`. Critères figés en §8.77 (b).
+- [ ] (session locale) Témoin R1 dans le dépôt (`model/backtest/temoin_r1.py`, avec test) ; polissage
+  L-BFGS (`--polir`, relire `rev5/polir.py`) et classement par le potentiel ; ‖∇‖ et provenance dans
+  les sorties.
+- [ ] (spec d'abord) Respécifier §8.74 selon §8.77 (d) : fenêtre, champ 2027, Bardella, seuil.
+  Lancement après l'arbitrage.
+
 - NOTE (session locale, 24/11 ~00:15Z) : le venv du scratchpad (`/private/tmp/…/venv311`) a été vidé
   par le nettoyage de /tmp de macOS (24/11 00:00Z). Les lectures du V2 de R8c ont échoué (`No module
   named 'jax'`).
@@ -1019,7 +1027,7 @@ conservé pour l'historique.
   - Un seul modèle : duels et T1 restent inchangés.
   - La revue rejette (iii).
 
-- **(23/11, §8.76) Arc du cercle : FIXER ou laisser libre ?** La session locale le laisse libre
+- [CLOS 24/11, §8.77 b : la règle s'applique, arc = 2π testé] **(23/11, §8.76) Arc du cercle : FIXER ou laisser libre ?** La session locale le laisse libre
   (aucune valeur choisie a posteriori ; V2 n'en dépend pas). Le fixer (par exemple le cercle fermé)
   ferait gagner 1 scalaire, mais par un choix fondé sur le T1 de 2022. À trancher avant le lancement
   de §8.74 (2027).
@@ -1220,6 +1228,30 @@ conservé pour l'historique.
   instables (R̂ 7,5) et s_ab +0,7 pt ⇒ phase 2 à faire.
 
 
+
+## Revue Opus 2026-11-24 ~00:30Z (session locale) — arc, témoin R1, §8.74 : intégration point par point
+
+- **F1. Le profil de l'arc ne couvre pas les points retenus** (arcs 1,39 / 1,07-1,34 / 0,41 / 5,01).
+  **Retenu, vérifié** dans les npz : §8.77 (a). Les phrases fausses de §8.75 et §8.76 sont retirées.
+- **F2. « Arc libre » est une bifurcation contre la règle intégrée** (fixer l'arc par parcimonie).
+  **Retenu** : décision annulée, règle appliquée (arc = 2π), critères figés avant le run (§8.77 b).
+  C'était le même travers que F2 du 23/11, je le reconnais.
+- **F3. V2 2022 favorable seulement contre `hier`, pas contre la régression T1 (R1 2,85).** **Retenu,
+  reproduit** à l'identique : §8.77 (c) corrige §8.76.
+- **F4. §8.74 inexécutable** (n réel 3 à 6, Bardella, pas de champ 2027, test de signe non significatif).
+  **Retenu** : à respécifier, §8.77 (d) ; en file avant tout code 2027.
+- **F5. MAP sur-interprété** (une seule init pour 2 contrôles sur 4 ; η retiré = 0 au MAP ; classement
+  par log_density contre optimisation du potentiel ; ‖∇‖ non écrit). **Retenu** : polissage L-BFGS
+  et classement par le potentiel en file (piste 2). Le code proposé (`rev5/polir.py`) sera relu avant
+  intégration.
+- **F6. Plateformes mélangées** (arc lu sur la VM, contrôles sur le Mac). **Retenu** : le verdict de
+  l'arc 2π se fait sur le Mac seul. La concordance du mode à 3,4 entre VM et Mac est notée.
+- **F7. Mineures** (B_quad de lecture, t1_couv sur pseudo-chaînes, citation 1,76 → 1,39, partition par
+  lp). **Retenu** : citation corrigée en §8.77 (a) ; le reste en file.
+- **Fuites : aucune dans les données ; fuite de dessin (2022 a tout choisi).** **Pris acte.**
+- **Parcimonie : retrait suivant, l'arc (2π), puis η ≡ 0.** **Retenu**, dans cet ordre.
+- **Lot « PRÊT À PUBLIER ».** C'est un résultat de recherche et non un modèle publiable. Points 1 à 7
+  **retenus** : 1-3 faits dans ce lot, 4 en file, 5 en partie, 6 à vérifier à la clôture, 7 = arbitrages.
 
 ## Revue Opus 2026-11-23 ~20:30Z (session locale) — ω_k, référence, attribution V2 : intégration point par point
 

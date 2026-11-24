@@ -4224,6 +4224,74 @@ pas, Mac, mode retenu : Macron–Mélenchon −5,0 (61,3 contre 66,3), Macron–
   être une preuve.
 - Ce chiffre ne change pas la référence, figée avant la lecture.
 
+### 8.77 Corrections de la revue du 24/11 ~00:30Z : arc, témoin R1, §8.74 (avant tout nouveau run)
+
+**(a) Le profil de l'arc (§8.75) ne couvre pas les points retenus.** Vérifié dans les pseudo-chaînes.
+L'arc au point retenu de la référence en V2 vaut :
+
+| Paire retirée | Arc retenu | Init(s) |
+|---|---|---|
+| Mélenchon | 1,39 | c4, seule |
+| Zemmour | 1,07-1,34 | |
+| Le Pen | 0,41 | c3, seule, 175 nats au-dessus des 5 autres |
+| Pécresse | 5,01 | |
+
+- Trois contrôles sur quatre sont hors de la grille 1,8-6,2.
+- Sur Mélenchon, le point libre (lp hors prior ≈ 12 697,5) dépasse de 27 nats le meilleur point de la
+  grille.
+- « lp favorise 3,5 », « arc faiblement identifié » et « V2 indépendant de l'arc » sont **retirés** tels
+  qu'écrits. Seul tient : sur Macron–Mélenchon et sur [1,8 ; 6,2], V2 bouge de 0,6 pt (1,6 pt avec le
+  point à 1,39).
+- L'arc saute de 0,4 à 5,0 quand on retire une seule paire : c'est une **instabilité**, pas une crête
+  plate.
+- Correction annexe : « arc ≈ 1,76 » en §8.73 pour la référence V2 Mélenchon doit se lire **1,39**
+  (1,757 est l'arc du V1-LOHO).
+
+**(b) La décision « arc libre » de §8.76 est ANNULÉE.**
+
+- C'était une bifurcation : la règle en place, intégrée au journal (revue de la routine, point 5), et
+  §8.74 disaient de **fixer l'arc par parcimonie (cercle fermé ou médiane a priori)** si V2 bougeait de
+  moins de 4 pt.
+- L'argument « choisir une valeur sur 2022 » était faux : ces deux valeurs sont posées sans données.
+- **Règle appliquée : arc fixé à 2π (cercle fermé ; R6 + R7).** Cette valeur n'impose aucun
+  emplacement de trou, si bien que le fer à cheval doit émerger des positions.
+- Critères figés AVANT le run (2022, développement, Mac, 6 inits, 20 000 pas `--decroissant`) :
+  - au moins 4 inits sur 6 à moins de 1 nat du meilleur point sur chacun des 4 V2 (stabilité) ;
+  - σ_LP/σ_M < 1,5 et max |z_pos| ≤ 3 (hors Lassalle) sur tous les points retenus ;
+  - MAE V2 sur les 4 paires ≤ 3,65 (référence + 1).
+  - S'ils sont tenus, **le cercle fermé devient la référence avant 2027.** Sinon on revient à l'arc
+    libre, en déclarant l'instabilité.
+
+**(c) Témoin R1 (régression T1, 0 fit), défini et figé.**
+
+$$\mathrm{logit}\,y_{ab}=\beta\,(\log t_a-\log t_b),$$
+
+- MCO sans constante, pondérés par le nombre de duels, ajustés sur les AUTRES paires éligibles (au moins
+  3 duels dans la fenêtre W).
+- t_x : part T1 de x, moyenne par notice sur l'hypothèse la plus large, puis moyenne des notices sur
+  les 30 jours.
+- Reproduit par la session locale, 2022 : écarts −4,1 / −1,9 / +0,6 / +4,8, **MAE 2,85**.
+- **§8.76 est corrigé** : V2 2022 est « favorable contre `hier` (2,65 contre 7,9), **pas contre R1**
+  (2,65 contre 2,85, 2 paires sur 4) ». Sur les 2 paires V2 : référence 3,3, R1 3,0. Test de signe à
+  3/4 : p = 0,31. La prédiction de la revue de la routine (pas de victoire d'au moins 1 pt sur R1) est
+  vérifiée.
+
+**(d) §8.74 est à RESPÉCIFIER avant tout code 2027.** Constats de la revue :
+
+- Paires avec au moins 3 duels : 3 sur 30 jours, 6 sur 60 jours, 10 depuis toujours.
+- Les paires Bardella s'arrêtent au 27/05/2026.
+- Il n'existe ni `T1_DATES[2027]` ni champ officiel (`lse_officiel` / `champ_reports`).
+- « ≥ 8/11 (test de signe) » donne p = 0,11 et ⌈0,7·n⌉ n'est jamais significatif.
+
+Proposition de la revue, à figer :
+
+- fenêtre de 60 jours (n ≈ 6), Bardella exclu ou réconcilié ;
+- champ 2027 déclaré et figé à l'avance ;
+- plateforme figée (le Mac) ;
+- critère : MAE ≤ min(`hier`, R1) − 1 ET ≥ ⌈0,8·n⌉ victoires, présenté comme DESCRIPTIF.
+
+**À écrire avant le lancement (arbitrage « V2 2022 = développement » toujours ouvert).**
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
