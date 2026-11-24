@@ -5094,6 +5094,18 @@ P4c et 10,8 pour R1. **R1 ne doit pas être publié comme référence** : il s'e
 en remplaçant la clause σ_LP/σ_M par R_LP ≥ R_M − 0,05 (posée APRÈS lecture, donc à déclarer comme
 telle), ou garder P4b ? Les prédictions sont les mêmes.
 
+### 8.91 Neutralité des chiffres spatiaux publiés — protocole figé AVANT lecture (25/11 ~01:00Z)
+
+Quatre fits de production (premier tour seul, CSV au 2026-11-24) : main et branche, graines 27 et 28,
+**tous sur la VM**, par `model/backtest/neutralite_spatial.py`, qui n'écrit rien dans `docs/`. Écart
+mesuré en écarts-types a posteriori sur la part moyenne de chaque candidat, champ complet.
+
+- **Critère :** écart maximal main/branche ≤ 1,5 × le plus grand écart entre graines d'un même arbre,
+  ET R-hat ≤ 1,2 sur les 4 fits.
+- Sinon : « NON conclu », sans relâcher le seuil ; pas de « PRÊT À PUBLIER ».
+- Limite déclarée : le roster de la branche diffère (Hollande et Pinel en 2017, sans effet attendu en
+  2027) ; le script s'arrête si les candidats diffèrent.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

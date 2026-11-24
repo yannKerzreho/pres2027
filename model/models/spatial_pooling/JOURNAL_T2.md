@@ -31,8 +31,12 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] (Mac libre) **Fit de production complet main contre branche** (spatial, 4 chaînes), écarts comparés
-  au bruit Monte-Carlo (§8.90 a). Prérequis de « PRÊT À PUBLIER ».
+- [ ] **DEMANDE VM n° 10 (session locale, 2026-11-25 ~01:00Z) : neutralité du spatial** (spec §8.91,
+  critère figé ; prérequis de « PRÊT À PUBLIER »). NE PAS toucher à `docs/`.
+  1. `git archive origin/main | tar -x -C <dossier temporaire>` pour main ;
+  2. 4 fits (4 en parallèle au plus), graines 27 et 28 : `cd <arbre> && PYTHONPATH=<arbre> python <chemin de la branche>/model/backtest/neutralite_spatial.py fit <sortie.json> --seed <27|28>` ;
+  3. `python model/backtest/neutralite_spatial.py comparer main27 main28 branche27 branche28` ;
+  4. committer les 4 JSON sous `results/neutralite_spatial_*.json` et consigner le verdict en §8.91.
 - [ ] (0 fit) Vérifier T0, T0-cellules, l'enveloppe et R (§8.90 b, e, g) dans `model/backtest/`.
 
 - [x] [FAIT 24/11 19:25Z, §8.88 « Résultat » : V2 Fillon–LP +8,2 ✓ de justesse (seuil 8,3) mais modes de −0,3 à +22,8 ; T1 1,73 ✓ ; stabilité ambiguë (4/6 à λ ≈ 0, 240 nats sous le meilleur, seul) ; λ non identifié (0,007-3,8) ; points exportés] **DEMANDE VM n° 9 (session locale, 2026-11-24 ~19:20Z) : pénalité d'extrémité sur 2017** (spec
