@@ -1,0 +1,83 @@
+{
+ "spec": "§8.79",
+ "variante": "hiercercle_ra_fid_sigdyn30",
+ "stem": "map_hiercercle_ra_fid_sigdyn30_2017_T1-30_p20000d_v2sans_FrançoisFillonMarineLePen",
+ "x64": true,
+ "env": {
+  "PRES2027_SANS_PAIRE": "François Fillon|Marine Le Pen",
+  "PRES2027_SANS_HYP": null,
+  "PRES2027_ARC_FIXE": null
+ },
+ "inits": [
+  {
+   "init": 0,
+   "U_adam": -2795.01,
+   "U_poli": -2795.01,
+   "delta_U": 0.0,
+   "norme_gradient": 0.003843464421420188,
+   "iterations": 132,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 1,
+   "U_adam": -2963.14,
+   "U_poli": -2963.15,
+   "delta_U": 0.0,
+   "norme_gradient": 0.002560230880200888,
+   "iterations": 292,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 2,
+   "U_adam": -2932.42,
+   "U_poli": -2932.42,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0030365319304902555,
+   "iterations": 34,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 3,
+   "U_adam": -2811.93,
+   "U_poli": -2815.53,
+   "delta_U": 3.6,
+   "norme_gradient": 0.0038869485137689266,
+   "iterations": 751,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": false,
+   "arret_maxiter": false
+  },
+  {
+   "init": 4,
+   "U_adam": -2897.55,
+   "U_poli": -2897.55,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0021821565540072643,
+   "iterations": 26,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 5,
+   "U_adam": -2795.01,
+   "U_poli": -2795.01,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0036648879466385275,
+   "iterations": 354,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  }
+ ],
+ "meilleur": 1,
+ "a_1_nat": [
+  1
+ ]
+}

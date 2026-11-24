@@ -4865,6 +4865,37 @@ Protocole : MAP 20 000 pas `--decroissant` + polissage float64, 6 inits.
   est retenu par parcimonie (moins de rayons à prédiction égale) et 2017 reste en échec. Si 2022
   échoue, P4b reste la référence.
 
+
+**Résultat de P4c sur 2017** (VM, DEMANDE n° 8, 24/11 17:25Z, routine). Fichiers :
+`results/{polir,modes}_map_hiercercle_ra_fid_sigdyn30_2017_T1-30_p20000d*.json`,
+`results/v2paire_map_hiercercle_ra_fid_sigdyn30_2017_T1-30_p20000d_v2sans_FrançoisFillonMarineLePen_poli.json`,
+et **les points retenus** `results/points_map_hiercercle_ra_fid_sigdyn30_2017_T1-30_p20000d{,_v2sans_FrançoisFillonMarineLePen}_poli.json`
+(par init : `arc`, `z_pos`, `z_sigma`, `z_sigma_dyn`, `mu`, `sigma`, dans l'ordre des candidats du fit) pour le
+Procuste de la session locale. Polissage convergé (‖∇‖ 0,002-0,004).
+
+Données complètes, par init (−U poli ; Mélenchon, mesure 76,4 ; σ_LP/σ_M ; T1 ; arc) :
+
+| init | −U | Mélenchon | σ_LP/σ_M | T1 | arc |
+|---|---|---|---|---|---|
+| 0, 1, 3, 5 | 2769,2 (identiques) | 83,9 | 0,70 | 2,22 | 4,74 |
+| 2 | **3014,4** | 79,9 | 0,95 | 1,77 | 5,57 |
+| 4 | 3013,8 | 89,4 | 0,98 | 1,97 | 6,18 |
+
+- **Procuste ≥ 4/6 : ambigu.** 4 inits tombent exactement au même point (0, 1, 3, 5), mais c'est un mode
+  245 nats SOUS les deux meilleurs ; les deux meilleurs (2, 4) sont à 0,5 nat l'un de l'autre mais
+  différents (arc 5,57 / 6,18, Mélenchon 79,9 / 89,4). Lecture par lp : le mode retenu n'a qu'une
+  init. Procuste à faire par la session locale sur les points exportés.
+- **T1 ≤ 2,23 : ✓** 1,77 au meilleur point (toutes ≤ 2,22).
+- **σ_LP/σ_M < 1,5 : ✓** 0,95 ; |z_pos| des finalistes : dans les points exportés, non calculés ici.
+- **Mélenchon (rapporté)** : 79,9 au meilleur point (+3,5, dans les 5 pt, pour la première fois en 2017),
+  mais 89,4 à l'init 4, quasi égale en lp ⇒ non robuste.
+- **|écart V2 Fillon–LP| ≤ 9,3 : ✗** mode retenu (init 1) 43,1 (−14,0) ; autres modes 43,5 (−13,6) et
+  67,5 (+10,4), observé 57,1.
+- Rapporté : « Aucun » MAE 9,9 ; partages MAE 16,7 (persistance 4,1).
+
+**Lecture.** T1 et σ tiennent ; V2 échoue (−14,0 contre −16,6 pour P4b, `hier` −9,3) ; stabilité au mieux
+ambiguë. La fenêtre de 30 jours n'apporte pas la généralisation à 2017 sur V2.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

@@ -31,7 +31,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] [EN COURS VM (début 2026-11-24 16:58Z, routine : 2 séquences, complet et V2)] **DEMANDE VM n° 8 (session locale, 2026-11-24 ~17:00Z) : P4c sur 2017** (spec §8.87, critères
+- [x] [FAIT 24/11 17:25Z, §8.87 « Résultat » : T1 1,77 ✓, σ 0,95 ✓, V2 Fillon–LP −14,0 ✗ (seuil 9,3), stabilité ambiguë (4/6 identiques mais 245 nats sous les 2 meilleurs, eux-mêmes distincts) ; Mélenchon 79,9 au meilleur point mais 89,4 à l'init voisine ; points exportés en JSON pour le Procuste] **DEMANDE VM n° 8 (session locale, 2026-11-24 ~17:00Z) : P4c sur 2017** (spec §8.87, critères
   figés). Variante `hiercercle_ra_fid_sigdyn30` ; même séquence que la DEMANDE n° 7 (map_screen
   `--election 2017 --inits 6 --pas 20000 --decroissant --lse-officiel`, puis `polir` avec
   `JAX_ENABLE_X64=1`, puis `modes`), sur les données complètes ET avec
@@ -1139,6 +1139,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-24 17:30Z (routine) : P4c sur 2017 (DEMANDE VM n° 8, 30 min) ; V2 ✗, T1 et σ ✓ ; points retenus exportés ; spec §8.87. VM libre.
 - 2026-11-24 15:30Z (routine) : B′ 2017 de P4b (DEMANDE VM n° 7) fini en 35 min ; T1 et σ ✓, stabilité et V2 ✗ ; spec §8.84. VM libre.
 - 2026-11-23 22:10Z (routine) : profil de l'arc terminé (DEMANDE VM n° 6, 8 MAP, vague 2 relancée après redémarrage) ; V2 indépendant de l'arc (0,6 pt) ; spec §8.75 ; lecture préliminaire erronée corrigée. VM libre.
 - 2026-11-22 02:30Z (routine) : NUTS de R8c sur la VM terminé (DEMANDE VM n° 4, 4 chaînes, ≈ 16 h) ; tous les critères in-sample de §8.58 passent, V1 hors échantillon toujours en échec ; spec §8.71. VM libre ; DEMANDE VM n° 5 suspendue par la session locale.
