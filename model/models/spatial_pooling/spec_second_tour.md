@@ -4978,6 +4978,28 @@ V2 Fillon–Le Pen (observé 57,1), par mode : init 4 (meilleur lp, λ 3,81) **6
 **Lecture.** Le critère V2 passe au mode retenu mais pas de façon robuste ; la stabilité et
 l'identification de λ font défaut. Verdict laissé à la session locale après Procuste et 2022.
 
+**§8.88, Procuste de 2017 (session locale, 24/11 ~20:00Z).** Même calcul qu'en §8.87 (non pondéré).
+
+| Fit | Points | ΔU | Procuste |
+|---|---|---|---|
+| Données complètes | 3 (meilleur), 2 | 0, 46,9 | 0, **0,73** (λ 0,33 contre 2,0) |
+| Données complètes | 0, 1, 4, 5 | +240 (λ ≈ 0) | 0,76 (identiques entre eux) |
+| V2 Fillon–LP | 6 points, tous distincts | 0 à 284 | 0,79 à 1,14 |
+
+- **Stabilité 2017 : ÉCHEC**, comme pour P4c : les points retenus sont seuls.
+- λ n'est pas identifié (0,01 à 3,8).
+- Le V2 Fillon–LP passe de justesse au mode retenu (+8,2 ≤ 8,3), mais les modes vont de −0,3 à
+  +22,8 : **le critère V2 est tenu sans robustesse.**
+- **2017 : ÉCHEC** (stabilité). Le verdict de §8.88 ne peut plus être que « retenue par parcimonie »
+  si 2022 tient, 2017 restant en échec.
+
+**Lecture pour l'objectif.**
+
+- Avec deux paires de duels, toutes contre Le Pen, 2017 ne peut pas identifier à la fois la
+  géométrie et une pénalité, même à 1 paramètre. Les paramètres T2 de 2017 se confondent.
+- T0 (+4,7 sur la même paire, 0 paramètre ajusté) reste le meilleur prédicteur : l'information est
+  là, mais sous une forme qu'aucune variante spatiale ne capte de façon stable.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
