@@ -31,6 +31,18 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- [ ] (session locale, Mac, après la V1-LOHO) **B′ 2017 de P4b**, la règle de spec:3338 étant due.
+  Critères à figer avant le run : T1 2017 ≤ référence + 0,3 ; Procuste ≥ 4/6 ; Mélenchon → Le Pen de
+  bon signe ; V2 Fillon–Le Pen ≤ `hier` − 1.
+- [ ] η ≡ 0 sur P4b (§8.70 d 5 : V2 ≤ P4b + 1, duels en échantillon ≤ P4b + 0,5, V1-LOHO ≤ P4b + 2 ;
+  perte de vraisemblance rapportée contre l'AIC et le BIC), puis η structurel.
+- [ ] Clôture du lot :
+  - §8.84 Synthèse ;
+  - neutralité en production (diff de `run.py`, `gp_pooling`, `live_dataset` contre main, nowcasts
+    T1 identiques) ;
+  - scripts Procuste et critères dans `model/backtest/` ;
+  - export JSON des points retenus.
+
 - [ ] (session locale, Mac) **V1-LOHO de la nouvelle référence P4b** (3 hypothèses, 20 000 pas +
   polissage), face à U_fid (14,1) et au critère de §8.63 (moyenne ≤ U_fid − 2, aucune hypothèse >
   U_fid + 3).
@@ -1257,6 +1269,36 @@ conservé pour l'historique.
   instables (R̂ 7,5) et s_ab +0,7 pt ⇒ phase 2 à faire.
 
 
+
+## Revue Opus 2026-11-24 ~14:00Z (session locale) — verdict P4b : intégration point par point
+
+- **Critère 2 : stabilité confirmée par un vrai Procuste**, avec des réserves (Pécresse 3/6 selon la
+  partition à −10 nats ; bassin effondré relégué et non disparu ; Pécresse c4 non convergé).
+  **Retenu** (erratum §8.83). Le NUTS est à initialiser au MAP.
+- **Critère 7 : perte de vraisemblance d'environ 43 nats, et non 7,6.** BIC contre AIC ; « inutiles »
+  est retiré. **Retenu.** J'avais confronté un potentiel MAP (a priori compris) à une pénalité BIC,
+  donc compté Occam deux fois.
+- **ΔU de V2 contre des points de référence non convergés.** **Retenu** : chiffres corrigés.
+- **Colonne de référence |z_pos| non reproduite** (Zemmour 2,38, Pécresse 2,84). **Retenu**,
+  corrigé, sans effet.
+- **Critères 3 et 6 en partie tautologiques ; arc faiblement identifié.** **Retenu.**
+- **Seuil de 5 % robuste (entre 4,98 et 7,11 %), Ciotti au bord ; chemins multiples.** **Retenu** :
+  2022 reste du développement.
+- **B′ 2017 non appliqué alors qu'il est dû.** **Retenu, en file** (prioritaire après la V1-LOHO).
+- **Parcimonie.**
+  - η : 17/23 morts au MAP ; les η identifiés forment un axe « modérés + / extrêmes − ».
+  - Proposition : η structurel à 1 ou 2 paramètres, après η ≡ 0.
+  - z_w (120 paramètres) est presque inutilisé, mais touche le T1 et la production : hors périmètre,
+    **signalé**.
+
+  **Retenu.**
+- **Synthèse de fin de recherche et conditions d'un lot « PRÊT À PUBLIER ».** **Retenu** :
+  - points 1-3 (V1-LOHO, erratum, synthèse §8.84) ;
+  - point 4 : neutralité en production ; le diff touche `model/run.py`, `gp_pooling/model.py` et
+    `live_dataset.py`. À prouver, ou à sortir dans une PR séparée ;
+  - point 5 : reproductibilité, avec npz exportés et scripts Procuste versés dans `model/backtest/`.
+
+  Tout cela en file de clôture.
 
 ## Revue Opus 2026-11-24 ~10:00Z (session locale) — P4, mécanisme Pécresse, bilan : intégration point par point
 

@@ -4622,6 +4622,40 @@ Barnier, Le Pen, Zemmour). Fichiers `results/polir_map_hiercercle_ra_fid_sigdyn_
   stable, pas la précision.
 - V1-LOHO de P4b (reports d'une hypothèse cachée, face à U_fid 14,1) : **pas encore mesuré**, en file.
 
+**§8.83, erratum (revue du 24/11 ~14:00Z).**
+
+- **Critère 2, recalculé avec un vrai Procuste** (m centrées, pondérées par les parts, champ officiel) :
+  **5, 5, 6, 5, 5 confirmé.** Réserves :
+  - pour Pécresse, c1 et c2 sont des optima distincts (+27 nats, arc 4,35 contre 2,73) mais
+    équivalents en prédiction (Procuste 0,21, duels ≤ 0,25 pt). La partition figée de `modes.py`
+    (−10 nats) ne compte que 3/6 dans le mode dominant ;
+  - le bassin effondré n'a pas disparu : il est RELÉGUÉ de 975 à 1 436 nats (init 4 dans 4 fits sur
+    5 ; V2 Le Pen à +15,7) ;
+  - Pécresse c4 n'est pas convergé (‖∇‖ 30,9).
+
+  Pour le NUTS : initialiser au MAP et vérifier qu'aucune chaîne n'entre dans ce bassin.
+- **Critère 7 mal interprété.** ΔU = +7,6 compare des potentiels qui contiennent les a priori, dont
+  environ 35 nats en faveur de P4b (normalisations, ½Σz² des 15 z_σ, z_pos).
+  - **La perte de vraisemblance est d'environ 43 nats.** Elle est sous le BIC sur les nœuds (61), au
+    seuil du BIC sur les sondages (41), et au-dessus de l'AIC (15) comme du test du rapport de
+    vraisemblance (86 contre 25).
+  - Formulation corrigée : « **les 15 rayons portent environ 43 nats ; le BIC ne les justifie pas,
+    l'AIC les garderait** ». « Jugés inutiles » est retiré. Le critère, figé sur ΔU, reste tenu à la
+    lettre ; l'erreur d'interprétation favorisait P4b.
+  - Les ΔU de V2 (+226 à +284) étaient mesurés contre des points de référence non convergés. Contre
+    le meilleur point convergé et non effondré : 9,6 / 25,4 / 3,9 (51,9 si l'on prend Le Pen c4) /
+    12,0, tous sous 61.
+- **Colonne « référence » de |z_pos|** : Zemmour vaut 2,38 (et non 0,59), Pécresse 2,84 (et non 1,69).
+  C'est sans effet, car la borne de 3 s'applique.
+- **Critères 3 et 6 en partie tautologiques** (15 rayons fixés). L'arc reste faiblement identifié
+  (2,73 à 4,35 au sein d'un même mode pour Pécresse).
+- **Duels en échantillon** (pour mémoire) : P4b 1,59, référence 1,56, P4 1,77.
+- **Seuil de 5 %** : tout seuil entre 4,98 % (Ciotti) et 7,11 % (Jadot) donne les mêmes 8 candidats.
+  Ciotti est au fil du rasoir. L'idée est venue après les échecs de 2022 : statut « développement »
+  confirmé.
+- **Règle « B′ (2017) accompagne tout verdict » (spec:3338) non appliquée** en §8.82-8.83 : elle est
+  due, en file.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
