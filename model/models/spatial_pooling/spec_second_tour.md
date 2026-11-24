@@ -4371,6 +4371,42 @@ l'optimisation.
   l'a priori N(log 3 ; 0,75) sur log(arc) ne retient pas (à 0,075, z ≈ −4,9).
 - Lecture des prédictions V2 aux points polis : en cours.
 
+**§8.79, suite : prédictions V2 aux points polis de la référence à arc libre (24/11 ~04:10Z).**
+
+| Paire retirée (observé) | Point poli de meilleure lp | Écart | lp (avant → après) | arc | σ_Mélenchon | σ_LP/σ_M |
+|---|---|---|---|---|---|---|
+| Mélenchon (66,3) | 66,2 | −0,1 | 12 692 → 12 900 | 0,078 | 1,77 | 1,00 |
+| Zemmour (64,4) | 70,1 | +5,7 | 12 233 → 12 313 | 0,08 | 1,55 | 1,01 |
+| Le Pen (57,4) | 60,8 | +3,5 | 12 270 → 12 317 | 0,073 | 1,87 | 1,01 |
+| Pécresse (59,2) | 59,8 | +0,5 | inchangé | 5,0 | 0,16 | 1,10 |
+| **MAE** | **2,45** | | | | | |
+
+À titre de comparaison, la MAE était de 2,65 avant polissage ; R1 fait 2,85 et `hier` 7,9.
+
+- **Les prédictions V2 bougent à peine** (au plus 0,4 pt par paire).
+- **Mais la géométrie disparaît au vrai mode.** Sur 3 paires sur 4, l'arc tombe à 0,07-0,08 rad avec des
+  σ de 1,5 à 1,9 (en unités de μ, soit des noyaux couvrant tout le cercle). σ_LP/σ_M ≈ 1,00 :
+  **tous les noyaux sont plats.** Le modèle devient en pratique un logit sans espace (attractivité w,
+  κ, ω, η, et fidélité R7 sur les reports).
+- **Lecture.**
+  - Au MAP, les données de 2022 (T1, duels, reports d'avant T1) préfèrent **abolir la géométrie**
+    plutôt que la révéler.
+  - Le V2 « favorable » de la référence vient alors d'un modèle de fait non spatial, nourri par les
+    reports. C'est cohérent avec R1, une régression sans espace, presque aussi bon (2,85).
+  - L'a priori actuel sur l'arc ne protège pas contre cette dégénérescence.
+- **Conséquence pour l'objectif** (« la géométrie révèle la structure »). Sur 2022, la vraisemblance
+  ne soutient pas de structure spatiale au-delà de ce que donne un modèle sans espace, une fois les
+  reports inclus. C'est un résultat négatif, qui rejoint l'option (ii) / (iii) de l'arbitrage du 21/11.
+
+**ARBITRAGE À TRANCHER (utilisateur).** Que faire de la dégénérescence de l'arc ?
+
+- (a) un a priori sur l'arc plus ferme, ou une borne inférieure posée à l'avance (par exemple
+  arc ≥ π) : c'est une contrainte éditoriale qui impose la géométrie ;
+- (b) accepter le constat : modèle sans espace + reports pour le T2, la géométrie servant au seul T1
+  ou à la présentation ;
+- (c) chercher la structure ailleurs (modèle joint 2017 + 2022 + 2027 avec positions partagées,
+  R3b) avant de trancher.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

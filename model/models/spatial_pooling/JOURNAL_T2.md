@@ -1032,6 +1032,15 @@ conservé pour l'historique.
   ferait gagner 1 scalaire, mais par un choix fondé sur le T1 de 2022. À trancher avant le lancement
   de §8.74 (2027).
 
+- **(24/11 ~04:10Z, §8.79 suite) ARBITRAGE À TRANCHER : dégénérescence de l'arc.** Au vrai mode
+  (MAP poli), la référence à arc libre fait tomber l'arc à 0,07 rad avec des noyaux plats
+  (σ ≈ 1,5-1,9) : la géométrie disparaît.
+  - Les V2 restent bons (MAE 2,45), mais c'est un modèle de fait non spatial.
+  - Options :
+    - (a) a priori ou borne d'arc posés à l'avance (contrainte éditoriale) ;
+    - (b) modèle sans espace + reports pour le T2 ;
+    - (c) modèle joint multi-élections (R3b) avant de trancher.
+
 ## Faits établis (ne pas re-mesurer)
 
 - Géométrie T1 seule : MAE 6,3 pt sur les 11 paires 2027 ; abstention (κ, ω)
