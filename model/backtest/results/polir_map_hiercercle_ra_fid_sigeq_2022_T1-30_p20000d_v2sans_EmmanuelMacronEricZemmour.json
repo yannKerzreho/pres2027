@@ -1,0 +1,87 @@
+{
+ "spec": "§8.79",
+ "variante": "hiercercle_ra_fid_sigeq",
+ "stem": "map_hiercercle_ra_fid_sigeq_2022_T1-30_p20000d_v2sans_EmmanuelMacronEricZemmour",
+ "x64": true,
+ "env": {
+  "PRES2027_SANS_PAIRE": "Emmanuel Macron|Eric Zemmour",
+  "PRES2027_SANS_HYP": null,
+  "PRES2027_ARC_FIXE": null
+ },
+ "inits": [
+  {
+   "init": 0,
+   "U_adam": -11964.82,
+   "U_poli": -11964.82,
+   "delta_U": 0.0,
+   "norme_gradient": 0.003309807111590618,
+   "iterations": 150,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 1,
+   "U_adam": -11964.82,
+   "U_poli": -11964.82,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0032922019407836873,
+   "iterations": 150,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 2,
+   "U_adam": -11964.81,
+   "U_poli": -11964.82,
+   "delta_U": 0.01,
+   "norme_gradient": 0.004261797617628242,
+   "iterations": 468,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 3,
+   "U_adam": -11964.82,
+   "U_poli": -11964.82,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0029666919369066083,
+   "iterations": 153,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 4,
+   "U_adam": -11964.82,
+   "U_poli": -11964.82,
+   "delta_U": 0.0,
+   "norme_gradient": 0.002490250265856107,
+   "iterations": 143,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 5,
+   "U_adam": -11960.73,
+   "U_poli": -11960.73,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0024346633375554655,
+   "iterations": 353,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  }
+ ],
+ "meilleur": 0,
+ "a_1_nat": [
+  0,
+  1,
+  2,
+  3,
+  4
+ ]
+}

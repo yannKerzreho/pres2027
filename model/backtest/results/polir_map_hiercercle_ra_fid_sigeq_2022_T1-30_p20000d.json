@@ -1,0 +1,88 @@
+{
+ "spec": "§8.79",
+ "variante": "hiercercle_ra_fid_sigeq",
+ "stem": "map_hiercercle_ra_fid_sigeq_2022_T1-30_p20000d",
+ "x64": true,
+ "env": {
+  "PRES2027_SANS_PAIRE": null,
+  "PRES2027_SANS_HYP": null,
+  "PRES2027_ARC_FIXE": null
+ },
+ "inits": [
+  {
+   "init": 0,
+   "U_adam": -12642.03,
+   "U_poli": -12642.03,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0029241510347017457,
+   "iterations": 159,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 1,
+   "U_adam": -12642.03,
+   "U_poli": -12642.03,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0021795815587399964,
+   "iterations": 179,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 2,
+   "U_adam": -12642.03,
+   "U_poli": -12642.03,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0029688752640446487,
+   "iterations": 355,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 3,
+   "U_adam": -12642.03,
+   "U_poli": -12642.03,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0023270364229378932,
+   "iterations": 181,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 4,
+   "U_adam": -12642.03,
+   "U_poli": -12642.03,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0020883290464068127,
+   "iterations": 148,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 5,
+   "U_adam": -12642.02,
+   "U_poli": -12642.03,
+   "delta_U": 0.02,
+   "norme_gradient": 0.0030452511100544344,
+   "iterations": 538,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  }
+ ],
+ "meilleur": 0,
+ "a_1_nat": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5
+ ]
+}

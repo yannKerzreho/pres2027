@@ -4465,6 +4465,11 @@ Critères figés AVANT le run (2022, développement, Mac, MAP 20 000 pas `--decr
 - |z_pos| des finalistes (Macron, Le Pen, Mélenchon, Zemmour, Pécresse) ≤ 3 ;
 - perte de vraisemblance T1 rapportée, sans seuil.
 
+**Mesure des duels en échantillon**, précisée le 24/11 ~07:55Z AVANT toute lecture des deux points :
+moyenne de |100·(duel_s − duel_y)| sur tous les duels du fit sur données complètes, au point poli de
+meilleur U. La référence est `hiercercle_ra_fid` sur données complètes, à 20 000 pas `--decroissant`,
+puis polie (run lancé le 24/11 à ~07:55Z, aucun n'existait).
+
 Si ces critères tiennent, `hiercercle_ra_fid_sigeq` devient la référence ; sinon, la référence reste
 inchangée. Témoins rapportés : R1 (2,86) et `hier` (7,9).
 
