@@ -4656,6 +4656,30 @@ Barnier, Le Pen, Zemmour). Fichiers `results/polir_map_hiercercle_ra_fid_sigdyn_
 - **Règle « B′ (2017) accompagne tout verdict » (spec:3338) non appliquée** en §8.82-8.83 : elle est
   due, en file.
 
+### 8.84 B′ 2017 de P4b (règle de spec:3338) — protocole et critères figés AVANT le run (24/11 ~15:00Z)
+
+**Cadre.** `hiercercle_ra_fid_sigdyn`, 2017 à T1−30, `--lse-officiel`, B = 100, MAP 20 000 pas
+`--decroissant`, 6 inits, polissage float64 (`polir`). Les candidats dynamiques sont définis par la
+même règle (part ≥ 5 %), appliquée aux données de 2017. **Plateforme : la VM (DEMANDE n° 7), seule
+pour cette étape.**
+
+**Critères**, même famille que le dépistage B′ de R8c (§8.58, R8c : T1 1,93, Mélenchon 87,2 contre
+76,4) :
+
+1. **Stabilité** : Procuste (§8.80 e) au moins 4/6 inits dans le même mode ;
+2. **T1 2017** : MAE ≤ 1,93 + 0,3 = **2,23** ;
+3. **Partage de l'électorat Mélenchon** (Macron–Le Pen, après T1) à 5 pt au plus de la mesure
+   (76,4) ;
+4. **σ_LP/σ_M < 1,5** ; aucun |z_σ| > 3 ; |z_pos| des finalistes ≤ 3 ;
+5. **rapporté, sans seuil** : V2 Fillon–Le Pen retiré (seule autre paire sondée), contre `hier` sur
+   la même paire.
+
+**Lecture.**
+
+- Si 1, 2 et 4 tiennent, la structure de P4b se généralise à 2017.
+- Le critère 3 a échoué pour R8c (+10,8) ; un nouvel échec serait attendu (report Mélenchon → Le Pen
+  de 2017). Il serait rapporté comme la limite connue, sans bloquer.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

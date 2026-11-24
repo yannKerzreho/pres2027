@@ -31,6 +31,17 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- [ ] **DEMANDE VM n° 7 (session locale, 2026-11-24 ~15:00Z) : B′ 2017 de P4b** (spec §8.84, critères
+  figés). Code sur la branche (790429c et suivants). Pour la VM, `polir` demande `JAX_ENABLE_X64=1`.
+  - Données complètes :
+    1. `PRES2027_B_QUAD=100 python -m model.backtest.map_screen --variante hiercercle_ra_fid_sigdyn --election 2017 --inits 6 --pas 20000 --decroissant --lse-officiel`
+    2. `JAX_ENABLE_X64=1 PRES2027_B_QUAD=100 python -m model.backtest.polir --variante hiercercle_ra_fid_sigdyn --election 2017 --stem map_hiercercle_ra_fid_sigdyn_2017_T1-30_p20000d --n 6 --lse-officiel`
+    3. `PRES2027_B_QUAD=100 PRES2027_N_CHAINES=6 python -m model.backtest.modes --variante hiercercle_ra_fid_sigdyn --election 2017 --stem map_hiercercle_ra_fid_sigdyn_2017_T1-30_p20000d_poli --n 6 --lse-officiel`
+  - V2 Fillon–Le Pen : la même séquence, précédée de `PRES2027_SANS_PAIRE="François Fillon|Marine Le Pen"`, pour `hiercercle_ra_fid_sigdyn` puis `hier`. Le stem prend le suffixe `_v2sans_FrançoisFillonMarineLePen`, et la lecture se fait avec `--v2-paire --sans-criteres`.
+  - Au plus 4 tâches en parallèle. Consigner dans §8.84 face aux critères, avec le Procuste des
+    inits : script de la revue `scratchpad/rev8/procuste_p4b.py`, inaccessible depuis la VM ; à défaut,
+    rapporter U poli et les prédictions par init, et la session locale fera le Procuste.
+
 - [ ] (session locale, Mac, après la V1-LOHO) **B′ 2017 de P4b**, la règle de spec:3338 étant due.
   Critères à figer avant le run : T1 2017 ≤ référence + 0,3 ; Procuste ≥ 4/6 ; Mélenchon → Le Pen de
   bon signe ; V2 Fillon–Le Pen ≤ `hier` − 1.
