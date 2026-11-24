@@ -4473,6 +4473,43 @@ puis polie (run lancé le 24/11 à ~07:55Z, aucun n'existait).
 Si ces critères tiennent, `hiercercle_ra_fid_sigeq` devient la référence ; sinon, la référence reste
 inchangée. Témoins rapportés : R1 (2,86) et `hier` (7,9).
 
+### 8.81 Résultat de P4, σ égaux (§8.80 f ; 24/11 ~09:30Z, Mac, MAP 20 000 pas + polissage float64)
+
+`hiercercle_ra_fid_sigeq`. Fichiers `results/polir_map_hiercercle_ra_fid_sigeq_*.json` et
+`results/v2paire_map_hiercercle_ra_fid_sigeq_*_poli.json`.
+
+| Paire retirée (observé) | P4 | Écart | Inits concordantes (U poli, à 1 nat) | Référence (bassin non effondré) |
+|---|---|---|---|---|
+| Mélenchon (66,3) | 61,6 | −4,7 | 6/6 | −1,3 |
+| Zemmour (64,4) | 69,4 | +5,0 | 5/6 | +5,3 |
+| Le Pen (57,4) | 56,0 | −1,4 | 4/6 | +3,5 |
+| Pécresse (59,2) | 72,4 | **+13,1** | 6/6 | +0,5 |
+| **MAE** | **6,03** | | | 2,98 (R1 2,86 ; `hier` 7,9) |
+
+**Données complètes :** 6/6 inits au même point, convergé (‖∇‖ ≈ 2e-3). Roussel → Mélenchon 73,3 (mesure
+65,8) ; T1 3,02 ; σ_LP/σ_M = 1 (par construction).
+
+**Critères figés :**
+
+- V2 ≤ 3,98 ✗ (6,03) ;
+- Roussel → Mélenchon ≥ 50 ✓ ;
+- |z_pos| des finalistes ≤ 3 ✗ : Zemmour à −3,69 dans le fit Macron–Le Pen ; partout ailleurs ≤ 2,7 ;
+- duels en échantillon : point de référence en cours, rapporté pour mémoire (le verdict est déjà
+  acquis).
+
+**Verdict : P4 NON retenu.** La référence reste `hiercercle_ra_fid`.
+
+**Lecture.**
+
+- σ égaux SUPPRIME l'instabilité : de 4 à 6 inits concordantes partout, et les données complètes en
+  un seul point. Cela confirme que la multimodalité venait de la coordonnée radiale (§8.80 a).
+- Mais le cercle 1D ainsi contraint ne sait plus placer Pécresse : 72,4 contre 59,2. La flexibilité
+  radiale portait de l'information réelle sur la droite modérée.
+- **Tension parcimonie / prédiction :** −23 paramètres et la stabilité, au prix de +3 pt de MAE V2.
+  La règle figée tranche contre P4.
+- Piste ouverte par ce résultat : la piste P3 (vecteur 2D explicite, jauge fixée), qui garde le rayon
+  mais le paramètre proprement.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

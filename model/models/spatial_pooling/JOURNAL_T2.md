@@ -31,7 +31,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] [EN COURS MAC (début 2026-11-24 ~05:15Z)] **P4, σ égaux (`hiercercle_ra_fid_sigeq`, §8.80 f).**
+- [x] [FAIT 24/11 ~09:30Z, §8.81 : NON retenu ; V2 6,03 (Pécresse +13,1), Zemmour |z_pos| 3,69 ; mais stabilité retrouvée, 4 à 6 inits sur 6] **P4, σ égaux (`hiercercle_ra_fid_sigeq`, §8.80 f).**
   MAP 20 000 pas `--decroissant`, puis polissage ; V2 sur les 4 paires de 2022 et données complètes.
   Critères figés en §8.80 (f).
 - [ ] (session locale) polir.py : critère de Newton (½gᵀH⁻¹g < 0,1) ; classement par U partout ;
