@@ -4326,6 +4326,22 @@ Proposition de la revue, à figer :
 - Ailleurs, il est en échec de stabilité.
 - Aucune variante à arc fixe ou libre ne bat R1 d'au moins 1 pt en 2022.
 
+### 8.79 Polissage L-BFGS des points MAP (protocole figé AVANT lecture ; 24/11 ~03:40Z)
+
+- **Outil.** `model/backtest/polir.py` repolit les pseudo-chaînes existantes : L-BFGS-B sur le potentiel
+  U (jacobiens compris), en float64 (`JAX_ENABLE_X64=1`, paramètres convertis), avec ftol = 1e-15 et
+  gtol = 1e-3.
+- **Contrôle sur 1 point** (arc 2π, V2 Mélenchon, init 0) : ‖∇‖ passe de 0,95 à 0,006, ΔU = 0,00. Le
+  point Adam était convergé en valeur.
+- **Application :** les 6 inits de chacun des 8 V2 de 2022 (référence à arc libre et arc 2π × 4 paires).
+- **Critère** (revue de la routine du 23/11, point 3) : convergé si |ΔU| < 1 et ‖∇‖ < 1e-2.
+- **Lecture des modes** après polissage : classement par U poli ; « au moins 4 inits sur 6 à moins de
+  1 nat » (§8.77 b).
+- **Conséquences prévues :**
+  - si les inits restent à plus de 1 nat après polissage, ce sont de vrais modes distincts, et le
+    verdict d'instabilité de §8.78 tient ;
+  - si elles se rejoignent, c'étaient des non-convergences, et §8.78 est à relire.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
