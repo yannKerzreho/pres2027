@@ -102,3 +102,17 @@ def test_arc_fixe_param():
     kw = dict(b["kwargs"], arc_fixe=3.5)
     tr = handlers.trace(handlers.seed(spatial_pooling_model_ou, 0)).get_trace(**kw)
     assert abs(float(tr["arc"]["value"]) - 3.5) < 1e-5
+
+
+def test_sigma_egaux():
+    """§8.80 (f) P4 : z_sigma ≡ 0 ⇒ tous les σ_i égaux à σ_global."""
+    import numpy as np
+    from numpyro import handlers
+    import model.backtest.multi_election as M
+    M.VARIANTES["hiercercle_ra_fid_sigeq"] = {"eta_hier": True, "carte_cercle": True, "_reports_avant": True,
+                                              "fidelite": True, "sigma_egaux": True}
+    b = M.preparer(2022, "T1-30", "hiercercle_ra_fid_sigeq")
+    from model.models.spatial_pooling.joint_model import spatial_pooling_model_ou
+    tr = handlers.trace(handlers.seed(spatial_pooling_model_ou, 0)).get_trace(**b["kwargs"])
+    sig = np.asarray(tr["sigma"]["value"])
+    assert np.allclose(sig, sig[0]) and tr["z_sigma"]["type"] == "deterministic"

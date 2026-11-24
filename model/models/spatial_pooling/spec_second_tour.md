@@ -4407,6 +4407,67 @@ l'optimisation.
 - (c) chercher la structure ailleurs (modèle joint 2017 + 2022 + 2027 avec positions partagées,
   R3b) avant de trancher.
 
+### 8.80 Correction de §8.79 et §8.79 suite ; arbitrage retiré ; piste P4 (σ égaux) figée (revue du 24/11 ~05:00Z)
+
+**(a) « Noyaux plats, géométrie disparue, modèle de fait non spatial » est FAUX.** Il est retiré.
+
+- Le noyau de von Mises est un modèle vectoriel 2D : A_i(θ) = w_i − κ_i − log Z_i + ⟨e^{iθ}, m_i⟩,
+  avec m_i = κ_i·e^{iθ_i}. Les parts et les duels sont invariants par translation commune des m_i.
+- Au point « effondré », arc → 0 avec κ_vM ≈ 53-57 (≈ 150 pour Roussel). Le noyau a une largeur
+  arc·σ ≈ 0,14 rad, soit 2 % du cercle, et non « tout le cercle ». Le jitter de σ (0,2) y devient une
+  **coordonnée radiale libre** : la géométrie s'ÉTIRE au lieu de s'aplatir.
+- Mesures de la revue aux points polis :
+  - information mutuelle θ → vote T1 de 0,58 à 0,63 nat (29-32 % de H), PLUS élevée qu'aux modes
+    non effondrés (0,43-0,55) ;
+  - égaliser les positions déplace les duels de 10,5 à 13,6 pt en moyenne, jusqu'à 27 pt.
+- σ_LP/σ_M ≈ 1 y vaut par construction et ne dit rien de la largeur.
+- Le κ ≈ 1,9-2,3 cité était celui des duels.
+
+**(b) « NON convergé, encore en mouvement vers le bord » est FAUX** pour Mél c4 et LP c3 : hessienne
+définie positive, gain de Newton ≤ 0,05 nat, conditionnement de 10⁷ à 10⁸ (raideur). Plusieurs inits
+convergent vers le même arc 0,073-0,084 : c'est un **mode intérieur**. Z c2 n'est pas tout à fait
+convergé (gain de Newton 7,6 nats).
+
+Autres corrections :
+
+- L'a priori porte sur logit(arc/2π) : z = −7,3 et une pénalité d'environ 27 nats, et non « z ≈ −4,9
+  sur log(arc) ».
+- La MAE de 2,45 mélange des bassins : 2,98 sur le bassin non effondré homogène.
+
+**(c) Ce que gagne le bassin effondré, et ce qu'il coûte.** Il gagne +144 à +372 nats sur la
+vraisemblance T1, et en perd 35 à 64 sur les reports. Il est peu crédible :
+
+- l'électorat Roussel donne 0 % à Mélenchon dans Mélenchon–Macron (75-95 % ailleurs) ;
+- |z_pos| de Mélenchon vaut 4,3-4,6 ;
+- les cellules Mélenchon–Macron font 22-24, contre 7,7-14.
+
+Le V2 bouge d'au plus 1,1 pt entre les bassins. **L'instabilité porte sur les paramètres (jauge), pas
+sur les prédictions** (Procuste : des configurations identiques à 10 % près sous des arcs de 2,98 et
+4,97).
+
+**(d) L'ARBITRAGE (a)/(b)/(c) du §8.79 suite est RETIRÉ** : sa prémisse est fausse. Il sera reposé, s'il
+le faut, après P4.
+
+**(e) Critère « au moins 4/6 inits à 1 nat » (§8.77 b).** Il reste appliqué tel quel aux verdicts
+déjà rendus (figés). **Pour la suite**, deux modes ne sont « distincts » que si le résidu de Procuste
+(en m centrées) dépasse 0,25 fois l'échelle ET si un duel clé diffère de plus de 2 pt. Ce critère est
+figé AVANT les runs de P4.
+
+**(f) Piste P4 : σ_i tous égaux** (drapeau `sigma_egaux`, z_sigma ≡ 0, −23 paramètres). Cela supprime
+la coordonnée radiale : on obtient un vrai cercle 1D en fer à cheval, le plus parcimonieux. Variante
+`hiercercle_ra_fid_sigeq`.
+
+Critères figés AVANT le run (2022, développement, Mac, MAP 20 000 pas `--decroissant` + polissage) :
+
+- V2 sur les 4 paires ≤ référence + 1, avec pour référence le bassin non effondré à 2,98, soit **≤ 3,98** ;
+- **duels en échantillon** (données complètes) : MAE ≤ référence + 0,5 ;
+- **électorat Roussel → Mélenchon ≥ 50 %** dans Mélenchon–Macron (données complètes) ;
+- |z_pos| des finalistes (Macron, Le Pen, Mélenchon, Zemmour, Pécresse) ≤ 3 ;
+- perte de vraisemblance T1 rapportée, sans seuil.
+
+Si ces critères tiennent, `hiercercle_ra_fid_sigeq` devient la référence ; sinon, la référence reste
+inchangée. Témoins rapportés : R1 (2,86) et `hier` (7,9).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

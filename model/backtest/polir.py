@@ -39,8 +39,7 @@ def polir(potential_fn, z, maxiter=5000, gtol=1e-3):
                  options=dict(maxiter=maxiter, gtol=gtol, ftol=1e-15, maxcor=50))
     x1 = jnp.asarray(r.x, dtype=flat0.dtype)
     v1, g1 = fg(x1)
-    print("lbfgs:", r.message, "dtype", flat0.dtype, flush=True)
-    return unravel(x1), float(v1), float(jnp.linalg.norm(g1)), int(r.nit)
+    return unravel(x1), float(v1), float(jnp.linalg.norm(g1)), int(r.nit), str(r.message)
 
 
 def main() -> None:
@@ -62,7 +61,7 @@ def main() -> None:
         params = {s: jnp.asarray(np.asarray(z0[f"s__{s}"][0, 0], dtype=np.float64)) for s in sites}
         zu = unconstrain_fn(fn, (), kw, params)
         U0 = float(info.potential_fn(zu))
-        z1, U1, gn, nit = polir(info.potential_fn, zu, maxiter=a.maxiter)
+        z1, U1, gn, nit, msg = polir(info.potential_fn, zu, maxiter=a.maxiter)
         cons = info.postprocess_fn(z1)
         tr = handlers.trace(handlers.substitute(handlers.seed(fn, 0), data=cons)).get_trace(**kw)
         vals = {n: np.asarray(s["value"]) for n, s in tr.items()
@@ -72,7 +71,10 @@ def main() -> None:
                             **{f"s__{n}": np.repeat(v[None, None], S, axis=1) for n, v in vals.items()},
                             e__diverging=np.zeros(S, dtype=bool), e__num_steps=np.ones(S, dtype=int))
         out.append({"init": k, "U_adam": round(U0, 2), "U_poli": round(U1, 2), "delta_U": round(U0 - U1, 2),
-                    "norme_gradient": gn, "iterations": nit, "converge": abs(U0 - U1) < 1.0 and gn < 1e-2})
+                    "norme_gradient": gn, "iterations": nit, "message": msg,
+                    # revue du 24/11 F6 : « Adam convergé » et « point poli stationnaire » sont distincts
+                    "adam_converge": abs(U0 - U1) < 1.0 and gn < 1e-2,
+                    "arret_maxiter": nit >= a.maxiter})
         print(json.dumps(out[-1]), flush=True)
     rang = sorted(out, key=lambda o: o["U_poli"])
     rep = {"spec": "§8.79", "variante": a.variante, "stem": a.stem, "x64": bool(jax.config.jax_enable_x64),

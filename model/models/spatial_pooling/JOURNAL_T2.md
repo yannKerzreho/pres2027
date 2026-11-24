@@ -31,6 +31,12 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- [ ] [EN COURS MAC (début 2026-11-24 ~05:15Z)] **P4, σ égaux (`hiercercle_ra_fid_sigeq`, §8.80 f).**
+  MAP 20 000 pas `--decroissant`, puis polissage ; V2 sur les 4 paires de 2022 et données complètes.
+  Critères figés en §8.80 (f).
+- [ ] (session locale) polir.py : critère de Newton (½gᵀH⁻¹g < 0,1) ; classement par U partout ;
+  `hier_ra_fid` en V2 (cellule manquante).
+
 - [x] [FAIT 24/11 ~03:10Z, §8.78 : ÉCHEC de stabilité (1 à 2 inits sur 6 pour 3 paires) et de |z_pos| (Zemmour 4,2-4,4) ; MAE 3,13 ; le cercle fermé n'est pas retenu, arc libre avec instabilité déclarée] **§8.77 (b) : arc fixé à 2π**, V2 sur les 4 paires de
   2022, 6 inits, 20 000 pas `--decroissant`. Critères figés en §8.77 (b).
 - [ ] [R1 FAIT 24/11 ~01:00Z : `model/backtest/temoin_r1.py`, test, `results/temoin_r1_2022_T1-30.json`, MAE 2,86 (arrondi par paire 2,85)] (session locale) Témoin R1 dans le dépôt (`model/backtest/temoin_r1.py`, avec test) ; polissage
@@ -1032,7 +1038,7 @@ conservé pour l'historique.
   ferait gagner 1 scalaire, mais par un choix fondé sur le T1 de 2022. À trancher avant le lancement
   de §8.74 (2027).
 
-- **(24/11 ~04:10Z, §8.79 suite) ARBITRAGE À TRANCHER : dégénérescence de l'arc.** Au vrai mode
+- [RETIRÉ 24/11 ~05:10Z, §8.80 d : prémisse fausse] **(24/11 ~04:10Z, §8.79 suite) ARBITRAGE À TRANCHER : dégénérescence de l'arc.** Au vrai mode
   (MAP poli), la référence à arc libre fait tomber l'arc à 0,07 rad avec des noyaux plats
   (σ ≈ 1,5-1,9) : la géométrie disparaît.
   - Les V2 restent bons (MAE 2,45), mais c'est un modèle de fait non spatial.
@@ -1237,6 +1243,38 @@ conservé pour l'historique.
   instables (R̂ 7,5) et s_ab +0,7 pt ⇒ phase 2 à faire.
 
 
+
+## Revue Opus 2026-11-24 ~05:00Z (session locale) — dégénérescence de l'arc : intégration point par point
+
+- **0. « Noyaux plats, modèle de fait non spatial » est FAUX.** C'est un modèle vectoriel 2D : au point
+  effondré, le jitter de σ devient une coordonnée radiale et la géométrie s'étire. L'information
+  mutuelle θ → vote est plus élevée, et égaliser les positions déplace les duels de 10 à 14 pt.
+  **Retenu** : §8.80 (a), conclusion retirée. Erreur de ma part : j'avais lu σ en unités de μ comme
+  une largeur sur le cercle.
+- **1. Les points effondrés sont des modes intérieurs**, convergés en valeur (hessienne définie
+  positive, gain de Newton ≤ 0,05), et non « en mouvement vers le bord ». **Retenu** : §8.80 (b).
+- **2. a priori : z = −7,3 sur logit(arc/2π), et non −4,9.** **Retenu, corrigé.**
+- **3. L'arbitrage repose sur une prémisse fausse.** **Retenu** : ARBITRAGE (a)/(b)/(c) RETIRÉ (§8.80 d).
+- **4. σ_LP/σ_M ≈ 1 par construction en régime vectoriel.** **Retenu** : le critère « front
+  républicain » se relit sur les duels et les reports aux points effondrés.
+- **5. La MAE de 2,45 mélange les bassins** ; 2,98 sur le bassin non effondré, et R1 n'est battu
+  nulle part. **Retenu** : la référence de P4 est 2,98.
+- **6-7. polir.py : `converge` confondait deux choses, et le message d'arrêt n'était pas écrit.**
+  **Corrigé** : `adam_converge`, `arret_maxiter` et `message` sont écrits. Le critère de Newton
+  (½gᵀH⁻¹g < 0,1) est **en file** (coût de la hessienne : 5 à 8 min par point).
+- **8. Classement par deux objectifs** (U contre lp sans jacobien). **Retenu, en file** : un seul
+  objectif, U, partout.
+- **9. Critère « 4/6 inits à 1 nat » mal posé pour des MAP.** **Retenu pour la suite** : critère
+  Procuste + duels figé en §8.80 (e). Les verdicts déjà rendus restent sous l'ancien critère.
+- **Parcimonie.**
+  - R1 + U_fid (1 à 2 paramètres) gagnent à prédiction égale, mais sans T1, sans P(élu) ni structure.
+  - Le segment n'est pas plus parcimonieux.
+  - Il manque `hier_ra_fid` en V2.
+
+  **Pris acte** : R1 + U_fid restent la barre à battre.
+- **Arbitrage, avis de la revue : corriger d'abord la paramétrisation.** **Retenu.** P4 (σ égaux,
+  −23 paramètres) est **lancé**, critères figés en §8.80 (f). P3 (vecteur 2D) est différé, P6 (R3b)
+  après.
 
 ## Revue Opus 2026-11-24 ~00:30Z (session locale) — arc, témoin R1, §8.74 : intégration point par point
 
