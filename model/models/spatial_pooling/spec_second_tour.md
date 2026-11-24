@@ -4292,6 +4292,40 @@ Proposition de la revue, à figer :
 
 **À écrire avant le lancement (arbitrage « V2 2022 = développement » toujours ouvert).**
 
+### 8.78 Résultat de l'arc fixé à 2π (§8.77 b ; 24/11 ~03:10Z, Mac, MAP 20 000 pas, 6 inits)
+
+`hiercercle_ra_fid`, `PRES2027_ARC_FIXE=6.283185`, V2 sur les 4 paires de 2022. Fichiers
+`results/v2paire_map_hiercercle_ra_fid_2022_T1-30_arc6p283185_p20000d_v2sans_*.json`.
+
+| Paire retirée (observé) | Prédiction, mode de meilleure lp | Écart | Inits à moins de 1 nat du meilleur point | σ_LP/σ_M | max \|z_pos\| (hors Lassalle) |
+|---|---|---|---|---|---|
+| Macron–Mélenchon (66,3) | 66,4 | +0,1 | 5/6 ✓ | 0,98 | Zemmour 4,35 |
+| Macron–Zemmour (64,4) | 70,8 | +6,4 | 2/6 ✗ | 0,98-1,01 | Poutou 4,34, Zemmour 4,16 |
+| Macron–Le Pen (57,4) | 62,7 | +5,3 | 1/6 ✗ | 1,31-1,34 | Zemmour 4,41 |
+| Macron–Pécresse (59,2) | 58,6 | −0,7 | 1/6 ✗ | 1,15 | Bertrand 4,97 |
+| **MAE** | **3,13** | | | | |
+
+**Critères figés :**
+
+- stabilité (au moins 4 inits sur 6 par paire) ✗ sur 3 paires ;
+- σ_LP/σ_M < 1,5 ✓ ;
+- max |z_pos| ≤ 3 ✗ (Zemmour vers 4,2-4,4 partout, comme R6 : 3,9) ;
+- MAE ≤ 3,65 ✓ (3,13 ; arc libre 2,65 ; R1 2,85 ; `hier` 7,9).
+
+**Verdict : le cercle fermé NE devient PAS la référence.**
+
+- Règle de §8.77 (b) : retour à l'arc libre, **instabilité déclarée**. L'arc libre saute de 0,4 à 5,0
+  selon la paire retirée (§8.77 a), et fixer l'arc ne rend pas les inits concordantes sur 3 paires.
+- La multimodalité ne vient donc pas de l'arc seul.
+- Le cercle fermé force aussi Zemmour, comme R6, et perd 0,5 pt de MAE V2.
+
+**Lecture.**
+
+- Sur la seule paire où il y a des reports de l'électorat finaliste à lire (Mélenchon), le cercle
+  fermé est presque exact et stable.
+- Ailleurs, il est en échec de stabilité.
+- Aucune variante à arc fixe ou libre ne bat R1 d'au moins 1 pt en 2022.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

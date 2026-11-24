@@ -31,7 +31,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] [EN COURS MAC (début 2026-11-24 ~00:45Z)] **§8.77 (b) : arc fixé à 2π**, V2 sur les 4 paires de
+- [x] [FAIT 24/11 ~03:10Z, §8.78 : ÉCHEC de stabilité (1 à 2 inits sur 6 pour 3 paires) et de |z_pos| (Zemmour 4,2-4,4) ; MAE 3,13 ; le cercle fermé n'est pas retenu, arc libre avec instabilité déclarée] **§8.77 (b) : arc fixé à 2π**, V2 sur les 4 paires de
   2022, 6 inits, 20 000 pas `--decroissant`. Critères figés en §8.77 (b).
 - [ ] [R1 FAIT 24/11 ~01:00Z : `model/backtest/temoin_r1.py`, test, `results/temoin_r1_2022_T1-30.json`, MAE 2,86 (arrondi par paire 2,85)] (session locale) Témoin R1 dans le dépôt (`model/backtest/temoin_r1.py`, avec test) ; polissage
   L-BFGS (`--polir`, relire `rev5/polir.py`) et classement par le potentiel ; ‖∇‖ et provenance dans
