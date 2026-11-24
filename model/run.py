@@ -177,11 +177,10 @@ def run(model_id: str = "all", as_of: str | None = None, include_private: bool =
     if rejeu is None:
         rejeu = not as_of_explicite
 
-    # Les modèles de premier tour filtrent leur propre entrée ; le spatial
-    # consomme aussi les duels T2 directement sondés. Garder les deux tours à
-    # cette frontière évite une seconde lecture du CSV et préserve le contrat
-    # riche transmis aux modèles.
-    raw = load_raw_polls(tour=None, as_of=as_of)
+    # Premier tour seulement, comme sur main : charger les T2 ici changerait listes.json,
+    # derniers-sondages.json et les alertes publiés (revue du 24/11 ~17:00Z). Le câblage T2
+    # en production attend PUBLIER_T2 et une PR séparée, avec un test de non-régression.
+    raw = load_raw_polls(as_of=as_of)
     if raw.empty:
         raise SystemExit(f"Aucun sondage disponible à la date {as_of}.")
 

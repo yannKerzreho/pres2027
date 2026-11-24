@@ -7,7 +7,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## État (mis à jour à chaque réveil)
 
-- Dernière revue Opus : 2026-11-24 ~10:00Z (session locale)
+- Dernière revue Opus : 2026-11-24 ~17:00Z (session locale)
 - OBJECTIF (utilisateur, via l'orchestrateur, 2026-11-14) : « un modèle qui est
   backé par le passé mais qui représente bien les sondages et tendances
   actuels ». 2017/2022 servent à CALIBRER et VALIDER ; le critère final est la
@@ -30,6 +30,18 @@ l'historique, ajouter en bas de « Historique ».
   (voir Faits établis) ; fusion/push = orchestrateur.
 
 ## File de tâches (prendre la première non cochée)
+
+- [ ] (session locale) **Test de non-régression de production** : `listes.json` et
+  `derniers-sondages.json`, branche contre main, sur le même CSV, à 0 fit. C'est le prérequis de tout
+  « PRÊT À PUBLIER ».
+- [ ] (spec d'abord) **Rayons libres sur la fenêtre de 30 jours** (part ≥ 5 % dans les 30 jours avant
+  `as_of`). Les critères de la revue du 24/11 ~17:00Z sont à figer :
+  - 2017 : Procuste ≥ 4/6, T1 ≤ 2,23, V2 Fillon–LP ≤ `hier` ;
+  - 2022 : V2 ≤ 3,39, V1-LOHO ≤ 14,2 ;
+  - T0 rapporté.
+- [ ] (spec d'abord) **η ≡ 0 contre pénalité d'extrémité à 1 paramètre.**
+- [ ] Témoins à 0 fit systématiques (T0, constante par hypothèse, 50/50, R1) dans les tableaux V1/V2.
+- [ ] Rapatrier les npz de la VM (B′ 2017) ou les exporter en JSON ; Procuste.
 
 - [x] [FAIT 24/11 15:25Z, §8.84 « Résultat » : T1 1,97 ✓, σ_LP/σ_M 0,89 ✓, Mélenchon 88,9 ✗ (attendu), stabilité ÉCHEC probable (6 points polis distincts sur 254 nats, mode dominant 1 init ; Procuste à faire par la session locale) ; V2 Fillon–Le Pen : P4b −16,6 (modes 40,5-75,9) contre hier −9,3 ⇒ pas de généralisation à 2017 en l'état] **DEMANDE VM n° 7 (session locale, 2026-11-24 ~15:00Z) : B′ 2017 de P4b** (spec §8.84, critères
   figés). Code sur la branche (790429c et suivants). Pour la VM, `polir` demande `JAX_ENABLE_X64=1`.
@@ -1281,6 +1293,38 @@ conservé pour l'historique.
   instables (R̂ 7,5) et s_ab +0,7 pt ⇒ phase 2 à faire.
 
 
+
+## Revue Opus 2026-11-24 ~17:00Z (session locale) — B′ 2017, V1-LOHO, neutralité en production : intégration point par point
+
+- **F1. 4 dynamiques fantômes en 2017** (6 si l'on compte Bertrand et Barnier en 2022). **Retenu** :
+  §8.86 ; la règle des 30 jours est en file.
+- **F2. V2 Fillon–LP : fourchette −16,6 / −10,4.** **Retenu.**
+- **F3. Stabilité 2017 non démontrée ; Procuste impossible sans les npz de la VM.** **Retenu, en
+  file** : rapatriement (artefact, ou export JSON par la routine).
+- **F4. Critère 4 de §8.84 coché sans calcul.** **Retenu.**
+- **F5. Critères de §8.84 assouplis avant le run.** **Retenu.** Reconnu : sous le seuil initial,
+  c'est un ✗.
+- **F6. U_fid est une constante par hypothèse.** **Retenu** : renommé « constante par hypothèse » dans
+  la synthèse.
+- **F7. |z_pos| > 3 dans deux fits LOHO.** **Retenu.**
+- **Pas de fuite.** **Pris acte.**
+- **2017.** Information dans les données (T0 +4,7), décomposition η / géométrie défaillante.
+  **Retenu** : T0 est ajouté aux témoins.
+- **Pécresse.** Non-identification, plus valence propre à l'électorat. **Retenu.**
+- **Parcimonie.**
+  - Rayons sur 30 jours : retenu, en file.
+  - η ≡ 0 contre pénalité d'extrémité à 1 paramètre : retenu, en file.
+  - L'arc est gardé et déclaré faiblement identifié.
+- **NEUTRALITÉ EN PRODUCTION : ÉCHEC.** `run.py` chargeait les T2 (d7b1575), ce qui changeait
+  `listes.json`, `derniers-sondages.json` et les alertes. **CORRIGÉ** dans ce lot : retour à la ligne de
+  main, tests verts. Le risque latent de `base.py` (modèles privés) devient inactif ; il est documenté.
+- **Synthèse.** **Retenue** (§8.86).
+- **Conditions du lot.**
+  - Points 1 (neutralité) et 5 (tests) : faits.
+  - Point 2 (npz de la VM et Procuste), point 3 (export JSON et scripts versés) et point 4 (en-tête
+    du journal) : en file.
+  - **Aucun « PRÊT À PUBLIER » tant que la neutralité n'est pas prouvée par un test de non-régression**
+    sur `listes.json` et `derniers-sondages.json`.
 
 ## Revue Opus 2026-11-24 ~14:00Z (session locale) — verdict P4b : intégration point par point
 

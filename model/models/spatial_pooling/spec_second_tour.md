@@ -4738,6 +4738,84 @@ vaut 13,2 et Pécresse dépasse de +9,5.
 - L'échec est concentré sur Macron–Pécresse : la droite modérée reste mal ordonnée par rapport à la
   gauche dans les reports, comme pour toutes les variantes depuis §8.64.
 
+### 8.86 Errata de §8.84-8.85 et synthèse de fin de recherche (revue du 24/11 ~17:00Z)
+
+**Errata.**
+
+- **§8.84 : 9 « dynamiques » en 2017, et non 8, dont 4 fantômes** (Hollande, Valls, Montebourg,
+  Bayrou). Aucun n'est testé dans les 30 derniers jours ni ne figure dans un duel ou un tableau croisé.
+  La règle de 5 % fait la moyenne sur TOUTE la campagne. En 2022, Bertrand et Barnier sont dans le
+  même cas. Dupont-Aignan (3,1 %) a un σ fixé, et sa cellule varie de 35,9 à 99,7 selon l'init.
+- **§8.84, V2 Fillon–Le Pen** : deux modes sont retenus (Δlp ≤ 10), c'est donc une **fourchette de
+  −16,6 à −10,4** (`hier` : −9,3). La conclusion tient ; l'ampleur était exagérée.
+- **§8.84, stabilité** : non démontrée dans un sens comme dans l'autre (npz de la VM non versionnés).
+  Les prédictions en échantillon restent proches entre inits (Hamon 92-95, Fillon 60-67, Mélenchon
+  85-90), sauf pour Dupont-Aignan.
+- **§8.84, critère 4** : coché sans calcul de |z_σ| ni de |z_pos|. Vérifié en partie seulement.
+- **§8.84, critères assouplis AVANT le run**, mais vers l'indulgence : le V2 Fillon–Le Pen est passé
+  de « ≤ `hier` − 1 » à « rapporté ». Sous le seuil initial, c'est un ✗ ferme.
+- **§8.85, U_fid** : ce n'est pas un témoin indépendant. C'est le même fit à τ = 0, donc **une
+  constante par hypothèse** (54,0 pour toutes les cellules de Macron–Pécresse) : le critère mesure
+  la valeur ajoutée de la géométrie sur une constante. 50/50 sur Macron–Pécresse : 15,2.
+- **§8.85, |z_pos|** : 3,08 pour Zemmour et 3,19 pour Mélenchon dans deux fits LOHO (> 3), non
+  rapportés.
+
+**Mécanismes** (revue, à 0 fit).
+
+- **2017 : une seule paire en V2, et tout contre Le Pen.** Les données T2 ne séparent pas
+  « Le Pen pénalisée » (front républicain, transférable) de « Macron central » (géométrie). Le témoin
+  **T0, « pénalité Le Pen constante »** (Fillon–LP prédit à la valeur observée de Macron–LP), donne
+  **+4,7**, contre −16,6 / −10,4 pour P4b, −9,3 pour `hier` et +42,8 pour R1, qui s'effondre en 2017.
+  - L'information est dans les données ; c'est la décomposition du modèle qui échoue.
+  - Mélenchon est à +12,5 à toutes les inits : le « ni-ni » de 2017 n'est pas une distance.
+- **Pécresse en V1-LOHO.** Sans ses tableaux croisés, elle glisse vers Le Pen (θ de 0,42 à 0,86,
+  σ de 0,23 à 0,15). La gauche bascule alors à 95-99 % sur Macron, pour 59 à 74 % mesurés. Cela donne
+  une MAE de 23,4, pire que 50/50 (15,2).
+  - Diagnostic : non-identification, plus une valence propre à l'électorat (rejet de Macron à gauche).
+  - En revanche, Mélenchon–Macron et Zemmour font aussi bien cachés qu'en échantillon : ce ne sont pas
+    des échecs de généralisation.
+
+**Neutralité en production : ÉCHEC CONSTATÉ, puis CORRIGÉ dans ce lot.**
+
+- `model/run.py` chargeait `tour=None` (commit d7b1575, audit Codex). Les T2 entraient donc dans
+  `listes.produire`, `derniers_sondages.produire` et `_alerte_palette`. Mesuré par la revue : les 3
+  listes publiées changeaient, les événements passaient de 25 à 51, et les `n_sondages` gonflaient.
+- **Retour à `load_raw_polls(as_of=as_of)`**, identique à main. Les tests restent verts.
+- Restent à documenter :
+  - `base.py:186` : le `used_polls` par défaut des modèles privés compte les notices T2, avec un
+    risque de rejeu en `--include-private` ; inactif depuis que run.py ne charge plus de T2 ;
+  - la colonne `non_expression` de `live_dataset` (NaN).
+
+  gp-pooling et le spatial de production sont neutres (revue : mêmes kwargs, mêmes paramètres, même
+  potentiel en un point fixé, sur les données 2027).
+
+**SYNTHÈSE DE FIN DE RECHERCHE** (2022 = développement ; MAP sur le Mac, NON PROBANT).
+
+- **Établi.**
+  - Un modèle génératif unique (cercle + duels + tableaux croisés + abstention + fidélité) s'ajuste
+    bien à 2022 en échantillon : duels 1,6 pt, cellules environ 6-7 pt.
+  - Avec des rayons libres pour les seuls candidats qui pèsent (P4b), la carte de 2022 est stable, sans
+    effondrement ni pointe, et σ_Le Pen reste crédible (σ_LP/σ_M ≈ 0,9 à 1,4).
+  - Les reports d'avant T1 et la fidélité sont ce qui rend le T2 utilisable (V2 de 7,9 à environ 3).
+  - Le rayon d'un candidat encode la concentration de son électorat (cas Pécresse).
+- **Meilleure variante : P4b** (`hiercercle_ra_fid_sigdyn`). Ses limites :
+  - hors échantillon, il **ne bat pas les témoins triviaux** : V2 3,09 contre R1 2,86 ; V1-LOHO 13,2
+    contre une constante par hypothèse (13,9) ;
+  - il échoue sur Pécresse caché (pire que 50/50) ;
+  - en 2017, le report Mélenchon est faux (+12,5) et le V2 Fillon–LP est pire que `hier` et que T0.
+- **Non établi.**
+  - Que la géométrie apporte de la précision prédictive.
+  - Que la structure se généralise à 2017.
+  - Que le postérieur NUTS soit stable.
+  - Qu'un candidat sans tableaux croisés soit bien placé, ce qui concernera des candidats de 2027.
+- **Recommandation sur l'objectif.** Le modèle spatial unique est atteint comme **représentation
+  cohérente** (carte, reports, abstention), mais **non validé comme prévision du T2**.
+  - Garder `PUBLIER_T2 = False`.
+  - Deux essais peu coûteux et parcimonieux avant de conclure, jugés sur le V2 2017 contre T0 :
+    - (1) rayons libres sur la fenêtre de 30 jours (règle sans fuite) ;
+    - (2) pénalité d'extrémité à 1 paramètre à la place de η.
+  - Sans gain, publier R1 / T0 comme référence des duels, et la carte spatiale comme représentation.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
