@@ -4549,6 +4549,19 @@ inchangée. Témoins rapportés : R1 (2,86) et `hier` (7,9).
 - **Le rayon encode la concentration de l'électorat, identifiée au T1 par les substitutions.** C'est la
   géométrie qui révèle la structure, au sens de l'utilisateur.
 
+**Point de référence sur données complètes** (`hiercercle_ra_fid`, 20 000 pas + polissage, Mac,
+24/11 ~10:30Z ; pour mémoire, le critère n'étant plus vérifiable « avant lecture »).
+
+| | Référence | P4 |
+|---|---|---|
+| Inits au même point (à 1 nat) | 6/6 | 6/6 |
+| Arc | 3,67 | 3,84 |
+| MAE des duels en échantillon | 1,56 | 1,77 (+0,21 ≤ +0,5 ✓) |
+| U | | 174 nats de plus que la référence |
+
+Sur les données complètes, la référence n'est donc PAS instable. L'instabilité et l'effondrement
+n'apparaissent qu'une paire retirée.
+
 **(P4b) Rayons libres pour les seuls candidats « dynamiques ».** Règle PRÉEXISTANTE :
 `SEUIL_DYNAMIQUE` = 5 % de part moyenne au T1, celle qui donne déjà un chemin à w. Les autres
 candidats ont z_σ ≡ 0 (σ_global). En 2022, cela laisse 8 rayons au lieu de 23 (−15 paramètres). Aucun
