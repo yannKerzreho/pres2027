@@ -4,7 +4,7 @@ import model.backtest.essai_2027 as X
 
 def test_retraits():
     raw, rep, champ = X.donnees()
-    assert len(champ) >= 5 and "Marine Le Pen" in champ
+    assert len(champ) >= 5 and "Le Pen" in champ
     d = X.duels(raw)
     r2, p2 = X.retirer(raw, rep, "v2:Le Pen|Philippe")
     e = X.duels(r2)
