@@ -1,0 +1,3774 @@
+{
+ "spec": "§8.92",
+ "geo": "segment",
+ "epreuve": "v2:Attal|Le Pen",
+ "champ": [
+  "Arthaud",
+  "Dupont-Aignan",
+  "Glucksmann",
+  "Le Pen",
+  "Mélenchon",
+  "Philippe",
+  "Retailleau",
+  "Roussel",
+  "Tondelier",
+  "Zemmour"
+ ],
+ "n_reports_fit": 65,
+ "n_duels_fit": 86,
+ "x64": true,
+ "inits": [
+  {
+   "init": 0,
+   "U_adam": -8490.14,
+   "U": -8540.395,
+   "gnorm": 0.0033125894036340254,
+   "it": 783,
+   "arret": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "secondes": 54.3,
+   "arc": null,
+   "candidats": [
+    "Arthaud",
+    "Mélenchon",
+    "Ruffin",
+    "Roussel",
+    "Tondelier",
+    "Glucksmann",
+    "Hollande",
+    "Faure",
+    "Villepin",
+    "Attal",
+    "Riner",
+    "Philippe",
+    "Retailleau",
+    "Lisnard",
+    "Polony",
+    "Dupont-Aignan",
+    "Bardella",
+    "Le Pen",
+    "Zemmour"
+   ],
+   "mu": [
+    0.053491807598263795,
+    0.1786626429490059,
+    0.30960439824142727,
+    0.3033014454156683,
+    0.3060289330883709,
+    0.30286966701912427,
+    0.3535810941620509,
+    0.325112907082003,
+    0.37571851091448116,
+    0.42167117017933153,
+    0.4346308781758088,
+    0.43897975707810394,
+    0.5218819721066068,
+    0.5380227781307745,
+    0.7590019505361312,
+    0.6716100710945246,
+    0.6810291691492163,
+    0.9066281811655108,
+    0.6838627514151607
+   ],
+   "sigma": [
+    0.09514094921972585,
+    0.05825890862573393,
+    0.09514094921972585,
+    0.09514094921972585,
+    0.09514094921972585,
+    0.04998127174304705,
+    0.09514094921972585,
+    0.09514094921972585,
+    0.09514094921972585,
+    0.08199712154441818,
+    0.09514094921972585,
+    0.08975011061491955,
+    0.1390667946512511,
+    0.10092428411161464,
+    0.09514094921972585,
+    0.09514094921972585,
+    0.09514094921972585,
+    0.19537701351247996,
+    0.09514094921972585
+   ],
+   "z_pos": [
+    0.17796966564319416,
+    1.679474984243296,
+    2.3700764466043833,
+    1.6709358823490486,
+    1.078123451875673,
+    0.41582546619173155,
+    0.3666627698144226,
+    -0.5759321968150032,
+    -0.6444028728073364,
+    -0.7897920598131617,
+    -1.2824542896249154,
+    -1.8632592198470836,
+    -1.6560404176240309,
+    -2.119036721885884,
+    -0.25696123169582624,
+    -1.9613094729644218,
+    -2.4787363030358303,
+    0.18979567743799208,
+    -5.432145469402378
+   ],
+   "z_sigma": [
+    0.0,
+    -2.452312247525112,
+    0.0,
+    0.0,
+    0.0,
+    -3.218555489579193,
+    0.0,
+    0.0,
+    0.0,
+    -0.7433766225330457,
+    0.0,
+    -0.2916510409602054,
+    1.8979744336560591,
+    0.29505552702434507,
+    0.0,
+    0.0,
+    0.0,
+    3.597858132683336,
+    0.0
+   ],
+   "eta": [
+    -1.6518257543443994e-53,
+    -0.0963859650182722,
+    8.640790131136283e-55,
+    8.35618715638999e-55,
+    -2.673960363937903e-55,
+    0.3238904781377864,
+    0.02779473786947967,
+    5.688571380705438e-54,
+    5.0725678609376e-53,
+    -0.03643564219546748,
+    2.2135727742013586e-53,
+    -0.07811995542045883,
+    -0.15513920990003605,
+    -7.944290579089572e-54,
+    3.255591880072338e-54,
+    1.9316365985269665e-54,
+    0.06898347035196385,
+    -0.05458768495724689,
+    -1.0386842477206413e-54
+   ],
+   "kappa": 0.7439862135429575,
+   "omega": -2.7881172488645216,
+   "duels": {
+    "Attal|Bardella": 34.51206304643934,
+    "Le Pen|Philippe": 57.12346054808943,
+    "Attal|Le Pen": 37.333099986336514,
+    "Bardella|Mélenchon": 66.91333370545702,
+    "Bardella|Philippe": 60.842133532937126,
+    "Glucksmann|Le Pen": 40.800709087835116,
+    "Hollande|Le Pen": 38.5623480431212,
+    "Bardella|Glucksmann": 60.393614135201936,
+    "Mélenchon|Philippe": 42.25202779407166,
+    "Le Pen|Retailleau": 62.93656051532351,
+    "Bardella|Retailleau": 66.28202454059783,
+    "Le Pen|Mélenchon": 65.78870937622719
+   },
+   "cellules": [
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      33.43,
+      50.9,
+      15.67
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      17.36,
+      0.1,
+      82.54
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Jordan Bardella",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      65.51,
+      2.52,
+      31.97
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      34.71,
+      47.87,
+      17.43
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      16.35,
+      7.14,
+      76.5
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      62.27,
+      7.92,
+      29.81
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      32.66,
+      44.6,
+      22.74
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      55.9,
+      21.24,
+      22.87
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      35.45,
+      2.07,
+      62.49
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      3.48,
+      70.59,
+      25.94
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      4.48,
+      56.51,
+      39.01
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Jordan Bardella",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      43.68,
+      18.05,
+      38.27
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      4.91,
+      67.92,
+      27.17
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      8.07,
+      53.78,
+      38.14
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      48.48,
+      17.84,
+      33.67
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      41.99,
+      45.18,
+      12.84
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      24.77,
+      0.09,
+      75.13
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Jordan Bardella",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      72.02,
+      2.48,
+      25.5
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Édouard Philippe",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      46.08,
+      39.87,
+      14.06
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      23.05,
+      6.91,
+      70.04
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      68.82,
+      7.13,
+      24.05
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Édouard Philippe",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    }
+   ]
+  },
+  {
+   "init": 1,
+   "U_adam": -8463.14,
+   "U": -8540.395,
+   "gnorm": 0.003690608396602567,
+   "it": 799,
+   "arret": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "secondes": 27.6,
+   "arc": null,
+   "candidats": [
+    "Arthaud",
+    "Mélenchon",
+    "Ruffin",
+    "Roussel",
+    "Tondelier",
+    "Glucksmann",
+    "Hollande",
+    "Faure",
+    "Villepin",
+    "Attal",
+    "Riner",
+    "Philippe",
+    "Retailleau",
+    "Lisnard",
+    "Polony",
+    "Dupont-Aignan",
+    "Bardella",
+    "Le Pen",
+    "Zemmour"
+   ],
+   "mu": [
+    0.053492236172374155,
+    0.17866092202968153,
+    0.30960168261068827,
+    0.30329999824734527,
+    0.3060277390984788,
+    0.3028689637675344,
+    0.35358206763871736,
+    0.32511455369699793,
+    0.375719889571738,
+    0.42167064054146564,
+    0.4346392544576141,
+    0.43897920425640985,
+    0.521881599642701,
+    0.5380236665158249,
+    0.7589982987689388,
+    0.6716106290735044,
+    0.6810323406096889,
+    0.9066298111793938,
+    0.6838650129155108
+   ],
+   "sigma": [
+    0.09514278719959618,
+    0.058258844252965875,
+    0.09514278719959618,
+    0.09514278719959618,
+    0.09514278719959618,
+    0.049981095456426095,
+    0.09514278719959618,
+    0.09514278719959618,
+    0.09514278719959618,
+    0.08199739729343486,
+    0.09514278719959618,
+    0.08975068134957209,
+    0.13906777058181058,
+    0.10092188659615445,
+    0.09514278719959618,
+    0.09514278719959618,
+    0.09514278719959618,
+    0.19537888418827754,
+    0.09514278719959618
+   ],
+   "z_pos": [
+    0.17799082744528064,
+    1.6794456654004184,
+    2.3700446846924312,
+    1.670918760910481,
+    1.0781093966675732,
+    0.41581713933185277,
+    0.3666734176711511,
+    -0.5759134353749168,
+    -0.6443881783702924,
+    -0.7897974894446879,
+    -1.2823690703846293,
+    -1.8632648316462455,
+    -1.6560441494103932,
+    -2.119027786360686,
+    -0.25701114133453973,
+    -1.9613031481031231,
+    -2.478699803799634,
+    0.18984381561941813,
+    -5.432119318126344
+   ],
+   "z_sigma": [
+    0.0,
+    -2.452414363780436,
+    0.0,
+    0.0,
+    0.0,
+    -3.2186697164156657,
+    0.0,
+    0.0,
+    0.0,
+    -0.743456399544364,
+    0.0,
+    -0.29171583683584,
+    1.8979129305496765,
+    0.2948401561482851,
+    0.0,
+    0.0,
+    0.0,
+    3.597809414403796,
+    0.0
+   ],
+   "eta": [
+    -3.12940127951533e-10,
+    -0.09639089282868372,
+    1.850246791138983e-15,
+    2.629048947386477e-53,
+    -3.44083169620014e-47,
+    0.3238909581774883,
+    0.027788162463540433,
+    3.203409038794541e-53,
+    -2.123064506305585e-19,
+    -0.036440405673485374,
+    8.575844683369306e-12,
+    -0.07812428480101352,
+    -0.15513691500757115,
+    -1.4353620072340227e-51,
+    -1.0478267128373235e-52,
+    5.119508727784327e-53,
+    0.0689703597612524,
+    -0.05459298379610883,
+    -4.713005498330842e-13
+   ],
+   "kappa": 0.7439897442945638,
+   "omega": -2.788119008906479,
+   "duels": {
+    "Attal|Bardella": 34.510338923071686,
+    "Le Pen|Philippe": 57.123402422289814,
+    "Attal|Le Pen": 37.33294910246741,
+    "Bardella|Mélenchon": 66.91409995997213,
+    "Bardella|Philippe": 60.84383097244167,
+    "Glucksmann|Le Pen": 40.800745443930545,
+    "Hollande|Le Pen": 38.56287152010513,
+    "Bardella|Glucksmann": 60.394668225231094,
+    "Mélenchon|Philippe": 42.252376866215826,
+    "Le Pen|Retailleau": 62.9366299638382,
+    "Bardella|Retailleau": 66.28435467493958,
+    "Le Pen|Mélenchon": 65.78855318935476
+   },
+   "cellules": [
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      33.43,
+      50.9,
+      15.67
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      17.36,
+      0.1,
+      82.54
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Jordan Bardella",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      65.51,
+      2.52,
+      31.97
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      34.7,
+      47.87,
+      17.43
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      16.35,
+      7.14,
+      76.5
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      62.27,
+      7.92,
+      29.81
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      32.66,
+      44.6,
+      22.75
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      55.9,
+      21.23,
+      22.87
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      35.44,
+      2.07,
+      62.49
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      3.48,
+      70.59,
+      25.94
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      4.48,
+      56.52,
+      39.01
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Jordan Bardella",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      43.68,
+      18.05,
+      38.27
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      4.91,
+      67.91,
+      27.17
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      8.07,
+      53.78,
+      38.14
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      48.48,
+      17.84,
+      33.67
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      41.99,
+      45.18,
+      12.84
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      24.77,
+      0.09,
+      75.13
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Jordan Bardella",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      72.02,
+      2.48,
+      25.5
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Édouard Philippe",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      46.07,
+      39.87,
+      14.06
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      23.05,
+      6.91,
+      70.04
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      68.82,
+      7.13,
+      24.05
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Édouard Philippe",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    }
+   ]
+  },
+  {
+   "init": 2,
+   "U_adam": -8430.21,
+   "U": -8540.395,
+   "gnorm": 0.003816533571248534,
+   "it": 832,
+   "arret": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "secondes": 28.2,
+   "arc": null,
+   "candidats": [
+    "Arthaud",
+    "Mélenchon",
+    "Ruffin",
+    "Roussel",
+    "Tondelier",
+    "Glucksmann",
+    "Hollande",
+    "Faure",
+    "Villepin",
+    "Attal",
+    "Riner",
+    "Philippe",
+    "Retailleau",
+    "Lisnard",
+    "Polony",
+    "Dupont-Aignan",
+    "Bardella",
+    "Le Pen",
+    "Zemmour"
+   ],
+   "mu": [
+    0.053485209030486404,
+    0.17866702216985061,
+    0.30961207651650824,
+    0.30330581746492286,
+    0.30603347442924467,
+    0.3028716027142683,
+    0.35358482944591235,
+    0.32511806349231276,
+    0.3757204080822942,
+    0.4216731891289032,
+    0.4346356497327416,
+    0.4389824593041334,
+    0.5218864243300847,
+    0.5380226158507836,
+    0.7589999907470405,
+    0.6716093301049816,
+    0.6810287478701323,
+    0.906627963451705,
+    0.6838625933661092
+   ],
+   "sigma": [
+    0.09514044533131248,
+    0.058261142042017676,
+    0.09514044533131248,
+    0.09514044533131248,
+    0.09514044533131248,
+    0.04998115161173607,
+    0.09514044533131248,
+    0.09514044533131248,
+    0.09514044533131248,
+    0.08199739935816616,
+    0.09514044533131248,
+    0.0897506904140434,
+    0.13906520285716317,
+    0.10092524694557975,
+    0.09514044533131248,
+    0.09514044533131248,
+    0.09514044533131248,
+    0.19537689957828197,
+    0.09514044533131248
+   ],
+   "z_pos": [
+    0.1776438264561726,
+    1.6795495908625504,
+    2.3701662505809415,
+    1.670987607753798,
+    1.0781769105834058,
+    0.41584838575956773,
+    0.3667036261578783,
+    -0.5758734451257788,
+    -0.6443826518240627,
+    -0.7897713623819991,
+    -1.282405744356722,
+    -1.8632317890539352,
+    -1.6559958099355279,
+    -2.1190383541248714,
+    -0.25698801670008653,
+    -1.9613178722975797,
+    -2.4787411513758566,
+    0.1897892478892794,
+    -5.4321472970279485
+   ],
+   "z_sigma": [
+    0.0,
+    -2.4520940897385635,
+    0.0,
+    0.0,
+    0.0,
+    -3.218541026002637,
+    0.0,
+    0.0,
+    0.0,
+    -0.7433332008809171,
+    0.0,
+    -0.29159225909402176,
+    1.8979436832736067,
+    0.29512970882756545,
+    0.0,
+    0.0,
+    0.0,
+    3.5978816981536,
+    0.0
+   ],
+   "eta": [
+    -5.925964548206619e-52,
+    -0.09640064096466253,
+    -4.395458623084754e-36,
+    2.2282514643879935e-29,
+    -8.789775203457346e-53,
+    0.3238939908454862,
+    0.02780614098407596,
+    1.0579705130255738e-52,
+    4.318730278614382e-14,
+    -0.03644118088101735,
+    -3.01790994224722e-48,
+    -0.07812648418923256,
+    -0.15511488828018766,
+    -1.2951159585820074e-30,
+    -4.8795596960703077e-23,
+    5.55476796806803e-28,
+    0.06898088909025962,
+    -0.054593288952754226,
+    1.2812428513297822e-50
+   ],
+   "kappa": 0.7440102654442766,
+   "omega": -2.7881367050747223,
+   "duels": {
+    "Attal|Bardella": 34.51246290601121,
+    "Le Pen|Philippe": 57.123598985517724,
+    "Attal|Le Pen": 37.332507448425844,
+    "Bardella|Mélenchon": 66.9127266634585,
+    "Bardella|Philippe": 60.84126274742222,
+    "Glucksmann|Le Pen": 40.800665456057466,
+    "Hollande|Le Pen": 38.562278050350415,
+    "Bardella|Glucksmann": 60.39297686053013,
+    "Mélenchon|Philippe": 42.25211325012474,
+    "Le Pen|Retailleau": 62.936710472160094,
+    "Bardella|Retailleau": 66.28095620305278,
+    "Le Pen|Mélenchon": 65.78864270148237
+   },
+   "cellules": [
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      33.43,
+      50.9,
+      15.67
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      17.36,
+      0.1,
+      82.54
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Jordan Bardella",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      65.51,
+      2.52,
+      31.97
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      34.7,
+      47.87,
+      17.43
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      16.35,
+      7.14,
+      76.5
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      62.27,
+      7.92,
+      29.81
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      32.66,
+      44.6,
+      22.74
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      55.9,
+      21.23,
+      22.87
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      35.44,
+      2.07,
+      62.49
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      3.48,
+      70.59,
+      25.94
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      4.48,
+      56.51,
+      39.01
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Jordan Bardella",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      43.68,
+      18.05,
+      38.27
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      4.91,
+      67.92,
+      27.17
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      8.07,
+      53.78,
+      38.14
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      48.48,
+      17.84,
+      33.67
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      41.99,
+      45.18,
+      12.84
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      24.77,
+      0.09,
+      75.13
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Jordan Bardella",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      72.02,
+      2.48,
+      25.5
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Édouard Philippe",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      46.08,
+      39.87,
+      14.06
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      23.05,
+      6.91,
+      70.04
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      68.82,
+      7.13,
+      24.05
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Édouard Philippe",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    }
+   ]
+  },
+  {
+   "init": 3,
+   "U_adam": -8437.87,
+   "U": -8540.395,
+   "gnorm": 0.002942495425458124,
+   "it": 834,
+   "arret": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "secondes": 28.5,
+   "arc": null,
+   "candidats": [
+    "Arthaud",
+    "Mélenchon",
+    "Ruffin",
+    "Roussel",
+    "Tondelier",
+    "Glucksmann",
+    "Hollande",
+    "Faure",
+    "Villepin",
+    "Attal",
+    "Riner",
+    "Philippe",
+    "Retailleau",
+    "Lisnard",
+    "Polony",
+    "Dupont-Aignan",
+    "Bardella",
+    "Le Pen",
+    "Zemmour"
+   ],
+   "mu": [
+    0.05349083107061485,
+    0.17866301037805074,
+    0.3096053402854961,
+    0.3033018602321132,
+    0.3060297630190613,
+    0.30286987475405747,
+    0.35358124322957973,
+    0.32511325803529884,
+    0.37571857819665044,
+    0.4216714653847351,
+    0.4346346775987219,
+    0.4389800721684422,
+    0.5218822065362311,
+    0.5380222427181992,
+    0.759001508434112,
+    0.6716091817195639,
+    0.6810285754491351,
+    0.9066281502069292,
+    0.6838622795696455
+   ],
+   "sigma": [
+    0.09514074549508522,
+    0.058258614203934696,
+    0.09514074549508522,
+    0.09514074549508522,
+    0.09514074549508522,
+    0.04998142224594085,
+    0.09514074549508522,
+    0.09514074549508522,
+    0.09514074549508522,
+    0.08199719024227929,
+    0.09514074549508522,
+    0.08975029178739989,
+    0.1390662110915324,
+    0.10092489472382055,
+    0.09514074549508522,
+    0.09514074549508522,
+    0.09514074549508522,
+    0.19537739365935944,
+    0.09514074549508522
+   ],
+   "z_pos": [
+    0.17792144681612482,
+    1.679481244005168,
+    2.3700874646794308,
+    1.6709407900310753,
+    1.078133221495229,
+    0.4158279258779016,
+    0.3666644003111593,
+    -0.5759281980684517,
+    -0.6444021556789251,
+    -0.7897890334884888,
+    -1.282415634725773,
+    -1.8632560213052487,
+    -1.6560380688291338,
+    -2.119042107153808,
+    -0.25696727404496017,
+    -1.9613195542885193,
+    -2.4787431357022576,
+    0.1897947631648437,
+    -5.432150925662256
+   ],
+   "z_sigma": [
+    0.0,
+    -2.4523268095058683,
+    0.0,
+    0.0,
+    0.0,
+    -3.21852972719701,
+    0.0,
+    0.0,
+    0.0,
+    -0.7433617270177371,
+    0.0,
+    -0.2916302413323949,
+    1.8979641588135754,
+    0.29509648441394,
+    0.0,
+    0.0,
+    0.0,
+    3.5978785676966023,
+    0.0
+   ],
+   "eta": [
+    -8.504227815821622e-54,
+    -0.09638705367728828,
+    -7.292759885086673e-51,
+    -5.567732111417115e-54,
+    -1.0963771118495561e-52,
+    0.3238878761446388,
+    0.02779770685083805,
+    1.9092798218795063e-18,
+    -5.617877721466422e-53,
+    -0.036437559176277716,
+    7.84616369026187e-52,
+    -0.07812228501703015,
+    -0.1551318109507737,
+    -1.897337174933777e-53,
+    -2.489865031895575e-53,
+    1.5706505218930557e-50,
+    0.06898280141540192,
+    -0.05458982585399224,
+    1.2675722937029708e-53
+   ],
+   "kappa": 0.743992729696082,
+   "omega": -2.7881255315065583,
+   "duels": {
+    "Attal|Bardella": 34.51146705987239,
+    "Le Pen|Philippe": 57.123488784169005,
+    "Attal|Le Pen": 37.33282654910043,
+    "Bardella|Mélenchon": 66.91343092151291,
+    "Bardella|Philippe": 60.84254498485806,
+    "Glucksmann|Le Pen": 40.800723698267426,
+    "Hollande|Le Pen": 38.56287669291287,
+    "Bardella|Glucksmann": 60.39382594010524,
+    "Mélenchon|Philippe": 42.252246654909364,
+    "Le Pen|Retailleau": 62.93652562044447,
+    "Bardella|Retailleau": 66.2824848717251,
+    "Le Pen|Mélenchon": 65.78861629232156
+   },
+   "cellules": [
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      33.43,
+      50.9,
+      15.67
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      17.36,
+      0.1,
+      82.54
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Jordan Bardella",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      65.51,
+      2.52,
+      31.97
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      34.7,
+      47.87,
+      17.43
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      16.35,
+      7.14,
+      76.5
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      62.27,
+      7.92,
+      29.81
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      32.66,
+      44.6,
+      22.74
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      55.9,
+      21.23,
+      22.87
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      35.45,
+      2.07,
+      62.49
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      3.48,
+      70.59,
+      25.94
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      4.48,
+      56.51,
+      39.01
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Jordan Bardella",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      43.68,
+      18.05,
+      38.27
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      4.91,
+      67.92,
+      27.17
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      8.07,
+      53.78,
+      38.14
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      48.48,
+      17.84,
+      33.67
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      41.99,
+      45.18,
+      12.84
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      24.77,
+      0.09,
+      75.13
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Jordan Bardella",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      72.02,
+      2.48,
+      25.5
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Édouard Philippe",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      46.08,
+      39.87,
+      14.06
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      23.05,
+      6.91,
+      70.04
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      68.82,
+      7.13,
+      24.05
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Édouard Philippe",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    }
+   ]
+  },
+  {
+   "init": 4,
+   "U_adam": -8285.77,
+   "U": -8540.395,
+   "gnorm": 0.003387413078453625,
+   "it": 808,
+   "arret": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "secondes": 21.5,
+   "arc": null,
+   "candidats": [
+    "Arthaud",
+    "Mélenchon",
+    "Ruffin",
+    "Roussel",
+    "Tondelier",
+    "Glucksmann",
+    "Hollande",
+    "Faure",
+    "Villepin",
+    "Attal",
+    "Riner",
+    "Philippe",
+    "Retailleau",
+    "Lisnard",
+    "Polony",
+    "Dupont-Aignan",
+    "Bardella",
+    "Le Pen",
+    "Zemmour"
+   ],
+   "mu": [
+    0.05349196497575027,
+    0.1786635697774719,
+    0.30960441810659023,
+    0.30330268407348626,
+    0.3060301397781386,
+    0.3028700276572994,
+    0.35358198772944505,
+    0.3251137575299867,
+    0.37572067836053924,
+    0.4216721532466581,
+    0.4346315077867588,
+    0.4389810706449401,
+    0.5218847709710014,
+    0.5380262715573365,
+    0.7589996705385101,
+    0.6716118845880973,
+    0.6810312610576245,
+    0.9066288123652031,
+    0.6838650636216002
+   ],
+   "sigma": [
+    0.09514139958169003,
+    0.058259329822578,
+    0.09514139958169003,
+    0.09514139958169003,
+    0.09514139958169003,
+    0.049981397799183154,
+    0.09514139958169003,
+    0.09514139958169003,
+    0.09514139958169003,
+    0.08199735605883225,
+    0.09514139958169003,
+    0.08975069544261176,
+    0.13906682564058123,
+    0.10092073952018003,
+    0.09514139958169003,
+    0.09514139958169003,
+    0.09514139958169003,
+    0.1953774919103369,
+    0.09514139958169003
+   ],
+   "z_pos": [
+    0.17797743652600348,
+    1.6794907742807677,
+    2.370076678945994,
+    1.670950536864614,
+    1.078137656550873,
+    0.4158297363286383,
+    0.36667254362657964,
+    -0.575922506851613,
+    -0.6443797710638265,
+    -0.7897819818125152,
+    -1.2824478840288942,
+    -1.863245885584082,
+    -1.6560123752641647,
+    -2.1190015844041157,
+    -0.256992393068545,
+    -1.9612889164435947,
+    -2.4787122280107567,
+    0.18981431817463776,
+    -5.432118731775984
+   ],
+   "z_sigma": [
+    0.0,
+    -2.4522997670381397,
+    0.0,
+    0.0,
+    0.0,
+    -3.218566547347487,
+    0.0,
+    0.0,
+    0.0,
+    -0.7433859904815158,
+    0.0,
+    -0.2916421282659785,
+    1.8979518797552368,
+    0.29485624938207683,
+    0.0,
+    0.0,
+    0.0,
+    3.5978467075201337,
+    0.0
+   ],
+   "eta": [
+    -3.2144411884488357e-52,
+    -0.09638722930786861,
+    3.4258502624813835e-52,
+    -2.267384824967801e-23,
+    -7.270421785413384e-52,
+    0.32389378971437166,
+    0.02780613286153882,
+    -8.516676570057753e-35,
+    -5.7914462793768856e-52,
+    -0.03643028396744635,
+    7.969807333039798e-52,
+    -0.07811841960156884,
+    -0.15512203424166798,
+    3.4014964934698596e-51,
+    7.609279104451863e-52,
+    2.221763847739333e-52,
+    0.0689829231771461,
+    -0.05458796581413309,
+    -3.856752848910083e-36
+   ],
+   "kappa": 0.7439982772556238,
+   "omega": -2.788129505104137,
+   "duels": {
+    "Attal|Bardella": 34.511384521692904,
+    "Le Pen|Philippe": 57.123454662233996,
+    "Attal|Le Pen": 37.33299651342239,
+    "Bardella|Mélenchon": 66.91354150901326,
+    "Bardella|Philippe": 60.842800341225164,
+    "Glucksmann|Le Pen": 40.80076004325683,
+    "Hollande|Le Pen": 38.563369862912225,
+    "Bardella|Glucksmann": 60.39397434099635,
+    "Mélenchon|Philippe": 42.252289526997004,
+    "Le Pen|Retailleau": 62.93662636945858,
+    "Bardella|Retailleau": 66.28294610190173,
+    "Le Pen|Mélenchon": 65.78856036348272
+   },
+   "cellules": [
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      33.43,
+      50.9,
+      15.67
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      17.36,
+      0.1,
+      82.54
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Jordan Bardella",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      65.51,
+      2.52,
+      31.97
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      34.7,
+      47.87,
+      17.43
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      16.35,
+      7.14,
+      76.5
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      62.27,
+      7.92,
+      29.81
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      32.66,
+      44.6,
+      22.75
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      55.9,
+      21.23,
+      22.87
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      35.45,
+      2.07,
+      62.49
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      3.48,
+      70.59,
+      25.94
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      4.48,
+      56.51,
+      39.01
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Jordan Bardella",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      43.68,
+      18.05,
+      38.27
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      4.91,
+      67.92,
+      27.17
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      8.07,
+      53.78,
+      38.14
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      48.48,
+      17.84,
+      33.67
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      41.99,
+      45.18,
+      12.84
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      24.77,
+      0.09,
+      75.13
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Jordan Bardella",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      72.02,
+      2.48,
+      25.5
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Édouard Philippe",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      46.08,
+      39.87,
+      14.06
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      23.05,
+      6.91,
+      70.04
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      68.82,
+      7.13,
+      24.05
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Édouard Philippe",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    }
+   ]
+  },
+  {
+   "init": 5,
+   "U_adam": -8090.97,
+   "U": -8540.395,
+   "gnorm": 0.003768755074500804,
+   "it": 855,
+   "arret": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "secondes": 19.4,
+   "arc": null,
+   "candidats": [
+    "Arthaud",
+    "Mélenchon",
+    "Ruffin",
+    "Roussel",
+    "Tondelier",
+    "Glucksmann",
+    "Hollande",
+    "Faure",
+    "Villepin",
+    "Attal",
+    "Riner",
+    "Philippe",
+    "Retailleau",
+    "Lisnard",
+    "Polony",
+    "Dupont-Aignan",
+    "Bardella",
+    "Le Pen",
+    "Zemmour"
+   ],
+   "mu": [
+    0.05348847676309012,
+    0.17866460255309516,
+    0.3096085195436515,
+    0.30330390801482243,
+    0.3060311833517818,
+    0.30287010915069307,
+    0.3535847483361259,
+    0.3251177961713379,
+    0.37572053012874046,
+    0.4216723916330598,
+    0.43462614306504166,
+    0.4389812854918336,
+    0.5218855302290263,
+    0.538027183146265,
+    0.7589986431885827,
+    0.671610848534745,
+    0.681029866566023,
+    0.9066265770266608,
+    0.6838643091281559
+   ],
+   "sigma": [
+    0.09514117238386971,
+    0.05825929981114689,
+    0.09514117238386971,
+    0.09514117238386971,
+    0.09514117238386971,
+    0.04998053881125839,
+    0.09514117238386971,
+    0.09514117238386971,
+    0.09514117238386971,
+    0.0819975460478983,
+    0.09514117238386971,
+    0.08975050218817485,
+    0.13906648605136152,
+    0.10091951275489923,
+    0.09514117238386971,
+    0.09514117238386971,
+    0.09514117238386971,
+    0.1953770580429387,
+    0.09514117238386971
+   ],
+   "z_pos": [
+    0.17780519277833093,
+    1.6795083692256905,
+    2.370124648902039,
+    1.6709650172368256,
+    1.0781499410622521,
+    0.41583070125090155,
+    0.3667027389852678,
+    -0.5758764909457764,
+    -0.6443813509921109,
+    -0.7897795379744342,
+    -1.2825024642158689,
+    -1.8632437046338477,
+    -1.6560047681098309,
+    -2.1189924154806032,
+    -0.2570064340849846,
+    -1.961300660441765,
+    -2.4787282767247687,
+    0.18974830414369703,
+    -5.4321274565118935
+   ],
+   "z_sigma": [
+    0.0,
+    -2.452290402692202,
+    0.0,
+    0.0,
+    0.0,
+    -3.218640538825842,
+    0.0,
+    0.0,
+    0.0,
+    -0.7433624653996823,
+    0.0,
+    -0.29164095443547494,
+    1.89795161019321,
+    0.2948074103842544,
+    0.0,
+    0.0,
+    0.0,
+    3.597847544219699,
+    0.0
+   ],
+   "eta": [
+    3.55079328543778e-52,
+    -0.09638748494362201,
+    1.899962448709023e-23,
+    -1.3827875628040687e-50,
+    -4.540127052704483e-52,
+    0.32390892037566915,
+    0.02780556997272267,
+    -9.769581184311032e-45,
+    -2.2566833113454254e-52,
+    -0.03643682650307168,
+    4.587794623462184e-52,
+    -0.07811783434885795,
+    -0.15512076416198045,
+    -7.620386205946133e-53,
+    -4.995734250585266e-16,
+    3.924571255280743e-52,
+    0.06898294380089032,
+    -0.054589740709622095,
+    -1.1023642162951388e-14
+   ],
+   "kappa": 0.7440029419510112,
+   "omega": -2.7881355670145864,
+   "duels": {
+    "Attal|Bardella": 34.51161755443656,
+    "Le Pen|Philippe": 57.12347605866191,
+    "Attal|Le Pen": 37.332885123575856,
+    "Bardella|Mélenchon": 66.91344175895783,
+    "Bardella|Philippe": 60.84243269813594,
+    "Glucksmann|Le Pen": 40.80079727862812,
+    "Hollande|Le Pen": 38.563045784048086,
+    "Bardella|Glucksmann": 60.393672557133996,
+    "Mélenchon|Philippe": 42.25215705451462,
+    "Le Pen|Retailleau": 62.93657502771403,
+    "Bardella|Retailleau": 66.2824226753306,
+    "Le Pen|Mélenchon": 65.78865322229154
+   },
+   "cellules": [
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      33.43,
+      50.9,
+      15.67
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      17.36,
+      0.1,
+      82.54
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Jordan Bardella",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      65.51,
+      2.52,
+      31.97
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      34.7,
+      47.87,
+      17.43
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      16.35,
+      7.14,
+      76.5
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      62.27,
+      7.92,
+      29.81
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      32.66,
+      44.6,
+      22.75
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      55.9,
+      21.23,
+      22.87
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      35.44,
+      2.07,
+      62.49
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      3.48,
+      70.59,
+      25.94
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      4.48,
+      56.51,
+      39.01
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Jordan Bardella",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      43.68,
+      18.05,
+      38.27
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      4.91,
+      67.92,
+      27.17
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      8.07,
+      53.78,
+      38.14
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      48.48,
+      17.84,
+      33.67
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      41.99,
+      45.18,
+      12.84
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      24.77,
+      0.09,
+      75.13
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Jordan Bardella",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      72.02,
+      2.48,
+      25.5
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Édouard Philippe",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      46.08,
+      39.87,
+      14.06
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      23.05,
+      6.91,
+      70.04
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      68.82,
+      7.13,
+      24.05
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Édouard Philippe",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    }
+   ]
+  },
+  {
+   "init": 6,
+   "U_adam": -8427.74,
+   "U": -8540.395,
+   "gnorm": 0.0033693631368266613,
+   "it": 764,
+   "arret": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "secondes": 28.4,
+   "arc": null,
+   "candidats": [
+    "Arthaud",
+    "Mélenchon",
+    "Ruffin",
+    "Roussel",
+    "Tondelier",
+    "Glucksmann",
+    "Hollande",
+    "Faure",
+    "Villepin",
+    "Attal",
+    "Riner",
+    "Philippe",
+    "Retailleau",
+    "Lisnard",
+    "Polony",
+    "Dupont-Aignan",
+    "Bardella",
+    "Le Pen",
+    "Zemmour"
+   ],
+   "mu": [
+    0.05349360227090308,
+    0.17866465729633424,
+    0.30960754588584294,
+    0.30330275236125803,
+    0.30603054085393744,
+    0.3028703143339097,
+    0.3535814850610217,
+    0.32511244431908437,
+    0.3757184798500859,
+    0.4216712311854249,
+    0.4346309862556627,
+    0.4389800380854194,
+    0.5218818281221788,
+    0.5380199700010663,
+    0.7590037729205485,
+    0.6716085753680141,
+    0.6810269747978507,
+    0.9066292959846517,
+    0.6838608394938248
+   ],
+   "sigma": [
+    0.09514022140438547,
+    0.058259514729232006,
+    0.09514022140438547,
+    0.09514022140438547,
+    0.09514022140438547,
+    0.04998151577296703,
+    0.09514022140438547,
+    0.09514022140438547,
+    0.09514022140438547,
+    0.08199705569929965,
+    0.09514022140438547,
+    0.08975028809686758,
+    0.1390657130422192,
+    0.10092645917490024,
+    0.09514022140438547,
+    0.09514022140438547,
+    0.09514022140438547,
+    0.19537793992964317,
+    0.09514022140438547
+   ],
+   "z_pos": [
+    0.17805828053790143,
+    1.6795093018600022,
+    2.3701132611392963,
+    1.6709513447737734,
+    1.0781423778497852,
+    0.415833130721463,
+    0.3666670454564929,
+    -0.5759374695189421,
+    -0.6444032039078609,
+    -0.7897914344036768,
+    -1.2824531900316216,
+    -1.8632563672884586,
+    -1.6560418602312934,
+    -2.1190649665074783,
+    -0.2569363245075883,
+    -1.9613264274518587,
+    -2.4787615569500234,
+    0.18982860061356124,
+    -5.43216757817859
+   ],
+   "z_sigma": [
+    0.0,
+    -2.4522219802326437,
+    0.0,
+    0.0,
+    0.0,
+    -3.218492828035607,
+    0.0,
+    0.0,
+    0.0,
+    -0.7433423881546036,
+    0.0,
+    -0.29160290394121274,
+    1.8979737948595503,
+    0.29520153251222003,
+    0.0,
+    0.0,
+    0.0,
+    3.5979200905426354,
+    0.0
+   ],
+   "eta": [
+    -8.140054489563885e-46,
+    -0.09639589771471185,
+    -9.693871701873619e-35,
+    -2.92797292574008e-51,
+    -6.265539336100261e-52,
+    0.32388241392993883,
+    0.02779825387191497,
+    6.899623722404409e-52,
+    -1.013971429769705e-14,
+    -0.03643799298226606,
+    1.6379172166908786e-51,
+    -0.07812703768963085,
+    -0.15512911618996617,
+    1.1455495441932931e-51,
+    8.744109895769178e-14,
+    -1.6650662928010845e-52,
+    0.06898231631097235,
+    -0.05459377443497724,
+    1.6649116258948477e-51
+   ],
+   "kappa": 0.7439995386170204,
+   "omega": -2.7881302670704997,
+   "duels": {
+    "Attal|Bardella": 34.512285808702025,
+    "Le Pen|Philippe": 57.12356869306292,
+    "Attal|Le Pen": 37.33295494482794,
+    "Bardella|Mélenchon": 66.91305699882314,
+    "Bardella|Philippe": 60.841853311886766,
+    "Glucksmann|Le Pen": 40.80071424566468,
+    "Hollande|Le Pen": 38.562487018774874,
+    "Bardella|Glucksmann": 60.393352360937214,
+    "Mélenchon|Philippe": 42.25219150657853,
+    "Le Pen|Retailleau": 62.936564322092195,
+    "Bardella|Retailleau": 66.28156764923541,
+    "Le Pen|Mélenchon": 65.78864006793735
+   },
+   "cellules": [
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      33.43,
+      50.9,
+      15.67
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      17.36,
+      0.1,
+      82.54
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Jordan Bardella",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      65.51,
+      2.52,
+      31.97
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      34.71,
+      47.87,
+      17.43
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      16.35,
+      7.14,
+      76.5
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      62.27,
+      7.92,
+      29.81
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      32.66,
+      44.6,
+      22.74
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      55.9,
+      21.23,
+      22.87
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      35.45,
+      2.07,
+      62.49
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      3.48,
+      70.59,
+      25.94
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      4.47,
+      56.51,
+      39.01
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Jordan Bardella",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      43.68,
+      18.05,
+      38.27
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      4.91,
+      67.92,
+      27.17
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      8.07,
+      53.78,
+      38.14
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      48.48,
+      17.84,
+      33.67
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      41.99,
+      45.18,
+      12.84
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      24.77,
+      0.09,
+      75.13
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Jordan Bardella",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      72.02,
+      2.48,
+      25.5
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Édouard Philippe",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      46.08,
+      39.87,
+      14.06
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      23.05,
+      6.91,
+      70.04
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      68.82,
+      7.13,
+      24.05
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Édouard Philippe",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    }
+   ]
+  },
+  {
+   "init": 7,
+   "U_adam": -8375.0,
+   "U": -8540.395,
+   "gnorm": 0.003397188299597914,
+   "it": 824,
+   "arret": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "secondes": 26.6,
+   "arc": null,
+   "candidats": [
+    "Arthaud",
+    "Mélenchon",
+    "Ruffin",
+    "Roussel",
+    "Tondelier",
+    "Glucksmann",
+    "Hollande",
+    "Faure",
+    "Villepin",
+    "Attal",
+    "Riner",
+    "Philippe",
+    "Retailleau",
+    "Lisnard",
+    "Polony",
+    "Dupont-Aignan",
+    "Bardella",
+    "Le Pen",
+    "Zemmour"
+   ],
+   "mu": [
+    0.05349144770209744,
+    0.1786638590573998,
+    0.30960593374693607,
+    0.3033023855673837,
+    0.3060307526840596,
+    0.30287014736724865,
+    0.3535825986199791,
+    0.3251135706148459,
+    0.3757205714693292,
+    0.42167224842649037,
+    0.43463413262469003,
+    0.4389808797890988,
+    0.5218835217384263,
+    0.538023834238554,
+    0.7589977782722617,
+    0.6716099163667029,
+    0.6810298383233612,
+    0.9066269913235588,
+    0.6838628898248142
+   ],
+   "sigma": [
+    0.09514144829421534,
+    0.058259819225294704,
+    0.09514144829421534,
+    0.09514144829421534,
+    0.09514144829421534,
+    0.04998144307223608,
+    0.09514144829421534,
+    0.09514144829421534,
+    0.09514144829421534,
+    0.08199718205523858,
+    0.09514144829421534,
+    0.08975043462476985,
+    0.13906622831844279,
+    0.10092199097862306,
+    0.09514144829421534,
+    0.09514144829421534,
+    0.09514144829421534,
+    0.19537720000479114,
+    0.09514144829421534
+   ],
+   "z_pos": [
+    0.17795189484412294,
+    1.6794957026239337,
+    2.3700944057493416,
+    1.6709470052528683,
+    1.0781448714252344,
+    0.41583115375385366,
+    0.3666792255216592,
+    -0.5759246365526038,
+    -0.6443809103635169,
+    -0.7897810060684806,
+    -1.282421179225157,
+    -1.863247822996938,
+    -1.656024891566939,
+    -2.1190260993771943,
+    -0.25701825505408216,
+    -1.961311226850328,
+    -2.478728601759258,
+    0.1897605390550962,
+    -5.432143868879733
+   ],
+   "z_sigma": [
+    0.0,
+    -2.4522603251311987,
+    0.0,
+    0.0,
+    0.0,
+    -3.2185645783653722,
+    0.0,
+    0.0,
+    0.0,
+    -0.7433991608162182,
+    0.0,
+    -0.29165921842250064,
+    1.8979278436199891,
+    0.2949156910363664,
+    0.0,
+    0.0,
+    0.0,
+    3.5978366772122765,
+    0.0
+   ],
+   "eta": [
+    -6.017258133193343e-51,
+    -0.09639195033101533,
+    -6.1723741052526295e-52,
+    3.931008673284256e-42,
+    4.811847771657239e-52,
+    0.32388998189929663,
+    0.027800374749606314,
+    5.534712990213641e-23,
+    -5.911485720153452e-52,
+    -0.03643672496055779,
+    2.0836248106989433e-52,
+    -0.07812055870012168,
+    -0.15512886412029178,
+    -6.618352112982678e-52,
+    1.2920020595317947e-52,
+    -3.7200551453973925e-52,
+    0.06898072860984558,
+    -0.05458967955890758,
+    -2.6006046563564804e-52
+   ],
+   "kappa": 0.7439963709358617,
+   "omega": -2.7881272423704058,
+   "duels": {
+    "Attal|Bardella": 34.511564161817724,
+    "Le Pen|Philippe": 57.123443657648195,
+    "Attal|Le Pen": 37.33284917741707,
+    "Bardella|Mélenchon": 66.91343065815002,
+    "Bardella|Philippe": 60.84242066742577,
+    "Glucksmann|Le Pen": 40.80077381657709,
+    "Hollande|Le Pen": 38.562742282873494,
+    "Bardella|Glucksmann": 60.39373962908121,
+    "Mélenchon|Philippe": 42.25211367156782,
+    "Le Pen|Retailleau": 62.936364225342054,
+    "Bardella|Retailleau": 66.28226367961419,
+    "Le Pen|Mélenchon": 65.78863819060687
+   },
+   "cellules": [
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      33.43,
+      50.9,
+      15.67
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      17.36,
+      0.1,
+      82.54
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Jordan Bardella",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Bardella",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      65.51,
+      2.52,
+      31.97
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      34.7,
+      47.87,
+      17.43
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      16.35,
+      7.14,
+      76.5
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Attal – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      62.27,
+      7.92,
+      29.81
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      32.66,
+      44.6,
+      22.74
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      55.9,
+      21.23,
+      22.87
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      35.45,
+      2.07,
+      62.49
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Glucksmann – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      3.48,
+      70.59,
+      25.94
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      4.48,
+      56.51,
+      39.01
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Jordan Bardella",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Bardella",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      43.68,
+      18.05,
+      38.27
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      4.91,
+      67.92,
+      27.17
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Gabriel Attal",
+     "pred": [
+      8.07,
+      53.78,
+      38.14
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Mélenchon – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      48.48,
+      17.84,
+      33.67
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      41.99,
+      45.18,
+      12.84
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      24.77,
+      0.09,
+      75.13
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Jordan Bardella",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      72.02,
+      2.48,
+      25.5
+     ]
+    },
+    {
+     "hypothese": "Philippe – Bardella",
+     "electorat": "Édouard Philippe",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Bruno Retailleau",
+     "pred": [
+      46.08,
+      39.87,
+      14.06
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Jean-Luc Mélenchon",
+     "pred": [
+      23.05,
+      6.91,
+      70.04
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Marine Le Pen",
+     "pred": [
+      1.9,
+      92.92,
+      5.18
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Raphaël Glucksmann",
+     "pred": [
+      68.82,
+      7.13,
+      24.05
+     ]
+    },
+    {
+     "hypothese": "Philippe – Le Pen",
+     "electorat": "Édouard Philippe",
+     "pred": [
+      92.92,
+      1.9,
+      5.18
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -5181,6 +5181,41 @@ et Bradley-Terry pour toutes. V1 : **K**, mêmes électorats dans les AUTRES hyp
 - Plausibilité rapportée sans seuil : concentration d'électorat R de Le Pen et Philippe (§8.90 b).
 - Un seul institut (Harris) fournit les reports : tout résultat V1 est « selon Harris ».
 
+### 8.93 Résultat de l'essai 2027 (§8.92 ; 25/11 ~22:00Z, Mac, MAP 8 inits float64, 24 fits, 0 erreur)
+
+Fichiers `results/essai2027_*.json`, lecture `essai2027_lecture.json` (lecteur commité avant lecture).
+
+| | Segment | Cercle | Témoin |
+|---|---|---|---|
+| V2, 8 paires cachées | 4,91 | 4,96 | **BT 1,81** |
+| V2, 6 paires avec Le Pen | 3,66 | 3,17 | T0 3,76 ; **BT 1,51** |
+| V1, 9 cellules × 3 | **7,36** | 9,54 | K 9,75 |
+| LFI : RN et Aucun (critère figé) | 10,7 | 12,2 | **K 2,6** |
+| Inits au même point | 8/8 sauf une épreuve 1/8 (Le Pen–Mélenchon) et une 7/8 | 8/8 partout | |
+
+**Verdicts figés : géométries NON SÉPARÉES ; pas de « prévision du T2 »** (BT bat les deux de 3 pt en V2 ;
+V1 : le segment bat K de 2,4 pt, le cercle de 0,2, mais K fait 2,6 sur LFI contre 10,7 et 12,2).
+
+**Lu APRÈS coup (descriptif, ne change pas le verdict) :**
+
+- **LFI → RN seul** (points du total, hypothèses cachées) : cercle 1,5 pt d'erreur, segment 6,4, K 2,4.
+  Le segment annonce 2 à 6 % au lieu de 8 à 12 ; le cercle 8 à 9.
+- **Les deux ratent la suite** : trop d'« Aucun » (cercle 22,9 pt d'erreur, segment 15,1) et pas assez pour
+  l'adversaire (23,9 et 14,9). En échantillon aussi : l'écart ne vient pas du masquage.
+- **Ajustement** : le cercle est meilleur de **79 à 110 nats de potentiel sur les 12 épreuves**, pour 1
+  paramètre (a priori compris) ; cellules en échantillon 5,9 contre 8,2.
+- **Plausibilité** : segment σ_Le Pen 0,19 contre 0,09 pour Philippe, Zemmour à z_pos −5,5 ; cercle 0,10
+  contre 0,13, max |z_pos| 2,84. Le rapport de σ dépend de la jauge (§8.90 b), les z_pos moins.
+- K est pollué pour l'électorat Attal (une seule autre hypothèse, Mélenchon–Le Pen) ; sans cette cellule, V1 :
+  segment 7,3, cercle 10,0, K 7,1. **Alors plus aucune géométrie ne bat K.**
+
+**Limites** : MAP (pas de NUTS), Mac ; Harris seul pour les reports ; cibles V2 sur 2 à 13 duels ; BT et K
+utilisent la même campagne.
+
+**Lecture.** Le cercle explique le mieux l'ensemble et le passage LFI → RN ; il échoue sur la case
+« Aucun » de LFI. Le défaut commun est l'ABSTENTION, trop élevée pour un électorat éloigné des deux
+finalistes : c'est la prochaine pièce à revoir, pas la géométrie.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
