@@ -31,7 +31,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] [EN COURS VM (début 2026-11-25 00:25Z, routine : 4 fits ; 1er lancement de 23:55Z perdu au redémarrage du conteneur)] **DEMANDE VM n° 10 (session locale, 2026-11-25 ~01:00Z) : neutralité du spatial** (spec §8.91,
+- [x] [FAIT 25/11 00:57Z, §8.91 « Résultat » : NEUTRE au bruit près — écart main/branche max 0,042 sd ≤ 1,5 × 0,094 (graines) ; R-hat ≤ 1,021 ; 4 JSON committés] **DEMANDE VM n° 10 (session locale, 2026-11-25 ~01:00Z) : neutralité du spatial** (spec §8.91,
   critère figé ; prérequis de « PRÊT À PUBLIER »). NE PAS toucher à `docs/`.
   1. `git archive origin/main | tar -x -C <dossier temporaire>` pour main ;
   2. 4 fits (4 en parallèle au plus), graines 27 et 28 : `cd <arbre> && PYTHONPATH=<arbre> python <chemin de la branche>/model/backtest/neutralite_spatial.py fit <sortie.json> --seed <27|28>` ;
@@ -1159,6 +1159,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-25 01:00Z (routine) : neutralité du spatial (DEMANDE VM n° 10, relancée après redémarrage, 33 min) : neutre au bruit près ; spec §8.91. VM libre.
 - 2026-11-24 19:30Z (routine) : pénalité d'extrémité sur 2017 (DEMANDE VM n° 9, 27 min) ; V2 ✓ de justesse et fragile, T1 ✓, stabilité ambiguë, λ non identifié ; spec §8.88. VM libre.
 - 2026-11-24 17:30Z (routine) : P4c sur 2017 (DEMANDE VM n° 8, 30 min) ; V2 ✗, T1 et σ ✓ ; points retenus exportés ; spec §8.87. VM libre.
 - 2026-11-24 15:30Z (routine) : B′ 2017 de P4b (DEMANDE VM n° 7) fini en 35 min ; T1 et σ ✓, stabilité et V2 ✗ ; spec §8.84. VM libre.

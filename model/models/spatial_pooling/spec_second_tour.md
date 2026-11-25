@@ -5125,6 +5125,20 @@ mesuré en écarts-types a posteriori sur la part moyenne de chaque candidat, ch
 - Limite déclarée : le roster de la branche diffère (Hollande et Pinel en 2017, sans effet attendu en
   2027) ; le script s'arrête si les candidats diffèrent.
 
+**Résultat** (VM, DEMANDE n° 10, 25/11 00:57Z, routine ; main extrait par `git archive origin/main`,
+`results/neutralite_spatial_{main,branche}{27,28}.json`). 19 candidats identiques des deux côtés.
+
+| comparaison | écart max | écart moyen |
+|---|---|---|
+| graines main/main | 0,071 sd | 0,028 sd |
+| graines branche/branche | 0,094 sd | 0,030 sd |
+| main/branche, graine 27 | 0,042 sd | 0,014 sd |
+| main/branche, graine 28 | 0,029 sd | 0,009 sd |
+
+R-hat 1,016 / 1,014 / 1,021 / 1,017 (≤ 1,2) ; ESS min 195-238 ; 0 divergence.
+**Critère tenu** : écart main/branche max 0,042 ≤ 1,5 × 0,094 = 0,141. **Verdict : neutre au bruit près**
+(l'écart entre arbres est plus petit que l'écart entre graines d'un même arbre).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
