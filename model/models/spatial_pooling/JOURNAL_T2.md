@@ -44,7 +44,7 @@ l'historique, ajouter en bas de « Historique ».
   complètes, puis V2 `PRES2027_SANS_PAIRE="François Fillon|Marine Le Pen"`, polissage, lecture),
   avec export JSON des points retenus (dont `lam_ext`). Rapporter le Procuste si possible ; sinon la
   session locale le fait depuis les points.
-- [ ] (session locale, Mac, après P4c 2022) **Pénalité d'extrémité sur 2022** (§8.88) : 4 V2, 3
+- [x] [FAIT 25/11 ~01:00Z : ÉCHEC, +23,8 sur Macron–Mélenchon ; 6 fits restants arrêtés, sans objet] (session locale, Mac, après P4c 2022) **Pénalité d'extrémité sur 2022** (§8.88) : 4 V2, 3
   V1-LOHO, données complètes.
 
 - [x] [FAIT 24/11 17:25Z, §8.87 « Résultat » : T1 1,77 ✓, σ 0,95 ✓, V2 Fillon–LP −14,0 ✗ (seuil 9,3), stabilité ambiguë (4/6 identiques mais 245 nats sous les 2 meilleurs, eux-mêmes distincts) ; Mélenchon 79,9 au meilleur point mais 89,4 à l'init voisine ; points exportés en JSON pour le Procuste] **DEMANDE VM n° 8 (session locale, 2026-11-24 ~17:00Z) : P4c sur 2017** (spec §8.87, critères

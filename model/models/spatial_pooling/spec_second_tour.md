@@ -5094,6 +5094,25 @@ P4c et 10,8 pour R1. **R1 ne doit pas être publié comme référence** : il s'e
 en remplaçant la clause σ_LP/σ_M par R_LP ≥ R_M − 0,05 (posée APRÈS lecture, donc à déclarer comme
 telle), ou garder P4b ? Les prédictions sont les mêmes.
 
+**§8.88, résultat 2022 (Mac, 25/11 ~01:00Z) : ÉCHEC, run interrompu.** Deux fits lus sur huit.
+
+| Fit | Inits à 1 nat | λ par init | Lecture |
+|---|---|---|---|
+| Données complètes | 3/6 | 0,35 à 0,39 | ΔU brut +35,0 contre P4b |
+| Macron–Mélenchon retiré | 3/6 | 0,41 ou **3,52** | mode retenu **+23,8** ; autre mode +0,4 |
+
+- +23,8 sur une seule paire impose une MAE d'au moins 5,95 : le seuil de 3,59 est perdu quoi que
+  donnent les 3 autres paires. Les six fits restants ont été ARRÊTÉS : ils ne pouvaient plus changer le
+  verdict. **Leurs résultats ne sont pas connus.**
+- Prédiction de la revue (§8.90) : λ ≲ 0,3, constaté 0,35-0,39 (proche) ; « V2 hors Pécresse à ± 1 pt »
+  **démentie** au mode retenu. Les deux modes montrent la non-identification de λ annoncée en (c).
+- ΔU contient environ 21 nats de normalisation (§8.90 f), avec un signe à vérifier avant tout usage ;
+  il n'est pas interprété ici.
+
+**T0 vérifié (session locale, arithmétique sur les 5 paires) :** −6,0 / −3,4 / +5,9 / +3,5 en 2022 et
++4,7 en 2017, soit MAE 4,7. Confirme §8.90 (g). Réserve : T0 utilise les duels des autres paires, pas
+le T1 ni les reports.
+
 ### 8.91 Neutralité des chiffres spatiaux publiés — protocole figé AVANT lecture (25/11 ~01:00Z)
 
 Quatre fits de production (premier tour seul, CSV au 2026-11-24) : main et branche, graines 27 et 28,

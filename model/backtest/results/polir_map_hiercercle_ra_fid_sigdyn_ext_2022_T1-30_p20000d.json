@@ -1,0 +1,85 @@
+{
+ "spec": "§8.79",
+ "variante": "hiercercle_ra_fid_sigdyn_ext",
+ "stem": "map_hiercercle_ra_fid_sigdyn_ext_2022_T1-30_p20000d",
+ "x64": true,
+ "env": {
+  "PRES2027_SANS_PAIRE": null,
+  "PRES2027_SANS_HYP": null,
+  "PRES2027_ARC_FIXE": null
+ },
+ "inits": [
+  {
+   "init": 0,
+   "U_adam": -12773.44,
+   "U_poli": -12773.44,
+   "delta_U": 0.0,
+   "norme_gradient": 0.003335261463382714,
+   "iterations": 263,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 1,
+   "U_adam": -12758.46,
+   "U_poli": -12758.47,
+   "delta_U": 0.01,
+   "norme_gradient": 0.0026188948624087357,
+   "iterations": 618,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 2,
+   "U_adam": -12758.47,
+   "U_poli": -12758.47,
+   "delta_U": 0.0,
+   "norme_gradient": 0.0031064082707267246,
+   "iterations": 393,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 3,
+   "U_adam": -12773.44,
+   "U_poli": -12773.44,
+   "delta_U": 0.0,
+   "norme_gradient": 0.002774736613806585,
+   "iterations": 365,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 4,
+   "U_adam": -12758.46,
+   "U_poli": -12758.47,
+   "delta_U": 0.01,
+   "norme_gradient": 0.0026704122798075027,
+   "iterations": 682,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  },
+  {
+   "init": 5,
+   "U_adam": -12773.44,
+   "U_poli": -12773.44,
+   "delta_U": 0.0,
+   "norme_gradient": 0.002695832586974315,
+   "iterations": 146,
+   "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+   "adam_converge": true,
+   "arret_maxiter": false
+  }
+ ],
+ "meilleur": 0,
+ "a_1_nat": [
+  0,
+  3,
+  5
+ ]
+}
