@@ -1,0 +1,210 @@
+"""Essai 2027, cercle contre segment, modèle unique (spec_second_tour §8.92).
+
+    JAX_ENABLE_X64=1 PRES2027_B_QUAD=100 python -m model.backtest.essai_2027 --geo cercle \\
+        --epreuve complet | "v2:Le Pen|Philippe" | "v1:Philippe – Le Pen"   [--inits 4] [--pas 4000]
+    python -m model.backtest.essai_2027 --lister
+
+MAP (Adam puis L-BFGS) ; rien n'est écrit hors de `model/backtest/results/essai2027_*.json`.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import time
+from pathlib import Path
+
+import jax
+import jax.numpy as jnp
+import numpy as np
+import pandas as pd
+from numpyro import handlers
+from numpyro.infer import init_to_median
+from numpyro.infer.util import initialize_model
+from scipy.special import logsumexp
+
+import model.backtest.eval_r2 as E
+import model.backtest.second_round as sr
+from model.backtest.polir import polir
+from model.core.live_dataset import load_raw_polls
+from model.models.spatial_pooling.fit import duel_draws, fit_spatial_pooling
+from model.models.spatial_pooling.geometry import reports_cellules
+
+AS_OF = "2026-11-25"
+CACHES_V1 = ("Philippe – Le Pen", "Attal – Le Pen", "Glucksmann – Le Pen")
+
+
+def court(nom: str) -> str:
+    return "Le Pen" if "Le Pen" in nom else nom.split()[-1]
+
+
+def donnees():
+    raw = load_raw_polls(tour=None, as_of=AS_OF)
+    raw = raw[raw.date_fin >= pd.Timestamp("2026-01-01")].copy()
+    rep = pd.read_csv(Path(sr.PARSED_DIR) / "reports_avant_t1_2027.csv")
+    rep["hypothese"] = rep["hypothese"].str.replace("—", "–")
+    rep = rep[pd.to_datetime(rep.date_fin) <= pd.Timestamp(AS_OF)]
+    t1 = raw[raw.tour.eq("Premier tour") & (raw.date_fin >= pd.Timestamp(AS_OF) - pd.Timedelta(days=60))]
+    champs = t1.groupby(["notice", "hypothese"], dropna=False).candidat.agg(lambda x: tuple(sorted(x)))
+    return raw, rep, list(champs.value_counts().index[0])
+
+
+def duels(raw: pd.DataFrame) -> pd.DataFrame:
+    """Une ligne par duel : a, b (triés par nom court), part de a, date."""
+    t2 = raw[raw.tour.eq("Deuxième tour")]
+    out = []
+    for _, g in t2.groupby(["notice", "hypothese"], dropna=False):
+        if len(g) != 2:
+            continue
+        g = g.assign(c=g.candidat.map(court)).sort_values("c")
+        out.append({"a": g.c.iloc[0], "b": g.c.iloc[1], "date": g.date_fin.iloc[0],
+                    "y": float(g.intention.iloc[0] / g.intention.sum())})
+    return pd.DataFrame(out)
+
+
+def cible_v2(d: pd.DataFrame, a: str, b: str) -> tuple[float, int]:
+    x = d[(d.a == a) & (d.b == b)].sort_values("date")
+    r = x[x.date >= pd.Timestamp(AS_OF) - pd.Timedelta(days=60)]
+    r = r if len(r) else x.tail(3)
+    return float(100 * r.y.mean()), len(r)
+
+
+def retirer(raw, rep, epreuve: str):
+    if epreuve.startswith("v1:"):
+        return raw, rep[rep.hypothese != epreuve[3:]]
+    if epreuve.startswith("v2:"):
+        paire = set(epreuve[3:].split("|"))
+        t2 = raw.tour.eq("Deuxième tour")
+        cle = raw.notice.astype(str) + "|" + raw.hypothese.fillna("__u__").astype(str)
+        p = raw[t2].groupby(cle[t2]).candidat.agg(lambda x: {court(c) for c in x})
+        raw = raw[~(t2 & cle.isin(p[p.map(lambda s: s == paire)].index))]
+        rep = rep[rep.hypothese.map(lambda h: {x.strip() for x in h.split("–")} != paire)]
+    return raw, rep
+
+
+def appel(raw, rep, champ, geo, runner):
+    return fit_spatial_pooling(raw, AS_OF, second_tour=True, eta_hier=True, fidelite=True,
+                               sigma_dynamiques_30j=True, carte_cercle=(geo == "cercle"),
+                               lse_officiel=champ, reports=rep, champ_reports=champ, mcmc_runner=runner)
+
+
+class _Stop(Exception):
+    pass
+
+
+def cellules(fit, champ, ia, ib, k):
+    A, poids = E._A(fit, fit.w_draws)
+    S = A.shape[0]
+    lse = logsumexp(A if fit.masque_lse is None else A + np.log(fit.masque_lse)[None, :, None], axis=1)
+    mask = np.zeros(len(fit.candidates))
+    for j, c in enumerate(fit.candidates):
+        mask[j] = float(c in champ or j in (ia, ib, k))
+    s = duel_draws(fit, fit.candidates[ia], fit.candidates[ib], 0.0, scrutin=False)
+    th, _ = reports_cellules(jnp.asarray(A), jnp.asarray(mask), jnp.full(S, ia), jnp.full(S, ib), jnp.full(S, k),
+                             jnp.asarray(fit.kappa_draws), jnp.asarray(fit.eta_draws[:, ia] - fit.eta_draws[:, ib]),
+                             jnp.asarray(lse), jnp.asarray(fit.omega_draws), jnp.asarray(s), poids, n_newton=8,
+                             fidelite=True)
+    return 100 * np.asarray(th).mean(0)
+
+
+def lire(fit, champ, rep_tout, d) -> dict:
+    idx = {court(c): i for i, c in enumerate(fit.candidates)}
+    out = {"duels": {}, "cellules": []}
+    for a, b in {(r.a, r.b) for r in d.itertuples()}:
+        if a in idx and b in idx:
+            out["duels"][f"{a}|{b}"] = float(100 * duel_draws(fit, fit.candidates[idx[a]], fit.candidates[idx[b]],
+                                                              0.0, scrutin=False).mean())
+    for (h, e), _ in rep_tout.groupby(["hypothese", "electorat_t1"]):
+        a, b = [x.strip() for x in h.split("–")]
+        if {a, b, court(e)} <= set(idx):
+            th = cellules(fit, champ, idx[a], idx[b], idx[court(e)])
+            out["cellules"].append({"hypothese": h, "electorat": e, "pred": [round(float(x), 2) for x in th]})
+    # concentration R de l'électorat T1 (§8.90 b), cercle seulement
+    if fit.arc_draws is not None:
+        from model.models.spatial_pooling.geometry import THETA
+        A, poids = E._A(fit, fit.w_draws)
+        m = np.array([c in champ for c in fit.candidates])
+        p = np.exp(A[0][m] - logsumexp(A[0][m], axis=0)) * np.asarray(poids)
+        z = (p * np.exp(1j * np.asarray(THETA))).sum(1) / p.sum(1)
+        out["R"] = {c: round(float(abs(v)), 3) for c, v in zip(np.array(fit.candidates)[m], z)}
+    return out
+
+
+def lancer(geo: str, epreuve: str, inits: int, pas: int, lr: float = 0.01) -> dict:
+    raw0, rep0, champ = donnees()
+    raw, rep = retirer(raw0, rep0, epreuve)
+    cap = {}
+
+    def capture(fn, kw, **k):
+        cap.update(fn=fn, kw=kw)
+        raise _Stop
+    try:
+        appel(raw, rep, champ, geo, capture)
+    except _Stop:
+        pass
+    fn, kw = cap["fn"], cap["kw"]
+    d = duels(raw0)
+    res = {"spec": "§8.92", "geo": geo, "epreuve": epreuve, "champ": champ, "n_reports_fit": int(len(kw["rep_y"])),
+           "n_duels_fit": int(len(kw["duel_y"])), "x64": bool(jax.config.jax_enable_x64), "inits": []}
+    for s in range(inits):
+        t = time.time()
+        info = initialize_model(jax.random.PRNGKey(s), fn, model_kwargs=kw, init_strategy=init_to_median)
+        z = dict(info.param_info.z)
+        rng = np.random.default_rng(s)
+        if s:
+            z = {k: v + 0.5 * jnp.asarray(rng.standard_normal(np.shape(v)), dtype=jnp.asarray(v).dtype)
+                 for k, v in z.items()}
+        vg = jax.jit(jax.value_and_grad(info.potential_fn))
+
+        @jax.jit
+        def pas_adam(i, etat):
+            z, m, v = etat
+            g = jax.grad(info.potential_fn)(z)
+            m = jax.tree_util.tree_map(lambda a, b: 0.9 * a + 0.1 * b, m, g)
+            v = jax.tree_util.tree_map(lambda a, b: 0.999 * a + 0.001 * b * b, v, g)
+            l = lr * 0.05 ** (i / pas)
+            z = jax.tree_util.tree_map(lambda x, a, b: x - l * (a / (1 - 0.9 ** (i + 1.0))) /
+                                       (jnp.sqrt(b / (1 - 0.999 ** (i + 1.0))) + 1e-8), z, m, v)
+            return z, m, v
+        zero = jax.tree_util.tree_map(jnp.zeros_like, z)
+        z, _, _ = jax.lax.fori_loop(0, pas, pas_adam, (z, zero, zero))
+        U0 = float(vg(z)[0])
+        z, U, gn, nit, msg = polir(info.potential_fn, z, maxiter=3000)
+        tr = handlers.trace(handlers.substitute(handlers.seed(fn, 0), data=info.postprocess_fn(z))).get_trace(**kw)
+        vals = {n: np.asarray(x["value"]) for n, x in tr.items()
+                if x["type"] in ("sample", "deterministic") and not x.get("is_observed", False)}
+
+        def rejoue(f, k2, **k):
+            S = 4
+            return ({n: np.repeat(v[None, None], S, axis=1) for n, v in vals.items()},
+                    {"diverging": np.zeros((1, S), bool), "num_steps": np.ones((1, S), int)})
+        fit = appel(raw, rep, champ, geo, rejoue)
+        r = {"init": s, "U_adam": round(U0, 2), "U": round(U, 3), "gnorm": gn, "it": nit, "arret": msg,
+             "secondes": round(time.time() - t, 1), "arc": float(vals["arc"]) if "arc" in vals else None,
+             "candidats": list(fit.candidates), "mu": vals["mu"].tolist(), "sigma": vals["sigma"].tolist(),
+             "z_pos": vals["z_pos"].tolist(), "z_sigma": vals["z_sigma"].tolist(), "eta": vals["eta"].tolist(),
+             "kappa": float(vals["kappa"]), "omega": float(vals["omega"]), **lire(fit, champ, rep0, d)}
+        res["inits"].append(r)
+        print(json.dumps({k: r[k] for k in ("init", "U_adam", "U", "gnorm", "it", "secondes", "arc")}), flush=True)
+    nom = "".join(ch for ch in epreuve if ch.isalnum())
+    (sr.OUT_DIR / f"essai2027_{geo}_{nom}.json").write_text(json.dumps(res, ensure_ascii=False, indent=1) + "\n")
+    return res
+
+
+def epreuves() -> list[str]:
+    raw, _, _ = donnees()
+    n = duels(raw).groupby(["a", "b"]).size()
+    return ["complet"] + [f"v2:{a}|{b}" for (a, b), k in n.items() if k >= 3] + [f"v1:{h}" for h in CACHES_V1]
+
+
+if __name__ == "__main__":
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--geo", choices=["cercle", "segment"])
+    ap.add_argument("--epreuve")
+    ap.add_argument("--inits", type=int, default=4)
+    ap.add_argument("--pas", type=int, default=4000)
+    ap.add_argument("--lister", action="store_true")
+    a = ap.parse_args()
+    if a.lister:
+        print("\n".join(epreuves()))
+    else:
+        lancer(a.geo, a.epreuve, a.inits, a.pas)

@@ -5157,7 +5157,7 @@ sur 30 jours (P4c).
 - Champ déclaré (`lse_officiel`, `champ_reports`) : hypothèse T1 la plus fréquente des 60 derniers jours.
 - Le Pen et Bardella restent deux candidats distincts, comme en production.
 
-**Épreuves.** MAP 4 inits + polissage float64 ; une seule plateforme, le Mac. Mode retenu : meilleur U ;
+**Épreuves.** MAP 8 inits (amendé de 4 à 8 AVANT lecture des prédictions ; seul U du fit complet, 1 init, vu) + polissage float64 ; une seule plateforme, le Mac. Mode retenu : meilleur U ;
 les autres modes à moins de 10 nats sont rapportés.
 
 1. **V2** : chaque paire d'au moins 3 duels en 2026 est retirée (duels ET reports de l'hypothèse) ; cible :
