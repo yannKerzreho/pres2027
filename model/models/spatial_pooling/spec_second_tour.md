@@ -5139,6 +5139,48 @@ R-hat 1,016 / 1,014 / 1,021 / 1,017 (≤ 1,2) ; ESS min 195-238 ; 0 divergence.
 **Critère tenu** : écart main/branche max 0,042 ≤ 1,5 × 0,094 = 0,141. **Verdict : neutre au bruit près**
 (l'écart entre arbres est plus petit que l'écart entre graines d'un même arbre).
 
+### 8.92 Essai 2027 : modèle unique, cercle contre segment — protocole figé AVANT code et lecture (25/11 ~20:20Z)
+
+Demandé par l'utilisateur le 25/11 (« utilise les données 2027/2026 », « je veux un unique modèle »).
+Remplace §8.74, inexécutable.
+
+**Données vues avant de figer :** effectifs des duels et cellules BRUTES de l'électorat Mélenchon (Harris
+seul : 5 à 12 % vers le RN face à Philippe, Attal ou Glucksmann, 49 à 67 % « Aucun »). Aucune prédiction
+de modèle n'a été lue sur ces cellules. 2027 n'a pas servi à choisir les variantes, sauf les anciens
+diagnostics κ/η (déclaré, §8 ancien).
+
+**Modèle unique, deux géométries qui ne diffèrent que par elles.** T1, duels et reports de tout 2026
+(`MIN_POLL_DATE`), as_of 2026-11-25, une seule vraisemblance ; η hiérarchique, fidélité R7, rayons libres
+sur 30 jours (P4c).
+
+- **C** : cercle ; **S** : segment, 1 paramètre de moins (pas d'arc), B = 100.
+- Champ déclaré (`lse_officiel`, `champ_reports`) : hypothèse T1 la plus fréquente des 60 derniers jours.
+- Le Pen et Bardella restent deux candidats distincts, comme en production.
+
+**Épreuves.** MAP 4 inits + polissage float64 ; une seule plateforme, le Mac. Mode retenu : meilleur U ;
+les autres modes à moins de 10 nats sont rapportés.
+
+1. **V2** : chaque paire d'au moins 3 duels en 2026 est retirée (duels ET reports de l'hypothèse) ; cible :
+   moyenne de ses duels des 60 derniers jours, ou des 3 derniers s'il n'y en a pas.
+2. **V1** : les reports de Philippe–Le Pen, puis Attal–Le Pen, puis Glucksmann–Le Pen sont cachés (duels
+   gardés) ; cible : moyenne des notices, 3 cellules par électorat non finaliste.
+3. **LFI → Le Pen** (question de l'utilisateur) : électorat Mélenchon des épreuves V1, part RN et « Aucun »,
+   en points du total.
+
+**Témoins à 0 paramètre ajusté.** V2 : T0 (moyenne des autres duels X–Le Pen) pour les paires X–Le Pen,
+et Bradley-Terry pour toutes. V1 : **K**, mêmes électorats dans les AUTRES hypothèses X–Le Pen (moyenne).
+
+**Règles de décision.**
+
+- **Cercle retenu** si LFI → Le Pen (erreur absolue moyenne des cellules RN et Aucun) est meilleur que le
+  segment d'au moins 2 pt ET si V2 et V1 ne sont pas pires de plus de 0,5 pt.
+- **Segment retenu** dans le cas symétrique. Sinon : **non séparés** ; la parcimonie penche alors pour le
+  segment d'un paramètre, décision à l'utilisateur.
+- **« Prévision du T2 »** seulement si la géométrie retenue bat chaque témoin d'au moins 1 pt (V2 contre le
+  meilleur de T0 et BT sur les paires communes ; V1 contre K). Sinon : représentation.
+- Plausibilité rapportée sans seuil : concentration d'électorat R de Le Pen et Philippe (§8.90 b).
+- Un seul institut (Harris) fournit les reports : tout résultat V1 est « selon Harris ».
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
