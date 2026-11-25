@@ -31,7 +31,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] [EN COURS VM (début 2026-11-24 23:55Z, routine : 4 fits)] **DEMANDE VM n° 10 (session locale, 2026-11-25 ~01:00Z) : neutralité du spatial** (spec §8.91,
+- [ ] [EN COURS VM (début 2026-11-25 00:25Z, routine : 4 fits ; 1er lancement de 23:55Z perdu au redémarrage du conteneur)] **DEMANDE VM n° 10 (session locale, 2026-11-25 ~01:00Z) : neutralité du spatial** (spec §8.91,
   critère figé ; prérequis de « PRÊT À PUBLIER »). NE PAS toucher à `docs/`.
   1. `git archive origin/main | tar -x -C <dossier temporaire>` pour main ;
   2. 4 fits (4 en parallèle au plus), graines 27 et 28 : `cd <arbre> && PYTHONPATH=<arbre> python <chemin de la branche>/model/backtest/neutralite_spatial.py fit <sortie.json> --seed <27|28>` ;
