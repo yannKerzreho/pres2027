@@ -37,7 +37,7 @@ l'historique, ajouter en bas de « Historique ».
 - [x] [FAIT MAC 26/11 ~20:00Z, §8.104 : β* ≈ κ (segment, à moins de 2 nats) ou = κ (cercle) ; β = 0 rejeté par 237 à 1489 nats ; LFI 10,0 / 10,4 > 6 ; pas de fit β ; g5 abandonné] **Test β sans refit** : `kappa_rho` dans `reports_cellules`, ω re-profilé sur les reports d'entraînement, β\* sur la grille {0 ; 0,4 ; 0,56 ; 0,75 ; κ} ; fit seulement si LFI < 6, exprimés ≤ +1, V1 ≤ K_s.
 - [x] [FAIT MAC 26/11 ~21:15Z, §8.106 : cercle transmet le biais (10/13, 1,55 pt), segment non (8/13, 0,96) ; écart des données 1,96 pt] **Cohérence duel / reports dans le modèle** : écart s_n − agrégat des cellules du modèle sur E_n, 13 notices, 6 fits V1.
 - [x] [FAIT MAC 26/11 ~22:30Z, §8.107 : segment − témoin −0,15 [−1,18 ; +0,84] ; cercle +1,85 [+0,76 ; +2,85], pire que le témoin ; P(segment ≤ cercle) = 1,00] **Bootstrap apparié par notice** de V1.
-- [ ] (Mac, 0 fit, §8.105 e3) **Fidélité R7 en lecture** (`fidelite=False`) sur les cellules des finalistes.
+- [x] [FAIT MAC 27/11 ~00:00Z, §8.108 : sans R7, +8,5 pt (segment) et +5,9 (cercle) ; R7 gardée (0 paramètre libre)] **Fidélité R7 en lecture** (`fidelite=False`) sur les cellules des finalistes.
 - [ ] (Mac, 0 fit, §8.105 e4) **Profil conjoint (ω, log_c), grille β étendue à {1,0 ; 1,25}** : confirmation.
 - [ ] (sans priorité, maths d'abord, après l'ARBITRAGE de géométrie ; §8.106) **Électorat « reste » qui porte l'écart de base duel/reports de Harris** (0 paramètre).
 - [ ] (Mac, 12 fits chacune, critères figés §8.98 g3-6 ; ARBITRAGE de la revue du 26/11 ~14:40Z) Simplifications : segment η ≡ 0, arc 2π, P4 contre P4c (« Aucun » constant abandonné, §8.104).

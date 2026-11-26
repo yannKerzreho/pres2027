@@ -1,0 +1,175 @@
+{
+ "spec": "§8.105 e3",
+ "fits": {
+  "segment|Philippe – Le Pen": {
+   "avec": {
+    "entrainement": 3.41,
+    "cachees": 3.42,
+    "exemple_cache": [
+     1.9,
+     91.2,
+     7.0
+    ]
+   },
+   "sans": {
+    "entrainement": 11.65,
+    "cachees": 12.68,
+    "exemple_cache": [
+     8.1,
+     79.6,
+     12.3
+    ]
+   },
+   "n": {
+    "entrainement": 18,
+    "cachees": 16
+   }
+  },
+  "segment|Attal – Le Pen": {
+   "avec": {
+    "entrainement": 2.65,
+    "cachees": 2.37,
+    "exemple_cache": [
+     92.7,
+     1.9,
+     5.4
+    ]
+   },
+   "sans": {
+    "entrainement": 10.76,
+    "cachees": 11.49,
+    "exemple_cache": [
+     69.4,
+     15.0,
+     15.5
+    ]
+   },
+   "n": {
+    "entrainement": 26,
+    "cachees": 8
+   }
+  },
+  "segment|Glucksmann – Le Pen": {
+   "avec": {
+    "entrainement": 2.38,
+    "cachees": 2.66,
+    "exemple_cache": [
+     1.9,
+     93.1,
+     5.0
+    ]
+   },
+   "sans": {
+    "entrainement": 11.21,
+    "cachees": 5.88,
+    "exemple_cache": [
+     1.8,
+     89.1,
+     9.1
+    ]
+   },
+   "n": {
+    "entrainement": 32,
+    "cachees": 2
+   }
+  },
+  "cercle|Philippe – Le Pen": {
+   "avec": {
+    "entrainement": 2.09,
+    "cachees": 1.65,
+    "exemple_cache": [
+     1.9,
+     94.6,
+     3.5
+    ]
+   },
+   "sans": {
+    "entrainement": 7.82,
+    "cachees": 6.73,
+    "exemple_cache": [
+     4.4,
+     86.1,
+     9.5
+    ]
+   },
+   "n": {
+    "entrainement": 18,
+    "cachees": 16
+   }
+  },
+  "cercle|Attal – Le Pen": {
+   "avec": {
+    "entrainement": 2.03,
+    "cachees": 1.67,
+    "exemple_cache": [
+     94.3,
+     1.9,
+     3.7
+    ]
+   },
+   "sans": {
+    "entrainement": 8.45,
+    "cachees": 8.7,
+    "exemple_cache": [
+     76.1,
+     6.6,
+     17.3
+    ]
+   },
+   "n": {
+    "entrainement": 26,
+    "cachees": 8
+   }
+  },
+  "cercle|Glucksmann – Le Pen": {
+   "avec": {
+    "entrainement": 1.78,
+    "cachees": 2.06,
+    "exemple_cache": [
+     1.9,
+     94.9,
+     3.2
+    ]
+   },
+   "sans": {
+    "entrainement": 7.36,
+    "cachees": 7.09,
+    "exemple_cache": [
+     1.1,
+     92.0,
+     6.9
+    ]
+   },
+   "n": {
+    "entrainement": 32,
+    "cachees": 2
+   }
+  }
+ },
+ "synthese": {
+  "segment": {
+   "avec": {
+    "entrainement": 2.72,
+    "cachees": 3.04
+   },
+   "sans": {
+    "entrainement": 11.16,
+    "cachees": 11.79
+   },
+   "degradation_sans_R7": 8.52,
+   "R7_justifiee": true
+  },
+  "cercle": {
+   "avec": {
+    "entrainement": 1.94,
+    "cachees": 1.69
+   },
+   "sans": {
+    "entrainement": 7.84,
+    "cachees": 7.36
+   },
+   "degradation_sans_R7": 5.85,
+   "R7_justifiee": true
+  }
+ }
+}

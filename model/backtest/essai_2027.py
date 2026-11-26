@@ -91,7 +91,7 @@ class _Stop(Exception):
     pass
 
 
-def cellules(fit, champ, ia, ib, k, w=None, kappa_rho=None, omega_rho=None):
+def cellules(fit, champ, ia, ib, k, w=None, kappa_rho=None, omega_rho=None, fidelite=True):
     """`w` (S, N) : attractivités à une date donnée (revue du 26/11) ; défaut : as_of.
     `ia`, `ib`, `k` : entiers, ou tableaux (S,) — une ligne par tirage (§8.100 e2, lecture vectorisée).
     `kappa_rho`, `omega_rho` (§8.100 e2) : pente et ω de l'expression ρ des cellules seulement."""
@@ -116,7 +116,7 @@ def cellules(fit, champ, ia, ib, k, w=None, kappa_rho=None, omega_rho=None):
     th, _ = reports_cellules(jnp.asarray(A), jnp.asarray(mask), jnp.asarray(ia), jnp.asarray(ib), jnp.asarray(k),
                              jnp.asarray(fit.kappa_draws), jnp.asarray(fit.eta_draws[rows, ia] - fit.eta_draws[rows, ib]),
                              jnp.asarray(lse), jnp.asarray(om), jnp.asarray(s), poids, n_newton=8,
-                             fidelite=True, kappa_rho=kr)
+                             fidelite=fidelite, kappa_rho=kr)              # §8.105 e3 : R7 en lecture
     lignes = not (np.all(ia == ia[0]) and np.all(ib == ib[0]) and np.all(k == k[0]))
     if np.ndim(th) == 2 and (lignes or (w is not None and np.ndim(w) == 2 and not np.allclose(w, w[0]))):
         return 100 * np.asarray(th)                     # une cellule par ligne (§8.105 a : aussi si w varie)

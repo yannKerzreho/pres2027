@@ -5764,6 +5764,30 @@ P(V1 segment ≤ V1 cercle) = **1,00** (seuil 0,8) : **segment préférable**.
 - L'unité de tirage est la notice d'un seul institut, et Glucksmann – Le Pen n'a qu'une notice, constante dans les tirages : l'intervalle est conditionnel à Harris.
 - **La décision de géométrie revient à l'utilisateur. Ce chiffre lève la réserve « 8 moyennes ne peuvent pas séparer » (§8.96 c) pour V1.**
 
+### 8.108 Fidélité R7 en lecture : résultat (§8.105 e3 ; 27/11 ~00:00Z, Mac, 0 fit)
+
+**Méthode.** `fidelite_essai_2027.py` porte sur les 6 fits V1 rejoués.
+
+- Il lit les cellules des électorats des finalistes avec R7 (comme au fit), puis sans (`fidelite=False`, la géométrie seule).
+- Deux jeux de cellules : 76 cellules d'entraînement par géométrie et 26 cachées, à la date de chaque notice.
+
+| MAE, en pt | Segment avec R7 | Segment sans R7 | Cercle avec R7 | Cercle sans R7 |
+|---|---|---|---|---|
+| Entraînement | 2,72 | 11,16 | 1,94 | 7,84 |
+| Cachées | 3,04 | 11,79 | 1,69 | 7,36 |
+| **Dégradation sans R7** | | **+8,5** | | **+5,9** |
+
+**Critère figé (> 1 pt) : R7 est justifiée sur les deux géométries.**
+
+- Sans R7, la géométrie donne 70 à 80 % de fidélité, 7 à 15 % de défection et 10 à 17 % d'« Aucun » à l'électorat d'un finaliste. Harris mesure environ 93/5/2.
+- **Biais déclaré** : les fits ont été faits AVEC R7. La lecture sans R7 n'est donc pas un modèle ajusté sans R7, et le test favorise R7.
+- L'écart, de 6 à 8,5 pt, est grand devant ce biais plausible.
+- **R7 n'ajoute aucun paramètre libre** : ε = 2 % est figé, et ρ_f réutilise κ et ω. Elle est gardée.
+
+**Lu après coup.** Le cercle reproduit mieux les cellules de fidélité que le segment (1,7-1,9 contre 2,7-3,0) :
+son ω, plus bas, donne moins d'« Aucun » aux fidèles. C'est un des rares points où le cercle fait mieux. Ces
+cellules pèsent peu dans la décision : elles sont presque fixées par R7.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
