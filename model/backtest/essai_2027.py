@@ -113,6 +113,22 @@ def lire(fit, champ, rep_tout, d) -> dict:
         if a in idx and b in idx:
             out["duels"][f"{a}|{b}"] = float(100 * duel_draws(fit, fit.candidates[idx[a]], fit.candidates[idx[b]],
                                                               0.0, scrutin=False).mean())
+    # revue du 26/11 : la même part évaluée AUX DATES DE LA CIBLE V2 (chemin de w), et non à as_of
+    from model.models.spatial_pooling.fit import _duel_par_tirage
+    out["duels_date"] = {}
+    if fit.w_path_draws is not None:
+        for a, b in {(r.a, r.b) for r in d.itertuples()}:
+            if a in idx and b in idx:
+                x = d[(d.a == a) & (d.b == b)].sort_values("date")
+                r = x[x.date >= pd.Timestamp(AS_OF) - pd.Timedelta(days=60)]
+                r = r if len(r) else x.tail(3)
+                v = []
+                for t in r.date:
+                    j = int(np.clip(np.searchsorted(fit.w_dates, float(t.toordinal())), 0, len(fit.w_dates) - 1))
+                    S = fit.w_path_draws.shape[0]
+                    v.append(100 * float(_duel_par_tirage(fit, fit.w_path_draws[:, :, j], np.full(S, idx[a]),
+                                                          np.full(S, idx[b])).mean()))
+                out["duels_date"][f"{a}|{b}"] = float(np.mean(v))
     for (h, e), _ in rep_tout.groupby(["hypothese", "electorat_t1"]):
         a, b = [x.strip() for x in h.split("–")]
         if {a, b, court(e)} <= set(idx):
@@ -182,7 +198,12 @@ def lancer(geo: str, epreuve: str, inits: int, pas: int, lr: float = 0.01) -> di
              "secondes": round(time.time() - t, 1), "arc": float(vals["arc"]) if "arc" in vals else None,
              "candidats": list(fit.candidates), "mu": vals["mu"].tolist(), "sigma": vals["sigma"].tolist(),
              "z_pos": vals["z_pos"].tolist(), "z_sigma": vals["z_sigma"].tolist(), "eta": vals["eta"].tolist(),
-             "kappa": float(vals["kappa"]), "omega": float(vals["omega"]), **lire(fit, champ, rep0, d)}
+             "kappa": float(vals["kappa"]), "omega": float(vals["omega"]), **lire(fit, champ, rep0, d),
+             # revue du 26/11 : traçabilité (prédiction de chaque duel À SA DATE, z, quadrature)
+             "duel_s": np.asarray(vals["duel_s"]).tolist(), "duel_y": np.asarray(kw["duel_y"]).tolist(),
+             "duel_a": np.asarray(kw["duel_a"]).tolist(), "duel_b": np.asarray(kw["duel_b"]).tolist(),
+             "z": {n: np.asarray(v).tolist() for n, v in vals.items() if n.startswith(("z_", "s_", "sigma_", "a_arc", "log_"))},
+             "B_quad": int(__import__("os").environ.get("PRES2027_B_QUAD", "25"))}
         res["inits"].append(r)
         print(json.dumps({k: r[k] for k in ("init", "U_adam", "U", "gnorm", "it", "secondes", "arc")}), flush=True)
     nom = "".join(ch for ch in epreuve if ch.isalnum())

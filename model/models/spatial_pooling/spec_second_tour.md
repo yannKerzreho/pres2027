@@ -5216,6 +5216,37 @@ utilisent la même campagne.
 « Aucun » de LFI. Le défaut commun est l'ABSTENTION, trop élevée pour un électorat éloigné des deux
 finalistes : c'est la prochaine pièce à revoir, pas la géométrie.
 
+### 8.94 Revue du 26/11 sur §8.93 : erreur de lecture par la date, correction déclarée
+
+**(a) « Le spatial n'ajuste pas les duels qu'il voit » (revue) : RÉFUTÉ, c'est un artefact de lecture.**
+- `lire()` évaluait tous les duels à l'as_of (fin novembre) au lieu de leur date.
+- Refit complet avec la prédiction de chaque duel à SA date (`duel_s`, même U au millième) :
+  - cercle : 1,16 pt par duel, 0,49 par paire ;
+  - segment : 1,23 et 0,79 ;
+  - BT : 1,04 en échantillon (revue).
+- Le modèle ajuste donc bien ses duels.
+
+**(b) Le même défaut biaisait V2 §8.93.** Deux cibles ne sont pas récentes : Bardella–Philippe (mars à mai)
+et Le Pen–Retailleau (juillet-août). Lues à l'as_of, elles chargeaient les géométries (Bardella–Philippe :
+cercle 64,9 à l'as_of contre 52,3 aux dates de la cible, pour 51,5 observés). BT, sans date, n'est pas
+concerné.
+
+- **Correction APRÈS lecture** : V2 lu aux dates de la cible, par le chemin de w (`duels_date`), et les 8
+  épreuves refaites. Le verdict de §8.93 est conservé tel quel.
+- La lecture corrigée sera rapportée À CÔTÉ, sans changer les seuils, et marquée « corrigée après lecture ».
+
+**(c) Autres points de la revue, retenus :**
+- K pollué pour l'électorat Attal ; K-bloc à rapporter aussi.
+- ΔU : environ 35 nats viennent de l'a priori (z_pos, z_σ) ; la vraisemblance pure donne environ 45 à
+  75 nats. À décomposer.
+- Les inits ne sont que du bruit autour d'un même point ; 8/8 ne prouve pas un mode global.
+- Le champ du lse diffère de celui des cellules (effet de 1 à 3 pt).
+- La V2 Le Pen–Philippe retire 40 lignes de reports.
+- **Le mécanisme d'abstention est identifié** : pente κ, imposée par les duels. La pente impliquée vaut
+  environ 0,56, contre κ = 0,93. Correction à 1 paramètre (β découplé) **spécifiée, NON lancée**, en
+  attente de l'accord de l'utilisateur. Critères proposés par la revue : β ∈ [0,4 ; 0,75] ; LFI ≤ 6 ;
+  V1 ≤ K − 1 ; V2 +0,3 au plus ; ΔU ≥ 3.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

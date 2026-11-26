@@ -54,6 +54,8 @@ def main() -> dict:
                 best, proches = modes(r)
                 L[g] = round(best["duels"][f"{a}|{b}"] - y, 2)
                 L[g + "_modes"] = [round(m["duels"][f"{a}|{b}"] - y, 1) for m in proches]
+                if best.get("duels_date"):                     # revue du 26/11 : lu aux dates de la cible
+                    L[g + "_date"] = round(best["duels_date"][f"{a}|{b}"] - y, 2)
         autres = d[~((d.a == a) & (d.b == b))]
         L["BT"] = round(100 * float(sr._bradley_terry(autres, a, b)) - y, 2)
         if "Le Pen" in (a, b):
@@ -83,7 +85,7 @@ def main() -> dict:
     mae = lambda key, K: float(np.mean([np.abs(np.array(x[key]) - x["mesure"]).mean() for x in K if x.get(key)]))  # noqa: E731,E501
     lfi = [x for x in out["v1"] if x["electorat"] == "Mélenchon"]
     S = out["synthese"] = {}
-    for k in G + ("BT", "T0"):
+    for k in G + tuple(g + "_date" for g in G) + ("BT", "T0"):
         v = [abs(x[k]) for x in out["v2"] if x.get(k) is not None]
         S[f"V2_{k}"] = [round(float(np.mean(v)), 2), len(v)] if v else None
     lp = [x for x in out["v2"] if x.get("T0") is not None]

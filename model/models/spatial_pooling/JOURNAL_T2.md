@@ -7,7 +7,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## État (mis à jour à chaque réveil)
 
-- Dernière revue Opus : 2026-11-25 ~00:15Z (session locale)
+- Dernière revue Opus : 2026-11-26 ~01:30Z (session locale)
 - OBJECTIF (utilisateur, via l'orchestrateur, 2026-11-14) : « un modèle qui est
   backé par le passé mais qui représente bien les sondages et tendances
   actuels ». 2017/2022 servent à CALIBRER et VALIDER ; le critère final est la
@@ -32,7 +32,8 @@ l'historique, ajouter en bas de « Historique ».
 ## File de tâches (prendre la première non cochée)
 
 - [x] [FAIT 25/11 ~22:00Z, §8.93 : non séparés au critère figé ; BT 1,81 contre 4,9 ; cercle +79 à +110 nats et LFI → RN 1,5 contre 6,4 (lu après coup) ; défaut commun : « Aucun » de LFI] **Essai 2027 cercle contre segment (§8.92).**
-- [ ] (spec d'abord, sur accord de l'utilisateur) **Abstention sur le cercle 2027** : corriger la case
+- [ ] [EN COURS MAC 26/11 ~02:00Z : V2 relu aux dates de la cible, §8.94 b] Relecture V2 de l'essai 2027.
+- [ ] (spec d'abord, sur accord de l'utilisateur ; forme β découplé proposée en §8.94 c) **Abstention sur le cercle 2027** : corriger la case
   « Aucun » d'un électorat éloigné des deux finalistes, critères figés contre K et BT.
 
 - [x] [FAIT 25/11 00:57Z, §8.91 « Résultat » : NEUTRE au bruit près — écart main/branche max 0,042 sd ≤ 1,5 × 0,094 (graines) ; R-hat ≤ 1,021 ; 4 JSON committés] **DEMANDE VM n° 10 (session locale, 2026-11-25 ~01:00Z) : neutralité du spatial** (spec §8.91,
