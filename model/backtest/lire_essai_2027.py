@@ -81,6 +81,9 @@ def main() -> dict:
                     f = lambda m: next(z["pred"] for z in m["cellules"] if z["hypothese"] == h and X.court(z["electorat"]) == e)  # noqa: E731,E501
                     L[g] = f(best)
                     L[g + "_modes"] = [f(m) for m in proches]
+                    fd = lambda m: next(z.get("pred_date") for z in m["cellules"] if z["hypothese"] == h and X.court(z["electorat"]) == e)  # noqa: E731,E501
+                    if fd(best):
+                        L[g + "_date"] = fd(best)
             out["v1"].append(L)
     mae = lambda key, K: float(np.mean([np.abs(np.array(x[key]) - x["mesure"]).mean() for x in K if x.get(key)]))  # noqa: E731,E501
     lfi = [x for x in out["v1"] if x["electorat"] == "Mélenchon"]
@@ -92,7 +95,7 @@ def main() -> dict:
     for k in G + ("BT", "T0"):
         S[f"V2_avecT0_{k}"] = round(float(np.mean([abs(x[k]) for x in lp])), 2) if all(k in x for x in lp) else None
     avecK = [x for x in out["v1"] if x["K"]]
-    for k in G + ("K",):
+    for k in G + tuple(g + "_date" for g in G) + ("K",):
         if all(k in x for x in avecK):
             S[f"V1_{k}"] = [round(mae(k, avecK), 2), len(avecK)]
             S[f"LFI_RN_{k}"] = round(float(np.mean([np.abs(np.array(x[k])[1:] - np.array(x["mesure"])[1:]).mean()

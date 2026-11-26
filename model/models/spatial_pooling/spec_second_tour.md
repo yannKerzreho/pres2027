@@ -5268,11 +5268,56 @@ Mêmes fits refaits, 8 inits, Mac, 0 erreur ; mêmes U que §8.93. Écart à l'o
 - Cercle et segment : 1,95 contre 2,18, écart de 0,23 ≤ 0,5, donc toujours **non séparés**. Le cercle fait
   mieux sur 5 paires sur 8.
 - Face à BT : 1,95 contre 1,81 ; ni l'un ni l'autre ne bat BT d'1 pt, donc toujours **pas de « prévision »**
-  au sens figé. **Mais l'écart n'est plus que de 0,14 pt**, et non de 3 : le modèle spatial est au niveau du
-  meilleur témoin sur les duels cachés, en un seul modèle qui sort aussi le T1 et les reports.
+  au sens figé. [RETIRÉ, §8.96 b : BT sans date n'était pas équitable ; BT daté environ 1,0.]
 - Le verdict de §8.93 reste écrit ; celui-ci est la lecture corrigée, déclarée après lecture.
 - Non corrigé : les cellules V1 sont lues à l'as_of, alors que les cibles sont des moyennes de mai à
   novembre. L'effet attendu est petit, les reports Harris étant stables.
+
+### 8.96 Revue du 26/11 ~11:00Z sur §8.95 : BT daté, tests appariés, V1 à la date
+
+**(a) La correction V2 est juste** (dates sur les nœuds, `duel_s` reproduit, pas de fuite). Erratum :
+
+- dans la V2 Hollande–Le Pen, Hollande était hors du `masque_lse`. Corrigé, la MAE vaut 2,01 pour le
+  cercle et 2,15 pour le segment ;
+- le cercle fait mieux sur **7 paires sur 8** (et non 5), l'égalité étant Le Pen–Mélenchon.
+
+**(b) BT sans date n'est pas un témoin équitable** contre un modèle lu à la date. Un BT daté (entraîné sur
+les autres duels à ±W jours de chaque cible) fait **1,01 à ±30 et ±60 j, 0,85 à ±90 j**, contre 1,81 sans
+date. Les fenêtres ont été choisies après lecture.
+
+- **Le spatial (environ 2,0) est donc à environ 1 pt du meilleur témoin, et non à 0,14.**
+- La phrase de §8.95 « au niveau du meilleur témoin » est **retirée**.
+
+**(c) Tests appariés (8 paires) : aucun écart n'est distinguable du bruit.**
+
+| Écart | Moyenne | Test de signe | IC t 95 % |
+|---|---|---|---|
+| Cercle − BT ±60 j | +0,94 | p = 0,73 | [−1,1 ; +3,0] |
+| Cercle − segment | −0,24 | p = 0,07 | [−1,4 ; +0,9] |
+
+Les tests sont optimistes, car les erreurs sont corrélées (0,72) et les candidats partagés. **8 moyennes ne
+peuvent pas séparer les géométries.**
+
+**(d) La lecture des cellules V1 à l'as_of a un GROS effet** (revue, à 0 fit, en échantillon) : V1 cercle
+6,57 → 5,58, segment 5,30 → 4,33 ; LFI (RN + Aucun) cercle 8,9 → 6,2, segment 8,75 → 4,1.
+
+- Approximation en hypothèses cachées : la règle figée de §8.92 basculerait vers le **segment** (LFI 6,9
+  contre 9,6).
+- **Lecture datée en cours** (6 fits V1 refaits, `z` sauvegardé, cellules à la date de chaque notice,
+  finalistes et électorat dans le lse). Ce sera une correction APRÈS lecture, aux seuils inchangés.
+
+**(e) Point faible propre au cercle** : Mélenchon → Glucksmann à 61-68 %, contre 36 mesurés, même en
+échantillon ; le segment est à environ 39.
+
+**(f) β.** L'excès d'« Aucun » venait en grande partie de la lecture à l'as_of. La pente impliquée (0,56)
+est à recalculer aux dates avant tout fit. Critères proposés pour un essai β :
+
+- log-vraisemblance prédictive des observations cachées, sommée sur 11 épreuves, comme juge cercle contre
+  segment (ΣΔ ≥ 5 nats et 8/11) ;
+- non séparés ⇒ **segment, par parcimonie, figé** ;
+- témoin V2 : BT ±60 j.
+
+À figer avant tout fit, sous réserve de l'accord de l'utilisateur.
 
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 

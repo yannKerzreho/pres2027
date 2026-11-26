@@ -91,10 +91,14 @@ class _Stop(Exception):
     pass
 
 
-def cellules(fit, champ, ia, ib, k):
-    A, poids = E._A(fit, fit.w_draws)
+def cellules(fit, champ, ia, ib, k, w=None):
+    """`w` (S, N) : attractivités à une date donnée (revue du 26/11) ; défaut : as_of."""
+    A, poids = E._A(fit, fit.w_draws if w is None else w)
     S = A.shape[0]
-    lse = logsumexp(A if fit.masque_lse is None else A + np.log(fit.masque_lse)[None, :, None], axis=1)
+    ml = None if fit.masque_lse is None else np.asarray(fit.masque_lse, dtype=float).copy()
+    if ml is not None:                                  # revue du 26/11 : finalistes et électorat dans le lse
+        ml[[ia, ib, k]] = 1.0
+    lse = logsumexp(A if ml is None else A + np.log(ml)[None, :, None], axis=1)
     mask = np.zeros(len(fit.candidates))
     for j, c in enumerate(fit.candidates):
         mask[j] = float(c in champ or j in (ia, ib, k))
@@ -133,7 +137,14 @@ def lire(fit, champ, rep_tout, d) -> dict:
         a, b = [x.strip() for x in h.split("–")]
         if {a, b, court(e)} <= set(idx):
             th = cellules(fit, champ, idx[a], idx[b], idx[court(e)])
-            out["cellules"].append({"hypothese": h, "electorat": e, "pred": [round(float(x), 2) for x in th]})
+            c = {"hypothese": h, "electorat": e, "pred": [round(float(x), 2) for x in th]}
+            if fit.w_path_draws is not None:            # revue du 26/11 : à la date de CHAQUE notice
+                v = []
+                for t in pd.to_datetime(rep_tout[(rep_tout.hypothese == h)].date_fin.unique()):
+                    j = int(np.clip(np.searchsorted(fit.w_dates, float(t.toordinal())), 0, len(fit.w_dates) - 1))
+                    v.append(cellules(fit, champ, idx[a], idx[b], idx[court(e)], w=fit.w_path_draws[:, :, j]))
+                c["pred_date"] = [round(float(x), 2) for x in np.mean(v, axis=0)]
+            out["cellules"].append(c)
     # concentration R de l'électorat T1 (§8.90 b), cercle seulement
     if fit.arc_draws is not None:
         from model.models.spatial_pooling.geometry import THETA

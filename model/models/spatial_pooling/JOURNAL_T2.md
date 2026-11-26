@@ -7,7 +7,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## État (mis à jour à chaque réveil)
 
-- Dernière revue Opus : 2026-11-26 ~01:30Z (session locale)
+- Dernière revue Opus : 2026-11-26 ~11:00Z (session locale)
 - OBJECTIF (utilisateur, via l'orchestrateur, 2026-11-14) : « un modèle qui est
   backé par le passé mais qui représente bien les sondages et tendances
   actuels ». 2017/2022 servent à CALIBRER et VALIDER ; le critère final est la
@@ -30,6 +30,9 @@ l'historique, ajouter en bas de « Historique ».
   (voir Faits établis) ; fusion/push = orchestrateur.
 
 ## File de tâches (prendre la première non cochée)
+
+- [ ] [EN COURS MAC 26/11 ~11:15Z] **V1 de l'essai 2027 relu à la date de chaque notice** (6 fits, §8.96 d),
+  correction déclarée après lecture.
 
 - [x] [FAIT 25/11 ~22:00Z, §8.93 : non séparés au critère figé ; BT 1,81 contre 4,9 ; cercle +79 à +110 nats et LFI → RN 1,5 contre 6,4 (lu après coup) ; défaut commun : « Aucun » de LFI] **Essai 2027 cercle contre segment (§8.92).**
 - [x] [FAIT 26/11 ~10:00Z, §8.95 : V2 cercle 1,95, segment 2,18, BT 1,81 ; non séparés, pas de prévision au seuil figé, mais à 0,14 pt de BT] Relecture V2 de l'essai 2027.
