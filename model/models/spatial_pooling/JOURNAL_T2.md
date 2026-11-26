@@ -1170,6 +1170,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-26 15:10Z (routine) : fusion d'origin/main 348ca3f (maj quotidienne des données, sans conflit) ; file relue : rien d'actionnable côté VM (abstention cercle 2027 en attente d'accord utilisateur).
 - 2026-11-25 01:00Z (routine) : neutralité du spatial (DEMANDE VM n° 10, relancée après redémarrage, 33 min) : neutre au bruit près ; spec §8.91. VM libre.
 - 2026-11-24 19:30Z (routine) : pénalité d'extrémité sur 2017 (DEMANDE VM n° 9, 27 min) ; V2 ✓ de justesse et fragile, T1 ✓, stabilité ambiguë, λ non identifié ; spec §8.88. VM libre.
 - 2026-11-24 17:30Z (routine) : P4c sur 2017 (DEMANDE VM n° 8, 30 min) ; V2 ✗, T1 et σ ✓ ; points retenus exportés ; spec §8.87. VM libre.
