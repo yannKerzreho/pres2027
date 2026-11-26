@@ -34,6 +34,14 @@ def mesure(rep, hyp):
     return out
 
 
+def verdict(S: dict, suf: str) -> str:
+    """Règle figée de §8.92 : cercle (ou segment) si LFI meilleur d'au moins 2 pt ET V2, V1 pas pires de plus de 0,5."""
+    e = S[f"LFI_RN_segment{suf}"] - S[f"LFI_RN_cercle{suf}"]
+    dv2, dv1 = (S[f"{t}_cercle{suf}"][0] - S[f"{t}_segment{suf}"][0] for t in ("V2", "V1"))
+    return ("cercle" if e >= 2 and dv2 <= .5 and dv1 <= .5 else
+            "segment" if -e >= 2 and -dv2 <= .5 and -dv1 <= .5 else "non séparés")
+
+
 def main() -> dict:
     raw, rep, champ = X.donnees()
     d = X.duels(raw)
@@ -100,17 +108,22 @@ def main() -> dict:
             S[f"V1_{k}"] = [round(mae(k, avecK), 2), len(avecK)]
             S[f"LFI_RN_{k}"] = round(float(np.mean([np.abs(np.array(x[k])[1:] - np.array(x["mesure"])[1:]).mean()
                                                    for x in lfi if x.get(k)])), 2)
+    # §8.98 b, g1 : K sans la cellule polluée (Glucksmann – Le Pen, électorat Attal : K = seule hypothèse Mélenchon – Le Pen)
+    propre = [x for x in avecK if not (x["hypothese"].startswith("Glucksmann") and x["electorat"] == "Attal")]
+    for k in G + tuple(g + "_date" for g in G) + ("K",):
+        if all(k in x for x in propre):
+            S[f"V1_sans_pollue_{k}"] = [round(mae(k, propre), 2), len(propre)]
+    # §8.98 a : part RN parmi les EXPRIMÉS de l'électorat Mélenchon (lecture rapportée, sans seuil)
+    for k in G + tuple(g + "_date" for g in G) + ("K",):
+        if all(x.get(k) for x in lfi):
+            S[f"LFI_RN_exprimes_{k}"] = round(float(np.mean([abs(100 * x[k][1] / (x[k][0] + x[k][1])
+                                                              - 100 * x["mesure"][1] / (x["mesure"][0] + x["mesure"][1]))
+                                                          for x in lfi])), 2)
     if all(S.get(f"V2_{g}") and S.get(f"V1_{g}") for g in G):
-        e = {t: S[f"{t}_segment"] for t in ("LFI_RN",)}["LFI_RN"] - S["LFI_RN_cercle"]
-        dv2, dv1 = (S[f"{t}_cercle"][0] - S[f"{t}_segment"][0] for t in ("V2", "V1"))
-        S["verdict_geometrie"] = ("cercle" if e >= 2 and dv2 <= .5 and dv1 <= .5 else
-                                  "segment" if -e >= 2 and -dv2 <= .5 and -dv1 <= .5 else "non séparés")
+        S["verdict_geometrie"] = verdict(S, "")
     # revue du 26/11 ~14:40Z : la même règle figée, appliquée par le code à la lecture DATÉE
     if all(S.get(f"V2_{g}_date") and S.get(f"V1_{g}_date") for g in G):
-        e = S["LFI_RN_segment_date"] - S["LFI_RN_cercle_date"]
-        dv2, dv1 = (S[f"{t}_cercle_date"][0] - S[f"{t}_segment_date"][0] for t in ("V2", "V1"))
-        S["verdict_geometrie_date"] = ("cercle" if e >= 2 and dv2 <= .5 and dv1 <= .5 else
-                                       "segment" if -e >= 2 and -dv2 <= .5 and -dv1 <= .5 else "non séparés")
+        S["verdict_geometrie_date"] = verdict(S, "_date")
     for x in ("complet",):
         for g in G:
             r = charger(g, x)

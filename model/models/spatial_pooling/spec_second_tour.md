@@ -5432,6 +5432,47 @@ datée (clé `verdict_geometrie_date` de `essai2027_lecture.json`) : **non sépa
 
 Les pistes 1 et 2 se font sans fit. Les pistes 3 à 6 sont des fits Mac (12 chacun) ; elles touchent au modèle, d'où l'arbitrage soumis à l'utilisateur.
 
+### 8.99 Relecture V1 corrigée (§8.98 c, g1 ; 26/11 ~16:20Z, Mac, 0 fit)
+
+**Méthode.**
+
+- Le partage du duel est désormais pris à la date de la notice : `_duel_par_tirage` sur `w` à cette date.
+- Les 6 fits V1 ont été rejoués depuis leurs valeurs sauvegardées (`essai_2027.py --rejouer`), soit 48 inits :
+  - le rejeu reproduit `duel_s` à 0,0 près ;
+  - la lecture de §8.97 est gardée sous `cellules_s_asof`.
+- Comme prévu, « Aucun » est inchangé, seul le partage a contre RN bouge.
+- Le verdict est appliqué par le code (`verdict`, testée) : seuils de §8.92, témoins de §8.98.
+
+| Épreuve | Segment | Cercle | K |
+|---|---|---|---|
+| V1, 9 électorats | 7,26 | 8,79 | 9,75 |
+| V1, sans la cellule K polluée (8) | **7,10** | 9,06 | **7,13** |
+| LFI → Le Pen, RN + Aucun | 9,32 | 10,50 | 2,57 |
+| Électorat Mélenchon, part RN des exprimés (rapportée sans seuil) | 10,5 | 9,5 | 3,9 |
+
+**Verdict figé : non séparés.**
+
+- LFI : le cercle est pire de 1,2 pt.
+- V1 : le cercle est pire de 1,5 pt.
+
+**Pas de « prévision ».**
+
+- En V1, le segment égale K (7,10 contre 7,13), sans le battre de 1 pt.
+- En V2 (§8.95-8.96), aucune géométrie ne bat BT ±60 j.
+
+**Les géométries reproduisent les reports cachés aussi bien qu'un témoin sans paramètre, pas mieux.**
+
+**Ce qui tient, lu après coup.**
+
+- Part RN de l'électorat Mélenchon, en points du total : cercle 1,7, segment 5,4. Elle repose toujours sur un excès d'« Aucun » du cercle face à Philippe et Attal (§8.98 a).
+- Parmi les exprimés, l'avantage du cercle n'est plus que de 1 pt, sur 3 cellules Harris : non probant.
+- Le défaut commun reste la platitude de LFI (environ 35 / 55 quel que soit l'adversaire), que K capte et qu'aucune distance ne capte.
+
+**Conséquences.**
+
+- Tout ce qui suit dans l'essai 2027 relève de la parcimonie (§8.98 g3 à g6) ou de l'abstention (g2, g5).
+- Rien ne départage le cercle et le segment sur les données 2027.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

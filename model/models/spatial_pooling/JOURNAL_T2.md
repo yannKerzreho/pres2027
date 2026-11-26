@@ -31,7 +31,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] (Mac, 0 fit) **Relecture V1 corrigée (§8.98 c, g1)** : `cellules()` avec `s` à la date de la notice, `z` rejoué, verdict par le code, K sans la cellule polluée ; test du lecteur.
+- [x] [FAIT MAC 26/11 ~16:20Z, §8.99 : V1 segment 7,26, cercle 8,79, K 9,75 ; sans cellule polluée 7,10 / 9,06 / K 7,13 ; LFI 9,32 / 10,50 / K 2,57 ; non séparés, pas de prévision] **Relecture V1 corrigée (§8.98 c, g1)** : `cellules()` avec `s` à la date de la notice, `z` rejoué, verdict par le code, K sans la cellule polluée ; test du lecteur.
 - [ ] (Mac, 0 fit, après la ligne précédente) **Test du niveau d'« Aucun » (§8.98 g2)** : β ∈ {0,4 ; 0,56 ; 0,75} sur `z` V1 ; fit β seulement si LFI < 6 et part RN des exprimés non dégradée de plus de 1.
 - [ ] (Mac, 12 fits chacune, critères figés §8.98 g3-6 ; ARBITRAGE de la revue du 26/11 ~14:40Z) Simplifications : segment η ≡ 0, arc 2π, P4 contre P4c ; « Aucun » constant (maths d'abord).
 

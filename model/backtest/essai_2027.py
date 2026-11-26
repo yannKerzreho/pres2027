@@ -102,7 +102,11 @@ def cellules(fit, champ, ia, ib, k, w=None):
     mask = np.zeros(len(fit.candidates))
     for j, c in enumerate(fit.candidates):
         mask[j] = float(c in champ or j in (ia, ib, k))
-    s = duel_draws(fit, fit.candidates[ia], fit.candidates[ib], 0.0, scrutin=False)
+    if w is None:
+        s = duel_draws(fit, fit.candidates[ia], fit.candidates[ib], 0.0, scrutin=False)
+    else:                                               # revue du 26/11 ~14:40Z (§8.98 c) : part du duel À LA MÊME DATE
+        from model.models.spatial_pooling.fit import _duel_par_tirage
+        s = _duel_par_tirage(fit, w, np.full(S, ia), np.full(S, ib))
     th, _ = reports_cellules(jnp.asarray(A), jnp.asarray(mask), jnp.full(S, ia), jnp.full(S, ib), jnp.full(S, k),
                              jnp.asarray(fit.kappa_draws), jnp.asarray(fit.eta_draws[:, ia] - fit.eta_draws[:, ib]),
                              jnp.asarray(lse), jnp.asarray(fit.omega_draws), jnp.asarray(s), poids, n_newton=8,
@@ -222,6 +226,49 @@ def lancer(geo: str, epreuve: str, inits: int, pas: int, lr: float = 0.01) -> di
     return res
 
 
+def rejouer(geo: str, epreuve: str) -> dict:
+    """§8.98 c : relit les cellules d'un fit sauvegardé SANS refit (valeurs des sites rejouées), et réécrit le JSON."""
+    nom = "".join(ch for ch in epreuve if ch.isalnum())
+    f = sr.OUT_DIR / f"essai2027_{geo}_{nom}.json"
+    res = json.loads(f.read_text())
+    raw0, rep0, champ = donnees()
+    raw, rep = retirer(raw0, rep0, epreuve)
+    cap = {}
+
+    def capture(fn, kw, **k):
+        cap.update(fn=fn, kw=kw)
+        raise _Stop
+    try:
+        appel(raw, rep, champ, geo, capture)
+    except _Stop:
+        pass
+    fn, kw = cap["fn"], cap["kw"]
+    d = duels(raw0)
+    for r in res["inits"]:
+        data = {n: jnp.asarray(v) for n, v in r["z"].items()}
+        data.update(kappa=jnp.asarray(r["kappa"]), omega=jnp.asarray(r["omega"]))
+        tr = handlers.trace(handlers.substitute(handlers.seed(fn, 0), data=data)).get_trace(**kw)
+        manque = [n for n, x in tr.items() if x["type"] == "sample" and not x.get("is_observed", False) and n not in data]
+        assert not manque, manque
+        vals = {n: np.asarray(x["value"]) for n, x in tr.items()
+                if x["type"] in ("sample", "deterministic") and not x.get("is_observed", False)}
+        ecart = float(np.abs(np.asarray(vals["duel_s"]) - np.asarray(r["duel_s"])).max())
+        assert ecart < 1e-6, ecart                       # le rejeu reproduit le fit sauvegardé
+
+        def rejoue(f, k2, **k):
+            S = 4
+            return ({n: np.repeat(v[None, None], S, axis=1) for n, v in vals.items()},
+                    {"diverging": np.zeros((1, S), bool), "num_steps": np.ones((1, S), int)})
+        fit = appel(raw, rep, champ, geo, rejoue)
+        L = lire(fit, champ, rep0, d)
+        r["cellules_s_asof"] = r["cellules"]             # lecture de §8.97, gardée pour comparaison
+        r["cellules"] = L["cellules"]
+        r["rejeu"] = {"spec": "§8.98 c", "ecart_duel_s": ecart}
+        print(json.dumps({"init": r["init"], "ecart": ecart}), flush=True)
+    f.write_text(json.dumps(res, ensure_ascii=False, indent=1) + "\n")
+    return res
+
+
 def epreuves() -> list[str]:
     raw, _, _ = donnees()
     n = duels(raw).groupby(["a", "b"]).size()
@@ -235,8 +282,11 @@ if __name__ == "__main__":
     ap.add_argument("--inits", type=int, default=4)
     ap.add_argument("--pas", type=int, default=4000)
     ap.add_argument("--lister", action="store_true")
+    ap.add_argument("--rejouer", action="store_true", help="§8.98 c : relire un fit sauvegardé, sans refit")
     a = ap.parse_args()
     if a.lister:
         print("\n".join(epreuves()))
+    elif a.rejouer:
+        rejouer(a.geo, a.epreuve)
     else:
         lancer(a.geo, a.epreuve, a.inits, a.pas)
