@@ -5247,6 +5247,33 @@ concerné.
   attente de l'accord de l'utilisateur. Critères proposés par la revue : β ∈ [0,4 ; 0,75] ; LFI ≤ 6 ;
   V1 ≤ K − 1 ; V2 +0,3 au plus ; ΔU ≥ 3.
 
+### 8.95 V2 de l'essai 2027 relu aux dates des cibles (correction APRÈS lecture, §8.94 b ; 26/11 ~10:00Z)
+
+Mêmes fits refaits, 8 inits, Mac, 0 erreur ; mêmes U que §8.93. Écart à l'observé, en points :
+
+| Paire (observé) | Segment, à l'as_of → à la date | Cercle, à l'as_of → à la date | BT | T0 |
+|---|---|---|---|---|
+| Attal–Le Pen (44,0) | −6,7 → −6,6 | −5,1 → −5,6 | −1,6 | −2,7 |
+| Bardella–Philippe (51,5) | +9,8 → +2,1 | +13,4 → **+0,8** | +4,6 | — |
+| Glucksmann–Le Pen (43,2) | −3,3 → −1,3 | −0,4 → +0,8 | −2,2 | −1,8 |
+| Hollande–Le Pen (43,0) | −4,0 → +1,0 | −7,8 → −4,1 | +1,0 | −1,5 |
+| Le Pen–Mélenchon (67,7) | −0,8 → +0,2 | −1,6 → −0,2 | +0,1 | +11,3 |
+| Le Pen–Philippe (55,1) | +0,9 → −0,9 | +0,7 → −0,2 | −2,8 | −3,8 |
+| Le Pen–Retailleau (57,0) | +6,4 → +1,5 | +3,4 → −0,7 | +1,4 | −1,5 |
+| Mélenchon–Philippe (36,5) | +7,5 → +3,9 | +7,3 → +3,2 | −0,8 | — |
+| **MAE** | 4,91 → **2,18** | 4,96 → **1,95** | **1,81** | 3,76 (6 paires) |
+
+**Lecture corrigée, aux mêmes seuils que §8.92 :**
+
+- Cercle et segment : 1,95 contre 2,18, écart de 0,23 ≤ 0,5, donc toujours **non séparés**. Le cercle fait
+  mieux sur 5 paires sur 8.
+- Face à BT : 1,95 contre 1,81 ; ni l'un ni l'autre ne bat BT d'1 pt, donc toujours **pas de « prévision »**
+  au sens figé. **Mais l'écart n'est plus que de 0,14 pt**, et non de 3 : le modèle spatial est au niveau du
+  meilleur témoin sur les duels cachés, en un seul modèle qui sort aussi le T1 et les reports.
+- Le verdict de §8.93 reste écrit ; celui-ci est la lecture corrigée, déclarée après lecture.
+- Non corrigé : les cellules V1 sont lues à l'as_of, alors que les cibles sont des moyennes de mai à
+  novembre. L'effet attendu est petit, les reports Harris étant stables.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
