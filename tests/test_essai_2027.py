@@ -36,3 +36,20 @@ def test_delta_ks_racine():
     w = np.array(p) * (1 - np.array(n))
     assert abs((w / (1 + np.exp(-(np.array(l) + d)))).sum() / w.sum() - 0.55) < 1e-9
     assert delta_ks(p, n, [0, 0, 0], 0.5) == pytest.approx(0, abs=1e-9)
+
+
+def test_kappa_rho_defaut_inchange():
+    import jax.numpy as jnp
+    import numpy as np
+    from model.models.spatial_pooling.geometry import W, reports_cellules
+    rng = np.random.default_rng(0)
+    R, N, G = 3, 4, len(np.asarray(W))
+    A = jnp.asarray(rng.normal(size=(R, N, G)))
+    lse = jnp.asarray(rng.normal(size=(R, G)))
+    arg = (A, jnp.ones(N), jnp.array([0, 0, 1]), jnp.array([1, 1, 2]), jnp.array([2, 3, 3]), 0.9,
+           jnp.zeros(R), lse, -2.0, jnp.array([.5, .45, .6]), W)
+    a, _ = reports_cellules(*arg, fidelite=True)
+    b, _ = reports_cellules(*arg, fidelite=True, kappa_rho=0.9)
+    c, _ = reports_cellules(*arg, fidelite=True, kappa_rho=0.3)
+    assert np.allclose(a, b, atol=0, rtol=0)
+    assert not np.allclose(a, c)

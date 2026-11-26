@@ -333,8 +333,11 @@ def duel_shares_poids(A_a, A_b, kappa, eta_a, eta_b, lse, omega, poids, omega_g=
 
 def reports_cellules(A, champ_mask, ia, ib, k_idx, kappa, eta_diff, lse, omega, s_ab, poids, n_newton=4,
                      omega_g=None, fidelite=False, omega_k=None, lam=None, tau=None,
-                     fid_newton=False):
-    """Cellules (a, b, aucun) de l'électorat T1 `k_idx` (spec §8.38, §8.44.4),
+                     fid_newton=False, kappa_rho=None):
+    """`kappa_rho` (§8.100 e2, test β sans refit ; défaut None = κ, inchangé) : pente de l'expression ρ
+    des cellules seulement (ρ = σ(β·ℓ − ω) et ρ_f des finalistes) ; `q` et le Newton gardent κ.
+
+    Cellules (a, b, aucun) de l'électorat T1 `k_idx` (spec §8.38, §8.44.4),
     différentiables : δ par `n_newton` pas de Newton depuis `eta_diff` pour que
     l'agrégat des électorats du champ redonne `s_ab`.
 
@@ -359,7 +362,8 @@ def reports_cellules(A, champ_mask, ia, ib, k_idx, kappa, eta_diff, lse, omega, 
         pr = jnp.einsum("rng,rng,g->rn", p, rho_n, poids)
         G = jnp.clip(jnp.einsum("rng,rng,rg,g->rn", p, rho_n, q, poids) / jnp.clip(pr, 1e-12, None), 1e-6, 1 - 1e-6)
     else:
-        rho = jnp.ones_like(q) if lse is None else duel_expression(A_a, A_b, kappa, lse, omega, omega_g)
+        kr = kappa if kappa_rho is None else kappa_rho
+        rho = jnp.ones_like(q) if lse is None else duel_expression(A_a, A_b, kr, lse, omega, omega_g)
         pr = jnp.einsum("rng,rg,g->rn", p, rho, poids)
         G = jnp.clip(jnp.einsum("rng,rg,rg,g->rn", p, rho, q, poids) / jnp.clip(pr, 1e-12, None), 1e-6, 1 - 1e-6)
     Rk = pr / jnp.clip(E, 1e-12, None)
@@ -411,7 +415,7 @@ def reports_cellules(A, champ_mask, ia, ib, k_idx, kappa, eta_diff, lse, omega, 
         if omega_k is not None:                                            # §8.58 : ω de l'électorat k
             okk = jnp.asarray(omega_k)
             om = okk[k_idx] if okk.ndim == 1 else okk[jnp.arange(cel.shape[0]), k_idx]
-        kq_ = jnp.asarray(kappa)
+        kq_ = jnp.asarray(kappa if kappa_rho is None else kappa_rho)
         kq_ = kq_ if kq_.ndim else jnp.full(cel.shape[0], kq_)
         u = (jnp.arange(32) + 0.5) / 32
         g = -jnp.log(-jnp.log(u))                                         # quantiles Gumbel(0,1)

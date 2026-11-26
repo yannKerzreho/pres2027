@@ -91,26 +91,34 @@ class _Stop(Exception):
     pass
 
 
-def cellules(fit, champ, ia, ib, k, w=None):
-    """`w` (S, N) : attractivités à une date donnée (revue du 26/11) ; défaut : as_of."""
+def cellules(fit, champ, ia, ib, k, w=None, kappa_rho=None, omega_rho=None):
+    """`w` (S, N) : attractivités à une date donnée (revue du 26/11) ; défaut : as_of.
+    `ia`, `ib`, `k` : entiers, ou tableaux (S,) — une ligne par tirage (§8.100 e2, lecture vectorisée).
+    `kappa_rho`, `omega_rho` (§8.100 e2) : pente et ω de l'expression ρ des cellules seulement."""
     A, poids = E._A(fit, fit.w_draws if w is None else w)
     S = A.shape[0]
-    ml = None if fit.masque_lse is None else np.asarray(fit.masque_lse, dtype=float).copy()
+    ia, ib, k = (np.broadcast_to(np.asarray(x), (S,)) for x in (ia, ib, k))
+    rows = np.arange(S)
+    ml = None if fit.masque_lse is None else np.tile(np.asarray(fit.masque_lse, dtype=float), (S, 1))
     if ml is not None:                                  # revue du 26/11 : finalistes et électorat dans le lse
-        ml[[ia, ib, k]] = 1.0
-    lse = logsumexp(A if ml is None else A + np.log(ml)[None, :, None], axis=1)
-    mask = np.zeros(len(fit.candidates))
-    for j, c in enumerate(fit.candidates):
-        mask[j] = float(c in champ or j in (ia, ib, k))
-    if w is None:
-        s = duel_draws(fit, fit.candidates[ia], fit.candidates[ib], 0.0, scrutin=False)
+        ml[rows, ia] = ml[rows, ib] = ml[rows, k] = 1.0
+    lse = logsumexp(A if ml is None else A + np.log(ml)[:, :, None], axis=1)
+    base = np.array([float(c in champ) for c in fit.candidates])
+    mask = np.tile(base, (S, 1))
+    mask[rows, ia] = mask[rows, ib] = mask[rows, k] = 1.0
+    if w is None and np.all(ia == ia[0]) and np.all(ib == ib[0]):
+        s = duel_draws(fit, fit.candidates[ia[0]], fit.candidates[ib[0]], 0.0, scrutin=False)
     else:                                               # revue du 26/11 ~14:40Z (§8.98 c) : part du duel À LA MÊME DATE
         from model.models.spatial_pooling.fit import _duel_par_tirage
-        s = _duel_par_tirage(fit, w, np.full(S, ia), np.full(S, ib))
-    th, _ = reports_cellules(jnp.asarray(A), jnp.asarray(mask), jnp.full(S, ia), jnp.full(S, ib), jnp.full(S, k),
-                             jnp.asarray(fit.kappa_draws), jnp.asarray(fit.eta_draws[:, ia] - fit.eta_draws[:, ib]),
-                             jnp.asarray(lse), jnp.asarray(fit.omega_draws), jnp.asarray(s), poids, n_newton=8,
-                             fidelite=True)
+        s = _duel_par_tirage(fit, fit.w_draws if w is None else w, ia, ib)
+    om = fit.omega_draws if omega_rho is None else np.full(S, omega_rho)
+    kr = None if kappa_rho is None else jnp.full(S, kappa_rho)
+    th, _ = reports_cellules(jnp.asarray(A), jnp.asarray(mask), jnp.asarray(ia), jnp.asarray(ib), jnp.asarray(k),
+                             jnp.asarray(fit.kappa_draws), jnp.asarray(fit.eta_draws[rows, ia] - fit.eta_draws[rows, ib]),
+                             jnp.asarray(lse), jnp.asarray(om), jnp.asarray(s), poids, n_newton=8,
+                             fidelite=True, kappa_rho=kr)
+    if np.ndim(th) == 2 and not (np.all(ia == ia[0]) and np.all(ib == ib[0]) and np.all(k == k[0])):
+        return 100 * np.asarray(th)                     # une cellule par ligne
     return 100 * np.asarray(th).mean(0)
 
 
