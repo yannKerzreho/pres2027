@@ -5536,6 +5536,23 @@ Les pistes 1 et 2 se font sans fit. Les pistes 3 à 6 sont des fits Mac (12 chac
 - Si l'utilisateur adopte le segment, g4 (arc 2π, cercle fermé) devient sans objet : 12 fits économisés.
 - **ARBITRAGE À TRANCHER.**
 
+### 8.101 Correctif `pred_date` appliqué (§8.100 c ; 26/11 ~17:15Z, Mac, 0 fit)
+
+Une date par notice où l'électorat a ses cellules a, b et « Aucun » complètes, comme `mesure()`. Les 6 fits V1
+sont rejoués et reproduisent le fit sauvegardé à l'identique.
+
+**Effet : au plus 0,1 pt.** Seule la cellule Attal – Le Pen de l'électorat Mélenchon change (4 dates ramenées à 3).
+
+| Mesure (lecture datée) | Segment | Cercle | K |
+|---|---|---|---|
+| V1, 9 électorats | 7,22 | 8,74 | 9,75 |
+| V1, sans la cellule K polluée (8) | 7,06 | 9,00 | 7,13 |
+| LFI, RN + Aucun | 9,24 | 10,40 | 2,57 |
+| Électorat Mélenchon, part RN des exprimés | 10,4 | 9,2 | 3,9 |
+
+**Verdict figé (code) : non séparés.** Pas de prévision. Les conclusions de §8.99 et §8.100 sont inchangées.
+Prochaine étape : le témoin K_s (§8.100 d-e1).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

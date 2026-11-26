@@ -789,9 +789,9 @@
     ]
    ],
    "segment_date": [
-    27.62,
-    7.84,
-    64.54
+    28.17,
+    7.8,
+    64.03
    ],
    "cercle": [
     15.22,
@@ -841,9 +841,9 @@
     ]
    ],
    "cercle_date": [
-    24.55,
-    6.87,
-    68.59
+    25.38,
+    6.74,
+    67.89
    ]
   },
   {
@@ -1360,15 +1360,15 @@
   ],
   "LFI_RN_cercle": 12.21,
   "V1_segment_date": [
-   7.26,
+   7.22,
    9
   ],
-  "LFI_RN_segment_date": 9.32,
+  "LFI_RN_segment_date": 9.24,
   "V1_cercle_date": [
-   8.79,
+   8.74,
    9
   ],
-  "LFI_RN_cercle_date": 10.5,
+  "LFI_RN_cercle_date": 10.4,
   "V1_K": [
    9.75,
    9
@@ -1383,11 +1383,11 @@
    8
   ],
   "V1_sans_pollue_segment_date": [
-   7.1,
+   7.06,
    8
   ],
   "V1_sans_pollue_cercle_date": [
-   9.06,
+   9.0,
    8
   ],
   "V1_sans_pollue_K": [
@@ -1396,8 +1396,8 @@
   ],
   "LFI_RN_exprimes_segment": 10.44,
   "LFI_RN_exprimes_cercle": 17.06,
-  "LFI_RN_exprimes_segment_date": 10.5,
-  "LFI_RN_exprimes_cercle_date": 9.53,
+  "LFI_RN_exprimes_segment_date": 10.36,
+  "LFI_RN_exprimes_cercle_date": 9.24,
   "LFI_RN_exprimes_K": 3.86,
   "verdict_geometrie": "non séparés",
   "verdict_geometrie_date": "non séparés",

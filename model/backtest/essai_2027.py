@@ -144,7 +144,11 @@ def lire(fit, champ, rep_tout, d) -> dict:
             c = {"hypothese": h, "electorat": e, "pred": [round(float(x), 2) for x in th]}
             if fit.w_path_draws is not None:            # revue du 26/11 : à la date de CHAQUE notice
                 v = []
-                for t in pd.to_datetime(rep_tout[(rep_tout.hypothese == h)].date_fin.unique()):
+                g = rep_tout[(rep_tout.hypothese == h) & (rep_tout.electorat_t1 == e)]   # §8.100 c : notices de CET électorat
+                t_ = g.pivot_table(index="notice", columns="candidat_t2", values="part")
+                ok = t_[[a, b, "Aucun"]].dropna().index if {a, b, "Aucun"} <= set(t_.columns) else []
+                dates = g.drop_duplicates("notice").set_index("notice").loc[list(ok), "date_fin"]
+                for t in pd.to_datetime(dates):                # une date par notice complète, comme `mesure()`
                     j = int(np.clip(np.searchsorted(fit.w_dates, float(t.toordinal())), 0, len(fit.w_dates) - 1))
                     v.append(cellules(fit, champ, idx[a], idx[b], idx[court(e)], w=fit.w_path_draws[:, :, j]))
                 c["pred_date"] = [round(float(x), 2) for x in np.mean(v, axis=0)]
@@ -261,9 +265,9 @@ def rejouer(geo: str, epreuve: str) -> dict:
                     {"diverging": np.zeros((1, S), bool), "num_steps": np.ones((1, S), int)})
         fit = appel(raw, rep, champ, geo, rejoue)
         L = lire(fit, champ, rep0, d)
-        r["cellules_s_asof"] = r["cellules"]             # lecture de §8.97, gardée pour comparaison
+        r.setdefault("cellules_s_asof", r["cellules"])   # lecture de §8.97, gardée pour comparaison
         r["cellules"] = L["cellules"]
-        r["rejeu"] = {"spec": "§8.98 c", "ecart_duel_s": ecart}
+        r["rejeu"] = {"spec": "§8.98 c, §8.100 c", "ecart_duel_s": ecart}
         print(json.dumps({"init": r["init"], "ecart": ecart}), flush=True)
     f.write_text(json.dumps(res, ensure_ascii=False, indent=1) + "\n")
     return res
