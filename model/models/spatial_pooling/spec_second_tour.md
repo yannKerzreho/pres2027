@@ -5621,6 +5621,47 @@ pire sur Philippe – Le Pen, l'hypothèse la plus documentée (8 notices).
 
 **Suite : le test β sans refit (§8.100 e2), dont le critère contient « V1 ≤ K_s ».**
 
+### 8.104 Test β sans refit : résultat (§8.100 e2 ; 26/11 ~20:00Z, Mac, 0 fit)
+
+**Mise en œuvre.**
+
+- `beta_essai_2027.py`, avec `kappa_rho` dans `reports_cellules` (défaut None, inchangé, testé).
+- Non-régression : à β = κ et au ω du fit, les cellules d'entraînement redonnent `reports_theta` à 6e-16 près sur les 6 fits.
+- Le JSON de lecture est reproduit à l'octet après le passage des cellules à un calcul vectorisé.
+- ω est re-profilé pour chaque β sur la seule vraisemblance Dirichlet des reports d'entraînement.
+
+**Les reports d'entraînement choisissent β ≈ κ.**
+
+| Fit | κ | β\* | ll(β\*) − ll(κ), en nats | ll(0) − ll(κ) |
+|---|---|---|---|---|
+| Segment, Philippe – Le Pen | 0,53 | 0,56 | +1,1 | −237 |
+| Segment, Attal – Le Pen | 0,68 | 0,75 | +1,9 | −533 |
+| Segment, Glucksmann – Le Pen | 0,69 | 0,75 | +2,0 | −716 |
+| Cercle, Philippe – Le Pen | 0,91 | κ | 0 (β = 0,75 : −11) | −782 |
+| Cercle, Attal – Le Pen | 0,92 | κ | 0 (β = 0,75 : −15) | −939 |
+| Cercle, Glucksmann – Le Pen | 0,91 | κ | 0 (β = 0,75 : −20) | −1489 |
+
+- Sur le segment, β\* est le point de la grille voisin de κ, à moins de 2 nats : pas de découplage.
+- Sur le cercle, κ est le meilleur point, devant 0,75 de 11 à 20 nats.
+- Un « Aucun » constant (β = 0) est rejeté par 237 à 1489 nats sur les reports d'entraînement.
+- **La pente « impliquée » de 0,56 (§8.94 c), lue sur des cellules à l'as_of, est réfutée** par les reports d'entraînement lus à la date.
+
+**Critère figé : non rempli par les deux géométries. Pas de fit β.**
+
+| Géométrie | V1 (8 cellules), K_s 7,79 | LFI, RN + Aucun (seuil 6) | Part RN des exprimés (référence) |
+|---|---|---|---|
+| Segment, à β\* | 7,40 | 10,02 | 10,2 (10,4) |
+| Cercle, à β\* = κ | 9,01 | 10,40 | 9,2 (9,2) |
+
+**Lecture.**
+
+- La revue de §8.98 e est confirmée : l'erreur sur LFI ne vient pas de la pente de l'abstention.
+- Les reports d'entraînement eux-mêmes refusent de l'aplatir.
+- Les cellules LFI d'entraînement (Mélenchon – Le Pen, Mélenchon – Bardella) et les cellules cachées ne demandent pas la même chose. Une platitude « 35 / 55 quel que soit l'adversaire » n'est pas représentable par une abstention fonction de la distance, quelle que soit sa pente.
+- §8.98 g5 (« Aucun » constant par électorat, environ 10 paramètres) n'avait de sens que si β\* = 0 : **abandonnée** par sa propre condition (§8.100 e3).
+
+**Le mécanisme d'abstention reste celui du modèle, sans paramètre ajouté.**
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
