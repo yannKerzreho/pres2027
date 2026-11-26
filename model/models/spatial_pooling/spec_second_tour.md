@@ -5741,6 +5741,29 @@ pire sur Philippe – Le Pen, l'hypothèse la plus documentée (8 notices).
 - Elle touche la vraisemblance : maths d'abord, et seulement après l'arbitrage sur la géométrie.
 - Mise en file, sans priorité.
 
+### 8.107 Bootstrap apparié par notice de V1 : résultat (§8.105 e2 ; 26/11 ~22:30Z, Mac, 0 fit)
+
+**Méthode.** `bootstrap_essai_2027.py` : 2 000 tirages, graine 0.
+
+- Les notices sont tirées avec remise à l'intérieur de chaque hypothèse cachée : 8, 4 et 1 notices.
+- Les prédictions du modèle sont lues à la date de chaque notice.
+- Le témoin est le meilleur de K et K_s, à chaque tirage.
+- Les valeurs observées reproduisent §8.101-8.103 au centième près : 7,05 / 9,00 / K 7,15 / K_s 7,80. Elles diffèrent de 0,01 à 0,02 parce que chaque notice est normalisée avant la moyenne.
+
+| V1, 8 cellules | Écart au témoin, moyenne | IC à 90 % | Apporte (IC < −0,5) |
+|---|---|---|---|
+| Segment | −0,15 | [−1,18 ; +0,84] | non |
+| Cercle | +1,85 | [+0,76 ; +2,85] | non, **pire que le témoin** |
+
+P(V1 segment ≤ V1 cercle) = **1,00** (seuil 0,8) : **segment préférable**.
+
+**Lecture, au critère figé.**
+
+- Le segment n'est pas distinguable d'un témoin à 0 paramètre sur les reports cachés.
+- Le cercle est pire que le témoin dans tous les tirages à 90 % : c'est le seul écart de l'essai 2027 qui sorte du bruit.
+- L'unité de tirage est la notice d'un seul institut, et Glucksmann – Le Pen n'a qu'une notice, constante dans les tirages : l'intervalle est conditionnel à Harris.
+- **La décision de géométrie revient à l'utilisateur. Ce chiffre lève la réserve « 8 moyennes ne peuvent pas séparer » (§8.96 c) pour V1.**
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

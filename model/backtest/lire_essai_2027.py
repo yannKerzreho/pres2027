@@ -54,7 +54,7 @@ def delta_ks(p, n, l, s):
     return (lo + hi) / 2
 
 
-def k_s(raw, rep, h, autres):
+def k_s(raw, rep, h, autres, par_notice=False):
     """§8.102 : témoin K_s {électorat court: [a, b, Aucun]} pour l'hypothèse cachée h, et notices exclues."""
     a, b = [x.strip() for x in h.split("–")]
     base = {}
@@ -67,7 +67,7 @@ def k_s(raw, rep, h, autres):
             v = [m[e] for h2, m in autres.items() if e in m and e not in {y.strip() for y in h2.split("–")}]
         if v:
             base[e] = np.mean(v, axis=0) / 100
-    par_cellule, exclues = {}, []
+    par_cellule, exclues, notes = {}, [], []
     for nt, g in rep[rep.hypothese == h].groupby("notice"):
         t = g.pivot_table(index="electorat_t1", columns="candidat_t2", values="part")
         if not {a, b, "Aucun"} <= set(t.columns):
@@ -95,6 +95,9 @@ def k_s(raw, rep, h, autres):
         q = 1 / (1 + np.exp(-(l + dl)))
         for e, ni, qi in zip(E, n, q):
             par_cellule.setdefault(e, []).append(100 * np.array([(1 - ni) * qi, (1 - ni) * (1 - qi), ni]))
+            notes.append((e, nt, par_cellule[e][-1]))
+    if par_notice:                                      # §8.105 e2 : bootstrap par notice
+        return {(e, nt): v for e, nt, v in notes}, exclues
     return {e: np.mean(v, axis=0) for e, v in par_cellule.items()}, exclues
 
 
