@@ -7,7 +7,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## État (mis à jour à chaque réveil)
 
-- Dernière revue Opus : 2026-11-26 ~14:40Z (session locale)
+- Dernière revue Opus : 2026-11-26 ~16:15Z (session locale)
 - OBJECTIF (utilisateur, via l'orchestrateur, 2026-11-14) : « un modèle qui est
   backé par le passé mais qui représente bien les sondages et tendances
   actuels ». 2017/2022 servent à CALIBRER et VALIDER ; le critère final est la
@@ -32,7 +32,9 @@ l'historique, ajouter en bas de « Historique ».
 ## File de tâches (prendre la première non cochée)
 
 - [x] [FAIT MAC 26/11 ~16:20Z, §8.99 : V1 segment 7,26, cercle 8,79, K 9,75 ; sans cellule polluée 7,10 / 9,06 / K 7,13 ; LFI 9,32 / 10,50 / K 2,57 ; non séparés, pas de prévision] **Relecture V1 corrigée (§8.98 c, g1)** : `cellules()` avec `s` à la date de la notice, `z` rejoué, verdict par le code, K sans la cellule polluée ; test du lecteur.
-- [ ] (Mac, 0 fit, après la ligne précédente) **Test du niveau d'« Aucun » (§8.98 g2)** : β ∈ {0,4 ; 0,56 ; 0,75} sur `z` V1 ; fit β seulement si LFI < 6 et part RN des exprimés non dégradée de plus de 1.
+- [ ] (Mac, 0 fit) **Correctif `pred_date` (§8.100 c)** : dates filtrées par (hypothèse, électorat) aux cellules complètes, rejeu des 6 fits V1.
+- [ ] (Mac, 0 fit, spec figée §8.100 d-e1) **Témoin K_s** : K avec logit a/RN décalé pour redonner `s` ; V1 ≤ K_s − 1 et 2 hypothèses sur 3.
+- [ ] (Mac, 0 fit, spec figée §8.100 e2 ; remplace §8.98 g2) **Test β sans refit** : `kappa_rho` dans `reports_cellules`, ω re-profilé sur les reports d'entraînement, β\* sur la grille {0 ; 0,4 ; 0,56 ; 0,75 ; κ} ; fit seulement si LFI < 6, exprimés ≤ +1, V1 ≤ K_s.
 - [ ] (Mac, 12 fits chacune, critères figés §8.98 g3-6 ; ARBITRAGE de la revue du 26/11 ~14:40Z) Simplifications : segment η ≡ 0, arc 2π, P4 contre P4c ; « Aucun » constant (maths d'abord).
 
 - [x] [FAIT MAC 26/11 ~14:35Z, §8.97 : V1 segment 7,54, cercle 8,88, K 9,75 ; LFI segment 9,41, cercle 10,53, K 2,57 ; non séparés, pas de prévision ; §8.96 d démenti ; RN seul (post hoc) cercle 1,8 contre 5,6, « Aucun » 19,2 contre 13,2] **V1 de l'essai 2027 relu à la date de chaque notice** (6 fits).
@@ -1340,6 +1342,39 @@ conservé pour l'historique.
   instables (R̂ 7,5) et s_ab +0,7 pt ⇒ phase 2 à faire.
 
 
+
+## Revue Opus 2026-11-26 ~16:15Z (session locale) — §8.99, rejeu, test β : intégration point par point
+
+Revue courte, faite 1 h 30 après la précédente, sur ce qui a changé : §8.99, `rejouer()`, `verdict()`. Aucun fichier modifié par le relecteur.
+
+1. **Rejeu fidèle.** INTÉGRÉ (§8.100 a) : 13 sites fournis, `duel_s`, `mu` et `eta` identiques.
+2. **`cellules` à la date égale `reports_theta` du modèle à 8e-16 près.** INTÉGRÉ : c'est le contrôle qui manquait en §8.98 c.
+3. **Chiffres de §8.99 conformes.** INTÉGRÉ.
+4. **`verdict()` conforme à §8.92, appliqué aux 9 cellules.** INTÉGRÉ.
+5. **`pred_date` moyenne les dates de l'hypothèse, sans regarder l'électorat** (Attal – Le Pen, électorat Mélenchon : 4 dates contre 3 notices). INTÉGRÉ (§8.100 c).
+   - Vérifié dans le code : le filtre porte sur `hypothese` seulement.
+   - Correctif et rejeu sans fit en file.
+6. **« 48 inits » surestime le contrôle : il n'y a que 6 fits distincts.** INTÉGRÉ, corrigé en §8.100 a.
+7. **Le sous-ensemble « sans polluée » a été choisi après lecture.** INTÉGRÉ : témoin rapporté, hors de tout verdict.
+8. **Le RN en points du total relève de la compensation d'erreurs, et l'écart sur les exprimés change de signe selon la lecture.** INTÉGRÉ : retiré de « ce qui tient » (§8.100 b).
+   - Sur les données 2027, plus aucun argument ne favorise le cercle.
+9. **Comparaison V1 inéquitable : la géométrie connaît `s`, K non.** INTÉGRÉ.
+   - Témoin K_s défini et critère figé en §8.100 d et e1, avant code.
+
+**Pistes.** Retenues dans la file, dans cet ordre, toutes sans fit sauf la dernière :
+
+- correctif de `pred_date` ;
+- témoin K_s ;
+- test β sans refit (mise en œuvre et critères §8.100 e2, β\* choisi sur les reports d'entraînement seulement) ;
+- puis g3 (η ≡ 0) et g6 (P4 contre P4c), inchangés.
+
+La piste « adopter le segment, abandonner g4 » est une décision de l'utilisateur.
+
+**ARBITRAGE À TRANCHER (utilisateur).** Le cercle n'a plus d'argument sur les données 2027.
+
+- Le segment est meilleur ou égal en V1 et non séparé partout.
+- Adopter le segment comme géométrie unique (−1 paramètre, g4 abandonné) ?
+- Ou garder le cercle jusqu'au terme des simplifications ?
 
 ## Revue Opus 2026-11-26 ~14:40Z (session locale) — §8.97 relu : intégration point par point
 

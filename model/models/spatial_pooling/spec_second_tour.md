@@ -5473,6 +5473,69 @@ Les pistes 1 et 2 se font sans fit. Les pistes 3 à 6 sont des fits Mac (12 chac
 - Tout ce qui suit dans l'essai 2027 relève de la parcimonie (§8.98 g3 à g6) ou de l'abstention (g2, g5).
 - Rien ne départage le cercle et le segment sur les données 2027.
 
+### 8.100 Revue du 26/11 ~16:15Z sur §8.99 : témoin K_s et critères figés du test β (AVANT code et lecture)
+
+**(a) Vérifié par la revue.**
+
+- Le rejeu est fidèle : 13 sites échantillonnés fournis, `duel_s`, `mu` et `eta` identiques.
+- `cellules(…, w à la date)` redonne le `reports_theta` du modèle à 8e-16 près : la part `s` à la date est bien `s_r`.
+- Les chiffres de §8.99 et `verdict()` sont conformes.
+- **Correction de §8.99 :** les 8 inits de chaque fichier ont le même U. Le contrôle porte sur **6 fits**, pas sur 48 points distincts.
+
+**(b) Retraits et précisions sur §8.99.**
+
+- « RN en points du total : cercle 1,7 contre 5,4 » est **retiré** de « ce qui tient ». C'est la compensation d'erreurs de §8.98 a.
+- L'écart sur les exprimés change de signe selon la lecture :
+  - à l'as_of : 17,1 contre 10,4 ;
+  - en lecture hybride : 12,8 contre 11,6 ;
+  - en lecture datée : 9,5 contre 10,5.
+- **Il ne tient donc pas non plus.**
+- Le sous-ensemble « sans cellule polluée » a été choisi après lecture : il reste un témoin rapporté et n'entre dans aucun verdict.
+
+**(c) Défaut de lecture.** `pred_date` moyennait les dates de l'hypothèse, sans regarder l'électorat (`essai_2027.py`, lecture des cellules) :
+
+- pour Attal – Le Pen, électorat Mélenchon, 4 dates étaient moyennées contre 3 notices mesurées ;
+- correctif : ne garder que les notices où l'électorat a ses cellules complètes, comme `mesure()` ;
+- relecture par rejeu, sans fit.
+
+**(d) Comparaison inéquitable en V1.** La géométrie connaît la part du duel caché par `s`, ce que K ignore. Témoin
+**K_s**, à 0 paramètre :
+
+- garder le « Aucun » de K pour chaque électorat ;
+- décaler le logit a/RN de K d'un δ commun à tous les électorats de la notice ;
+- choisir δ pour que l'agrégat sur les électorats du champ (parts T1 des sondages de la même date, pondérées comme dans le Newton du modèle) redonne la part `s` du duel observé ;
+- moyenner sur les notices de la cellule, comme pour `pred_date`.
+
+**(e) Critères figés, avant tout code de K_s ou de β.**
+
+1. **Une géométrie n'apporte quelque chose sur les reports** que si les deux conditions suivantes sont réunies (8 cellules hors cellule polluée, et 9 rapportées) :
+   - V1 ≤ K_s − 1 ;
+   - au moins 2 des 3 hypothèses s'améliorent.
+
+   Sinon, le modèle reproduit les reports aussi bien qu'un témoin à 0 paramètre qui connaît le duel.
+2. **Test β sans refit**, ρ = σ(β·ℓ − ω) dans les cellules de reports seulement :
+   - **mise en œuvre :**
+     - `kappa_rho` optionnel dans `duel_expression` et `reports_cellules` (`geometry.py`), `q` intact ;
+     - `s` gardé à sa valeur ajustée ;
+     - ω re-profilé en une dimension pour chaque β, sur la seule vraisemblance Dirichlet des reports **d'entraînement**, `log_c` fixé ;
+   - **choix de β\*** sur la grille {0 ; 0,4 ; 0,56 ; 0,75 ; κ}, par cette vraisemblance d'entraînement, jamais sur les cellules cachées ;
+   - **non-régression :** `kappa_rho=None` redonne `reports_theta` à 1e-12 près ;
+   - **un fit β n'est demandé que si,** à β\* :
+     - LFI daté < 6 ;
+     - la part RN des exprimés n'est pas pire de plus de 1 pt ;
+     - V1 ≤ K_s.
+3. **« Aucun » constant par électorat (g5)** : seulement si β\* = 0 et si l'écart à K_s dépasse 2 pt.
+   - Le critère g5 « V1 ≤ K − 1 » devient « V1 ≤ K_s, et V2 pas pire de plus de 0,3 ».
+   - Ce modèle reproduit K par construction.
+4. **Les pistes g3 (η ≡ 0) et g6 (P4 contre P4c) sont inchangées.**
+   - η n'entre dans les cellules que par `s`, puisque le Newton converge.
+   - g3 se juge donc surtout sur les duels.
+
+**(f) Géométrie.** Le segment est meilleur ou égal en V1 et non séparé partout, et la parcimonie le désigne (§8.92).
+
+- Si l'utilisateur adopte le segment, g4 (arc 2π, cercle fermé) devient sans objet : 12 fits économisés.
+- **ARBITRAGE À TRANCHER.**
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
