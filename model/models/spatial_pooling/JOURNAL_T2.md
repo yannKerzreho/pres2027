@@ -31,8 +31,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] [EN COURS MAC 26/11 ~11:15Z] **V1 de l'essai 2027 relu à la date de chaque notice** (6 fits, §8.96 d),
-  correction déclarée après lecture.
+- [x] [FAIT MAC 26/11 ~14:35Z, §8.97 : V1 segment 7,54, cercle 8,88, K 9,75 ; LFI segment 9,41, cercle 10,53, K 2,57 ; non séparés, pas de prévision ; §8.96 d démenti ; RN seul (post hoc) cercle 1,8 contre 5,6, « Aucun » 19,2 contre 13,2] **V1 de l'essai 2027 relu à la date de chaque notice** (6 fits).
 
 - [x] [FAIT 25/11 ~22:00Z, §8.93 : non séparés au critère figé ; BT 1,81 contre 4,9 ; cercle +79 à +110 nats et LFI → RN 1,5 contre 6,4 (lu après coup) ; défaut commun : « Aucun » de LFI] **Essai 2027 cercle contre segment (§8.92).**
 - [x] [FAIT 26/11 ~10:00Z, §8.95 : V2 cercle 1,95, segment 2,18, BT 1,81 ; non séparés, pas de prévision au seuil figé, mais à 0,14 pt de BT] Relecture V2 de l'essai 2027.

@@ -5319,6 +5319,53 @@ est à recalculer aux dates avant tout fit. Critères proposés pour un essai β
 
 À figer avant tout fit, sous réserve de l'accord de l'utilisateur.
 
+### 8.97 V1 de l'essai 2027 relu à la date de chaque notice (correction APRÈS lecture, §8.96 d ; 26/11 ~14:35Z)
+
+Six fits V1 refaits sur le Mac (8 inits, float64, 0 erreur ; les 8 inits de chaque fit sont à moins d'un nat
+du meilleur U). `z` est sauvegardé. Cellules lues à la date de chaque notice, finalistes et électorat dans le
+lse. Seuils inchangés (§8.92).
+
+| Épreuve | Segment | Cercle | Témoin |
+|---|---|---|---|
+| V1, MAE, 9 électorats | 7,54 (7,36 à l'as_of) | 8,88 (9,54) | K 9,75 |
+| LFI → Le Pen, RN + Aucun | 9,41 (10,73) | 10,53 (12,21) | K 2,57 |
+| V2, MAE, 8 paires, à la date (§8.95) | 2,18 | 1,95 | BT 1,81 ; BT ±60 j ≈ 1,0 |
+
+**Règle figée appliquée.**
+
+- LFI : le cercle est **pire** de 1,1 pt. Aucune géométrie n'a l'écart de 2 pt.
+- V1 : le cercle est pire de 1,3 pt, au-delà de la tolérance de 0,5 pt.
+- **Verdict : non séparés**, comme en §8.93.
+- **Pas de « prévision » :**
+  - V2 ne bat aucun témoin ;
+  - en V1, le segment bat K de 2,2 pt (le cercle de 0,9), mais K est pollué pour l'électorat Attal (§8.93).
+- Par la règle de parcimonie de §8.92, **le segment l'emporte**. La décision reste à l'utilisateur.
+
+**L'estimation de §8.96 d est démentie.** Elle prédisait un gros gain à la date et une bascule nette vers le
+segment (LFI 4,1 contre 6,2), mais elle portait sur des cellules vues en échantillon. Sur reports cachés,
+dater fait gagner 0,2 à 1,7 pt, pas 3 à 5. LFI reste à 4 fois l'erreur de K.
+
+**Lu après coup, hors critère : la part RN seule de l'électorat Mélenchon.**
+
+| Hypothèse | Mesuré | Segment | Cercle |
+|---|---|---|---|
+| Philippe – Le Pen | 8,6 | 2,0 | 9,8 |
+| Attal – Le Pen | 8,3 | 9,9 | 8,5 |
+| Glucksmann – Le Pen | 12,0 | 3,5 | 8,0 |
+| **MAE** | | **5,6** | **1,8** |
+
+- Le cercle place bien LFI par rapport au RN, comme en §8.93 (1,5 contre 6,4).
+- Il le paie sur « Aucun » :
+  - MAE 19,2 pour le cercle, contre 13,2 pour le segment ;
+  - le pire cas est Mélenchon → Glucksmann, avec 69 % pour Glucksmann et 23 % pour « Aucun » mesurés à 36 et 52 (§8.96 e).
+- Le signal « le cercle explique mieux LFI → RN » tient donc sur trois cellules d'un seul institut.
+- C'est l'abstention de l'électorat éloigné qui fait l'erreur, pas la géométrie.
+- Lecture post hoc, Harris seul : **non probant**.
+
+**Erratum de lecture.** Le lecteur imprime encore 1,95 et 2,18 pour V2 à la date, car le fit V2
+Hollande–Le Pen corrigé (`masque_lse`, §8.96 a : 2,01 et 2,15) n'a pas été réécrit dans les résultats. Le
+verdict ne change pas.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
