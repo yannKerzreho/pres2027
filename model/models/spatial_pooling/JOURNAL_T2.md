@@ -35,10 +35,11 @@ l'historique, ajouter en bas de « Historique ».
 - [x] [FAIT MAC 26/11 ~17:15Z, §8.101 : effet ≤ 0,1 pt ; V1 7,22 / 8,74 / K 9,75 ; LFI 9,24 / 10,40 ; non séparés] **Correctif `pred_date` (§8.100 c)** : dates filtrées par (hypothèse, électorat) aux cellules complètes, rejeu des 6 fits V1.
 - [x] [FAIT MAC 26/11 ~18:30Z, §8.102-8.103 : K_s 7,79 (8 cellules), pire que K 7,13 ; critère non rempli (segment 7,06, cercle 9,00)] **Témoin K_s** : K avec logit a/RN décalé pour redonner `s` ; V1 ≤ K_s − 1 et 2 hypothèses sur 3.
 - [x] [FAIT MAC 26/11 ~20:00Z, §8.104 : β* ≈ κ (segment, à moins de 2 nats) ou = κ (cercle) ; β = 0 rejeté par 237 à 1489 nats ; LFI 10,0 / 10,4 > 6 ; pas de fit β ; g5 abandonné] **Test β sans refit** : `kappa_rho` dans `reports_cellules`, ω re-profilé sur les reports d'entraînement, β\* sur la grille {0 ; 0,4 ; 0,56 ; 0,75 ; κ} ; fit seulement si LFI < 6, exprimés ≤ +1, V1 ≤ K_s.
-- [ ] (Mac, 0 fit, critère figé §8.105 e1) **Cohérence duel / reports dans le modèle** : écart s_n − agrégat des cellules du modèle sur E_n, 13 notices, 6 fits V1.
+- [x] [FAIT MAC 26/11 ~21:15Z, §8.106 : cercle transmet le biais (10/13, 1,55 pt), segment non (8/13, 0,96) ; écart des données 1,96 pt] **Cohérence duel / reports dans le modèle** : écart s_n − agrégat des cellules du modèle sur E_n, 13 notices, 6 fits V1.
 - [ ] (Mac, 0 fit, §8.105 e2) **Bootstrap apparié par notice** de V1 : segment, cercle, K, K_s.
 - [ ] (Mac, 0 fit, §8.105 e3) **Fidélité R7 en lecture** (`fidelite=False`) sur les cellules des finalistes.
 - [ ] (Mac, 0 fit, §8.105 e4) **Profil conjoint (ω, log_c), grille β étendue à {1,0 ; 1,25}** : confirmation.
+- [ ] (sans priorité, maths d'abord, après l'ARBITRAGE de géométrie ; §8.106) **Électorat « reste » qui porte l'écart de base duel/reports de Harris** (0 paramètre).
 - [ ] (Mac, 12 fits chacune, critères figés §8.98 g3-6 ; ARBITRAGE de la revue du 26/11 ~14:40Z) Simplifications : segment η ≡ 0, arc 2π, P4 contre P4c (« Aucun » constant abandonné, §8.104).
 
 - [x] [FAIT MAC 26/11 ~14:35Z, §8.97 : V1 segment 7,54, cercle 8,88, K 9,75 ; LFI segment 9,41, cercle 10,53, K 2,57 ; non séparés, pas de prévision ; §8.96 d démenti ; RN seul (post hoc) cercle 1,8 contre 5,6, « Aucun » 19,2 contre 13,2] **V1 de l'essai 2027 relu à la date de chaque notice** (6 fits).

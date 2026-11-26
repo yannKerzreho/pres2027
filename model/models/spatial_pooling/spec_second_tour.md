@@ -5708,6 +5708,39 @@ pire sur Philippe – Le Pen, l'hypothèse la plus documentée (8 notices).
    - Seuils : V2 dégradé de 0,3 au plus, V1 de 0,5 au plus, vraisemblance des duels cachés de 2 nats au plus.
    - En cas d'égalité, le plus simple.
 
+### 8.106 Cohérence duel / reports dans le modèle : résultat (§8.105 e1 ; 26/11 ~21:15Z, Mac, 0 fit)
+
+**Méthode.** `coherence_essai_2027.py` porte sur 13 notices Harris et sur les 6 fits V1 rejoués.
+
+- On calcule l'écart s_n − agrégat sur E_n, avec les poids T1 de la notice.
+- Côté données, l'agrégat porte sur les cellules mesurées ; côté modèle, sur les cellules du modèle à la date de la notice, aux mêmes poids.
+- Le fit qui sert à une notice est celui où l'hypothèse de cette notice est cachée.
+
+| Géométrie | Écart moyen, modèle | Écart moyen, données | Même signe | Critère figé (≥ 10/13 et ≥ 1 pt) |
+|---|---|---|---|---|
+| Segment | 0,96 | 1,96 | 8/13 | **non** (de justesse) |
+| Cercle | 1,55 | 1,96 | 10/13 | **oui** |
+
+**Verdict figé.**
+
+- Le **cercle** reproduit l'incohérence des données : son agrégat sur les électorats mesurés reste, comme celui de Harris, sous le duel, et c'est le reste du champ qui comble l'écart.
+- Le **segment**, non.
+
+**Lecture, en partie après coup.**
+
+- Les cellules du modèle doivent à la fois redonner le duel (Newton) et suivre les reports d'entraînement.
+- Pour reproduire un écart d'environ 2 pt, le modèle charge sur les électorats non mesurés une part vers l'adversaire du RN qu'aucune donnée ne contrôle.
+- Le cercle le fait davantage. C'est cohérent avec sa cellule Mélenchon → Glucksmann (§8.96 e), mais non démontré.
+- Les plus gros écarts tombent là où la couverture est la plus faible : Attal – Le Pen d'août, 65,5 % du T1, écart de 7,4 dans les données et de 6,3 à 7,3 dans le modèle.
+- La notice unique de Glucksmann – Le Pen va en sens inverse dans les deux modèles (−1,1 et −2,9).
+- **Harris seul, 13 notices : non probant pour juger les géométries.** Le constat sur les données reste : les tableaux de reports de Harris et ses duels publiés ne sont pas sur la même base, à environ 2 pt près. Toute vraisemblance qui les contraint ensemble absorbe cet écart quelque part.
+
+**Conséquence, à arbitrer.**
+
+- Une option à 0 paramètre : faire porter l'écart de base explicitement, par un électorat « reste » non observé, au lieu de le laisser aux électorats non mesurés.
+- Elle touche la vraisemblance : maths d'abord, et seulement après l'arbitrage sur la géométrie.
+- Mise en file, sans priorité.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

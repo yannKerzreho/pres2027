@@ -1,0 +1,255 @@
+{
+ "spec": "§8.105 e1",
+ "notices": [
+  {
+   "hypothese": "Philippe – Le Pen",
+   "notice": "Harris Interactive 18-19 août 2026 (WP)",
+   "geo": "segment",
+   "s_n": 0.45,
+   "ecart_donnees": 0.86,
+   "ecart_modele": 1.17,
+   "couverture_T1": 83.5
+  },
+  {
+   "hypothese": "Philippe – Le Pen",
+   "notice": "Harris Interactive 19-21 octobre 2026 (WP)",
+   "geo": "segment",
+   "s_n": 0.43,
+   "ecart_donnees": 0.28,
+   "ecart_modele": -1.24,
+   "couverture_T1": 84.0
+  },
+  {
+   "hypothese": "Philippe – Le Pen",
+   "notice": "Harris Interactive 22-24 septembre 2026 (WP)",
+   "geo": "segment",
+   "s_n": 0.43,
+   "ecart_donnees": 1.0,
+   "ecart_modele": -0.46,
+   "couverture_T1": 84.5
+  },
+  {
+   "hypothese": "Philippe – Le Pen",
+   "notice": "Harris Interactive 25-27 mai 2026 (WP)",
+   "geo": "segment",
+   "s_n": 0.48,
+   "ecart_donnees": 0.26,
+   "ecart_modele": -2.12,
+   "couverture_T1": 85.0
+  },
+  {
+   "hypothese": "Philippe – Le Pen",
+   "notice": "Harris Interactive 3-5 novembre 2026 (WP)",
+   "geo": "segment",
+   "s_n": 0.42,
+   "ecart_donnees": 1.05,
+   "ecart_modele": 0.35,
+   "couverture_T1": 84.3
+  },
+  {
+   "hypothese": "Philippe – Le Pen",
+   "notice": "Harris Interactive 5-8 octobre 2026 (WP)",
+   "geo": "segment",
+   "s_n": 0.44,
+   "ecart_donnees": 0.97,
+   "ecart_modele": 0.52,
+   "couverture_T1": 85.5
+  },
+  {
+   "hypothese": "Philippe – Le Pen",
+   "notice": "Harris Interactive 7-8 juillet 2026 (WP)",
+   "geo": "segment",
+   "s_n": 0.49,
+   "ecart_donnees": 2.64,
+   "ecart_modele": 2.71,
+   "couverture_T1": 85.5
+  },
+  {
+   "hypothese": "Philippe – Le Pen",
+   "notice": "Harris Interactive 8-10 septembre 2026 (WP)",
+   "geo": "segment",
+   "s_n": 0.45,
+   "ecart_donnees": 1.17,
+   "ecart_modele": 0.32,
+   "couverture_T1": 82.0
+  },
+  {
+   "hypothese": "Philippe – Le Pen",
+   "notice": "Harris Interactive 18-19 août 2026 (WP)",
+   "geo": "cercle",
+   "s_n": 0.45,
+   "ecart_donnees": 0.86,
+   "ecart_modele": 1.66,
+   "couverture_T1": 83.5
+  },
+  {
+   "hypothese": "Philippe – Le Pen",
+   "notice": "Harris Interactive 19-21 octobre 2026 (WP)",
+   "geo": "cercle",
+   "s_n": 0.43,
+   "ecart_donnees": 0.28,
+   "ecart_modele": -0.34,
+   "couverture_T1": 84.0
+  },
+  {
+   "hypothese": "Philippe – Le Pen",
+   "notice": "Harris Interactive 22-24 septembre 2026 (WP)",
+   "geo": "cercle",
+   "s_n": 0.43,
+   "ecart_donnees": 1.0,
+   "ecart_modele": 0.29,
+   "couverture_T1": 84.5
+  },
+  {
+   "hypothese": "Philippe – Le Pen",
+   "notice": "Harris Interactive 25-27 mai 2026 (WP)",
+   "geo": "cercle",
+   "s_n": 0.48,
+   "ecart_donnees": 0.26,
+   "ecart_modele": -2.04,
+   "couverture_T1": 85.0
+  },
+  {
+   "hypothese": "Philippe – Le Pen",
+   "notice": "Harris Interactive 3-5 novembre 2026 (WP)",
+   "geo": "cercle",
+   "s_n": 0.42,
+   "ecart_donnees": 1.05,
+   "ecart_modele": 1.29,
+   "couverture_T1": 84.3
+  },
+  {
+   "hypothese": "Philippe – Le Pen",
+   "notice": "Harris Interactive 5-8 octobre 2026 (WP)",
+   "geo": "cercle",
+   "s_n": 0.44,
+   "ecart_donnees": 0.97,
+   "ecart_modele": 1.16,
+   "couverture_T1": 85.5
+  },
+  {
+   "hypothese": "Philippe – Le Pen",
+   "notice": "Harris Interactive 7-8 juillet 2026 (WP)",
+   "geo": "cercle",
+   "s_n": 0.49,
+   "ecart_donnees": 2.64,
+   "ecart_modele": 2.69,
+   "couverture_T1": 85.5
+  },
+  {
+   "hypothese": "Philippe – Le Pen",
+   "notice": "Harris Interactive 8-10 septembre 2026 (WP)",
+   "geo": "cercle",
+   "s_n": 0.45,
+   "ecart_donnees": 1.17,
+   "ecart_modele": 0.72,
+   "couverture_T1": 82.0
+  },
+  {
+   "hypothese": "Attal – Le Pen",
+   "notice": "Harris Interactive 18-19 août 2026 (WP)",
+   "geo": "segment",
+   "s_n": 0.43,
+   "ecart_donnees": 7.41,
+   "ecart_modele": 6.32,
+   "couverture_T1": 65.5
+  },
+  {
+   "hypothese": "Attal – Le Pen",
+   "notice": "Harris Interactive 25-27 mai 2026 (WP)",
+   "geo": "segment",
+   "s_n": 0.46,
+   "ecart_donnees": 0.37,
+   "ecart_modele": -0.92,
+   "couverture_T1": 84.0
+  },
+  {
+   "hypothese": "Attal – Le Pen",
+   "notice": "Harris Interactive 7-8 juillet 2026 (WP)",
+   "geo": "segment",
+   "s_n": 0.45,
+   "ecart_donnees": 3.63,
+   "ecart_modele": 3.56,
+   "couverture_T1": 82.0
+  },
+  {
+   "hypothese": "Attal – Le Pen",
+   "notice": "Harris Interactive 8-10 septembre 2026 (WP)",
+   "geo": "segment",
+   "s_n": 0.44,
+   "ecart_donnees": 3.41,
+   "ecart_modele": 3.42,
+   "couverture_T1": 80.0
+  },
+  {
+   "hypothese": "Attal – Le Pen",
+   "notice": "Harris Interactive 18-19 août 2026 (WP)",
+   "geo": "cercle",
+   "s_n": 0.43,
+   "ecart_donnees": 7.41,
+   "ecart_modele": 7.3,
+   "couverture_T1": 65.5
+  },
+  {
+   "hypothese": "Attal – Le Pen",
+   "notice": "Harris Interactive 25-27 mai 2026 (WP)",
+   "geo": "cercle",
+   "s_n": 0.46,
+   "ecart_donnees": 0.37,
+   "ecart_modele": 0.49,
+   "couverture_T1": 84.0
+  },
+  {
+   "hypothese": "Attal – Le Pen",
+   "notice": "Harris Interactive 7-8 juillet 2026 (WP)",
+   "geo": "cercle",
+   "s_n": 0.45,
+   "ecart_donnees": 3.63,
+   "ecart_modele": 4.82,
+   "couverture_T1": 82.0
+  },
+  {
+   "hypothese": "Attal – Le Pen",
+   "notice": "Harris Interactive 8-10 septembre 2026 (WP)",
+   "geo": "cercle",
+   "s_n": 0.44,
+   "ecart_donnees": 3.41,
+   "ecart_modele": 4.94,
+   "couverture_T1": 80.0
+  },
+  {
+   "hypothese": "Glucksmann – Le Pen",
+   "notice": "Harris Interactive 3-5 novembre 2026 (WP)",
+   "geo": "segment",
+   "s_n": 0.4,
+   "ecart_donnees": 2.37,
+   "ecart_modele": -1.1,
+   "couverture_T1": 82.3
+  },
+  {
+   "hypothese": "Glucksmann – Le Pen",
+   "notice": "Harris Interactive 3-5 novembre 2026 (WP)",
+   "geo": "cercle",
+   "s_n": 0.4,
+   "ecart_donnees": 2.37,
+   "ecart_modele": -2.88,
+   "couverture_T1": 82.3
+  }
+ ],
+ "synthese": {
+  "segment": {
+   "n": 13,
+   "moyenne_ecart_modele": 0.96,
+   "moyenne_ecart_donnees": 1.96,
+   "meme_signe": 8,
+   "transmet_biais": false
+  },
+  "cercle": {
+   "n": 13,
+   "moyenne_ecart_modele": 1.55,
+   "moyenne_ecart_donnees": 1.96,
+   "meme_signe": 10,
+   "transmet_biais": true
+  }
+ }
+}
