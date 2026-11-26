@@ -33,7 +33,7 @@ l'historique, ajouter en bas de « Historique ».
 
 - [x] [FAIT MAC 26/11 ~16:20Z, §8.99 : V1 segment 7,26, cercle 8,79, K 9,75 ; sans cellule polluée 7,10 / 9,06 / K 7,13 ; LFI 9,32 / 10,50 / K 2,57 ; non séparés, pas de prévision] **Relecture V1 corrigée (§8.98 c, g1)** : `cellules()` avec `s` à la date de la notice, `z` rejoué, verdict par le code, K sans la cellule polluée ; test du lecteur.
 - [x] [FAIT MAC 26/11 ~17:15Z, §8.101 : effet ≤ 0,1 pt ; V1 7,22 / 8,74 / K 9,75 ; LFI 9,24 / 10,40 ; non séparés] **Correctif `pred_date` (§8.100 c)** : dates filtrées par (hypothèse, électorat) aux cellules complètes, rejeu des 6 fits V1.
-- [ ] (Mac, 0 fit, spec figée §8.100 d-e1) **Témoin K_s** : K avec logit a/RN décalé pour redonner `s` ; V1 ≤ K_s − 1 et 2 hypothèses sur 3.
+- [x] [FAIT MAC 26/11 ~18:30Z, §8.102-8.103 : K_s 7,79 (8 cellules), pire que K 7,13 ; critère non rempli (segment 7,06, cercle 9,00)] **Témoin K_s** : K avec logit a/RN décalé pour redonner `s` ; V1 ≤ K_s − 1 et 2 hypothèses sur 3.
 - [ ] (Mac, 0 fit, spec figée §8.100 e2 ; remplace §8.98 g2) **Test β sans refit** : `kappa_rho` dans `reports_cellules`, ω re-profilé sur les reports d'entraînement, β\* sur la grille {0 ; 0,4 ; 0,56 ; 0,75 ; κ} ; fit seulement si LFI < 6, exprimés ≤ +1, V1 ≤ K_s.
 - [ ] (Mac, 12 fits chacune, critères figés §8.98 g3-6 ; ARBITRAGE de la revue du 26/11 ~14:40Z) Simplifications : segment η ≡ 0, arc 2π, P4 contre P4c ; « Aucun » constant (maths d'abord).
 

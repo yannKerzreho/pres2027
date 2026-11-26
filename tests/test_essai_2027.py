@@ -1,3 +1,4 @@
+import pytest
 """§8.92 : le retrait V2 ôte duels ET reports de la paire ; V1 n'ôte que les reports."""
 import model.backtest.essai_2027 as X
 
@@ -25,3 +26,13 @@ def test_verdict_regle_figee():
     assert verdict(S(10, 8, 2, 2.5, 7, 7.5), "") == "cercle"                         # bords inclus
     assert verdict(S(10, 8, 2, 2.6, 7, 7), "") == "non séparés"
     assert verdict(S(6, 9, 2.4, 2, 7.4, 7, "_date"), "_date") == "segment"
+
+
+def test_delta_ks_racine():
+    import numpy as np
+    from model.backtest.lire_essai_2027 import delta_ks
+    p, n, l = [30, 20, 50], [0.5, 0.1, 0.02], [0.3, -1.0, 2.0]
+    d = delta_ks(p, n, l, 0.55)
+    w = np.array(p) * (1 - np.array(n))
+    assert abs((w / (1 + np.exp(-(np.array(l) + d)))).sum() / w.sum() - 0.55) < 1e-9
+    assert delta_ks(p, n, [0, 0, 0], 0.5) == pytest.approx(0, abs=1e-9)

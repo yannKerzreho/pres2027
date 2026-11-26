@@ -5586,6 +5586,41 @@ Sont aussi rapportés, sans seuil : K_s sur l'électorat Mélenchon (RN + Aucun)
 **Limite déclarée.** K_s utilise le duel de la même notice que les reports cachés. Le modèle n'y a accès que par les
 duels ajustés à cette date, Harris inclus. Les deux témoins sont donc à égalité d'information sur le duel.
 
+### 8.103 Témoin K_s : résultat (§8.102 ; 26/11 ~18:30Z, Mac, 0 fit)
+
+**Mise en œuvre.** `k_s` et `delta_ks` dans `lire_essai_2027.py` (racine testée).
+
+- « Même notice » se lit comme même institut et même date de fin : les libellés T1 de Harris n'ont pas l'année, ceux de T2 l'ont. Ce constat a été fait pendant le débogage, avant toute lecture de K_s.
+- 0 notice exclue sur 13.
+
+| Lecture datée | Segment | Cercle | K | K_s |
+|---|---|---|---|---|
+| V1, 9 électorats | 7,22 | 8,74 | 9,75 | 10,04 |
+| V1, 8 cellules (hors cellule polluée) | **7,06** | 9,00 | 7,13 | 7,79 |
+| LFI, RN + Aucun | 9,24 | 10,40 | 2,57 | 3,94 |
+| Électorat Mélenchon, part RN des exprimés | 10,4 | 9,2 | 3,9 | 11,2 |
+
+**Critère figé (§8.100 e1, §8.102) : non rempli par les deux géométries.**
+
+| Géométrie | V1 | Seuil (K_s − 1) | Hypothèses améliorées |
+|---|---|---|---|
+| Segment | 7,06 | 6,79 | 2 sur 3 (Attal 3,75 contre 8,50 ; Glucksmann 8,65 contre 9,03 ; Philippe 9,30 contre 6,26) |
+| Cercle | 9,00 | 6,79 | 1 sur 3 |
+
+**Lecture.**
+
+- Le témoin qui connaît le duel fait **moins bien** que K (7,79 contre 7,13).
+- Forcer l'agrégat des électorats mesurés sur le duel tire le partage des exprimés vers le finaliste opposé au RN : LFI vers le RN tombe à 4 à 6 %, contre 8 à 12 mesurés.
+- C'est ce qu'on attend de l'approximation déclarée en §8.102 (6) : les électorats non mesurés (Zemmour, Dupont-Aignan, petits candidats) ne se partagent pas comme l'agrégat mesuré.
+- Le témoin équitable de §8.100 d n'est donc **pas plus exigeant** que K.
+- La conclusion de §8.99 tient contre les deux témoins : **aucune géométrie n'apporte quelque chose sur les reports cachés au-delà d'un témoin à 0 paramètre.**
+- Le segment s'en approche (7,06 contre 7,13 pour K), le cercle non.
+
+Lecture après coup, sans seuil : le segment est meilleur que K_s sur Attal – Le Pen et Glucksmann – Le Pen, et
+pire sur Philippe – Le Pen, l'hypothèse la plus documentée (8 notices).
+
+**Suite : le test β sans refit (§8.100 e2), dont le critère contient « V1 ≤ K_s ».**
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
