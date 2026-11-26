@@ -156,5 +156,53 @@ def main() -> dict:
     return res
 
 
+
+
+def confirmer() -> dict:
+    """§8.105 e4 : profil CONJOINT (ω, log_c) sur les reports d'entraînement, grille β étendue à {1,0 ; 1,25}.
+    θ ne dépend pas de c : log_c est profilé à θ fixé (1-D, sans recalcul des cellules).
+    Critère figé : « β = κ » confirmé si |ll(β*) − ll(κ)| < 2 nats, ou si β* ∈ [0,8κ ; 1,25κ]."""
+    grille = (0.0, 0.4, 0.56, 0.75, 1.0, 1.25, None)
+    res = {"spec": "§8.105 e4", "fits": {}}
+    for geo in ("segment", "cercle"):
+        for h in X.CACHES_V1:
+            ep = f"v1:{h}"
+            nom = "".join(ch for ch in ep if ch.isalnum())
+            r = min(json.loads((sr.OUT_DIR / f"essai2027_{geo}_{nom}.json").read_text())["inits"], key=lambda i: i["U"])
+            _, kw, _, _, _ = reconstruire(geo, ep, r, 4)
+            fit, kw, vals, champ, _ = reconstruire(geo, ep, r, len(kw["rep_y"]))
+            y = np.asarray(kw["rep_y"])
+
+            def ll_c(th):
+                o = minimize_scalar(lambda lc: -ll(th, y, float(np.exp(lc))), bounds=(0.0, 10.0), method="bounded",
+                                    options={"xatol": 1e-4})
+                return float(-o.fun), float(o.x)
+            prof = {}
+            for beta in grille:
+                cache = {}
+
+                def f(om):
+                    v, lc = ll_c(theta_entrainement(fit, kw, champ, beta, om))
+                    cache[om] = lc
+                    return -v
+                o = minimize_scalar(f, bounds=(r["omega"] - 6, r["omega"] + 6), method="bounded", options={"xatol": 1e-3})
+                prof["kappa" if beta is None else beta] = {"omega": float(o.x), "log_c": cache.get(o.x), "ll": float(-o.fun)}
+            kap = r["kappa"]
+            best = max(prof, key=lambda b: prof[b]["ll"])
+            bval = kap if best == "kappa" else best
+            ok = bool(abs(prof[best]["ll"] - prof["kappa"]["ll"]) < 2 or 0.8 * kap <= bval <= 1.25 * kap)
+            res["fits"][f"{geo}|{h}"] = {"kappa": kap, "profil": prof, "beta_etoile": best, "confirme": ok,
+                                         "log_c_fit": float(vals["log_c"])}
+            print(json.dumps({f"{geo}|{h}": {"kappa": round(kap, 3), "beta*": best, "confirme": ok,
+                                             "dll": {str(b): round(p["ll"] - prof["kappa"]["ll"], 1) for b, p in prof.items()}}}),
+                  flush=True)
+    res["synthese"] = {"confirme_tous": all(v["confirme"] for v in res["fits"].values()),
+                       "n_confirmes": sum(v["confirme"] for v in res["fits"].values())}
+    (sr.OUT_DIR / "essai2027_beta_conjoint.json").write_text(json.dumps(res, ensure_ascii=False, indent=1) + "\n")
+    print(json.dumps(res["synthese"]))
+    return res
+
+
 if __name__ == "__main__":
-    main()
+    import sys
+    confirmer() if "--conjoint" in sys.argv else main()

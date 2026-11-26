@@ -5788,6 +5788,31 @@ P(V1 segment ≤ V1 cercle) = **1,00** (seuil 0,8) : **segment préférable**.
 son ω, plus bas, donne moins d'« Aucun » aux fidèles. C'est un des rares points où le cercle fait mieux. Ces
 cellules pèsent peu dans la décision : elles sont presque fixées par R7.
 
+### 8.109 Confirmation β : profil conjoint (ω, log_c), grille étendue (§8.105 e4 ; 27/11 ~01:00Z, Mac, 0 fit)
+
+**Méthode.** `beta_essai_2027.py --conjoint`, grille β ∈ {0 ; 0,4 ; 0,56 ; 0,75 ; 1,0 ; 1,25 ; κ}.
+
+- ω est profilé ; `log_c` est profilé à θ fixé, puisque θ ne dépend pas de c.
+- Seules les reports d'entraînement servent.
+- À β = κ, le `log_c` profilé redonne celui du fit à 0,02 près.
+
+ll(β) − ll(κ), en nats :
+
+| Fit | κ | 0 | 0,56 | 0,75 | 1,0 | 1,25 | β\* | Confirmé |
+|---|---|---|---|---|---|---|---|---|
+| Segment, Philippe – Le Pen | 0,53 | −86 | +1,1 | +1,5 | −11 | −27 | 0,75 | oui (< 2 nats) |
+| Segment, Attal – Le Pen | 0,68 | −158 | −15 | +2,1 | −19 | −52 | 0,75 | oui (dans [0,8κ ; 1,25κ]) |
+| Segment, Glucksmann – Le Pen | 0,69 | −199 | −22 | +2,1 | −27 | −74 | 0,75 | oui (dans [0,8κ ; 1,25κ]) |
+| Cercle, Philippe – Le Pen | 0,91 | −137 | −35 | −8,8 | −1,5 | −19 | κ | oui |
+| Cercle, Attal – Le Pen | 0,92 | −192 | −48 | −12,5 | −1,8 | −27 | κ | oui |
+| Cercle, Glucksmann – Le Pen | 0,91 | −252 | −67 | −16,4 | −4,6 | −44 | κ | oui |
+
+**Critère figé : « β = κ » confirmé sur les 6 fits.**
+
+- La grille étendue borne maintenant l'optimum : 1,0 et 1,25 perdent.
+- Profiler `log_c` divise par 3 à 6 les écarts de §8.104 (β = 0 : de −86 à −252 au lieu de −237 à −1489), comme le prévoyait la revue de §8.105 c. La conclusion ne change pas.
+- **La pente de l'abstention est celle du partage, à environ ±25 % près. Le découplage β (1 paramètre) ne se justifie pas.** Le dossier β est clos.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
