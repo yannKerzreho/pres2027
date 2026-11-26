@@ -117,8 +117,9 @@ def cellules(fit, champ, ia, ib, k, w=None, kappa_rho=None, omega_rho=None):
                              jnp.asarray(fit.kappa_draws), jnp.asarray(fit.eta_draws[rows, ia] - fit.eta_draws[rows, ib]),
                              jnp.asarray(lse), jnp.asarray(om), jnp.asarray(s), poids, n_newton=8,
                              fidelite=True, kappa_rho=kr)
-    if np.ndim(th) == 2 and not (np.all(ia == ia[0]) and np.all(ib == ib[0]) and np.all(k == k[0])):
-        return 100 * np.asarray(th)                     # une cellule par ligne
+    lignes = not (np.all(ia == ia[0]) and np.all(ib == ib[0]) and np.all(k == k[0]))
+    if np.ndim(th) == 2 and (lignes or (w is not None and np.ndim(w) == 2 and not np.allclose(w, w[0]))):
+        return 100 * np.asarray(th)                     # une cellule par ligne (§8.105 a : aussi si w varie)
     return 100 * np.asarray(th).mean(0)
 
 

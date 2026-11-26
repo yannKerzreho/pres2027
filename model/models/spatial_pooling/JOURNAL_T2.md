@@ -7,7 +7,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## État (mis à jour à chaque réveil)
 
-- Dernière revue Opus : 2026-11-26 ~16:15Z (session locale)
+- Dernière revue Opus : 2026-11-26 ~20:15Z (session locale)
 - OBJECTIF (utilisateur, via l'orchestrateur, 2026-11-14) : « un modèle qui est
   backé par le passé mais qui représente bien les sondages et tendances
   actuels ». 2017/2022 servent à CALIBRER et VALIDER ; le critère final est la
@@ -35,6 +35,10 @@ l'historique, ajouter en bas de « Historique ».
 - [x] [FAIT MAC 26/11 ~17:15Z, §8.101 : effet ≤ 0,1 pt ; V1 7,22 / 8,74 / K 9,75 ; LFI 9,24 / 10,40 ; non séparés] **Correctif `pred_date` (§8.100 c)** : dates filtrées par (hypothèse, électorat) aux cellules complètes, rejeu des 6 fits V1.
 - [x] [FAIT MAC 26/11 ~18:30Z, §8.102-8.103 : K_s 7,79 (8 cellules), pire que K 7,13 ; critère non rempli (segment 7,06, cercle 9,00)] **Témoin K_s** : K avec logit a/RN décalé pour redonner `s` ; V1 ≤ K_s − 1 et 2 hypothèses sur 3.
 - [x] [FAIT MAC 26/11 ~20:00Z, §8.104 : β* ≈ κ (segment, à moins de 2 nats) ou = κ (cercle) ; β = 0 rejeté par 237 à 1489 nats ; LFI 10,0 / 10,4 > 6 ; pas de fit β ; g5 abandonné] **Test β sans refit** : `kappa_rho` dans `reports_cellules`, ω re-profilé sur les reports d'entraînement, β\* sur la grille {0 ; 0,4 ; 0,56 ; 0,75 ; κ} ; fit seulement si LFI < 6, exprimés ≤ +1, V1 ≤ K_s.
+- [ ] (Mac, 0 fit, critère figé §8.105 e1) **Cohérence duel / reports dans le modèle** : écart s_n − agrégat des cellules du modèle sur E_n, 13 notices, 6 fits V1.
+- [ ] (Mac, 0 fit, §8.105 e2) **Bootstrap apparié par notice** de V1 : segment, cercle, K, K_s.
+- [ ] (Mac, 0 fit, §8.105 e3) **Fidélité R7 en lecture** (`fidelite=False`) sur les cellules des finalistes.
+- [ ] (Mac, 0 fit, §8.105 e4) **Profil conjoint (ω, log_c), grille β étendue à {1,0 ; 1,25}** : confirmation.
 - [ ] (Mac, 12 fits chacune, critères figés §8.98 g3-6 ; ARBITRAGE de la revue du 26/11 ~14:40Z) Simplifications : segment η ≡ 0, arc 2π, P4 contre P4c (« Aucun » constant abandonné, §8.104).
 
 - [x] [FAIT MAC 26/11 ~14:35Z, §8.97 : V1 segment 7,54, cercle 8,88, K 9,75 ; LFI segment 9,41, cercle 10,53, K 2,57 ; non séparés, pas de prévision ; §8.96 d démenti ; RN seul (post hoc) cercle 1,8 contre 5,6, « Aucun » 19,2 contre 13,2] **V1 de l'essai 2027 relu à la date de chaque notice** (6 fits).
@@ -1342,6 +1346,34 @@ conservé pour l'historique.
   instables (R̂ 7,5) et s_ab +0,7 pt ⇒ phase 2 à faire.
 
 
+
+## Revue Opus 2026-11-26 ~20:15Z (session locale) — K_s, test β, parcimonie : intégration point par point
+
+La revue porte sur §8.101 à §8.104. Le relecteur n'a modifié aucun fichier. Son diagnostic du point 3 a été refait et reproduit avant intégration.
+
+1. **K_s conforme à §8.102 ; des électorats sans base étaient retirés en silence.** INTÉGRÉ (§8.105 a) : ils sont désormais rapportés, sans effet observé.
+2. **« Même notice = institut + date de fin » juste ici, mais fragile.** INTÉGRÉ : assertion « 2 lignes de duel par notice ».
+3. **L'explication de §8.103 est contredite dans sa direction.** INTÉGRÉ, vérifié.
+   - Le duel s_n dépasse l'agrégat des cellules mesurées dans 13 notices sur 13, de 2,0 pt en moyenne (0,3 à 7,4).
+   - La phrase de §8.103 est retirée.
+   - Ce constat est lu après coup ; le test sur le modèle est figé en §8.105 e1 et mis en file.
+4. **K_s pire que K rend « ≤ K_s » plus laxiste.** INTÉGRÉ (§8.105 d) : le témoin devient le meilleur de K et K_s, soit K à ce jour.
+5. **Code vectorisé correct ; bug latent dans la moyenne des lignes quand w varie.** INTÉGRÉ : bug corrigé (non déclenché auparavant), tests verts.
+6. **β = 0 est un « Aucun » global, pas g5.** INTÉGRÉ (§8.105 c) : g5 « écartée par condition et parcimonie », pas « réfutée ».
+7. **« 0,56 réfutée » est faux pour le segment.** INTÉGRÉ : §8.104 précisé, « cercle seulement ».
+8. **Grille non bornante et log_c fixé.** INTÉGRÉ : l'énoncé devient « β ≥ ~κ, pas d'aplatissement ». Confirmation en file (§8.105 e4).
+9. **« L'erreur LFI ne vient pas de la pente » tient.** INTÉGRÉ.
+10. **Sur-interprétation de 8 cellules et 13 notices.** INTÉGRÉ : bootstrap apparié par notice, critère figé en §8.105 e2, en file.
+11. **Adopter le segment ; ω et log_c justifiés ; η hiérarchique, P4c et R7 sans test en leur faveur sur les reports.** INTÉGRÉ comme pistes :
+    - R7, en lecture sans fit, en file ;
+    - g3 et g6, sur le segment seulement après l'arbitrage, 3 fits chacun (au lieu de 12).
+
+**Pistes retenues :** e1 à e4, toutes sans fit, en file. g3 et g6 restent derrière l'ARBITRAGE.
+
+**ARBITRAGE À TRANCHER (utilisateur), inchangé et renforcé.** Le relecteur recommande d'adopter le segment.
+
+- Le cercle n'apporte rien contre aucun des deux témoins, ni sur les données 2027, ni en V2, ni en V1.
+- Adopter le segment comme géométrie unique ? On économise alors l'arc et g4 (12 fits), et g3 et g6 se testent sur le segment.
 
 ## Revue Opus 2026-11-26 ~16:15Z (session locale) — §8.99, rejeu, test β : intégration point par point
 

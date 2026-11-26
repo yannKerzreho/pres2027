@@ -74,6 +74,9 @@ def k_s(raw, rep, h, autres):
             exclues.append(nt); continue
         t = t[[a, b, "Aucun"]].dropna()
         E = [X.court(x) for x in t.index if X.court(x) in base]
+        sans_base = [X.court(x) for x in t.index if X.court(x) not in base]
+        if sans_base:                                   # §8.105 a : rapporté, non silencieux
+            exclues.append(f"{nt} : électorats sans base {sans_base}")
         # même notice = même institut et même date de fin (les libellés T1 et T2 diffèrent : « 2026 » absent)
         r = raw[(raw.institut == g.institut.iloc[0]) & (raw.date_fin.astype(str).str[:10] == str(g.date_fin.iloc[0])[:10])]
         duel = r[(r.tour == "Deuxième tour") & (r.hypothese.str.replace("Hypothèse ", "").str.strip() == h)]
@@ -81,6 +84,7 @@ def k_s(raw, rep, h, autres):
         hyps = [x for x, gg in t1.groupby("hypothese") if {a, b, *E} <= set(gg.candidat)]
         if duel.empty or not hyps or not E:
             exclues.append(nt); continue
+        assert len(duel) == 2, (nt, len(duel))          # §8.105 a : une seule notice par institut et date
         d = duel.set_index("candidat").intention
         s_n = float(d[a] / (d[a] + d[b]))
         pe = np.mean([t1[t1.hypothese == x].set_index("candidat").intention.reindex(E).to_numpy() for x in hyps], axis=0)

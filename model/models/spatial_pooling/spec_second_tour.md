@@ -5611,7 +5611,7 @@ duels ajustés à cette date, Harris inclus. Les deux témoins sont donc à éga
 
 - Le témoin qui connaît le duel fait **moins bien** que K (7,79 contre 7,13).
 - Forcer l'agrégat des électorats mesurés sur le duel tire le partage des exprimés vers le finaliste opposé au RN : LFI vers le RN tombe à 4 à 6 %, contre 8 à 12 mesurés.
-- C'est ce qu'on attend de l'approximation déclarée en §8.102 (6) : les électorats non mesurés (Zemmour, Dupont-Aignan, petits candidats) ne se partagent pas comme l'agrégat mesuré.
+- C'est ce qu'on attend de l'approximation déclarée en §8.102 (6) : les électorats non mesurés (Zemmour, Dupont-Aignan, petits candidats) ne se partagent pas comme l'agrégat mesuré. **RETIRÉ en §8.105 b** (contredit dans sa direction).
 - Le témoin équitable de §8.100 d n'est donc **pas plus exigeant** que K.
 - La conclusion de §8.99 tient contre les deux témoins : **aucune géométrie n'apporte quelque chose sur les reports cachés au-delà d'un témoin à 0 paramètre.**
 - Le segment s'en approche (7,06 contre 7,13 pour K), le cercle non.
@@ -5644,7 +5644,7 @@ pire sur Philippe – Le Pen, l'hypothèse la plus documentée (8 notices).
 - Sur le segment, β\* est le point de la grille voisin de κ, à moins de 2 nats : pas de découplage.
 - Sur le cercle, κ est le meilleur point, devant 0,75 de 11 à 20 nats.
 - Un « Aucun » constant (β = 0) est rejeté par 237 à 1489 nats sur les reports d'entraînement.
-- **La pente « impliquée » de 0,56 (§8.94 c), lue sur des cellules à l'as_of, est réfutée** par les reports d'entraînement lus à la date.
+- **La pente « impliquée » de 0,56 (§8.94 c), lue sur des cellules à l'as_of, est réfutée** par les reports d'entraînement lus à la date. **Pour le cercle seulement** (§8.105 c).
 
 **Critère figé : non rempli par les deux géométries. Pas de fit β.**
 
@@ -5661,6 +5661,52 @@ pire sur Philippe – Le Pen, l'hypothèse la plus documentée (8 notices).
 - §8.98 g5 (« Aucun » constant par électorat, environ 10 paramètres) n'avait de sens que si β\* = 0 : **abandonnée** par sa propre condition (§8.100 e3).
 
 **Le mécanisme d'abstention reste celui du modèle, sans paramètre ajouté.**
+
+### 8.105 Revue du 26/11 ~20:15Z sur §8.101-8.104 : retraits, incohérence duel / reports, critères révisés AVANT lecture
+
+**(a) Code.**
+
+- La mise en œuvre de K_s suit la définition. Les électorats sans cellule de base étaient retirés de E_n sans être signalés ; ils sont désormais rapportés (aucun effet observé).
+- « Même notice = même institut + même date de fin » est juste sur ces données : une notice Harris par date, 2 lignes de duel par notice. Une assertion le garde.
+- Le chemin vectorisé du test β est correct.
+- Un bug latent, non déclenché, est corrigé : `cellules()` moyennait les lignes quand ia, ib et k étaient constants, même avec `w` variable par ligne.
+
+**(b) L'explication de §8.103 est RETIRÉE : elle est contredite dans sa direction.** Vérifié en refaisant le calcul du relecteur.
+
+- On agrège les cellules MESURÉES de Harris avec les poids T1 de la même notice. Ce partage est **inférieur** à la part du duel s_n dans **13 notices sur 13**, de 0,3 à 7,4 pt, avec une moyenne d'environ 2,0.
+- Si l'écart venait des électorats non mesurés, ceux-ci devraient pencher vers l'adversaire du RN, contrairement à ce que §8.103 supposait (Zemmour et Dupont-Aignan penchent vers le RN).
+- **Cause plus plausible : une incohérence de base entre les tableaux de reports et le duel publié** (abstentionnistes ou non-réponses du T1, base différente).
+- Le Newton du modèle impose la même contrainte « agrégat = s ». S'il hérite du biais, ses cellules sont tirées vers l'adversaire du RN, dans le sens de l'erreur LFI → RN.
+- Ce constat est lu après coup : il ne sert à aucun verdict passé. Il est mis en file comme diagnostic.
+
+**(c) Précisions sur §8.104.**
+
+- « Pente impliquée 0,56 réfutée » ne vaut **que pour le cercle**, où 0,56 perd 63 à 127 nats contre κ. Pour le segment, β\* = 0,56 sur Philippe – Le Pen, et l'écart à κ reste sous 2 nats ailleurs.
+- La grille ne borne pas l'optimum (0,75 > κ pour 2 segments sur 3 ; le cercle croît jusqu'à κ). L'énoncé solide est **« β ≥ ~κ : pas d'aplatissement »**.
+- `log_c` est fixé à sa valeur à κ, ce qui surestime les écarts en nats.
+- β = 0 est un « Aucun » constant **global**, à 0 paramètre. Son rejet ne réfute pas g5 (un « Aucun » par électorat, environ 10 paramètres) : g5 est **écartée par sa condition figée et par parcimonie, pas réfutée**.
+- « L'erreur LFI ne vient pas de la pente » tient : LFI vaut 10,0 au β\* du segment.
+
+**(d) Critères révisés pour la suite, figés avant toute lecture nouvelle.**
+
+- K_s est pire que K, donc « ≤ K_s » est plus laxiste que « ≤ K − 1 ». Le témoin des reports devient **le meilleur de K et K_s en MAE agrégée sur les mêmes cellules** (K à ce jour).
+- Avec 8 cellules, 13 notices, un seul institut et une seule notice pour Glucksmann – Le Pen, tout écart de V1 se lit avec un **bootstrap apparié par notice** (2 000 tirages, graine 0).
+
+**(e) Pistes figées.**
+
+1. **Cohérence duel / reports dans le modèle** (0 fit). Écart s_n − agrégat des cellules du modèle sur E_n, aux mêmes 13 notices, pour les 6 fits V1.
+   - La contrainte du Newton est déclarée transmettre le biais si l'écart du modèle a le même signe que celui des données dans au moins 10 notices sur 13 et une moyenne d'au moins 1 pt.
+   - Le constat sur les données (b) est déjà lu, déclaré.
+2. **Bootstrap apparié par notice** (0 fit) sur V1 du segment, du cercle, de K et de K_s.
+   - La géométrie apporte seulement si l'IC à 90 % de V1 − V1(meilleur témoin) est entièrement sous −0,5.
+   - « Segment préférable » si P(V1 segment ≤ V1 cercle) ≥ 0,8 ; rapporté pour l'arbitrage, sans le trancher.
+3. **Fidélité R7 en lecture** (`fidelite=False`, 0 fit) sur les cellules des électorats des finalistes, cachées et d'entraînement.
+   - R7 se justifie si sa suppression dégrade la MAE de ces cellules de plus de 1 pt.
+4. **Profil conjoint (ω, log_c), grille β étendue à {1,0 ; 1,25}** (0 fit, confirmation).
+   - « β = κ » est confirmé si |ll(β\*) − ll(κ)| < 2 nats, ou si β\* est dans [0,8κ ; 1,25κ].
+5. **g3 (η ≡ 0) et g6 (P4 contre P4c) sur le segment** (3 fits chacun) : seulement après l'arbitrage sur le segment.
+   - Seuils : V2 dégradé de 0,3 au plus, V1 de 0,5 au plus, vraisemblance des duels cachés de 2 nats au plus.
+   - En cas d'égalité, le plus simple.
 
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
