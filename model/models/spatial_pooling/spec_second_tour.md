@@ -5338,14 +5338,14 @@ lse. Seuils inchangés (§8.92).
 - **Verdict : non séparés**, comme en §8.93.
 - **Pas de « prévision » :**
   - V2 ne bat aucun témoin ;
-  - en V1, le segment bat K de 2,2 pt (le cercle de 0,9), mais K est pollué pour l'électorat Attal (§8.93).
+  - en V1, « le segment bat K de 2,2 pt » est **retiré** (§8.98 b) : sans la cellule polluée, aucune géométrie ne bat K.
 - Par la règle de parcimonie de §8.92, **le segment l'emporte**. La décision reste à l'utilisateur.
 
 **L'estimation de §8.96 d est démentie.** Elle prédisait un gros gain à la date et une bascule nette vers le
 segment (LFI 4,1 contre 6,2), mais elle portait sur des cellules vues en échantillon. Sur reports cachés,
 dater fait gagner 0,2 à 1,7 pt, pas 3 à 5. LFI reste à 4 fois l'erreur de K.
 
-**Lu après coup, hors critère : la part RN seule de l'électorat Mélenchon.**
+**Lu après coup, hors critère : la part RN seule de l'électorat Mélenchon.** RETIRÉ en §8.98 a (compensation d'erreurs) ; chiffres provisoires (§8.98 c).
 
 | Hypothèse | Mesuré | Segment | Cercle |
 |---|---|---|---|
@@ -5365,6 +5365,72 @@ dater fait gagner 0,2 à 1,7 pt, pas 3 à 5. LFI reste à 4 fois l'erreur de K.
 **Erratum de lecture.** Le lecteur imprime encore 1,95 et 2,18 pour V2 à la date, car le fit V2
 Hollande–Le Pen corrigé (`masque_lse`, §8.96 a : 2,01 et 2,15) n'a pas été réécrit dans les résultats. Le
 verdict ne change pas.
+
+### 8.98 Revue du 26/11 ~14:40Z sur §8.97 : deux retraits, un défaut de lecture
+
+**(a) Retrait du post hoc favorable au cercle.** Vérifié depuis le JSON.
+
+- En points du total, « RN seul, cercle 1,8 contre 5,6 » est une **compensation d'erreurs**.
+- Part du RN parmi les **exprimés** de l'électorat Mélenchon :
+
+| Hypothèse | Mesuré | Cercle | Segment | K |
+|---|---|---|---|---|
+| Philippe – Le Pen | 19,2 | 35,4 | 11,3 | |
+| Attal – Le Pen | 19,5 | 27,1 | 27,8 | |
+| Glucksmann – Le Pen | 25,0 | 10,3 | 6,5 | |
+| **MAE** | | **12,8** | **11,6** | **3,9** |
+
+- Le cercle tombe juste en part du total parce qu'il compte trop d'« Aucun » : ses exprimés valent 27,7 au lieu de 44,8 face à Philippe.
+- **Ce post hoc ne dit rien en faveur du cercle.** Sa ligne de §8.97 est retirée.
+
+**(b) Retrait de « le segment bat K de 2,2 ».**
+
+- Sans la cellule K polluée (Glucksmann – Le Pen, électorat Attal : K vient de la seule hypothèse Mélenchon – Le Pen), en lecture datée, sur 8 électorats : segment 7,33, cercle 9,20, K 7,13.
+- **Aucune géométrie ne bat K**, ni en V1 ni sur LFI.
+
+**(c) Défaut de lecture dans `cellules()` (`essai_2027.py`, ligne 103).** Avec `w` à la date de la notice, la part de
+duel `s` contrainte par le Newton reste `duel_draws` à l'as_of, alors que l'entraînement utilise `s_r` à la
+date (`joint_model.py`, ligne 329).
+
+- Les `pred_date` V1 de §8.97 sont donc **hybrides**, et le défaut touche surtout le partage a contre RN.
+- Correction : `_duel_par_tirage(fit, w, …)`, puis rejouer le `z` sauvegardé, sans fit. Mise en file.
+- Les chiffres de §8.97 restent provisoires jusque-là.
+
+**(d) Verdict de §8.97.** Il avait été appliqué à la main ; le code l'applique désormais aussi à la lecture
+datée (clé `verdict_geometrie_date` de `essai2027_lecture.json`) : **non séparés**, inchangé.
+
+**(e) Fait structurel retenu : K bat tout sur LFI.**
+
+- LFI donne environ 35 % à l'adversaire du RN et environ 55 % « Aucun », quel que soit l'adversaire.
+- Un modèle où abstention et partage dépendent de la distance ne produit pas cette platitude ; ses erreurs changent de sens selon l'adversaire.
+- **Une pente β unique ne règle que le niveau** : le critère « LFI ≤ 6 » de §8.94 c est probablement hors d'atteinte avec β seul.
+- **β est suspendu** derrière un test sans fit (§8.98 g, 2).
+
+**(f) Taille réelle des données, déclarée.**
+
+- Reports d'avant T1 : Glucksmann – Le Pen et Mélenchon – Le Pen ne comptent qu'une notice Harris chacune.
+- Les 3 cellules V1 Glucksmann viennent donc d'un seul sondage.
+- V2 repose sur 8 paires corrélées.
+- P4c (rayons sur 30 j) a été utilisé en 2027 alors que §8.89 le laisse non adopté : déclaré comme choix du protocole §8.92.
+- **Le BT ±60 j est figé comme témoin V2 de tout nouvel essai.**
+- Biais mineur, sans incidence sur le verdict : `searchsorted` prend le nœud suivant au lieu du plus proche.
+
+**(g) Pistes et critères, figés avant lecture.** Tout résultat de reports reste « selon Harris, non probant ».
+
+1. **Relecture corrigée, sans fit.** On applique (c), puis la règle de §8.92 par le code ; on rapporte aussi K sans la cellule polluée.
+2. **Test du niveau d'« Aucun », sans fit.** On rejoue le `z` V1 avec β ∈ {0,4 ; 0,56 ; 0,75}, seul ρ changeant.
+   - Un fit β n'est demandé que si LFI < 6 pt **et** si la part RN parmi les exprimés ne se dégrade pas de plus de 1 pt.
+3. **Segment η ≡ 0 contre le segment actuel** (−20 paramètres), sur 11 épreuves.
+   - η ≡ 0 est retenu si la log-vraisemblance prédictive des observations cachées vérifie ΣΔ ≥ −5 nats **et** si V2 daté se dégrade de 0,3 pt au plus.
+   - En cas d'égalité, η ≡ 0.
+4. **Arc figé à 2π contre arc libre, puis segment contre cercle fermé.**
+   - La géométrie la plus riche n'est retenue que si ΣΔ ≥ 5 nats et 8 épreuves sur 11 ; sinon la plus parcimonieuse.
+5. **« Aucun » constant par électorat** (1 paramètre par électorat, à la place de la distance).
+   - Retenu si V1 ≤ K − 1 et si V2 ne se dégrade pas de plus de 0,3.
+   - Maths à écrire avant le code.
+6. **P4 contre P4c.** P4 est retenu si V2 daté se dégrade de 0,3 au plus et si z_σ max ≤ 3 ; sinon P4c.
+
+Les pistes 1 et 2 se font sans fit. Les pistes 3 à 6 sont des fits Mac (12 chacun) ; elles touchent au modèle, d'où l'arbitrage soumis à l'utilisateur.
 
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 

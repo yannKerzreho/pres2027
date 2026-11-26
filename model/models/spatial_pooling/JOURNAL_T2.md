@@ -7,7 +7,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## État (mis à jour à chaque réveil)
 
-- Dernière revue Opus : 2026-11-26 ~11:00Z (session locale)
+- Dernière revue Opus : 2026-11-26 ~14:40Z (session locale)
 - OBJECTIF (utilisateur, via l'orchestrateur, 2026-11-14) : « un modèle qui est
   backé par le passé mais qui représente bien les sondages et tendances
   actuels ». 2017/2022 servent à CALIBRER et VALIDER ; le critère final est la
@@ -31,10 +31,14 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- [ ] (Mac, 0 fit) **Relecture V1 corrigée (§8.98 c, g1)** : `cellules()` avec `s` à la date de la notice, `z` rejoué, verdict par le code, K sans la cellule polluée ; test du lecteur.
+- [ ] (Mac, 0 fit, après la ligne précédente) **Test du niveau d'« Aucun » (§8.98 g2)** : β ∈ {0,4 ; 0,56 ; 0,75} sur `z` V1 ; fit β seulement si LFI < 6 et part RN des exprimés non dégradée de plus de 1.
+- [ ] (Mac, 12 fits chacune, critères figés §8.98 g3-6 ; ARBITRAGE de la revue du 26/11 ~14:40Z) Simplifications : segment η ≡ 0, arc 2π, P4 contre P4c ; « Aucun » constant (maths d'abord).
+
 - [x] [FAIT MAC 26/11 ~14:35Z, §8.97 : V1 segment 7,54, cercle 8,88, K 9,75 ; LFI segment 9,41, cercle 10,53, K 2,57 ; non séparés, pas de prévision ; §8.96 d démenti ; RN seul (post hoc) cercle 1,8 contre 5,6, « Aucun » 19,2 contre 13,2] **V1 de l'essai 2027 relu à la date de chaque notice** (6 fits).
 
 - [x] [FAIT 25/11 ~22:00Z, §8.93 : non séparés au critère figé ; BT 1,81 contre 4,9 ; cercle +79 à +110 nats et LFI → RN 1,5 contre 6,4 (lu après coup) ; défaut commun : « Aucun » de LFI] **Essai 2027 cercle contre segment (§8.92).**
-- [x] [FAIT 26/11 ~10:00Z, §8.95 : V2 cercle 1,95, segment 2,18, BT 1,81 ; non séparés, pas de prévision au seuil figé, mais à 0,14 pt de BT] Relecture V2 de l'essai 2027.
+- [x] [FAIT 26/11 ~10:00Z, §8.95 : V2 cercle 1,95, segment 2,18, BT 1,81 ; non séparés, pas de prévision au seuil figé ; « à 0,14 pt de BT » retiré en §8.96 b] Relecture V2 de l'essai 2027.
 - [ ] (spec d'abord, sur accord de l'utilisateur ; forme β découplé proposée en §8.94 c) **Abstention sur le cercle 2027** : corriger la case
   « Aucun » d'un électorat éloigné des deux finalistes, critères figés contre K et BT.
 
@@ -1335,6 +1339,42 @@ conservé pour l'historique.
   instables (R̂ 7,5) et s_ab +0,7 pt ⇒ phase 2 à faire.
 
 
+
+## Revue Opus 2026-11-26 ~14:40Z (session locale) — §8.97 relu : intégration point par point
+
+Rapport du relecteur (Opus, aucun fichier modifié). Points vérifiés depuis les JSON avant intégration.
+
+1. **Chiffres de §8.97 conformes aux JSON.** INTÉGRÉ.
+   - Erratum Hollande déjà déclaré.
+   - La ligne « à 0,14 pt de BT » de la file est corrigée.
+2. **`verdict_geometrie` calculé sur l'as_of seulement.** INTÉGRÉ.
+   - Le lecteur ajoute `verdict_geometrie_date` : non séparés, inchangé.
+   - Pas de test du lecteur : mis en file avec la piste 1.
+3. **`cellules()` garde la part `s` à l'as_of quand on lui passe `w` à la date.** INTÉGRÉ (§8.98 c).
+   - Vérifié dans le code : `pred_date` est hybride.
+   - Relecture sans fit en file, en tête.
+4. **Le post hoc « cercle 1,8 contre 5,6 sur RN » est une compensation d'erreurs.** INTÉGRÉ, recalculé.
+   - Part RN parmi les exprimés : cercle 12,8, segment 11,6, K 3,9.
+   - La ligne est retirée de §8.97 (§8.98 a).
+5. **K bat tout sur LFI, et c'est structurel (platitude 35 / 55) ; β seul ne règle que le niveau.** INTÉGRÉ.
+   - β est suspendu derrière un test sans fit (piste 2).
+6. **K pollué : sans la cellule Attal, segment 7,33, cercle 9,20, K 7,13.** INTÉGRÉ, recalculé.
+   - « Le segment bat K de 2,2 » est retiré.
+   - Une seule notice pour Glucksmann – Le Pen et pour Mélenchon – Le Pen : déclaré.
+   - BT ±60 j figé comme témoin V2.
+7. **Pas de fuite, une seule plateforme ; `searchsorted` prend le nœud suivant ; P4c non adopté utilisé en 2027.** INTÉGRÉ (déclaré, §8.98 f). Sans incidence sur le verdict.
+8. **Parcimonie.** INTÉGRÉ comme pistes 3, 4 et 6. η ≡ 0 et arc figé n'ont jamais été testés en prédictif en 2027.
+   - Arc : aucune épreuve prédictive ne le justifie.
+   - η : |η| ≤ 0,18 au MAP.
+   - P4c : intrus probable.
+   - R7 est gardé.
+
+Retenu en file : pistes 1 et 2 (sans fit, Mac). Pistes 3 à 6 : critères figés en §8.98 g, fits à lancer.
+
+ARBITRAGE À TRANCHER (utilisateur) :
+- l'essai 2027 ne sépare pas les géométries, et aucune ne bat les témoins simples (K, BT daté) ;
+- à la règle figée, la parcimonie désigne le **segment** ;
+- faut-il l'adopter comme modèle unique, ou d'abord lancer les simplifications 3 à 6 (η ≡ 0, arc figé, P4), qui peuvent encore retirer des paramètres ?
 
 ## Revue Opus 2026-11-25 ~00:15Z (session locale) — P4c, extrémité, 2017, neutralité : intégration point par point
 

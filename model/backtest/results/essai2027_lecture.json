@@ -1375,6 +1375,7 @@
   ],
   "LFI_RN_K": 2.57,
   "verdict_geometrie": "non séparés",
+  "verdict_geometrie_date": "non séparés",
   "complet_segment": {
    "U": -8651.691,
    "arc": null,

@@ -105,6 +105,12 @@ def main() -> dict:
         dv2, dv1 = (S[f"{t}_cercle"][0] - S[f"{t}_segment"][0] for t in ("V2", "V1"))
         S["verdict_geometrie"] = ("cercle" if e >= 2 and dv2 <= .5 and dv1 <= .5 else
                                   "segment" if -e >= 2 and -dv2 <= .5 and -dv1 <= .5 else "non séparés")
+    # revue du 26/11 ~14:40Z : la même règle figée, appliquée par le code à la lecture DATÉE
+    if all(S.get(f"V2_{g}_date") and S.get(f"V1_{g}_date") for g in G):
+        e = S["LFI_RN_segment_date"] - S["LFI_RN_cercle_date"]
+        dv2, dv1 = (S[f"{t}_cercle_date"][0] - S[f"{t}_segment_date"][0] for t in ("V2", "V1"))
+        S["verdict_geometrie_date"] = ("cercle" if e >= 2 and dv2 <= .5 and dv1 <= .5 else
+                                       "segment" if -e >= 2 and -dv2 <= .5 and -dv1 <= .5 else "non séparés")
     for x in ("complet",):
         for g in G:
             r = charger(g, x)
