@@ -5553,6 +5553,39 @@ sont rejoués et reproduisent le fit sauvegardé à l'identique.
 **Verdict figé (code) : non séparés.** Pas de prévision. Les conclusions de §8.99 et §8.100 sont inchangées.
 Prochaine étape : le témoin K_s (§8.100 d-e1).
 
+### 8.102 Témoin K_s : définition exacte (précise §8.100 d ; écrite AVANT code, 26/11 ~18:00Z)
+
+§8.100 d laissait ouverts les électorats des finalistes et ceux sans cellule. K_s reste à 0 paramètre ajusté.
+
+**Pour chaque notice n de l'hypothèse cachée h = a – b :**
+
+1. **E_n**, les électorats T1 qui ont des cellules a, b et « Aucun » complètes dans la notice, y compris ceux des finalistes. Les cellules mesurées ne servent qu'à fixer E_n, jamais à la valeur prédite.
+2. **Poids p_e** : intention T1 de e dans la même notice, renormalisée sur E_n.
+   - On prend l'hypothèse T1 de la notice qui contient a, b et tous les e de E_n ; s'il y en a plusieurs, leur moyenne.
+   - Sans hypothèse T1 convenable : notice exclue de K_s, nombre rapporté.
+3. **Cible s_n** : part de a dans le duel a – b de la même notice (`date_fin` égale). Sans duel dans la notice : notice exclue, nombre rapporté.
+4. **Cellules de base** (a, b, Aucun) :
+   - **e non finaliste** : K_e (§8.92), soit les mêmes électorats dans les AUTRES hypothèses X – Le Pen, en moyenne ;
+   - **électorat de Le Pen** : idem, K de l'électorat Le Pen ;
+   - **électorat de a** : moyenne, sur les autres hypothèses X – Le Pen, de la cellule de X dans son propre électorat (fidélité), avec le même ordre (soi, Le Pen, Aucun).
+5. **Ajustement** : on garde « Aucun » (n_e) de chaque cellule de base, et on écrit le partage des exprimés comme σ(l_e + δ), où l_e = logit(a_e / (a_e + b_e)).
+   - δ est l'unique racine de Σ_e p_e (1 − n_e) σ(l_e + δ) / Σ_e p_e (1 − n_e) = s_n.
+   - La racine existe et est unique, la fonction étant monotone.
+6. **Approximation déclarée** : les électorats hors E_n (petits candidats, environ 15 à 25 % du T1) sont supposés se partager comme l'agrégat de E_n. C'est ce qui fait de s_n une cible de l'agrégat de E_n.
+
+**Valeur de K_s.** Pour une cellule (h, e), c'est la moyenne des cellules ajustées sur les notices retenues où e a des
+cellules complètes, comme `mesure()`. Électorats lus : ceux de §8.92, hors finalistes.
+
+**Critère, inchangé (§8.100 e1).** Une géométrie n'apporte quelque chose sur les reports que si :
+
+- V1 ≤ K_s − 1, sur les 8 cellules hors cellule polluée (et 9 rapportées) ;
+- au moins 2 des 3 hypothèses s'améliorent, comparées par la MAE moyenne de leurs cellules.
+
+Sont aussi rapportés, sans seuil : K_s sur l'électorat Mélenchon (RN + Aucun), et la part RN de cet électorat parmi les exprimés.
+
+**Limite déclarée.** K_s utilise le duel de la même notice que les reports cachés. Le modèle n'y a accès que par les
+duels ajustés à cette date, Harris inclus. Les deux témoins sont donc à égalité d'information sur le duel.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
