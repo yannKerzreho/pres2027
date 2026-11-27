@@ -5906,6 +5906,21 @@ ll(β) − ll(κ), en nats :
 - **Harris seul pour les reports**, et le décompte est à la limite : verdict au critère figé, à présenter comme tel. Les MAE de V1 (§8.97-8.107) ne séparaient pas les géométries ; la vraisemblance, qui pondère par la précision des cellules, le fait.
 - **Ce verdict contredit la recommandation « segment par parcimonie » des revues.** Le critère avait été figé pour trancher précisément ce cas. La parcimonie (1 paramètre, l'arc) ne vaut pas 46,6 nats (BIC : environ 2,3 nats par paramètre).
 
+### 8.112 Cohérence duel / reports refaite (§8.110 f3 ; 27/11 ~03:30Z, Mac, 0 fit)
+
+`coherence_essai_2027.py` porte sur 13 notices et 6 fits V1. Écart de la part de duel du MODÈLE (s_mod, à la date de la notice) à l'agrégat de ses cellules sur E_n :
+
+| Variante | Segment | Cercle | Distingués (Δ moyenne ≥ 1 et Δ « même signe » ≥ 3) |
+|---|---|---|---|
+| Poids T1 de Harris | 1,94 pt, 12/13 | 2,43 pt, 11/13 | non |
+| Poids T1 du modèle | 0,59 pt, 7/13 | 1,26 pt, 9/13 | non |
+
+**Verdict figé : les géométries ne sont pas distinguées.**
+
+- La revue est reproduite à 0,01 près (§8.110 b).
+- Avec les parts T1 du modèle, l'écart tombe à 0,6 et 1,3 pt : la plus grande partie de l'écart de base vient des **poids T1 de Harris**. Les électorats mesurés pèsent plus dans le T1 de Harris que dans celui du modèle.
+- Ce contrôle ne départage pas les géométries. Il ne pèse pas sur l'arbitrage de §8.111.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
