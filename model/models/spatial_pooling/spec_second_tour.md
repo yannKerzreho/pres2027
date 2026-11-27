@@ -5721,7 +5721,7 @@ pire sur Philippe – Le Pen, l'hypothèse la plus documentée (8 notices).
 | Segment | 0,96 | 1,96 | 8/13 | **non** (de justesse) |
 | Cercle | 1,55 | 1,96 | 10/13 | **oui** |
 
-**Verdict figé.**
+**Verdict figé. RETIRÉ en §8.110 b** (artefact de l'erreur de duel).
 
 - Le **cercle** reproduit l'incohérence des données : son agrégat sur les électorats mesurés reste, comme celui de Harris, sous le duel, et c'est le reste du champ qui comble l'écart.
 - Le **segment**, non.
@@ -5755,7 +5755,7 @@ pire sur Philippe – Le Pen, l'hypothèse la plus documentée (8 notices).
 | Segment | −0,15 | [−1,18 ; +0,84] | non |
 | Cercle | +1,85 | [+0,76 ; +2,85] | non, **pire que le témoin** |
 
-P(V1 segment ≤ V1 cercle) = **1,00** (seuil 0,8) : **segment préférable**.
+P(V1 segment ≤ V1 cercle) = **1,00** (seuil 0,8) : **segment préférable**. **RETIRÉ en §8.110 a** : le verdict tient à une seule notice.
 
 **Lecture, au critère figé.**
 
@@ -5812,6 +5812,64 @@ ll(β) − ll(κ), en nats :
 - La grille étendue borne maintenant l'optimum : 1,0 et 1,25 perdent.
 - Profiler `log_c` divise par 3 à 6 les écarts de §8.104 (β = 0 : de −86 à −252 au lieu de −237 à −1489), comme le prévoyait la revue de §8.105 c. La conclusion ne change pas.
 - **La pente de l'abstention est celle du partage, à environ ±25 % près. Le découplage β (1 paramètre) ne se justifie pas.** Le dossier β est clos.
+
+### 8.110 Revue du 27/11 ~01:30Z sur §8.106-8.109 : deux verdicts retirés, critères révisés AVANT lecture
+
+**(a) §8.107 : le verdict tient à UNE notice. RETIRÉ.** Vérifié en recalculant depuis `essai2027_bootstrap.json`.
+
+| V1 par hypothèse (8 cellules) | Segment | Cercle | K |
+|---|---|---|---|
+| Philippe – Le Pen (8 notices) | 9,30 | **7,75** | 7,06 |
+| Attal – Le Pen (4 notices) | **3,75** | 4,84 | 9,56 |
+| Glucksmann – Le Pen (1 notice) | 8,65 | 17,11 | 3,66 |
+
+- Glucksmann – Le Pen n'est jamais rééchantillonné. Ses 2 cellules (25 % de V1) font à elles seules l'écart cercle − segment, notamment Mélenchon → Glucksmann à 69 dans le cercle, contre 36 mesurés.
+- **Sans cette notice, le verdict s'inverse.** P(segment ≤ cercle) = 0,33. Segment − K = [−3,2 ; −0,5], cercle − K = [−3,5 ; −0,6] : les deux « apporteraient ».
+- Ni « segment préférable (P = 1,00) » ni « cercle pire que le témoin » ne tiennent.
+- **V1 ne sépare pas les géométries, et son verdict sur le témoin dépend d'un sondage.**
+- Le témoin pris par tirage, le rembourrage et les cellules K_s n'ont pas d'incidence.
+
+**(b) §8.106 : la distinction « cercle oui, segment non » est un artefact. RETIRÉE.**
+
+- L'écart s_n − agrégat du modèle contient l'erreur de duel du modèle (s_n − s_mod, environ −0,9 pt).
+- Avec la part de duel du modèle, à la date de chaque notice, d'après le recalcul de la revue :
+  - segment : 1,93 pt, même signe 12 fois sur 13 ;
+  - cercle : 2,44 pt, même signe 11 fois sur 13.
+- **Les deux géométries reproduisent l'écart de base de Harris.**
+- Le cercle donne bien davantage à Philippe chez les électeurs non mesurés (Villepin, Riner, Attal : 78 à 83 % contre 57 à 70). Mais aucune donnée ne contrôle ces cellules, et les poids T1 diffèrent entre Harris et le Newton : non comparable en l'état.
+
+**(c) §8.108 : le test ne justifie pas R7.**
+
+- Sur les cellules des finalistes, R7 impose environ 93/5/2. Les comparer avec et sans R7 relève de la tautologie.
+- L'effet principal de R7 passe par le Newton sur TOUTES les cellules et par les duels. Seul un refit le mesure.
+- R7 est gardée **par parcimonie** : 0 paramètre libre, ε figé. Elle ne l'est pas à cause des +8,5 pt.
+
+**(d) §8.109 : le critère était presque tautologique.**
+
+- La fenêtre [0,8κ ; 1,25κ] contient toujours un point de la grille voisin de κ.
+- Sur le segment, β\* = 0,75 > κ sur 3 fits sur 3 (+1,5 / +2,1 / +2,1 nats). Deux fits échouent à la branche « < 2 nats » et ne passent que par la fenêtre.
+- Les autres sites restent au MAP de β = κ, ce qui biaise vers κ.
+- **Énoncé retenu :** « segment, β légèrement > κ ; gain de 2,1 nats au plus, sous une pénalité BIC d'environ 2,2 à 2,5 nats ; pas d'aplatissement ».
+- La conclusion de parcimonie tient, par ce raisonnement.
+
+**(e) État de la question géométrique.**
+
+- Aucun contrôle hors échantillon ne sépare le cercle et le segment.
+- Le critère qui devait trancher (§8.96 f, repris en §8.98 g4) n'a pas été appliqué : log-vraisemblance prédictive des observations cachées, sommée sur 11 épreuves (8 V2, 3 V1) ; cercle seulement si ΣΔ ≥ 5 nats et 8 épreuves sur 11 ; sinon segment, par parcimonie.
+- **C'est lui qui tranche**, sans fit : les 22 fits sont sauvegardés et se rejouent.
+
+**(f) Critères figés avant lecture.**
+
+1. **Log-vraisemblance prédictive (§8.96 f) sur les 11 épreuves, 0 fit.**
+   - V2 : densité gaussienne des duels cachés de la paire, à leur date, avec la variance du modèle (s(1 − s)/n + σ_t2²).
+   - V1 : densité Dirichlet(c·θ) des reports cachés, à la date de chaque notice, cellules complètes.
+   - Verdict : cercle si ΣΔ(cercle − segment) ≥ 5 nats **et** cercle meilleur sur au moins 8 épreuves sur 11 ; sinon **segment**.
+2. **Robustesse de toute lecture de V1** : un verdict de V1 n'est rapporté que s'il garde son signe quand on retire chacune des 3 hypothèses à tour de rôle.
+3. **§8.106 refait** avec s_mod, puis avec les poids T1 du modèle sur E_n. Géométries distinguées seulement si l'écart des moyennes est ≥ 1 pt **et** si les nombres de « même signe » diffèrent d'au moins 3.
+4. **Après l'arbitrage, sur la géométrie retenue, 3 fits chacun, critères de §8.105 e5 :**
+   - η ≡ 0 ;
+   - P4 contre P4c (en plus, z_σ max ≤ 3) ;
+   - R7 en refit : gardée si sa suppression dégrade V1 de plus de 0,5 pt ou la vraisemblance des reports cachés de plus de 2 nats ; sinon retirée.
 
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 

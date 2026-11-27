@@ -7,7 +7,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## État (mis à jour à chaque réveil)
 
-- Dernière revue Opus : 2026-11-26 ~20:15Z (session locale)
+- Dernière revue Opus : 2026-11-27 ~01:30Z (session locale)
 - OBJECTIF (utilisateur, via l'orchestrateur, 2026-11-14) : « un modèle qui est
   backé par le passé mais qui représente bien les sondages et tendances
   actuels ». 2017/2022 servent à CALIBRER et VALIDER ; le critère final est la
@@ -31,12 +31,17 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- [ ] (Mac, 0 fit, critère figé §8.110 f1 = §8.96 f) **Log-vraisemblance prédictive cercle contre segment sur les 11 épreuves de l'essai 2027** : V2 (duels cachés, gaussienne du modèle) et V1 (reports cachés, Dirichlet) ; cercle si ΣΔ ≥ 5 nats et 8/11, sinon segment. **Tranche la géométrie.**
+- [ ] (Mac, 0 fit, §8.110 f3) §8.106 refait avec s_mod puis avec les poids T1 du modèle.
+- [ ] (Mac, 3 fits chacun, §8.110 f4, après l'arbitrage) η ≡ 0 ; P4 contre P4c ; R7 en refit, sur la géométrie retenue.
+- [ ] (après tout cela) **Lot à présenter** : fusion d'origin/main, lot réduit (code, spec, tests, JSON cités), neutralité §8.91 rejouée sur le HEAD final, `PUBLIER_T2 = False` vérifié, puis « PRÊT À PUBLIER ».
+
 - [x] [FAIT MAC 26/11 ~16:20Z, §8.99 : V1 segment 7,26, cercle 8,79, K 9,75 ; sans cellule polluée 7,10 / 9,06 / K 7,13 ; LFI 9,32 / 10,50 / K 2,57 ; non séparés, pas de prévision] **Relecture V1 corrigée (§8.98 c, g1)** : `cellules()` avec `s` à la date de la notice, `z` rejoué, verdict par le code, K sans la cellule polluée ; test du lecteur.
 - [x] [FAIT MAC 26/11 ~17:15Z, §8.101 : effet ≤ 0,1 pt ; V1 7,22 / 8,74 / K 9,75 ; LFI 9,24 / 10,40 ; non séparés] **Correctif `pred_date` (§8.100 c)** : dates filtrées par (hypothèse, électorat) aux cellules complètes, rejeu des 6 fits V1.
 - [x] [FAIT MAC 26/11 ~18:30Z, §8.102-8.103 : K_s 7,79 (8 cellules), pire que K 7,13 ; critère non rempli (segment 7,06, cercle 9,00)] **Témoin K_s** : K avec logit a/RN décalé pour redonner `s` ; V1 ≤ K_s − 1 et 2 hypothèses sur 3.
 - [x] [FAIT MAC 26/11 ~20:00Z, §8.104 : β* ≈ κ (segment, à moins de 2 nats) ou = κ (cercle) ; β = 0 rejeté par 237 à 1489 nats ; LFI 10,0 / 10,4 > 6 ; pas de fit β ; g5 abandonné] **Test β sans refit** : `kappa_rho` dans `reports_cellules`, ω re-profilé sur les reports d'entraînement, β\* sur la grille {0 ; 0,4 ; 0,56 ; 0,75 ; κ} ; fit seulement si LFI < 6, exprimés ≤ +1, V1 ≤ K_s.
-- [x] [FAIT MAC 26/11 ~21:15Z, §8.106 : cercle transmet le biais (10/13, 1,55 pt), segment non (8/13, 0,96) ; écart des données 1,96 pt] **Cohérence duel / reports dans le modèle** : écart s_n − agrégat des cellules du modèle sur E_n, 13 notices, 6 fits V1.
-- [x] [FAIT MAC 26/11 ~22:30Z, §8.107 : segment − témoin −0,15 [−1,18 ; +0,84] ; cercle +1,85 [+0,76 ; +2,85], pire que le témoin ; P(segment ≤ cercle) = 1,00] **Bootstrap apparié par notice** de V1.
+- [x] [FAIT MAC 26/11 ~21:15Z, §8.106 (distinction RETIRÉE §8.110 b) : cercle transmet le biais (10/13, 1,55 pt), segment non (8/13, 0,96) ; écart des données 1,96 pt] **Cohérence duel / reports dans le modèle** : écart s_n − agrégat des cellules du modèle sur E_n, 13 notices, 6 fits V1.
+- [x] [FAIT MAC 26/11 ~22:30Z, §8.107 : segment − témoin −0,15 [−1,18 ; +0,84] ; cercle +1,85 [+0,76 ; +2,85], pire que le témoin ; P(segment ≤ cercle) = 1,00 ; RETIRÉ §8.110 a : tient à une seule notice] **Bootstrap apparié par notice** de V1.
 - [x] [FAIT MAC 27/11 ~00:00Z, §8.108 : sans R7, +8,5 pt (segment) et +5,9 (cercle) ; R7 gardée (0 paramètre libre)] **Fidélité R7 en lecture** (`fidelite=False`) sur les cellules des finalistes.
 - [x] [FAIT MAC 27/11 ~01:00Z, §8.109 : β = κ confirmé sur 6 fits sur 6 ; optimum borné ; dossier β clos] **Profil conjoint (ω, log_c), grille β étendue**.
 - [ ] (sans priorité, maths d'abord, après l'ARBITRAGE de géométrie ; §8.106) **Électorat « reste » qui porte l'écart de base duel/reports de Harris** (0 paramètre).
@@ -1347,6 +1352,34 @@ conservé pour l'historique.
   instables (R̂ 7,5) et s_ab +0,7 pt ⇒ phase 2 à faire.
 
 
+
+## Revue Opus 2026-11-27 ~01:30Z (session locale) — §8.106-8.109 : intégration point par point
+
+La revue porte sur §8.106 à §8.109. Le relecteur n'a modifié aucun fichier. Son point 1 a été recalculé et reproduit avant intégration.
+
+1. **§8.107 tient à une seule notice (Glucksmann – Le Pen, jamais rééchantillonnée).** INTÉGRÉ, vérifié : sans elle, P(segment ≤ cercle) = 0,33.
+   - Verdict RETIRÉ (§8.110 a).
+   - Le titre de a4e71d0 et la ligne de file de §8.107 sur-interprètent ; ils sont corrigés ici.
+2. **§8.106 mélange l'écart de base et l'erreur de duel du modèle.** INTÉGRÉ : avec s_mod, segment 1,93 (12/13) et cercle 2,44 (11/13).
+   - La distinction est RETIRÉE (§8.110 b).
+   - Le contrôle refait est en file.
+3. **§8.108 ne peut pas justifier R7.** INTÉGRÉ (§8.110 c) : R7 est gardée par parcimonie (0 paramètre libre). Le refit est en file après l'arbitrage.
+4. **§8.109 : critère presque tautologique, profil partiel.** INTÉGRÉ (§8.110 d) : énoncé réécrit (gain de 2,1 nats au plus, sous le BIC). La conclusion tient.
+5. **Pas de fuite ; les lectures après coup sont déjà déclarées.** INTÉGRÉ.
+6. **Aucun contrôle hors échantillon ne sépare les géométries.** INTÉGRÉ (§8.110 e).
+   - Le critère figé §8.96 f / §8.98 g4 n'a jamais été appliqué. Il est mis en tête de file, sans fit : c'est lui qui tranche.
+   - Le relecteur recommande le segment par parcimonie, sans s'appuyer sur §8.107.
+7. **Avant « PRÊT À PUBLIER »** : fusionner origin/main (1 commit de retard), un lot réduit, la neutralité §8.91 rejouée sur le HEAD final, `PUBLIER_T2 = False` vérifié. INTÉGRÉ.
+   - Mis en file comme dernière étape, après l'arbitrage.
+
+**Pistes retenues.**
+
+- A : robustesse de V1 en retirant chaque hypothèse, devenue règle de lecture (§8.110 f2).
+- B : §8.106 refait (f3).
+- C : log-vraisemblance prédictive (f1), **en tête**.
+- D, E, F : η ≡ 0, P4 contre P4c, R7 en refit (f4), derrière l'arbitrage.
+
+**ARBITRAGE À TRANCHER (utilisateur), mis à jour.** La décision sur le segment devrait suivre le critère figé §8.96 f, qui se calcule sans fit et passe en tête de file. La recommandation « segment par parcimonie » reste, mais elle ne s'appuie plus sur §8.107.
 
 ## Revue Opus 2026-11-26 ~20:15Z (session locale) — K_s, test β, parcimonie : intégration point par point
 
