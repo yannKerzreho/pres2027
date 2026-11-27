@@ -6125,6 +6125,39 @@ Source : `essai2027_vraisemblance_lsefin.json`.
 
 **Rapporté, sans seuil.** Même à arc fixé, donc à nombre de paramètres égal au segment, le cercle bat le segment de **+32,7 nats** sur 8 épreuves sur 11. L'avantage du cercle ne tient donc pas au paramètre d'arc.
 
+### 8.118 η ≡ 0 sur le cercle (§8.113 e2 ; 28/11 ~01:00Z, Mac, 11 fits)
+
+**Méthode.**
+
+- Géométrie `cercle_eta0` d'`essai_2027.py` : `eta_hier` est éteint et l'échelle mise à 0, donc η ≡ 0. On retire les 20 paramètres η et s_η ; il ne reste que le z_η de l'a priori, inerte.
+- Fits : 8 inits, 2 000 pas puis polissage, 88 inits sans erreur.
+- Lecture : `vraisemblance_essai_2027.py --eta0`, finalistes dans le lse, mêmes observations cachées.
+
+| Épreuve | Segment | Cercle (η) | Cercle (η ≡ 0) | Δ (η ≡ 0 − η) |
+|---|---|---|---|---|
+| V2 Attal – Le Pen | 62,1 | 76,1 | 76,4 | +0,3 |
+| V2 Bardella – Philippe | 14,0 | 30,9 | 30,9 | +0,0 |
+| V2 Glucksmann – Le Pen | 47,4 | 33,7 | 30,8 | −2,9 |
+| V2 Hollande – Le Pen | 9,9 | −11,2 | −8,1 | +3,1 |
+| V2 Le Pen – Mélenchon | 66,3 | 80,7 | 81,5 | +0,8 |
+| V2 Le Pen – Philippe | 155,3 | 177,8 | 186,9 | +9,1 |
+| V2 Le Pen – Retailleau | 7,1 | 8,4 | 7,8 | −0,6 |
+| V2 Mélenchon – Philippe | 4,1 | 5,8 | 7,9 | +2,2 |
+| V1 Philippe – Le Pen | 93,3 | 113,3 | 115,8 | +2,6 |
+| V1 Attal – Le Pen | 73,5 | 76,9 | 75,1 | −1,8 |
+| V1 Glucksmann – Le Pen | 12,6 | −4,6 | 3,6 | +8,2 |
+
+**Critère figé : ΣΔ(η ≡ 0 − η) = +20,9 nats (seuil −5), 3 épreuves dégradées sur 11 (seuil 6). η ≡ 0 est RETENU.**
+
+- **Retirer les valences** ne coûte rien et **améliore** la prévision des observations cachées de 21 nats : environ 20 paramètres de moins.
+- Les η, contraints par les seuls duels, sur-ajustaient. C'est cohérent avec §8.90 f (|η| ≤ 0,18 au MAP, presque tous ≈ 0).
+- Le cercle sans η bat le segment (avec η) de **+63,1 nats**, sur 8 épreuves sur 11.
+- Le point faible Glucksmann – Le Pen (une notice) se réduit : V1 passe de −4,6 à +3,6, contre 12,6 pour le segment.
+
+**Nouvelle référence de l'essai : cercle, arc libre, η ≡ 0.** Les simplifications suivantes (§8.113 e3 P4 contre P4c, e4 R7 en refit) se jugent contre elle, aux mêmes critères.
+
+**Réserve.** Le segment n'a pas été refait à η ≡ 0. La comparaison « cercle η ≡ 0 contre segment » mêle donc deux changements. Un segment η ≡ 0 (11 fits) la rendrait propre ; il est mis en file.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

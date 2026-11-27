@@ -111,29 +111,40 @@ def main(lse_finalistes: bool = False) -> dict:
 
 
 
-def arc_fixe() -> dict:
-    """§8.113 e5 : cercle à arc fixé a priori à 2π contre cercle à arc libre, mêmes observations cachées,
+def variante(geo: str = "cercle2pi") -> dict:
+    """§8.113 e5 / e2 : variante du cercle (arc fixé à 2π, ou η ≡ 0) contre le cercle de référence, mêmes observations cachées,
     finalistes dans le lse (§8.114). Critère figé : fixer l'arc si ΣΔ(fixé − libre) ≥ −2,3 nats."""
     raw0, rep0, _ = X.donnees()
     libre = json.loads((sr.OUT_DIR / "essai2027_vraisemblance_lsefin.json").read_text())["epreuves"]
     res = {"spec": "§8.113 e5", "epreuves": {}}
     for ep in [e for e in X.epreuves() if e != "complet"]:
-        L = ll_epreuve("cercle2pi", ep, raw0, rep0, lse_finalistes=True)
+        L = ll_epreuve(geo, ep, raw0, rep0, lse_finalistes=True)
         d = round(L["ll"] - libre[ep]["cercle"]["ll"], 2)
-        res["epreuves"][ep] = {"cercle2pi": L, "cercle_ll": libre[ep]["cercle"]["ll"],
+        res["epreuves"][ep] = {geo: L, "cercle_ll": libre[ep]["cercle"]["ll"],
                                "segment_ll": libre[ep]["segment"]["ll"], "delta_fixe_moins_libre": d}
         print(json.dumps({ep: d}, ensure_ascii=False), flush=True)
     d = [v["delta_fixe_moins_libre"] for v in res["epreuves"].values()]
-    ds = [v["cercle2pi"]["ll"] - v["segment_ll"] for v in res["epreuves"].values()]
+    ds = [v[geo]["ll"] - v["segment_ll"] for v in res["epreuves"].values()]
+    res["geo"] = geo
     res["synthese"] = {"somme_delta_fixe_moins_libre": round(float(sum(d)), 2),
-                       "arc_fixe_retenu": bool(sum(d) >= -2.3),
-                       "somme_delta_2pi_moins_segment": round(float(sum(ds)), 2),
-                       "2pi_meilleur_que_segment": int(sum(x > 0 for x in ds))}
-    (sr.OUT_DIR / "essai2027_vraisemblance_arc2pi.json").write_text(json.dumps(res, ensure_ascii=False, indent=1) + "\n")
+                       "epreuves_degradees": int(sum(x < 0 for x in d)),
+                       "somme_delta_variante_moins_segment": round(float(sum(ds)), 2),
+                       "variante_meilleure_que_segment": int(sum(x > 0 for x in ds))}
+    if geo == "cercle2pi":                                 # §8.113 e5
+        res["synthese"]["arc_fixe_retenu"] = bool(sum(d) >= -2.3)
+    if geo == "cercle_eta0":                               # §8.113 e2
+        res["synthese"]["eta0_retenu"] = bool(sum(d) >= -5 and sum(x < 0 for x in d) <= 6)
+    (sr.OUT_DIR / ("essai2027_vraisemblance_arc2pi.json" if geo == "cercle2pi"
+                   else f"essai2027_vraisemblance_{geo}.json")).write_text(json.dumps(res, ensure_ascii=False, indent=1) + "\n")
     print(json.dumps(res["synthese"], ensure_ascii=False))
     return res
 
 
 if __name__ == "__main__":
     import sys
-    arc_fixe() if "--arc-fixe" in sys.argv else main(lse_finalistes="--lse-finalistes" in sys.argv)
+    if "--arc-fixe" in sys.argv:
+        variante("cercle2pi")
+    elif "--eta0" in sys.argv:
+        variante("cercle_eta0")
+    else:
+        main(lse_finalistes="--lse-finalistes" in sys.argv)
