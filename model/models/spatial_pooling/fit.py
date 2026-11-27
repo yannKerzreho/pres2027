@@ -610,6 +610,8 @@ def _masque_lse(fit, ia, ib, lse_finalistes: bool):
 def _duel_par_tirage(fit, w, ia: np.ndarray, ib: np.ndarray, lse_finalistes: bool = False) -> np.ndarray:
     """Part de `ia[s]` contre `ib[s]` au tirage s (indices par tirage)."""
     s_idx = np.arange(len(ia))
+    if lse_finalistes and getattr(fit, "omega_k_draws", None) is not None:   # §8.115 : ρ_k lirait encore l'ancien masque
+        raise NotImplementedError("lse_finalistes avec ω par électorat (R8) : non pris en charge")
     ml = _masque_lse(fit, np.asarray(ia), np.asarray(ib), lse_finalistes)
     if fit.nu_draws is not None or fit.arc_draws is not None:            # carte 2D (§8.44) / cercle (§8.46)
         from .geometry import W2, W_THETA, duel_shares_poids, log_attractivite_2d, log_attractivite_cercle

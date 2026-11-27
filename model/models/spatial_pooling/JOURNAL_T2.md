@@ -7,7 +7,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## État (mis à jour à chaque réveil)
 
-- Dernière revue Opus : 2026-11-27 ~04:00Z (session locale)
+- Dernière revue Opus : 2026-11-27 ~08:00Z (session locale)
 - OBJECTIF (utilisateur, via l'orchestrateur, 2026-11-14) : « un modèle qui est
   backé par le passé mais qui représente bien les sondages et tendances
   actuels ». 2017/2022 servent à CALIBRER et VALIDER ; le critère final est la
@@ -34,6 +34,7 @@ l'historique, ajouter en bas de « Historique ».
 - [x] [FAIT MAC 27/11 ~03:00Z, §8.111 : ΣΔ = +46,6 nats, cercle meilleur 8/11 (au seuil) ⇒ CERCLE au critère figé ; duels +8,1, reports +38,5 ; contre : Hollande et la notice Glucksmann] **Log-vraisemblance prédictive cercle contre segment sur les 11 épreuves de l'essai 2027** : V2 (duels cachés, gaussienne du modèle) et V1 (reports cachés, Dirichlet) ; cercle si ΣΔ ≥ 5 nats et 8/11, sinon segment. **Tranche la géométrie.**
 - [x] [FAIT MAC 27/11 ~03:30Z, §8.112 : non distingués (s_mod : 1,94 / 2,43 ; poids du modèle : 0,59 / 1,26)] §8.106 refait avec s_mod puis avec les poids T1 du modèle.
 - [x] [FAIT MAC 27/11 ~06:30Z, §8.114 : ΣΔ = +42,1, 8/11, verdict inchangé ; drapeau `lse_finalistes` éteint par défaut] **Finalistes dans le lse de `_duel_par_tirage`** (cohérence avec `cellules()`), deux géométries ; ΣΔ rapporté sans critère.
+- [ ] (0 fit, après l'arbitrage, §8.115 d1) **Cache de compilation / formes figées** : une compilation par géométrie ; ll identiques au centième sur 2 épreuves.
 - [ ] (Mac, après l'arbitrage, critères §8.113 e2-e5) Sur la géométrie retenue : arc fixé a priori à 2π (si cercle) ; η ≡ 0 ; P4 contre P4c ; R7 en refit (reports hors électorats des finalistes).
 - [ ] (après tout cela) **Lot à présenter** : fusion d'origin/main, lot réduit (code, spec, tests, JSON cités), neutralité §8.91 rejouée sur le HEAD final, `PUBLIER_T2 = False` vérifié, puis « PRÊT À PUBLIER ».
 
@@ -1354,6 +1355,20 @@ conservé pour l'historique.
   instables (R̂ 7,5) et s_ab +0,7 pt ⇒ phase 2 à faire.
 
 
+
+## Revue Opus 2026-11-27 ~08:00Z (session locale) — §8.114, lot : intégration point par point
+
+Revue courte, sur le seul changement depuis 04:00Z. Le relecteur n'a modifié aucun fichier ; 31 tests passent chez lui.
+
+1. **Drapeau neutre au défaut ; production T1 non touchée.** INTÉGRÉ (§8.115 a).
+   - Défaut latent sous R8 : garde-fou `NotImplementedError` ajouté.
+   - Test numérique de non-régression ajouté ; 6 tests du fichier verts.
+2. **Résultat correct.** INTÉGRÉ : une seule valeur, 42,1 ; la MAE du segment sur Hollande passe de 1,51 à 1,67 pt ; Hollande devient l'épreuve la plus défavorable au cercle (−21,1).
+3. **Lot.** INTÉGRÉ (§8.115 c) : liste à inclure et à exclure, contrôles, page de décision, environ une demi-journée.
+   - Point à signaler : `gp_pooling/model.py` (filtre T1 de `used_polls`) change la production et doit être annoncé.
+4. **Ordre des simplifications.** INTÉGRÉ (§8.115 d) : d'abord l'ingénierie de compilation (0 fit), puis l'arc à 2π, η ≡ 0, R7 en refit, P4.
+
+**ARBITRAGE À TRANCHER (utilisateur), inchangé.** Le critère figé désigne le cercle (+42,1 nats, 8/11 au seuil). Si l'utilisateur l'adopte, le cache de compilation est préparé d'abord, puis viennent les 4 simplifications (environ 4 h de Mac avec le cache, 12 h sans), puis le lot.
 
 ## Revue Opus 2026-11-27 ~04:00Z (session locale) — §8.111-8.112, verdict cercle : intégration point par point
 

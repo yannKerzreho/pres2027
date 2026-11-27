@@ -5938,7 +5938,7 @@ ll(β) − ll(κ), en nats :
 | ll sans erratum | 9,89 | −6,81 |
 | ll avec erratum | 9,89 | **−11,23** |
 
-ΣΔ passe de 46,6 à 42,2. Le décompte ne change pas.
+ΣΔ passe de 46,6 à 42,2 (42,1 au calcul complet, §8.114-8.115). Le décompte ne change pas.
 
 **(c) Le verdict figé tient sur la somme. Le décompte est fragile.** Contrôles lus après coup, sans changement du verdict figé :
 
@@ -5990,6 +5990,56 @@ ll(β) − ll(κ), en nats :
 
 - Le drapeau reste éteint par défaut dans `duel_draws` (production T2 non publiée).
 - L'allumer en production fera partie du lot de la géométrie retenue.
+
+### 8.115 Revue du 27/11 ~08:00Z sur §8.114 : neutralité au défaut, garde-fou R8, préparation du lot
+
+**(a) Code.**
+
+- Au défaut, le drapeau est neutre : même forme de diffusion dans les deux branches, appelants inchangés.
+- La production T1 n'est pas touchée : avec `PUBLIER_T2 = False`, `kappa_draws` vaut None et le masque n'est jamais lu.
+- **Défaut latent corrigé.** Avec R8 (`omega_k_draws`), `rho_electorats` lirait encore l'ancien masque.
+  - `lse_finalistes=True` lève désormais `NotImplementedError` dans ce cas.
+  - Les fits de l'essai n'ont pas de R8.
+- **Test de non-régression ajouté** (`test_lse_finalistes_non_regression`), sur deux géométries avec `ia` variable :
+  - drapeau allumé égal au défaut quand les finalistes sont déjà dans le masque ;
+  - différent seulement sur les lignes où un finaliste en sort.
+
+**(b) Chiffres.**
+
+- Une seule valeur, ΣΔ = **+42,1**. La valeur 42,2 de §8.113 b est corrigée.
+- Sur Hollande – Le Pen, le segment passe de 9,890 à 9,895 (MAE de 1,51 à 1,67 pt).
+- Hollande devient l'épreuve la plus défavorable au cercle (Δ = −21,1).
+- Les deux marges les plus faibles (+1,3 et +1,6) laissent le décompte au seuil.
+
+**(c) Lot « PRÊT À PUBLIER », si le cercle est adopté.** Il y a aujourd'hui 476 fichiers contre main, dont 417 JSON.
+
+- **À inclure :**
+  - le code de production du T2 : fit, geometry, joint_model, forecast_model, roster, run, core ;
+  - les deux spécifications, JOURNAL_T2 et les tests ;
+  - les scripts de §8.111 à §8.114 ;
+  - les seuls JSON cités par la spécification (une vingtaine).
+- **`gp_pooling/model.py` change la production.** `used_polls` n'y retient plus que le T1 (2 lignes), c'est le correctif de neutralité de §8.91. À annoncer, avec son propre test.
+- **À exclure :** les autres JSON de résultats, les scripts morts, et toute activation de `lse_finalistes` ou de `PUBLIER_T2`.
+- **Contrôles :**
+  - fusion d'origin/main ;
+  - suite de tests complète ;
+  - neutralité §8.91 rejouée : 4 fits NUTS de production, puis `comparer` ;
+  - grep de `PUBLIER_T2 = False`.
+- **Page de décision pour l'utilisateur**, selon §8.113 c :
+  - ΣΔ de +40 à +46 nats ;
+  - 8/11 au seuil, p = 0,11 ;
+  - critère choisi après §8.93 ;
+  - aucune corroboration par 2017/2022 ;
+  - coût : 1 paramètre (l'arc).
+- Environ une demi-journée, dont environ 1,5 h de Mac.
+
+**(d) Ordre des simplifications si le cercle est adopté.** Un fit compte environ 15 min de compilation plus 8 × 30 s.
+
+1. **Ingénierie, 0 fit :** formes figées par rembourrage et cache de compilation, pour compiler une fois par géométrie. Le lot de fits est 3 à 5 fois plus rapide. Critère : log-vraisemblances identiques au centième sur 2 épreuves.
+2. **Arc fixé à 2π** (11 fits) : ΣΔ(fixé − libre) ≥ −2,3.
+3. **η ≡ 0** (11 fits) : ΣΔ ≥ −5 et 6 épreuves au plus sur 11 dégradées. On peut le combiner avec 2 en un plan 2 × 2 restreint aux 8 V2.
+4. **R7 en refit** (6 fits) : R7 gardée si la retirer coûte plus de 2 nats hors électorats des finalistes.
+5. **P4 contre P4c** (11 fits) : même règle qu'en 3, plus z_σ max ≤ 3.
 
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 

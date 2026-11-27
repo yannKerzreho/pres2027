@@ -64,3 +64,31 @@ def test_masque_lse_finalistes():
     m = _masque_lse(fit, np.array([1, 0]), np.array([2, 3]), True)
     assert m.tolist() == [[1, 1, 1, 0], [1, 0, 1, 1]]
     assert _masque_lse(SimpleNamespace(masque_lse=None), np.array([0]), np.array([1]), True) is None
+
+
+def _faux_fit(cercle: bool, masque):
+    import numpy as np
+    from types import SimpleNamespace
+    rng = np.random.default_rng(1)
+    S, N = 3, 4
+    return SimpleNamespace(mu_draws=np.tile(np.linspace(0.15, 0.85, N), (S, 1)),
+                           sigma_draws=np.full((S, N), 0.12), kappa_draws=np.full(S, 0.8),
+                           eta_draws=rng.normal(0, 0.1, (S, N)), omega_draws=np.full(S, -2.5),
+                           masque_lse=np.asarray(masque, float), nu_draws=None,
+                           arc_draws=np.full(S, 4.0) if cercle else None), rng.normal(0, 0.5, (S, N))
+
+
+def test_lse_finalistes_non_regression():
+    """§8.115 : drapeau éteint inchangé ; allumé = éteint quand les finalistes sont déjà dans le masque ;
+    allumé ≠ éteint quand un finaliste en sort ; deux géométries, `ia` variable."""
+    import numpy as np
+    from model.models.spatial_pooling.fit import _duel_par_tirage
+    ia, ib = np.array([0, 1, 0]), np.array([2, 3, 3])
+    for cercle in (False, True):
+        fit, w = _faux_fit(cercle, [1, 1, 1, 1])
+        a = _duel_par_tirage(fit, w, ia, ib)
+        assert np.array_equal(a, _duel_par_tirage(fit, w, ia, ib, lse_finalistes=True))
+        fit, w = _faux_fit(cercle, [1, 1, 1, 0])
+        off = _duel_par_tirage(fit, w, ia, ib)
+        on = _duel_par_tirage(fit, w, ia, ib, lse_finalistes=True)
+        assert np.array_equal(off[0], on[0]) and not np.allclose(off[1:], on[1:])
