@@ -1184,6 +1184,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-27 15:10Z (routine) : fusion d'origin/main (maj quotidienne des données, sans conflit) ; file relue : rien d'actionnable côté VM (tout derrière l'ARBITRAGE de géométrie).
 - 2026-11-27 00:10Z (routine) : fusion d'origin/main (maj quotidienne des données, sans conflit) ; file relue : rien d'actionnable côté VM (restent l'électorat « reste » et les simplifications, derrière l'ARBITRAGE de géométrie).
 - 2026-11-26 15:10Z (routine) : fusion d'origin/main 348ca3f (maj quotidienne des données, sans conflit) ; file relue : rien d'actionnable côté VM (abstention cercle 2027 en attente d'accord utilisateur).
 - 2026-11-25 01:00Z (routine) : neutralité du spatial (DEMANDE VM n° 10, relancée après redémarrage, 33 min) : neutre au bruit près ; spec §8.91. VM libre.
