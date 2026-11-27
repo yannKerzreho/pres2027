@@ -3,8 +3,8 @@
 
 Pour chacune des 11 épreuves (8 V2, 3 V1) et chaque géométrie, le fit sauvegardé (meilleur U) est rejoué, puis
 on évalue, avec la vraisemblance du modèle, les observations que l'épreuve a retirées :
-- duels cachés (V2) : Normal(y ; s, √(s(1−s)/n + σ_t2²)), s à la date du duel (chemin de w, nœud le plus proche
-  par `searchsorted` comme partout dans l'essai) ;
+- duels cachés (V2) : Normal(y ; s, √(s(1−s)/n + σ_t2²)), s à la date du duel (chemin de w, nœud SUIVANT par
+  `searchsorted` comme partout dans l'essai ; écart nul pour les duels cachés, §8.113 a) ;
 - reports cachés (V2 : hypothèse de la paire, s'il y en a ; V1 : hypothèse cachée) : Dirichlet(c·max(θ, 1e-4)),
   θ = cellules du modèle à la date de la notice, mêmes lignes que `arrays_reports` (cellules complètes,
   plancher 0,5 %, renormalisées).

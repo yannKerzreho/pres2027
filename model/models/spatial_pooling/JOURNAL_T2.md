@@ -7,7 +7,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## État (mis à jour à chaque réveil)
 
-- Dernière revue Opus : 2026-11-27 ~01:30Z (session locale)
+- Dernière revue Opus : 2026-11-27 ~04:00Z (session locale)
 - OBJECTIF (utilisateur, via l'orchestrateur, 2026-11-14) : « un modèle qui est
   backé par le passé mais qui représente bien les sondages et tendances
   actuels ». 2017/2022 servent à CALIBRER et VALIDER ; le critère final est la
@@ -33,7 +33,8 @@ l'historique, ajouter en bas de « Historique ».
 
 - [x] [FAIT MAC 27/11 ~03:00Z, §8.111 : ΣΔ = +46,6 nats, cercle meilleur 8/11 (au seuil) ⇒ CERCLE au critère figé ; duels +8,1, reports +38,5 ; contre : Hollande et la notice Glucksmann] **Log-vraisemblance prédictive cercle contre segment sur les 11 épreuves de l'essai 2027** : V2 (duels cachés, gaussienne du modèle) et V1 (reports cachés, Dirichlet) ; cercle si ΣΔ ≥ 5 nats et 8/11, sinon segment. **Tranche la géométrie.**
 - [x] [FAIT MAC 27/11 ~03:30Z, §8.112 : non distingués (s_mod : 1,94 / 2,43 ; poids du modèle : 0,59 / 1,26)] §8.106 refait avec s_mod puis avec les poids T1 du modèle.
-- [ ] (Mac, 3 fits chacun, §8.110 f4, après l'arbitrage) η ≡ 0 ; P4 contre P4c ; R7 en refit, sur la géométrie retenue.
+- [ ] (Mac, 0 fit, drapeau éteint, §8.113 e1) **Finalistes dans le lse de `_duel_par_tirage`** (cohérence avec `cellules()`), deux géométries ; ΣΔ rapporté sans critère.
+- [ ] (Mac, après l'arbitrage, critères §8.113 e2-e5) Sur la géométrie retenue : arc fixé a priori à 2π (si cercle) ; η ≡ 0 ; P4 contre P4c ; R7 en refit (reports hors électorats des finalistes).
 - [ ] (après tout cela) **Lot à présenter** : fusion d'origin/main, lot réduit (code, spec, tests, JSON cités), neutralité §8.91 rejouée sur le HEAD final, `PUBLIER_T2 = False` vérifié, puis « PRÊT À PUBLIER ».
 
 - [x] [FAIT MAC 26/11 ~16:20Z, §8.99 : V1 segment 7,26, cercle 8,79, K 9,75 ; sans cellule polluée 7,10 / 9,06 / K 7,13 ; LFI 9,32 / 10,50 / K 2,57 ; non séparés, pas de prévision] **Relecture V1 corrigée (§8.98 c, g1)** : `cellules()` avec `s` à la date de la notice, `z` rejoué, verdict par le code, K sans la cellule polluée ; test du lecteur.
@@ -1353,6 +1354,41 @@ conservé pour l'historique.
   instables (R̂ 7,5) et s_ab +0,7 pt ⇒ phase 2 à faire.
 
 
+
+## Revue Opus 2026-11-27 ~04:00Z (session locale) — §8.111-8.112, verdict cercle : intégration point par point
+
+Le relecteur n'a modifié aucun fichier ; il a reproduit les 22 vraisemblances.
+
+1. **Vraisemblance identique à celle du modèle.** INTÉGRÉ (§8.113 a).
+2. **Observations cachées exactes.** INTÉGRÉ.
+3. **`searchsorted` : nœud suivant, écart de 0 jour.** INTÉGRÉ : docstring corrigée.
+4. **L'erratum Hollande joue contre le cercle, et non contre le segment.** INTÉGRÉ : la phrase de §8.111 est corrigée (§8.113 b ; ΣΔ = 42,2).
+   - Correctif du code derrière un drapeau, en file.
+5. **Armes égales vérifiées.** INTÉGRÉ.
+6. **Double compte V1 / V2.** INTÉGRÉ : ΣΔ ≈ +40 à +45 en comptant chaque observation une fois ; 6/8 sur les seules V2.
+7. **Le décompte 8/11 est au seuil, avec p = 0,11.** INTÉGRÉ : présenté comme fragile.
+8. **c propre à chaque géométrie ; une partie du gain vient des cellules R7 ; 40 lignes issues de 8 notices.** INTÉGRÉ.
+   - À c commun, ΣΔ augmente.
+   - Le gain est surestimé par l'hypothèse d'indépendance.
+9. **σ_t2 étroit, biais par paire de signe constant.** INTÉGRÉ.
+10. **§8.96 f a été choisi après §8.93.** INTÉGRÉ : déclaré comme tel dans l'arbitrage.
+11. **Aucune cohérence avec 2017/2022, dans un sens ou dans l'autre.** INTÉGRÉ.
+12. **Avant « PRÊT À PUBLIER » :** `carte_cercle=False` par défaut, `PUBLIER_T2 = False`, neutralité §8.91 sur le HEAD final, lot réduit. INTÉGRÉ.
+    - origin/main est déjà inclus.
+
+**Pistes retenues (§8.113 e).**
+
+- Piste 1, sans fit, en file.
+- Pistes 2 à 5, derrière l'arbitrage. Sur le cercle, l'arc fixé à 2π rendrait le cercle aussi parcimonieux que le segment.
+- Piste 6 : règle de comparaison future.
+
+**ARBITRAGE À TRANCHER (utilisateur), mis à jour.**
+
+- Le critère figé désigne le **cercle** : +42 à +46 nats, de l'ordre de +40 en dédoublonnant.
+- Le décompte des épreuves est au seuil (8/11, p = 0,11), et le critère a été choisi après la lecture en échantillon de §8.93.
+- Les options :
+  - adopter le cercle, en testant ensuite l'arc fixé à 2π, η ≡ 0 et P4 ;
+  - ou exiger un second institut.
 
 ## Revue Opus 2026-11-27 ~01:30Z (session locale) — §8.106-8.109 : intégration point par point
 

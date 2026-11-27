@@ -5877,7 +5877,7 @@ ll(β) − ll(κ), en nats :
 
 - **Duels :** gaussienne √(s(1−s)/n + σ_t2²), s pris à la date du duel.
 - **Reports :** Dirichlet(c·θ), aux lignes construites par `arrays_reports`, θ pris à la date de la notice.
-- **Lecture des duels :** celle du lecteur de §8.95, masque lse du fit. L'erratum Hollande de §8.96 a n'est pas appliqué ici ; il jouerait contre le segment.
+- **Lecture des duels :** celle du lecteur de §8.95, masque lse du fit. L'erratum Hollande de §8.96 a n'est pas appliqué ici ; il jouerait contre le segment. **Faux, corrigé en §8.113 b : il joue contre le cercle** (ΣΔ 42,2).
 
 | Épreuve | Duels | Reports | ll segment | ll cercle | Δ (cercle − segment) |
 |---|---|---|---|---|---|
@@ -5920,6 +5920,57 @@ ll(β) − ll(κ), en nats :
 - La revue est reproduite à 0,01 près (§8.110 b).
 - Avec les parts T1 du modèle, l'écart tombe à 0,6 et 1,3 pt : la plus grande partie de l'écart de base vient des **poids T1 de Harris**. Les électorats mesurés pèsent plus dans le T1 de Harris que dans celui du modèle.
 - Ce contrôle ne départage pas les géométries. Il ne pèse pas sur l'arbitrage de §8.111.
+
+### 8.113 Revue du 27/11 ~04:00Z sur §8.111-8.112 : calcul juste, verdict CERCLE sur la somme, décompte fragile
+
+**(a) Conformité.**
+
+- La vraisemblance est celle du modèle : `joint_model.py`, lignes 296, 315 et 337. Les 22 valeurs ont été reproduites au centième.
+- Les observations cachées sont exactement celles que `retirer()` enlève, sur 11 épreuves et 2 géométries.
+- Le champ `None` de `caches()` est sans effet.
+- `searchsorted` prend le nœud suivant ; l'écart vaut 0 jour pour chaque duel caché (docstring corrigée).
+- **Armes égales :** 8 inits, toutes au même U à 0,1 près, et convergées. Deux inits isolées s'en écartent, toutes deux côté segment.
+
+**(b) Erreur de §8.111 corrigée.** L'erratum Hollande (finalistes dans le lse) joue **contre le cercle**, pas contre le segment comme l'écrivait §8.111 :
+
+| | Segment | Cercle |
+|---|---|---|
+| ll sans erratum | 9,89 | −6,81 |
+| ll avec erratum | 9,89 | **−11,23** |
+
+ΣΔ passe de 46,6 à 42,2. Le décompte ne change pas.
+
+**(c) Le verdict figé tient sur la somme. Le décompte est fragile.** Contrôles lus après coup, sans changement du verdict figé :
+
+- **Double compte.** Les reports cachés en V1 Philippe, Attal et Glucksmann le sont déjà dans les V2 de la même paire. En comptant chaque observation une fois, ΣΔ vaut environ +40 à +45 nats. Sur les seules 8 V2, le cercle gagne 6 fois.
+- **Seuil.** Un seul retournement donne 7/11, donc SEGMENT. Les marges les plus faibles sont Le Pen – Retailleau (+1,3, 3 duels), Mélenchon – Philippe (+1,6, 3 duels) et V1 Attal (+3,5). Leurs signes résistent à un σ_t2 commun de 1,5 pt et à un c commun. Au test de signe, 8/11 donne p = 0,11.
+- **Concentration c.** Elle vaut 23 à 45 pour le segment, 60 à 80 pour le cercle.
+  - À c commun = 50, ΣΔ augmente encore.
+  - Environ 19 des 20 nats de V1 Philippe viennent des électorats des finalistes, des cellules imposées par R7 : le gain vient de c, pas de la géométrie.
+  - Les 40 lignes viennent de 8 notices, supposées indépendantes : l'évidence est surestimée.
+- **Duels.** σ_t2 au MAP vaut environ 0,9 pt, et les biais par paire ont un signe constant (Attal – Le Pen : +1 à +7 pt sur 15 duels). La somme des densités les multiplie.
+- **Procédure.** §8.96 f a été figé avant cette lecture, mais choisi APRÈS §8.93, qui montrait un avantage de +79 à +110 nats au cercle en échantillon. Il remplace la règle de §8.92, qui donnait « non séparés, décision à l'utilisateur ». À présenter ainsi.
+- **Cohérence avec 2017/2022 : aucune, dans un sens ou dans l'autre.**
+  - En 2022, aucune géométrie ne bat les témoins, et l'arc vaut 2π.
+  - En 2027, l'arc vaut environ 0,64 × 2π, stable sur les épreuves.
+  - Le défaut LFI de 2017 (« ni-ni ») réapparaît dans la cellule Mélenchon → Glucksmann du cercle.
+
+**(d) Conclusion pour l'arbitrage.**
+
+- Le critère figé désigne le cercle, avec un gain de +40 à +46 nats qui résiste au dédoublonnage, à c commun et à l'erratum Hollande.
+- Le décompte des épreuves, lui, ne prouve presque rien.
+- La décision reste à l'utilisateur.
+
+**(e) Pistes figées.**
+
+1. **Finalistes dans le lse de `_duel_par_tirage`** (0 fit), derrière un drapeau éteint, pour les deux géométries. On l'adopte par cohérence avec `cellules()`, quel que soit le signe. ΣΔ est rapporté, sans servir de critère.
+2. **Si le cercle est retenu, η ≡ 0 sur le cercle** (11 fits) : retirer η si ΣΔ(η ≡ 0 − η) ≥ −5 nats et si 6 épreuves au plus sur 11 se dégradent.
+3. **P4 contre P4c** (11 fits) : même critère, plus z_σ max ≤ 3.
+4. **R7 en refit** (6 fits V1) : vraisemblance des reports cachés **hors électorats des finalistes**. R7 est gardée si la retirer coûte plus de 2 nats.
+5. **Arc fixé a priori à 2π** (valeur de 2022, pas lue sur 2027), 11 fits : fixer l'arc si ΣΔ(fixé − libre) ≥ −2,3 nats (BIC d'un paramètre). Le cercle ne coûterait alors aucun paramètre de plus que le segment.
+6. **Comparaisons futures :**
+   - unités dédoublonnées : 8 paires de duels et 5 hypothèses de reports, avec bootstrap par notice ;
+   - critère : ΣΔ ≥ 5 nats et au moins 9 unités sur 13.
 
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
