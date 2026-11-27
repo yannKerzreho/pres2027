@@ -51,7 +51,7 @@ l'historique, ajouter en bas de « Historique ».
 
 - [x] [FAIT 25/11 ~22:00Z, §8.93 : non séparés au critère figé ; BT 1,81 contre 4,9 ; cercle +79 à +110 nats et LFI → RN 1,5 contre 6,4 (lu après coup) ; défaut commun : « Aucun » de LFI] **Essai 2027 cercle contre segment (§8.92).**
 - [x] [FAIT 26/11 ~10:00Z, §8.95 : V2 cercle 1,95, segment 2,18, BT 1,81 ; non séparés, pas de prévision au seuil figé ; « à 0,14 pt de BT » retiré en §8.96 b] Relecture V2 de l'essai 2027.
-- [ ] (spec d'abord, sur accord de l'utilisateur ; forme β découplé proposée en §8.94 c) **Abstention sur le cercle 2027** : corriger la case
+- [x] [CLOS 27/11, §8.104 et §8.109 : β = κ, pas de découplage ; « Aucun » constant écarté] (spec d'abord, sur accord de l'utilisateur ; forme β découplé proposée en §8.94 c) **Abstention sur le cercle 2027** : corriger la case
   « Aucun » d'un électorat éloigné des deux finalistes, critères figés contre K et BT.
 
 - [x] [FAIT 25/11 00:57Z, §8.91 « Résultat » : NEUTRE au bruit près — écart main/branche max 0,042 sd ≤ 1,5 × 0,094 (graines) ; R-hat ≤ 1,021 ; 4 JSON committés] **DEMANDE VM n° 10 (session locale, 2026-11-25 ~01:00Z) : neutralité du spatial** (spec §8.91,
