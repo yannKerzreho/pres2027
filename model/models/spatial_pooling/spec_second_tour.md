@@ -5871,6 +5871,41 @@ ll(β) − ll(κ), en nats :
    - P4 contre P4c (en plus, z_σ max ≤ 3) ;
    - R7 en refit : gardée si sa suppression dégrade V1 de plus de 0,5 pt ou la vraisemblance des reports cachés de plus de 2 nats ; sinon retirée.
 
+### 8.111 Log-vraisemblance prédictive, cercle contre segment : résultat (§8.96 f, §8.110 f1 ; 27/11 ~03:00Z, Mac, 0 fit)
+
+**Méthode.** `vraisemblance_essai_2027.py` rejoue les 22 fits sauvegardés et évalue, avec la vraisemblance du modèle, les observations que chaque épreuve a retirées.
+
+- **Duels :** gaussienne √(s(1−s)/n + σ_t2²), s pris à la date du duel.
+- **Reports :** Dirichlet(c·θ), aux lignes construites par `arrays_reports`, θ pris à la date de la notice.
+- **Lecture des duels :** celle du lecteur de §8.95, masque lse du fit. L'erratum Hollande de §8.96 a n'est pas appliqué ici ; il jouerait contre le segment.
+
+| Épreuve | Duels | Reports | ll segment | ll cercle | Δ (cercle − segment) |
+|---|---|---|---|---|---|
+| V2 Attal – Le Pen | 15 | 19 | 62,1 | 76,1 | +14,0 |
+| V2 Bardella – Philippe | 4 | 5 | 14,0 | 30,9 | +16,9 |
+| V2 Glucksmann – Le Pen | 15 | 5 | 47,4 | 33,8 | −13,7 |
+| V2 Hollande – Le Pen | 4 | 0 | 9,9 | −6,8 | −16,7 |
+| V2 Le Pen – Mélenchon | 26 | 5 | 66,3 | 80,7 | +14,4 |
+| V2 Le Pen – Philippe | 26 | 40 | 155,3 | 177,8 | +22,5 |
+| V2 Le Pen – Retailleau | 3 | 0 | 7,1 | 8,4 | +1,3 |
+| V2 Mélenchon – Philippe | 3 | 0 | 4,1 | 5,8 | +1,6 |
+| V1 Philippe – Le Pen | 0 | 40 | 93,3 | 113,3 | +20,0 |
+| V1 Attal – Le Pen | 0 | 19 | 73,5 | 76,9 | +3,5 |
+| V1 Glucksmann – Le Pen | 0 | 5 | 12,6 | −4,6 | −17,2 |
+
+**Critère figé : ΣΔ = +46,6 nats (seuil 5), cercle meilleur sur 8 épreuves sur 11 (seuil 8) ⇒ CERCLE.**
+
+**Lecture.**
+
+- Le critère est rempli **au seuil exact** sur le décompte (8/11). La somme le dépasse de loin.
+- La somme se décompose en +8,1 nats sur les duels cachés et +38,5 sur les reports cachés. Les reports pèsent lourd, car la Dirichlet est concentrée (c ≈ 25 à 80).
+- Les trois épreuves contre le cercle sont :
+  - **Hollande – Le Pen** (4 duels) : Hollande n'a que ces duels, et il n'est pas dans le lse du fit quand on les retire ;
+  - les deux épreuves qui contiennent **l'unique notice Glucksmann – Le Pen** (reports −17,8 et −17,2) : c'est la cellule Mélenchon → Glucksmann (§8.96 e).
+- Sans la notice Glucksmann, l'écart s'élargit (9 épreuves, ΣΔ = +77,4, 8/9). Le verdict ne dépend donc pas de cette notice, à l'inverse de §8.107, mais du décompte.
+- **Harris seul pour les reports**, et le décompte est à la limite : verdict au critère figé, à présenter comme tel. Les MAE de V1 (§8.97-8.107) ne séparaient pas les géométries ; la vraisemblance, qui pondère par la précision des cellules, le fait.
+- **Ce verdict contredit la recommandation « segment par parcimonie » des revues.** Le critère avait été figé pour trancher précisément ce cas. La parcimonie (1 paramètre, l'arc) ne vaut pas 46,6 nats (BIC : environ 2,3 nats par paramètre).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

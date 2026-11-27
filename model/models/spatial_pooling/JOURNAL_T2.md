@@ -31,7 +31,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] (Mac, 0 fit, critère figé §8.110 f1 = §8.96 f) **Log-vraisemblance prédictive cercle contre segment sur les 11 épreuves de l'essai 2027** : V2 (duels cachés, gaussienne du modèle) et V1 (reports cachés, Dirichlet) ; cercle si ΣΔ ≥ 5 nats et 8/11, sinon segment. **Tranche la géométrie.**
+- [x] [FAIT MAC 27/11 ~03:00Z, §8.111 : ΣΔ = +46,6 nats, cercle meilleur 8/11 (au seuil) ⇒ CERCLE au critère figé ; duels +8,1, reports +38,5 ; contre : Hollande et la notice Glucksmann] **Log-vraisemblance prédictive cercle contre segment sur les 11 épreuves de l'essai 2027** : V2 (duels cachés, gaussienne du modèle) et V1 (reports cachés, Dirichlet) ; cercle si ΣΔ ≥ 5 nats et 8/11, sinon segment. **Tranche la géométrie.**
 - [ ] (Mac, 0 fit, §8.110 f3) §8.106 refait avec s_mod puis avec les poids T1 du modèle.
 - [ ] (Mac, 3 fits chacun, §8.110 f4, après l'arbitrage) η ≡ 0 ; P4 contre P4c ; R7 en refit, sur la géométrie retenue.
 - [ ] (après tout cela) **Lot à présenter** : fusion d'origin/main, lot réduit (code, spec, tests, JSON cités), neutralité §8.91 rejouée sur le HEAD final, `PUBLIER_T2 = False` vérifié, puis « PRÊT À PUBLIER ».
@@ -1381,6 +1381,8 @@ La revue porte sur §8.106 à §8.109. Le relecteur n'a modifié aucun fichier. 
 - D, E, F : η ≡ 0, P4 contre P4c, R7 en refit (f4), derrière l'arbitrage.
 
 **ARBITRAGE À TRANCHER (utilisateur), mis à jour.** La décision sur le segment devrait suivre le critère figé §8.96 f, qui se calcule sans fit et passe en tête de file. La recommandation « segment par parcimonie » reste, mais elle ne s'appuie plus sur §8.107.
+
+**MISE À JOUR 27/11 ~03:00Z (§8.111) : le critère figé désigne le CERCLE** (+46,6 nats, 8/11 au seuil exact, reports Harris seuls). À l'utilisateur : adopter le cercle selon ce critère, ou exiger plus (second institut, 9/11) ?
 
 ## Revue Opus 2026-11-26 ~20:15Z (session locale) — K_s, test β, parcimonie : intégration point par point
 
