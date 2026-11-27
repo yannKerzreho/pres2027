@@ -1,0 +1,228 @@
+{
+ "spec": "§8.96 f, §8.110 f1",
+ "epreuves": {
+  "v2:Attal|Le Pen": {
+   "segment": {
+    "n_duels": 15,
+    "n_reports": 19,
+    "ll_duels": -9.332160049905712,
+    "ll_reports": 71.43523817168003,
+    "mae_duels_pt": 3.915309264988085,
+    "ll": 62.10307812177432
+   },
+   "cercle": {
+    "n_duels": 15,
+    "n_reports": 19,
+    "ll_duels": 4.532781116250151,
+    "ll_reports": 71.59224418477356,
+    "mae_duels_pt": 3.3265925251211637,
+    "ll": 76.12502530102371
+   },
+   "delta_cercle_moins_segment": 14.02
+  },
+  "v2:Bardella|Philippe": {
+   "segment": {
+    "n_duels": 4,
+    "n_reports": 5,
+    "ll_duels": 7.445406594588741,
+    "ll_reports": 6.56543218296004,
+    "mae_duels_pt": 2.542703156621902,
+    "ll": 14.01083877754878
+   },
+   "cercle": {
+    "n_duels": 4,
+    "n_reports": 5,
+    "ll_duels": 11.145337632233844,
+    "ll_reports": 19.750407856676315,
+    "mae_duels_pt": 1.4215080365847719,
+    "ll": 30.89574548891016
+   },
+   "delta_cercle_moins_segment": 16.88
+  },
+  "v2:Glucksmann|Le Pen": {
+   "segment": {
+    "n_duels": 15,
+    "n_reports": 5,
+    "ll_duels": 34.33194498564311,
+    "ll_reports": 13.080166209273425,
+    "mae_duels_pt": 1.779079483853582,
+    "ll": 47.412111194916534
+   },
+   "cercle": {
+    "n_duels": 15,
+    "n_reports": 5,
+    "ll_duels": 38.49098462209378,
+    "ll_reports": -4.745090813026483,
+    "mae_duels_pt": 1.4020847943020298,
+    "ll": 33.7458938090673
+   },
+   "delta_cercle_moins_segment": -13.67
+  },
+  "v2:Hollande|Le Pen": {
+   "segment": {
+    "n_duels": 4,
+    "n_reports": 0,
+    "ll_duels": 9.89467654150809,
+    "ll_reports": 0.0,
+    "mae_duels_pt": 1.6749428616734272,
+    "ll": 9.89467654150809
+   },
+   "cercle": {
+    "n_duels": 4,
+    "n_reports": 0,
+    "ll_duels": -11.231680848380797,
+    "ll_reports": 0.0,
+    "mae_duels_pt": 5.316537254536706,
+    "ll": -11.231680848380797
+   },
+   "delta_cercle_moins_segment": -21.13
+  },
+  "v2:Le Pen|Mélenchon": {
+   "segment": {
+    "n_duels": 26,
+    "n_reports": 5,
+    "ll_duels": 63.72938047619011,
+    "ll_reports": 2.600802092256923,
+    "mae_duels_pt": 1.4928415058292923,
+    "ll": 66.33018256844703
+   },
+   "cercle": {
+    "n_duels": 26,
+    "n_reports": 5,
+    "ll_duels": 60.18634979779345,
+    "ll_reports": 20.549155280008797,
+    "mae_duels_pt": 1.603198840705728,
+    "ll": 80.73550507780224
+   },
+   "delta_cercle_moins_segment": 14.41
+  },
+  "v2:Le Pen|Philippe": {
+   "segment": {
+    "n_duels": 26,
+    "n_reports": 40,
+    "ll_duels": 64.11809920154518,
+    "ll_reports": 91.18729603551643,
+    "mae_duels_pt": 1.6654395811251597,
+    "ll": 155.3053952370616
+   },
+   "cercle": {
+    "n_duels": 26,
+    "n_reports": 40,
+    "ll_duels": 67.78933382110993,
+    "ll_reports": 109.98871072236814,
+    "mae_duels_pt": 1.381129042234016,
+    "ll": 177.77804454347807
+   },
+   "delta_cercle_moins_segment": 22.47
+  },
+  "v2:Le Pen|Retailleau": {
+   "segment": {
+    "n_duels": 3,
+    "n_reports": 0,
+    "ll_duels": 7.066474868034904,
+    "ll_reports": 0.0,
+    "mae_duels_pt": 1.8400927115377663,
+    "ll": 7.066474868034904
+   },
+   "cercle": {
+    "n_duels": 3,
+    "n_reports": 0,
+    "ll_duels": 8.357867760292725,
+    "ll_reports": 0.0,
+    "mae_duels_pt": 1.0715180869041738,
+    "ll": 8.357867760292725
+   },
+   "delta_cercle_moins_segment": 1.29
+  },
+  "v2:Mélenchon|Philippe": {
+   "segment": {
+    "n_duels": 3,
+    "n_reports": 0,
+    "ll_duels": 4.115968705251422,
+    "ll_reports": 0.0,
+    "mae_duels_pt": 2.873287057806068,
+    "ll": 4.115968705251422
+   },
+   "cercle": {
+    "n_duels": 3,
+    "n_reports": 0,
+    "ll_duels": 5.7561493141612745,
+    "ll_reports": 0.0,
+    "mae_duels_pt": 2.210437506889118,
+    "ll": 5.7561493141612745
+   },
+   "delta_cercle_moins_segment": 1.64
+  },
+  "v1:Philippe – Le Pen": {
+   "segment": {
+    "n_duels": 0,
+    "n_reports": 40,
+    "ll_duels": 0.0,
+    "ll_reports": 93.29182820450555,
+    "ll": 93.29182820450555
+   },
+   "cercle": {
+    "n_duels": 0,
+    "n_reports": 40,
+    "ll_duels": 0.0,
+    "ll_reports": 113.26284983321919,
+    "ll": 113.26284983321919
+   },
+   "delta_cercle_moins_segment": 19.97
+  },
+  "v1:Attal – Le Pen": {
+   "segment": {
+    "n_duels": 0,
+    "n_reports": 19,
+    "ll_duels": 0.0,
+    "ll_reports": 73.45648538307714,
+    "ll": 73.45648538307714
+   },
+   "cercle": {
+    "n_duels": 0,
+    "n_reports": 19,
+    "ll_duels": 0.0,
+    "ll_reports": 76.91012599325663,
+    "ll": 76.91012599325663
+   },
+   "delta_cercle_moins_segment": 3.45
+  },
+  "v1:Glucksmann – Le Pen": {
+   "segment": {
+    "n_duels": 0,
+    "n_reports": 5,
+    "ll_duels": 0.0,
+    "ll_reports": 12.632811667523459,
+    "ll": 12.632811667523459
+   },
+   "cercle": {
+    "n_duels": 0,
+    "n_reports": 5,
+    "ll_duels": 0.0,
+    "ll_reports": -4.576243180758656,
+    "ll": -4.576243180758656
+   },
+   "delta_cercle_moins_segment": -17.21
+  }
+ },
+ "synthese": {
+  "n_epreuves": 11,
+  "somme_delta": 42.12,
+  "cercle_meilleur": 8,
+  "delta_par_epreuve": {
+   "v2:Attal|Le Pen": 14.02,
+   "v2:Bardella|Philippe": 16.88,
+   "v2:Glucksmann|Le Pen": -13.67,
+   "v2:Hollande|Le Pen": -21.13,
+   "v2:Le Pen|Mélenchon": 14.41,
+   "v2:Le Pen|Philippe": 22.47,
+   "v2:Le Pen|Retailleau": 1.29,
+   "v2:Mélenchon|Philippe": 1.64,
+   "v1:Philippe – Le Pen": 19.97,
+   "v1:Attal – Le Pen": 3.45,
+   "v1:Glucksmann – Le Pen": -17.21
+  },
+  "verdict": "cercle"
+ },
+ "lse_finalistes": true
+}

@@ -33,7 +33,7 @@ l'historique, ajouter en bas de « Historique ».
 
 - [x] [FAIT MAC 27/11 ~03:00Z, §8.111 : ΣΔ = +46,6 nats, cercle meilleur 8/11 (au seuil) ⇒ CERCLE au critère figé ; duels +8,1, reports +38,5 ; contre : Hollande et la notice Glucksmann] **Log-vraisemblance prédictive cercle contre segment sur les 11 épreuves de l'essai 2027** : V2 (duels cachés, gaussienne du modèle) et V1 (reports cachés, Dirichlet) ; cercle si ΣΔ ≥ 5 nats et 8/11, sinon segment. **Tranche la géométrie.**
 - [x] [FAIT MAC 27/11 ~03:30Z, §8.112 : non distingués (s_mod : 1,94 / 2,43 ; poids du modèle : 0,59 / 1,26)] §8.106 refait avec s_mod puis avec les poids T1 du modèle.
-- [ ] (Mac, 0 fit, drapeau éteint, §8.113 e1) **Finalistes dans le lse de `_duel_par_tirage`** (cohérence avec `cellules()`), deux géométries ; ΣΔ rapporté sans critère.
+- [x] [FAIT MAC 27/11 ~06:30Z, §8.114 : ΣΔ = +42,1, 8/11, verdict inchangé ; drapeau `lse_finalistes` éteint par défaut] **Finalistes dans le lse de `_duel_par_tirage`** (cohérence avec `cellules()`), deux géométries ; ΣΔ rapporté sans critère.
 - [ ] (Mac, après l'arbitrage, critères §8.113 e2-e5) Sur la géométrie retenue : arc fixé a priori à 2π (si cercle) ; η ≡ 0 ; P4 contre P4c ; R7 en refit (reports hors électorats des finalistes).
 - [ ] (après tout cela) **Lot à présenter** : fusion d'origin/main, lot réduit (code, spec, tests, JSON cités), neutralité §8.91 rejouée sur le HEAD final, `PUBLIER_T2 = False` vérifié, puis « PRÊT À PUBLIER ».
 

@@ -48,7 +48,7 @@ def caches(raw0, rep0, ep, candidates):
     return duels, R
 
 
-def ll_epreuve(geo, ep, raw0, rep0):
+def ll_epreuve(geo, ep, raw0, rep0, lse_finalistes=False):
     nom = "".join(ch for ch in ep if ch.isalnum())
     r = min(json.loads((sr.OUT_DIR / f"essai2027_{geo}_{nom}.json").read_text())["inits"], key=lambda i: i["U"])
     fit4, _, _, _, _ = reconstruire(geo, ep, r, 4)
@@ -68,7 +68,7 @@ def ll_epreuve(geo, ep, raw0, rep0):
         ia = np.concatenate([duels["a"], np.full(pad, duels["a"][0])])
         ib = np.concatenate([duels["b"], np.full(pad, duels["b"][0])])
         w = fit.w_path_draws[np.arange(S), :, np.array(jj)]
-        s = np.asarray(_duel_par_tirage(fit, w, ia, ib))[:n_d]
+        s = np.asarray(_duel_par_tirage(fit, w, ia, ib, lse_finalistes=lse_finalistes))[:n_d]
         sd = np.sqrt(s * (1 - s) / np.clip(duels["n"], 1.0, None) + float(vals["sigma_t2"]) ** 2 + 1e-8)
         out["ll_duels"] = float(norm.logpdf(duels["y"], s, sd).sum())
         out["mae_duels_pt"] = float(100 * np.abs(s - duels["y"]).mean())
@@ -88,12 +88,12 @@ def ll_epreuve(geo, ep, raw0, rep0):
     return out
 
 
-def main() -> dict:
+def main(lse_finalistes: bool = False) -> dict:
     raw0, rep0, _ = X.donnees()
     eps = [e for e in X.epreuves() if e != "complet"]
     res = {"spec": "§8.96 f, §8.110 f1", "epreuves": {}}
     for ep in eps:
-        L = {geo: ll_epreuve(geo, ep, raw0, rep0) for geo in ("segment", "cercle")}
+        L = {geo: ll_epreuve(geo, ep, raw0, rep0, lse_finalistes) for geo in ("segment", "cercle")}
         L["delta_cercle_moins_segment"] = round(L["cercle"]["ll"] - L["segment"]["ll"], 2)
         res["epreuves"][ep] = L
         print(json.dumps({ep: L}, ensure_ascii=False), flush=True)
@@ -102,10 +102,13 @@ def main() -> dict:
          "delta_par_epreuve": {k: v["delta_cercle_moins_segment"] for k, v in res["epreuves"].items()}}
     S["verdict"] = "cercle" if (S["somme_delta"] >= 5 and S["cercle_meilleur"] >= 8) else "segment"
     res["synthese"] = S
-    (sr.OUT_DIR / "essai2027_vraisemblance.json").write_text(json.dumps(res, ensure_ascii=False, indent=1) + "\n")
+    res["lse_finalistes"] = lse_finalistes                 # §8.113 e1
+    nomf = "essai2027_vraisemblance_lsefin.json" if lse_finalistes else "essai2027_vraisemblance.json"
+    (sr.OUT_DIR / nomf).write_text(json.dumps(res, ensure_ascii=False, indent=1) + "\n")
     print(json.dumps(S, ensure_ascii=False, indent=1))
     return res
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+    main(lse_finalistes="--lse-finalistes" in sys.argv)

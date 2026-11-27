@@ -595,9 +595,22 @@ def _lam(fit):
     return None if v is None else jnp.asarray(v)
 
 
-def _duel_par_tirage(fit, w, ia: np.ndarray, ib: np.ndarray) -> np.ndarray:
+def _masque_lse(fit, ia, ib, lse_finalistes: bool):
+    """(S, N) ou (N,) : masque du lse. `lse_finalistes` (§8.113 e1, défaut False, inchangé) : les deux finalistes
+    du duel lu entrent toujours dans le lse, comme dans `cellules()` (un candidat sans duel au fit, ex. Hollande
+    en V2, en sortait)."""
+    if fit.masque_lse is None or not lse_finalistes:
+        return None if fit.masque_lse is None else np.asarray(fit.masque_lse, dtype=float)[None, :]
+    ml = np.tile(np.asarray(fit.masque_lse, dtype=float), (len(ia), 1))
+    r = np.arange(len(ia))
+    ml[r, ia] = ml[r, ib] = 1.0
+    return ml
+
+
+def _duel_par_tirage(fit, w, ia: np.ndarray, ib: np.ndarray, lse_finalistes: bool = False) -> np.ndarray:
     """Part de `ia[s]` contre `ib[s]` au tirage s (indices par tirage)."""
     s_idx = np.arange(len(ia))
+    ml = _masque_lse(fit, np.asarray(ia), np.asarray(ib), lse_finalistes)
     if fit.nu_draws is not None or fit.arc_draws is not None:            # carte 2D (§8.44) / cercle (§8.46)
         from .geometry import W2, W_THETA, duel_shares_poids, log_attractivite_2d, log_attractivite_cercle
         if fit.nu_draws is not None:
@@ -612,7 +625,7 @@ def _duel_par_tirage(fit, w, ia: np.ndarray, ib: np.ndarray) -> np.ndarray:
         lse = None
         if fit.omega_draws is not None:
             from scipy.special import logsumexp
-            Am = A if fit.masque_lse is None else A + np.log(fit.masque_lse)[None, :, None]
+            Am = A if ml is None else A + np.log(ml)[:, :, None]
             lse = logsumexp(Am, axis=1)
         og = None
         if getattr(fit, "gamma_draws", None) is not None:                 # §8.48 bis
@@ -633,7 +646,7 @@ def _duel_par_tirage(fit, w, ia: np.ndarray, ib: np.ndarray) -> np.ndarray:
     extra = ()
     if fit.omega_draws is not None:
         from scipy.special import logsumexp
-        Am = A if fit.masque_lse is None else A + np.log(fit.masque_lse)[None, :, None]
+        Am = A if ml is None else A + np.log(ml)[:, :, None]
         extra = (logsumexp(Am, axis=1), fit.omega_draws)
         if getattr(fit, "omega_k_draws", None) is not None:                # §8.58 (R8)
             from .geometry import W, duel_shares_poids, rho_electorats

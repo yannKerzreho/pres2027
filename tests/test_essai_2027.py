@@ -53,3 +53,14 @@ def test_kappa_rho_defaut_inchange():
     c, _ = reports_cellules(*arg, fidelite=True, kappa_rho=0.3)
     assert np.allclose(a, b, atol=0, rtol=0)
     assert not np.allclose(a, c)
+
+
+def test_masque_lse_finalistes():
+    import numpy as np
+    from types import SimpleNamespace
+    from model.models.spatial_pooling.fit import _masque_lse
+    fit = SimpleNamespace(masque_lse=np.array([1.0, 0.0, 1.0, 0.0]))
+    assert np.array_equal(_masque_lse(fit, np.array([1, 0]), np.array([2, 3]), False)[0], fit.masque_lse)
+    m = _masque_lse(fit, np.array([1, 0]), np.array([2, 3]), True)
+    assert m.tolist() == [[1, 1, 1, 0], [1, 0, 1, 1]]
+    assert _masque_lse(SimpleNamespace(masque_lse=None), np.array([0]), np.array([1]), True) is None

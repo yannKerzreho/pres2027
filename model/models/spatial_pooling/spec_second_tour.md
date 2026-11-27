@@ -5972,6 +5972,25 @@ ll(β) − ll(κ), en nats :
    - unités dédoublonnées : 8 paires de duels et 5 hypothèses de reports, avec bootstrap par notice ;
    - critère : ΣΔ ≥ 5 nats et au moins 9 unités sur 13.
 
+### 8.114 Finalistes dans le lse des duels lus (§8.113 e1 ; 27/11 ~06:30Z, Mac, 0 fit)
+
+**Code.**
+
+- `_duel_par_tirage(..., lse_finalistes=False)` dans `fit.py`, avec l'aide `_masque_lse`.
+- Le défaut est éteint et ne change ni la production ni les lectures existantes.
+- Test : `test_masque_lse_finalistes`.
+
+**Lecture.** `vraisemblance_essai_2027.py --lse-finalistes` produit `essai2027_vraisemblance_lsefin.json`.
+
+- Seule l'épreuve Hollande – Le Pen change : segment 9,89 → 9,89, cercle −6,81 → −11,23.
+- La revue est reproduite (§8.113 b).
+- ΣΔ = **+42,1 nats**, cercle meilleur sur **8/11** : verdict inchangé (cercle).
+
+**Adoption.** Le correctif est adopté par cohérence avec `cellules()`, quel que soit le signe (§8.113 e1), pour toute lecture future de l'essai.
+
+- Le drapeau reste éteint par défaut dans `duel_draws` (production T2 non publiée).
+- L'allumer en production fera partie du lot de la géométrie retenue.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
