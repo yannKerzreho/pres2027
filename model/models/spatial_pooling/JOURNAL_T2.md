@@ -31,6 +31,10 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- [x] [FAIT 27/11 ~10:15Z, §8.116] **Décision de l'utilisateur : « exiger plus », puis « push forward ».** Second institut indisponible (Harris seul) ; critère dédoublonné §8.113 e6 : ΣΔ = +41,2, 10/13 ⇒ cercle (bootstrap par notice à faire).
+- [ ] [EN COURS MAC 27/11] **Arc fixé à 2π sur le cercle** (§8.113 e5, 11 fits) : fixer l'arc si ΣΔ(fixé − libre) ≥ −2,3 nats.
+- [ ] (0 fit) Bootstrap par notice des unités de reports (§8.113 e6) : log-vraisemblances par notice à sauvegarder.
+
 - [x] [FAIT MAC 27/11 ~03:00Z, §8.111 : ΣΔ = +46,6 nats, cercle meilleur 8/11 (au seuil) ⇒ CERCLE au critère figé ; duels +8,1, reports +38,5 ; contre : Hollande et la notice Glucksmann] **Log-vraisemblance prédictive cercle contre segment sur les 11 épreuves de l'essai 2027** : V2 (duels cachés, gaussienne du modèle) et V1 (reports cachés, Dirichlet) ; cercle si ΣΔ ≥ 5 nats et 8/11, sinon segment. **Tranche la géométrie.**
 - [x] [FAIT MAC 27/11 ~03:30Z, §8.112 : non distingués (s_mod : 1,94 / 2,43 ; poids du modèle : 0,59 / 1,26)] §8.106 refait avec s_mod puis avec les poids T1 du modèle.
 - [x] [FAIT MAC 27/11 ~06:30Z, §8.114 : ΣΔ = +42,1, 8/11, verdict inchangé ; drapeau `lse_finalistes` éteint par défaut] **Finalistes dans le lse de `_duel_par_tirage`** (cohérence avec `cellules()`), deux géométries ; ΣΔ rapporté sans critère.

@@ -6041,6 +6041,60 @@ ll(β) − ll(κ), en nats :
 4. **R7 en refit** (6 fits) : R7 gardée si la retirer coûte plus de 2 nats hors électorats des finalistes.
 5. **P4 contre P4c** (11 fits) : même règle qu'en 3, plus z_σ max ≤ 3.
 
+### 8.116 Décision de l'utilisateur : « exiger plus » ; critère par unités dédoublonnées (§8.113 e6) appliqué (27/11 ~10:15Z, 0 fit)
+
+**Décision de l'utilisateur (27/11).** Il ne retient pas le cercle sur le seul critère de §8.96 f (8/11 au seuil).
+Il exige plus, puis demande d'avancer (« push forward »).
+
+**Second institut : indisponible.**
+
+- `reports_avant_t1_2027.csv` ne contient que Harris Interactive : 252 lignes, la dernière notice datée du 2026-11-05.
+- Cette exigence ne peut pas être remplie aujourd'hui. Elle reste ouverte et sera rejouée quand un autre institut publiera des reports.
+
+**Critère plus strict, figé AVANT cette lecture en §8.113 e6.** Il porte sur des unités dédoublonnées :
+
+- 8 paires de duels, où seuls les duels cachés comptent ;
+- 5 hypothèses de reports, comptées une seule fois.
+
+Seuils : ΣΔ ≥ 5 nats **et** au moins 9 unités sur 13.
+
+**Choix de lecture, déclaré.** Les valeurs par épreuve étaient connues (§8.111-8.114) avant ce découpage.
+
+- Pour une hypothèse de reports qui a un fit V1 (où seuls les reports sont cachés), on prend ce fit.
+- Sinon, on prend le fit V2 de la paire.
+- La variante « toujours V2 » est rapportée aussi.
+
+Source : `essai2027_vraisemblance_lsefin.json`.
+
+| Unité | Δ (cercle − segment), en nats |
+|---|---|
+| Duels Attal – Le Pen | +13,9 |
+| Duels Bardella – Philippe | +3,7 |
+| Duels Glucksmann – Le Pen | +4,2 |
+| Duels Hollande – Le Pen | −21,1 |
+| Duels Le Pen – Mélenchon | −3,5 |
+| Duels Le Pen – Philippe | +3,7 |
+| Duels Le Pen – Retailleau | +1,3 |
+| Duels Mélenchon – Philippe | +1,6 |
+| Reports Philippe – Le Pen (V1) | +20,0 |
+| Reports Attal – Le Pen (V1) | +3,5 |
+| Reports Glucksmann – Le Pen (V1) | −17,2 |
+| Reports Bardella – Philippe (V2) | +13,2 |
+| Reports Mélenchon – Le Pen (V2) | +17,9 |
+
+**Verdict : ΣΔ = +41,2 nats, cercle meilleur sur 10 unités sur 13 (seuil 9) ⇒ CERCLE.**
+
+- La variante « toujours V2 » donne ΣΔ = +36,1 et 10/13 : même verdict.
+- Les duels seuls donnent +3,8 nats et 6/8. Le gain du cercle vient surtout des reports, donc de Harris.
+- Le bootstrap par notice prévu en e6 n'est pas fait : les log-vraisemblances par notice ne sont pas sauvegardées. Il reste à faire, sans fit.
+
+**Ce qui reste exigible.**
+
+- Un second institut : indisponible.
+- La simplification qui rendrait la question sans enjeu : **l'arc fixé a priori à 2π** (§8.113 e5).
+  - Si ΣΔ(fixé − libre) ≥ −2,3 nats, le cercle ne coûte plus aucun paramètre de plus que le segment.
+  - Lancé ensuite (11 fits, Mac).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
