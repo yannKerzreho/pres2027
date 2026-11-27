@@ -6095,6 +6095,36 @@ Source : `essai2027_vraisemblance_lsefin.json`.
   - Si ΣΔ(fixé − libre) ≥ −2,3 nats, le cercle ne coûte plus aucun paramètre de plus que le segment.
   - Lancé ensuite (11 fits, Mac).
 
+### 8.117 Arc fixé a priori à 2π contre arc libre (§8.113 e5 ; 27/11 ~23:30Z, Mac, 11 fits)
+
+**Méthode.**
+
+- Géométrie `cercle2pi` d'`essai_2027.py` (`arc_ferme=True`) : mêmes données, 8 inits, 2 000 pas puis polissage, 88 inits sans erreur.
+- Lecture : `vraisemblance_essai_2027.py --arc-fixe`, finalistes dans le lse (§8.114), mêmes observations cachées.
+- Résultat : `essai2027_vraisemblance_arc2pi.json`.
+
+| Épreuve | Segment | Cercle, arc libre | Cercle, arc 2π | Δ (2π − libre) |
+|---|---|---|---|---|
+| V2 Attal – Le Pen | 62,1 | 76,1 | 65,0 | −11,1 |
+| V2 Bardella – Philippe | 14,0 | 30,9 | 31,0 | +0,1 |
+| V2 Glucksmann – Le Pen | 47,4 | 33,7 | 38,9 | +5,2 |
+| V2 Hollande – Le Pen | 9,9 | −11,2 | −12,0 | −0,8 |
+| V2 Le Pen – Mélenchon | 66,3 | 80,7 | 81,6 | +0,9 |
+| V2 Le Pen – Philippe | 155,3 | 177,8 | 188,3 | +10,5 |
+| V2 Le Pen – Retailleau | 7,1 | 8,4 | 8,2 | −0,1 |
+| V2 Mélenchon – Philippe | 4,1 | 5,8 | 6,3 | +0,5 |
+| V1 Philippe – Le Pen | 93,3 | 113,3 | 104,9 | −8,4 |
+| V1 Attal – Le Pen | 73,5 | 76,9 | 73,8 | −3,1 |
+| V1 Glucksmann – Le Pen | 12,6 | −4,6 | −7,6 | −3,1 |
+
+**Critère figé : ΣΔ(2π − libre) = −9,4 nats, sous le seuil de −2,3.**
+
+- **L'arc libre est gardé.** Son paramètre vaut environ 9 nats prédictifs, au-delà du prix d'un paramètre au BIC.
+- Les épreuves se partagent : 5 pour le 2π, 6 pour l'arc libre. La perte vient surtout d'Attal – Le Pen et de V1 Philippe ; Le Pen – Philippe va en sens inverse.
+- Le double compte de §8.113 c (V2 et V1 de la même paire) touche aussi ce calcul. Il est rapporté sans correction, comme au critère figé.
+
+**Rapporté, sans seuil.** Même à arc fixé, donc à nombre de paramètres égal au segment, le cercle bat le segment de **+32,7 nats** sur 8 épreuves sur 11. L'avantage du cercle ne tient donc pas au paramètre d'arc.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
