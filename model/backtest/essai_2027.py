@@ -83,7 +83,8 @@ def retirer(raw, rep, epreuve: str):
 
 def appel(raw, rep, champ, geo, runner):
     return fit_spatial_pooling(raw, AS_OF, second_tour=True, eta_hier=True, fidelite=True,
-                               sigma_dynamiques_30j=True, carte_cercle=(geo == "cercle"),
+                               sigma_dynamiques_30j=True, carte_cercle=geo in ("cercle", "cercle2pi"),
+                               arc_ferme=(geo == "cercle2pi"),                  # §8.113 e5 : arc fixé a priori à 2π
                                lse_officiel=champ, reports=rep, champ_reports=champ, mcmc_runner=runner)
 
 
@@ -290,7 +291,7 @@ def epreuves() -> list[str]:
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--geo", choices=["cercle", "segment"])
+    ap.add_argument("--geo", choices=["cercle", "segment", "cercle2pi"])
     ap.add_argument("--epreuve")
     ap.add_argument("--inits", type=int, default=4)
     ap.add_argument("--pas", type=int, default=4000)
