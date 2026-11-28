@@ -7,7 +7,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## État (mis à jour à chaque réveil)
 
-- Dernière revue Opus : 2026-11-27 ~08:00Z (session locale)
+- Dernière revue Opus : 2026-11-28 ~08:15Z (routine)
 - OBJECTIF (utilisateur, via l'orchestrateur, 2026-11-14) : « un modèle qui est
   backé par le passé mais qui représente bien les sondages et tendances
   actuels ». 2017/2022 servent à CALIBRER et VALIDER ; le critère final est la
@@ -30,6 +30,11 @@ l'historique, ajouter en bas de « Historique ».
   (voir Faits établis) ; fusion/push = orchestrateur.
 
 ## File de tâches (prendre la première non cochée)
+
+- [ ] (0 fit, revue 28/11 points 1-2, 11) Bootstrap §8.123 refait : duels rééchantillonnés par sondage dans chaque paire ; leave-one-notice-out ; décompte aux seuils 0 / 0,5 / 1 nat ; corriger « 7/11 » et les heures d'après `git log`.
+- [ ] (VM possible, revue 28/11 point 8 ; BLOQUANT avant publication) Backtests 2017 et 2022 du modèle final (cercle, arc libre, η ≡ 0, P4c, R7) au protocole §8.29 ; ratio σ_LP/σ_Macron < 1,5. À déposer en DEMANDE VM avec la variante exacte.
+- [ ] (0 fit, revue 28/11 points 4, 6, 7) Optimisme de la chaîne de choix (bootstrap rejoué) ; prédictive Laplace/NUTS sur 3 épreuves et ΣΔ à c commun ; vraisemblance des duels avec effet de paire τ.
+- [ ] (revue 28/11 point 5) Figer modèle et règle ; évaluer sur les prochaines notices et duels, sans refit de structure.
 
 - [x] [FAIT 27/11 ~10:15Z, §8.116] **Décision de l'utilisateur : « exiger plus », puis « push forward ».** Second institut indisponible (Harris seul) ; critère dédoublonné §8.113 e6 : ΣΔ = +41,2, 10/13 ⇒ cercle (bootstrap par notice à faire).
 - [x] [FAIT MAC 27/11 ~23:30Z, §8.117 : ΣΔ(2π − libre) = −9,4 ⇒ arc libre gardé ; à arc fixé, le cercle bat encore le segment de +32,7 nats, 8/11] **Arc fixé à 2π sur le cercle** (11 fits).
@@ -1064,6 +1069,8 @@ Résultats : `model/backtest/results/*.json` (committés).
 
 ## Arbitrages ouverts (pour l'utilisateur — ne pas trancher seul)
 
+- ARBITRAGE À TRANCHER (revue routine 28/11 ~08:15Z, point 3) : la comparaison décisive cercle contre segment est-elle « à η égal » (critère strict ÉCHOUE, 8/13) ou « chaque géométrie dans sa configuration retenue » (9/13, règle posée après lecture) ? Et faut-il retirer η en production (`ETA_HIER_T2`) avant les backtests 2017/2022 du modèle final ?
+
 - ARBITRAGE À TRANCHER (revue routine 23/11 20:15Z) : V2 2022 = développement ; confirmation par V2 en paire retirée sur 2027 (11 paires) et 2017, avec témoin de régression T1.
 
 - ARBITRAGE À TRANCHER (revue routine 21/11 12:15Z, points 1 et 6) : rétrograder les critères 1-2 en diagnostics (in-sample, ω_k) et juger sur V1 strict / V2 témoin `hier` / 2017 ; et/ou figer la famille puis un fit confirmatoire 2017.
@@ -1192,6 +1199,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-28 08:15Z (routine) : revue Opus quotidienne (12 points, 3 bloquants : bootstrap vide par construction, chemin bifurquant §8.119 c, η ≡ 0 sans backtest 2017/2022) intégrée ; 4 tâches ajoutées en tête de file ; date de revue mise à jour.
 - 2026-11-27 15:10Z (routine) : fusion d'origin/main (maj quotidienne des données, sans conflit) ; file relue : rien d'actionnable côté VM (tout derrière l'ARBITRAGE de géométrie).
 - 2026-11-27 00:10Z (routine) : fusion d'origin/main (maj quotidienne des données, sans conflit) ; file relue : rien d'actionnable côté VM (restent l'électorat « reste » et les simplifications, derrière l'ARBITRAGE de géométrie).
 - 2026-11-26 15:10Z (routine) : fusion d'origin/main 348ca3f (maj quotidienne des données, sans conflit) ; file relue : rien d'actionnable côté VM (abstention cercle 2027 en attente d'accord utilisateur).
@@ -1364,6 +1372,25 @@ conservé pour l'historique.
   instables (R̂ 7,5) et s_ab +0,7 pt ⇒ phase 2 à faire.
 
 
+
+## Revue Opus 2026-11-28 ~08:15Z (routine) — §8.116-8.123, chaîne de simplifications : intégration point par point
+
+Relecteur : sous-agent Opus, lecture seule. ΣΔ et décomptes de §8.117-8.123 reproduits à 0,1 nat près depuis les JSON ; les défauts portent sur la procédure, pas sur l'arithmétique. Le point 1 a été vérifié dans le code (`vraisemblance_essai_2027.py:186`, `u = list(duels)` fixe).
+
+1. **Bootstrap §8.123 presque vide par construction (BLOQUANT pour « robuste »).** 11 unités sur 13 sont constantes (8 de duels fixées, 3 hypothèses à une seule notice) ; P = 0,999 est mécanique. INTÉGRÉ : « robuste » à retirer de §8.123. Test en file : rééchantillonner aussi les duels (par sondage dans chaque paire) et rapporter un leave-one-notice-out (sans la notice Harris du 25-27 mai : ΣΔ ≈ +13,3, 7/13, sous le seuil).
+2. **9/13 repose sur des unités quasi nulles (important).** Le Pen – Retailleau = +0,7 nat ; avec une zone d'indifférence de ±1 nat, 8/13 et le critère strict échoue. INTÉGRÉ : rapporter le décompte aux seuils 0 / 0,5 / 1 nat.
+3. **Chemin bifurquant sur la comparaison décisive (BLOQUANT).** À η égal (segment η ≡ 0, annoncé comme la comparaison « propre » en §8.118), le critère strict échoue (8/13) ; la règle « chaque géométrie dans sa configuration retenue » (9/13) a été posée après lecture (§8.119 c). INTÉGRÉ : à écrire en §8.119 ; décision → ARBITRAGE ci-dessous.
+4. **Tests multiples et malédiction du gagnant (important).** 5 configurations explorées pour le cercle contre 2 pour le segment, jugées sur les mêmes 11 épreuves. INTÉGRÉ : test d'optimisme (rejouer la chaîne de choix sur tirages bootstrap ; écart ΣΔ choisi − hors sélection), 0 fit si les ll par ligne sont sauvegardées pour toutes les variantes.
+5. **Aucune donnée vraiment hors échantillon (BLOQUANT avant publication).** INTÉGRÉ : figer modèle et règle maintenant, évaluer sur les prochaines notices Harris et les prochains duels sans refit de structure.
+6. **« Prédictive » au MAP (important).** `beta_essai_2027.py:50` répète le MAP ; le c de la Dirichlet (60-80 cercle contre 23-45 segment) porte le gain des reports. INTÉGRÉ : prédictive par Laplace ou NUTS sur 3 épreuves, et ΣΔ à c commun.
+7. **Duels d'une même paire traités comme indépendants (important).** σ_t2 ≈ 0,01 et biais de paire de signe constant : le −48,7 de P4 sur Le Pen – Mélenchon compte 26 fois un même décalage (P4 est en outre un autre mode : arc ≈ 2,6 contre ≈ 4,0). INTÉGRÉ : recalcul P4 et η avec une gaussienne multivariée par paire (effet de paire τ intégré).
+8. **η ≡ 0 contredit les backtests historiques (BLOQUANT).** §8.29 retenait η hiérarchique sur 3 élections ; §9.3 (Codex) notait un biais de 5-6 pt sans valence. En faveur : σ_LP ≈ σ_global sur le cercle η ≡ 0 (0,106-0,117), conforme à l'orientation utilisateur. INTÉGRÉ : backtests 2017 et 2022 du modèle final au protocole figé §8.29 (CRPS + LS plafonné, ratio σ_LP/σ_Macron < 1,5). Rappel : en 2022 l'arc valait 2π et aucune géométrie ne battait les témoins.
+9. **z_σ ≤ 3 non appliqué au modèle retenu (mineur à important).** Sous P4c, z_σ(Mélenchon) ≈ −3,7 et σ_Mélenchon = 0,054. INTÉGRÉ : rapporter z_σ max des deux variantes en §8.120.
+10. **Champs JSON trompeurs (mineur).** `delta_fixe_moins_libre` toujours calculé contre le cercle η de lsefin (−11,0 écrit pour P4 au lieu de −31,9 ; −64,6 sans objet pour segment_eta0). Chiffres de la spec justes. INTÉGRÉ : référence en paramètre et champ `verdict`.
+11. **Coquilles et horodatage (mineur).** §8.123 « 7/11 » → 7/13 ; §8.122 daté après §8.123, §8.120-8.121 datés 03:00Z et 04:00Z alors que les commits sont de 01:12Z et 01:27Z. INTÉGRÉ : corriger d'après `git log`, figer le code du bootstrap dans le même commit que la règle.
+12. **R7 hors finalistes (mineur).** Calcul correct ; la perte de −6,3 vient surtout d'Attal (4 notices), Philippe au seuil (−2,02). R7 n'ajoute aucun paramètre : gardée. INTÉGRÉ : bootstrap par notice du Δ, sans priorité.
+
+**Avant « PRÊT À PUBLIER » :** neutralité §8.91 rejouée sur le HEAD final (dernière passe le 25/11, avant les drapeaux géométrie et η) ; backtests 2017/2022 du modèle final ; `PUBLIER_T2 = False` vérifié ; passer `ETA_HIER_T2` à η ≡ 0 change la production et doit être annoncé ; page de décision explicite (gain entièrement dans les reports d'un seul institut, duels seuls −1,9 nat, 7/13 sans la notice de mai, règle §8.119 c choisie après lecture).
 
 ## Revue Opus 2026-11-27 ~08:00Z (session locale) — §8.114, lot : intégration point par point
 
