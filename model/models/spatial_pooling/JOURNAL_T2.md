@@ -31,6 +31,13 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
+- [ ] **DEMANDE VM n° 11 (session locale, 2026-11-28 ~14:40Z) : modèle final η ≡ 0 sur 2017** (spec §8.126, critères figés AVANT lecture). Variante `cercle_ra_fid_sigdyn30_eta0` (déjà dans `map_screen.py` et `eval_r2.py`, commit f1e81b7). Même séquence que la DEMANDE n° 8 :
+  - `PRES2027_B_QUAD=100 PRES2027_N_CHAINES=6 python -m model.backtest.map_screen --variante cercle_ra_fid_sigdyn30_eta0 --election 2017 --inits 6 --pas 20000 --decroissant --lse-officiel` ;
+  - puis `JAX_ENABLE_X64=1 python -m model.backtest.polir --variante cercle_ra_fid_sigdyn30_eta0 --election 2017 --stem map_cercle_ra_fid_sigdyn30_eta0_2017_T1-30_p20000d --n 6 --lse-officiel` ;
+  - puis `python -m model.backtest.modes --variante cercle_ra_fid_sigdyn30_eta0 --election 2017 --stem <stem>_poli --n 6 --lse-officiel`.
+
+  Les mêmes trois étapes avec `PRES2027_SANS_PAIRE="François Fillon|Marine Le Pen"` (stem `..._v2sans_FrançoisFillonMarineLePen`, lecture `--v2-paire --sans-criteres`). Committer les JSON de `results/` (polir_, modes_, v2paire_, points_) et ne lire que les critères de §8.126 (2017 : T1 ≤ 2,07 ; |écart V2 Fillon – Le Pen| ≤ 15,0 ; σ_LP/σ_M < 1,5). **Le Mac ne fait PAS 2017** : les tâches 2017 en fin de ses deux files seront arrêtées par la session locale.
+
 - [x] [FAIT MAC 28/11 ~10:30Z, §8.124-8.125 : ΣΔ solide (IC90 > +19), décompte strict fragile (P = 0,77 ; 3 notices le font tomber ; 8/13 à η égal)] (revue 28/11 points 1-2, 11) Bootstrap §8.123 refait : duels rééchantillonnés par sondage dans chaque paire ; leave-one-notice-out ; décompte aux seuils 0 / 0,5 / 1 nat ; corriger « 7/11 » et les heures d'après `git log`.
 - [ ] [EN COURS MAC 28/11 ~11:30Z, protocole §8.126, 2 files : 2022 complet + 4 V2 + 3 V1-LOHO, 2017 complet + V2 Fillon – Le Pen] (revue 28/11 point 8 ; BLOQUANT avant publication) Backtests 2017 et 2022 du modèle final (cercle, arc libre, η ≡ 0, P4c, R7) au protocole §8.29 ; ratio σ_LP/σ_Macron < 1,5. À déposer en DEMANDE VM avec la variante exacte.
 - [ ] (0 fit, revue 28/11 points 4, 6, 7) Optimisme de la chaîne de choix (bootstrap rejoué) ; prédictive Laplace/NUTS sur 3 épreuves et ΣΔ à c commun ; vraisemblance des duels avec effet de paire τ.
