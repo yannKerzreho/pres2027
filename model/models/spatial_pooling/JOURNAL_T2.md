@@ -32,7 +32,7 @@ l'historique, ajouter en bas de « Historique ».
 ## File de tâches (prendre la première non cochée)
 
 - [x] [FAIT MAC 28/11 ~10:30Z, §8.124-8.125 : ΣΔ solide (IC90 > +19), décompte strict fragile (P = 0,77 ; 3 notices le font tomber ; 8/13 à η égal)] (revue 28/11 points 1-2, 11) Bootstrap §8.123 refait : duels rééchantillonnés par sondage dans chaque paire ; leave-one-notice-out ; décompte aux seuils 0 / 0,5 / 1 nat ; corriger « 7/11 » et les heures d'après `git log`.
-- [ ] (VM possible, revue 28/11 point 8 ; BLOQUANT avant publication) Backtests 2017 et 2022 du modèle final (cercle, arc libre, η ≡ 0, P4c, R7) au protocole §8.29 ; ratio σ_LP/σ_Macron < 1,5. À déposer en DEMANDE VM avec la variante exacte.
+- [ ] [EN COURS MAC 28/11 ~11:30Z, protocole §8.126, 2 files : 2022 complet + 4 V2 + 3 V1-LOHO, 2017 complet + V2 Fillon – Le Pen] (revue 28/11 point 8 ; BLOQUANT avant publication) Backtests 2017 et 2022 du modèle final (cercle, arc libre, η ≡ 0, P4c, R7) au protocole §8.29 ; ratio σ_LP/σ_Macron < 1,5. À déposer en DEMANDE VM avec la variante exacte.
 - [ ] (0 fit, revue 28/11 points 4, 6, 7) Optimisme de la chaîne de choix (bootstrap rejoué) ; prédictive Laplace/NUTS sur 3 épreuves et ΣΔ à c commun ; vraisemblance des duels avec effet de paire τ.
 - [ ] (revue 28/11 point 5) Figer modèle et règle ; évaluer sur les prochaines notices et duels, sans refit de structure.
 
