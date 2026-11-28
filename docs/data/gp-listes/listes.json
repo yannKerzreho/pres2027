@@ -1,6 +1,6 @@
 {
- "as_of": "2026-11-27",
- "genere_le": "2026-11-27",
+ "as_of": "2026-11-28",
+ "genere_le": "2026-11-28",
  "regle": {
   "n_recents": 10,
   "n_max": 3,
@@ -106,24 +106,6 @@
   {
    "date": "2026-03-22",
    "type": "entree",
-   "id": "04966243",
-   "candidats": [
-    "Arthaud",
-    "Attal",
-    "Bardella",
-    "Dupont-Aignan",
-    "Glucksmann",
-    "Mélenchon",
-    "Retailleau",
-    "Roussel",
-    "Tondelier",
-    "Zemmour"
-   ],
-   "libelle": "avec Attal, Bardella, sans Le Pen, Philippe"
-  },
-  {
-   "date": "2026-03-22",
-   "type": "entree",
    "id": "78307d1e",
    "candidats": [
     "Arthaud",
@@ -138,6 +120,24 @@
     "Zemmour"
    ],
    "libelle": "avec Bardella, sans Le Pen"
+  },
+  {
+   "date": "2026-03-22",
+   "type": "entree",
+   "id": "04966243",
+   "candidats": [
+    "Arthaud",
+    "Attal",
+    "Bardella",
+    "Dupont-Aignan",
+    "Glucksmann",
+    "Mélenchon",
+    "Retailleau",
+    "Roussel",
+    "Tondelier",
+    "Zemmour"
+   ],
+   "libelle": "avec Attal, Bardella, sans Le Pen, Philippe"
   },
   {
    "date": "2026-03-27",
@@ -419,25 +419,6 @@
   {
    "date": "2026-09-09",
    "type": "sortie",
-   "id": "4986b374",
-   "candidats": [
-    "Arthaud",
-    "Attal",
-    "Dupont-Aignan",
-    "Glucksmann",
-    "Le Pen",
-    "Mélenchon",
-    "Retailleau",
-    "Roussel",
-    "Tondelier",
-    "Villepin",
-    "Zemmour"
-   ],
-   "libelle": "avec Attal, Villepin, sans Philippe"
-  },
-  {
-   "date": "2026-09-09",
-   "type": "sortie",
    "id": "9a3ec75a",
    "candidats": [
     "Arthaud",
@@ -453,6 +434,25 @@
     "Zemmour"
    ],
    "libelle": "avec Villepin"
+  },
+  {
+   "date": "2026-09-09",
+   "type": "sortie",
+   "id": "4986b374",
+   "candidats": [
+    "Arthaud",
+    "Attal",
+    "Dupont-Aignan",
+    "Glucksmann",
+    "Le Pen",
+    "Mélenchon",
+    "Retailleau",
+    "Roussel",
+    "Tondelier",
+    "Villepin",
+    "Zemmour"
+   ],
+   "libelle": "avec Attal, Villepin, sans Philippe"
   },
   {
    "date": "2026-11-16",
