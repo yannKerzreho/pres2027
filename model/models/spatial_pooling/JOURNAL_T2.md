@@ -31,7 +31,7 @@ l'historique, ajouter en bas de « Historique ».
 
 ## File de tâches (prendre la première non cochée)
 
-- [ ] **DEMANDE VM n° 11 (session locale, 2026-11-28 ~14:40Z) : modèle final η ≡ 0 sur 2017** (spec §8.126, critères figés AVANT lecture). Variante `cercle_ra_fid_sigdyn30_eta0` (déjà dans `map_screen.py` et `eval_r2.py`, commit f1e81b7). Même séquence que la DEMANDE n° 8 :
+- [ ] [EN COURS (début 2026-11-28T14:36Z, routine VM : données complètes et V2 Fillon – Le Pen en parallèle, map → polir → modes)] **DEMANDE VM n° 11 (session locale, 2026-11-28 ~14:40Z) : modèle final η ≡ 0 sur 2017** (spec §8.126, critères figés AVANT lecture). Variante `cercle_ra_fid_sigdyn30_eta0` (déjà dans `map_screen.py` et `eval_r2.py`, commit f1e81b7). Même séquence que la DEMANDE n° 8 :
   - `PRES2027_B_QUAD=100 PRES2027_N_CHAINES=6 python -m model.backtest.map_screen --variante cercle_ra_fid_sigdyn30_eta0 --election 2017 --inits 6 --pas 20000 --decroissant --lse-officiel` ;
   - puis `JAX_ENABLE_X64=1 python -m model.backtest.polir --variante cercle_ra_fid_sigdyn30_eta0 --election 2017 --stem map_cercle_ra_fid_sigdyn30_eta0_2017_T1-30_p20000d --n 6 --lse-officiel` ;
   - puis `python -m model.backtest.modes --variante cercle_ra_fid_sigdyn30_eta0 --election 2017 --stem <stem>_poli --n 6 --lse-officiel`.
@@ -1206,6 +1206,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-28 14:36Z (routine) : DEMANDE VM n° 11 lancée (cercle_ra_fid_sigdyn30_eta0, 2017, complet + V2 Fillon – Le Pen).
 - 2026-11-28 14:10Z (routine) : fusion d'origin/main (maj quotidienne des données, sans conflit) ; backtests 2017/2022 du modèle final en cours sur le Mac, rien d'actionnable côté VM.
 - 2026-11-28 08:15Z (routine) : revue Opus quotidienne (12 points, 3 bloquants : bootstrap vide par construction, chemin bifurquant §8.119 c, η ≡ 0 sans backtest 2017/2022) intégrée ; 4 tâches ajoutées en tête de file ; date de revue mise à jour.
 - 2026-11-27 15:10Z (routine) : fusion d'origin/main (maj quotidienne des données, sans conflit) ; file relue : rien d'actionnable côté VM (tout derrière l'ARBITRAGE de géométrie).
