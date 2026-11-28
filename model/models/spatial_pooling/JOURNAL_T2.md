@@ -37,7 +37,7 @@ l'historique, ajouter en bas de « Historique ».
 - [x] [FAIT MAC 28/11 ~03:00Z, §8.120 : ΣΔ = −31,9 (Le Pen – Mélenchon −48,7) ⇒ P4 rejeté, P4c gardé] (11 fits, §8.113 e3) **P4 contre P4c** : P4 si ΣΔ ≥ −5, 6/11 au plus dégradées, z_σ max ≤ 3.
 - [x] [FAIT MAC 28/11 ~01:45Z, §8.119 : segment η ≡ 0 REJETÉ (−22,3) ; cercle retenu (η ≡ 0) contre segment retenu (η) : +44,5 nats, 9/13 unités au seuil ⇒ cercle ; duels seuls −1,9 ; ARBITRAGE] **Segment η ≡ 0**.
 - [x] [FAIT MAC 28/11 ~04:00Z, §8.121 : ΣΔ = −6,3 hors finalistes ⇒ R7 gardée] (§8.113 e4) **R7 en refit** sur la référence : R7 gardée si la retirer coûte plus de 2 nats hors électorats des finalistes.
-- [ ] (0 fit) Bootstrap par notice des unités de reports (§8.113 e6) : log-vraisemblances par notice à sauvegarder.
+- [x] [FAIT MAC 28/11 ~02:15Z, §8.122-8.123 : P = 0,999 ⇒ robuste ; IC90 [+32,5 ; +56,1] ; deux unités reposent sur la seule notice du 25-27 mai] Bootstrap par notice des unités de reports (§8.113 e6).
 
 - [x] [FAIT MAC 27/11 ~03:00Z, §8.111 : ΣΔ = +46,6 nats, cercle meilleur 8/11 (au seuil) ⇒ CERCLE au critère figé ; duels +8,1, reports +38,5 ; contre : Hollande et la notice Glucksmann] **Log-vraisemblance prédictive cercle contre segment sur les 11 épreuves de l'essai 2027** : V2 (duels cachés, gaussienne du modèle) et V1 (reports cachés, Dirichlet) ; cercle si ΣΔ ≥ 5 nats et 8/11, sinon segment. **Tranche la géométrie.**
 - [x] [FAIT MAC 27/11 ~03:30Z, §8.112 : non distingués (s_mod : 1,94 / 2,43 ; poids du modèle : 0,59 / 1,26)] §8.106 refait avec s_mod puis avec les poids T1 du modèle.

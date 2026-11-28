@@ -1,0 +1,43 @@
+{
+ "spec": "§8.122",
+ "n_boot": 2000,
+ "graine": 0,
+ "par_notice": {
+  "v1:Philippe – Le Pen": {
+   "Harris Interactive 25-27 mai 2026 (WP)": 4.896899867940653,
+   "Harris Interactive 7-8 juillet 2026 (WP)": 6.770144400565536,
+   "Harris Interactive 18-19 août 2026 (WP)": 4.404858221109232,
+   "Harris Interactive 8-10 septembre 2026 (WP)": 3.4549760450373217,
+   "Harris Interactive 22-24 septembre 2026 (WP)": -0.30184140651601865,
+   "Harris Interactive 5-8 octobre 2026 (WP)": 3.1116801476434652,
+   "Harris Interactive 19-21 octobre 2026 (WP)": 1.9153577268301651,
+   "Harris Interactive 3-5 novembre 2026 (WP)": -1.7015798518076517
+  },
+  "v1:Attal – Le Pen": {
+   "Harris Interactive 25-27 mai 2026 (WP)": 0.07949141471834853,
+   "Harris Interactive 7-8 juillet 2026 (WP)": 0.4245760804509038,
+   "Harris Interactive 18-19 août 2026 (WP)": 0.22528038934784256,
+   "Harris Interactive 8-10 septembre 2026 (WP)": 0.9334108397003718
+  },
+  "v1:Glucksmann – Le Pen": {
+   "Harris Interactive 3-5 novembre 2026 (WP)": -9.055568620449844
+  },
+  "v2:Bardella|Philippe": {
+   "Harris Interactive 25-27 mai 2026 (WP)": 14.696081349378991
+  },
+  "v2:Le Pen|Mélenchon": {
+   "Harris Interactive 25-27 mai 2026 (WP)": 16.54249728148518
+  }
+ },
+ "synthese": {
+  "observe_somme": 44.53,
+  "observe_unites": 9,
+  "IC90_somme": [
+   32.5,
+   56.11
+  ],
+  "P_critere": 0.999,
+  "P_unites_ge_9": 0.999,
+  "robuste": true
+ }
+}

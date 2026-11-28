@@ -85,8 +85,10 @@ def ll_epreuve(geo, ep, raw0, rep0, lse_finalistes=False, fidelite=True, hors_fi
         th = X.cellules(fit, champ, A, B, K, w=w, fidelite=fidelite) / 100
         th = np.atleast_2d(th)[:n_r]
         c = float(np.exp(vals["log_c"]))
-        out["ll_reports"] = float(dist.Dirichlet(c * jnp.clip(jnp.asarray(th), 1e-4, None)).log_prob(
-            jnp.asarray(R["y"])).sum())
+        lp = np.asarray(dist.Dirichlet(c * jnp.clip(jnp.asarray(th), 1e-4, None)).log_prob(jnp.asarray(R["y"])))
+        out["ll_reports"] = float(lp.sum())
+        if not hors_finalistes:                          # §8.122 : par ligne, avec sa notice
+            out["lignes_reports"] = [[str(r[0]), float(v)] for r, v in zip(R["rows"], lp)]
     out["ll"] = out["ll_duels"] + out["ll_reports"]
     return out
 
@@ -160,12 +162,53 @@ def r7() -> dict:
     return res
 
 
+def bootstrap_unites(n_boot: int = 2000, graine: int = 0) -> dict:
+    """§8.122 : bootstrap par notice du critère strict (§8.113 e6), cercle retenu contre segment retenu."""
+    raw0, rep0, _ = X.donnees()
+    C = json.loads((sr.OUT_DIR / "essai2027_vraisemblance_cercle_eta0.json").read_text())["epreuves"]
+    A = json.loads((sr.OUT_DIR / "essai2027_vraisemblance_lsefin.json").read_text())["epreuves"]
+    duels = [C[e]["cercle_eta0"]["ll_duels"] - A[e]["segment"]["ll_duels"] for e in A if e.startswith("v2:")]
+    unites = ["v1:Philippe – Le Pen", "v1:Attal – Le Pen", "v1:Glucksmann – Le Pen", "v2:Bardella|Philippe",
+              "v2:Le Pen|Mélenchon"]
+    par_notice = {}
+    for ep in unites:
+        lc = ll_epreuve("cercle_eta0", ep, raw0, rep0, True)["lignes_reports"]
+        ls = ll_epreuve("segment", ep, raw0, rep0, True)["lignes_reports"]
+        assert [x[0] for x in lc] == [x[0] for x in ls]
+        d = {}
+        for (nt, a), (_, b) in zip(lc, ls):
+            d[nt] = d.get(nt, 0.0) + a - b
+        par_notice[ep] = d
+        print(json.dumps({ep: {k: round(v, 2) for k, v in d.items()}}, ensure_ascii=False), flush=True)
+    rng = np.random.default_rng(graine)
+    tot, cnt = [], []
+    for _ in range(n_boot):
+        u = list(duels)
+        for ep in unites:
+            nts = list(par_notice[ep])
+            u.append(sum(par_notice[ep][nts[i]] for i in rng.integers(0, len(nts), len(nts))))
+        tot.append(sum(u)); cnt.append(sum(x > 0 for x in u))
+    tot, cnt = np.array(tot), np.array(cnt)
+    obs = list(duels) + [sum(par_notice[ep].values()) for ep in unites]
+    S = {"observe_somme": round(float(sum(obs)), 2), "observe_unites": int(sum(x > 0 for x in obs)),
+         "IC90_somme": [round(float(x), 2) for x in np.quantile(tot, [0.05, 0.95])],
+         "P_critere": round(float(((tot >= 5) & (cnt >= 9)).mean()), 3),
+         "P_unites_ge_9": round(float((cnt >= 9).mean()), 3)}
+    S["robuste"] = bool(S["P_critere"] >= 0.8)
+    res = {"spec": "§8.122", "n_boot": n_boot, "graine": graine, "par_notice": par_notice, "synthese": S}
+    (sr.OUT_DIR / "essai2027_bootstrap_unites.json").write_text(json.dumps(res, ensure_ascii=False, indent=1) + "\n")
+    print(json.dumps(S))
+    return res
+
+
 if __name__ == "__main__":
     import sys
     if "--arc-fixe" in sys.argv:
         variante("cercle2pi")
     elif "--eta0" in sys.argv:
         variante("cercle_eta0")
+    elif "--bootstrap" in sys.argv:
+        bootstrap_unites()
     elif "--r7" in sys.argv:
         r7()
     elif "--variante" in sys.argv:

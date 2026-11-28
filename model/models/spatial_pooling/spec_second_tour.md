@@ -6292,6 +6292,28 @@ Source : `essai2027_vraisemblance_lsefin.json`.
 - **Règle :** le verdict « cercle » du critère strict est déclaré **robuste** si P(ΣΔ ≥ 5 **et** au moins 9 unités sur 13) ≥ 0,8 ; sinon **fragile**.
 - **Rapporté aussi :** l'IC à 90 % de ΣΔ.
 
+### 8.123 Bootstrap par notice du critère strict : résultat (§8.122 ; 28/11 ~02:15Z, Mac, 0 fit)
+
+Calcul : `vraisemblance_essai_2027.py --bootstrap`, sortie `essai2027_bootstrap_unites.json`. On somme par notice l'écart cercle retenu − segment retenu, en nats :
+
+| Unité de reports | Notices | Δ par notice |
+|---|---|---|
+| Philippe – Le Pen | 8 | +4,9 ; +6,8 ; +4,4 ; +3,5 ; −0,3 ; +3,1 ; +1,9 ; −1,7 (total +22,6) |
+| Attal – Le Pen | 4 | +0,1 ; +0,4 ; +0,2 ; +0,9 (total +1,7) |
+| Glucksmann – Le Pen | 1 | −9,1 |
+| Bardella – Philippe | 1 | +14,7 |
+| Mélenchon – Le Pen | 1 | +16,5 |
+
+**Règle figée : P(ΣΔ ≥ 5 et au moins 9/13) = 0,999 ≥ 0,8 ⇒ ROBUSTE.** L'IC à 90 % de ΣΔ vaut [+32,5 ; +56,1] nats.
+
+**Limites, à dire avec le verdict.**
+
+- Le gain de Philippe – Le Pen est réparti : 6 notices sur 8 vont au cercle.
+- Celui d'Attal – Le Pen est faible mais de signe constant sur ses 4 notices.
+- **Bardella – Philippe et Mélenchon – Le Pen reposent chacun sur la seule notice du 25-27 mai** : +31 nats, constants dans le bootstrap. Sans elles, ΣΔ tomberait vers +13 et le décompte à 7/11.
+- Les 8 unités de duels sont fixées par construction (§8.122). La robustesse porte sur le rééchantillonnage des notices de reports, pas sur les duels.
+- Un seul institut : le bootstrap mesure la variabilité entre les notices de Harris, pas entre instituts.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
