@@ -6158,6 +6158,63 @@ Source : `essai2027_vraisemblance_lsefin.json`.
 
 **Réserve.** Le segment n'a pas été refait à η ≡ 0. La comparaison « cercle η ≡ 0 contre segment » mêle donc deux changements. Un segment η ≡ 0 (11 fits) la rendrait propre ; il est mis en file.
 
+### 8.119 Segment η ≡ 0, et cercle contre segment à configuration retenue (§8.118 ; 28/11 ~01:45Z, Mac, 11 fits)
+
+**Méthode.**
+
+- Géométrie `segment_eta0` : 88 inits sans erreur.
+- Lecture : `vraisemblance_essai_2027.py --variante segment_eta0`, finalistes dans le lse.
+
+**(a) Pour le segment, η ≡ 0 est REJETÉ** au même critère que pour le cercle (§8.113 e2).
+
+- ΣΔ(η ≡ 0 − η) = **−22,3 nats**, sous le seuil de −5.
+- Les pertes viennent surtout de Glucksmann – Le Pen (−15,2), d'Attal – Le Pen (V1 −10,7, V2 −6,1) et de V1 Glucksmann (−9,3).
+- **Le segment a besoin des valences ; le cercle non.** La géométrie circulaire porte ce que les η corrigeaient sur le segment.
+
+**(b) Cercle contre segment à η égal** (les deux à η ≡ 0), lu à titre de diagnostic :
+
+- critère §8.96 f : ΣΔ = +85,5 nats, 8/11 ;
+- unités dédoublonnées : +55,5 nats, 8/13, sous le seuil de 9.
+
+**(c) Comparaison qui décide : chaque géométrie dans la configuration que ses propres critères figés retiennent.**
+
+- Cercle : arc libre, η ≡ 0 (§8.117-8.118).
+- Segment : η hiérarchique (§8.119 a).
+- Source : `essai2027_vraisemblance_cercle_eta0.json` et `essai2027_vraisemblance_lsefin.json`.
+
+| Unité dédoublonnée (§8.113 e6) | Δ (cercle − segment), en nats |
+|---|---|
+| Duels Attal – Le Pen | +13,7 |
+| Duels Bardella – Philippe | +2,2 |
+| Duels Glucksmann – Le Pen | −7,6 |
+| Duels Hollande – Le Pen | −18,0 |
+| Duels Le Pen – Mélenchon | −1,3 |
+| Duels Le Pen – Philippe | +4,7 |
+| Duels Le Pen – Retailleau | +0,7 |
+| Duels Mélenchon – Philippe | +3,8 |
+| Reports Philippe – Le Pen | +22,6 |
+| Reports Attal – Le Pen | +1,7 |
+| Reports Glucksmann – Le Pen | −9,1 |
+| Reports Bardella – Philippe | +14,7 |
+| Reports Mélenchon – Le Pen | +16,5 |
+
+**Critères figés :**
+
+- §8.96 f : ΣΔ = +63,1 nats, 8/11 ⇒ cercle ;
+- **critère plus strict demandé par l'utilisateur (§8.113 e6) : ΣΔ = +44,5 nats, 9/13 unités (seuil 9) ⇒ CERCLE**, de nouveau au seuil exact.
+
+**Lecture.**
+
+- Le cercle retenu a **environ 21 paramètres de moins** que le segment retenu (pas d'η, un arc), et il prévoit mieux les observations cachées de 44 à 63 nats.
+- **Sur les duels seuls, aucun avantage** : −1,9 nats, 5 paires sur 8. Tout le gain vient des reports, donc d'un seul institut (Harris).
+- Le décompte strict est à son seuil (9/13). Un seul retournement le ferait échouer.
+- Le bootstrap par notice (§8.113 e6) n'est toujours pas fait.
+
+**ARBITRAGE À TRANCHER (utilisateur).**
+
+- Le cercle retenu est plus parcimonieux que le segment retenu et le bat aux deux critères figés, mais seulement grâce aux reports d'un institut, et au seuil exact du critère strict.
+- Adopter le cercle (arc libre, η ≡ 0) ? Ou attendre un second institut ?
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

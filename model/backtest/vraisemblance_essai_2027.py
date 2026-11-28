@@ -146,5 +146,7 @@ if __name__ == "__main__":
         variante("cercle2pi")
     elif "--eta0" in sys.argv:
         variante("cercle_eta0")
+    elif "--variante" in sys.argv:
+        variante(sys.argv[sys.argv.index("--variante") + 1])
     else:
         main(lse_finalistes="--lse-finalistes" in sys.argv)

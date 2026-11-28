@@ -35,7 +35,7 @@ l'historique, ajouter en bas de « Historique ».
 - [x] [FAIT MAC 27/11 ~23:30Z, §8.117 : ΣΔ(2π − libre) = −9,4 ⇒ arc libre gardé ; à arc fixé, le cercle bat encore le segment de +32,7 nats, 8/11] **Arc fixé à 2π sur le cercle** (11 fits).
 - [x] [FAIT MAC 28/11 ~01:00Z, §8.118 : ΣΔ(η ≡ 0 − η) = +20,9, 3/11 dégradées ⇒ η RETIRÉ (−20 paramètres) ; cercle η ≡ 0 bat le segment de +63,1] **η ≡ 0 sur le cercle** (11 fits).
 - [ ] (Mac, 11 fits, §8.113 e3, contre la référence cercle η ≡ 0) **P4 contre P4c** : P4 si ΣΔ ≥ −5, 6/11 au plus dégradées, z_σ max ≤ 3.
-- [ ] (Mac, 11 fits, §8.118) **Segment η ≡ 0**, pour une comparaison cercle contre segment à η égal (critère §8.96 f).
+- [x] [FAIT MAC 28/11 ~01:45Z, §8.119 : segment η ≡ 0 REJETÉ (−22,3) ; cercle retenu (η ≡ 0) contre segment retenu (η) : +44,5 nats, 9/13 unités au seuil ⇒ cercle ; duels seuls −1,9 ; ARBITRAGE] **Segment η ≡ 0**.
 - [ ] (Mac, 6 fits V1, §8.113 e4) **R7 en refit** sur la référence : R7 gardée si la retirer coûte plus de 2 nats hors électorats des finalistes.
 - [ ] (0 fit) Bootstrap par notice des unités de reports (§8.113 e6) : log-vraisemblances par notice à sauvegarder.
 
