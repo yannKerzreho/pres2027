@@ -1,0 +1,60 @@
+{
+ "spec": "§8.113 e4",
+ "epreuves": {
+  "v1:Philippe – Le Pen": {
+   "avec_R7": {
+    "n_duels": 0,
+    "n_reports": 24,
+    "ll_duels": 0.0,
+    "ll_reports": 30.388634000694744,
+    "ll": 30.388634000694744
+   },
+   "sans_R7": {
+    "n_duels": 0,
+    "n_reports": 24,
+    "ll_duels": 0.0,
+    "ll_reports": 28.364271839705083,
+    "ll": 28.364271839705083
+   },
+   "delta_sans_moins_avec": -2.02
+  },
+  "v1:Attal – Le Pen": {
+   "avec_R7": {
+    "n_duels": 0,
+    "n_reports": 11,
+    "ll_duels": 0.0,
+    "ll_reports": 33.896769785083436,
+    "ll": 33.896769785083436
+   },
+   "sans_R7": {
+    "n_duels": 0,
+    "n_reports": 11,
+    "ll_duels": 0.0,
+    "ll_reports": 26.96229903028241,
+    "ll": 26.96229903028241
+   },
+   "delta_sans_moins_avec": -6.93
+  },
+  "v1:Glucksmann – Le Pen": {
+   "avec_R7": {
+    "n_duels": 0,
+    "n_reports": 3,
+    "ll_duels": 0.0,
+    "ll_reports": -6.659078535444976,
+    "ll": -6.659078535444976
+   },
+   "sans_R7": {
+    "n_duels": 0,
+    "n_reports": 3,
+    "ll_duels": 0.0,
+    "ll_reports": -3.959959952251417,
+    "ll": -3.959959952251417
+   },
+   "delta_sans_moins_avec": 2.7
+  }
+ },
+ "synthese": {
+  "somme_delta_sans_moins_avec": -6.25,
+  "R7_gardee": true
+ }
+}

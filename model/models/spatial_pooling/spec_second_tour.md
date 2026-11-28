@@ -6244,6 +6244,41 @@ Source : `essai2027_vraisemblance_lsefin.json`.
 
 **Référence de l'essai, inchangée : cercle, arc libre, η ≡ 0, rayons libres P4c, R7.** Reste à juger R7 en refit (§8.113 e4), en cours.
 
+### 8.121 R7 en refit (§8.113 e4 ; 28/11 ~04:00Z, Mac, 3 fits V1) — bilan des simplifications
+
+**Méthode.**
+
+- Géométrie `cercle_eta0_sansR7` (`fidelite=False` au fit), 24 inits sans erreur.
+- Lecture `--r7` sur les reports cachés des 3 V1, **électorats non finalistes seulement** (38 lignes) :
+  - variante sans R7 lue sans R7 ;
+  - référence (cercle η ≡ 0) lue avec R7.
+
+| V1 | Lignes | Avec R7 | Sans R7 | Δ (sans − avec) |
+|---|---|---|---|---|
+| Philippe – Le Pen | 24 | 30,4 | 28,4 | −2,0 |
+| Attal – Le Pen | 11 | 33,9 | 27,0 | −6,9 |
+| Glucksmann – Le Pen | 3 | −6,7 | −4,0 | +2,7 |
+
+**Critère figé : ΣΔ = −6,3 nats, perte supérieure à 2 nats. R7 est GARDÉE.**
+
+- Le gain passe par le Newton : la fidélité fixée des finalistes contraint mieux les autres électorats.
+- R7 n'ajoute aucun paramètre libre.
+
+**Bilan des simplifications de §8.113 e, toutes sous critère figé, sur les observations cachées de 2027 :**
+
+| Mécanisme | Paramètres | Verdict | Δ en nats |
+|---|---|---|---|
+| Arc du cercle libre (contre 2π) | 1 | gardé | 9,4 |
+| η hiérarchique sur le cercle | ~20 | **retiré** | +20,9 en le retirant |
+| η hiérarchique sur le segment | ~20 | gardé | 22,3 |
+| Rayons libres sur 30 jours (P4c, contre P4) | 7 | gardés | 31,9 |
+| Fidélité R7 | 0 | gardée | 6,3 |
+
+**Modèle unique proposé, sous réserve de l'arbitrage (§8.119) : cercle, arc libre, η ≡ 0, rayons libres P4c, R7, ω et log_c.**
+
+- Il bat le segment retenu (η hiérarchique) de **+44,5 nats** sur 9 unités sur 13 au critère strict, avec environ 21 paramètres de moins.
+- Le gain vient des seuls reports (Harris).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.

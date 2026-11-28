@@ -48,11 +48,14 @@ def caches(raw0, rep0, ep, candidates):
     return duels, R
 
 
-def ll_epreuve(geo, ep, raw0, rep0, lse_finalistes=False):
+def ll_epreuve(geo, ep, raw0, rep0, lse_finalistes=False, fidelite=True, hors_finalistes=False):
     nom = "".join(ch for ch in ep if ch.isalnum())
     r = min(json.loads((sr.OUT_DIR / f"essai2027_{geo}_{nom}.json").read_text())["inits"], key=lambda i: i["U"])
     fit4, _, _, _, _ = reconstruire(geo, ep, r, 4)
     duels, R = caches(raw0, rep0, ep, list(fit4.candidates))
+    if hors_finalistes and R is not None:               # §8.113 e4 : électorats non finalistes seulement
+        m = (R["k"] != R["a"]) & (R["k"] != R["b"])
+        R = {k: (np.asarray(v)[m] if k in ("y", "k", "a", "b", "dates") else v) for k, v in R.items()}
     n_d = 0 if duels is None else len(duels["y"])
     n_r = 0 if R is None else len(R["y"])
     S = max(n_d, n_r, 4)
@@ -79,7 +82,7 @@ def ll_epreuve(geo, ep, raw0, rep0, lse_finalistes=False):
         B = np.concatenate([R["b"], np.full(pad, R["b"][0])])
         K = np.concatenate([R["k"], np.full(pad, R["k"][0])])
         w = fit.w_path_draws[np.arange(S), :, np.array(jj)]
-        th = X.cellules(fit, champ, A, B, K, w=w) / 100
+        th = X.cellules(fit, champ, A, B, K, w=w, fidelite=fidelite) / 100
         th = np.atleast_2d(th)[:n_r]
         c = float(np.exp(vals["log_c"]))
         out["ll_reports"] = float(dist.Dirichlet(c * jnp.clip(jnp.asarray(th), 1e-4, None)).log_prob(
@@ -140,12 +143,31 @@ def variante(geo: str = "cercle2pi") -> dict:
     return res
 
 
+def r7() -> dict:
+    """§8.113 e4 : R7 en refit. Reports cachés des 3 V1, électorats NON finalistes ; référence cercle η ≡ 0 lue avec
+    R7, variante sans R7 lue sans R7. R7 gardée si la retirer coûte plus de 2 nats."""
+    raw0, rep0, _ = X.donnees()
+    res = {"spec": "§8.113 e4", "epreuves": {}}
+    for ep in [e for e in X.epreuves() if e.startswith("v1:")]:
+        a = ll_epreuve("cercle_eta0", ep, raw0, rep0, True, fidelite=True, hors_finalistes=True)
+        b = ll_epreuve("cercle_eta0_sansR7", ep, raw0, rep0, True, fidelite=False, hors_finalistes=True)
+        res["epreuves"][ep] = {"avec_R7": a, "sans_R7": b, "delta_sans_moins_avec": round(b["ll"] - a["ll"], 2)}
+        print(json.dumps({ep: res["epreuves"][ep]["delta_sans_moins_avec"]}, ensure_ascii=False), flush=True)
+    d = sum(v["delta_sans_moins_avec"] for v in res["epreuves"].values())
+    res["synthese"] = {"somme_delta_sans_moins_avec": round(d, 2), "R7_gardee": bool(d < -2)}
+    (sr.OUT_DIR / "essai2027_vraisemblance_r7.json").write_text(json.dumps(res, ensure_ascii=False, indent=1) + "\n")
+    print(json.dumps(res["synthese"]))
+    return res
+
+
 if __name__ == "__main__":
     import sys
     if "--arc-fixe" in sys.argv:
         variante("cercle2pi")
     elif "--eta0" in sys.argv:
         variante("cercle_eta0")
+    elif "--r7" in sys.argv:
+        r7()
     elif "--variante" in sys.argv:
         variante(sys.argv[sys.argv.index("--variante") + 1])
     else:
