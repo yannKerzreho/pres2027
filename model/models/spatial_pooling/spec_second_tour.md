@@ -6279,6 +6279,19 @@ Source : `essai2027_vraisemblance_lsefin.json`.
 - Il bat le segment retenu (η hiérarchique) de **+44,5 nats** sur 9 unités sur 13 au critère strict, avec environ 21 paramètres de moins.
 - Le gain vient des seuls reports (Harris).
 
+### 8.122 Bootstrap par notice du critère strict : règle figée AVANT calcul (28/11 ~05:00Z)
+
+§8.113 e6 demandait un bootstrap par notice sans en fixer la règle. On la fixe ici, avant tout calcul. Les valeurs ponctuelles de §8.119 c sont connues.
+
+- **Comparaison :** cercle retenu (arc libre, η ≡ 0, P4c, R7) contre segment retenu (η hiérarchique).
+- **Unités :** les 13 unités dédoublonnées de §8.119 c.
+  - Les 8 unités de duels restent fixées (pas de rééchantillonnage).
+  - Les 5 unités de reports sont recalculées à chaque tirage. Dans chaque hypothèse, on tire ses notices avec remise ; la log-vraisemblance d'une unité est la somme des log-vraisemblances par ligne des notices tirées.
+  - Les hypothèses à une seule notice restent constantes.
+- **Tirages :** 2 000, graine 0.
+- **Règle :** le verdict « cercle » du critère strict est déclaré **robuste** si P(ΣΔ ≥ 5 **et** au moins 9 unités sur 13) ≥ 0,8 ; sinon **fragile**.
+- **Rapporté aussi :** l'IC à 90 % de ΣΔ.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
