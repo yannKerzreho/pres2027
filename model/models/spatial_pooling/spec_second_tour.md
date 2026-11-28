@@ -6215,6 +6215,35 @@ Source : `essai2027_vraisemblance_lsefin.json`.
 - Le cercle retenu est plus parcimonieux que le segment retenu et le bat aux deux critères figés, mais seulement grâce aux reports d'un institut, et au seuil exact du critère strict.
 - Adopter le cercle (arc libre, η ≡ 0) ? Ou attendre un second institut ?
 
+### 8.120 P4 (σ égaux) contre P4c sur le cercle η ≡ 0 (§8.113 e3 ; 28/11 ~03:00Z, Mac, 11 fits)
+
+**Méthode.**
+
+- Géométrie `cercle_eta0_p4` : `sigma_egaux=True`, rayons libres sur 30 jours éteints. 88 inits sans erreur.
+- Lecture : `--variante cercle_eta0_p4`.
+- Référence : le cercle η ≡ 0 (§8.118).
+
+| Épreuve | Cercle η ≡ 0 (P4c) | Cercle η ≡ 0, σ égaux (P4) | Δ (P4 − P4c) |
+|---|---|---|---|
+| V2 Attal – Le Pen | 76,4 | 94,9 | +18,5 |
+| V2 Bardella – Philippe | 30,9 | 26,6 | −4,4 |
+| V2 Glucksmann – Le Pen | 30,8 | 44,7 | +13,8 |
+| V2 Hollande – Le Pen | −8,1 | −6,6 | +1,6 |
+| V2 Le Pen – Mélenchon | 81,5 | 32,8 | **−48,7** |
+| V2 Le Pen – Philippe | 186,9 | 176,8 | −10,1 |
+| V2 Le Pen – Retailleau | 7,8 | −3,0 | −10,8 |
+| V2 Mélenchon – Philippe | 7,9 | 6,3 | −1,7 |
+| V1 Philippe – Le Pen | 115,8 | 129,2 | +13,3 |
+| V1 Attal – Le Pen | 75,1 | 65,9 | −9,2 |
+| V1 Glucksmann – Le Pen | 3,6 | 9,3 | +5,7 |
+
+**Critère figé : ΣΔ = −31,9 nats (seuil −5), 6 épreuves dégradées. P4 est REJETÉ : les rayons libres sur 30 jours (P4c) sont gardés.**
+
+- La perte vient d'abord du duel **Le Pen – Mélenchon (−48,7)** : un rayon commun ne représente pas l'électorat resserré de Mélenchon (z_σ ≈ −2,2, §8.98).
+- P4 fait mieux sur Attal, Glucksmann et V1 Philippe : les rayons libres ne sont pas utiles partout. Le critère porte sur la somme.
+
+**Référence de l'essai, inchangée : cercle, arc libre, η ≡ 0, rayons libres P4c, R7.** Reste à juger R7 en refit (§8.113 e4), en cours.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
