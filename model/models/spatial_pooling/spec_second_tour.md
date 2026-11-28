@@ -6404,6 +6404,23 @@ Plateforme : **le Mac seul**, 2 files en parallèle.
 
 Rapportés, sans seuil : Mélenchon 2017, le mode retenu et son nombre d'inits, l'arc, et ΔU contre P4c.
 
+**Résultat 2017 (VM, DEMANDE n° 11, 28/11 ~15:00Z ; critères ci-dessus, lus tels quels).** Variante `cercle_ra_fid_sigdyn30_eta0`, 6 inits, MAP 20 000 pas `--decroissant`, polissage float64 (6/6 convergés, PGTOL), `--lse-officiel`, B = 100.
+
+| Critère 2017 | Seuil | η ≡ 0 | Verdict |
+|---|---|---|---|
+| T1 (MAE, mode dominant) | ≤ 2,07 | 1,87 (chaînes 0 et 4 ; meilleure chaîne 1,87) | ✓ |
+| \|écart V2 Fillon – Le Pen\| (mode retenu par lp) | ≤ 15,0 | 5,2 (observé 57,1, modèle 62,3) | ✓ |
+| σ_LP/σ_M (mode dominant) | < 1,5 | 0,86 (toutes chaînes 0,73-0,87) | ✓ |
+
+**2017 tenu.** Rapportés sans seuil :
+- **Mélenchon 2017** : critère 2 du lecteur en échec (86,2 / 76,4) ; σ_Mélenchon = 0,032 ; « Aucun » MAE 10,8 (critère en échec) ; MAE des partages 10,6.
+- **Mode retenu et nombre d'inits** : données complètes, mode dominant 2/6 (chaînes 0 et 4, U = −3024,6 et −3028,1), les autres à −3001, −2974 et −2735 (×2) ; V2, mode retenu 1/6 (chaîne 4, U = −3032,5), les autres à −2919, −2906, −2810 (×2) et −2768. Les autres modes V2 donnent un écart de 10,3 et 13,2, eux aussi ≤ 15.
+- **Arc** (meilleure chaîne) : 5,32 rad en données complètes, 4,15 rad en V2 ; de 3,7 à 5,3 selon les inits.
+- **ΔU contre P4c** (meilleur point) : −3028,1 contre −3014,35 en données complètes, −3032,5 contre −2963,15 en V2 (potentiel = −log p, plus négatif = meilleur ; les priors diffèrent par η, donc comparaison indicative).
+- **|z_pos| max** (meilleure chaîne) : 5,35 en données complètes ; aucun seuil en 2017.
+
+JSON : `results/{polir,modes,points}_map_cercle_ra_fid_sigdyn30_eta0_2017_T1-30_p20000d*.json`, `results/v2paire_…_v2sans_FrançoisFillonMarineLePen_poli.json`. Le verdict d'ensemble attend 2022 (Mac).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
