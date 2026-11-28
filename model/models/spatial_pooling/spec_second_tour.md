@@ -6367,6 +6367,43 @@ La revue est intégrée point par point dans `JOURNAL_T2.md`. Ce qui change ici 
 
 **Décision.** Elle reste à l'utilisateur. Les backtests 2017/2022 du modèle final et une évaluation sur des données futures restent bloquants avant publication (§8.124 c).
 
+### 8.126 Backtests 2017 et 2022 du modèle final (η ≡ 0) : protocole figé AVANT code et lecture (28/11 ~11:00Z)
+
+Demandés par l'utilisateur le 28/11 (« Oui, lancer »). Ils sont bloquants avant toute publication (§8.124 c) : η ≡ 0 contredit §8.29 et §9.3.
+
+**Variante.** `cercle_ra_fid_sigdyn30_eta0` : la référence P4c `hiercercle_ra_fid_sigdyn30` avec η ≡ 0 (`eta_scale = 0`, `eta_hier` éteint). C'est le modèle retenu en 2027 (§8.121) : cercle, arc libre, reports d'avant T1, R7, rayons libres sur 30 jours. Ce qui ne change pas :
+
+- **tâches :** celles de P4c (§8.87-8.89) ;
+- **protocole :** coupure T1−30, MAP 20 000 pas `--decroissant` puis polissage float64, 6 inits, `--lse-officiel`, B = 100 ;
+- **lecture :** `modes`, comme pour P4c.
+
+Plateforme : **le Mac seul**, 2 files en parallèle.
+
+**Tâches.**
+
+- **2022 :** données complètes ; V2 sans Macron – Zemmour, Macron – Le Pen, Macron – Mélenchon, Macron – Pécresse ; V1-LOHO sans Macron – Zemmour, Mélenchon – Macron, Macron – Pécresse.
+- **2017 :** données complètes ; V2 sans Fillon – Le Pen.
+
+**Critères figés, contre P4c, déjà lu.** Les chiffres de P4c sont connus (§8.87, §8.89) ; ceux de la variante η ≡ 0 ne le sont pas.
+
+- **2022 :**
+  - MAE V2 sur 4 paires ≤ P4c + 0,5, soit ≤ 3,59 ;
+  - V1-LOHO ≤ P4c + 1, soit ≤ 14,0 ;
+  - σ_LP/σ_M < 1,5 ;
+  - |z_pos| des finalistes ≤ 3.
+- **2017 :**
+  - T1 ≤ P4c + 0,3, soit ≤ 2,07 ;
+  - |écart V2 Fillon – Le Pen| ≤ P4c + 1, soit ≤ 15,0 ;
+  - σ_LP/σ_M < 1,5.
+
+**Verdict.**
+
+- **2022 et 2017 tenus :** η ≡ 0 est confirmé sur l'historique, et le modèle final reste candidat à la publication.
+- **2022 seul tenu :** η ≡ 0 est retenu, avec la réserve 2017.
+- **2022 en échec :** η ≡ 0 **n'est pas confirmé**. Le modèle final redevient une question ouverte (2027 contre l'historique) : ARBITRAGE.
+
+Rapportés, sans seuil : Mélenchon 2017, le mode retenu et son nombre d'inits, l'arc, et ΔU contre P4c.
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
