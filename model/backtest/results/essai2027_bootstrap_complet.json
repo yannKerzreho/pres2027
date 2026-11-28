@@ -1,0 +1,361 @@
+{
+ "spec": "§8.124 b",
+ "n_boot": 2000,
+ "graine": 0,
+ "comparaisons": {
+  "retenu": {
+   "geos": [
+    "cercle_eta0",
+    "segment"
+   ],
+   "synthese": {
+    "observe_somme": 44.53,
+    "observe_unites_seuils": {
+     "0": 9,
+     "0.5": 9,
+     "1": 8
+    },
+    "unites": [
+     13.67,
+     2.23,
+     -7.62,
+     -18.04,
+     -1.34,
+     4.7,
+     0.72,
+     3.82,
+     22.55,
+     1.66,
+     -9.06,
+     14.7,
+     16.54
+    ],
+    "IC90_somme": [
+     19.7,
+     70.38
+    ],
+    "P_critere": 0.771,
+    "loo_pire_somme": [
+     "Harris Interactive 25-27 mai 2026 (WP)",
+     [
+      7.8,
+      7
+     ]
+    ],
+    "loo_pire_unites": [
+     "Harris Interactive 25-27 mai 2026 (WP)",
+     [
+      7.8,
+      7
+     ]
+    ],
+    "loo_echecs": [
+     "Elabe 9-10 juillet 2026 (WP)",
+     "Harris Interactive 25-27 mai 2026 (WP)",
+     "Ifop 24-25 août 2026 (WP)"
+    ],
+    "robuste": false
+   },
+   "loo": {
+    "Cluster17 22-24 juillet 2026 (WP)": [
+     40.89,
+     9
+    ],
+    "Elabe 12-13 novembre 2026 (WP)": [
+     43.59,
+     9
+    ],
+    "Elabe 14-16 octobre 2026 (WP)": [
+     42.62,
+     9
+    ],
+    "Elabe 25-27 mars 2026 (WP)": [
+     41.76,
+     9
+    ],
+    "Elabe 26-28 août 2026 (WP)": [
+     46.44,
+     10
+    ],
+    "Elabe 9-10 juillet 2026 (WP)": [
+     42.17,
+     8
+    ],
+    "Harris Interactive 18-19 août 2026 (WP)": [
+     39.74,
+     9
+    ],
+    "Harris Interactive 18-19 novembre 2026 (WP)": [
+     43.53,
+     9
+    ],
+    "Harris Interactive 19-21 octobre 2026 (WP)": [
+     49.48,
+     10
+    ],
+    "Harris Interactive 22-24 septembre 2026 (WP)": [
+     45.86,
+     10
+    ],
+    "Harris Interactive 25-27 mai 2026 (WP)": [
+     7.8,
+     7
+    ],
+    "Harris Interactive 3-5 novembre 2026 (WP)": [
+     58.55,
+     9
+    ],
+    "Harris Interactive 5-8 octobre 2026 (WP)": [
+     40.85,
+     9
+    ],
+    "Harris Interactive 7-8 juillet 2026 (WP)": [
+     35.47,
+     9
+    ],
+    "Harris Interactive 8-10 septembre 2026 (WP)": [
+     38.27,
+     9
+    ],
+    "Ifop 17-19 octobre 2026 (WP)": [
+     45.06,
+     9
+    ],
+    "Ifop 24-25 août 2026 (WP)": [
+     46.97,
+     8
+    ],
+    "Ifop 7-8 juillet 2026 (WP)": [
+     44.3,
+     9
+    ],
+    "Odoxa 20-21 mai 2026 (WP)": [
+     44.16,
+     9
+    ],
+    "Odoxa 24 septembre - 7 octobre 2026 (WP)": [
+     47.19,
+     9
+    ],
+    "Odoxa 25-26 mars 2026 (WP)": [
+     43.75,
+     9
+    ],
+    "Opinion Way 10-12 novembre 2026 (WP)": [
+     46.36,
+     9
+    ],
+    "Opinion Way 13-14 octobre 2026 (WP)": [
+     44.01,
+     9
+    ],
+    "Opinion Way 2-3 septembre 2026 (WP)": [
+     43.09,
+     9
+    ],
+    "Opinion Way 21-22 octobre 2026 (WP)": [
+     45.76,
+     9
+    ],
+    "Opinion Way 9-10 septembre 2026 (WP)": [
+     44.26,
+     9
+    ],
+    "YouGov 12-15 octobre 2026 (WP)": [
+     44.74,
+     9
+    ],
+    "YouGov 12-17 novembre 2026 (WP)": [
+     41.96,
+     9
+    ],
+    "YouGov 17-21 septembre 2026 (WP)": [
+     48.27,
+     9
+    ]
+   }
+  },
+  "eta_egal": {
+   "geos": [
+    "cercle_eta0",
+    "segment_eta0"
+   ],
+   "synthese": {
+    "observe_somme": 55.47,
+    "observe_unites_seuils": {
+     "0": 8,
+     "0.5": 7,
+     "1": 7
+    },
+    "unites": [
+     10.1,
+     -0.61,
+     -0.31,
+     -17.61,
+     5.9,
+     -0.03,
+     -0.83,
+     1.77,
+     19.68,
+     12.27,
+     0.32,
+     8.37,
+     16.45
+    ],
+    "IC90_somme": [
+     30.49,
+     81.91
+    ],
+    "P_critere": 0.824,
+    "loo_pire_somme": [
+     "Harris Interactive 25-27 mai 2026 (WP)",
+     [
+      21.78,
+      7
+     ]
+    ],
+    "loo_pire_unites": [
+     "Harris Interactive 25-27 mai 2026 (WP)",
+     [
+      21.78,
+      7
+     ]
+    ],
+    "loo_echecs": [
+     "Elabe 12-13 novembre 2026 (WP)",
+     "Elabe 9-10 juillet 2026 (WP)",
+     "Harris Interactive 18-19 novembre 2026 (WP)",
+     "Harris Interactive 22-24 septembre 2026 (WP)",
+     "Harris Interactive 25-27 mai 2026 (WP)",
+     "Harris Interactive 3-5 novembre 2026 (WP)",
+     "Harris Interactive 5-8 octobre 2026 (WP)",
+     "Harris Interactive 7-8 juillet 2026 (WP)",
+     "Ifop 24-25 août 2026 (WP)",
+     "Odoxa 20-21 mai 2026 (WP)",
+     "Opinion Way 13-14 octobre 2026 (WP)",
+     "Opinion Way 21-22 octobre 2026 (WP)",
+     "YouGov 12-15 octobre 2026 (WP)"
+    ],
+    "robuste": true
+   },
+   "loo": {
+    "Cluster17 22-24 juillet 2026 (WP)": [
+     54.55,
+     10
+    ],
+    "Elabe 12-13 novembre 2026 (WP)": [
+     51.99,
+     8
+    ],
+    "Elabe 14-16 octobre 2026 (WP)": [
+     49.95,
+     9
+    ],
+    "Elabe 25-27 mars 2026 (WP)": [
+     55.6,
+     9
+    ],
+    "Elabe 26-28 août 2026 (WP)": [
+     55.25,
+     9
+    ],
+    "Elabe 9-10 juillet 2026 (WP)": [
+     53.53,
+     8
+    ],
+    "Harris Interactive 18-19 août 2026 (WP)": [
+     49.43,
+     9
+    ],
+    "Harris Interactive 18-19 novembre 2026 (WP)": [
+     55.48,
+     8
+    ],
+    "Harris Interactive 19-21 octobre 2026 (WP)": [
+     59.18,
+     9
+    ],
+    "Harris Interactive 22-24 septembre 2026 (WP)": [
+     55.92,
+     8
+    ],
+    "Harris Interactive 25-27 mai 2026 (WP)": [
+     21.78,
+     7
+    ],
+    "Harris Interactive 3-5 novembre 2026 (WP)": [
+     59.4,
+     8
+    ],
+    "Harris Interactive 5-8 octobre 2026 (WP)": [
+     52.4,
+     8
+    ],
+    "Harris Interactive 7-8 juillet 2026 (WP)": [
+     42.76,
+     8
+    ],
+    "Harris Interactive 8-10 septembre 2026 (WP)": [
+     48.33,
+     9
+    ],
+    "Ifop 17-19 octobre 2026 (WP)": [
+     55.79,
+     9
+    ],
+    "Ifop 24-25 août 2026 (WP)": [
+     59.22,
+     8
+    ],
+    "Ifop 7-8 juillet 2026 (WP)": [
+     54.72,
+     9
+    ],
+    "Odoxa 20-21 mai 2026 (WP)": [
+     55.76,
+     8
+    ],
+    "Odoxa 24 septembre - 7 octobre 2026 (WP)": [
+     55.25,
+     9
+    ],
+    "Odoxa 25-26 mars 2026 (WP)": [
+     56.22,
+     9
+    ],
+    "Opinion Way 10-12 novembre 2026 (WP)": [
+     56.3,
+     9
+    ],
+    "Opinion Way 13-14 octobre 2026 (WP)": [
+     53.97,
+     8
+    ],
+    "Opinion Way 2-3 septembre 2026 (WP)": [
+     55.03,
+     9
+    ],
+    "Opinion Way 21-22 octobre 2026 (WP)": [
+     55.04,
+     8
+    ],
+    "Opinion Way 9-10 septembre 2026 (WP)": [
+     55.66,
+     9
+    ],
+    "YouGov 12-15 octobre 2026 (WP)": [
+     57.71,
+     8
+    ],
+    "YouGov 12-17 novembre 2026 (WP)": [
+     55.47,
+     10
+    ],
+    "YouGov 17-21 septembre 2026 (WP)": [
+     61.4,
+     10
+    ]
+   }
+  }
+ }
+}

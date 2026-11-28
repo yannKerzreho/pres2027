@@ -6344,6 +6344,29 @@ La revue est intégrée point par point dans `JOURNAL_T2.md`. Ce qui change ici 
 - backtests 2017 et 2022 du modèle final au protocole figé §8.29, car η ≡ 0 contredit §8.29 et §9.3 ;
 - une évaluation sur des données futures, avec modèle et règle figés.
 
+### 8.125 Bootstrap complet : résultat (§8.124 b ; 28/11 ~10:30Z, Mac, 0 fit)
+
+`vraisemblance_essai_2027.py --bootstrap-complet` rééchantillonne duels et reports (2 000 tirages, graine 0). Sortie : `essai2027_bootstrap_complet.json`.
+
+| Comparaison | ΣΔ observé | Unités > 0 / > 0,5 / > 1 nat | IC à 90 % de ΣΔ | P(critère strict) | Verdict de la règle |
+|---|---|---|---|---|---|
+| Cercle retenu contre segment retenu | +44,5 | 9 / 9 / 8 | [+19,7 ; +70,4] | 0,771 | **fragile** |
+| Cercle η ≡ 0 contre segment η ≡ 0 | +55,5 | 8 / 7 / 7 | [+30,5 ; +81,9] | 0,824 | « robuste » (voir plus bas) |
+
+**Leave-one-notice-out.**
+
+- **Comparaison retenue :** le critère strict tombe si l'on retire l'une de 3 notices, Harris du 25-27 mai (ΣΔ = +7,8, 7/13), Elabe du 9-10 juillet ou Ifop du 24-25 août.
+- **À η égal :** le décompte observé est déjà sous le seuil (8/13). Le critère reste donc en échec quelle que soit la notice retirée.
+
+**Lecture.**
+
+- **La somme est solide.** Dans les deux comparaisons, l'IC à 90 % de ΣΔ est loin au-dessus de 0 (+20 à +30 nats au bas mot) : le cercle prévoit mieux, au total, les observations cachées. Les duels viennent de plusieurs instituts (Elabe, Ifop, Odoxa, OpinionWay, YouGov, Harris) ; les reports, de Harris seul.
+- **Le décompte ne l'est pas.** Le décompte strict (au moins 9/13) est fragile. Dans la comparaison retenue, P = 0,77, sous le seuil de 0,8, et il dépend de trois notices. À η égal, il échoue en observé.
+- Le « robuste » à η égal vient de ce que la règle de §8.124 b se lit sur la distribution du bootstrap, où les unités proches de 0 franchissent le seuil dans les deux sens. Avec un décompte observé de 8/13, ce n'est pas un appui. **Le verdict est donc « fragile » des deux côtés**, et cette lecture est déclarée.
+- **En résumé :** le cercle gagne en vraisemblance totale, mais il ne gagne pas sur une majorité qualifiée d'unités indépendantes. Son gain se concentre sur quelques paires et hypothèses, Attal – Le Pen et les reports surtout.
+
+**Décision.** Elle reste à l'utilisateur. Les backtests 2017/2022 du modèle final et une évaluation sur des données futures restent bloquants avant publication (§8.124 c).
+
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
 Détails : note de session `recherche-t2-01-audit-codex.md`.
