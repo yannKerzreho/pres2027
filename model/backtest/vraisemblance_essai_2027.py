@@ -40,6 +40,7 @@ def caches(raw0, rep0, ep, candidates):
         a, b = ep[3:].split("|")
         m = np.array([{court[i], court[j]} == {a, b} for i, j in zip(D["a"], D["b"])], dtype=bool)
         duels = {k: np.asarray(D[k])[m] for k in ("a", "b", "y", "n", "dates")}
+        duels["notices"] = [nt for nt, mm in zip(D["notices"], m) if mm]          # §8.124 : leave-one-notice-out
         hyps = [h for h in rep0.hypothese.unique() if {x.strip() for x in h.split("–")} == {a, b}]
     else:
         duels = None
@@ -73,7 +74,9 @@ def ll_epreuve(geo, ep, raw0, rep0, lse_finalistes=False, fidelite=True, hors_fi
         w = fit.w_path_draws[np.arange(S), :, np.array(jj)]
         s = np.asarray(_duel_par_tirage(fit, w, ia, ib, lse_finalistes=lse_finalistes))[:n_d]
         sd = np.sqrt(s * (1 - s) / np.clip(duels["n"], 1.0, None) + float(vals["sigma_t2"]) ** 2 + 1e-8)
-        out["ll_duels"] = float(norm.logpdf(duels["y"], s, sd).sum())
+        lpd = norm.logpdf(duels["y"], s, sd)
+        out["ll_duels"] = float(lpd.sum())
+        out["lignes_duels"] = [[str(nt), float(v)] for nt, v in zip(duels["notices"], lpd)]   # §8.124
         out["mae_duels_pt"] = float(100 * np.abs(s - duels["y"]).mean())
     if n_r:
         pad = S - n_r
@@ -201,12 +204,76 @@ def bootstrap_unites(n_boot: int = 2000, graine: int = 0) -> dict:
     return res
 
 
+def bootstrap_complet(n_boot: int = 2000, graine: int = 0) -> dict:
+    """§8.124 b : bootstrap des 13 unités, duels ET reports rééchantillonnés ; leave-one-notice-out ; seuils."""
+    raw0, rep0, _ = X.donnees()
+    v2 = [e for e in X.epreuves() if e.startswith("v2:")]
+    rep_u = ["v1:Philippe – Le Pen", "v1:Attal – Le Pen", "v1:Glucksmann – Le Pen", "v2:Bardella|Philippe",
+             "v2:Le Pen|Mélenchon"]
+    lignes = {}
+    for geo in ("cercle_eta0", "segment", "segment_eta0"):
+        lignes[geo] = {}
+        for ep in sorted(set(v2) | set(rep_u)):
+            L = ll_epreuve(geo, ep, raw0, rep0, True)
+            lignes[geo][ep] = {"duels": L.get("lignes_duels", []), "reports": L.get("lignes_reports", [])}
+        print(json.dumps({"geo": geo, "fait": True}), flush=True)
+    unites = [("duels", e) for e in v2] + [("reports", e) for e in rep_u]
+
+    def tables(gc, gs):
+        T = []
+        for kind, ep in unites:
+            a, b = lignes[gc][ep][kind], lignes[gs][ep][kind]
+            assert [x[0] for x in a] == [x[0] for x in b]
+            T.append([(x[0], x[1] - y[1]) for x, y in zip(a, b)])
+        return T
+
+    res = {"spec": "§8.124 b", "n_boot": n_boot, "graine": graine, "comparaisons": {}}
+    for nom, (gc, gs) in {"retenu": ("cercle_eta0", "segment"), "eta_egal": ("cercle_eta0", "segment_eta0")}.items():
+        T = tables(gc, gs)
+        obs = [sum(v for _, v in t) for t in T]
+        rng = np.random.default_rng(graine)
+        tot, cnt = [], []
+        for _ in range(n_boot):
+            u = []
+            for kind, t in zip([k for k, _ in unites], T):
+                if kind == "duels":
+                    u.append(sum(t[i][1] for i in rng.integers(0, len(t), len(t))))
+                else:
+                    par = {}
+                    for nt, v in t:
+                        par[nt] = par.get(nt, 0.0) + v
+                    nts = list(par)
+                    u.append(sum(par[nts[i]] for i in rng.integers(0, len(nts), len(nts))))
+            tot.append(sum(u)); cnt.append(sum(x > 0 for x in u))
+        tot, cnt = np.array(tot), np.array(cnt)
+        toutes = sorted({nt for t in T for nt, _ in t})
+        loo = {}
+        for nt in toutes:
+            u = [sum(v for n2, v in t if n2 != nt) for t in T]
+            loo[nt] = [round(float(sum(u)), 2), int(sum(x > 0 for x in u))]
+        S = {"observe_somme": round(float(sum(obs)), 2),
+             "observe_unites_seuils": {str(z): int(sum(x > z for x in obs)) for z in (0, 0.5, 1)},
+             "unites": [round(float(x), 2) for x in obs],
+             "IC90_somme": [round(float(x), 2) for x in np.quantile(tot, [0.05, 0.95])],
+             "P_critere": round(float(((tot >= 5) & (cnt >= 9)).mean()), 3),
+             "loo_pire_somme": min(loo.items(), key=lambda kv: kv[1][0]),
+             "loo_pire_unites": min(loo.items(), key=lambda kv: kv[1][1]),
+             "loo_echecs": sorted([k for k, v in loo.items() if not (v[0] >= 5 and v[1] >= 9)])}
+        S["robuste"] = bool(S["P_critere"] >= 0.8)
+        res["comparaisons"][nom] = {"geos": [gc, gs], "synthese": S, "loo": loo}
+        print(json.dumps({nom: S}, ensure_ascii=False), flush=True)
+    (sr.OUT_DIR / "essai2027_bootstrap_complet.json").write_text(json.dumps(res, ensure_ascii=False, indent=1) + "\n")
+    return res
+
+
 if __name__ == "__main__":
     import sys
     if "--arc-fixe" in sys.argv:
         variante("cercle2pi")
     elif "--eta0" in sys.argv:
         variante("cercle_eta0")
+    elif "--bootstrap-complet" in sys.argv:
+        bootstrap_complet()
     elif "--bootstrap" in sys.argv:
         bootstrap_unites()
     elif "--r7" in sys.argv:
