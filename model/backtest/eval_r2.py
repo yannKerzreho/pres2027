@@ -52,7 +52,9 @@ def reconstruire(variante: str, stem: str, coupure: str = "T2-7", chaines=None, 
                         "hiercercle_ra_fid_sigeq": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True, "fidelite": True, "sigma_egaux": True},
                         "hiercercle_ra_fid_sigdyn": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True, "fidelite": True, "sigma_dynamiques": True},
                         "hiercercle_ra_fid_sigdyn30": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True, "fidelite": True, "sigma_dynamiques_30j": True},
-                        "hiercercle_ra_fid_sigdyn_ext": {"eta_extremite": True, "carte_cercle": True, "_reports_avant": True, "fidelite": True, "sigma_dynamiques": True}}[variante])
+                        "hiercercle_ra_fid_sigdyn_ext": {"eta_extremite": True, "carte_cercle": True, "_reports_avant": True, "fidelite": True, "sigma_dynamiques": True},
+                        # §8.126 : modèle final 2027 (η ≡ 0)
+                        "cercle_ra_fid_sigdyn30_eta0": {"eta_scale": 0.0, "carte_cercle": True, "_reports_avant": True, "fidelite": True, "sigma_dynamiques_30j": True}}[variante])
     if lse_officiel or LSE_OFFICIEL:
         sr.VARIANTE_KW["_lse_officiel"] = True
     ref = sr.T1_DATES[ELECTION] if coupure.startswith("T1") else sr.T2_DATES[ELECTION]

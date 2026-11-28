@@ -50,6 +50,9 @@ def capturer(variante: str, election: int, coupure: str, lse_officiel: bool):
                                          "fidelite": True, "sigma_dynamiques": True},
         "hiercercle_ra_fid_sigdyn30": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True,
                                        "fidelite": True, "sigma_dynamiques_30j": True},
+        # §8.126 : modèle final 2027 (η ≡ 0), backtests 2017/2022
+        "cercle_ra_fid_sigdyn30_eta0": {"eta_scale": 0.0, "carte_cercle": True, "_reports_avant": True,
+                                        "fidelite": True, "sigma_dynamiques_30j": True},
         "hiercercle_ra_fid_sigdyn": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True, "fidelite": True,
                                      "sigma_dynamiques": True},
         "hiercercle_ra_fid_sigeq": {"eta_hier": True, "carte_cercle": True, "_reports_avant": True, "fidelite": True,
