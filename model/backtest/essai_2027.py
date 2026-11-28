@@ -82,12 +82,13 @@ def retirer(raw, rep, epreuve: str):
 
 
 def appel(raw, rep, champ, geo, runner):
-    eta0 = geo in ("cercle_eta0", "segment_eta0", "cercle_eta0_p4")   # §8.113 e2, §8.118 : η ≡ 0
+    eta0 = geo in ("cercle_eta0", "segment_eta0", "cercle_eta0_p4", "cercle_eta0_sansR7")   # §8.113 e2, §8.118
+    sansR7 = geo == "cercle_eta0_sansR7"                              # §8.113 e4 : R7 retirée au fit
     p4 = geo == "cercle_eta0_p4"                                       # §8.113 e3 : σ_i tous égaux (P4)
-    return fit_spatial_pooling(raw, AS_OF, second_tour=True, eta_hier=not eta0, fidelite=True,
+    return fit_spatial_pooling(raw, AS_OF, second_tour=True, eta_hier=not eta0, fidelite=not sansR7,
                                eta_scale=0.0 if eta0 else None, sigma_egaux=p4,
                                sigma_dynamiques_30j=not p4,
-                               carte_cercle=geo in ("cercle", "cercle2pi", "cercle_eta0", "cercle_eta0_p4"),
+                               carte_cercle=geo in ("cercle", "cercle2pi", "cercle_eta0", "cercle_eta0_p4", "cercle_eta0_sansR7"),
                                arc_ferme=(geo == "cercle2pi"),                  # §8.113 e5 : arc fixé a priori à 2π
                                lse_officiel=champ, reports=rep, champ_reports=champ, mcmc_runner=runner)
 
@@ -295,7 +296,7 @@ def epreuves() -> list[str]:
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--geo", choices=["cercle", "segment", "cercle2pi", "cercle_eta0", "segment_eta0", "cercle_eta0_p4"])
+    ap.add_argument("--geo", choices=["cercle", "segment", "cercle2pi", "cercle_eta0", "segment_eta0", "cercle_eta0_p4", "cercle_eta0_sansR7"])
     ap.add_argument("--epreuve")
     ap.add_argument("--inits", type=int, default=4)
     ap.add_argument("--pas", type=int, default=4000)
