@@ -1199,6 +1199,7 @@ conservé pour l'historique.
 
 ## Historique
 
+- 2026-11-28 14:10Z (routine) : fusion d'origin/main (maj quotidienne des données, sans conflit) ; backtests 2017/2022 du modèle final en cours sur le Mac, rien d'actionnable côté VM.
 - 2026-11-28 08:15Z (routine) : revue Opus quotidienne (12 points, 3 bloquants : bootstrap vide par construction, chemin bifurquant §8.119 c, η ≡ 0 sans backtest 2017/2022) intégrée ; 4 tâches ajoutées en tête de file ; date de revue mise à jour.
 - 2026-11-27 15:10Z (routine) : fusion d'origin/main (maj quotidienne des données, sans conflit) ; file relue : rien d'actionnable côté VM (tout derrière l'ARBITRAGE de géométrie).
 - 2026-11-27 00:10Z (routine) : fusion d'origin/main (maj quotidienne des données, sans conflit) ; file relue : rien d'actionnable côté VM (restent l'électorat « reste » et les simplifications, derrière l'ARBITRAGE de géométrie).
