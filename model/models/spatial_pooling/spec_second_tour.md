@@ -6304,15 +6304,45 @@ Calcul : `vraisemblance_essai_2027.py --bootstrap`, sortie `essai2027_bootstrap_
 | Bardella – Philippe | 1 | +14,7 |
 | Mélenchon – Le Pen | 1 | +16,5 |
 
-**Règle figée : P(ΣΔ ≥ 5 et au moins 9/13) = 0,999 ≥ 0,8 ⇒ ROBUSTE.** L'IC à 90 % de ΣΔ vaut [+32,5 ; +56,1] nats.
+**Règle figée : P(ΣΔ ≥ 5 et au moins 9/13) = 0,999 ≥ 0,8 ⇒ ROBUSTE. RETIRÉ en §8.124 a** (11 unités sur 13 constantes par construction). L'IC à 90 % de ΣΔ vaut [+32,5 ; +56,1] nats.
 
 **Limites, à dire avec le verdict.**
 
 - Le gain de Philippe – Le Pen est réparti : 6 notices sur 8 vont au cercle.
 - Celui d'Attal – Le Pen est faible mais de signe constant sur ses 4 notices.
-- **Bardella – Philippe et Mélenchon – Le Pen reposent chacun sur la seule notice du 25-27 mai** : +31 nats, constants dans le bootstrap. Sans elles, ΣΔ tomberait vers +13 et le décompte à 7/11.
+- **Bardella – Philippe et Mélenchon – Le Pen reposent chacun sur la seule notice du 25-27 mai** : +31 nats, constants dans le bootstrap. Sans elles, ΣΔ tomberait vers +13 et le décompte à 7/13 (coquille « 7/11 » corrigée, §8.124).
 - Les 8 unités de duels sont fixées par construction (§8.122). La robustesse porte sur le rééchantillonnage des notices de reports, pas sur les duels.
 - Un seul institut : le bootstrap mesure la variabilité entre les notices de Harris, pas entre instituts.
+
+### 8.124 Revue de la routine du 28/11 ~08:15Z : retraits, et bootstrap refait figé AVANT calcul (28/11 ~08:45Z)
+
+La revue est intégrée point par point dans `JOURNAL_T2.md`. Ce qui change ici :
+
+**(a) Retraits.**
+
+- **§8.123 « ROBUSTE » est RETIRÉ.** 11 unités sur 13 y étaient constantes : 8 de duels fixées, 3 hypothèses à une seule notice. P = 0,999 était donc mécanique.
+- **Coquille de §8.123 :** « 7/11 » doit se lire **7/13**. Sans la notice du 25-27 mai, ΣΔ ≈ +13,3 et le décompte tombe à 7/13, sous le seuil.
+- **§8.119 c est déclaré comme chemin bifurquant.** §8.118 annonçait la comparaison « à η égal » comme la propre. À η égal, le critère strict échoue : 8/13 (§8.119 b). La règle « chaque géométrie dans sa configuration retenue » (9/13) a été posée APRÈS cette lecture. Le verdict de §8.119 c ne vaut donc pas preuve. **Les deux lectures sont rapportées, et la décision revient à l'utilisateur.**
+- **9/13 tient à des unités quasi nulles.** Le Pen – Retailleau vaut +0,7 nat. Avec une zone d'indifférence de ±1 nat, on tombe à 8/13.
+
+**(b) Bootstrap refait, règle figée ici AVANT calcul.**
+
+- **Unités :** les 13 unités de §8.119 c. Les deux comparaisons sont rapportées :
+  - cercle retenu contre segment retenu ;
+  - cercle η ≡ 0 contre segment η ≡ 0.
+- **Tirage :** 2 000 tirages, graine 0. **Duels et reports sont rééchantillonnés.**
+  - Duels : par duel, avec remise, dans chaque paire. La log-vraisemblance d'une unité de duels est la somme sur les duels tirés.
+  - Reports : par notice, avec remise, dans chaque hypothèse.
+- **Règle :** verdict « cercle » robuste si P(ΣΔ ≥ 5 **et** au moins 9/13) ≥ 0,8 ; sinon fragile.
+- **Rapportés aussi :**
+  - l'IC à 90 % de ΣΔ ;
+  - le décompte observé aux seuils 0, 0,5 et 1 nat ;
+  - le **leave-one-notice-out** : ΣΔ et décompte en retirant chaque notice Harris, une à une, de toutes les unités où elle figure (duels et reports).
+
+**(c) Bloquant avant toute publication, en file :**
+
+- backtests 2017 et 2022 du modèle final au protocole figé §8.29, car η ≡ 0 contredit §8.29 et §9.3 ;
+- une évaluation sur des données futures, avec modèle et règle figés.
 
 ## 9. Audit Codex (d7b1575, 7dcb84a) — résumé
 
